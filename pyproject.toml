@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finembed-research"
+version = "0.1.0"
+description = "Auditable SEC 10-K ingestion for financial text research"
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6.0,<7"]
+
+[project.optional-dependencies]
+embed = ["numpy>=1.26,<3", "onnxruntime>=1.20,<2", "tokenizers>=0.20,<1", "huggingface_hub>=0.30,<2"]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+finembed = "finembed.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

@@ -1,0 +1,41 @@
+{
+  "common_companies": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META"
+  ],
+  "top_k": 2,
+  "same_config_repeat": {
+    "cosine_max_abs": 0.0,
+    "note": "fixed-weight repeat inference, not independent training seeds",
+    "passed": true,
+    "tolerance": 1e-05,
+    "vector_max_abs": 0.0
+  },
+  "upper_triangle_spearman": {
+    "pair_count": 10,
+    "tie_rule": "exactly equal float64 cosine values receive average ranks; no tolerance grouping",
+    "value": 0.9151515151515152
+  },
+  "topk_overlap_fraction_by_company": {
+    "AAPL": 1.0,
+    "AMZN": 1.0,
+    "GOOGL": 1.0,
+    "META": 1.0,
+    "MSFT": 0.5
+  },
+  "orthogonal_check": {
+    "cosine_max_abs": 1.2212453270876722e-15,
+    "gram_max_abs": 1.2212453270876722e-15,
+    "method": "fixed Householder orthogonal reflection, same vector dimension; no Procrustes",
+    "orthogonality_max_abs": 2.3314683517128287e-15,
+    "passed": true,
+    "tolerance_gram_cosine": 1e-10,
+    "tolerance_orthogonality": 1e-12
+  },
+  "only_changed_factor": "body tokens per nonoverlapping chunk",
+  "statistical_inference": "none; company-pair similarities are not independent observations",
+  "invalid_value_policy": "nonfinite embeddings/cosines fail; undefined Spearman is null with reason; no imputation"
+}

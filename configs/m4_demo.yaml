@@ -1,0 +1,20 @@
+# Engineering demonstration only; formal horizons remain unresolved in docs/PROTOCOL.md.
+market:
+  vendor: Massive
+  window_start: "2025-01-01"
+  window_end: "2025-12-31"
+  price_field: c
+  adjusted: true  # Split-adjusted aggregates; not dividend total returns.
+  max_pages_per_request: 20
+  min_interval_seconds: 13.0  # Safe for the documented free-plan 5 calls/minute.
+  max_attempts: 3
+  timeout_seconds: 20
+pca:
+  components: 2
+  center: true
+  scale: false
+tfidf:
+  token_pattern: "[a-z][a-z0-9]+"
+  lowercase: true
+  smooth_idf: true
+  l2_normalize: true

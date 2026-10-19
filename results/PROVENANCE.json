@@ -1,0 +1,130 @@
+{
+  "scope": "Curated share copy from existing runs; no inference or market request during export",
+  "m1_run": "20261019T003627Z-d3043c3e",
+  "m1_corpus_index_sha256": "ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c",
+  "m2_m3_run": "20261019T003637Z-d1875b3b",
+  "m2_m3_manifest_sha256": "ca3df1aeedfb6cf985ac096e4fa484460952388afdbf4773fa51037e4c48bf92",
+  "m4_run": "20261019T004950Z-828af5af",
+  "m4_manifest_sha256": "c4815bcbeafea98e3810cb3f46849e6c1b544bd2e5beb3a4835a5fddb36ca755",
+  "config_sha256": {
+    "smoke.yaml": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869",
+    "m4_demo.yaml": "a09317baf128cfb3dc446c140d4e36018f40904cc824018d93b4345dd0222535"
+  },
+  "source_results_sha256": {
+    "artifacts/runs/20261019T003637Z-d1875b3b/analysis_report.json": "912cbf75cf06148a2933fb924794f473f324ab480effc9ee68c21bd337831700",
+    "artifacts/runs/20261019T003637Z-d1875b3b/analysis/base_128/cosine.json": "e53bc242ea415eb2e87b5fd5bc826283ca9e5aa363081c5d5225aa7dbe5d50f5",
+    "artifacts/runs/20261019T003637Z-d1875b3b/analysis/alternate_192/cosine.json": "49eccf482f550089ce03f520e955df88fd618630bbb0ccf5f5c73149e3116ed4",
+    "artifacts/runs/20261019T004950Z-828af5af/tfidf/cosine.npy": "17643240778de50a507c13c6fe5b504f44fc447026645e7a6c18d64eac19e83c",
+    "artifacts/runs/20261019T004950Z-828af5af/tfidf/fit_boundary.json": "8aec2bfd666a7901d602733c0b341c23755bb37141c178a436aa4fcc0d889919",
+    "artifacts/runs/20261019T004950Z-828af5af/pca_stock_loadings_NxK.npy": "65e3e6eb69e5ef07607943585d86895946aca6bb10c265611738f2aa3bfd5b9d",
+    "artifacts/runs/20261019T004950Z-828af5af/pca_metadata.json": "3f22cf3dc04dfdc54e08210c8e066a05d56954c5f5a4a224d9759b2cce09fab5"
+  },
+  "sec_originals_omitted": [
+    {
+      "ticker": "AAPL",
+      "cik": "0000320193",
+      "accession": "0000320193-25-000079",
+      "raw_sha256": "60f22bb90bb8e46894019fd57c27df69abd192f3f0f4183c4345d786426f3391",
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec"
+    },
+    {
+      "ticker": "MSFT",
+      "cik": "0000789019",
+      "accession": "0000950170-25-100235",
+      "raw_sha256": "37e72a2b7e332899a583fe0655e1b45ec7dc53ea9b07c089bbbc78f1098e931f",
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6"
+    },
+    {
+      "ticker": "AMZN",
+      "cik": "0001018724",
+      "accession": "0001018724-25-000004",
+      "raw_sha256": "abe32d580cc33f064df65735cbd55c72b7b9aad63739a6f14e497e98f0cfddb8",
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b"
+    },
+    {
+      "ticker": "GOOGL",
+      "cik": "0001652044",
+      "accession": "0001652044-25-000014",
+      "raw_sha256": "5f272086fbc10d11064f4805fa3328847f2108f61c366f0b9e0496b50f74150f",
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b"
+    },
+    {
+      "ticker": "META",
+      "cik": "0001326801",
+      "accession": "0001326801-25-000017",
+      "raw_sha256": "2316a734d166a8a452cfadf15cb4586952bd09b10d39325f0d3210988e5ae2b5",
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede"
+    }
+  ],
+  "massive_raw_responses_omitted": [
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "reference_AAPL",
+      "sha256": "3f890ef9a5286db5cea55dc466760a138474e6674e960768ed37b882ba689b04"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "bars_AAPL",
+      "sha256": "1fbd3201d52178c93ab6864bcc0977118d1c01b6cc8a26bb249421eb403fd441"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "reference_MSFT",
+      "sha256": "b7090bf5cd1c742ea8a8186f3e76f3b45db56c61f79d36e0de583a31b8b2fc01"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "bars_MSFT",
+      "sha256": "eedeae4ca84977a076034688e25d65213a392ccf423339c7b7ed342d31c37e2c"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "reference_AMZN",
+      "sha256": "8b076b06f2e3373288144f17815cb343cea6b854a5ec61f97994cd7a880faab6"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "bars_AMZN",
+      "sha256": "7435096c4b13e765f486f36ba5538a1b0b60e0feb516308c3c80fe644046548b"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "reference_GOOGL",
+      "sha256": "3a7689694b6804fb65a34fe5ab313ab21366eb7a8ef9363a97420ef20824e4b4"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "bars_GOOGL",
+      "sha256": "fdcf6af729f927274368f9ebc9e3a8713872209de8501ca5dfdf9e0496a5eb11"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "reference_META",
+      "sha256": "7470d5b77404967cd6e10d6c37af482ae406507f5c92cdc922b6e644502129e2"
+    },
+    {
+      "kind": "Massive raw REST response, omitted",
+      "identity": "bars_META",
+      "sha256": "b6888663bc0d74bede338e9c557f65f5bb2917314bad9631e17982639bc77a38"
+    }
+  ],
+  "model_weights_omitted": {
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "onnx_sha256": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452"
+  },
+  "pca_demo": {
+    "observed_price_bars_per_security": 250,
+    "complete_return_dates": 249,
+    "center": true,
+    "scale": false,
+    "k": 2,
+    "effective_rank": 5,
+    "k_selection_reason_recorded": false
+  },
+  "tfidf_fit": {
+    "document_count": 5,
+    "vocabulary_size": 2902,
+    "fit_scope": "only the five validated M1 Item 1 Business texts"
+  }
+}

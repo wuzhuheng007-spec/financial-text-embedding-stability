@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Top-2 peer overlap: 128 vs 192 tokens">
+<rect width="800" height="450" fill="white"/>
+<text x="400" y="42" font-family="Arial" font-size="22" text-anchor="middle" fill="#182338">Top-2 peer overlap: 128 vs 192 tokens</text>
+<text x="20" y="225" font-family="Arial" font-size="13" transform="rotate(-90 20 225)" text-anchor="middle">Overlap / 2</text>
+<line x1="85" y1="365" x2="735" y2="365" stroke="#364154"/>
+<line x1="85" y1="365.0" x2="735" y2="365.0" stroke="#e6ebf2"/>
+<text x="73" y="370.0" text-anchor="end" font-family="Arial" font-size="12">0.00</text>
+<line x1="85" y1="293.8" x2="735" y2="293.8" stroke="#e6ebf2"/>
+<text x="73" y="298.8" text-anchor="end" font-family="Arial" font-size="12">0.25</text>
+<line x1="85" y1="222.5" x2="735" y2="222.5" stroke="#e6ebf2"/>
+<text x="73" y="227.5" text-anchor="end" font-family="Arial" font-size="12">0.50</text>
+<line x1="85" y1="151.2" x2="735" y2="151.2" stroke="#e6ebf2"/>
+<text x="73" y="156.2" text-anchor="end" font-family="Arial" font-size="12">0.75</text>
+<line x1="85" y1="80.0" x2="735" y2="80.0" stroke="#e6ebf2"/>
+<text x="73" y="85.0" text-anchor="end" font-family="Arial" font-size="12">1.00</text>
+<rect x="111.0" y="80.0" width="78.0" height="285.0" fill="#315f9c"/>
+<text x="150.0" y="72.0" text-anchor="middle" font-family="Arial" font-size="12">1.000</text>
+<text x="150.0" y="390" text-anchor="middle" font-family="Arial" font-size="13">AAPL</text>
+<rect x="241.0" y="222.5" width="78.0" height="142.5" fill="#315f9c"/>
+<text x="280.0" y="214.5" text-anchor="middle" font-family="Arial" font-size="12">0.500</text>
+<text x="280.0" y="390" text-anchor="middle" font-family="Arial" font-size="13">MSFT</text>
+<rect x="371.0" y="80.0" width="78.0" height="285.0" fill="#315f9c"/>
+<text x="410.0" y="72.0" text-anchor="middle" font-family="Arial" font-size="12">1.000</text>
+<text x="410.0" y="390" text-anchor="middle" font-family="Arial" font-size="13">AMZN</text>
+<rect x="501.0" y="80.0" width="78.0" height="285.0" fill="#315f9c"/>
+<text x="540.0" y="72.0" text-anchor="middle" font-family="Arial" font-size="12">1.000</text>
+<text x="540.0" y="390" text-anchor="middle" font-family="Arial" font-size="13">GOOGL</text>
+<rect x="631.0" y="80.0" width="78.0" height="285.0" fill="#315f9c"/>
+<text x="670.0" y="72.0" text-anchor="middle" font-family="Arial" font-size="12">1.000</text>
+<text x="670.0" y="390" text-anchor="middle" font-family="Arial" font-size="13">META</text>
+<text x="400" y="425" text-anchor="middle" font-family="Arial" font-size="12" fill="#576475">Five-company descriptive engineering demo; no financial inference</text>
+</svg>

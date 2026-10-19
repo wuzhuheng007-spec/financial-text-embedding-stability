@@ -1,0 +1,43 @@
+study:
+  as_of: "2025-12-31"
+  timezone: "America/New_York"
+  companies:
+    - ticker: AAPL
+      name: Apple Inc.
+    - ticker: MSFT
+      name: Microsoft Corporation
+    - ticker: AMZN
+      name: Amazon.com, Inc.
+    - ticker: GOOGL
+      name: Alphabet Inc.
+    - ticker: META
+      name: Meta Platforms, Inc.
+  first_run_symbol_limit: null  # Explicitly released after the M1 first-company smoke.
+sec:
+  min_interval_seconds: 0.5
+  max_attempts: 3
+  timeout_seconds: 20
+  max_response_bytes: 100000000
+paths:
+  cache: .cache/sec
+  artifacts: artifacts
+  model_cache: .cache/models/all-MiniLM-L6-v2-1110a243
+embedding:
+  model_id: sentence-transformers/all-MiniLM-L6-v2
+  revision: 1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+  tokenizer_revision: 1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+  onnx_file: onnx/model.onnx
+  onnx_sha256: 6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452
+  tokenizer_sha256: be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037
+  model_config_sha256: 953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41
+  pooling_config_sha256: fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7
+  body_tokens: 128
+  alternate_body_tokens: 192
+  overlap_tokens: 0
+  normalize_chunks: true
+  normalize_documents: true
+  top_k: 2
+  batch_size: 8
+  provider: CPUExecutionProvider
+  repeat_tolerance: 0.00001
+

@@ -1,0 +1,387 @@
+{
+  "status": "DESCRIPTIVE_HISTORICAL_FILING_AUDIT_ONLY",
+  "corpus_index_sha256": "ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c",
+  "m4_manifest_sha256": "c4815bcbeafea98e3810cb3f46849e6c1b544bd2e5beb3a4835a5fddb36ca755",
+  "m4_config_sha256": "a09317baf128cfb3dc446c140d4e36018f40904cc824018d93b4345dd0222535",
+  "time_policy": "2026 download is snapshot provenance, not evidence of 2025 unavailability. Raw SEC filing and acceptance fields verify historical filing identity, not exact publication or unchanged text vintage. The 2025 price role is unassigned.",
+  "rows": [
+    {
+      "ticker": "AAPL",
+      "cik": "0000320193",
+      "accession": "0000320193-25-000079",
+      "report_period_end": "2025-09-27",
+      "filing_date": "2025-10-31",
+      "sec_raw_header_acceptance_et": "2025-10-31T06:01:26-04:00",
+      "submissions_api_acceptance_source": "2025-10-31T14:01:26.000Z",
+      "api_minus_raw_header_seconds": 14400,
+      "raw_header_fields": {
+        "accession": "0000320193-25-000079",
+        "form": "10-K",
+        "report_date": "20250927",
+        "filed_as_of": "20251031",
+        "date_as_of_change": "20251031",
+        "acceptance_raw": "20251031060126"
+      },
+      "saved_submissions_revision_scan": {
+        "sources": [
+          {
+            "url": "https://data.sec.gov/submissions/CIK0000320193.json",
+            "sha256": "aad00f6aa75ba1405e0a34c788bdba9042281b2724fe1db3ff26f434b9a92e44",
+            "retrieved_utc": "2026-10-19T00:33:45.308595+00:00",
+            "rows_scanned": 1000
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0000320193-submissions-001.json",
+            "sha256": "3ce1f72cb9d77f355203d0e918ce6eb48f41c9bfa0111a9ea8fb4a847461adbb",
+            "retrieved_utc": "2026-10-19T00:33:45.758486+00:00",
+            "rows_scanned": 1267
+          }
+        ],
+        "same_period_10k_rows": [
+          {
+            "accession": "0000320193-25-000079",
+            "form": "10-K",
+            "report_date": "2025-09-27",
+            "filing_date": "2025-10-31",
+            "acceptance_source": "2025-10-31T14:01:26.000Z"
+          }
+        ],
+        "same_period_10ka_count": 0
+      },
+      "post_acceptance_correction_evidence": "DATE AS OF CHANGE equals the raw acceptance calendar date; same-day correction and later content revision are not ruled out. No PAC history or content-vintage archive verified.",
+      "exact_first_public_instant": null,
+      "text_snapshot_retrieved_utc": "2026-10-19T00:34:25.699741+00:00",
+      "text_raw_sha256": "60f22bb90bb8e46894019fd57c27df69abd192f3f0f4183c4345d786426f3391",
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "sec_archive_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/0000320193-25-000079.txt",
+      "price_window_configured": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "price_window_observed": [
+        "2025-01-02",
+        "2025-12-31"
+      ],
+      "price_bar_count": 250,
+      "proposed_conservative_session": "2025-11-03",
+      "proposed_proxy_assumptions": "Original filing disseminated by official filing-date end; decision-time Item 1 content unchanged by correction; first regular-session open strictly after filing date; historical security/price vintages valid. Unapproved.",
+      "price_processed_sha256": "c8ddd5cc94461783945c5a386ef86083803dffb140d8473dd9a56eb4f8180080",
+      "price_raw_sha256": "1fbd3201d52178c93ab6864bcc0977118d1c01b6cc8a26bb249421eb403fd441",
+      "price_raw_retrieved_utc": "2026-10-19T00:50:08.810207+00:00",
+      "price_2025_role": "UNASSIGNED: M4 price-only retrospective engineering input. Possible formal roles: trailing feature, future label, static comparison.",
+      "unsupported_historical_conclusions": [
+        "exact first public timestamp",
+        "absence of same-day PAC/content revision",
+        "point-in-time identity of 2026 saved text",
+        "predictive validity or text incremental value"
+      ],
+      "time_check": "HISTORICAL_FILING_VERIFIED; EXACT_PUBLICATION_AND_TEXT_VINTAGE_UNVERIFIED; PRICE_ROLE_UNASSIGNED"
+    },
+    {
+      "ticker": "MSFT",
+      "cik": "0000789019",
+      "accession": "0000950170-25-100235",
+      "report_period_end": "2025-06-30",
+      "filing_date": "2025-07-30",
+      "sec_raw_header_acceptance_et": "2025-07-30T16:11:40-04:00",
+      "submissions_api_acceptance_source": "2025-07-31T00:11:40.000Z",
+      "api_minus_raw_header_seconds": 14400,
+      "raw_header_fields": {
+        "accession": "0000950170-25-100235",
+        "form": "10-K",
+        "report_date": "20250630",
+        "filed_as_of": "20250730",
+        "date_as_of_change": "20250730",
+        "acceptance_raw": "20250730161140"
+      },
+      "saved_submissions_revision_scan": {
+        "sources": [
+          {
+            "url": "https://data.sec.gov/submissions/CIK0000789019.json",
+            "sha256": "a5848ba348a3d3ae08c3c40bf4599379014be077911e6550ed3a8182a34a6a7b",
+            "retrieved_utc": "2026-10-19T00:33:46.236321+00:00",
+            "rows_scanned": 1000
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0000789019-submissions-001.json",
+            "sha256": "451415b0dfe65e353081167154ab32b7ce241c76ae05ed7f5729833aea7639fa",
+            "retrieved_utc": "2026-10-19T00:33:47.028431+00:00",
+            "rows_scanned": 2006
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0000789019-submissions-002.json",
+            "sha256": "a8e9b1072aa20b7fa560fb3805f44529c29b849d69a83ebb47f99c596c3b114b",
+            "retrieved_utc": "2026-10-19T00:33:47.408568+00:00",
+            "rows_scanned": 1521
+          }
+        ],
+        "same_period_10k_rows": [
+          {
+            "accession": "0000950170-25-100235",
+            "form": "10-K",
+            "report_date": "2025-06-30",
+            "filing_date": "2025-07-30",
+            "acceptance_source": "2025-07-31T00:11:40.000Z"
+          }
+        ],
+        "same_period_10ka_count": 0
+      },
+      "post_acceptance_correction_evidence": "DATE AS OF CHANGE equals the raw acceptance calendar date; same-day correction and later content revision are not ruled out. No PAC history or content-vintage archive verified.",
+      "exact_first_public_instant": null,
+      "text_snapshot_retrieved_utc": "2026-10-19T00:34:28.133868+00:00",
+      "text_raw_sha256": "37e72a2b7e332899a583fe0655e1b45ec7dc53ea9b07c089bbbc78f1098e931f",
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "sec_archive_url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/0000950170-25-100235.txt",
+      "price_window_configured": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "price_window_observed": [
+        "2025-01-02",
+        "2025-12-31"
+      ],
+      "price_bar_count": 250,
+      "proposed_conservative_session": "2025-07-31",
+      "proposed_proxy_assumptions": "Original filing disseminated by official filing-date end; decision-time Item 1 content unchanged by correction; first regular-session open strictly after filing date; historical security/price vintages valid. Unapproved.",
+      "price_processed_sha256": "0fd1617faf735a820a5aa4cdb414ab8e099d1daa4efd2e28acc589a90a5547e7",
+      "price_raw_sha256": "eedeae4ca84977a076034688e25d65213a392ccf423339c7b7ed342d31c37e2c",
+      "price_raw_retrieved_utc": "2026-10-19T00:50:34.856061+00:00",
+      "price_2025_role": "UNASSIGNED: M4 price-only retrospective engineering input. Possible formal roles: trailing feature, future label, static comparison.",
+      "unsupported_historical_conclusions": [
+        "exact first public timestamp",
+        "absence of same-day PAC/content revision",
+        "point-in-time identity of 2026 saved text",
+        "predictive validity or text incremental value"
+      ],
+      "time_check": "HISTORICAL_FILING_VERIFIED; EXACT_PUBLICATION_AND_TEXT_VINTAGE_UNVERIFIED; PRICE_ROLE_UNASSIGNED"
+    },
+    {
+      "ticker": "AMZN",
+      "cik": "0001018724",
+      "accession": "0001018724-25-000004",
+      "report_period_end": "2024-12-31",
+      "filing_date": "2025-02-07",
+      "sec_raw_header_acceptance_et": "2025-02-06T18:40:29-05:00",
+      "submissions_api_acceptance_source": "2025-02-07T04:40:29.000Z",
+      "api_minus_raw_header_seconds": 18000,
+      "raw_header_fields": {
+        "accession": "0001018724-25-000004",
+        "form": "10-K",
+        "report_date": "20241231",
+        "filed_as_of": "20250207",
+        "date_as_of_change": "20250206",
+        "acceptance_raw": "20250206184029"
+      },
+      "saved_submissions_revision_scan": {
+        "sources": [
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001018724.json",
+            "sha256": "1f5bb6be4033e2378bfa0d14e0d9276a08d8dfb070b263f59ca0e77d68ced058",
+            "retrieved_utc": "2026-10-19T00:33:47.851112+00:00",
+            "rows_scanned": 1001
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001018724-submissions-001.json",
+            "sha256": "4d75fbd7d19d9955dcb0b19ebbd0cf1de8a1aff0cc0436a2cc1d0c5333c3a12a",
+            "retrieved_utc": "2026-10-19T00:33:48.342386+00:00",
+            "rows_scanned": 2000
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001018724-submissions-002.json",
+            "sha256": "2826573f41f877bbea71600dcf5c357f9e3b0114651dd949a200842f75b626c1",
+            "retrieved_utc": "2026-10-19T00:33:48.713311+00:00",
+            "rows_scanned": 129
+          }
+        ],
+        "same_period_10k_rows": [
+          {
+            "accession": "0001018724-25-000004",
+            "form": "10-K",
+            "report_date": "2024-12-31",
+            "filing_date": "2025-02-07",
+            "acceptance_source": "2025-02-07T04:40:29.000Z"
+          }
+        ],
+        "same_period_10ka_count": 0
+      },
+      "post_acceptance_correction_evidence": "DATE AS OF CHANGE equals the raw acceptance calendar date; same-day correction and later content revision are not ruled out. No PAC history or content-vintage archive verified.",
+      "exact_first_public_instant": null,
+      "text_snapshot_retrieved_utc": "2026-10-19T00:34:30.770920+00:00",
+      "text_raw_sha256": "abe32d580cc33f064df65735cbd55c72b7b9aad63739a6f14e497e98f0cfddb8",
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "sec_archive_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872425000004/0001018724-25-000004.txt",
+      "price_window_configured": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "price_window_observed": [
+        "2025-01-02",
+        "2025-12-31"
+      ],
+      "price_bar_count": 250,
+      "proposed_conservative_session": "2025-02-10",
+      "proposed_proxy_assumptions": "Original filing disseminated by official filing-date end; decision-time Item 1 content unchanged by correction; first regular-session open strictly after filing date; historical security/price vintages valid. Unapproved.",
+      "price_processed_sha256": "17154666d5ff652299c964f9090cd370d82608d0d291b3d2e035458ebff14f13",
+      "price_raw_sha256": "7435096c4b13e765f486f36ba5538a1b0b60e0feb516308c3c80fe644046548b",
+      "price_raw_retrieved_utc": "2026-10-19T00:51:01.187062+00:00",
+      "price_2025_role": "UNASSIGNED: M4 price-only retrospective engineering input. Possible formal roles: trailing feature, future label, static comparison.",
+      "unsupported_historical_conclusions": [
+        "exact first public timestamp",
+        "absence of same-day PAC/content revision",
+        "point-in-time identity of 2026 saved text",
+        "predictive validity or text incremental value"
+      ],
+      "time_check": "HISTORICAL_FILING_VERIFIED; EXACT_PUBLICATION_AND_TEXT_VINTAGE_UNVERIFIED; PRICE_ROLE_UNASSIGNED"
+    },
+    {
+      "ticker": "GOOGL",
+      "cik": "0001652044",
+      "accession": "0001652044-25-000014",
+      "report_period_end": "2024-12-31",
+      "filing_date": "2025-02-05",
+      "sec_raw_header_acceptance_et": "2025-02-04T20:41:40-05:00",
+      "submissions_api_acceptance_source": "2025-02-05T06:41:40.000Z",
+      "api_minus_raw_header_seconds": 18000,
+      "raw_header_fields": {
+        "accession": "0001652044-25-000014",
+        "form": "10-K",
+        "report_date": "20241231",
+        "filed_as_of": "20250205",
+        "date_as_of_change": "20250204",
+        "acceptance_raw": "20250204204140"
+      },
+      "saved_submissions_revision_scan": {
+        "sources": [
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001652044.json",
+            "sha256": "648cea84d824309b518807fd7e7fdb72d6855e12e8afa221d2caa047d5c9f2ca",
+            "retrieved_utc": "2026-10-19T00:33:49.238171+00:00",
+            "rows_scanned": 1000
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001652044-submissions-001.json",
+            "sha256": "99e552468fe10718c0e21dd9a85f7d6f485ea5299984475c1dee578516f97cf8",
+            "retrieved_utc": "2026-10-19T00:33:49.786841+00:00",
+            "rows_scanned": 1714
+          }
+        ],
+        "same_period_10k_rows": [
+          {
+            "accession": "0001652044-25-000014",
+            "form": "10-K",
+            "report_date": "2024-12-31",
+            "filing_date": "2025-02-05",
+            "acceptance_source": "2025-02-05T06:41:40.000Z"
+          }
+        ],
+        "same_period_10ka_count": 0
+      },
+      "post_acceptance_correction_evidence": "DATE AS OF CHANGE equals the raw acceptance calendar date; same-day correction and later content revision are not ruled out. No PAC history or content-vintage archive verified.",
+      "exact_first_public_instant": null,
+      "text_snapshot_retrieved_utc": "2026-10-19T00:34:32.178566+00:00",
+      "text_raw_sha256": "5f272086fbc10d11064f4805fa3328847f2108f61c366f0b9e0496b50f74150f",
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "sec_archive_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/0001652044-25-000014.txt",
+      "price_window_configured": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "price_window_observed": [
+        "2025-01-02",
+        "2025-12-31"
+      ],
+      "price_bar_count": 250,
+      "proposed_conservative_session": "2025-02-06",
+      "proposed_proxy_assumptions": "Original filing disseminated by official filing-date end; decision-time Item 1 content unchanged by correction; first regular-session open strictly after filing date; historical security/price vintages valid. Unapproved.",
+      "price_processed_sha256": "8e1aed29a396057a626e06ee382d7f2d8523fd47540e9e8c6e5626958ed018bc",
+      "price_raw_sha256": "fdcf6af729f927274368f9ebc9e3a8713872209de8501ca5dfdf9e0496a5eb11",
+      "price_raw_retrieved_utc": "2026-10-19T00:51:26.832434+00:00",
+      "price_2025_role": "UNASSIGNED: M4 price-only retrospective engineering input. Possible formal roles: trailing feature, future label, static comparison.",
+      "unsupported_historical_conclusions": [
+        "exact first public timestamp",
+        "absence of same-day PAC/content revision",
+        "point-in-time identity of 2026 saved text",
+        "predictive validity or text incremental value"
+      ],
+      "time_check": "HISTORICAL_FILING_VERIFIED; EXACT_PUBLICATION_AND_TEXT_VINTAGE_UNVERIFIED; PRICE_ROLE_UNASSIGNED"
+    },
+    {
+      "ticker": "META",
+      "cik": "0001326801",
+      "accession": "0001326801-25-000017",
+      "report_period_end": "2024-12-31",
+      "filing_date": "2025-01-30",
+      "sec_raw_header_acceptance_et": "2025-01-29T20:00:50-05:00",
+      "submissions_api_acceptance_source": "2025-01-30T06:00:50.000Z",
+      "api_minus_raw_header_seconds": 18000,
+      "raw_header_fields": {
+        "accession": "0001326801-25-000017",
+        "form": "10-K",
+        "report_date": "20241231",
+        "filed_as_of": "20250130",
+        "date_as_of_change": "20250129",
+        "acceptance_raw": "20250129200050"
+      },
+      "saved_submissions_revision_scan": {
+        "sources": [
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001326801.json",
+            "sha256": "56a1c4d16bec6ec1e5a605d028f9be4495fc1fcca8f32dda9f88889fdcddac95",
+            "retrieved_utc": "2026-10-19T00:33:50.243903+00:00",
+            "rows_scanned": 1000
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001326801-submissions-001.json",
+            "sha256": "636dcc652daa12721ed7da1a4b5e697f14bfb6495dda02bd76c3a39d8802907d",
+            "retrieved_utc": "2026-10-19T00:33:50.958849+00:00",
+            "rows_scanned": 2007
+          },
+          {
+            "url": "https://data.sec.gov/submissions/CIK0001326801-submissions-002.json",
+            "sha256": "159ce1808e1f504d67e080411afa744f4c7a7491d75588df7356effda5e1951e",
+            "retrieved_utc": "2026-10-19T00:33:51.475520+00:00",
+            "rows_scanned": 1192
+          }
+        ],
+        "same_period_10k_rows": [
+          {
+            "accession": "0001326801-25-000017",
+            "form": "10-K",
+            "report_date": "2024-12-31",
+            "filing_date": "2025-01-30",
+            "acceptance_source": "2025-01-30T06:00:50.000Z"
+          }
+        ],
+        "same_period_10ka_count": 0
+      },
+      "post_acceptance_correction_evidence": "DATE AS OF CHANGE equals the raw acceptance calendar date; same-day correction and later content revision are not ruled out. No PAC history or content-vintage archive verified.",
+      "exact_first_public_instant": null,
+      "text_snapshot_retrieved_utc": "2026-10-19T00:34:33.633771+00:00",
+      "text_raw_sha256": "2316a734d166a8a452cfadf15cb4586952bd09b10d39325f0d3210988e5ae2b5",
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "sec_archive_url": "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/0001326801-25-000017.txt",
+      "price_window_configured": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "price_window_observed": [
+        "2025-01-02",
+        "2025-12-31"
+      ],
+      "price_bar_count": 250,
+      "proposed_conservative_session": "2025-01-31",
+      "proposed_proxy_assumptions": "Original filing disseminated by official filing-date end; decision-time Item 1 content unchanged by correction; first regular-session open strictly after filing date; historical security/price vintages valid. Unapproved.",
+      "price_processed_sha256": "a7865de3175b67f6a70874eaa09d15c8e1b3b38ba66b80236a12d93589121b00",
+      "price_raw_sha256": "b6888663bc0d74bede338e9c557f65f5bb2917314bad9631e17982639bc77a38",
+      "price_raw_retrieved_utc": "2026-10-19T00:51:52.823364+00:00",
+      "price_2025_role": "UNASSIGNED: M4 price-only retrospective engineering input. Possible formal roles: trailing feature, future label, static comparison.",
+      "unsupported_historical_conclusions": [
+        "exact first public timestamp",
+        "absence of same-day PAC/content revision",
+        "point-in-time identity of 2026 saved text",
+        "predictive validity or text incremental value"
+      ],
+      "time_check": "HISTORICAL_FILING_VERIFIED; EXACT_PUBLICATION_AND_TEXT_VINTAGE_UNVERIFIED; PRICE_ROLE_UNASSIGNED"
+    }
+  ]
+}
