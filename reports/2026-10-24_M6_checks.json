@@ -1,0 +1,55 @@
+{
+  "scope": "Recorded acceptance checks; same-agent self-check; not independent audit",
+  "base_commit": "6a1e3877045c486ea9467e42d3a36274a401300b",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pytest": "9.1.1",
+  "command_count": 4,
+  "commands": [
+    {
+      "command": "python -m pytest -q -r s",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "accepted": true,
+      "stdout": ".....ss...................................                               [100%]\n=========================== short test summary info ============================\nSKIPPED [1] tests/test_analysis.py:70: Pinned model not downloaded; model-fetch must verify it separately\nSKIPPED [1] tests/test_analysis.py:86: Pinned model not downloaded\n40 passed, 2 skipped in 0.19s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -m compileall -q src scripts tests",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "accepted": true,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "python -m finembed.m6 --help",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "accepted": true,
+      "stdout": "usage: m6.py [-h] (--corpus CORPUS | --section-index SECTION_INDEX)\n             [--config CONFIG] --output OUTPUT [--dense] [--k1 K1]\n             [--b-values B_VALUES [B_VALUES ...]] [--top-k TOP_K]\n\nOffline M6 engineering entry point; requires real, hash-checked source files.\n\noptions:\n  -h, --help            show this help message and exit\n  --corpus CORPUS       Existing complete real M1 corpus_index.json\n  --section-index SECTION_INDEX\n                        Hash-checked original 10-K or 10-Q sections\n  --config CONFIG\n  --output OUTPUT       New directory; existing evidence is never overwritten\n  --dense               Also use locally pinned encoder; never downloads\n                        weights\n  --k1 K1\n  --b-values B_VALUES [B_VALUES ...]\n  --top-k TOP_K\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -m finembed.m6 --section-index local_data/10q_mda_sections.json --output artifacts/m6/acceptance-missing-corpus-001",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "accepted": true,
+      "stdout": "{\"status\": \"BLOCKED\", \"reason\": \"FileNotFoundError: [Errno 2] No such file or directory: '<CHECKOUT>/local_data/10q_mda_sections.json'\", \"output\": \"artifacts/m6/acceptance-missing-corpus-001\"}\n",
+      "stderr": ""
+    }
+  ],
+  "existing_result_config_figure_bytes": "UNCHANGED",
+  "changed_existing_files": [
+    "README.md",
+    "ROADMAP.md",
+    "docs/M5_PROTOCOL_DRAFT.md",
+    "src/finembed/extract.py",
+    "src/finembed/model.py",
+    "src/finembed/sec.py"
+  ],
+  "real_M6_SEC_analysis": "NOT_RUN_MISSING_LOCAL_CORPUS",
+  "real_dense_inference": "NOT_RUN_MISSING_PINNED_MODEL_AND_CORPUS",
+  "blocked_cli_outcome": "EXPECTED_BLOCKED_NO_METRIC_FILES",
+  "financial_experiment": "NOT_RUN"
+}

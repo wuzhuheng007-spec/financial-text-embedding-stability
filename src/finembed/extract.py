@@ -34,7 +34,9 @@ class _Text(HTMLParser):
             self.parts.append(data)
 
 
-def primary_text(raw: bytes) -> tuple[str, dict]:
+def primary_text(raw: bytes, expected_form: str = "10-K") -> tuple[str, dict]:
+    if expected_form not in {"10-K", "10-Q"}:
+        raise ExtractionError("Only original 10-K and 10-Q forms are supported")
     decoded = raw.decode("utf-8", errors="replace")
     if decoded.count("\ufffd") > max(20, len(decoded) // 1000):
         raise ExtractionError("Too many UTF-8 replacement characters in SEC submission")
@@ -43,14 +45,14 @@ def primary_text(raw: bytes) -> tuple[str, dict]:
     for doc in documents:
         content = doc.group(1)
         kind = re.search(r"<TYPE>\s*([^\r\n<]+)", content, re.I)
-        if kind and kind.group(1).strip().upper() == "10-K":
+        if kind and kind.group(1).strip().upper() == expected_form:
             primary.append((doc, content))
     if len(primary) != 1:
-        raise ExtractionError(f"Expected one primary TYPE 10-K document; found {len(primary)}")
+        raise ExtractionError(f"Expected one primary TYPE {expected_form} document; found {len(primary)}")
     doc, content = primary[0]
     match = re.search(r"<TEXT>\s*(.*?)\s*</TEXT>", content, re.I | re.S)
     if not match:
-        raise ExtractionError("Primary 10-K has no closed TEXT block")
+        raise ExtractionError(f"Primary {expected_form} has no closed TEXT block")
     html = match.group(1)
     parser = _Text()
     parser.feed(html)
@@ -61,7 +63,7 @@ def primary_text(raw: bytes) -> tuple[str, dict]:
     rendered = re.sub(r" *\n *", "\n", rendered)
     rendered = re.sub(r"\n{3,}", "\n\n", rendered).strip() + "\n"
     if len(rendered) < 2000:
-        raise ExtractionError("Primary 10-K rendered text is implausibly short")
+        raise ExtractionError(f"Primary {expected_form} rendered text is implausibly short")
     return rendered, {"primary_document_char_start_in_decoded_submission": doc.start(),
                       "primary_document_char_end_in_decoded_submission": doc.end(),
                       "utf8_replacement_characters": decoded.count("\ufffd"),
@@ -112,4 +114,5 @@ def comparison(text: str, item: str, offsets: dict) -> dict:
         "source_end_after": text[end:end + 240],
         "exact_substring": True,
     }
+
 

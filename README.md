@@ -48,6 +48,12 @@ For the price-only M4 workflow, obtain historical Stocks REST access from Massiv
 
 ## Limits and next step
 
+### M6 engineering extension
+
+See [M6 method and commands](docs/M6_METHOD.md), [plan/evidence](docs/M6_PLAN_EVIDENCE.md), [engineering acceptance](reports/2026-10-24_M6_engineering.md), and the [later publication review](reports/2026-10-25_M6_publication_review.md). `python -m finembed.m6` adds BM25 length-control comparisons and optional equal-chunk versus token-weighted dense pooling on your hash-checked local corpus. BM25 is a lexical ranking method; its directed scores are not dense embeddings or covariance. A reviewed 10-Q section adapter is available, but automated 10-Q discovery/extraction and real-data M6 results are not claimed. Original results are preserved. M5 remains unfrozen.
+
+`MANIFEST_SHA256.json` is the retained original Windows share-export manifest, not a claim that M6 source still has the old hashes. Fourteen historical text files have CRLF bytes in that local export and LF bytes in Git; their content is otherwise identical. Use `M6_CHECKSUMS.json` for SHA-256 values of the committed Git blobs in this updated branch.
+
 The five firms, one pretrained model and 2025 price window were engineering choices. The exact first-public filing instants and decision-time Item 1 vintages are not established here. The 2025 prices have no assigned role as trailing features, future labels or static comparison inputs in a formal experiment. First agree a dated M5 protocol for the recommended fixed-text stability mainline; historical return prediction and risk estimation are separately gated options.
 
 **License:** no repository license is granted or implied. Permission to license or redistribute team code remains to be confirmed. Third-party model, data and dependency terms remain with their respective owners.

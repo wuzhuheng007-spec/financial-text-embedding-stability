@@ -176,7 +176,9 @@ def submission_url(cik: str, accession: str) -> str:
     return f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession.replace('-', '')}/{accession}.txt"
 
 
-def raw_header(raw: bytes, expected_accession: str) -> dict:
+def raw_header(raw: bytes, expected_accession: str, expected_form: str = "10-K") -> dict:
+    if expected_form not in {"10-K", "10-Q"}:
+        raise SecError("Only original 10-K and 10-Q forms are supported")
     header_end = raw.find(b"</SEC-HEADER>")
     if header_end < 0:
         raise SecError("Complete SEC submission lacks a closed SEC-HEADER")
@@ -188,14 +190,15 @@ def raw_header(raw: bytes, expected_accession: str) -> dict:
     if not all((accepted, accession, form, filed)):
         raise SecError("Complete SEC submission header lacks required identity/time fields")
     raw_accession = accession.group(1).decode("ascii")
-    if raw_accession != expected_accession or form.group(1).strip() != b"10-K":
-        raise SecError("Raw SEC header accession or form differs from selected original 10-K")
+    if raw_accession != expected_accession or form.group(1).strip() != expected_form.encode("ascii"):
+        raise SecError(f"Raw SEC header accession or form differs from selected original {expected_form}")
     try:
         local = datetime.strptime(accepted.group(1).decode("ascii"), "%Y%m%d%H%M%S").replace(
             tzinfo=ZoneInfo("America/New_York"))
         filing_date = datetime.strptime(filed.group(1).decode("ascii"), "%Y%m%d").date()
     except ValueError as exc:
         raise SecError("Invalid raw SEC header date/time") from exc
-    return {"accession": raw_accession, "form": "10-K", "acceptance_datetime_raw_header": accepted.group(1).decode("ascii"),
+    return {"accession": raw_accession, "form": expected_form, "acceptance_datetime_raw_header": accepted.group(1).decode("ascii"),
             "acceptance_datetime_eastern": local.isoformat(), "filing_date_raw_header": filing_date.isoformat()}
+
 
