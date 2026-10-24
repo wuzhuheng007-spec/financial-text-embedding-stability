@@ -139,7 +139,7 @@ class Encoder:
         return np.vstack(rows)
 
 
-def aggregate(chunk_vectors, normalize_chunks: bool, normalize_documents: bool):
+def aggregate(chunk_vectors, normalize_chunks: bool, normalize_documents: bool, *, weights=None):
     import numpy as np
     v = np.asarray(chunk_vectors, dtype=np.float64)
     if v.ndim != 2 or v.shape[0] == 0 or not np.isfinite(v).all():
@@ -149,11 +149,22 @@ def aggregate(chunk_vectors, normalize_chunks: bool, normalize_documents: bool):
         if (norms <= 0).any():
             raise ModelError("Zero norm chunk vector")
         v = v / norms
-    doc = v.mean(axis=0)
+    if weights is None:
+        doc = v.mean(axis=0)
+    else:
+        w = np.asarray(weights, dtype=np.float64)
+        if w.shape != (len(v),) or not np.isfinite(w).all() or (w <= 0).any():
+            raise ModelError("Chunk weights must be finite, positive and match chunk rows")
+        # Rescale before summation to avoid overflow for large valid weights.
+        w = w / w.max()
+        doc = np.sum(v * (w / w.sum())[:, None], axis=0)
+    if not np.isfinite(doc).all():
+        raise ModelError("Nonfinite aggregated document vector")
     if normalize_documents:
         norm = np.linalg.norm(doc)
         if not np.isfinite(norm) or norm <= 0:
             raise ModelError("Zero or nonfinite document vector")
         doc = doc / norm
     return doc
+
 
