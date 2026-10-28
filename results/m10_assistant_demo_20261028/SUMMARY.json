@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "SANITIZED_PUBLIC_SUMMARY_OF_SAVED_LOCAL_M10_OUTPUTS",
+  "source_code_commit": "c864027413b9b6545f4fbe04611d91720b76212a",
+  "index_run_id": "20261028T001914Z-rag-real-index",
+  "index_manifest_sha256": "6be3b5831fed4361c5c64c9c7382ee852c2f36d0e6c16c8e07801b038b4682aa",
+  "evaluation_run_id": "20261028T001926Z-rag-eval-real6-final",
+  "evaluation_sha256": "3b7a90d3524a40bbff57ec31e6261dc4d9deb9c71bd8aa3f6ef7ca9cd29c020d",
+  "assistant_run_id": "20261028T001928Z-assistant-closure",
+  "assistant_response_sha256": "0bbfdf2e82609d55029c6ef5faaeaac1b7792d1e165713856a0545574e3716e6",
+  "test_log_sha256": "15dec18ceb0634f375779a4c628df2479ae4a8715de3fc15a4ab566f8af25519",
+  "source_documents": [
+    {"ticker": "AMZN", "accession": "0001018724-25-000036", "form": "10-Q", "section": "Part I Item 2 MD&A", "nodes": 65},
+    {"ticker": "GOOGL", "accession": "0001652044-25-000043", "form": "10-Q", "section": "Part I Item 2 MD&A", "nodes": 101}
+  ],
+  "index": {
+    "node_count": 166,
+    "dense_status": "READY",
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "body_tokens_per_chunk": 160,
+    "overlap_tokens": 0,
+    "bm25_fit_boundary": "ALL_VALIDATED_INDEX_NODES_BEFORE_QUERY_FILTERS",
+    "bm25_fit_node_count": 166,
+    "bm25_average_lexical_length": 110.644578313253,
+    "bm25_vocabulary_size": 1874,
+    "retrieval_config_sha256": "e7ff685e249ff43322e5c7387ddffa91f52bd445c31ec612d9dd804a7838be8d",
+    "encoder_config_sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869"
+  },
+  "development_evaluation": {
+    "scope": "AGENT_AUTHORED_SOURCE_LINKED_SOFTWARE_DEVELOPMENT_SMOKE",
+    "questions_total": 6,
+    "source_linked_questions": 5,
+    "unique_source_anchors": 4,
+    "top_k": 5,
+    "hit_rule": "Same ticker, accession and input-text SHA-256; returned saved-text chunk fully contains preselected hashed anchor",
+    "results": {
+      "bm25": {"full_span_hits": 5, "evaluable_denominator": 5},
+      "dense": {"full_span_hits": 5, "evaluable_denominator": 5},
+      "hybrid": {"full_span_hits": 5, "evaluable_denominator": 5}
+    },
+    "unsupported_probe": {"response_mode": "retrieval_only", "no_generated_answer": true, "semantic_abstention_verified": false}
+  },
+  "assistant": {"response_mode": "retrieval_only", "answer": null, "backend": "none", "generation_inference": "NOT_RUN", "genuine_moe_inference": "NOT_RUN"},
+  "saved_test_log": {"passed": 198, "skipped": 1, "status": "HISTORICAL_SAVED_LOG_NOT_RERUN_FOR_THIS_SHARE"},
+  "limitations": [
+    "Two exact accepted derivatives with company-specific limitations; not a broad corpus",
+    "GOOGL MDA-1 and MDA-5 sparse header-to-value mappings unresolved",
+    "Five source-linked questions reuse one anchor and are not independent human test cases",
+    "The full-span development hit measure is not recall@5, answer accuracy, or a RAG success rate",
+    "No generated answer, semantic abstention validation, formal financial experiment, or historical tradability assessment"
+  ]
+}

@@ -1,0 +1,7 @@
+# Local generation backend boundary
+
+The saved M10 assistant run used `configs/generation_none.json`: `mode=none`, `inference=NOT_RUN`, response `retrieval_only`, and `answer=null`. The installed MiniLM ONNX encoder supports embeddings, not causal answer generation. No real local dense generator or neural MoE inference was executed. A retrieval ensemble or tool router is not evidence of expert routing inside a neural model.
+
+[`finembed.generation`](../src/finembed/generation.py) defines configuration and validation contracts for future `local_dense` and `local_moe` modes. These contracts require pinned model identity, revision, local file hashes, tokenizer/config/weight receipt, declared architecture, and explicit device. The existence of those interfaces does not imply that weights, runtime, license clearance, or a compatible machine have been validated for an actual run. No model weights or private receipts are distributed here.
+
+A future generation study should first verify license, model architecture, runtime compatibility, available resources, and the complete local receipt. It should then separately evaluate grounded answer quality, citations, unsupported-question behavior and cost. Any MoE comparison would need controls for total and active parameter counts, training data, context, retrieval input, budget and hardware; it cannot attribute a model-to-model difference to MoE architecture without such a design. None of these future choices is frozen by M10.

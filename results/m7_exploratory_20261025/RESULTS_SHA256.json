@@ -1,0 +1,63 @@
+{
+  "kind": "M7_LOCAL_CURATED_DERIVED_RESULTS",
+  "run_id": "20261024T223714Z-tail-bm25-10q",
+  "human_10q_review": "PENDING",
+  "files": [
+    {
+      "path": "bm25_normalization_diagnostics.csv",
+      "bytes": 4067,
+      "sha256": "3707a23d5406feea8bbb2280dea2e7aaeae0a02f2be52e5d472a209c2975e8b4",
+      "source_run_path": "bm25/bm25_normalization_diagnostics.csv",
+      "source_sha256": "3707a23d5406feea8bbb2280dea2e7aaeae0a02f2be52e5d472a209c2975e8b4",
+      "transformation": "byte_copy"
+    },
+    {
+      "path": "bm25_peer_rankings.csv",
+      "bytes": 7175,
+      "sha256": "d57ab23f9a780f98ca197e9479e37b1910b4f2131bd3ef67e076d0197a2c1d0a",
+      "source_run_path": "bm25/bm25_peer_rankings.csv",
+      "source_sha256": "d57ab23f9a780f98ca197e9479e37b1910b4f2131bd3ef67e076d0197a2c1d0a",
+      "transformation": "byte_copy"
+    },
+    {
+      "path": "bm25_scaling_residuals.svg",
+      "bytes": 2469,
+      "sha256": "0a145a504a73eb590bbb2872af49d58f90147f91b665ca31cfbea863fb1b1ab3",
+      "source_run_path": "bm25/bm25_scaling_residuals.svg",
+      "source_sha256": "0a145a504a73eb590bbb2872af49d58f90147f91b665ca31cfbea863fb1b1ab3",
+      "transformation": "byte_copy"
+    },
+    {
+      "path": "RESULTS_SCOPE.md",
+      "bytes": 2089,
+      "sha256": "24bf91c14efd321a9af17d8898255932b786753fa4e1adaa7fb3a53d08b075b4",
+      "source_run_path": null,
+      "source_sha256": null,
+      "transformation": "documentation"
+    },
+    {
+      "path": "tail_weight_diagnostics.csv",
+      "bytes": 46036,
+      "sha256": "cecaff762cc17650c8b74db091284cd7681c0a6a02fc51bb7bd8a184086ad592",
+      "source_run_path": "tail_v2/tail_weight_diagnostics.csv",
+      "source_sha256": "cecaff762cc17650c8b74db091284cd7681c0a6a02fc51bb7bd8a184086ad592",
+      "transformation": "byte_copy"
+    },
+    {
+      "path": "tail_weight_effects.svg",
+      "bytes": 4382,
+      "sha256": "92687070c0d3d7b757f409716ceb6ef73baa1211d127a3ad0f730fd86b34464d",
+      "source_run_path": "tail_v2/tail_weight_effects.svg",
+      "source_sha256": "92687070c0d3d7b757f409716ceb6ef73baa1211d127a3ad0f730fd86b34464d",
+      "transformation": "byte_copy"
+    },
+    {
+      "path": "tenq_pilot_coverage.csv",
+      "bytes": 561,
+      "sha256": "4aa703cd552c2b5fefb268a3f123c030b85c72a12b21d34ebb616c3ca5d33cf0",
+      "source_run_path": "tenq/representation_v2/representation_checks.json",
+      "source_sha256": "d36847f968b4564dd913bfb54f3e5dc5f59628317e64405f3aad03bbfba2ed3a",
+      "transformation": "derived_rows"
+    }
+  ]
+}

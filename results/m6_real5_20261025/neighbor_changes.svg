@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1430 663" width="1430" height="663" role="img" aria-label="Top-2 neighbor changes">
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<text x="24" y="34" font-family="Arial" font-size="24" fill="#0f172a">Top-2 neighbor changes</text>
+<text x="24" y="58" font-family="Arial" font-size="13" fill="#475569">Run 20261024T221032Z-real5 | M1 index SHA-256 ce54c348458e | n=5 | exact-score ticker ties | self-check</text>
+<text x="270" y="100" font-family="Arial" font-size="14" font-weight="bold">AAPL</text>
+<text x="495" y="100" font-family="Arial" font-size="14" font-weight="bold">MSFT</text>
+<text x="720" y="100" font-family="Arial" font-size="14" font-weight="bold">AMZN</text>
+<text x="945" y="100" font-family="Arial" font-size="14" font-weight="bold">GOOGL</text>
+<text x="1170" y="100" font-family="Arial" font-size="14" font-weight="bold">META</text>
+<rect x="16" y="112" width="1395" height="50" fill="#fff"/>
+<text x="26" y="140" font-family="Arial" font-size="13">TF-IDF M6 same-tokenizer</text>
+<text x="270" y="140" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="495" y="140" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="140" font-family="Arial" font-size="13">MSFT, GOOGL</text>
+<text x="945" y="140" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="140" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="169" width="1395" height="50" fill="#e2e8f0"/>
+<text x="26" y="197" font-family="Arial" font-size="13">TF-IDF M4 historical</text>
+<text x="270" y="197" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="495" y="197" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="197" font-family="Arial" font-size="13">MSFT, GOOGL</text>
+<text x="945" y="197" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="197" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="226" width="1395" height="50" fill="#fff"/>
+<text x="26" y="254" font-family="Arial" font-size="13">BM25 term-weight cosine b0</text>
+<text x="270" y="254" font-family="Arial" font-size="13">MSFT, META</text>
+<text x="495" y="254" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="254" font-family="Arial" font-size="13">MSFT, GOOGL</text>
+<text x="945" y="254" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="254" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="283" width="1395" height="50" fill="#e2e8f0"/>
+<text x="26" y="311" font-family="Arial" font-size="13">BM25 term-weight cosine b0.75</text>
+<text x="270" y="311" font-family="Arial" font-size="13">MSFT, META</text>
+<text x="495" y="311" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="311" font-family="Arial" font-size="13">MSFT, GOOGL</text>
+<text x="945" y="311" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="311" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="340" width="1395" height="50" fill="#fff"/>
+<text x="26" y="368" font-family="Arial" font-size="13">BM25 term-weight cosine b1</text>
+<text x="270" y="368" font-family="Arial" font-size="13">MSFT, META</text>
+<text x="495" y="368" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="368" font-family="Arial" font-size="13">MSFT, GOOGL</text>
+<text x="945" y="368" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="368" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="397" width="1395" height="50" fill="#e2e8f0"/>
+<text x="26" y="425" font-family="Arial" font-size="13">Dense 128 equal_chunks</text>
+<text x="270" y="425" font-family="Arial" font-size="13">AMZN, MSFT</text>
+<text x="495" y="425" font-family="Arial" font-size="13">GOOGL, AMZN</text>
+<text x="720" y="425" font-family="Arial" font-size="13">MSFT, AAPL</text>
+<text x="945" y="425" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="425" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="454" width="1395" height="50" fill="#fff"/>
+<text x="26" y="482" font-family="Arial" font-size="13">Dense 128 body_token_weighted</text>
+<text x="270" y="482" font-family="Arial" font-size="13">AMZN, MSFT</text>
+<text x="495" y="482" font-family="Arial" font-size="13">GOOGL, AMZN</text>
+<text x="720" y="482" font-family="Arial" font-size="13">MSFT, AAPL</text>
+<text x="945" y="482" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="482" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="511" width="1395" height="50" fill="#e2e8f0"/>
+<text x="26" y="539" font-family="Arial" font-size="13">Dense 192 equal_chunks</text>
+<text x="270" y="539" font-family="Arial" font-size="13">AMZN, MSFT</text>
+<text x="495" y="539" font-family="Arial" font-size="13">GOOGL, META</text>
+<text x="720" y="539" font-family="Arial" font-size="13">MSFT, AAPL</text>
+<text x="945" y="539" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="539" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+<rect x="16" y="568" width="1395" height="50" fill="#fff"/>
+<text x="26" y="596" font-family="Arial" font-size="13">Dense 192 body_token_weighted</text>
+<text x="270" y="596" font-family="Arial" font-size="13">AMZN, MSFT</text>
+<text x="495" y="596" font-family="Arial" font-size="13">GOOGL, AMZN</text>
+<text x="720" y="596" font-family="Arial" font-size="13">MSFT, AAPL</text>
+<text x="945" y="596" font-family="Arial" font-size="13">META, MSFT</text>
+<text x="1170" y="596" font-family="Arial" font-size="13">GOOGL, MSFT</text>
+</svg>

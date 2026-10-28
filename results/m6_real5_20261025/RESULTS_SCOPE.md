@@ -1,0 +1,3 @@
+# M6 curated local result tables and figures
+
+The tables and figures are exact copies from the hash-checked private run artifacts/m6/20261024T221032Z-real5/report_v3/. The supplemental sensitivity_diagnostics.json was separately recalculated from saved dense cosine matrices after report_v3 and is labeled as such in SHA256.json. The complete run receipts, raw-output hashes, TF-IDF vectors/vocabulary and same-agent audit remain in the local ignored run directory. Original SEC text, Massive raw responses and model weights are not included. These are five-company descriptive engineering results, not a formal financial experiment or proof of text incremental value. No current M6 real-run material has been pushed to the public repository.

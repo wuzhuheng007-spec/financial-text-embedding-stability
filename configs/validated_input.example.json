@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "input_type": "structured_derivative",
+  "identity": {
+    "ticker": "EXAMPLE",
+    "cik": "0000000000",
+    "accession": "0000000000-00-000000",
+    "form": "10-Q",
+    "section": "PART_I_ITEM_2_MDA"
+  },
+  "derivative": {"path": "artifacts/example/structured_item2.txt", "sha256": "REPLACE_WITH_VERIFIED_SHA256"},
+  "provenance": {"path": "artifacts/example/structured_provenance.json", "sha256": "REPLACE_WITH_VERIFIED_SHA256"},
+  "serializer": {"path": "scripts/example_serializer.py", "sha256": "REPLACE_WITH_VERIFIED_SHA256"},
+  "serializer_version": "REPLACE_WITH_VERSION_FROM_PROVENANCE",
+  "boundary_evidence": {"path": "artifacts/example/boundary_candidates.json", "sha256": "REPLACE_WITH_VERIFIED_SHA256"},
+  "acceptance_event": {"path": "artifacts/example/accepted_event.json", "sha256": "REPLACE_WITH_VERIFIED_SHA256"},
+  "project_validation": {"path": "artifacts/example/project_validation_receipt.json", "sha256": "REPLACE_WITH_VERIFIED_SHA256"}
+}

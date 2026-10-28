@@ -1,0 +1,9 @@
+# M10 public result summary
+
+[SUMMARY.json](SUMMARY.json) is a **new sanitized derivative**, not the original local manifest, evaluation, assistant output, or test log. It retains the saved run IDs, exact original SHA-256 values, selected non-sensitive fields, configuration hashes, denominators, and limits. The original local files contain source-derived passages, machine paths, query logs, node text, vectors, and private input bindings and remain outside this repository. No retrieval or model inference was rerun to prepare this public summary.
+
+The index held 166 nodes from exact accepted AMZN (65) and GOOGL (101) 10-Q Item 2 structured derivatives. The BM25 fit boundary was all 166 validated nodes before query filtering; the dense branch used the pinned MiniLM revision and 160 body-token chunks. All three branches found each preselected complete source anchor within the top five for the five eligible agent-authored development questions. There were only four unique anchors. This custom source-span check does **not** measure independent human relevance, answer correctness, or general retrieval quality.
+
+The saved assistant response was `retrieval_only`, with `answer=null` and no generator. An unsupported-question probe still returned passages, so semantic abstention is not established. Local dense indexing is not generation, and an application routing interface is not neural MoE inference. The saved full test log reports 198 passed, 1 skipped; that is historical evidence, not a test run during this sharing task. Same-agent readback is a self-check.
+
+The source claims and exact file/field mapping are in [EVIDENCE_TRACE_M8_M10.md](../../docs/EVIDENCE_TRACE_M8_M10.md). The original files, review decisions, SEC text, weights, node index, and vector matrix are deliberately excluded. A new run with separately retained inputs must preserve a new manifest and compare hashes; it must not overwrite these saved results.

@@ -1,0 +1,70 @@
+# Next step: small 10-Q section pilot
+
+> **Historical M6/M7 planning record.** The checkboxes and pilot status below are not the current M8–M10 review ledger. See [EVIDENCE_TRACE_M8_M10.md](EVIDENCE_TRACE_M8_M10.md) for later exact-version evidence and limits.
+
+**Status: one-file engineering pilot run; AAPL researcher content review accepted in nine explicit chat item decisions.** The saved five-company 10-K M6 engineering comparison was rehashed before the separate M7 pilot. The M7 run group is `artifacts/m7/20261024T223714Z-tail-bm25-10q/`. It selected one original AAPL 10-Q from the SEC, saved raw/HTML/rendered inputs, found a programmatically valid Part I Item 2 MD&A body candidate, and generated one-file fixed-model representations with checked chunk coverage. The later researcher decisions cover the start, end, six tables and body/anomalies of this saved version; the browser form remains blank and its actual rendering/export/reload check is pending. No multi-company 10-Q corpus or formal financial experiment has been run. The M5 research protocol remains a draft.
+
+The preferred first section is **Form 10-Q Part I, Item 2 (MD&A)**. Treat **Part II, Item 1A (Risk Factors)** as a separate candidate with its own inclusion and missingness ledger: the quarterly item concerns material changes to previously disclosed annual risk factors and may be absent or brief. Part I, Item 1 contains financial statements; never apply the 10-K Item 1 Business extractor to it. These form labels follow the [SEC Form 10-Q](https://www.sec.gov/files/form10-q.pdf). Do not assume annual and quarterly narrative sections have equivalent coverage.
+
+## Entry gate and small sample
+
+- [ ] Confirm the saved 10-K M6 run, its input and output hashes, tests, figures, and same-agent self-check before opening a 10-Q run. Link the accepted run here only after that check.
+- [ ] Propose a small, explicit company–quarter list and an as-of rule. Record every selected, rejected, amended, and missing filing; do not silently substitute another quarter, form, section, or company.
+- [ ] Decide whether the pilot is only a fixed-text descriptive comparison. Any historical prediction or risk use must pass the separate M5 availability, revision, decision-time, and formal-protocol gates.
+
+## Acquisition and section evidence
+
+- [ ] Discover each original 10-Q by CIK, accession, report period, form, filing date, and SEC acceptance time. Record the source URL and all submissions-page versions used for discovery. Identify 10-Q/A and other changes separately; an amendment must never silently replace the original.
+- [ ] Download and retain the complete original SEC submission bytes in a private input store with retrieval time, response metadata, byte count, and SHA-256. Preserve any alternate or corrected bytes as separately versioned evidence. Use only the configured real SEC contact information and the existing rate and retry policy.
+- [ ] Select the primary `TYPE=10-Q` document, retain its rendered text and SHA-256, and record the exact primary-text offsets and hash of each candidate section. Record section label, Part, Item, company, CIK, accession, and original-filing hash in a new index. Do not overwrite the M1 corpus or prior results.
+- [ ] Check contents-page false hits, repeated headings, start and next-section boundaries, truncation, and missing/ambiguous sections. Fail explicitly when a boundary cannot be established; never fall back to the entire filing. Keep MD&A and Risk Factors in separate section indexes.
+- [ ] Save a human review record for semantic start/end boundaries and an independent program record for hash, accession/form/header, exact-substring, offset, and coverage checks. Label reviewer attestation and program validation separately; neither by itself proves historical public availability.
+- [ ] Record raw-header acceptance, submissions API acceptance, filing date, report period, retrieval time, any known dissemination evidence, and amendment/correction chronology. Preserve discrepancies and unknown times. A 2026 retrieval time is snapshot provenance, not proof of 2025 unavailability or of unchanged historical text.
+
+## Comparisons and acceptance
+
+- [ ] Freeze the reviewed input index, tokenizer/model revisions, fit corpus, and all content hashes before calculation. Fit lexical document frequencies and average length within the declared 10-Q section stratum only. Keep 10-K Business, 10-Q MD&A, and 10-Q Risk Factors distinct in length tables, BM25 fit pools, and descriptive summaries.
+- [ ] For each accepted section, report characters, lexical and model body tokens, chunk count, tail length, coverage, and truncation status. Preserve failures as failures and undefined measures as null with reasons.
+- [ ] If comparing 10-K and 10-Q, predefine the question and match by company, period, and section purpose. Report section and form as explicit factors; do not interpret a pooled length difference as a pure model or aggregation effect.
+- [ ] Run focused synthetic tests for 10-Q Part/Item parsing and boundary failures. Only after real inputs pass raw-to-section validation, run the small descriptive pilot and recheck its machine-readable outputs against tables and figures. Call this a same-agent self-check unless another reviewer independently reproduces it.
+
+## M7 one-filing status against the original 13 steps
+
+The numbered references below follow the 13 checklist lines above in their original order. An incomplete step stays unchecked above even when its one-file subset has evidence. A completed one-file subset does not authorize a five-company 10-Q comparison.
+
+| Step | One-file M7 status | Evidence and remaining work |
+|---|---|---|
+| 1 | DONE for entry gate | `../artifacts/m7/20261024T223714Z-tail-bm25-10q/baseline_audit.json` rehashes the saved M6 inputs, output receipts and `report_v3/`. This is a same-agent-team check. |
+| 2 | PILOT RULE SET; broader sample TODO | The user fixed AAPL and the first original 10-Q filed in calendar 2025 by filing date, then raw acceptance and accession for a same-day tie. `tenq/pilot_v3/selection_ledger.json` records the sole earliest-date candidate and 2025 filing list. Five-company quarter expansion has not been selected. |
+| 3 | DONE for this pilot's purpose; finance gate open | This single-file run is an engineering and fixed-text descriptive check. Historical prediction/risk tasks retain the M5 decision-time and protocol gates. |
+| 4 | DONE for AAPL pilot only | Official SEC ticker mapping and submissions responses are saved in `tenq/pilot_v3/discovery/`. `selection_ledger.json` selects CIK `0000320193`, accession `0000320193-25-000008`, filed 2025-01-31 for the quarter ended 2024-12-28, and separately lists 10-Q/A matches (none found for this report period in the queried SEC submissions list). It does not prove that no later correction of any kind exists. |
+| 5 | DONE for selected raw snapshot | `tenq/pilot_v3/original_submission.txt` and `receipt.json` preserve the SEC source URL, retrieval/cache provenance, byte count and SHA-256. One verified SEC cache copy was reused; the original private M1 index and 10-K files were not replaced. |
+| 6 | PARTIAL; AAPL content accepted | `tenq/pilot_v3/primary_document_source.html`, `primary_text.txt`, `boundary_evidence.json`, and candidate texts retain the primary 10-Q and exact text offsets/hashes. Nine later researcher chat decisions accept this one saved Item 2 version. A dedicated frozen reviewed 10-Q corpus index and the other four complete filings remain TODO. |
+| 7 | PROGRAM PASS; AAPL researcher content accepted | `boundary_evidence.json` preserves a short contents-page hit and selects one substantive body span from character 35413 through 51404, immediately before Part I Item 3. The researcher accepted start/end, all six flattened table comparisons and body/anomalies for this exact source/page version. The program and researcher checks are distinct; the decision does not establish that table structure is faithfully retained for other filings. |
+| 8 | AAPL HUMAN CONTENT REVIEW DONE; browser form check open | `../artifacts/m7_review/20261024T235855Z-closeout/review_handoff_v4/review_state_v9.json` binds nine explicit item-level `ACCEPT` replies to the saved raw/section/page hashes. The combined content gate is derived from those replies, not a separately signed overall decision. User-entered review time and actual browser form export/reload are absent. This review does not prove historical public availability. |
+| 9 | RECORDED FOR SELECTED FILING; first-public time unknown | Raw-header acceptance, SEC API acceptance, filing date, report period and snapshot retrieval metadata are in `selection_ledger.json` and SEC receipts. The October 24 saved API and raw-header values are the same instant in different time zones. `tenq/submissions_version_comparison.json` records an older October 19 saved API response for the same accession with a different UTC acceptance value; its cause is unknown. Neither snapshot gives a verified first-public time or unchanged decision-time vintage. |
+| 10 | TODO | A reviewed 10-Q stratum and fit corpus are absent. Do not fit one-document BM25/TF-IDF for company similarity or pool 10-K Business with 10-Q MD&A. |
+| 11 | DONE FOR ONE-FILE ENGINEERING TRIAL; multi-file acceptance TODO | `tenq/representation_v2/receipt.json` and `representation_checks.json` record pinned-model 128/192 chunks, verified source-span hashes, complete nonoverlap, 3,390 model body tokens and maximum model input lengths 130/194 below the limit 256. v1 is retained; v2 validates the raw primary filename against the SEC row. The later researcher content decision accepts the unchanged input text; the one-document vectors do not establish company similarity. |
+| 12 | TODO | No 10-K-versus-10-Q inference or cross-form length comparison has been specified or run. |
+| 13 | DONE for one-file engineering trial; broader pilot TODO | `tenq/qpilot_tests_v4.log` has 8 parser/source tests passed; M7 final focused and full logs have 18 passed and 65 passed/2 skipped. `m7_self_check.json` recomputes the saved representation, lexical/dense diagnostics and curated tables/figures. Fixtures are software tests only. The later AAPL human content decisions are recorded separately; any multi-file corpus still requires its own validation and acceptance. |
+
+## Research boundary
+
+The [M5 track gates](M5_TRACKS.md) and [draft decisions](M5_PROTOCOL_DRAFT.md) still apply. A fixed-text section pilot may describe sensitivity for the selected frozen filing. It cannot establish financial incremental value, causal effects, historical model availability, or absence of look-ahead bias. A financial extension requires an approved public-availability proxy or direct dissemination evidence, a decision-time text-vintage and revision policy, chronological fit/evaluation splits, and a frozen formal protocol. The 2025 price-window role remains undecided. For this pilot, the next minimum handoff is researcher review of the saved Item 2 start/end and flattened tables; wider 10-Q acquisition remains TODO.
+
+## M7 human-review handoff addendum (2026-10-25)
+
+The original 13-step checklist and statuses above remain intact. A new ignored local packet at `artifacts/m7_review/20261024T235855Z-closeout/review_page_v3/` exposes the saved AAPL start/end evidence and six source-HTML-versus-flattened tables. Static hash and source-coordinate checks passed; browser rendering and researcher review had **not** been confirmed at this historical stage. The blank form then retained `PENDING_HUMAN_REVIEW`. The original local M7 closeout is excluded from this share; see the [M8–M10 evidence trace](EVIDENCE_TRACE_M8_M10.md) for later state.
+
+Under one fixed calendar-2025 earliest-original-10-Q rule, [five candidate records](M7_10Q_FIVE_COMPANY_PILOT.md) now exist. The other four are SEC metadata and selected primary-HTML candidates only: their complete raw submissions, Part I Item 2 boundaries, table semantics and human decisions are TODO. The saved SEC acceptance-time discrepancy for AAPL is documented, with its cause and exact first-public time unresolved. These additions prepare review and discovery; they do not close checklist steps requiring an accepted five-filing corpus or batch inference.
+
+### M8 continuation, without rewriting the earlier M7 snapshot
+
+The sentences immediately above record the state **at M7 close**. M8 subsequently saved complete official raw submissions for the four fixed MSFT, AMZN, GOOGL and META accessions, and extracted four programmatic Part I Item 2 candidates. The private run is `artifacts/m8/20261025T230645Z-four-10q/`; its source receipts, append-only primary-version adjudication, `extraction_v4/` and `review_v7/` are summarized in the [M8–M10 evidence trace](EVIDENCE_TRACE_M8_M10.md). Forty-four literal body HTML tables plus two separate AMZN boundary layout tables were available for review. Table-adjacent plain-text note candidates were retained; they were not automatically accepted footnotes.
+
+- [x] Save and source-check the four fixed complete original submissions without replacing the M7 candidates or AAPL snapshot.
+- [x] Produce four programmatic Item 2 candidate boundaries, source maps, table/period hints, blank version-bound forms and a local central review entrance.
+- [ ] Obtain explicit researcher decisions for each of the four start/end boundaries, body anomalies, individual tables, AMZN layout tables and mixed narrative/table periods. All four remain `PENDING_HUMAN_REVIEW`.
+- [ ] After review and any revised version checks, freeze a five-filing 10-Q MD&A index before any multi-company representation, lexical fit or finance extension. No such run occurred in M8.
+
+The older AAPL nine-item content decision is preserved separately; it has no extra overall signature or user-entered time, and its own v4 browser export/reload check remains pending. M8's browser check concerns only the four new blank forms and one test export that remained pending. Exact first-public and tradable times remain unestablished.
