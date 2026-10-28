@@ -11,4 +11,4 @@ This is an index to the [technical route and decision table](docs/PROPOSED_TECHN
 | M10: source-bound retrieval assistant | Two-document, 166-node local index; agent-authored development retrieval check; retrieval-only response | Researcher-check questions and anchors; keep generation/MoE separate |
 | Future financial extension | **NOT_RUN** | Freeze M5 and verify historical availability, returns, split boundaries, fit scope and baselines first |
 
-The route-image source mentioned in the project handoff was unavailable in this release preparation. The linked technical roadmap is therefore a **PROPOSED, text-supported synthesis**, not a transcription or endorsement of an unseen image.
+Ten route screenshots were later supplied and hashed; the [source map](docs/ROUTE_IMAGE_SOURCE_MAP.md) separates their explicit suggestions from project-specific interpretation and new proposals. Their broad method-quality statements are not treated as project results. The technical roadmap remains **PROPOSED**, not a research-team decision.

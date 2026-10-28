@@ -6,7 +6,7 @@ This branch is an explicitly curated export from the local development commit `c
 
 - Current `src/finembed/` implementation, selected `scripts/`, tests, dependency metadata and credential-free configuration examples.
 - Previously shared M0–M5 lightweight result tables, figures and provenance, plus curated M6/M7 descriptive tables and figures. No new experiment was run to make this branch.
-- English claim-to-source evidence traces for M0–M10, protocol and method documentation, an explicit proposed route, and a sanitized M10 summary that retains original run IDs and SHA-256 values without copying source passages or vectors.
+- English claim-to-source evidence traces for M0–M10, protocol and method documentation, a proposed route with a ten-image source/hash map, and a sanitized M10 summary that retains original run IDs and SHA-256 values without copying source passages or vectors.
 - The author's existing short Overleaf progress fragment; no team-authored Overleaf project source or comments.
 
 ## Excluded
@@ -14,7 +14,7 @@ This branch is an explicitly curated export from the local development commit `c
 - API keys, cookies, login sessions, non-template `.env` files, credentials or authenticated URLs.
 - SEC raw submissions or extracted full sections, vendor raw responses or processed daily price/return matrices, accepted structured derivatives, private review replies and decision text.
 - Model weights, tokenizer cache, chunk text, embedding matrix, vector index, query logs, answer passages, virtual environments, cache directories, local test artifacts, old ZIP archives and unreviewed screenshots.
-- Superseded local reports, machine-specific paths/inventory, private correspondence, team documents and the private development commit chain.
+- Superseded local reports, machine-specific paths/inventory, private correspondence, the ten user-supplied route screenshots, team documents and the private development commit chain.
 
 Source identifiers, historical run/config hashes and exact limitations are retained in `docs/EVIDENCE_TRACE_M0_M7.md` and `docs/EVIDENCE_TRACE_M8_M10.md`. Public M10 `SUMMARY.json` is a new derived file; the source evaluation and assistant response hashes are recorded so a holder of local evidence can verify its provenance. A clone alone cannot recreate local results without obtaining the matching source files, permitted data access and pinned model files. Synthetic tests verify software only.
 

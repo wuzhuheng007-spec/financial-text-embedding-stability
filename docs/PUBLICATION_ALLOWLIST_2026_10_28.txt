@@ -26,6 +26,7 @@ docs/PROPOSED_TECHNICAL_ROADMAP.md
 docs/PROTOCOL.md
 docs/PUBLICATION_ALLOWLIST_2026_10_28.txt
 docs/PUBLICATION_AUDIT_2026_10_28.md
+docs/ROUTE_IMAGE_SOURCE_MAP.md
 docs/SHARE_PLAN_EXECUTION_2026_10_28.md
 figures/pca_variance_fraction.svg
 figures/stability_top2_overlap.svg

@@ -16,7 +16,7 @@ The project has not run a formal financial experiment, independent human retriev
 
 1. [Evidence trace, M0–M7](docs/EVIDENCE_TRACE_M0_M7.md) and [M8–M10](docs/EVIDENCE_TRACE_M8_M10.md): claim, saved result field, run identity, input/model version, and limit.
 2. [Current-status addendum](results/CURRENT_STATUS_ADDENDUM.md), [M6 descriptive outputs](results/m6_real5_20261025/RESULTS_SCOPE.md), [M7 exploratory outputs](results/m7_exploratory_20261025/RESULTS_SCOPE.md), and [public M10 summary](results/m10_assistant_demo_20261028/RESULTS_SCOPE.md). The M6/M7 scope files are preserved historical snapshots.
-3. [M10 assistant method](docs/M10_RAG_ASSISTANT.md), [M5 protocol draft](docs/M5_PROTOCOL_DRAFT.md), and the [proposed technical roadmap](docs/PROPOSED_TECHNICAL_ROADMAP.md).
+3. [M10 assistant method](docs/M10_RAG_ASSISTANT.md), [M5 protocol draft](docs/M5_PROTOCOL_DRAFT.md), the [proposed technical roadmap](docs/PROPOSED_TECHNICAL_ROADMAP.md), and its [ten-image source map](docs/ROUTE_IMAGE_SOURCE_MAP.md).
 4. [Publication scope and exclusions](SHARING_SCOPE.md) and [release audit](docs/PUBLICATION_AUDIT_2026_10_28.md).
 
 ## Install and reproduce
