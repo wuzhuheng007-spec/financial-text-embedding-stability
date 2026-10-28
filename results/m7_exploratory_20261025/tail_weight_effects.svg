@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1150" height="650" viewBox="0 0 1150 650">
+<rect width="1150" height="650" fill="#fff"/>
+<text x="30" y="40" font-family="Arial" font-size="23">Tail pooling sensitivity: five fixed 10-K Item 1 documents</text>
+<text x="30" y="66" font-family="Arial" font-size="13">Run 20261024T223714Z-tail-bm25-10q | M1 index SHA-256 ce54c348458e | L2 distance from equal pooling | exploratory, not quality</text>
+<text x="35" y="100" font-family="Arial" font-size="18">128 body tokens</text>
+<text x="40" y="153" font-family="Arial" font-size="13">AAPL</text>
+<rect x="105" y="137" width="64.68" height="12" fill="#2563eb"/>
+<text x="176.68" y="148" font-family="Arial" font-size="10">0.0123</text>
+<rect x="605" y="151" width="305.53" height="12" fill="#d97706"/>
+<text x="917.53" y="162" font-family="Arial" font-size="10">0.0583</text>
+<text x="40" y="191" font-family="Arial" font-size="13">MSFT</text>
+<rect x="105" y="175" width="73.20" height="12" fill="#2563eb"/>
+<text x="185.20" y="186" font-family="Arial" font-size="10">0.0140</text>
+<rect x="605" y="189" width="108.14" height="12" fill="#d97706"/>
+<text x="720.14" y="200" font-family="Arial" font-size="10">0.0206</text>
+<text x="40" y="229" font-family="Arial" font-size="13">AMZN</text>
+<rect x="105" y="213" width="22.24" height="12" fill="#2563eb"/>
+<text x="134.24" y="224" font-family="Arial" font-size="10">0.0042</text>
+<rect x="605" y="227" width="368.62" height="12" fill="#d97706"/>
+<text x="980.62" y="238" font-family="Arial" font-size="10">0.0704</text>
+<text x="40" y="267" font-family="Arial" font-size="13">GOOGL</text>
+<rect x="105" y="251" width="128.85" height="12" fill="#2563eb"/>
+<text x="240.85" y="262" font-family="Arial" font-size="10">0.0246</text>
+<rect x="605" y="265" width="188.09" height="12" fill="#d97706"/>
+<text x="800.09" y="276" font-family="Arial" font-size="10">0.0359</text>
+<text x="40" y="305" font-family="Arial" font-size="13">META</text>
+<rect x="105" y="289" width="129.23" height="12" fill="#2563eb"/>
+<text x="241.23" y="300" font-family="Arial" font-size="10">0.0247</text>
+<rect x="605" y="303" width="160.82" height="12" fill="#d97706"/>
+<text x="772.82" y="314" font-family="Arial" font-size="10">0.0307</text>
+<text x="35" y="370" font-family="Arial" font-size="18">192 body tokens</text>
+<text x="40" y="423" font-family="Arial" font-size="13">AAPL</text>
+<rect x="105" y="407" width="353.07" height="12" fill="#2563eb"/>
+<text x="465.07" y="418" font-family="Arial" font-size="10">0.0674</text>
+<rect x="605" y="421" width="438.71" height="12" fill="#d97706"/>
+<text x="1050.71" y="432" font-family="Arial" font-size="10">0.0837</text>
+<text x="40" y="461" font-family="Arial" font-size="13">MSFT</text>
+<rect x="105" y="445" width="117.31" height="12" fill="#2563eb"/>
+<text x="229.31" y="456" font-family="Arial" font-size="10">0.0224</text>
+<rect x="605" y="459" width="149.77" height="12" fill="#d97706"/>
+<text x="761.77" y="470" font-family="Arial" font-size="10">0.0286</text>
+<text x="40" y="499" font-family="Arial" font-size="13">AMZN</text>
+<rect x="105" y="483" width="349.31" height="12" fill="#2563eb"/>
+<text x="461.31" y="494" font-family="Arial" font-size="10">0.0667</text>
+<rect x="605" y="497" width="500.00" height="12" fill="#d97706"/>
+<text x="1112.00" y="508" font-family="Arial" font-size="10">0.0955</text>
+<text x="40" y="537" font-family="Arial" font-size="13">GOOGL</text>
+<rect x="105" y="521" width="205.75" height="12" fill="#2563eb"/>
+<text x="317.75" y="532" font-family="Arial" font-size="10">0.0393</text>
+<rect x="605" y="535" width="260.73" height="12" fill="#d97706"/>
+<text x="872.73" y="546" font-family="Arial" font-size="10">0.0498</text>
+<text x="40" y="575" font-family="Arial" font-size="13">META</text>
+<rect x="105" y="559" width="108.40" height="12" fill="#2563eb"/>
+<text x="220.40" y="570" font-family="Arial" font-size="10">0.0207</text>
+<rect x="605" y="573" width="204.02" height="12" fill="#d97706"/>
+<text x="816.02" y="584" font-family="Arial" font-size="10">0.0389</text>
+<text x="105" y="625" font-family="Arial" font-size="12" fill="#2563eb">Blue: body-token weighted</text>
+<text x="605" y="625" font-family="Arial" font-size="12" fill="#d97706">Orange: delete last chunk (diagnostic removal)</text>
+</svg>

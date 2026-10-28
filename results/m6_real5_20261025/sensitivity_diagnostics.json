@@ -1,0 +1,209 @@
+{
+  "kind": "M6_DESCRIPTIVE_TAIL_AND_EXACT_TIE_DIAGNOSTIC",
+  "run_id": "20261024T221032Z-real5",
+  "length_table_sha256": "da2a7157f70783f762612e7e3a1f1e5237b78d1693b541e638712013d2cd7eb0",
+  "tie_rule": "exact scores; ticker ascending at equal score",
+  "dense_arms": [
+    {
+      "length": 128,
+      "aggregation": "equal_chunks",
+      "matrix_sha256": "80c050f502fb6f2fa56267a48440e73b907d8037a5237db9d01b749a6cb082f1",
+      "exact_cutoff_ties": 0,
+      "minimum_rank2_rank3_gap": 0.010552429037235522,
+      "cutoffs": [
+        {
+          "ticker": "AAPL",
+          "second": "MSFT",
+          "third": "META",
+          "rank2_minus_rank3": 0.06532070413816438,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "MSFT",
+          "second": "AMZN",
+          "third": "META",
+          "rank2_minus_rank3": 0.01620240938153783,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "AMZN",
+          "second": "AAPL",
+          "third": "GOOGL",
+          "rank2_minus_rank3": 0.010552429037235522,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "GOOGL",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.029717401454066206,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "META",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.02283392457808464,
+          "exact_cutoff_tie": false
+        }
+      ],
+      "msft_amzn_cosine": 0.7297873627776962,
+      "msft_meta_cosine": 0.7135849533961584
+    },
+    {
+      "length": 128,
+      "aggregation": "body_token_weighted",
+      "matrix_sha256": "129f5a7a1b5285102db8b086854755bc5bdb2fc6999c7cbe3d637e9541ec1469",
+      "exact_cutoff_ties": 0,
+      "minimum_rank2_rank3_gap": 0.013680351770052113,
+      "cutoffs": [
+        {
+          "ticker": "AAPL",
+          "second": "MSFT",
+          "third": "META",
+          "rank2_minus_rank3": 0.06567041372049665,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "MSFT",
+          "second": "AMZN",
+          "third": "META",
+          "rank2_minus_rank3": 0.015435369125501697,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "AMZN",
+          "second": "AAPL",
+          "third": "GOOGL",
+          "rank2_minus_rank3": 0.013680351770052113,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "GOOGL",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.03168146469510291,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "META",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.024405879117648577,
+          "exact_cutoff_tie": false
+        }
+      ],
+      "msft_amzn_cosine": 0.7283541703744117,
+      "msft_meta_cosine": 0.71291880124891
+    },
+    {
+      "length": 192,
+      "aggregation": "equal_chunks",
+      "matrix_sha256": "59aa663afa753989d029d48fe048990ec275e02e1636f4d5ea3f6314a1fb47ba",
+      "exact_cutoff_ties": 0,
+      "minimum_rank2_rank3_gap": 0.001190021549372311,
+      "cutoffs": [
+        {
+          "ticker": "AAPL",
+          "second": "MSFT",
+          "third": "META",
+          "rank2_minus_rank3": 0.05024523328975128,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "MSFT",
+          "second": "META",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.001190021549372311,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "AMZN",
+          "second": "AAPL",
+          "third": "GOOGL",
+          "rank2_minus_rank3": 0.005480770692800507,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "GOOGL",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.04481127132813911,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "META",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.03718516633603541,
+          "exact_cutoff_tie": false
+        }
+      ],
+      "msft_amzn_cosine": 0.7197210178860978,
+      "msft_meta_cosine": 0.7209110394354701
+    },
+    {
+      "length": 192,
+      "aggregation": "body_token_weighted",
+      "matrix_sha256": "bf398a5fe1ddfbfc350f34cf99b896075039a5747cf6f316e8980ce62434e52a",
+      "exact_cutoff_ties": 0,
+      "minimum_rank2_rank3_gap": 0.0036091041334292973,
+      "cutoffs": [
+        {
+          "ticker": "AAPL",
+          "second": "MSFT",
+          "third": "META",
+          "rank2_minus_rank3": 0.05701838053098873,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "MSFT",
+          "second": "AMZN",
+          "third": "META",
+          "rank2_minus_rank3": 0.0036091041334292973,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "AMZN",
+          "second": "AAPL",
+          "third": "GOOGL",
+          "rank2_minus_rank3": 0.012331914584253423,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "GOOGL",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.043904933941253166,
+          "exact_cutoff_tie": false
+        },
+        {
+          "ticker": "META",
+          "second": "MSFT",
+          "third": "AMZN",
+          "rank2_minus_rank3": 0.031461837705238804,
+          "exact_cutoff_tie": false
+        }
+      ],
+      "msft_amzn_cosine": 0.7246113744209935,
+      "msft_meta_cosine": 0.7210022702875643
+    }
+  ],
+  "msft_tail_weights": {
+    "128": {
+      "chunks": 67,
+      "tail_body_tokens": 41,
+      "total_body_tokens": 8489,
+      "tail_share_token_weighted": 0.004829779714925197,
+      "tail_share_equal_chunks": 0.014925373134328358
+    },
+    "192": {
+      "chunks": 45,
+      "tail_body_tokens": 41,
+      "total_body_tokens": 8489,
+      "tail_share_token_weighted": 0.004829779714925197,
+      "tail_share_equal_chunks": 0.022222222222222223
+    }
+  },
+  "interpretation_limit": "Observed peer changes are consistent with sensitivity to pooling/chunk choices; these diagnostics do not identify causal contribution of document length or relevance quality."
+}

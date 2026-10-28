@@ -10,7 +10,7 @@ from .config import Config
 from .extract import primary_text, extract_item1, comparison, ExtractionError
 from .model import Encoder, ModelError, aggregate
 from .run import Run, sha256, write_json
-from .sec import raw_header
+from .sec import raw_header, raw_filer_cik
 
 
 class AnalysisError(RuntimeError):
@@ -30,7 +30,9 @@ def validate_corpus(config: Config, index_path: Path) -> tuple[list[dict], dict]
     for entry in entries:
         ticker = entry["ticker"]
         if entry.get("status") != "INCLUDED":
-            audit.append({"ticker": ticker, "status": "EXCLUDED", "reason": entry.get("reason", entry.get("status"))})
+            audit.append({"ticker": ticker, "status": "BLOCKED" if entry.get("status") == "BLOCKED" else "EXCLUDED",
+                          "source_status": entry.get("status"),
+                          "reason": entry.get("reason", entry.get("status"))})
             continue
         try:
             folder = Path(entry["filing_dir"]).resolve(strict=True)
@@ -44,11 +46,14 @@ def validate_corpus(config: Config, index_path: Path) -> tuple[list[dict], dict]
             boundary = json.loads((folder / "boundary_comparison.json").read_text(encoding="utf-8"))
             if not filing.get("archive_url", "").startswith("https://www.sec.gov/Archives/edgar/data/"):
                 raise AnalysisError("Filing lacks an official SEC archive URL")
-            if filing.get("ticker") != ticker or filing.get("accession") != entry.get("accession"):
+            if (filing.get("ticker") != ticker or filing.get("accession") != entry.get("accession")
+                    or filing.get("cik") != entry.get("cik")):
                 raise AnalysisError("Filing identity does not match corpus index")
             header = raw_header(raw, filing["accession"])
             if header != filing.get("raw_sec_header") or date.fromisoformat(header["acceptance_datetime_eastern"][:10]) > config.as_of:
                 raise AnalysisError("Raw SEC header identity/time differs or is after configured as_of")
+            if raw_filer_cik(raw) != entry.get("cik"):
+                raise AnalysisError("Raw SEC FILER CIK does not match corpus index and filing metadata")
             if sha256(raw) != filing["raw_sha256"] or sha256(raw) != entry["raw_sha256"]:
                 raise AnalysisError("Raw SEC submission hash mismatch")
             if sha256(primary.encode("utf-8")) != item_meta["primary_text_sha256"]:
@@ -71,7 +76,8 @@ def validate_corpus(config: Config, index_path: Path) -> tuple[list[dict], dict]
             audit.append({"ticker": ticker, "status": "VALID", "cik": entry["cik"],
                           "accession": entry["accession"], "item1_sha256": entry["item1_sha256"], "files": files})
         except (OSError, KeyError, ValueError, AnalysisError, ExtractionError) as exc:
-            audit.append({"ticker": ticker, "status": "INVALID", "reason": f"{type(exc).__name__}: {exc}"})
+            audit.append({"ticker": ticker, "status": "BLOCKED" if isinstance(exc, FileNotFoundError) else "INVALID",
+                          "reason": f"{type(exc).__name__}: {exc}"})
     summary = {"schema_version": 1, "corpus_index": str(index_path),
                "corpus_index_sha256": sha256(index_path.read_bytes()), "as_of": config.as_of.isoformat(),
                "planned_count": len(entries), "valid_count": len(valid), "entries": audit}

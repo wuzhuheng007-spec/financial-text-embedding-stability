@@ -2,6 +2,8 @@
 
 **DRAFT — no formal parameters frozen; no formal financial experiment authorized or run.** The recommendation is to make **representation stability the first primary task**. Future-return prediction or risk estimation may be a later, separately approved extension. The five-company M0–M4 work is an engineering demonstration only.
 
+**2026-10-24 engineering addendum:** [M6](M6_METHOD.md) now prepares BM25 lexical controls and document-length/pooling comparisons. Discuss BM25 b, fit-corpus boundaries, tokenizer length units and equal-chunk versus body-token-weighted aggregation under decisions 3, 5 and 6. These are additional proposals; no row below is automatically approved or frozen. 10-Q sections must use their own Part/Item labels and review, never the 10-K Business extractor.
+
 | Decision | Recommendation to discuss | Alternative | Reason | Data/evidence needed | Professor decision (all TBD) |
 |---|---|---|---|---|---|
 | 1. Primary task | Pre-register **fixed-text representation stability** of company similarities and Top-k peers under controlled text/model changes. | Historical return prediction or risk estimation only as separately gated extensions. | Directly addresses the representation question without assigning a financial outcome to the small 2025 price demo. | Frozen filing bytes and hashes, model provenance, pre-specified perturbations and firm-level stability outcomes; historical publication evidence only for a temporal/financial claim. | Primary estimand, hypothesis, and whether either financial extension is in scope. |

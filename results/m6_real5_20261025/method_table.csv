@@ -1,0 +1,13 @@
+method,input,output,fit_boundary,reference,parameters
+TF-IDF M6 same-tokenizer,same five saved 10-K Item 1 texts,symmetric document cosine,five M1 documents,descriptive lexical baseline for M6,regex [a-z0-9]+; raw TF; smooth IDF; L2
+TF-IDF M4 historical,same five saved 10-K Item 1 texts,symmetric document cosine,five M1 documents,historical only; tokenizer differs from M6,regex [a-z][a-z0-9]+; M4 fit_boundary.json
+BM25 term-weight cosine b0,same five saved 10-K Item 1 texts,symmetric term-weight cosine,five M1 documents,BM25 b0,k1=1.2; b=0; unique query terms
+BM25 term-weight cosine b0.75,same five saved 10-K Item 1 texts,symmetric term-weight cosine,five M1 documents,BM25 b0,k1=1.2; b=0.75; unique query terms
+BM25 term-weight cosine b1,same five saved 10-K Item 1 texts,symmetric term-weight cosine,five M1 documents,BM25 b0,k1=1.2; b=1; unique query terms
+Dense 128 equal_chunks,same five saved 10-K Item 1 texts,symmetric document cosine,fixed pretrained model,Dense 128 equal_chunks,128 body tokens; no overlap; chunk L2; equal_chunks; document L2
+Dense 128 body_token_weighted,same five saved 10-K Item 1 texts,symmetric document cosine,fixed pretrained model,Dense 128 equal_chunks,128 body tokens; no overlap; chunk L2; body_token_weighted; document L2
+Dense 192 equal_chunks,same five saved 10-K Item 1 texts,symmetric document cosine,fixed pretrained model,Dense 128 equal_chunks,192 body tokens; no overlap; chunk L2; equal_chunks; document L2
+Dense 192 body_token_weighted,same five saved 10-K Item 1 texts,symmetric document cosine,fixed pretrained model,Dense 192 equal_chunks,192 body tokens; no overlap; chunk L2; body_token_weighted; document L2
+BM25 directed query-document b0,unique terms of source document as query; target document as candidate,"directed score, not symmetric similarity",five M1 documents,BM25 directed b0,k1=1.2; b=0; positive log1p IDF
+BM25 directed query-document b0.75,unique terms of source document as query; target document as candidate,"directed score, not symmetric similarity",five M1 documents,BM25 directed b0,k1=1.2; b=0.75; positive log1p IDF
+BM25 directed query-document b1,unique terms of source document as query; target document as candidate,"directed score, not symmetric similarity",five M1 documents,BM25 directed b0,k1=1.2; b=1; positive log1p IDF

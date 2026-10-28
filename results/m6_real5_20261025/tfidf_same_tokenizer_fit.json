@@ -1,0 +1,52 @@
+{
+  "company_order": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META"
+  ],
+  "corpus_index_sha256": "ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c",
+  "fit_scope": "exact five hash-verified M1 10-K Item 1 Business documents only",
+  "historical_difference": "M4 uses [a-z][a-z0-9]+; not the same tokenizer as M6 BM25",
+  "historical_m4_fit_boundary_sha256": "8aec2bfd666a7901d602733c0b341c23755bb37141c178a436aa4fcc0d889919",
+  "idf": "log((1+n_documents)/(1+document_frequency))+1",
+  "item1_inputs": [
+    {
+      "accession": "0000320193-25-000079",
+      "cik": "0000320193",
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "cik": "0000789019",
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "cik": "0001018724",
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "cik": "0001652044",
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "cik": "0001326801",
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "ticker": "META"
+    }
+  ],
+  "l2_normalize": true,
+  "term_frequency": "raw count",
+  "token_pattern": "[a-z0-9]+",
+  "tokenizer": "ascii_alphanumeric_lower_v1",
+  "vocabulary_file_sha256": "b3bdd5818ef048ac194868b801cf98b4831719fc7f43667309aba1a66a5d5c90",
+  "vocabulary_size": 3023
+}

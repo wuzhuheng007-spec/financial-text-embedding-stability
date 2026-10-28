@@ -1,0 +1,14 @@
+# Separate engineering retrieval configuration; does not modify M2-M7 research chunks.
+embedding_config: configs/smoke.yaml
+rag:
+  body_tokens: 160
+  overlap_tokens: 0
+  top_k: 5
+  bm25:
+    k1: 1.2
+    b: 0.75
+  fusion:
+    rrf_k: 60
+    bm25_weight: 1.0
+    dense_weight: 1.0
+    branch_top_k: 20

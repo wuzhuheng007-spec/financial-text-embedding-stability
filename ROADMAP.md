@@ -1,14 +1,14 @@
-# Roadmap
+# Roadmap and status
 
-| Milestone | Scope | Current disposition |
-|---|---|---|
-| M0 | Runnable minimal package, config, logging, manifest, offline doctor | Implement and verify in this round |
-| M1 | Discover real 10-Ks, preserve source and metadata, extract Item 1 with checks | Five real filings ingested and revalidated from saved raw bytes in this demonstration |
-| M2 | Validate M1 corpus, pin real pretrained model/tokenizer, map chunks and create company embeddings | Five real Item 1 documents embedded with checked input/output hashes |
-| M3 | Same-config repeat, 128/192 chunk-length stability, orthogonal invariance check | Descriptive checks completed on the same five companies; see run report |
-| M4 | Massive account/identity/price audit, past-window returns and PCA; same-corpus TF-IDF control | Existing Default key used for one process; five real identity and daily-price series, past-window returns and PCA passed a separately coded read-only self-audit |
-| M5 | Freeze formal task, sample, models, time split, controls and metrics with researcher/professor | Corrected five-company historical filing chronology, separate fixed-text stability and optional financial-extension gates, decision sheet and professor agenda prepared; Overleaf compile errors repaired. Exact first-public/text-vintage evidence remains open for financial extensions; no formal experiment run |
-| Later | Out-of-sample incremental text-versus-price evaluation and point-in-time market audit | Not attempted |
+This is an index to the [technical route and decision table](docs/PROPOSED_TECHNICAL_ROADMAP.md), not a frozen research protocol. Evidence and implementation progress do not imply scientific approval.
 
-No claim about model performance, trading returns or text's financial incremental value follows from this engineering demonstration.
+| Stage | Actual status | Next gate |
+| --- | --- | --- |
+| M0–M4: 10-K, fixed encoder, lexical control, price-only PCA | Completed as a five-company engineering demonstration; descriptive only | Retain exact runs and source hashes; decide formal sample, task, and time rules separately |
+| M5: formal scientific protocol | Draft; unfrozen | Researcher/professor decision on task, sample, model, temporal design, controls, and metrics |
+| M6–M7: BM25, chunk and aggregation sensitivity, one 10-Q pilot | Saved exploratory checks and AAPL pilot | Preserve post hoc status; do not infer general superiority |
+| M8–M9: four 10-Q sources and versioned review | Source/extraction self-checks; AMZN/GOOGL accepted derivatives with limits; other company gates incomplete | Finish exact-version researcher review and unresolved table mappings |
+| M10: source-bound retrieval assistant | Two-document, 166-node local index; agent-authored development retrieval check; retrieval-only response | Researcher-check questions and anchors; keep generation/MoE separate |
+| Future financial extension | **NOT_RUN** | Freeze M5 and verify historical availability, returns, split boundaries, fit scope and baselines first |
 
+Ten route screenshots were later supplied and hashed; the [source map](docs/ROUTE_IMAGE_SOURCE_MAP.md) separates their explicit suggestions from project-specific interpretation and new proposals. Their broad method-quality statements are not treated as project results. The technical roadmap remains **PROPOSED**, not a research-team decision.

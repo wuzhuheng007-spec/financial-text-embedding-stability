@@ -1,0 +1,3 @@
+ticker,accession,form,section,section_sha256,body_chunk_length,body_tokens,chunk_count,tail_body_tokens,max_actual_model_input_tokens,model_input_limit,token_coverage,same_document_equal_vs_weighted_cosine,human_review
+AAPL,0000320193-25-000008,10-Q,PART_I_ITEM_2_MDA,de1f66f8a908d6cfadd9ca56bf32e07e521ff73c9c5254244bd6f15a14862e27,128,3390,27,62,130,256,PASS,0.9997046659992382,PENDING
+AAPL,0000320193-25-000008,10-Q,PART_I_ITEM_2_MDA,de1f66f8a908d6cfadd9ca56bf32e07e521ff73c9c5254244bd6f15a14862e27,192,3390,18,126,194,256,PASS,0.9997583783813646,PENDING

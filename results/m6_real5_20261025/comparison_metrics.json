@@ -1,0 +1,269 @@
+{
+  "comparisons": [
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "TF-IDF M4 historical",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.019347113344807106,
+        "max_absolute_off_diagonal": 0.008329741047020667,
+        "mean_absolute_off_diagonal": 0.0035390496210956244
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "TF-IDF M6 same-tokenizer",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 1.0
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "BM25 term-weight cosine b0",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 2.963306584213405,
+        "max_absolute_off_diagonal": 0.7157352160748288,
+        "mean_absolute_off_diagonal": 0.6600071598422224
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "TF-IDF M6 same-tokenizer",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.806060606060606
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "BM25 term-weight cosine b0.75",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 2.9627161432315026,
+        "max_absolute_off_diagonal": 0.7162656052641787,
+        "mean_absolute_off_diagonal": 0.659879832336659
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "TF-IDF M6 same-tokenizer",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.806060606060606
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "BM25 term-weight cosine b1",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 2.9634059380225923,
+        "max_absolute_off_diagonal": 0.7166333568552683,
+        "mean_absolute_off_diagonal": 0.6600330246402828
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "TF-IDF M6 same-tokenizer",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.806060606060606
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "BM25 term-weight cosine b0.75",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.0034031056755707985,
+        "max_absolute_off_diagonal": 0.001446589568818879,
+        "mean_absolute_off_diagonal": 0.0006279303781120807
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "BM25 term-weight cosine b0",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 1.0
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "BM25 term-weight cosine b1",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.004879289296916264,
+        "max_absolute_off_diagonal": 0.0018989523496350524,
+        "mean_absolute_off_diagonal": 0.0008817311509745337
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "BM25 term-weight cosine b0",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 1.0
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "Dense 128 body_token_weighted",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.010320505799450172,
+        "max_absolute_off_diagonal": 0.004486602648365756,
+        "mean_absolute_off_diagonal": 0.00198562669430169
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "Dense 128 equal_chunks",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.9878787878787879
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "Dense 192 body_token_weighted",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.018226746713758346,
+        "max_absolute_off_diagonal": 0.007235795729013006,
+        "mean_absolute_off_diagonal": 0.003438177423737354
+      },
+      "mean_top2_overlap": 0.9,
+      "reference": "Dense 192 equal_chunks",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 0.5
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.9878787878787879
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "Dense 192 equal_chunks",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.07442016213419232,
+        "max_absolute_off_diagonal": 0.029029739404829114,
+        "mean_absolute_off_diagonal": 0.014277485207180484
+      },
+      "mean_top2_overlap": 0.9,
+      "reference": "Dense 128 equal_chunks",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 0.5
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.9151515151515152
+      }
+    },
+    {
+      "common_company_count": 5,
+      "company_pair_count": 10,
+      "compared": "Dense 192 body_token_weighted",
+      "matrix_difference": {
+        "different_off_diagonal_pairs": 10,
+        "frobenius_full_matrix": 0.06644660512356161,
+        "max_absolute_off_diagonal": 0.029562875400166333,
+        "mean_absolute_off_diagonal": 0.012253681037249331
+      },
+      "mean_top2_overlap": 1.0,
+      "reference": "Dense 128 body_token_weighted",
+      "top2_overlap_by_ticker": {
+        "AAPL": 1.0,
+        "AMZN": 1.0,
+        "GOOGL": 1.0,
+        "META": 1.0,
+        "MSFT": 1.0
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "average ranks for exact equal saved values",
+        "value": 0.9757575757575757
+      }
+    }
+  ],
+  "directed_bm25_excluded_from_symmetric_comparisons": true,
+  "run_id": "20261024T221032Z-real5",
+  "scope": "five-company same-corpus descriptive engineering demonstration",
+  "tie_rule": "exact-score ties by ticker ascending; Spearman average ranks",
+  "undefined_values": "null with reason; never silently replaced by zero"
+}

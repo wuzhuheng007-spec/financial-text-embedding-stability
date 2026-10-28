@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="440" viewBox="0 0 990 440">
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<text x="25" y="35" font-family="Arial" font-size="22">BM25 term-weight departure from document scaling</text>
+<text x="25" y="58" font-family="Arial" font-size="12">Run 20261024T223714Z-tail-bm25-10q | M1 ce54c348458e | n=5 | exploratory; relative residual after scalar fit</text>
+<text x="30" y="118" font-family="Arial" font-size="15">AAPL</text>
+<rect x="115" y="100" width="270.30" height="15" fill="#2563eb"/>
+<text x="393.30" y="113" font-family="Arial" font-size="12">b=0.75: 0.0535965</text>
+<rect x="115" y="121" width="375.20" height="15" fill="#dc2626"/>
+<text x="498.20" y="134" font-family="Arial" font-size="12">b=1: 0.0743967</text>
+<text x="30" y="178" font-family="Arial" font-size="15">MSFT</text>
+<rect x="115" y="160" width="315.63" height="15" fill="#2563eb"/>
+<text x="438.63" y="173" font-family="Arial" font-size="12">b=0.75: 0.0625854</text>
+<rect x="115" y="181" width="405.66" height="15" fill="#dc2626"/>
+<text x="528.66" y="194" font-family="Arial" font-size="12">b=1: 0.0804368</text>
+<text x="30" y="238" font-family="Arial" font-size="15">AMZN</text>
+<rect x="115" y="220" width="341.05" height="15" fill="#2563eb"/>
+<text x="464.05" y="233" font-family="Arial" font-size="12">b=0.75: 0.0676251</text>
+<rect x="115" y="241" width="480.00" height="15" fill="#dc2626"/>
+<text x="603.00" y="254" font-family="Arial" font-size="12">b=1: 0.0951768</text>
+<text x="30" y="298" font-family="Arial" font-size="15">GOOGL</text>
+<rect x="115" y="280" width="34.48" height="15" fill="#2563eb"/>
+<text x="157.48" y="293" font-family="Arial" font-size="12">b=0.75: 0.00683681</text>
+<rect x="115" y="301" width="45.76" height="15" fill="#dc2626"/>
+<text x="168.76" y="314" font-family="Arial" font-size="12">b=1: 0.00907341</text>
+<text x="30" y="358" font-family="Arial" font-size="15">META</text>
+<rect x="115" y="340" width="216.81" height="15" fill="#2563eb"/>
+<text x="339.81" y="353" font-family="Arial" font-size="12">b=0.75: 0.0429893</text>
+<rect x="115" y="361" width="280.86" height="15" fill="#dc2626"/>
+<text x="403.86" y="374" font-family="Arial" font-size="12">b=1: 0.0556908</text>
+<text x="25" y="420" font-family="Arial" font-size="12">Same-support fit: alpha=(w0 dot wb)/(w0 dot w0); residual ||wb-alpha*w0||/||wb||. This is not a quality metric.</text>
+</svg>

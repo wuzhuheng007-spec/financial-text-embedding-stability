@@ -1,53 +1,43 @@
-# Financial Text Embedding Stability — Engineering Demo
+# Financial Text Embedding Stability
 
-This repository is a curated share copy of a five-company research engineering demonstration. The project asks how stable company representations from financial text are, whether text eventually adds value beyond price-only baselines, and how to test for look-ahead bias. **Only the engineering and descriptive demonstration is complete. No formal financial experiment has run.**
+This repository is a curated engineering share of a research project on the stability of financial-text representations. It also prepares, but has **not run**, a formal test of whether text adds value beyond price-only baselines while avoiding look-ahead bias. The present evidence is a small, descriptive demonstration; no financial incremental value or historical tradability has been established.
 
-## What has been done
+## What has been completed
 
-- Five real SEC Form 10-K original submissions were identified and their Item 1 Business sections extracted with source offsets and SHA-256 provenance. The original filings and extracted text are **not** redistributed here.
-- One pinned pretrained encoder and tokenizer (`sentence-transformers/all-MiniLM-L6-v2`, revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`) produced company embeddings. Fixed-weight repeat inference was checked; the only deliberate alternative changed nonoverlapping body chunks from 128 to 192 tokens. This is not an independent training-seed comparison.
-- A five-document TF-IDF control was fitted only to the validated Item 1 corpus. A separate price-only engineering baseline used Massive split-adjusted daily bars from the configured 2025 window: 250 observed price dates, 249 complete close-to-close return dates, and a centered, unscaled PCA with demo `K=2`. The bars exclude dividends; `K=2` has no recorded scientific selection rationale.
-- A same-agent, separately coded read-only self-audit checked saved M4 response hashes, security identity, returns and PCA relationships. It was **not an independent review**.
+- Five saved SEC 10-K Item 1 Business extracts were bound to original filing identities and hashes. One pinned pretrained encoder (`sentence-transformers/all-MiniLM-L6-v2`, revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`) supported 128/192-body-token, nonoverlapping chunk comparisons and a same-setting repeat check. A fixed-weight repeat is not an independent training seed.
+- Five-document TF-IDF, BM25 (`k1=1.2`, `b=0, 0.75, 1`), equal versus body-token-weighted aggregation, and tail-chunk diagnostics were run on the saved Item 1 texts. Directed BM25 query-to-document scores and BM25 term-weight cosine are distinct measures. The [M6](results/m6_real5_20261025/RESULTS_SCOPE.md) and [M7](results/m7_exploratory_20261025/RESULTS_SCOPE.md) tables and figures are descriptive for this exact corpus and model.
+- A price-only engineering demonstration used 250 saved 2025 split-adjusted daily bars per company, 249 complete close-to-close return dates, and centered, unscaled PCA with demo `K=2`. Split adjustment does not include dividends. `K=2` has no recorded scientific selection rationale. The price window has no approved formal role as trailing features, labels, or static comparison input.
+- Four additional 10-Q MD&A filings received source and extraction self-checks. Review state remains company- and version-specific. AMZN and GOOGL accepted structured derivatives passed a separate project provenance gate **with limitations**; AAPL and MSFT lack company-level sign-off, and META remains pending. GOOGL MDA-1/MDA-5 header-to-value mappings remain unresolved.
+- A local LlamaIndex-based **retrieval-only** assistant indexed 166 source-linked chunks from the exact AMZN and GOOGL derivatives. In a saved, agent-authored development check, BM25, dense, and hybrid retrieval each returned the complete preselected source span within the top five for 5/5 eligible questions. Those five questions use four unique source anchors. The measure is neither recall@5 nor answer accuracy. The sixth probe returned evidence with `answer=null`; it did not verify semantic abstention. Generator and genuine neural MoE inference were **not run**.
 
-The tables and figures under [`results/`](results/RESULTS.md) are small-sample descriptive outputs. They do **not** show predictive performance, establish text's incremental financial value, or rule out future-information contamination. M5 formal parameters remain **unfrozen**.
+The project has not run a formal financial experiment, independent human retrieval evaluation, or generator evaluation. Same-agent source checks are self-checks, not independent audits. M5 scientific parameters remain **unfrozen**.
 
 ## Reading order
 
-1. [`results/RESULTS.md`](results/RESULTS.md) and the CSV/SVG outputs for the descriptive findings.
-2. [`results/PROVENANCE.json`](results/PROVENANCE.json) and [`SHARING_SCOPE.md`](SHARING_SCOPE.md) for run IDs, source hashes and omissions.
-3. [`docs/M2_M3_METHOD.md`](docs/M2_M3_METHOD.md), [`docs/M4_METHOD.md`](docs/M4_METHOD.md), and the [M4 closeout](reports/2026-10-19_M4_closeout.md) for implementation and audit limits.
-4. The [corrected filing/price chronology](reports/2026-10-19_text_price_time_alignment.md), [M5 track gates](docs/M5_TRACKS.md), [protocol decision sheet](docs/M5_PROTOCOL_DRAFT.md), and [professor agenda](reports/2026-10-19_M5_professor_agenda.md).
-5. [`reports/2026-10-19_overleaf_progress.tex`](reports/2026-10-19_overleaf_progress.tex) is the author-written progress fragment. Team Overleaf sources are not included.
+1. [Evidence trace, M0–M7](docs/EVIDENCE_TRACE_M0_M7.md) and [M8–M10](docs/EVIDENCE_TRACE_M8_M10.md): claim, saved result field, run identity, input/model version, and limit.
+2. [Current-status addendum](results/CURRENT_STATUS_ADDENDUM.md), [M6 descriptive outputs](results/m6_real5_20261025/RESULTS_SCOPE.md), [M7 exploratory outputs](results/m7_exploratory_20261025/RESULTS_SCOPE.md), and [public M10 summary](results/m10_assistant_demo_20261028/RESULTS_SCOPE.md). The M6/M7 scope files are preserved historical snapshots.
+3. [M10 assistant method](docs/M10_RAG_ASSISTANT.md), [M5 protocol draft](docs/M5_PROTOCOL_DRAFT.md), the [proposed technical roadmap](docs/PROPOSED_TECHNICAL_ROADMAP.md), and its [ten-image source map](docs/ROUTE_IMAGE_SOURCE_MAP.md).
+4. [Publication scope and exclusions](SHARING_SCOPE.md) and [release audit](docs/PUBLICATION_AUDIT_2026_10_28.md).
 
-## Install and reproduce the workflow
+## Install and reproduce
 
-Python 3.11+ is required. From a fresh clone:
+Use Python 3.11+ from a fresh clone. The offline doctor and software tests do not fetch SEC filings or models:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python -m pip install -e ".[embed,test]"
+.\.venv\Scripts\python -m pip install -e ".[embed,rag,test]"
 .\.venv\Scripts\python -m finembed doctor --config configs/smoke.yaml --offline
 .\.venv\Scripts\python -m pytest -q
 ```
 
-The share ZIP omits original filings, vendor responses and model weights. To rerun the data workflow, set your **own real** SEC contact identity in the process environment as `SEC_USER_AGENT` (name/organization plus contact email), then run:
+The `rag` extra pins the tested `llama-index-core==0.14.25`. The [M10 method](docs/M10_RAG_ASSISTANT.md) gives commands for a new local index and retrieval check **only after** the exact hash-bound accepted text and pinned encoder files have been obtained separately. A clone of this public repository alone cannot reproduce private-source outputs byte-for-byte. New retrieval checks require new run directories and source receipts; do not relabel old results as a rerun.
 
-```powershell
-.\.venv\Scripts\python -m finembed ingest --config configs/smoke.yaml
-.\.venv\Scripts\python -m finembed model-fetch --config configs/smoke.yaml
-.\.venv\Scripts\python -m finembed analyze --config configs/smoke.yaml --corpus artifacts/runs/<M1-run-id>/corpus_index.json
-```
+For SEC ingestion, set a real name/organization and contact email in the process environment as `SEC_USER_AGENT`; see [the SEC EDGAR API documentation](https://www.sec.gov/search-filings/edgar-application-programming-interfaces). For the price-only workflow, obtain your own historical Stocks REST entitlement and set `MASSIVE_API_KEY` in the process environment. No key or `.env` file is included. The original SEC responses, vendor price responses, model weights, accepted derivatives, private review messages, and vector index are excluded from this share. Source IDs, hashes, provenance, and procedures remain in the evidence trace. Do not substitute synthetic fixtures for real filings or model inference.
 
-For the price-only M4 workflow, obtain historical Stocks REST access from Massive, set the console-issued `MASSIVE_API_KEY` in the **running process environment**, and run:
+## Next decisions and limits
 
-```powershell
-.\.venv\Scripts\python -m finembed m4 --config configs/smoke.yaml --m4-config configs/m4_demo.yaml --corpus artifacts/runs/<M1-run-id>/corpus_index.json
-```
+The [roadmap](docs/PROPOSED_TECHNICAL_ROADMAP.md) proposes completing exact-version 10-Q review, building a researcher-checked retrieval set, and broadening representation-stability analysis. Generation and a genuine MoE are optional, separate engineering gates. Historical prediction or risk estimation requires a researcher-approved M5 protocol with explicit public-availability evidence, temporal splits, fit boundaries, baselines, and metrics. None of those proposed scientific choices is frozen here.
 
-`.env.example` lists variable names only; the application does not auto-load `.env`. Do not commit credentials. SEC filings can be obtained through the [EDGAR data API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) and archive URLs recorded in the [chronology JSON](reports/2026-10-19_text_price_time_alignment.json). Model files are fetched from the pinned [Hugging Face revision](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/tree/1110a243fdf4706b3f48f1d95db1a4f5529b4d41) and checked against configuration hashes. Massive daily aggregates require your own authorization; see the [provider documentation](https://massive.com/docs/rest/stocks/aggregates/custom-bars). Provider revisions, entitlements or historical text changes may prevent byte-identical reruns; compare against `results/PROVENANCE.json` and retain new receipts.
+**Overleaf:** the existing team project link and online update remain pending live project verification; this README does not imply GitHub and Overleaf are synchronized.
 
-## Limits and next step
-
-The five firms, one pretrained model and 2025 price window were engineering choices. The exact first-public filing instants and decision-time Item 1 vintages are not established here. The 2025 prices have no assigned role as trailing features, future labels or static comparison inputs in a formal experiment. First agree a dated M5 protocol for the recommended fixed-text stability mainline; historical return prediction and risk estimation are separately gated options.
-
-**License:** no repository license is granted or implied. Permission to license or redistribute team code remains to be confirmed. Third-party model, data and dependency terms remain with their respective owners.
+**License:** no repository license is granted or implied. Redistribution and licensing of team code are pending confirmation. Third-party source, model, and dependency terms remain with their owners.

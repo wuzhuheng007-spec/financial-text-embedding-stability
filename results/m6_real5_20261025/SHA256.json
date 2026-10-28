@@ -1,0 +1,85 @@
+{
+  "source_run_id": "20261024T221032Z-real5",
+  "authoritative_report": "report_v3",
+  "files": [
+    {
+      "file": "comparison_metrics.json",
+      "sha256": "e97b61786f8d1611a41206b75ce98b36baafe251ead0542e3d63e63350ebd524",
+      "bytes": 8596,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "directed_bm25_neighbors.csv",
+      "sha256": "6cd14a0f42a2a038b502da43ad2ff19eaeb8a5680ef1494f7b37581e3e6962e2",
+      "bytes": 918,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "length_chunks.svg",
+      "sha256": "7e35bf2a4382a8150fbb7a2a3ea014f5718b9c4c00bcc18326cc5c0c1047daaa",
+      "bytes": 2095,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "length_table.csv",
+      "sha256": "da2a7157f70783f762612e7e3a1f1e5237b78d1693b541e638712013d2cd7eb0",
+      "bytes": 822,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "method_table.csv",
+      "sha256": "7742985e00f2551c081c1bfd99b5c006f4f0d202b088d4032c336c588fd678d9",
+      "bytes": 2330,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "neighbor_changes.svg",
+      "sha256": "4043ade77bc008960e70110d68f3e324c2ef3ce8548d8c0aee9edf22ecd501a5",
+      "bytes": 5752,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "neighbors.csv",
+      "sha256": "403943440d6ce714d00267e6bd10c20d8ba833967d4d7b2e5298f7f6d2d1d378",
+      "bytes": 3693,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "report.md",
+      "sha256": "5980213dbeef784f0ef4f7cae0f111356cd725027fed88f7cac11ec1a856afc9",
+      "bytes": 2509,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "similarity_heatmaps.svg",
+      "sha256": "2773b69cf23321ed8da51f0bb67d653cf89e8d8b786bbb40d27ff368bc59ab79",
+      "bytes": 53448,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "tfidf_same_tokenizer_cosine.csv",
+      "sha256": "c786bde2f70f6e07b8cb6a15b915b818f48e1d50d8f13d512080a9425f6fbdd3",
+      "bytes": 751,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "tfidf_same_tokenizer_fit.json",
+      "sha256": "f2a02b608a46a32c911ab1c1002994158523fd4561734cd2c37658b887ec8b46",
+      "bytes": 1832,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "top2_overlap.csv",
+      "sha256": "1f0007bf41f89006da3580e381673ab2f7e61d08f1916cb0a0cccd222d77ab65",
+      "bytes": 4471,
+      "identical_to_authoritative_report_v3": true
+    },
+    {
+      "file": "sensitivity_diagnostics.json",
+      "sha256": "3538b921c6c23c5c368d5d6377532fd01ef39fd0a1eeb40aa8f4920c8a42c94a",
+      "bytes": 6480,
+      "identical_to_authoritative_report_v3": false,
+      "source": "supplemental saved-matrix diagnostic after report_v3"
+    }
+  ]
+}

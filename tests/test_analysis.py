@@ -12,6 +12,8 @@ from finembed.cli import ingest
 from finembed.model import Encoder
 from finembed.run import Run, sha256
 from finembed.sec import MissingContact
+from finembed.sec import raw_header
+from finembed.extract import primary_text, extract_item1, comparison
 
 
 def test_topk_ties_are_resolved_by_ticker_and_self_is_excluded():
@@ -50,6 +52,62 @@ def test_blocked_m1_index_cannot_enter_analysis(tmp_path):
     valid, audit = validate_corpus(config, index)
     assert valid == [] and audit["valid_count"] == 0
     assert len(audit["entries"]) == len(config.companies)
+
+
+def test_m1_corpus_rejects_index_and_raw_filer_cik_mismatches(tmp_path):
+    """A synthetic, internally consistent filing proves the identity gates."""
+    config = load_config(Path(__file__).parents[1] / "configs" / "smoke.yaml")
+    cik = "0000320193"
+    accession = "0000000001-25-000001"
+    html = ("<html><body><p>Cover " + "cover " * 400 + "</p>"
+            "<p>TABLE OF CONTENTS</p><p>Item 1. Business</p><p>Item 1A. Risk Factors</p>"
+            "<h2>Item 1. Business</h2><p>" + "Synthetic business description. " * 120 + "</p>"
+            "<h2>Item 1A. Risk Factors</h2><p>" + "Synthetic risk text. " * 100 + "</p></body></html>")
+    def submission(filer_cik):
+        return (f"<SEC-DOCUMENT>\n<SEC-HEADER>\n<ACCEPTANCE-DATETIME>20251201090000\n"
+                f"ACCESSION NUMBER: {accession}\nCONFORMED SUBMISSION TYPE: 10-K\n"
+                f"FILED AS OF DATE: 20251201\nFILER:\n\tCOMPANY DATA:\n"
+                f"\t\tCENTRAL INDEX KEY: {filer_cik}\n</SEC-HEADER>\n"
+                f"<DOCUMENT><TYPE>10-K\n<TEXT>{html}</TEXT></DOCUMENT>").encode()
+    raw = submission(cik)
+    primary, _ = primary_text(raw)
+    item, offsets = extract_item1(primary)
+    folder = tmp_path / "filing"
+    folder.mkdir()
+    metadata = {"ticker": "AAPL", "cik": cik, "accession": accession,
+                "archive_url": "https://www.sec.gov/Archives/edgar/data/320193/synthetic",
+                "raw_sec_header": raw_header(raw, accession), "raw_sha256": sha256(raw)}
+    item_meta = {"primary_text_sha256": sha256(primary.encode()), "item1_sha256": sha256(item.encode()),
+                 "start_char": offsets["start_char"], "end_char_exclusive": offsets["end_char_exclusive"]}
+    (folder / "original_submission.txt").write_bytes(raw)
+    (folder / "primary_text.txt").write_text(primary, encoding="utf-8")
+    (folder / "item1_business.txt").write_text(item, encoding="utf-8")
+    (folder / "filing_metadata.json").write_text(json.dumps(metadata), encoding="utf-8")
+    (folder / "item1_metadata.json").write_text(json.dumps(item_meta), encoding="utf-8")
+    (folder / "boundary_comparison.json").write_text(json.dumps(comparison(primary, item, offsets)), encoding="utf-8")
+    entries = [{"ticker": "AAPL", "cik": cik, "accession": accession, "status": "INCLUDED",
+                "filing_dir": str(folder), "raw_sha256": sha256(raw), "item1_sha256": sha256(item.encode())}]
+    entries.extend({"ticker": c.ticker, "status": "BLOCKED", "reason": "synthetic excluded"}
+                   for c in config.companies[1:])
+    index = tmp_path / "corpus_index.json"
+    def save_index():
+        index.write_text(json.dumps({"as_of": config.as_of.isoformat(), "first_run_symbol_limit": None,
+                                     "entries": entries}), encoding="utf-8")
+    save_index()
+    valid, audit = validate_corpus(config, index)
+    assert len(valid) == 1 and audit["entries"][0]["status"] == "VALID"
+    entries[0]["cik"] = "9999999999"
+    save_index()
+    valid, audit = validate_corpus(config, index)
+    assert not valid and "Filing identity" in audit["entries"][0]["reason"]
+    entries[0]["cik"] = cik
+    wrong_raw = submission("9999999999")
+    (folder / "original_submission.txt").write_bytes(wrong_raw)
+    metadata["raw_sha256"] = entries[0]["raw_sha256"] = sha256(wrong_raw)
+    (folder / "filing_metadata.json").write_text(json.dumps(metadata), encoding="utf-8")
+    save_index()
+    valid, audit = validate_corpus(config, index)
+    assert not valid and "Raw SEC FILER CIK" in audit["entries"][0]["reason"]
 
 
 def test_released_m1_limit_records_every_planned_company(monkeypatch, tmp_path):
