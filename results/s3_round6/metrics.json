@@ -1,0 +1,4836 @@
+{
+  "arms": {
+    "-10": {
+      "body_token_weighted": {
+        "cosine_matrix": [
+          [
+            1.0000000000000004,
+            0.7125105377640242,
+            0.7327663223376343,
+            0.6155216274559737,
+            0.6414059046323669
+          ],
+          [
+            0.7125105377640242,
+            1.0000000000000002,
+            0.7252958827354289,
+            0.735670012237514,
+            0.7091271940751811
+          ],
+          [
+            0.7327663223376343,
+            0.7252958827354289,
+            0.9999999999999998,
+            0.7054648615054262,
+            0.689802983314324
+          ],
+          [
+            0.6155216274559737,
+            0.735670012237514,
+            0.7054648615054262,
+            1.0000000000000002,
+            0.7680896117531156
+          ],
+          [
+            0.6414059046323669,
+            0.7091271940751811,
+            0.689802983314324,
+            0.7680896117531156,
+            1.0000000000000007
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "AAPL",
+            "MSFT",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.07110463313165727,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.019831021230002688,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.03020515073208785,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.019324210760857108,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.01278534497140471,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "AAPL",
+            "MSFT"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      },
+      "equal_chunks": {
+        "cosine_matrix": [
+          [
+            1.0,
+            0.7106400257546752,
+            0.7326597866706385,
+            0.6155259376163355,
+            0.6408595772310015
+          ],
+          [
+            0.7106400257546752,
+            0.9999999999999997,
+            0.7254864108749127,
+            0.7367836984721087,
+            0.7103342507892048
+          ],
+          [
+            0.7326597866706385,
+            0.7254864108749127,
+            0.9999999999999993,
+            0.7078928985296443,
+            0.6922576252543859
+          ],
+          [
+            0.6155259376163355,
+            0.7367836984721087,
+            0.7078928985296443,
+            0.9999999999999999,
+            0.7715956230255214
+          ],
+          [
+            0.6408595772310015,
+            0.7103342507892048,
+            0.6922576252543859,
+            0.7715956230255214,
+            0.9999999999999996
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "AAPL",
+            "MSFT",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.06978044852367371,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.017593512345268403,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.02889079994246435,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.018076625534818813,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.014846385120237504,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "AAPL",
+            "MSFT"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      }
+    },
+    "-5": {
+      "body_token_weighted": {
+        "cosine_matrix": [
+          [
+            0.9999999999999993,
+            0.7035490395206568,
+            0.7297869527384256,
+            0.6087081036706998,
+            0.6362220671529613
+          ],
+          [
+            0.7035490395206568,
+            0.9999999999999998,
+            0.7348039265684833,
+            0.7358989482262154,
+            0.7144170657532305
+          ],
+          [
+            0.7297869527384256,
+            0.7348039265684833,
+            1.0000000000000004,
+            0.710973815157481,
+            0.6960363057875089
+          ],
+          [
+            0.6087081036706998,
+            0.7358989482262154,
+            0.710973815157481,
+            1.0000000000000002,
+            0.7640242431157457
+          ],
+          [
+            0.6362220671529613,
+            0.7144170657532305,
+            0.6960363057875089,
+            0.7640242431157457,
+            1.0000000000000002
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "META",
+            "AAPL"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.06732697236769558,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.018813137580944606,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.02492513306873434,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.018380759965721638,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.02038686081525276,
+            "rank3": "META"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      },
+      "equal_chunks": {
+        "cosine_matrix": [
+          [
+            1.0000000000000007,
+            0.7018632861448459,
+            0.7301392558581872,
+            0.6103688705909758,
+            0.6361088015795666
+          ],
+          [
+            0.7018632861448459,
+            1.0000000000000002,
+            0.7354556514753187,
+            0.7373671104627285,
+            0.7155268098884937
+          ],
+          [
+            0.7301392558581872,
+            0.7354556514753187,
+            1.0000000000000009,
+            0.7139164725076781,
+            0.6985313584980896
+          ],
+          [
+            0.6103688705909758,
+            0.7373671104627285,
+            0.7139164725076781,
+            1.0000000000000007,
+            0.7674493788488677
+          ],
+          [
+            0.6361088015795666,
+            0.7155268098884937,
+            0.6985313584980896,
+            0.7674493788488677,
+            1.0000000000000004
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "META",
+            "AAPL"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.06575448456527933,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.016222783350509085,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.023450637955050424,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.016995451390404148,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.019928841586824952,
+            "rank3": "META"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      }
+    },
+    "0": {
+      "body_token_weighted": {
+        "cosine_matrix": [
+          [
+            0.9999999999999988,
+            0.7050625655125904,
+            0.7262987128306031,
+            0.6134371143736757,
+            0.6393921517920937
+          ],
+          [
+            0.7050625655125904,
+            1.000000000000001,
+            0.7283541703744117,
+            0.7442998257556539,
+            0.71291880124891
+          ],
+          [
+            0.7262987128306031,
+            0.7283541703744117,
+            0.9999999999999996,
+            0.712618361060551,
+            0.6885129221312615
+          ],
+          [
+            0.6134371143736757,
+            0.7442998257556539,
+            0.712618361060551,
+            1.0000000000000002,
+            0.7620217773388581
+          ],
+          [
+            0.6393921517920937,
+            0.71291880124891,
+            0.6885129221312615,
+            0.7620217773388581,
+            1.0000000000000013
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "META",
+            "AAPL"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.06567041372049665,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.013680351770052113,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.03168146469510291,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.024405879117648577,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.015435369125501697,
+            "rank3": "META"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      },
+      "equal_chunks": {
+        "cosine_matrix": [
+          [
+            1.0000000000000004,
+            0.7032528415037814,
+            0.726696755839717,
+            0.6157136777437578,
+            0.637932137365617
+          ],
+          [
+            0.7032528415037814,
+            0.9999999999999998,
+            0.7297873627776962,
+            0.7458617282565477,
+            0.7135849533961584
+          ],
+          [
+            0.726696755839717,
+            0.7297873627776962,
+            1.0,
+            0.7161443268024815,
+            0.6907510288180737
+          ],
+          [
+            0.6157136777437578,
+            0.7458617282565477,
+            0.7161443268024815,
+            1.0000000000000007,
+            0.7665083799872239
+          ],
+          [
+            0.637932137365617,
+            0.7135849533961584,
+            0.6907510288180737,
+            0.7665083799872239,
+            1.0000000000000004
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "META",
+            "AAPL"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.06532070413816438,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.010552429037235522,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.029717401454066206,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.02283392457808464,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.01620240938153783,
+            "rank3": "META"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      }
+    },
+    "10": {
+      "body_token_weighted": {
+        "cosine_matrix": [
+          [
+            1.0000000000000002,
+            0.717165017901637,
+            0.7314664700667659,
+            0.6150738730127742,
+            0.6379664671195412
+          ],
+          [
+            0.717165017901637,
+            1.0,
+            0.7346847716336423,
+            0.7400801606337293,
+            0.7112672455533897
+          ],
+          [
+            0.7314664700667659,
+            0.7346847716336423,
+            1.0000000000000004,
+            0.7120421090191346,
+            0.6850067618641726
+          ],
+          [
+            0.6150738730127742,
+            0.7400801606337293,
+            0.7120421090191346,
+            0.9999999999999999,
+            0.7704681694811423
+          ],
+          [
+            0.6379664671195412,
+            0.7112672455533897,
+            0.6850067618641726,
+            0.7704681694811423,
+            1.0
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.07919855078209581,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.019424361047631344,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.028038051614594717,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.026260483689217073,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.017519753732005316,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      },
+      "equal_chunks": {
+        "cosine_matrix": [
+          [
+            1.0000000000000009,
+            0.7153935608778744,
+            0.7327530852200658,
+            0.6165380236599626,
+            0.6372471643739601
+          ],
+          [
+            0.7153935608778744,
+            0.9999999999999996,
+            0.7380268896499681,
+            0.7405564114870725,
+            0.711895317200898
+          ],
+          [
+            0.7327530852200658,
+            0.7380268896499681,
+            1.0000000000000007,
+            0.7165176607959214,
+            0.6869201846229476
+          ],
+          [
+            0.6165380236599626,
+            0.7405564114870725,
+            0.7165176607959214,
+            1.0,
+            0.7745073179908162
+          ],
+          [
+            0.6372471643739601,
+            0.711895317200898,
+            0.6869201846229476,
+            0.7745073179908162,
+            0.9999999999999997
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.0781463965039143,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.016235424424144385,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.024038750691151134,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.024975132577950476,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.022633328772093675,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      }
+    },
+    "5": {
+      "body_token_weighted": {
+        "cosine_matrix": [
+          [
+            0.9999999999999996,
+            0.713213326544508,
+            0.7273117131883119,
+            0.6082727767027639,
+            0.6325203922786741
+          ],
+          [
+            0.713213326544508,
+            1.000000000000001,
+            0.7336198672262176,
+            0.7386307979768726,
+            0.7091530791426979
+          ],
+          [
+            0.7273117131883119,
+            0.7336198672262176,
+            0.9999999999999998,
+            0.7078840947161684,
+            0.6836803706677718
+          ],
+          [
+            0.6082727767027639,
+            0.7386307979768726,
+            0.7078840947161684,
+            1.0000000000000002,
+            0.75674851462949
+          ],
+          [
+            0.6325203922786741,
+            0.7091530791426979,
+            0.6836803706677718,
+            0.75674851462949,
+            0.9999999999999996
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.0806929342658339,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.01942761847214347,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.030746703260704167,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.02547270847492611,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.02040654068170966,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      },
+      "equal_chunks": {
+        "cosine_matrix": [
+          [
+            0.9999999999999994,
+            0.7115353383345999,
+            0.7282118972154771,
+            0.6110689132788669,
+            0.6311678344651717
+          ],
+          [
+            0.7115353383345999,
+            1.000000000000001,
+            0.7358124766057467,
+            0.7398319410297854,
+            0.7093979156074581
+          ],
+          [
+            0.7282118972154771,
+            0.7358124766057467,
+            1.0000000000000002,
+            0.7115400378715636,
+            0.6853006753722845
+          ],
+          [
+            0.6110689132788669,
+            0.7398319410297854,
+            0.7115400378715636,
+            0.9999999999999999,
+            0.7610762773796182
+          ],
+          [
+            0.6311678344651717,
+            0.7093979156074581,
+            0.6853006753722845,
+            0.7610762773796182,
+            1.0000000000000009
+          ]
+        ],
+        "neighbor_order": {
+          "AAPL": [
+            "AMZN",
+            "MSFT",
+            "META",
+            "GOOGL"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL",
+            "GOOGL",
+            "META"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT",
+            "AMZN",
+            "AAPL"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN",
+            "AAPL",
+            "META"
+          ]
+        },
+        "rank2_rank3": {
+          "AAPL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.08036750386942826,
+            "rank3": "META"
+          },
+          "AMZN": {
+            "exact_cutoff_tie": false,
+            "rank2": "AAPL",
+            "rank2_minus_rank3": 0.016671859343913464,
+            "rank3": "GOOGL"
+          },
+          "GOOGL": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.02829190315822183,
+            "rank3": "AMZN"
+          },
+          "META": {
+            "exact_cutoff_tie": false,
+            "rank2": "MSFT",
+            "rank2_minus_rank3": 0.024097240235173678,
+            "rank3": "AMZN"
+          },
+          "MSFT": {
+            "exact_cutoff_tie": false,
+            "rank2": "AMZN",
+            "rank2_minus_rank3": 0.024277138271146748,
+            "rank3": "AAPL"
+          }
+        },
+        "tie_rule": "descending exact float64 cosine; ascending company ID on exact ties",
+        "top2": {
+          "AAPL": [
+            "AMZN",
+            "MSFT"
+          ],
+          "AMZN": [
+            "MSFT",
+            "AAPL"
+          ],
+          "GOOGL": [
+            "META",
+            "MSFT"
+          ],
+          "META": [
+            "GOOGL",
+            "MSFT"
+          ],
+          "MSFT": [
+            "GOOGL",
+            "AMZN"
+          ]
+        }
+      }
+    }
+  },
+  "axis": "boundary_shift",
+  "base_step_body_tokens": 128,
+  "candidate_boundary_shifts": [
+    -10,
+    -5,
+    0,
+    5,
+    10
+  ],
+  "company_order": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META"
+  ],
+  "denominators": {
+    "companies": 5,
+    "tracked_reference_rank2_rank3_peers": 10,
+    "upper_triangle_pairs": 10
+  },
+  "inference_provenance": "REAL_MODEL",
+  "kind": "BOUNDARY_SHIFT_DESCRIPTIVE_METRICS",
+  "pooling_methods": [
+    "equal_chunks",
+    "body_token_weighted"
+  ],
+  "reference_boundary_shift": 0,
+  "same_shift_pooling_comparisons": {
+    "-10": {
+      "candidate_arm": {
+        "boundary_shift": -10,
+        "pooling": "body_token_weighted"
+      },
+      "company_vector_cosine_distance": {
+        "by_company": {
+          "AAPL": 4.0573886855965746e-05,
+          "AMZN": 1.090717283591669e-05,
+          "GOOGL": 0.00024303892686083906,
+          "META": 0.00022552242349260787,
+          "MSFT": 8.761147813385328e-05
+        },
+        "denominator": 5,
+        "mean": 0.00012153077763583653
+      },
+      "rank2_rank3_margin": {
+        "AAPL": {
+          "candidate": 0.07110463313165727,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0013241846079835584,
+          "reference": 0.06978044852367371,
+          "reference_exact_cutoff_tie": false
+        },
+        "AMZN": {
+          "candidate": 0.019831021230002688,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.002237508884734285,
+          "reference": 0.017593512345268403,
+          "reference_exact_cutoff_tie": false
+        },
+        "GOOGL": {
+          "candidate": 0.03020515073208785,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0013143507896234974,
+          "reference": 0.02889079994246435,
+          "reference_exact_cutoff_tie": false
+        },
+        "META": {
+          "candidate": 0.019324210760857108,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0012475852260382947,
+          "reference": 0.018076625534818813,
+          "reference_exact_cutoff_tie": false
+        },
+        "MSFT": {
+          "candidate": 0.01278534497140471,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": -0.0020610401488327934,
+          "reference": 0.014846385120237504,
+          "reference_exact_cutoff_tie": false
+        }
+      },
+      "reference_arm": {
+        "boundary_shift": -10,
+        "pooling": "equal_chunks"
+      },
+      "reference_rank2_rank3_peer_movement": {
+        "by_company": {
+          "AAPL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "AMZN": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "GOOGL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "GOOGL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "META": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "MSFT": [
+            {
+              "candidate_rank": 2,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ]
+        },
+        "mean_absolute_rank_shift": 0.0,
+        "tracked_peer_denominator": 10
+      },
+      "similarity_change": {
+        "maximum_absolute": 0.0035060112724057957,
+        "mean_absolute": 0.0013427646562859884,
+        "pair_denominator": 10,
+        "pairs_independent": false,
+        "upper_triangle_pairs": [
+          {
+            "absolute_cosine_change": 0.001870512009348957,
+            "companies": [
+              "AAPL",
+              "MSFT"
+            ],
+            "signed_cosine_change": 0.001870512009348957
+          },
+          {
+            "absolute_cosine_change": 0.00010653566699581063,
+            "companies": [
+              "AAPL",
+              "AMZN"
+            ],
+            "signed_cosine_change": 0.00010653566699581063
+          },
+          {
+            "absolute_cosine_change": 4.310160361731263e-06,
+            "companies": [
+              "AAPL",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -4.310160361731263e-06
+          },
+          {
+            "absolute_cosine_change": 0.0005463274013653985,
+            "companies": [
+              "AAPL",
+              "META"
+            ],
+            "signed_cosine_change": 0.0005463274013653985
+          },
+          {
+            "absolute_cosine_change": 0.0001905281394838365,
+            "companies": [
+              "MSFT",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0001905281394838365
+          },
+          {
+            "absolute_cosine_change": 0.0011136862345946241,
+            "companies": [
+              "MSFT",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0011136862345946241
+          },
+          {
+            "absolute_cosine_change": 0.0012070567140236577,
+            "companies": [
+              "MSFT",
+              "META"
+            ],
+            "signed_cosine_change": -0.0012070567140236577
+          },
+          {
+            "absolute_cosine_change": 0.0024280370242181215,
+            "companies": [
+              "AMZN",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0024280370242181215
+          },
+          {
+            "absolute_cosine_change": 0.0024546419400619524,
+            "companies": [
+              "AMZN",
+              "META"
+            ],
+            "signed_cosine_change": -0.0024546419400619524
+          },
+          {
+            "absolute_cosine_change": 0.0035060112724057957,
+            "companies": [
+              "GOOGL",
+              "META"
+            ],
+            "signed_cosine_change": -0.0035060112724057957
+          }
+        ]
+      },
+      "top2_overlap": {
+        "by_company": {
+          "AAPL": 1.0,
+          "AMZN": 1.0,
+          "GOOGL": 1.0,
+          "META": 1.0,
+          "MSFT": 1.0
+        },
+        "company_denominator": 5,
+        "mean": 1.0,
+        "set_denominator_per_company": 2
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+        "value": 1.0
+      }
+    },
+    "-5": {
+      "candidate_arm": {
+        "boundary_shift": -5,
+        "pooling": "body_token_weighted"
+      },
+      "company_vector_cosine_distance": {
+        "by_company": {
+          "AAPL": 5.609330521150202e-05,
+          "AMZN": 3.228123657161852e-06,
+          "GOOGL": 0.0002776919389806398,
+          "META": 0.0002542150550477462,
+          "MSFT": 9.869377740157059e-05
+        },
+        "denominator": 5,
+        "mean": 0.0001379844400597241
+      },
+      "rank2_rank3_margin": {
+        "AAPL": {
+          "candidate": 0.06732697236769558,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0015724878024162559,
+          "reference": 0.06575448456527933,
+          "reference_exact_cutoff_tie": false
+        },
+        "AMZN": {
+          "candidate": 0.018813137580944606,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.002590354230435521,
+          "reference": 0.016222783350509085,
+          "reference_exact_cutoff_tie": false
+        },
+        "GOOGL": {
+          "candidate": 0.02492513306873434,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0014744951136839157,
+          "reference": 0.023450637955050424,
+          "reference_exact_cutoff_tie": false
+        },
+        "META": {
+          "candidate": 0.018380759965721638,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0013853085753174899,
+          "reference": 0.016995451390404148,
+          "reference_exact_cutoff_tie": false
+        },
+        "MSFT": {
+          "candidate": 0.02038686081525276,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0004580192284278084,
+          "reference": 0.019928841586824952,
+          "reference_exact_cutoff_tie": false
+        }
+      },
+      "reference_arm": {
+        "boundary_shift": -5,
+        "pooling": "equal_chunks"
+      },
+      "reference_rank2_rank3_peer_movement": {
+        "by_company": {
+          "AAPL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "AMZN": [
+            {
+              "candidate_rank": 2,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "GOOGL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "GOOGL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "META": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "MSFT": [
+            {
+              "candidate_rank": 2,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ]
+        },
+        "mean_absolute_rank_shift": 0.0,
+        "tracked_peer_denominator": 10
+      },
+      "similarity_change": {
+        "maximum_absolute": 0.0034251357331219756,
+        "mean_absolute": 0.00159045660617545,
+        "pair_denominator": 10,
+        "pairs_independent": false,
+        "upper_triangle_pairs": [
+          {
+            "absolute_cosine_change": 0.0016857533758108945,
+            "companies": [
+              "AAPL",
+              "MSFT"
+            ],
+            "signed_cosine_change": 0.0016857533758108945
+          },
+          {
+            "absolute_cosine_change": 0.0003523031197615323,
+            "companies": [
+              "AAPL",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0003523031197615323
+          },
+          {
+            "absolute_cosine_change": 0.0016607669202759467,
+            "companies": [
+              "AAPL",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0016607669202759467
+          },
+          {
+            "absolute_cosine_change": 0.00011326557339463861,
+            "companies": [
+              "AAPL",
+              "META"
+            ],
+            "signed_cosine_change": 0.00011326557339463861
+          },
+          {
+            "absolute_cosine_change": 0.0006517249068354047,
+            "companies": [
+              "MSFT",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0006517249068354047
+          },
+          {
+            "absolute_cosine_change": 0.0014681622365131375,
+            "companies": [
+              "MSFT",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0014681622365131375
+          },
+          {
+            "absolute_cosine_change": 0.0011097441352632131,
+            "companies": [
+              "MSFT",
+              "META"
+            ],
+            "signed_cosine_change": -0.0011097441352632131
+          },
+          {
+            "absolute_cosine_change": 0.002942657350197053,
+            "companies": [
+              "AMZN",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.002942657350197053
+          },
+          {
+            "absolute_cosine_change": 0.002495052710580703,
+            "companies": [
+              "AMZN",
+              "META"
+            ],
+            "signed_cosine_change": -0.002495052710580703
+          },
+          {
+            "absolute_cosine_change": 0.0034251357331219756,
+            "companies": [
+              "GOOGL",
+              "META"
+            ],
+            "signed_cosine_change": -0.0034251357331219756
+          }
+        ]
+      },
+      "top2_overlap": {
+        "by_company": {
+          "AAPL": 1.0,
+          "AMZN": 1.0,
+          "GOOGL": 1.0,
+          "META": 1.0,
+          "MSFT": 1.0
+        },
+        "company_denominator": 5,
+        "mean": 1.0,
+        "set_denominator_per_company": 2
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+        "value": 1.0
+      }
+    },
+    "0": {
+      "candidate_arm": {
+        "boundary_shift": 0,
+        "pooling": "body_token_weighted"
+      },
+      "company_vector_cosine_distance": {
+        "by_company": {
+          "AAPL": 7.623099048648108e-05,
+          "AMZN": 9.009394356773726e-06,
+          "GOOGL": 0.00030250613903226586,
+          "META": 0.00030429361320516435,
+          "MSFT": 9.762683415337481e-05
+        },
+        "denominator": 5,
+        "mean": 0.00015793339424681198
+      },
+      "rank2_rank3_margin": {
+        "AAPL": {
+          "candidate": 0.06567041372049665,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.00034970958233226934,
+          "reference": 0.06532070413816438,
+          "reference_exact_cutoff_tie": false
+        },
+        "AMZN": {
+          "candidate": 0.013680351770052113,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0031279227328165904,
+          "reference": 0.010552429037235522,
+          "reference_exact_cutoff_tie": false
+        },
+        "GOOGL": {
+          "candidate": 0.03168146469510291,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0019640632410367065,
+          "reference": 0.029717401454066206,
+          "reference_exact_cutoff_tie": false
+        },
+        "META": {
+          "candidate": 0.024405879117648577,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0015719545395639356,
+          "reference": 0.02283392457808464,
+          "reference_exact_cutoff_tie": false
+        },
+        "MSFT": {
+          "candidate": 0.015435369125501697,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": -0.0007670402560361333,
+          "reference": 0.01620240938153783,
+          "reference_exact_cutoff_tie": false
+        }
+      },
+      "reference_arm": {
+        "boundary_shift": 0,
+        "pooling": "equal_chunks"
+      },
+      "reference_rank2_rank3_peer_movement": {
+        "by_company": {
+          "AAPL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "AMZN": [
+            {
+              "candidate_rank": 2,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "GOOGL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "GOOGL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "META": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "MSFT": [
+            {
+              "candidate_rank": 2,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ]
+        },
+        "mean_absolute_rank_shift": 0.0,
+        "tracked_peer_denominator": 10
+      },
+      "similarity_change": {
+        "maximum_absolute": 0.004486602648365756,
+        "mean_absolute": 0.00198562669430169,
+        "pair_denominator": 10,
+        "pairs_independent": false,
+        "upper_triangle_pairs": [
+          {
+            "absolute_cosine_change": 0.0018097240088089661,
+            "companies": [
+              "AAPL",
+              "MSFT"
+            ],
+            "signed_cosine_change": 0.0018097240088089661
+          },
+          {
+            "absolute_cosine_change": 0.0003980430091139464,
+            "companies": [
+              "AAPL",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0003980430091139464
+          },
+          {
+            "absolute_cosine_change": 0.0022765633700821963,
+            "companies": [
+              "AAPL",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0022765633700821963
+          },
+          {
+            "absolute_cosine_change": 0.0014600144264766968,
+            "companies": [
+              "AAPL",
+              "META"
+            ],
+            "signed_cosine_change": 0.0014600144264766968
+          },
+          {
+            "absolute_cosine_change": 0.0014331924032844334,
+            "companies": [
+              "MSFT",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0014331924032844334
+          },
+          {
+            "absolute_cosine_change": 0.0015619025008938303,
+            "companies": [
+              "MSFT",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0015619025008938303
+          },
+          {
+            "absolute_cosine_change": 0.0006661521472483001,
+            "companies": [
+              "MSFT",
+              "META"
+            ],
+            "signed_cosine_change": -0.0006661521472483001
+          },
+          {
+            "absolute_cosine_change": 0.003525965741930537,
+            "companies": [
+              "AMZN",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.003525965741930537
+          },
+          {
+            "absolute_cosine_change": 0.0022381066868122357,
+            "companies": [
+              "AMZN",
+              "META"
+            ],
+            "signed_cosine_change": -0.0022381066868122357
+          },
+          {
+            "absolute_cosine_change": 0.004486602648365756,
+            "companies": [
+              "GOOGL",
+              "META"
+            ],
+            "signed_cosine_change": -0.004486602648365756
+          }
+        ]
+      },
+      "top2_overlap": {
+        "by_company": {
+          "AAPL": 1.0,
+          "AMZN": 1.0,
+          "GOOGL": 1.0,
+          "META": 1.0,
+          "MSFT": 1.0
+        },
+        "company_denominator": 5,
+        "mean": 1.0,
+        "set_denominator_per_company": 2
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+        "value": 0.9878787878787879
+      }
+    },
+    "10": {
+      "candidate_arm": {
+        "boundary_shift": 10,
+        "pooling": "body_token_weighted"
+      },
+      "company_vector_cosine_distance": {
+        "by_company": {
+          "AAPL": 0.0001434328491760617,
+          "AMZN": 5.809979393156528e-05,
+          "GOOGL": 0.00040003398219545794,
+          "META": 0.00036755291623336017,
+          "MSFT": 0.00013567584775808772
+        },
+        "denominator": 5,
+        "mean": 0.00022095907785890656
+      },
+      "rank2_rank3_margin": {
+        "AAPL": {
+          "candidate": 0.07919855078209581,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0010521542781815052,
+          "reference": 0.0781463965039143,
+          "reference_exact_cutoff_tie": false
+        },
+        "AMZN": {
+          "candidate": 0.019424361047631344,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.00318893662348696,
+          "reference": 0.016235424424144385,
+          "reference_exact_cutoff_tie": false
+        },
+        "GOOGL": {
+          "candidate": 0.028038051614594717,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.003999300923443583,
+          "reference": 0.024038750691151134,
+          "reference_exact_cutoff_tie": false
+        },
+        "META": {
+          "candidate": 0.026260483689217073,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0012853511112665972,
+          "reference": 0.024975132577950476,
+          "reference_exact_cutoff_tie": false
+        },
+        "MSFT": {
+          "candidate": 0.017519753732005316,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": -0.005113575040088358,
+          "reference": 0.022633328772093675,
+          "reference_exact_cutoff_tie": false
+        }
+      },
+      "reference_arm": {
+        "boundary_shift": 10,
+        "pooling": "equal_chunks"
+      },
+      "reference_rank2_rank3_peer_movement": {
+        "by_company": {
+          "AAPL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "AMZN": [
+            {
+              "candidate_rank": 2,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "GOOGL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "GOOGL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "META": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "MSFT": [
+            {
+              "candidate_rank": 2,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ]
+        },
+        "mean_absolute_rank_shift": 0.0,
+        "tracked_peer_denominator": 10
+      },
+      "similarity_change": {
+        "maximum_absolute": 0.004475551776786824,
+        "mean_absolute": 0.002011608913224494,
+        "pair_denominator": 10,
+        "pairs_independent": false,
+        "upper_triangle_pairs": [
+          {
+            "absolute_cosine_change": 0.0017714570237625793,
+            "companies": [
+              "AAPL",
+              "MSFT"
+            ],
+            "signed_cosine_change": 0.0017714570237625793
+          },
+          {
+            "absolute_cosine_change": 0.0012866151532998638,
+            "companies": [
+              "AAPL",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0012866151532998638
+          },
+          {
+            "absolute_cosine_change": 0.0014641506471884114,
+            "companies": [
+              "AAPL",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0014641506471884114
+          },
+          {
+            "absolute_cosine_change": 0.0007193027455810741,
+            "companies": [
+              "AAPL",
+              "META"
+            ],
+            "signed_cosine_change": 0.0007193027455810741
+          },
+          {
+            "absolute_cosine_change": 0.003342118016325779,
+            "companies": [
+              "MSFT",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.003342118016325779
+          },
+          {
+            "absolute_cosine_change": 0.0004762508533432408,
+            "companies": [
+              "MSFT",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0004762508533432408
+          },
+          {
+            "absolute_cosine_change": 0.0006280716475083326,
+            "companies": [
+              "MSFT",
+              "META"
+            ],
+            "signed_cosine_change": -0.0006280716475083326
+          },
+          {
+            "absolute_cosine_change": 0.004475551776786824,
+            "companies": [
+              "AMZN",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.004475551776786824
+          },
+          {
+            "absolute_cosine_change": 0.0019134227587749297,
+            "companies": [
+              "AMZN",
+              "META"
+            ],
+            "signed_cosine_change": -0.0019134227587749297
+          },
+          {
+            "absolute_cosine_change": 0.004039148509673907,
+            "companies": [
+              "GOOGL",
+              "META"
+            ],
+            "signed_cosine_change": -0.004039148509673907
+          }
+        ]
+      },
+      "top2_overlap": {
+        "by_company": {
+          "AAPL": 1.0,
+          "AMZN": 1.0,
+          "GOOGL": 1.0,
+          "META": 1.0,
+          "MSFT": 1.0
+        },
+        "company_denominator": 5,
+        "mean": 1.0,
+        "set_denominator_per_company": 2
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+        "value": 0.9878787878787879
+      }
+    },
+    "5": {
+      "candidate_arm": {
+        "boundary_shift": 5,
+        "pooling": "body_token_weighted"
+      },
+      "company_vector_cosine_distance": {
+        "by_company": {
+          "AAPL": 0.00010731572383493315,
+          "AMZN": 2.786042210045636e-05,
+          "GOOGL": 0.00036636800802991587,
+          "META": 0.00034358132685397,
+          "MSFT": 0.00011063747342021646
+        },
+        "denominator": 5,
+        "mean": 0.00019115259084789837
+      },
+      "rank2_rank3_margin": {
+        "AAPL": {
+          "candidate": 0.0806929342658339,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.00032543039640564597,
+          "reference": 0.08036750386942826,
+          "reference_exact_cutoff_tie": false
+        },
+        "AMZN": {
+          "candidate": 0.01942761847214347,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.0027557591282300065,
+          "reference": 0.016671859343913464,
+          "reference_exact_cutoff_tie": false
+        },
+        "GOOGL": {
+          "candidate": 0.030746703260704167,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.002454800102482335,
+          "reference": 0.02829190315822183,
+          "reference_exact_cutoff_tie": false
+        },
+        "META": {
+          "candidate": 0.02547270847492611,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": 0.001375468239752431,
+          "reference": 0.024097240235173678,
+          "reference_exact_cutoff_tie": false
+        },
+        "MSFT": {
+          "candidate": 0.02040654068170966,
+          "candidate_exact_cutoff_tie": false,
+          "candidate_minus_reference": -0.003870597589437086,
+          "reference": 0.024277138271146748,
+          "reference_exact_cutoff_tie": false
+        }
+      },
+      "reference_arm": {
+        "boundary_shift": 5,
+        "pooling": "equal_chunks"
+      },
+      "reference_rank2_rank3_peer_movement": {
+        "by_company": {
+          "AAPL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "META",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "AMZN": [
+            {
+              "candidate_rank": 2,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "GOOGL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "GOOGL": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "META": [
+            {
+              "candidate_rank": 2,
+              "peer": "MSFT",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ],
+          "MSFT": [
+            {
+              "candidate_rank": 2,
+              "peer": "AMZN",
+              "rank_change": 0,
+              "reference_rank": 2
+            },
+            {
+              "candidate_rank": 3,
+              "peer": "AAPL",
+              "rank_change": 0,
+              "reference_rank": 3
+            }
+          ]
+        },
+        "mean_absolute_rank_shift": 0.0,
+        "tracked_peer_denominator": 10
+      },
+      "similarity_change": {
+        "maximum_absolute": 0.00432776275012825,
+        "mean_absolute": 0.0019969466133916924,
+        "pair_denominator": 10,
+        "pairs_independent": false,
+        "upper_triangle_pairs": [
+          {
+            "absolute_cosine_change": 0.0016779882099080545,
+            "companies": [
+              "AAPL",
+              "MSFT"
+            ],
+            "signed_cosine_change": 0.0016779882099080545
+          },
+          {
+            "absolute_cosine_change": 0.0009001840271651851,
+            "companies": [
+              "AAPL",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0009001840271651851
+          },
+          {
+            "absolute_cosine_change": 0.0027961365761030033,
+            "companies": [
+              "AAPL",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0027961365761030033
+          },
+          {
+            "absolute_cosine_change": 0.0013525578135024086,
+            "companies": [
+              "AAPL",
+              "META"
+            ],
+            "signed_cosine_change": 0.0013525578135024086
+          },
+          {
+            "absolute_cosine_change": 0.0021926093795290313,
+            "companies": [
+              "MSFT",
+              "AMZN"
+            ],
+            "signed_cosine_change": -0.0021926093795290313
+          },
+          {
+            "absolute_cosine_change": 0.0012011430529128564,
+            "companies": [
+              "MSFT",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0012011430529128564
+          },
+          {
+            "absolute_cosine_change": 0.00024483646476025633,
+            "companies": [
+              "MSFT",
+              "META"
+            ],
+            "signed_cosine_change": -0.00024483646476025633
+          },
+          {
+            "absolute_cosine_change": 0.0036559431553951915,
+            "companies": [
+              "AMZN",
+              "GOOGL"
+            ],
+            "signed_cosine_change": -0.0036559431553951915
+          },
+          {
+            "absolute_cosine_change": 0.0016203047045126873,
+            "companies": [
+              "AMZN",
+              "META"
+            ],
+            "signed_cosine_change": -0.0016203047045126873
+          },
+          {
+            "absolute_cosine_change": 0.00432776275012825,
+            "companies": [
+              "GOOGL",
+              "META"
+            ],
+            "signed_cosine_change": -0.00432776275012825
+          }
+        ]
+      },
+      "top2_overlap": {
+        "by_company": {
+          "AAPL": 1.0,
+          "AMZN": 1.0,
+          "GOOGL": 1.0,
+          "META": 1.0,
+          "MSFT": 1.0
+        },
+        "company_denominator": 5,
+        "mean": 1.0,
+        "set_denominator_per_company": 2
+      },
+      "upper_triangle_spearman": {
+        "pair_count": 10,
+        "reason": null,
+        "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+        "value": 0.9636363636363636
+      }
+    }
+  },
+  "schema_version": 1,
+  "signed_shift_by_pooling_interactions": {
+    "-10": {
+      "definition": "[S(delta,weighted)-S(0,weighted)] - [S(delta,equal)-S(0,equal)]; signed pairwise cosine changes",
+      "mean_signed": 0.0004935893665006019,
+      "pair_denominator": 10,
+      "pairs_independent": false,
+      "reference_boundary_shift": 0,
+      "upper_triangle_pairs": [
+        {
+          "companies": [
+            "AAPL",
+            "MSFT"
+          ],
+          "equal_shift_effect": 0.007387184250893797,
+          "weighted_minus_equal_interaction": 6.078800053999078e-05,
+          "weighted_shift_effect": 0.007447972251433788
+        },
+        {
+          "companies": [
+            "AAPL",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.005963030830921423,
+          "weighted_minus_equal_interaction": 0.000504578676109757,
+          "weighted_shift_effect": 0.00646760950703118
+        },
+        {
+          "companies": [
+            "AAPL",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.00018774012742239776,
+          "weighted_minus_equal_interaction": 0.002272253209720465,
+          "weighted_shift_effect": 0.0020845130822980673
+        },
+        {
+          "companies": [
+            "AAPL",
+            "META"
+          ],
+          "equal_shift_effect": 0.0029274398653844624,
+          "weighted_minus_equal_interaction": -0.0009136870251112983,
+          "weighted_shift_effect": 0.002013752840273164
+        },
+        {
+          "companies": [
+            "MSFT",
+            "AMZN"
+          ],
+          "equal_shift_effect": -0.004300951902783456,
+          "weighted_minus_equal_interaction": 0.001242664263800597,
+          "weighted_shift_effect": -0.0030582876389828595
+        },
+        {
+          "companies": [
+            "MSFT",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.009078029784439057,
+          "weighted_minus_equal_interaction": 0.0004482162662992062,
+          "weighted_shift_effect": -0.00862981351813985
+        },
+        {
+          "companies": [
+            "MSFT",
+            "META"
+          ],
+          "equal_shift_effect": -0.0032507026069535927,
+          "weighted_minus_equal_interaction": -0.0005409045667753576,
+          "weighted_shift_effect": -0.0037916071737289503
+        },
+        {
+          "companies": [
+            "AMZN",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.008251428272837202,
+          "weighted_minus_equal_interaction": 0.0010979287177124153,
+          "weighted_shift_effect": -0.007153499555124787
+        },
+        {
+          "companies": [
+            "AMZN",
+            "META"
+          ],
+          "equal_shift_effect": 0.0015065964363122353,
+          "weighted_minus_equal_interaction": -0.00021653525324971667,
+          "weighted_shift_effect": 0.0012900611830625186
+        },
+        {
+          "companies": [
+            "GOOGL",
+            "META"
+          ],
+          "equal_shift_effect": 0.005087243038297551,
+          "weighted_minus_equal_interaction": 0.0009805913759599605,
+          "weighted_shift_effect": 0.006067834414257511
+        }
+      ]
+    },
+    "-5": {
+      "definition": "[S(delta,weighted)-S(0,weighted)] - [S(delta,equal)-S(0,equal)]; signed pairwise cosine changes",
+      "mean_signed": 0.00010102619091021393,
+      "pair_denominator": 10,
+      "pairs_independent": false,
+      "reference_boundary_shift": 0,
+      "upper_triangle_pairs": [
+        {
+          "companies": [
+            "AAPL",
+            "MSFT"
+          ],
+          "equal_shift_effect": -0.0013895553589354792,
+          "weighted_minus_equal_interaction": -0.00012397063299807165,
+          "weighted_shift_effect": -0.0015135259919335509
+        },
+        {
+          "companies": [
+            "AAPL",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.0034425000184701293,
+          "weighted_minus_equal_interaction": 4.573988935241413e-05,
+          "weighted_shift_effect": 0.0034882399078225435
+        },
+        {
+          "companies": [
+            "AAPL",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.005344807152782072,
+          "weighted_minus_equal_interaction": 0.0006157964498062496,
+          "weighted_shift_effect": -0.004729010702975822
+        },
+        {
+          "companies": [
+            "AAPL",
+            "META"
+          ],
+          "equal_shift_effect": -0.0018233357860504285,
+          "weighted_minus_equal_interaction": -0.0013467488530820582,
+          "weighted_shift_effect": -0.0031700846391324866
+        },
+        {
+          "companies": [
+            "MSFT",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.005668288697622481,
+          "weighted_minus_equal_interaction": 0.0007814674964490287,
+          "weighted_shift_effect": 0.00644975619407151
+        },
+        {
+          "companies": [
+            "MSFT",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.008494617793819215,
+          "weighted_minus_equal_interaction": 9.374026438069283e-05,
+          "weighted_shift_effect": -0.008400877529438522
+        },
+        {
+          "companies": [
+            "MSFT",
+            "META"
+          ],
+          "equal_shift_effect": 0.0019418564923353587,
+          "weighted_minus_equal_interaction": -0.00044359198801491306,
+          "weighted_shift_effect": 0.0014982645043204457
+        },
+        {
+          "companies": [
+            "AMZN",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.002227854294803433,
+          "weighted_minus_equal_interaction": 0.0005833083917334836,
+          "weighted_shift_effect": -0.0016445459030699494
+        },
+        {
+          "companies": [
+            "AMZN",
+            "META"
+          ],
+          "equal_shift_effect": 0.007780329680015852,
+          "weighted_minus_equal_interaction": -0.0002569460237684673,
+          "weighted_shift_effect": 0.007523383656247384
+        },
+        {
+          "companies": [
+            "GOOGL",
+            "META"
+          ],
+          "equal_shift_effect": 0.0009409988616437825,
+          "weighted_minus_equal_interaction": 0.0010614669152437806,
+          "weighted_shift_effect": 0.002002465776887563
+        }
+      ]
+    },
+    "10": {
+      "definition": "[S(delta,weighted)-S(0,weighted)] - [S(delta,equal)-S(0,equal)]; signed pairwise cosine changes",
+      "mean_signed": -0.00018177795211120616,
+      "pair_denominator": 10,
+      "pairs_independent": false,
+      "reference_boundary_shift": 0,
+      "upper_triangle_pairs": [
+        {
+          "companies": [
+            "AAPL",
+            "MSFT"
+          ],
+          "equal_shift_effect": 0.012140719374093,
+          "weighted_minus_equal_interaction": -3.8266985046386814e-05,
+          "weighted_shift_effect": 0.012102452389046614
+        },
+        {
+          "companies": [
+            "AAPL",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.006056329380348724,
+          "weighted_minus_equal_interaction": -0.0008885721441859173,
+          "weighted_shift_effect": 0.005167757236162807
+        },
+        {
+          "companies": [
+            "AAPL",
+            "GOOGL"
+          ],
+          "equal_shift_effect": 0.0008243459162047273,
+          "weighted_minus_equal_interaction": 0.000812412722893785,
+          "weighted_shift_effect": 0.0016367586390985123
+        },
+        {
+          "companies": [
+            "AAPL",
+            "META"
+          ],
+          "equal_shift_effect": -0.0006849729916569292,
+          "weighted_minus_equal_interaction": -0.0007407116808956227,
+          "weighted_shift_effect": -0.0014256846725525518
+        },
+        {
+          "companies": [
+            "MSFT",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.008239526872271918,
+          "weighted_minus_equal_interaction": -0.0019089256130413457,
+          "weighted_shift_effect": 0.006330601259230573
+        },
+        {
+          "companies": [
+            "MSFT",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.00530531676947521,
+          "weighted_minus_equal_interaction": 0.0010856516475505895,
+          "weighted_shift_effect": -0.004219665121924621
+        },
+        {
+          "companies": [
+            "MSFT",
+            "META"
+          ],
+          "equal_shift_effect": -0.0016896361952603023,
+          "weighted_minus_equal_interaction": 3.808049973996752e-05,
+          "weighted_shift_effect": -0.0016515556955203348
+        },
+        {
+          "companies": [
+            "AMZN",
+            "GOOGL"
+          ],
+          "equal_shift_effect": 0.0003733339934398616,
+          "weighted_minus_equal_interaction": -0.0009495860348562868,
+          "weighted_shift_effect": -0.0005762520414164252
+        },
+        {
+          "companies": [
+            "AMZN",
+            "META"
+          ],
+          "equal_shift_effect": -0.0038308441951261374,
+          "weighted_minus_equal_interaction": 0.00032468392803730595,
+          "weighted_shift_effect": -0.0035061602670888314
+        },
+        {
+          "companies": [
+            "GOOGL",
+            "META"
+          ],
+          "equal_shift_effect": 0.007998938003592304,
+          "weighted_minus_equal_interaction": 0.0004474541386918496,
+          "weighted_shift_effect": 0.008446392142284154
+        }
+      ]
+    },
+    "5": {
+      "definition": "[S(delta,weighted)-S(0,weighted)] - [S(delta,equal)-S(0,equal)]; signed pairwise cosine changes",
+      "mean_signed": -5.9158401465042584e-05,
+      "pair_denominator": 10,
+      "pairs_independent": false,
+      "reference_boundary_shift": 0,
+      "upper_triangle_pairs": [
+        {
+          "companies": [
+            "AAPL",
+            "MSFT"
+          ],
+          "equal_shift_effect": 0.008282496830818498,
+          "weighted_minus_equal_interaction": -0.00013173579890091158,
+          "weighted_shift_effect": 0.008150761031917586
+        },
+        {
+          "companies": [
+            "AAPL",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.0015151413757600318,
+          "weighted_minus_equal_interaction": -0.0005021410180512387,
+          "weighted_shift_effect": 0.0010130003577087932
+        },
+        {
+          "companies": [
+            "AAPL",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.004644764464890927,
+          "weighted_minus_equal_interaction": -0.0005195732060208069,
+          "weighted_shift_effect": -0.005164337670911734
+        },
+        {
+          "companies": [
+            "AAPL",
+            "META"
+          ],
+          "equal_shift_effect": -0.006764302900445385,
+          "weighted_minus_equal_interaction": -0.00010745661297428821,
+          "weighted_shift_effect": -0.006871759513419673
+        },
+        {
+          "companies": [
+            "MSFT",
+            "AMZN"
+          ],
+          "equal_shift_effect": 0.006025113828050488,
+          "weighted_minus_equal_interaction": -0.0007594169762445979,
+          "weighted_shift_effect": 0.00526569685180589
+        },
+        {
+          "companies": [
+            "MSFT",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.006029787226762284,
+          "weighted_minus_equal_interaction": 0.0003607594479809739,
+          "weighted_shift_effect": -0.00566902777878131
+        },
+        {
+          "companies": [
+            "MSFT",
+            "META"
+          ],
+          "equal_shift_effect": -0.004187037788700221,
+          "weighted_minus_equal_interaction": 0.00042131568248804374,
+          "weighted_shift_effect": -0.003765722106212177
+        },
+        {
+          "companies": [
+            "AMZN",
+            "GOOGL"
+          ],
+          "equal_shift_effect": -0.00460428893091791,
+          "weighted_minus_equal_interaction": -0.00012997741346465475,
+          "weighted_shift_effect": -0.004734266344382565
+        },
+        {
+          "companies": [
+            "AMZN",
+            "META"
+          ],
+          "equal_shift_effect": -0.005450353445789258,
+          "weighted_minus_equal_interaction": 0.0006178019822995484,
+          "weighted_shift_effect": -0.004832551463489709
+        },
+        {
+          "companies": [
+            "GOOGL",
+            "META"
+          ],
+          "equal_shift_effect": -0.005432102607605627,
+          "weighted_minus_equal_interaction": 0.0001588398982375061,
+          "weighted_shift_effect": -0.005273262709368121
+        }
+      ]
+    }
+  },
+  "status": "COMPLETE_NUMERICAL_ONLY",
+  "top_k": 2,
+  "uncertainty": "none; company pairs share firms and are not independent observations",
+  "within_pooling_shift_comparisons": {
+    "-10": {
+      "body_token_weighted": {
+        "candidate_arm": {
+          "boundary_shift": -10,
+          "pooling": "body_token_weighted"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.00365110302486249,
+            "AMZN": 0.004630957407114833,
+            "GOOGL": 0.0016760270748522599,
+            "META": 0.0015929672080514656,
+            "MSFT": 0.0010793345946001898
+          },
+          "denominator": 5,
+          "mean": 0.002526077861896248
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.07110463313165727,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0054342194111606235,
+            "reference": 0.06567041372049665,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.019831021230002688,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.006150669459950575,
+            "reference": 0.013680351770052113,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.03020515073208785,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.0014763139630150635,
+            "reference": 0.03168146469510291,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.019324210760857108,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.005081668356791469,
+            "reference": 0.024405879117648577,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.01278534497140471,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.002650024154096986,
+            "reference": 0.015435369125501697,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "body_token_weighted"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 1,
+                "peer": "AAPL",
+                "rank_change": -1,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.2,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.00862981351813985,
+          "mean_absolute": 0.004800495116433268,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.007447972251433788,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.007447972251433788
+            },
+            {
+              "absolute_cosine_change": 0.00646760950703118,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.00646760950703118
+            },
+            {
+              "absolute_cosine_change": 0.0020845130822980673,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": 0.0020845130822980673
+            },
+            {
+              "absolute_cosine_change": 0.002013752840273164,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": 0.002013752840273164
+            },
+            {
+              "absolute_cosine_change": 0.0030582876389828595,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": -0.0030582876389828595
+            },
+            {
+              "absolute_cosine_change": 0.00862981351813985,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.00862981351813985
+            },
+            {
+              "absolute_cosine_change": 0.0037916071737289503,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.0037916071737289503
+            },
+            {
+              "absolute_cosine_change": 0.007153499555124787,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.007153499555124787
+            },
+            {
+              "absolute_cosine_change": 0.0012900611830625186,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": 0.0012900611830625186
+            },
+            {
+              "absolute_cosine_change": 0.006067834414257511,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.006067834414257511
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9515151515151515
+        }
+      },
+      "equal_chunks": {
+        "candidate_arm": {
+          "boundary_shift": -10,
+          "pooling": "equal_chunks"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.003694089890980301,
+            "AMZN": 0.004597371934878303,
+            "GOOGL": 0.001922200309000699,
+            "META": 0.0017412911961269817,
+            "MSFT": 0.0010717413328531489
+          },
+          "denominator": 5,
+          "mean": 0.002605338932767887
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.06978044852367371,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.004459744385509334,
+            "reference": 0.06532070413816438,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.017593512345268403,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0070410833080328805,
+            "reference": 0.010552429037235522,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.02889079994246435,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.0008266015116018544,
+            "reference": 0.029717401454066206,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.018076625534818813,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.004757299043265828,
+            "reference": 0.02283392457808464,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.014846385120237504,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.001356024261300326,
+            "reference": 0.01620240938153783,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "equal_chunks"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 1,
+                "peer": "AAPL",
+                "rank_change": -1,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.2,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.009078029784439057,
+          "mean_absolute": 0.004794034711624517,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.007387184250893797,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.007387184250893797
+            },
+            {
+              "absolute_cosine_change": 0.005963030830921423,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.005963030830921423
+            },
+            {
+              "absolute_cosine_change": 0.00018774012742239776,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.00018774012742239776
+            },
+            {
+              "absolute_cosine_change": 0.0029274398653844624,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": 0.0029274398653844624
+            },
+            {
+              "absolute_cosine_change": 0.004300951902783456,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": -0.004300951902783456
+            },
+            {
+              "absolute_cosine_change": 0.009078029784439057,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.009078029784439057
+            },
+            {
+              "absolute_cosine_change": 0.0032507026069535927,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.0032507026069535927
+            },
+            {
+              "absolute_cosine_change": 0.008251428272837202,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.008251428272837202
+            },
+            {
+              "absolute_cosine_change": 0.0015065964363122353,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": 0.0015065964363122353
+            },
+            {
+              "absolute_cosine_change": 0.005087243038297551,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.005087243038297551
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9393939393939394
+        }
+      }
+    },
+    "-5": {
+      "body_token_weighted": {
+        "candidate_arm": {
+          "boundary_shift": -5,
+          "pooling": "body_token_weighted"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.003145191127992719,
+            "AMZN": 0.0030148830230707357,
+            "GOOGL": 0.0012087690257971406,
+            "META": 0.001048231139075817,
+            "MSFT": 0.0009703170312156395
+          },
+          "denominator": 5,
+          "mean": 0.0018774782694304104
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.06732697236769558,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0016565586471989358,
+            "reference": 0.06567041372049665,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.018813137580944606,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.005132785810892493,
+            "reference": 0.013680351770052113,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.02492513306873434,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.006756331626368572,
+            "reference": 0.03168146469510291,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.018380759965721638,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.006025119151926939,
+            "reference": 0.024405879117648577,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.02038686081525276,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.004951491689751064,
+            "reference": 0.015435369125501697,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "body_token_weighted"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.0,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.008400877529438522,
+          "mean_absolute": 0.004042015480589978,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.0015135259919335509,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": -0.0015135259919335509
+            },
+            {
+              "absolute_cosine_change": 0.0034882399078225435,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.0034882399078225435
+            },
+            {
+              "absolute_cosine_change": 0.004729010702975822,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.004729010702975822
+            },
+            {
+              "absolute_cosine_change": 0.0031700846391324866,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.0031700846391324866
+            },
+            {
+              "absolute_cosine_change": 0.00644975619407151,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.00644975619407151
+            },
+            {
+              "absolute_cosine_change": 0.008400877529438522,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.008400877529438522
+            },
+            {
+              "absolute_cosine_change": 0.0014982645043204457,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": 0.0014982645043204457
+            },
+            {
+              "absolute_cosine_change": 0.0016445459030699494,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.0016445459030699494
+            },
+            {
+              "absolute_cosine_change": 0.007523383656247384,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": 0.007523383656247384
+            },
+            {
+              "absolute_cosine_change": 0.002002465776887563,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.002002465776887563
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 1.0
+        }
+      },
+      "equal_chunks": {
+        "candidate_arm": {
+          "boundary_shift": -5,
+          "pooling": "equal_chunks"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.0031224367300164424,
+            "AMZN": 0.002983945178667291,
+            "GOOGL": 0.0017022870793769185,
+            "META": 0.0012028274609601208,
+            "MSFT": 0.0009528736559804019
+          },
+          "denominator": 5,
+          "mean": 0.001992874021000235
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.06575448456527933,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.00043378042711494924,
+            "reference": 0.06532070413816438,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.016222783350509085,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.005670354313273562,
+            "reference": 0.010552429037235522,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.023450637955050424,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.006266763499015782,
+            "reference": 0.029717401454066206,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.016995451390404148,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.005838473187680493,
+            "reference": 0.02283392457808464,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.019928841586824952,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0037264322052871224,
+            "reference": 0.01620240938153783,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "equal_chunks"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.0,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.008494617793819215,
+          "mean_absolute": 0.003905414413647823,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.0013895553589354792,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": -0.0013895553589354792
+            },
+            {
+              "absolute_cosine_change": 0.0034425000184701293,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.0034425000184701293
+            },
+            {
+              "absolute_cosine_change": 0.005344807152782072,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.005344807152782072
+            },
+            {
+              "absolute_cosine_change": 0.0018233357860504285,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.0018233357860504285
+            },
+            {
+              "absolute_cosine_change": 0.005668288697622481,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.005668288697622481
+            },
+            {
+              "absolute_cosine_change": 0.008494617793819215,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.008494617793819215
+            },
+            {
+              "absolute_cosine_change": 0.0019418564923353587,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": 0.0019418564923353587
+            },
+            {
+              "absolute_cosine_change": 0.002227854294803433,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.002227854294803433
+            },
+            {
+              "absolute_cosine_change": 0.007780329680015852,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": 0.007780329680015852
+            },
+            {
+              "absolute_cosine_change": 0.0009409988616437825,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.0009409988616437825
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9878787878787879
+        }
+      }
+    },
+    "10": {
+      "body_token_weighted": {
+        "candidate_arm": {
+          "boundary_shift": 10,
+          "pooling": "body_token_weighted"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.00244995918516977,
+            "AMZN": 0.003123899326038293,
+            "GOOGL": 0.0018425256437764048,
+            "META": 0.0019619066843157285,
+            "MSFT": 0.0011781893948972222
+          },
+          "denominator": 5,
+          "mean": 0.0021112960468394836
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.07919855078209581,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.013528137061599166,
+            "reference": 0.06567041372049665,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.019424361047631344,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.005744009277579232,
+            "reference": 0.013680351770052113,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.028038051614594717,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.0036434130805081955,
+            "reference": 0.03168146469510291,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.026260483689217073,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0018546045715684967,
+            "reference": 0.024405879117648577,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.017519753732005316,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.00208438460650362,
+            "reference": 0.015435369125501697,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "body_token_weighted"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.1,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.012102452389046614,
+          "mean_absolute": 0.004506327946432543,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.012102452389046614,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.012102452389046614
+            },
+            {
+              "absolute_cosine_change": 0.005167757236162807,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.005167757236162807
+            },
+            {
+              "absolute_cosine_change": 0.0016367586390985123,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": 0.0016367586390985123
+            },
+            {
+              "absolute_cosine_change": 0.0014256846725525518,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.0014256846725525518
+            },
+            {
+              "absolute_cosine_change": 0.006330601259230573,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.006330601259230573
+            },
+            {
+              "absolute_cosine_change": 0.004219665121924621,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.004219665121924621
+            },
+            {
+              "absolute_cosine_change": 0.0016515556955203348,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.0016515556955203348
+            },
+            {
+              "absolute_cosine_change": 0.0005762520414164252,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.0005762520414164252
+            },
+            {
+              "absolute_cosine_change": 0.0035061602670888314,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": -0.0035061602670888314
+            },
+            {
+              "absolute_cosine_change": 0.008446392142284154,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.008446392142284154
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9515151515151515
+        }
+      },
+      "equal_chunks": {
+        "candidate_arm": {
+          "boundary_shift": 10,
+          "pooling": "equal_chunks"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.0024231611630456396,
+            "AMZN": 0.0031106387777994904,
+            "GOOGL": 0.002096386518580018,
+            "META": 0.0020016206983591855,
+            "MSFT": 0.001194296145216156
+          },
+          "denominator": 5,
+          "mean": 0.002165220660600098
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.0781463965039143,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.01282569236574993,
+            "reference": 0.06532070413816438,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.016235424424144385,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.005682995386908862,
+            "reference": 0.010552429037235522,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.024038750691151134,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.005678650762915072,
+            "reference": 0.029717401454066206,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.024975132577950476,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.002141207999865835,
+            "reference": 0.02283392457808464,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.022633328772093675,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.006430919390555845,
+            "reference": 0.01620240938153783,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "equal_chunks"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.1,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.012140719374093,
+          "mean_absolute": 0.004714396369146912,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.012140719374093,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.012140719374093
+            },
+            {
+              "absolute_cosine_change": 0.006056329380348724,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.006056329380348724
+            },
+            {
+              "absolute_cosine_change": 0.0008243459162047273,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": 0.0008243459162047273
+            },
+            {
+              "absolute_cosine_change": 0.0006849729916569292,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.0006849729916569292
+            },
+            {
+              "absolute_cosine_change": 0.008239526872271918,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.008239526872271918
+            },
+            {
+              "absolute_cosine_change": 0.00530531676947521,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.00530531676947521
+            },
+            {
+              "absolute_cosine_change": 0.0016896361952603023,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.0016896361952603023
+            },
+            {
+              "absolute_cosine_change": 0.0003733339934398616,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": 0.0003733339934398616
+            },
+            {
+              "absolute_cosine_change": 0.0038308441951261374,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": -0.0038308441951261374
+            },
+            {
+              "absolute_cosine_change": 0.007998938003592304,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": 0.007998938003592304
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9878787878787879
+        }
+      }
+    },
+    "5": {
+      "body_token_weighted": {
+        "candidate_arm": {
+          "boundary_shift": 5,
+          "pooling": "body_token_weighted"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.00236955735987876,
+            "AMZN": 0.0030913527865574775,
+            "GOOGL": 0.0009178601961770116,
+            "META": 0.0011813974963830187,
+            "MSFT": 0.0008367121103635133
+          },
+          "denominator": 5,
+          "mean": 0.0016793759898719562
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.0806929342658339,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.015022520545337259,
+            "reference": 0.06567041372049665,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.01942761847214347,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.005747266702091358,
+            "reference": 0.013680351770052113,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.030746703260704167,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.0009347614343987454,
+            "reference": 0.03168146469510291,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.02547270847492611,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.0010668293572775323,
+            "reference": 0.024405879117648577,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.02040654068170966,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.004971171556207965,
+            "reference": 0.015435369125501697,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "body_token_weighted"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.1,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.008150761031917586,
+          "mean_absolute": 0.005074038582799756,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.008150761031917586,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.008150761031917586
+            },
+            {
+              "absolute_cosine_change": 0.0010130003577087932,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.0010130003577087932
+            },
+            {
+              "absolute_cosine_change": 0.005164337670911734,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.005164337670911734
+            },
+            {
+              "absolute_cosine_change": 0.006871759513419673,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.006871759513419673
+            },
+            {
+              "absolute_cosine_change": 0.00526569685180589,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.00526569685180589
+            },
+            {
+              "absolute_cosine_change": 0.00566902777878131,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.00566902777878131
+            },
+            {
+              "absolute_cosine_change": 0.003765722106212177,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.003765722106212177
+            },
+            {
+              "absolute_cosine_change": 0.004734266344382565,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.004734266344382565
+            },
+            {
+              "absolute_cosine_change": 0.004832551463489709,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": -0.004832551463489709
+            },
+            {
+              "absolute_cosine_change": 0.005273262709368121,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": -0.005273262709368121
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9636363636363636
+        }
+      },
+      "equal_chunks": {
+        "candidate_arm": {
+          "boundary_shift": 5,
+          "pooling": "equal_chunks"
+        },
+        "company_vector_cosine_distance": {
+          "by_company": {
+            "AAPL": 0.002370320930140668,
+            "AMZN": 0.0031042133941193706,
+            "GOOGL": 0.0010420148231748971,
+            "META": 0.001226051282298135,
+            "MSFT": 0.0008673405812547053
+          },
+          "denominator": 5,
+          "mean": 0.0017219882021975552
+        },
+        "rank2_rank3_margin": {
+          "AAPL": {
+            "candidate": 0.08036750386942826,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.015046799731263882,
+            "reference": 0.06532070413816438,
+            "reference_exact_cutoff_tie": false
+          },
+          "AMZN": {
+            "candidate": 0.016671859343913464,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.006119430306677942,
+            "reference": 0.010552429037235522,
+            "reference_exact_cutoff_tie": false
+          },
+          "GOOGL": {
+            "candidate": 0.02829190315822183,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": -0.001425498295844374,
+            "reference": 0.029717401454066206,
+            "reference_exact_cutoff_tie": false
+          },
+          "META": {
+            "candidate": 0.024097240235173678,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.001263315657089037,
+            "reference": 0.02283392457808464,
+            "reference_exact_cutoff_tie": false
+          },
+          "MSFT": {
+            "candidate": 0.024277138271146748,
+            "candidate_exact_cutoff_tie": false,
+            "candidate_minus_reference": 0.008074728889608918,
+            "reference": 0.01620240938153783,
+            "reference_exact_cutoff_tie": false
+          }
+        },
+        "reference_arm": {
+          "boundary_shift": 0,
+          "pooling": "equal_chunks"
+        },
+        "reference_rank2_rank3_peer_movement": {
+          "by_company": {
+            "AAPL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "META",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "AMZN": [
+              {
+                "candidate_rank": 2,
+                "peer": "AAPL",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "GOOGL",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "GOOGL": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "META": [
+              {
+                "candidate_rank": 2,
+                "peer": "MSFT",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 3,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 3
+              }
+            ],
+            "MSFT": [
+              {
+                "candidate_rank": 2,
+                "peer": "AMZN",
+                "rank_change": 0,
+                "reference_rank": 2
+              },
+              {
+                "candidate_rank": 4,
+                "peer": "META",
+                "rank_change": 1,
+                "reference_rank": 3
+              }
+            ]
+          },
+          "mean_absolute_rank_shift": 0.1,
+          "tracked_peer_denominator": 10
+        },
+        "similarity_change": {
+          "maximum_absolute": 0.008282496830818498,
+          "mean_absolute": 0.0052935389399740625,
+          "pair_denominator": 10,
+          "pairs_independent": false,
+          "upper_triangle_pairs": [
+            {
+              "absolute_cosine_change": 0.008282496830818498,
+              "companies": [
+                "AAPL",
+                "MSFT"
+              ],
+              "signed_cosine_change": 0.008282496830818498
+            },
+            {
+              "absolute_cosine_change": 0.0015151413757600318,
+              "companies": [
+                "AAPL",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.0015151413757600318
+            },
+            {
+              "absolute_cosine_change": 0.004644764464890927,
+              "companies": [
+                "AAPL",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.004644764464890927
+            },
+            {
+              "absolute_cosine_change": 0.006764302900445385,
+              "companies": [
+                "AAPL",
+                "META"
+              ],
+              "signed_cosine_change": -0.006764302900445385
+            },
+            {
+              "absolute_cosine_change": 0.006025113828050488,
+              "companies": [
+                "MSFT",
+                "AMZN"
+              ],
+              "signed_cosine_change": 0.006025113828050488
+            },
+            {
+              "absolute_cosine_change": 0.006029787226762284,
+              "companies": [
+                "MSFT",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.006029787226762284
+            },
+            {
+              "absolute_cosine_change": 0.004187037788700221,
+              "companies": [
+                "MSFT",
+                "META"
+              ],
+              "signed_cosine_change": -0.004187037788700221
+            },
+            {
+              "absolute_cosine_change": 0.00460428893091791,
+              "companies": [
+                "AMZN",
+                "GOOGL"
+              ],
+              "signed_cosine_change": -0.00460428893091791
+            },
+            {
+              "absolute_cosine_change": 0.005450353445789258,
+              "companies": [
+                "AMZN",
+                "META"
+              ],
+              "signed_cosine_change": -0.005450353445789258
+            },
+            {
+              "absolute_cosine_change": 0.005432102607605627,
+              "companies": [
+                "GOOGL",
+                "META"
+              ],
+              "signed_cosine_change": -0.005432102607605627
+            }
+          ]
+        },
+        "top2_overlap": {
+          "by_company": {
+            "AAPL": 1.0,
+            "AMZN": 1.0,
+            "GOOGL": 1.0,
+            "META": 1.0,
+            "MSFT": 1.0
+          },
+          "company_denominator": 5,
+          "mean": 1.0,
+          "set_denominator_per_company": 2
+        },
+        "upper_triangle_spearman": {
+          "pair_count": 10,
+          "reason": null,
+          "tie_rule": "exact float64 values receive average ranks; no tolerance grouping",
+          "value": 0.9878787878787879
+        }
+      }
+    }
+  }
+}

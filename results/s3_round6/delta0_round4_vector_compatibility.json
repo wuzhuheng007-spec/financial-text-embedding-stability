@@ -1,0 +1,198 @@
+{
+  "checks": {
+    "AAPL_delta0_chunk_map_equal": true,
+    "AMZN_delta0_chunk_map_equal": true,
+    "GOOGL_delta0_chunk_map_equal": true,
+    "META_delta0_chunk_map_equal": true,
+    "MSFT_delta0_chunk_map_equal": true,
+    "batch_size_equal": true,
+    "historical_128_alignment_pass": true,
+    "input_manifest_equal": true,
+    "input_versions_equal": true,
+    "model_identity_equal": true,
+    "normalization_config_equal": true,
+    "round4_manifest_hash_unchanged": true,
+    "round4_metrics_hash_unchanged": true,
+    "round4_receipt_hash_unchanged": true,
+    "round4_was_verified_in_round5": true,
+    "runtime_provenance_equal": true
+  },
+  "comparisons": [
+    {
+      "array_equal": true,
+      "kind": "chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "afa0a695a704f7f570aea38b3c9ac51f83b9184ae1a7cf9ed986f1a7bc78928a",
+      "s3_file_sha256": "afa0a695a704f7f570aea38b3c9ac51f83b9184ae1a7cf9ed986f1a7bc78928a",
+      "shape": [
+        23,
+        384
+      ],
+      "ticker": "AAPL"
+    },
+    {
+      "array_equal": true,
+      "kind": "equal_chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "7052f8040ed0c336dda4975be7a7d8641147f4309e40721570f5877002006da4",
+      "s3_file_sha256": "7052f8040ed0c336dda4975be7a7d8641147f4309e40721570f5877002006da4",
+      "shape": [
+        384
+      ],
+      "ticker": "AAPL"
+    },
+    {
+      "array_equal": true,
+      "kind": "body_token_weighted",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "224e6b4da0e9064023eccacf2698b84a849077eee9e9a14b6ffd3b998bb09a4c",
+      "s3_file_sha256": "224e6b4da0e9064023eccacf2698b84a849077eee9e9a14b6ffd3b998bb09a4c",
+      "shape": [
+        384
+      ],
+      "ticker": "AAPL"
+    },
+    {
+      "array_equal": true,
+      "kind": "chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "f105289494fa1eba0d59d2128ae5ed42956a47c8f2844c29b36af9aaa80a949a",
+      "s3_file_sha256": "f105289494fa1eba0d59d2128ae5ed42956a47c8f2844c29b36af9aaa80a949a",
+      "shape": [
+        67,
+        384
+      ],
+      "ticker": "MSFT"
+    },
+    {
+      "array_equal": true,
+      "kind": "equal_chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "7725499513303e4eb31a6c6e1a75451dd74d6e9cef15a09daa6543ef09fe1eb5",
+      "s3_file_sha256": "7725499513303e4eb31a6c6e1a75451dd74d6e9cef15a09daa6543ef09fe1eb5",
+      "shape": [
+        384
+      ],
+      "ticker": "MSFT"
+    },
+    {
+      "array_equal": true,
+      "kind": "body_token_weighted",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "0753e16da9b4bc1603ba9df4c77d29828a038ff126f8df7fe24be8fa14b7fe25",
+      "s3_file_sha256": "0753e16da9b4bc1603ba9df4c77d29828a038ff126f8df7fe24be8fa14b7fe25",
+      "shape": [
+        384
+      ],
+      "ticker": "MSFT"
+    },
+    {
+      "array_equal": true,
+      "kind": "chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "7c99426bfd0c8205ec8da0bbf561d1743bd33af437c974f3ff0c768ce655819a",
+      "s3_file_sha256": "7c99426bfd0c8205ec8da0bbf561d1743bd33af437c974f3ff0c768ce655819a",
+      "shape": [
+        20,
+        384
+      ],
+      "ticker": "AMZN"
+    },
+    {
+      "array_equal": true,
+      "kind": "equal_chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "bd0bbd1607d9a7bc0efb7b34350f6178659beab835a4506118139ee030eb4c3c",
+      "s3_file_sha256": "bd0bbd1607d9a7bc0efb7b34350f6178659beab835a4506118139ee030eb4c3c",
+      "shape": [
+        384
+      ],
+      "ticker": "AMZN"
+    },
+    {
+      "array_equal": true,
+      "kind": "body_token_weighted",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "64fbd28166f144bc7489e6df580e56f1e18b0123a884e5dd6ec6eba1ce9d217e",
+      "s3_file_sha256": "64fbd28166f144bc7489e6df580e56f1e18b0123a884e5dd6ec6eba1ce9d217e",
+      "shape": [
+        384
+      ],
+      "ticker": "AMZN"
+    },
+    {
+      "array_equal": true,
+      "kind": "chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "ed45cf7b13126dc8d442c742bafe5b8c704fb4d7462d02795ac78a364eca600f",
+      "s3_file_sha256": "ed45cf7b13126dc8d442c742bafe5b8c704fb4d7462d02795ac78a364eca600f",
+      "shape": [
+        46,
+        384
+      ],
+      "ticker": "GOOGL"
+    },
+    {
+      "array_equal": true,
+      "kind": "equal_chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "c6fdde885414a710223797ef0feed0292181b766f1b084b6115bd1a162276c7f",
+      "s3_file_sha256": "c6fdde885414a710223797ef0feed0292181b766f1b084b6115bd1a162276c7f",
+      "shape": [
+        384
+      ],
+      "ticker": "GOOGL"
+    },
+    {
+      "array_equal": true,
+      "kind": "body_token_weighted",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "ab38153b33a1b7011662437a67bc40e77420bed59ff1dde33fc2bfabf4b42051",
+      "s3_file_sha256": "ab38153b33a1b7011662437a67bc40e77420bed59ff1dde33fc2bfabf4b42051",
+      "shape": [
+        384
+      ],
+      "ticker": "GOOGL"
+    },
+    {
+      "array_equal": true,
+      "kind": "chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "e3f651ba892176b4e1e987a60f7bab640a62a7f6e6cea09f6696f4465014ba25",
+      "s3_file_sha256": "e3f651ba892176b4e1e987a60f7bab640a62a7f6e6cea09f6696f4465014ba25",
+      "shape": [
+        60,
+        384
+      ],
+      "ticker": "META"
+    },
+    {
+      "array_equal": true,
+      "kind": "equal_chunks",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "0d77964792fca86812dc6ff91f8ebe6cc5ded5bf61e38c2276d8c2bf84ef8259",
+      "s3_file_sha256": "0d77964792fca86812dc6ff91f8ebe6cc5ded5bf61e38c2276d8c2bf84ef8259",
+      "shape": [
+        384
+      ],
+      "ticker": "META"
+    },
+    {
+      "array_equal": true,
+      "kind": "body_token_weighted",
+      "max_absolute_difference": 0.0,
+      "round4_file_sha256": "11e95af3699a6e7541a5b98d7c3e56f17f8ca7a67355b4813ad25475fc8795cf",
+      "s3_file_sha256": "11e95af3699a6e7541a5b98d7c3e56f17f8ca7a67355b4813ad25475fc8795cf",
+      "shape": [
+        384
+      ],
+      "ticker": "META"
+    }
+  ],
+  "note": "Read-only delta=0 compatibility diagnostic; round 4 receipt was not rerun under changed source inventory.",
+  "round4_manifest_sha256": "698942ddc8a7b395108a3ce2b72deab0f370ed3cd9de2bca827b693632182d5e",
+  "round4_metrics_sha256": "879b9753af91e8f1a1a9248aec4b81577a16c2ac902b33b8b63da3b148d2ac6d",
+  "s3_manifest_sha256": "eab4abec64f65d9f9d48589eba20c59edc5c75f4d6ee2567db6765e58dfd1f47",
+  "s3_metrics_sha256": "77e4bcdd7074a0206ccf798e4770106177b2409c57ecef02a7ef3d51b0b22f27",
+  "status": "PASS_READBACK_COMPARISON"
+}

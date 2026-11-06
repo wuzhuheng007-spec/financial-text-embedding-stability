@@ -1,0 +1,282 @@
+{
+  "audit_code_sha256": "570f26b843a823e37c0b4b8ecec1cb32efb3d037e4341b037ea5b01534384429",
+  "calendar_manifest_sha256": "ebd95c7f293088545706a0fac65c8c25427748a0e1f01ded88b3ee950c0d3565",
+  "calendar_sessions_sha256": "2072e81065f8749fb41f531f8c62338d0ff478a2965e00ced18ee324d995489c",
+  "candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "horizons": {
+    "21": {
+      "admitted_financial_observations": null,
+      "difference_rows_vs_round8": 0,
+      "firms": [
+        {
+          "accession": "0000320193-25-000079",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-10-31",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-12-03",
+            "reference_start_date": "2025-11-03",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "c8ddd5cc94461783945c5a386ef86083803dffb140d8473dd9a56eb4f8180080",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "AAPL",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-12-03",
+            "reference_start_date": "2025-11-03",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0000950170-25-100235",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-07-30",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-08-29",
+            "reference_start_date": "2025-07-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "0fd1617faf735a820a5aa4cdb414ab8e099d1daa4efd2e28acc589a90a5547e7",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "MSFT",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-08-29",
+            "reference_start_date": "2025-07-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001018724-25-000004",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-02-07",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-03-12",
+            "reference_start_date": "2025-02-10",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "17154666d5ff652299c964f9090cd370d82608d0d291b3d2e035458ebff14f13",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "AMZN",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-03-12",
+            "reference_start_date": "2025-02-10",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001652044-25-000014",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-02-05",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-03-10",
+            "reference_start_date": "2025-02-06",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "8e1aed29a396057a626e06ee382d7f2d8523fd47540e9e8c6e5626958ed018bc",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "GOOGL",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-03-10",
+            "reference_start_date": "2025-02-06",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001326801-25-000017",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-01-30",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-03-04",
+            "reference_start_date": "2025-01-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": false
+          },
+          "saved_bar_sha256": "a7865de3175b67f6a70874eaa09d15c8e1b3b38ba66b80236a12d93589121b00",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "META",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-03-04",
+            "reference_start_date": "2025-01-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": false
+          }
+        }
+      ],
+      "horizon_subsequent_sessions": 21,
+      "reference_axis": "XNYS_OFFICIAL_RETROSPECTIVE_BASELINE_ONLY",
+      "security_calendar_confirmed_pairs": null,
+      "xnys_baseline_complete_pairs": 5,
+      "xnys_baseline_pairs_with_predecision_lookback": 4
+    },
+    "5": {
+      "admitted_financial_observations": null,
+      "difference_rows_vs_round8": 0,
+      "firms": [
+        {
+          "accession": "0000320193-25-000079",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-10-31",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-11-10",
+            "reference_start_date": "2025-11-03",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "c8ddd5cc94461783945c5a386ef86083803dffb140d8473dd9a56eb4f8180080",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "AAPL",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-11-10",
+            "reference_start_date": "2025-11-03",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0000950170-25-100235",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-07-30",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-08-07",
+            "reference_start_date": "2025-07-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "0fd1617faf735a820a5aa4cdb414ab8e099d1daa4efd2e28acc589a90a5547e7",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "MSFT",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-08-07",
+            "reference_start_date": "2025-07-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001018724-25-000004",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-02-07",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-02-18",
+            "reference_start_date": "2025-02-10",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "17154666d5ff652299c964f9090cd370d82608d0d291b3d2e035458ebff14f13",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "AMZN",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-02-18",
+            "reference_start_date": "2025-02-10",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001652044-25-000014",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-02-05",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-02-13",
+            "reference_start_date": "2025-02-06",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          },
+          "saved_bar_sha256": "8e1aed29a396057a626e06ee382d7f2d8523fd47540e9e8c6e5626958ed018bc",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "GOOGL",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-02-13",
+            "reference_start_date": "2025-02-06",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": true
+          }
+        },
+        {
+          "accession": "0001326801-25-000017",
+          "admitted_financial_observation": null,
+          "differences": [],
+          "market_applicability": "BASELINE_ONLY_LISTING_MIC_NOT_VERIFIED_AS_OF_EVENT",
+          "official_filing_date": "2025-01-30",
+          "round8_saved_row_reference": {
+            "reference_end_date": "2025-02-07",
+            "reference_start_date": "2025-01-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": false
+          },
+          "saved_bar_sha256": "a7865de3175b67f6a70874eaa09d15c8e1b3b38ba66b80236a12d93589121b00",
+          "security_calendar_confirmed_pair": null,
+          "ticker": "META",
+          "xnys_baseline": {
+            "missing_window_price_dates": [],
+            "reason": "SAVED_ROWS_PRESENT_ONLY",
+            "reference_end_date": "2025-02-07",
+            "reference_start_date": "2025-01-31",
+            "structural_pair_complete": true,
+            "trailing_close_window_complete": false
+          }
+        }
+      ],
+      "horizon_subsequent_sessions": 5,
+      "reference_axis": "XNYS_OFFICIAL_RETROSPECTIVE_BASELINE_ONLY",
+      "security_calendar_confirmed_pairs": null,
+      "xnys_baseline_complete_pairs": 5,
+      "xnys_baseline_pairs_with_predecision_lookback": 4
+    }
+  },
+  "m4_common_masks_sha256": "4f4a0f4b6a7d0c57bd56a9c0079520d662eb58423b90ad9a7566a86393a9c647",
+  "market_applicability_status": "BASELINE_ONLY_UNVERIFIED_EVENT_TIME_LISTING_MIC",
+  "recorded_at_utc": "2026-10-31T21:43:01.039730+00:00",
+  "return_labels_or_scores_computed": false,
+  "round7_data_audit_sha256": "eab463172225170ab935de5599e258f916576de712e5434a1bfa929ebc9d391e",
+  "round8_receipt_sha256": "27d7027e871996f17e4669d3c040ef53ffc94890f40e98cd012f525c493b0a41",
+  "saved_2025_date_count": 250,
+  "saved_common_dates_outside_xnys": [],
+  "schema": "m5_round9_xnys_baseline_price_coverage_v1",
+  "status": "INDEPENDENT_XNYS_BASELINE_COMPARISON_NO_FINANCIAL_LABELS",
+  "xnys_2025_session_count": 250,
+  "xnys_dates_without_saved_common_bar": []
+}

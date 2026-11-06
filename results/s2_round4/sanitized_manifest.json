@@ -1,0 +1,1110 @@
+{
+  "actual_batch_call_attempts": 145,
+  "batch_size": 8,
+  "candidate_sha256": "a307536980057c227d63fafb11b7b25b4615a2923455717616a7431f05d82388",
+  "chunk_vector_count_planned": 1083,
+  "chunk_vectors_completed": 1083,
+  "company_vector_count_planned": 50,
+  "company_vectors_completed": 50,
+  "decision": {
+    "original_message_at_utc": null,
+    "record_sha256": "2e446cf5d5841e346699202afef2db374f69d5e69ec7e2edc4a20e3162efe859",
+    "recorded_at_utc": "2026-10-31T01:17:26.914188Z",
+    "researcher_recipient_as_supplied": "zhuheng wu",
+    "source_authenticity": "NOT_VERIFIED_BY_SOFTWARE",
+    "status": "ACCEPTED"
+  },
+  "encoder_construction_attempts": 1,
+  "ended_utc": "2026-10-31T01:18:35.522923+00:00",
+  "evidence_class": "REAL_MODEL",
+  "failure_policy": "FULL_FIVE_COMPANIES_ALL_ARMS_NO_IMPUTATION",
+  "failures": [],
+  "final_documentation_commit": "c59cc1895deb48946703b96ea4423c2fe55cf0d9",
+  "git_head_at_run": "241ce77ee76e31737e2e67e834d18a987cd79237",
+  "git_status_interpretation": "Only the report script and its synthetic test were untracked at run time; all bound finembed modules matched the receipt. These files were committed during closeout.",
+  "git_status_porcelain_at_run": "?? scripts/report_small_chunk_round4.py\n?? tests/test_report_small_chunk_round4.py",
+  "input_manifest_sha256": "c240d12864bdbe95f21586d4068218a2d3623e1372ba403d521a01fdfdb82a4e",
+  "input_versions": [
+    {
+      "accession": "0000320193-25-000079",
+      "cik": "0000320193",
+      "form": "10-K",
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "section": "ITEM_1_BUSINESS",
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "cik": "0000789019",
+      "form": "10-K",
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "section": "ITEM_1_BUSINESS",
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "cik": "0001018724",
+      "form": "10-K",
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "section": "ITEM_1_BUSINESS",
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "cik": "0001652044",
+      "form": "10-K",
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "section": "ITEM_1_BUSINESS",
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "cik": "0001326801",
+      "form": "10-K",
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "section": "ITEM_1_BUSINESS",
+      "ticker": "META"
+    }
+  ],
+  "jobs": [
+    {
+      "accession": "0000320193-25-000079",
+      "body_tokens": 2916,
+      "body_tokens_per_chunk": 118,
+      "chunk_count": 25,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/118/AAPL_body_token_weighted.npy",
+          "sha256": "5156828ddf0a17984c914546e0696600b79849c69f65ad3a76b30128ad186597",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/AAPL_chunks.npy",
+          "sha256": "3d7892fb994aa0afe677e9d6562a880af68c0fa8dcbcec8c3db1711beac9dfb6",
+          "shape": [
+            25,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/AAPL_equal_chunks.npy",
+          "sha256": "8ddcb353657fbb74329d103eb7768e7d1cd6d2c19694a3a55bd0fcea2c6ed8cd",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "status": "COMPLETE",
+      "tail_tokens": 84,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "body_tokens": 8489,
+      "body_tokens_per_chunk": 118,
+      "chunk_count": 72,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/118/MSFT_body_token_weighted.npy",
+          "sha256": "f57a87cda6f93f7ae078a06e2c94f3e5e4cfbf93b4b04a05b8a95cdb3408a174",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/MSFT_chunks.npy",
+          "sha256": "4630154449d737c4cb0a8108dc141801917e52fec1507c601b618814b44c878f",
+          "shape": [
+            72,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/MSFT_equal_chunks.npy",
+          "sha256": "5a5c4197073d8bca105d3fe1183c06d05c3aa0074e0cc3ecd3df25106405efd9",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "status": "COMPLETE",
+      "tail_tokens": 111,
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "body_tokens": 2552,
+      "body_tokens_per_chunk": 118,
+      "chunk_count": 22,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/118/AMZN_body_token_weighted.npy",
+          "sha256": "c9249a2d68158c06b4c559628ee6c5085f4ec431c14e0f3e72ce5e888ce56a65",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/AMZN_chunks.npy",
+          "sha256": "894a267d89b2b04a2a0cab7def05574569d60e0dfcac973c9da2175e0637c079",
+          "shape": [
+            22,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/AMZN_equal_chunks.npy",
+          "sha256": "88a0e89394bf30abe603c4d1394177037dc7d8e0f31b0c19908546a4a28dd35b",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "status": "COMPLETE",
+      "tail_tokens": 74,
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "body_tokens": 5800,
+      "body_tokens_per_chunk": 118,
+      "chunk_count": 50,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/118/GOOGL_body_token_weighted.npy",
+          "sha256": "d642471d1d8a0d45c92496851b7e1e28432bf31bef596a71a4c0c1e58e74fe60",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/GOOGL_chunks.npy",
+          "sha256": "a47f74a6fda3d2d187868f265f45a5722c1c3b1a6d500b82158f3437bfcc155e",
+          "shape": [
+            50,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/GOOGL_equal_chunks.npy",
+          "sha256": "c5d04e20b915fbb90d90ac6dfa0032570ae36e7f8a203f5a9fbaaec7d0eae2d6",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "status": "COMPLETE",
+      "tail_tokens": 18,
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "body_tokens": 7577,
+      "body_tokens_per_chunk": 118,
+      "chunk_count": 65,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/118/META_body_token_weighted.npy",
+          "sha256": "8d5e97727fd8e9f006ee0e24cc107ae25335c10c8bbd01c9461d37b67b5939eb",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/META_chunks.npy",
+          "sha256": "0193d3bffed8973f7117c9b106a3c198c0c148273b5b844faef2e9b6434bc0b0",
+          "shape": [
+            65,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/118/META_equal_chunks.npy",
+          "sha256": "4a52bb14913ae373a046e9368ee92616a149c3f2d2150392bd0c479aadd8090e",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "status": "COMPLETE",
+      "tail_tokens": 25,
+      "ticker": "META"
+    },
+    {
+      "accession": "0000320193-25-000079",
+      "body_tokens": 2916,
+      "body_tokens_per_chunk": 123,
+      "chunk_count": 24,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/123/AAPL_body_token_weighted.npy",
+          "sha256": "ad4a84f0dfaa6d0c26171c371089175c8ae171858f887e4ecf9184a3e952fcf9",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/AAPL_chunks.npy",
+          "sha256": "77122ad64951e4f375d6051decb06fea997850e90f5597da8ff98d152ac1da63",
+          "shape": [
+            24,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/AAPL_equal_chunks.npy",
+          "sha256": "421bcc084f31f027603f2f1b04fb7488a63155a4222e417df7e881de40c567b5",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "status": "COMPLETE",
+      "tail_tokens": 87,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "body_tokens": 8489,
+      "body_tokens_per_chunk": 123,
+      "chunk_count": 70,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/123/MSFT_body_token_weighted.npy",
+          "sha256": "eb4a38e34472331ef7dac6a53d7d91004bd4650e5eee94f9f8089a1f95b6f22f",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/MSFT_chunks.npy",
+          "sha256": "98286e2e23dd069820b33d07a972747ac62309af4c29f64616ef5fb3b00fd597",
+          "shape": [
+            70,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/MSFT_equal_chunks.npy",
+          "sha256": "c6a885194efa4f42a2b35713910ca2a36545b36998262f7a5e705aef4ef21f98",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "status": "COMPLETE",
+      "tail_tokens": 2,
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "body_tokens": 2552,
+      "body_tokens_per_chunk": 123,
+      "chunk_count": 21,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/123/AMZN_body_token_weighted.npy",
+          "sha256": "b8f9e3be54ce41859fe6f8318adad89b13a708223518dd62b6a305056bba7ea5",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/AMZN_chunks.npy",
+          "sha256": "5fdf09d1c42e49117d108ee93647bff7013ed88c5424822ccb39f26846e476dd",
+          "shape": [
+            21,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/AMZN_equal_chunks.npy",
+          "sha256": "55976ca3946e6c9027148158c9dade3874f82f3c5f0dd4198f9bab3b7c364a37",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "status": "COMPLETE",
+      "tail_tokens": 92,
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "body_tokens": 5800,
+      "body_tokens_per_chunk": 123,
+      "chunk_count": 48,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/123/GOOGL_body_token_weighted.npy",
+          "sha256": "1b4e4805d6eac071524463219b8069a2dbe2d98e78236b0c9b3e169e08b99d69",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/GOOGL_chunks.npy",
+          "sha256": "2939dc2ab429a6d1fefd9460b651cbf2bc68c771b3e4fb74afdc3190e43bed3c",
+          "shape": [
+            48,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/GOOGL_equal_chunks.npy",
+          "sha256": "96553d2c5dd358da23af12130e4d0c91b0b4bb11fdbacf1d94507f7364f06ae5",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "status": "COMPLETE",
+      "tail_tokens": 19,
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "body_tokens": 7577,
+      "body_tokens_per_chunk": 123,
+      "chunk_count": 62,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/123/META_body_token_weighted.npy",
+          "sha256": "33fa22e4051420e46fa0184daca62c638516f6651b48132e4343aab7fa9ab4c7",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/META_chunks.npy",
+          "sha256": "dda9267c92b1b17aa0bf10c816db9a385dbf78c9962db77699f304ceae28fd88",
+          "shape": [
+            62,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/123/META_equal_chunks.npy",
+          "sha256": "83ad238dcd9f525551e74c6754575632b4ff1977f8982b3d518d8989b7b06f97",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "status": "COMPLETE",
+      "tail_tokens": 74,
+      "ticker": "META"
+    },
+    {
+      "accession": "0000320193-25-000079",
+      "body_tokens": 2916,
+      "body_tokens_per_chunk": 128,
+      "chunk_count": 23,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/128/AAPL_body_token_weighted.npy",
+          "sha256": "224e6b4da0e9064023eccacf2698b84a849077eee9e9a14b6ffd3b998bb09a4c",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/AAPL_chunks.npy",
+          "sha256": "afa0a695a704f7f570aea38b3c9ac51f83b9184ae1a7cf9ed986f1a7bc78928a",
+          "shape": [
+            23,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/AAPL_equal_chunks.npy",
+          "sha256": "7052f8040ed0c336dda4975be7a7d8641147f4309e40721570f5877002006da4",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "status": "COMPLETE",
+      "tail_tokens": 100,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "body_tokens": 8489,
+      "body_tokens_per_chunk": 128,
+      "chunk_count": 67,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/128/MSFT_body_token_weighted.npy",
+          "sha256": "0753e16da9b4bc1603ba9df4c77d29828a038ff126f8df7fe24be8fa14b7fe25",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/MSFT_chunks.npy",
+          "sha256": "f105289494fa1eba0d59d2128ae5ed42956a47c8f2844c29b36af9aaa80a949a",
+          "shape": [
+            67,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/MSFT_equal_chunks.npy",
+          "sha256": "7725499513303e4eb31a6c6e1a75451dd74d6e9cef15a09daa6543ef09fe1eb5",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "status": "COMPLETE",
+      "tail_tokens": 41,
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "body_tokens": 2552,
+      "body_tokens_per_chunk": 128,
+      "chunk_count": 20,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/128/AMZN_body_token_weighted.npy",
+          "sha256": "64fbd28166f144bc7489e6df580e56f1e18b0123a884e5dd6ec6eba1ce9d217e",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/AMZN_chunks.npy",
+          "sha256": "7c99426bfd0c8205ec8da0bbf561d1743bd33af437c974f3ff0c768ce655819a",
+          "shape": [
+            20,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/AMZN_equal_chunks.npy",
+          "sha256": "bd0bbd1607d9a7bc0efb7b34350f6178659beab835a4506118139ee030eb4c3c",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "status": "COMPLETE",
+      "tail_tokens": 120,
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "body_tokens": 5800,
+      "body_tokens_per_chunk": 128,
+      "chunk_count": 46,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/128/GOOGL_body_token_weighted.npy",
+          "sha256": "ab38153b33a1b7011662437a67bc40e77420bed59ff1dde33fc2bfabf4b42051",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/GOOGL_chunks.npy",
+          "sha256": "ed45cf7b13126dc8d442c742bafe5b8c704fb4d7462d02795ac78a364eca600f",
+          "shape": [
+            46,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/GOOGL_equal_chunks.npy",
+          "sha256": "c6fdde885414a710223797ef0feed0292181b766f1b084b6115bd1a162276c7f",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "status": "COMPLETE",
+      "tail_tokens": 40,
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "body_tokens": 7577,
+      "body_tokens_per_chunk": 128,
+      "chunk_count": 60,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/128/META_body_token_weighted.npy",
+          "sha256": "11e95af3699a6e7541a5b98d7c3e56f17f8ca7a67355b4813ad25475fc8795cf",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/META_chunks.npy",
+          "sha256": "e3f651ba892176b4e1e987a60f7bab640a62a7f6e6cea09f6696f4465014ba25",
+          "shape": [
+            60,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/128/META_equal_chunks.npy",
+          "sha256": "0d77964792fca86812dc6ff91f8ebe6cc5ded5bf61e38c2276d8c2bf84ef8259",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "status": "COMPLETE",
+      "tail_tokens": 25,
+      "ticker": "META"
+    },
+    {
+      "accession": "0000320193-25-000079",
+      "body_tokens": 2916,
+      "body_tokens_per_chunk": 133,
+      "chunk_count": 22,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/133/AAPL_body_token_weighted.npy",
+          "sha256": "57316298ec6fd1617e17de049adfceb8e7de2ed0386ba452183e5c19187ebe97",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/AAPL_chunks.npy",
+          "sha256": "ad121175ec79d597be1edf737fba29de31734845c9524748fb234e3ad41184f7",
+          "shape": [
+            22,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/AAPL_equal_chunks.npy",
+          "sha256": "cbb4753d2671072b9e3e2332186329723fc0c73ea6dfa98d1cfd1d701d9fe6e2",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "status": "COMPLETE",
+      "tail_tokens": 123,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "body_tokens": 8489,
+      "body_tokens_per_chunk": 133,
+      "chunk_count": 64,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/133/MSFT_body_token_weighted.npy",
+          "sha256": "3890c6e590ea4449f460d4546463ec9a748c5c9b979f4a71440fc13e1c49c2dc",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/MSFT_chunks.npy",
+          "sha256": "406dcd94477640f95438d7a7eccdb76bb12876fe6346155215b6049dfb9790f7",
+          "shape": [
+            64,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/MSFT_equal_chunks.npy",
+          "sha256": "e54f53610d9b9ac8a83c1879ee92889d0eb20534ee29a0d0565642639c7881f7",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "status": "COMPLETE",
+      "tail_tokens": 110,
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "body_tokens": 2552,
+      "body_tokens_per_chunk": 133,
+      "chunk_count": 20,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/133/AMZN_body_token_weighted.npy",
+          "sha256": "96973263b5798dd68d8688c206deb37ad85c2be0f21267bc02bdce6c1e763559",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/AMZN_chunks.npy",
+          "sha256": "b483984adca07a8f90e719dc071b8fcca47f189bdcfe9564b10e0f6c16839ff9",
+          "shape": [
+            20,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/AMZN_equal_chunks.npy",
+          "sha256": "77bd37256a68ae2fea660cbf00a53932b743af8477f24db14905093a6f2ed001",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "status": "COMPLETE",
+      "tail_tokens": 25,
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "body_tokens": 5800,
+      "body_tokens_per_chunk": 133,
+      "chunk_count": 44,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/133/GOOGL_body_token_weighted.npy",
+          "sha256": "e598c2295144af5cf82ca8fda5d889b604cc55950c4b9e370fbf68049b5dbe5c",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/GOOGL_chunks.npy",
+          "sha256": "549146198c52a744825ce21fbbe4f253c50028df2a48269b0211d29df7eef450",
+          "shape": [
+            44,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/GOOGL_equal_chunks.npy",
+          "sha256": "58dd4801f1bbfeb77af8385c4fec537a0ac7d603062c8337a961bb404e259757",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "status": "COMPLETE",
+      "tail_tokens": 81,
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "body_tokens": 7577,
+      "body_tokens_per_chunk": 133,
+      "chunk_count": 57,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/133/META_body_token_weighted.npy",
+          "sha256": "9e37fc21692cd4bf7b7e68335dd6364ae9a3d2fd8afa08f765d96c2521af76bb",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/META_chunks.npy",
+          "sha256": "af96ba7283bb9530e238291e9094c7583ed93644f8641e0bd90e47dc02efa26a",
+          "shape": [
+            57,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/133/META_equal_chunks.npy",
+          "sha256": "ff0b8db58952c39fd392c2c4a805df8ff3da2478c89f2aca2a71b232462e75ab",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "status": "COMPLETE",
+      "tail_tokens": 129,
+      "ticker": "META"
+    },
+    {
+      "accession": "0000320193-25-000079",
+      "body_tokens": 2916,
+      "body_tokens_per_chunk": 138,
+      "chunk_count": 22,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/138/AAPL_body_token_weighted.npy",
+          "sha256": "c6a5c7edcc5bffb998089082d88182ff7b1594cd561ad45f3dd8184afa7eb4e6",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/AAPL_chunks.npy",
+          "sha256": "7ff1dc6b55fff625d92c5c8d1c0e9df31870caa1578ffabbd7ab75b59c6fe64a",
+          "shape": [
+            22,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/AAPL_equal_chunks.npy",
+          "sha256": "3b33a1fc6749871a307dce5a77d571783218045828cc76958a947205c4e4099f",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+      "status": "COMPLETE",
+      "tail_tokens": 18,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000950170-25-100235",
+      "body_tokens": 8489,
+      "body_tokens_per_chunk": 138,
+      "chunk_count": 62,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/138/MSFT_body_token_weighted.npy",
+          "sha256": "52a1c6502b565df4672de984cf868ccf1584e2f3a62b98d4edc90feab0548589",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/MSFT_chunks.npy",
+          "sha256": "0e7553d532cbb94bf9f92d27853e3b44ea542dff4c35e6ba43a9425d7694a746",
+          "shape": [
+            62,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/MSFT_equal_chunks.npy",
+          "sha256": "41d7c6bfc1120d8703fb648d5ef9b91710604de09fae6bb36125b980cb0d4ba7",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+      "status": "COMPLETE",
+      "tail_tokens": 71,
+      "ticker": "MSFT"
+    },
+    {
+      "accession": "0001018724-25-000004",
+      "body_tokens": 2552,
+      "body_tokens_per_chunk": 138,
+      "chunk_count": 19,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/138/AMZN_body_token_weighted.npy",
+          "sha256": "6a85c1c8586cb50eba12c8c62004f40c429d30c71a1c07ab7f607226f042539a",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/AMZN_chunks.npy",
+          "sha256": "791715ad6228e6bea45f763a3f73771240bc9313d0b3bef3319a84b7e5a850d5",
+          "shape": [
+            19,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/AMZN_equal_chunks.npy",
+          "sha256": "392dfbf97c71f5ac1526fe6d7779f0d2438212ac7bd7be71006f01e1b60a91d5",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+      "status": "COMPLETE",
+      "tail_tokens": 68,
+      "ticker": "AMZN"
+    },
+    {
+      "accession": "0001652044-25-000014",
+      "body_tokens": 5800,
+      "body_tokens_per_chunk": 138,
+      "chunk_count": 43,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/138/GOOGL_body_token_weighted.npy",
+          "sha256": "5d47298125f918b7a633bc1e001ad67328a2647b1a8b78b1540d303d52d637be",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/GOOGL_chunks.npy",
+          "sha256": "26013a44a70782dd06c57d379859893d148a7fb0a366a01298e42daaa15b4097",
+          "shape": [
+            43,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/GOOGL_equal_chunks.npy",
+          "sha256": "1f9b1ad7ab15f6d9af1aff60c036633497b715db6bd465a915e5ebcc1eee1333",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+      "status": "COMPLETE",
+      "tail_tokens": 4,
+      "ticker": "GOOGL"
+    },
+    {
+      "accession": "0001326801-25-000017",
+      "body_tokens": 7577,
+      "body_tokens_per_chunk": 138,
+      "chunk_count": 55,
+      "files": {
+        "body_token_weighted": {
+          "dtype": "float64",
+          "path": "vectors/138/META_body_token_weighted.npy",
+          "sha256": "865025dd7f2c981bfabd9642abdabbac870815dc4c9320327a1ec96ae2de16be",
+          "shape": [
+            384
+          ]
+        },
+        "chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/META_chunks.npy",
+          "sha256": "bbea05a2327e623c1c14ef995077d38a118ab95bc2f980baa2b987fb2abb82f9",
+          "shape": [
+            55,
+            384
+          ]
+        },
+        "equal_chunks": {
+          "dtype": "float64",
+          "path": "vectors/138/META_equal_chunks.npy",
+          "sha256": "a5d5417066ba7f489f77422bf9c0f59826c0b528250f3c71b38528d2e47c37f4",
+          "shape": [
+            384
+          ]
+        }
+      },
+      "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+      "status": "COMPLETE",
+      "tail_tokens": 125,
+      "ticker": "META"
+    }
+  ],
+  "kind": "SANITIZED_ROUND4_RUN_MANIFEST",
+  "logical_job_count_planned": 25,
+  "logical_jobs_completed": 25,
+  "metric_contract_sha256": "58a7b2f1389be691ef979f4fc4710f11d29027617c93f5a4eab580f73f3a6402",
+  "metric_file": {
+    "path": "metrics.json",
+    "sha256": "879b9753af91e8f1a1a9248aec4b81577a16c2ac902b33b8b63da3b148d2ac6d"
+  },
+  "model_identity": {
+    "model_file_sha256": {
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "onnx/model.onnx": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037"
+    },
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "provider": "CPUExecutionProvider",
+    "reference_config_sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+  },
+  "real_encoder_sessions_created": 1,
+  "receipt_sha256": "9a046813accd5295992b8074c7fa42c745dfc765ad5bcdcab8f5ad43d9e660e0",
+  "redaction_note": "Absolute local paths, raw text, model weights, vectors, private decision source/record, complete receipt and logs are excluded.",
+  "run_status": "COMPLETE",
+  "runtime": {
+    "available_providers": [
+      "AzureExecutionProvider",
+      "CPUExecutionProvider"
+    ],
+    "critical_modules": {
+      "finembed": {
+        "path": "src/finembed/__init__.py",
+        "sha256": "c8572aa8a562a6cde0704174851e21568b44e4aaa64dd9b80bbd55d5d55d33e7"
+      },
+      "finembed.analysis": {
+        "path": "src/finembed/analysis.py",
+        "sha256": "78bf513dfa5995c9fb1be17253e27b19953704e79bb87fbd4fab038e988ef413"
+      },
+      "finembed.config": {
+        "path": "src/finembed/config.py",
+        "sha256": "afc70c19f11cfdde5b51b97cf1cdfb7ecccc455110079f159435f58afc028c88"
+      },
+      "finembed.extract": {
+        "path": "src/finembed/extract.py",
+        "sha256": "4b21f7e4476883ad51b9c60eba71a9d5ec67e96ff546890556c3355eec30338a"
+      },
+      "finembed.m6": {
+        "path": "src/finembed/m6.py",
+        "sha256": "719f4773a82f0fea6221c55558ad11c331ec99d26b0dea41e7c0ed40176819c7"
+      },
+      "finembed.model": {
+        "path": "src/finembed/model.py",
+        "sha256": "9398d3ccefc08ba10104dd0a42e584d123aaec77d836d4c2094497a732412445"
+      },
+      "finembed.run": {
+        "path": "src/finembed/run.py",
+        "sha256": "d665e06d0af027e635e1d4862ff497f08f49f33b200a96342653015555eeb788"
+      },
+      "finembed.sec": {
+        "path": "src/finembed/sec.py",
+        "sha256": "d9e3b43ce6f8773bc6826b39428ac9ab37f58ad87b301f4eca5d6d2cddb80067"
+      },
+      "finembed.sensitivity_preflight": {
+        "path": "src/finembed/sensitivity_preflight.py",
+        "sha256": "4d654196aea5c013ee4eb7a18a419d845238ddc916e369d8a0b33730e8af3015"
+      },
+      "finembed.small_chunk_decision": {
+        "path": "src/finembed/small_chunk_decision.py",
+        "sha256": "010e535c5d3e6bc6d361556d2aad18ad03ff940fa31ca8ef8396d05cabbccf54"
+      },
+      "finembed.small_chunk_metrics": {
+        "path": "src/finembed/small_chunk_metrics.py",
+        "sha256": "58a30b054b51db560b8f566d6b9784c1c3bd4ce56037c7ec9b2d4c0c9517f558"
+      },
+      "finembed.small_chunk_provenance": {
+        "path": "src/finembed/small_chunk_provenance.py",
+        "sha256": "b383bee52a6e3ee8803b67dd5c5cada35f77a952e4b7a92960d782c5a5eb03a1"
+      },
+      "finembed.small_chunk_runner": {
+        "path": "src/finembed/small_chunk_runner.py",
+        "sha256": "75811296ae751649f0efc7da2c1ee044b340a99add125d488436cc4efb5fbf71"
+      }
+    },
+    "dependencies": {
+      "numpy": {
+        "distribution": "numpy",
+        "module_sha256": "65d5e777b6d662ba19cb80800bef3eb999eda7aee51eea62c308feabf679dba4",
+        "version": "2.4.6"
+      },
+      "onnxruntime": {
+        "distribution": "onnxruntime",
+        "module_sha256": "147e8169d2305a810121647a239f217df349f6755008a78b8bd7abf6905c68ea",
+        "version": "1.31.0"
+      },
+      "tokenizers": {
+        "distribution": "tokenizers",
+        "module_sha256": "6a5955273d382901d5b1f5284d887b24501464725977f6684485c2dfd2fb42f3",
+        "version": "0.23.3"
+      },
+      "yaml": {
+        "distribution": "PyYAML",
+        "module_sha256": "b19dfcc333d6a75dfd73073901164507252f271b41d3b5f7d85510033a0547a7",
+        "version": "6.0.3"
+      }
+    },
+    "interpreter_implementation": "CPython",
+    "interpreter_version": "3.11.9",
+    "required_provider": "CPUExecutionProvider"
+  },
+  "schema_version": 1,
+  "source_commit_at_preflight": "241ce77ee76e31737e2e67e834d18a987cd79237",
+  "source_manifest_sha256": "698942ddc8a7b395108a3ce2b72deab0f370ed3cd9de2bca827b693632182d5e",
+  "started_utc": "2026-10-31T01:18:25.723953+00:00"
+}

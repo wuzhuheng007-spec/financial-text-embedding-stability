@@ -2,7 +2,17 @@
 
 This repository is a curated engineering share of a research project on the stability of financial-text representations. It also prepares, but has **not run**, a formal test of whether text adds value beyond price-only baselines while avoiding look-ahead bias. The present evidence is a small, descriptive demonstration; no financial incremental value or historical tradability has been established.
 
-## What has been completed
+## Team update 6 November 2026
+
+Read the [bilingual team progress report](reports/2026-11-06_team_progress_bilingual.md), [plain-language bilingual briefing](reports/2026-11-06_plain_language_briefing.md), and [current sharing scope](docs/SHARE_ROUND10_2026_11_06.md) first.
+
+The shared update adds the completed fixed-five-company S2 length and S3 boundary-shift probes, their complete machine metrics, controlled runner code, M5 draft and calendar/data-intake tools, and the narrowly verified multiclass importer correction. **Formal M5 is still PROPOSED and NOT_RUN.** The latest researcher-relayed local intake check found no newly registered authorized M5 files; that check was not independently replayed from a new packet. More than data import remains: research choices, source access, historical joins and time evidence are still required.
+
+Download the [PDF report](reports/Quant_Team_Progress_Bilingual_2026-11-06.pdf) or [editable Word report](reports/Quant_Team_Progress_Bilingual_2026-11-06.docx).
+
+The files in this branch are a curated snapshot assembled from the supplied deidentified handoffs, not a push or merge of the Windows private development history. Original inputs, weights, vectors and private decision records remain excluded. No license is added.
+
+## Earlier M0 to M10 work
 
 - Five saved SEC 10-K Item 1 Business extracts were bound to original filing identities and hashes. One pinned pretrained encoder (`sentence-transformers/all-MiniLM-L6-v2`, revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`) supported 128/192-body-token, nonoverlapping chunk comparisons and a same-setting repeat check. A fixed-weight repeat is not an independent training seed.
 - Five-document TF-IDF, BM25 (`k1=1.2`, `b=0, 0.75, 1`), equal versus body-token-weighted aggregation, and tail-chunk diagnostics were run on the saved Item 1 texts. Directed BM25 query-to-document scores and BM25 term-weight cosine are distinct measures. The [M6](results/m6_real5_20261025/RESULTS_SCOPE.md) and [M7](results/m7_exploratory_20261025/RESULTS_SCOPE.md) tables and figures are descriptive for this exact corpus and model.

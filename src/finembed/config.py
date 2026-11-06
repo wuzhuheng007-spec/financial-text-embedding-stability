@@ -59,6 +59,8 @@ def load_config(path: str | Path) -> Config:
     data = yaml.safe_load(raw)
     if not isinstance(data, dict):
         raise ValueError("Config must be a YAML mapping")
+    if data.get("kind") == "new_engineering_probe_candidate":
+        raise ValueError("Proposed engineering candidate is plan-only and cannot be an inference config")
     study, sec, paths, embedding = (data[k] for k in ("study", "sec", "paths", "embedding"))
     if any(not isinstance(x, dict) for x in (study, sec, paths, embedding)):
         raise ValueError("study, sec, paths and embedding must be mappings")

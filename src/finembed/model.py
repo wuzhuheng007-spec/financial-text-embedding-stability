@@ -60,6 +60,37 @@ class Chunk:
     source_span_sha256: str
 
 
+def chunk_text(tokenizer, text: str, body_tokens: int, special_count: int,
+               max_input_tokens: int) -> list[Chunk]:
+    """Partition complete body tokenization without constructing an encoder session."""
+    if type(body_tokens) is not int or body_tokens <= 0:
+        raise ModelError("Body chunk length must be a positive integer")
+    if body_tokens + special_count > max_input_tokens:
+        raise ModelError("Chunk plus special tokens exceeds model input limit")
+    encoded = tokenizer.encode(text, add_special_tokens=False)
+    ids, offsets = encoded.ids, encoded.offsets
+    if not ids:
+        raise ModelError("No body tokens in Item 1")
+    if max(end for _, end in offsets) < len(text.rstrip()) - 2:
+        raise ModelError("Tokenizer appears to have truncated the document")
+    chunks = []
+    for start in range(0, len(ids), body_tokens):
+        end = min(start + body_tokens, len(ids))
+        span_offsets = [pair for pair in offsets[start:end] if pair[1] > pair[0]]
+        if not span_offsets:
+            raise ModelError("Chunk has no nonempty source offsets")
+        char_start, char_end = span_offsets[0][0], span_offsets[-1][1]
+        if not 0 <= char_start < char_end <= len(text):
+            raise ModelError("Tokenizer source offsets are invalid")
+        chunks.append(Chunk(start, end, char_start, char_end, tuple(ids[start:end]),
+                            sha256(text[char_start:char_end].encode("utf-8"))))
+    if chunks[0].token_start != 0 or chunks[-1].token_end_exclusive != len(ids) or any(
+        a.token_end_exclusive != b.token_start for a, b in zip(chunks, chunks[1:])
+    ):
+        raise ModelError("Chunk coverage is incomplete or overlapping")
+    return chunks
+
+
 class Encoder:
     def __init__(self, config: Config):
         try:
@@ -84,36 +115,15 @@ class Encoder:
         self.identity["special_tokens_per_single_chunk"] = special_count
         self.session = ort.InferenceSession(str(config.model_cache / config.onnx_file),
                                             providers=[config.provider])
+        self.forward_batch_call_attempts = 0
         if {x.name for x in self.session.get_inputs()} != {"input_ids", "attention_mask", "token_type_ids"}:
             raise ModelError("Unexpected ONNX model input interface")
         if self.session.get_outputs()[0].name != "last_hidden_state":
             raise ModelError("Unexpected ONNX model output interface")
 
     def chunks(self, text: str, body_tokens: int) -> list[Chunk]:
-        if body_tokens + self.special_count > self.identity["max_input_tokens"]:
-            raise ModelError("Chunk plus special tokens exceeds model input limit")
-        encoded = self.tokenizer.encode(text, add_special_tokens=False)
-        ids, offsets = encoded.ids, encoded.offsets
-        if not ids:
-            raise ModelError("No body tokens in Item 1")
-        if max(end for _, end in offsets) < len(text.rstrip()) - 2:
-            raise ModelError("Tokenizer appears to have truncated the document")
-        chunks = []
-        for start in range(0, len(ids), body_tokens):
-            end = min(start + body_tokens, len(ids))
-            span_offsets = [pair for pair in offsets[start:end] if pair[1] > pair[0]]
-            if not span_offsets:
-                raise ModelError("Chunk has no nonempty source offsets")
-            char_start, char_end = span_offsets[0][0], span_offsets[-1][1]
-            if not 0 <= char_start < char_end <= len(text):
-                raise ModelError("Tokenizer source offsets are invalid")
-            chunks.append(Chunk(start, end, char_start, char_end, tuple(ids[start:end]),
-                                sha256(text[char_start:char_end].encode("utf-8"))))
-        if chunks[0].token_start != 0 or chunks[-1].token_end_exclusive != len(ids) or any(
-            a.token_end_exclusive != b.token_start for a, b in zip(chunks, chunks[1:])
-        ):
-            raise ModelError("Chunk coverage is incomplete or overlapping")
-        return chunks
+        return chunk_text(self.tokenizer, text, body_tokens, self.special_count,
+                          self.identity["max_input_tokens"])
 
     def embed_chunks(self, chunks: list[Chunk]):
         import numpy as np
@@ -129,6 +139,7 @@ class Encoder:
             for i, seq in enumerate(sequences):
                 input_ids[i, :len(seq)] = seq
                 mask[i, :len(seq)] = 1
+            self.forward_batch_call_attempts += 1
             output = self.session.run(None, {"input_ids": input_ids, "attention_mask": mask,
                                              "token_type_ids": np.zeros_like(input_ids)})[0]
             weight = mask[:, :, None].astype(np.float64)
@@ -166,3 +177,5 @@ def aggregate(chunk_vectors, normalize_chunks: bool, normalize_documents: bool, 
             raise ModelError("Zero or nonfinite document vector")
         doc = doc / norm
     return doc
+
+

@@ -1,0 +1,23 @@
+{
+  "actual_batch_call_attempts": 145,
+  "arms": 10,
+  "chunk_vectors": 1080,
+  "company_vectors": 50,
+  "excluded_firms_or_arms": 0,
+  "failures": 0,
+  "jobs": 25,
+  "kind": "S3_INDEPENDENT_SAVED_OUTPUT_AUDIT",
+  "manifest_sha256": "eab4abec64f65d9f9d48589eba20c59edc5c75f4d6ee2567db6765e58dfd1f47",
+  "metric_json_strict_and_finite": true,
+  "metrics_sha256": "77e4bcdd7074a0206ccf798e4770106177b2409c57ecef02a7ef3d51b0b22f27",
+  "model_file_content_not_included": true,
+  "real_encoder_sessions_created": 1,
+  "same_shift_pooling_comparisons": 5,
+  "same_shift_pooling_top2_set_change_rows": 0,
+  "signed_interaction_pairs": 40,
+  "signed_interaction_sets": 4,
+  "status": "PASS",
+  "vector_files_checked": 75,
+  "within_pooling_shift_comparisons": 8,
+  "within_pooling_top2_set_change_rows": 0
+}

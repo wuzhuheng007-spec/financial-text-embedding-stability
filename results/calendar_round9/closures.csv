@@ -1,0 +1,64 @@
+mic,date,reason,kind,source_id
+XNYS,2019-11-28,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2018_2019_2021_announcement
+XNYS,2019-12-25,Christmas Day,ANNUAL_HOLIDAY,ice_2018_2019_2021_announcement
+XNYS,2020-01-01,New Year's Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-01-20,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-02-17,Washington's Birthday,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-04-10,Good Friday,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-05-25,Memorial Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-07-03,Independence Day observed,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-09-07,Labor Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-11-26,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2020-12-25,Christmas Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-01-01,New Year's Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-01-18,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-02-15,Washington's Birthday,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-04-02,Good Friday,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-05-31,Memorial Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-07-05,Independence Day observed,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-09-06,Labor Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-11-25,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2021-12-24,Christmas Day observed,ANNUAL_HOLIDAY,ice_2019_2020_2022_announcement
+XNYS,2022-01-17,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-02-21,Washington's Birthday,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-04-15,Good Friday,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-05-30,Memorial Day,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-06-20,Juneteenth National Independence Day observed,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-07-04,Independence Day,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-09-05,Labor Day,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-11-24,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2022-12-26,Christmas Day observed,ANNUAL_HOLIDAY,ice_2021_2022_2024_announcement
+XNYS,2023-01-02,New Year's Day observed,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-01-16,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-02-20,Washington's Birthday,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-04-07,Good Friday,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-05-29,Memorial Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-06-19,Juneteenth National Independence Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-07-04,Independence Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-09-04,Labor Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-11-23,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2023-12-25,Christmas Day,ANNUAL_HOLIDAY,ice_2022_2023_2025_announcement
+XNYS,2024-01-01,New Year's Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-01-15,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-02-19,Washington's Birthday,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-03-29,Good Friday,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-05-27,Memorial Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-06-19,Juneteenth National Independence Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-07-04,Independence Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-09-02,Labor Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-11-28,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2024-12-25,Christmas Day,ANNUAL_HOLIDAY,ice_2023_2024_2026_announcement
+XNYS,2025-01-01,New Year's Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-01-09,National Day of Mourning for former President Jimmy Carter,TEMPORARY_CLOSURE,ice_2024_carter_closure
+XNYS,2025-01-20,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-02-17,Washington's Birthday,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-04-18,Good Friday,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-05-26,Memorial Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-06-19,Juneteenth National Independence Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-07-04,Independence Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-09-01,Labor Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-11-27,Thanksgiving Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2025-12-25,Christmas Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2026-01-01,New Year's Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2026-01-19,Martin Luther King Jr. Day,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement
+XNYS,2026-02-16,Washington's Birthday,ANNUAL_HOLIDAY,ice_2024_2025_2027_announcement

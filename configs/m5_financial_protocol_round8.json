@@ -1,0 +1,233 @@
+{
+  "schema_version": 2,
+  "status": "PROPOSED",
+  "researcher_accepted": false,
+  "formal_financial_experiment_status": "NOT_RUN",
+  "purpose": "Minimum retrospective filing-event price-return prediction comparison; no historical tradability or economic-value claim",
+  "development_evidence_only": {
+    "s2_candidate_sha256": "a307536980057c227d63fafb11b7b25b4615a2923455717616a7431f05d82388",
+    "s3_candidate_sha256": "a16dc7786e33c607eabb833eb1adb7f8c9652735cfb21eaa862f12a3661199e2",
+    "selection_policy": "Do not select a dense setting using S2/S3 outcomes; use the pre-existing 128-body-token equal-chunk reference"
+  },
+  "time_interpretation": {
+    "recommended": "RETROSPECTIVE_FIXED_BYTES",
+    "strict_historical_as_of_status": "BLOCKED_PENDING_MODEL_TEXT_AND_MARKET_TIME_EVIDENCE",
+    "strict_alternative": "Bind a contemporaneously available complete model-file revision, training-data cutoff evidence, decision-time text vintage and point-in-time market data before any as-of claim"
+  },
+  "current_missing_evidence": {
+    "historical_security_master_sha256": null,
+    "historical_security_master_reason": "No verified as-of-2020-01-01 US operating-common-share and CIK/security history is saved locally",
+    "decision_time_item1_vintage_manifest_sha256": null,
+    "decision_time_item1_vintage_reason": "Saved 2026 text snapshots are not certified as the exact versions public at each proposed decision",
+    "first_public_dissemination_manifest_sha256": null,
+    "first_public_dissemination_reason": "SEC acceptance timestamps do not identify each first-public instant",
+    "complete_feature_and_label_price_manifest_sha256": null,
+    "complete_feature_and_label_price_reason": "Only a 2025 five-firm price year is currently saved, not the proposed 2020-2025 event panel and adjacent lookbacks/horizons",
+    "independent_session_calendar_sha256": null,
+    "independent_session_calendar_reason": "No version-bound point-in-time exchange session file is bound to the saved price run",
+    "delisting_outcome_manifest_sha256": null,
+    "delisting_outcome_reason": "No historical exit and identifier-chain outcome source is bound to the five-symbol price demonstration",
+    "dividend_manifest_sha256": null,
+    "dividend_manifest_reason": "No local dividend cashflow series is bound; the proposed primary target excludes dividends",
+    "global_model_training_cutoff_utc": null,
+    "global_model_training_cutoff_reason": "The official model card does not establish a cutoff across all pretraining and fine-tuning sources",
+    "approved_prediction_observation_count": null,
+    "approved_prediction_observation_count_reason": "M5 sample, public-time, vintage, label and split choices are not frozen"
+  },
+  "sample": {
+    "source_form": "original_10-K",
+    "section": "Item 1 Business",
+    "event_unit": "one original filing section per CIK and fiscal period at one eligible decision session",
+    "planning_cohort": "Up to 200 distinct CIKs from a verified as-of-2020-01-01 US exchange-listed operating-common-share security master; include later exits and identifier changes",
+    "planning_cohort_master_as_of": "2020-01-01",
+    "planning_cohort_hash_rule": "sort ascending by SHA-256(UTF-8('m5-r7-2026-11-01:' + ten_digit_CIK)); take the first 200 after excluding the five development CIKs",
+    "development_cik_exclusions": [
+      "0000320193",
+      "0000789019",
+      "0001018724",
+      "0001652044",
+      "0001326801"
+    ],
+    "filing_decision_years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "admission": "Original accession, fiscal period, CIK/security link, exact section vintage, public-time rule, trailing prices and future label coverage must be verifiable; record every excluded event and reason",
+    "illustrative_filing_events_at_one_per_firm_year": 1200,
+    "illustrative_count_is_a_hard_cap": false,
+    "planning_count_is_power_claim": false,
+    "current_local_five_texts_role": "ENGINEERING_DEVELOPMENT_ONLY"
+  },
+  "decision_and_label": {
+    "timezone": "America/New_York",
+    "session_calendar": "VERIFIED_US_EQUITY_REGULAR_SESSIONS_REQUIRED",
+    "recommended_decision": "18:00 America/New_York on the first regular trading session strictly after the official filing date, conditional on proof that the exact text and finalized d close bar were available by 18:00; otherwise the event is ineligible with a recorded reason",
+    "acceptance_time_is_public_time": false,
+    "primary_horizon_subsequent_sessions": 5,
+    "alternative_horizon_subsequent_sessions": 21,
+    "primary_label": "split-adjusted closing-price return C(i,d+5)/C(i,d)-1, where d is the decision session; dividends are excluded",
+    "label_start": "regular-session close on d",
+    "label_end": "regular-session close on d+5",
+    "label_available_after": "close on d+5 and vendor finalization",
+    "label_is_executable_trade_return": false,
+    "total_return_alternative": "Require dividend, delisting and corporate-action data plus a prespecified reinvestment convention before claiming total return",
+    "missing_or_delisted_label_policy": "Null with reason; block a broad-cohort evaluation until a delisting outcome rule and source cover exits, or separately approve a narrower estimand with explicit exclusions; never zero-fill or silently select survivors",
+    "security_join": {
+      "unit": "one time-valid listed common-share security identifier per CIK filing event",
+      "recommended_rule": "use a unique historical primary common-share listing flag valid at the decision time; require its stable security identifier, CIK link, effective start/end and ticker history",
+      "multiple_candidate_rule": "if multiple classes remain and no unique primary listing is documented, mark the event AMBIGUOUS_SECURITY and exclude it under the predeclared common mask; do not choose a class by future price coverage or realized label",
+      "alternative_rule": "a separate approved predecision 60-session dollar-volume ranking may choose a class, but changes the security-selection rule and data needs",
+      "delisting_rule": "retain all CIK and security exit events; missing terminal prices do not become zeros or silently remove firms"
+    },
+    "close_availability_rule": "the exact decision-session close bar must have a source timestamp or accepted no-later-than evidence by 18:00 ET; absent evidence makes the event ineligible, not historically verified"
+  },
+  "features": {
+    "shared_nontext": [
+      "C(d)/C(d-5)-1 using split-adjusted closes",
+      "C(d)/C(d-20)-1 using split-adjusted closes",
+      "population standard deviation (ddof=0) of C(t)/C(t-1)-1 for the twenty regular sessions ending at d"
+    ],
+    "minimum_prior_closes_including_d": 21,
+    "lexical": {
+      "representation": "Item 1 train-only TF-IDF: lowercase [a-z][a-z0-9]+, raw term counts, top 5000 terms by training-document frequency with lexical ties, IDF log((1+N)/(1+df))+1, row L2 normalization, then 32 train-only SVD dimensions",
+      "fit_boundary": "training documents only; refit on training plus validation before final test after hyperparameter choice; block if fitting rank is below 32",
+      "numeric_contract": {
+        "dtype": "float64",
+        "tokenizer": "lowercase then regex [a-z][a-z0-9]+; no stopword removal or stemming",
+        "vocabulary": "fit only on current training rows; descending document frequency with ascending lexical ties; take at most 5000 terms",
+        "term_frequency": "raw count",
+        "idf": "log((1+N)/(1+df))+1, fitted on current training rows only",
+        "normalization": "L2 row normalization of TF-IDF before SVD",
+        "empty_after_tokenization": "exclude event from all arms before splitting, with reason EMPTY_LEXICAL_DOCUMENT",
+        "all_terms_out_of_vocabulary": "retain an all-zero lexical input and record OOV_ONLY; transform to zero SVD coordinates without imputation",
+        "zero_tfidf_training_row": "fail and review common sample before any fit"
+      },
+      "svd": {
+        "input": "train-only TF-IDF matrix after row L2 normalization",
+        "centering": false,
+        "solver": "numpy.linalg.svd(full_matrices=False) on a dense float64 matrix; no randomized algorithm",
+        "component_score": "X @ V_k.T; equivalent to U_k times singular values on the training matrix",
+        "components": 32,
+        "numerical_rank_tolerance": "max(n_rows,n_columns) * eps(float64) * largest_singular_value",
+        "failure": "block if numerical rank < 32, nonfinite singular values, nonconvergence, or singular values 32 and 33 are indistinguishable within rank tolerance",
+        "component_sign": "for each row of V_k, make the largest-absolute-loading coordinate positive; ties use the lowest feature index",
+        "random_state": null,
+        "repeat_policy": "one deterministic fit per allowed training window; log library and BLAS versions; any randomized replacement requires a new proposed contract"
+      }
+    },
+    "dense": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2 ONNX",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "onnx_sha256": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "tokenizer_sha256": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "body_chunk_length": 128,
+      "overlap": 0,
+      "pooling": "equal_chunks",
+      "normalization": "L2-normalize each chunk, equal-mean the chunk vectors, then L2-normalize the filing vector",
+      "dimension_before_training_only_pca": 384,
+      "training_only_pca_dimensions": 32,
+      "fit_failure_policy": "Block if the training embedding matrix has fewer than 32 supported components",
+      "provider": "CPUExecutionProvider",
+      "pca": {
+        "dtype": "float64 after conversion from the pinned stored embedding dtype",
+        "centering": "subtract the training-only column mean; do not scale input embedding coordinates before PCA",
+        "solver": "numpy.linalg.svd(full_matrices=False) on the centered dense training matrix; no randomized algorithm",
+        "component_score": "(X - training_mean) @ V_k.T",
+        "components": 32,
+        "numerical_rank_tolerance": "max(n_rows,n_columns) * eps(float64) * largest_singular_value",
+        "failure": "block if numerical rank < 32, nonfinite singular values, nonconvergence, or singular values 32 and 33 are indistinguishable within rank tolerance",
+        "component_sign": "for each row of V_k, make the largest-absolute-loading coordinate positive; ties use the lowest embedding-coordinate index",
+        "random_state": null,
+        "repeat_policy": "one deterministic fit per allowed training window; fixed encoder reruns are runtime checks, not independent training seeds"
+      }
+    }
+  },
+  "prediction_arms": {
+    "F0": "three shared trailing-price features",
+    "F1": "F0 plus 32 train-only lexical SVD coordinates",
+    "F2": "F0 plus 32 train-only dense PCA coordinates",
+    "common_sample_and_label": true,
+    "predictor": "ridge regression with intercept and train-only mean/standard-deviation scaling (ddof=0); drop zero-variance coordinates using the training window",
+    "alpha_grid": [
+      0.1,
+      1.0,
+      10.0
+    ],
+    "planned_validation_fits": 9,
+    "planned_post_selection_refits": 3,
+    "hyperparameter_choice": "lowest validation MSE; exact ties choose the largest alpha",
+    "tuning_budget": "same three alpha candidates for each arm; no test-set setting selection",
+    "numeric_contract": {
+      "dtype": "float64",
+      "standardization": "training-window mean and population standard deviation (ddof=0), fitted separately within each arm; drop train-zero-variance columns and record indices; refit on permitted train+validation only",
+      "ridge_objective": "minimize sum_i (y_i - intercept - x_i dot beta)^2 + alpha * sum_j beta_j^2 on standardized coordinates",
+      "intercept_penalized": false,
+      "alpha_loss_scale": "sum of squared errors, not mean squared error",
+      "solver": "deterministic float64 numpy.linalg.lstsq(rcond=None) on an augmented design with sqrt(alpha) coefficient penalty rows and an unpenalized intercept column",
+      "failure": "nonfinite feature/label, empty eligible split, linear solve failure or undefined validation score blocks all three-arm comparison; do not zero-fill or report a partial winner",
+      "random_state": null,
+      "repeat_policy": "one deterministic fit for each of the three alpha values in each arm, then one permitted final refit per arm; no test-based rerun or seed selection"
+    }
+  },
+  "chronology": {
+    "training_decision_years": [
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "validation_decision_years": [
+      2024
+    ],
+    "test_decision_years": [
+      2025
+    ],
+    "split_unit": "decision session in America/New_York",
+    "purge": "A training label used for fitting must end and be finalized before the first validation decision; a validation label used for alpha selection or refit must end and be finalized before the first test decision; otherwise purge the event from that fit or validation set",
+    "refit": "After validation selection, refit transforms and predictor on permitted training plus validation events whose labels are available before the first test decision",
+    "random_shuffle": false
+  },
+  "metrics": {
+    "calculation_dtype": "float64",
+    "primary": "F2 versus F0 common-row out-of-sample squared-error reduction: 1 - SSE(F2)/SSE(F0); undefined if the F0 denominator is zero",
+    "secondary": [
+      "1-SSE(F1)/SSE(F0) and 1-SSE(F2)/SSE(F1) on identical test events; null if a reference SSE is zero",
+      "MAE(F0)-MAE(F2) and MAE(F1)-MAE(F2) on identical test events; positive means F2 has lower absolute error",
+      "mean of defined calendar-month cross-sectional Spearman correlations, equal-weighting months with at least five distinct eligible firms; use the earliest eligible original filing per firm-month for this secondary metric, average ranks for exact ties, null month for constant predictions or labels, no fill"
+    ],
+    "aggregation_unit": "distinct original filing event; firm and calendar-time dependence must be reported",
+    "economic_value": "NOT_ESTIMATED; a separate accepted trading, execution and cost protocol would be required",
+    "undefined_and_failure_policy": {
+      "reference_sse_zero": "null with reason; do not divide or replace with zero",
+      "monthly_spearman_constant_or_too_few_firms": "null month with reason, omitted from defined-month mean with numerator and denominator reported",
+      "nonfinite_prediction_or_label": "fail affected arm and common-row comparison before scoring; retain failure ledger",
+      "comparison_completion": "do not report a complete F0/F1/F2 result if any required arm, row, transform or score is unavailable"
+    }
+  },
+  "execution_gates": [
+    "Researcher freezes this protocol version and its data/vintage/exclusion choices",
+    "Point-in-time security master and filing/publication/revision evidence are available",
+    "Historical prices, identifiers and delisting/corporate-action policy cover the full feature and label windows",
+    "Exact model-time limitations and retrospective interpretation are accepted",
+    "All three arms use identical event rows and a chronological, purged split",
+    "A historical CIK-to-security primary-listing rule and effective-date identity must be verified before joining prices",
+    "A 21-session alternative must use its own fixed endpoint and is not the old 20-session local check",
+    "Numerical rank and both transform fits must pass in the training and permitted refit windows before any test score"
+  ],
+  "supersedes_proposed_candidate_sha256": "f49c3800267250a21928c71e2aa0c82dc778195c82a02ec0722e05c59dc38c15",
+  "date_coverage_contract": {
+    "horizons_from_candidate": [
+      "primary_horizon_subsequent_sessions",
+      "alternative_horizon_subsequent_sessions"
+    ],
+    "position_reference": "first session strictly after official filing date, then exactly h subsequent positions on an independent bound exchange calendar for a confirmed session pair",
+    "without_independent_calendar": "report saved common-date-axis structural pairs only; calendar-confirmed pairs and admitted financial observations remain null",
+    "missing_price": "keep the d+h endpoint fixed on the reference axis; any missing required session price blocks that event and must not shift the endpoint",
+    "required_future_window_prices": "require a finite positive close for every reference-axis session from d through d+h inclusive; no gap skipping or endpoint substitution",
+    "no_return_labels_in_coverage_audit": true
+  }
+}
