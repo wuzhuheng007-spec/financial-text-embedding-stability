@@ -1,0 +1,558 @@
+{
+  "buffer_basis": "At least 21 sessions before the first post-2020-01-01 decision and after the first post-2025-12-31 decision; covers 21 prior closes and the 21-session alternative",
+  "calendar_interpretation": "RETROSPECTIVE_ACTUAL_SESSIONS_NOT_PROVEN_AS_OF_ANNOUNCED_VERSION",
+  "closures": [
+    {
+      "date": "2019-11-28",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2018_2019_2021_announcement"
+    },
+    {
+      "date": "2019-12-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day",
+      "source_id": "ice_2018_2019_2021_announcement"
+    },
+    {
+      "date": "2020-01-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-01-20",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-02-17",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-04-10",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-05-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-07-03",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day observed",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-09-07",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-11-26",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-12-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-01-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-01-18",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-02-15",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-04-02",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-05-31",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-07-05",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day observed",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-09-06",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-11-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-12-24",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day observed",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2022-01-17",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-02-21",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-04-15",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-05-30",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-06-20",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Juneteenth National Independence Day observed",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-07-04",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-09-05",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-11-24",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2022-12-26",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day observed",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2023-01-02",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day observed",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-01-16",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-02-20",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-04-07",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-05-29",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-06-19",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Juneteenth National Independence Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-07-04",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-09-04",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-11-23",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-12-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2024-01-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-01-15",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-02-19",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-03-29",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-05-27",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-06-19",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Juneteenth National Independence Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-07-04",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-09-02",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-11-28",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-12-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2025-01-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-01-09",
+      "kind": "TEMPORARY_CLOSURE",
+      "reason": "National Day of Mourning for former President Jimmy Carter",
+      "source_id": "ice_2024_carter_closure"
+    },
+    {
+      "date": "2025-01-20",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-02-17",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-04-18",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Good Friday",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-05-26",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Memorial Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-06-19",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Juneteenth National Independence Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-07-04",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Independence Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-09-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Labor Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-11-27",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Thanksgiving Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-12-25",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Christmas Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2026-01-01",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "New Year's Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2026-01-19",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Martin Luther King Jr. Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2026-02-16",
+      "kind": "ANNUAL_HOLIDAY",
+      "reason": "Washington's Birthday",
+      "source_id": "ice_2024_2025_2027_announcement"
+    }
+  ],
+  "early_close_local": "13:00",
+  "early_closes": [
+    {
+      "date": "2019-11-29",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2018_2019_2021_announcement"
+    },
+    {
+      "date": "2019-12-24",
+      "reason": "Christmas Eve",
+      "source_id": "ice_2018_2019_2021_announcement"
+    },
+    {
+      "date": "2020-11-27",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2020-12-24",
+      "reason": "Christmas Eve",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2021-11-26",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2019_2020_2022_announcement"
+    },
+    {
+      "date": "2022-11-25",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2021_2022_2024_announcement"
+    },
+    {
+      "date": "2023-07-03",
+      "reason": "Day before Independence Day",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2023-11-24",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2022_2023_2025_announcement"
+    },
+    {
+      "date": "2024-07-03",
+      "reason": "Day before Independence Day",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-11-29",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2024-12-24",
+      "reason": "Christmas Eve",
+      "source_id": "ice_2023_2024_2026_announcement"
+    },
+    {
+      "date": "2025-07-03",
+      "reason": "Day before Independence Day",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-11-28",
+      "reason": "Day after Thanksgiving",
+      "source_id": "ice_2024_2025_2027_announcement"
+    },
+    {
+      "date": "2025-12-24",
+      "reason": "Christmas Eve",
+      "source_id": "ice_2024_2025_2027_announcement"
+    }
+  ],
+  "end_date": "2026-02-28",
+  "hours_source_id": "nyse_core_hours",
+  "market_scope": "NYSE_EQUITIES_CORE",
+  "mic": "XNYS",
+  "normal_close_local": "16:00",
+  "normal_open_local": "09:30",
+  "schema": "nyse_round9_official_explicit_dates_v1",
+  "sources": [
+    {
+      "announcement_date": "2018-12-04",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2018_2019_2021_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2018_2019_2021_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:19.951541+00:00",
+      "sha256": "bfc91ff0fef5ecbdce022898e1ae622579c06257918a0bb9995750dc5bafb58a",
+      "url": "https://ir.theice.com/files/doc_news/archive/15638cee-2935-4422-bcb4-a3733587eb8b.pdf"
+    },
+    {
+      "announcement_date": "2019-12-09",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2019_2020_2022_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2019_2020_2022_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:51.740257+00:00",
+      "sha256": "685a189e56b95efda98e8c7cbcb17a661de6e4aa49b9f78b1aa943925a0ac9c2",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/archive/91a5230f-7233-4a93-b30a-79c9411ebdbe.pdf"
+    },
+    {
+      "announcement_date": "2021-12-27",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2021_2022_2024_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2021_2022_2024_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:53.072536+00:00",
+      "sha256": "b8537e458aa0f7123c014056da9260d08f3e874b32f7f617d99451f36e049e90",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/NYSE-Group-Announces-2022-2023-and-2024-Holiday-and-Early-Closings-Calendar-2021.pdf"
+    },
+    {
+      "announcement_date": "2022-12-21",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2022_2023_2025_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2022_2023_2025_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:54.129738+00:00",
+      "sha256": "8092099cfc8c408089257004d61da3fba4ca6b7161ed722aac1189fe83a67186",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/NYSE-Group-Announces-2023-2024-and-2025-Holiday-and-Early-Closings-Calendar-2022.pdf"
+    },
+    {
+      "announcement_date": "2023-11-10",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2023_2024_2026_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2023_2024_2026_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:54.858357+00:00",
+      "sha256": "a379433b12a84c1b898075be0c04343ffaef45b6d47a2fd4283747cdcd2bd64f",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/NYSE-Group-Announces-2024-2025-and-2026-Holiday-and-Early-Closings-Calendar-2023.pdf"
+    },
+    {
+      "announcement_date": "2024-11-08",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2024_2025_2027_announcement",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2024_2025_2027_announcement.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:55.613001+00:00",
+      "sha256": "6d719aaaf827c909f362725293c8e932f1b879687e4705eeb8a16f7201fe3355",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/NYSE-Group-Announces-2025-2026-and-2027-Holiday-and-Early-Closings-Calendar-2024.pdf"
+    },
+    {
+      "announcement_date": "2024-12-30",
+      "announcement_date_reason": null,
+      "evidence_kind": "OFFICIAL_PDF_RAW",
+      "id": "ice_2024_carter_closure",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/ice_2024_carter_closure.pdf",
+      "retrieved_at_utc": "2026-10-31T21:39:25.789993+00:00",
+      "sha256": "b83882b2f29554a969c30f5a48c37eff3b6baab449273bfdb3d8c3df62244c69",
+      "url": "https://s2.q4cdn.com/154085107/files/doc_news/The-New-York-Stock-Exchange-Will-Close-Markets-on-January-9-to-Honor-the-Passing-of-Former-President-Jimmy-Carter-on-National-Day-of--IGCRS.pdf"
+    },
+    {
+      "announcement_date": null,
+      "announcement_date_reason": "The official live market-hours page does not state a publication date",
+      "evidence_kind": "OFFICIAL_HTML_RAW",
+      "id": "nyse_core_hours",
+      "local_evidence_relative_path": "artifacts/round9/calendar_sources/nyse_core_hours.html",
+      "retrieved_at_utc": "2026-10-31T21:40:48.422890+00:00",
+      "sha256": "b5f667811dcc2f13ebc8078f760d9ad6938c3c0914c80f318936fed6224fd47c",
+      "url": "https://www.nyse.com/trade/trading-information"
+    }
+  ],
+  "start_date": "2019-11-01",
+  "timezone": "America/New_York",
+  "year_source_ids": {
+    "2019": "ice_2018_2019_2021_announcement",
+    "2020": "ice_2019_2020_2022_announcement",
+    "2021": "ice_2019_2020_2022_announcement",
+    "2022": "ice_2021_2022_2024_announcement",
+    "2023": "ice_2022_2023_2025_announcement",
+    "2024": "ice_2023_2024_2026_announcement",
+    "2025": "ice_2024_2025_2027_announcement",
+    "2026": "ice_2024_2025_2027_announcement"
+  }
+}

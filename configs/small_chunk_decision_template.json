@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "small_chunk_decision_record",
+  "decision_scope": "small_chunk_engineering_probe_real_inference_five_company_full_grid",
+  "decision": "NOT_PROVIDED",
+  "source_reference": {
+    "path": "NOT_PROVIDED",
+    "sha256": "NOT_PROVIDED"
+  },
+  "original_message_at_utc": null,
+  "recorded_at_utc": "NOT_PROVIDED",
+  "candidate_sha256": "a307536980057c227d63fafb11b7b25b4615a2923455717616a7431f05d82388",
+  "input_manifest_sha256": "NOT_PROVIDED",
+  "input_versions": "NOT_PROVIDED",
+  "model_identity": {
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "model_file_sha256": {
+      "onnx/model.onnx": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7"
+    },
+    "provider": "CPUExecutionProvider",
+    "reference_config_sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869"
+  },
+  "metric_contract_sha256": "NOT_PROVIDED",
+  "company_failure_policy": {
+    "required_company_order": ["AAPL", "MSFT", "AMZN", "GOOGL", "META"],
+    "missing_or_failed_company": "FAIL_ARM_NO_SUBSET",
+    "zero_or_nonfinite_vector": "FAIL_ARM_WITH_REASON",
+    "undefined_metric": "NULL_WITH_REASON"
+  }
+}

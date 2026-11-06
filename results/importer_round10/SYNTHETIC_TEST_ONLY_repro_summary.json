@@ -1,0 +1,23 @@
+{
+  "admitted_financial_observations": null,
+  "after_issue_codes": [],
+  "after_receipt_sha256": "b4190f4cf25d39b8f44cbb9b835ec086e69916b74b52719d545b0446272fe338",
+  "after_status": "PASS_STRUCTURE_ONLY",
+  "after_validator_sha256": "bae792fa4d9465af218a010ff6d7284b3293806757e639f84166cdd02147547c",
+  "before_issue_codes": [
+    "AMBIGUOUS_CONCURRENT_SECURITIES"
+  ],
+  "before_receipt_sha256": "419bac4521c96678d21450699ced461df157826f5af11552cd23deb1342245b4",
+  "before_status": "REJECTED_STRUCTURE_ONLY",
+  "before_validator_sha256": "2b771961ae7a03948eff369772407117995c724b9a64cc88a24a9e6d67cd640c",
+  "evidence_class": "SYNTHETIC_TEST_ONLY",
+  "input_sha256": "14e97f045bd13c53f4eaa55952f2fafc28ed3da1513f238e7522c2b9a0da97ec",
+  "provenance_or_license_verified": false,
+  "real_authorized_product_files_imported": 0,
+  "schema": "round10_multiclass_synthetic_repro_v2",
+  "source_commit": "26aea807b1834f41acc035195cfe3d2094e75941",
+  "supersedes_summary_sha256": "c98a66ee06d8bcaca1dbcec63e6c0d36c2c962fa3c1538d2a3f8127f20293b6c",
+  "targeted_test_log_sha256": "4c4703a8ffb00a9a2c31eb312fc99a10502586c8b3aea25a7dccd32c9ff241ac",
+  "targeted_test_source_sha256": "54d16dda14db7da85e296b6af94f7bf11f73e74c2e19a9fe62c0033f34f7854a",
+  "targeted_tests_passed": 18
+}

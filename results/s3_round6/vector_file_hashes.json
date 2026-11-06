@@ -1,0 +1,933 @@
+{
+  "count": 75,
+  "files": [
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+0/AAPL_body_token_weighted.npy",
+      "sha256": "224e6b4da0e9064023eccacf2698b84a849077eee9e9a14b6ffd3b998bb09a4c",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 70784,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+0/AAPL_chunks.npy",
+      "sha256": "afa0a695a704f7f570aea38b3c9ac51f83b9184ae1a7cf9ed986f1a7bc78928a",
+      "shape": [
+        23,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+0/AAPL_equal_chunks.npy",
+      "sha256": "7052f8040ed0c336dda4975be7a7d8641147f4309e40721570f5877002006da4",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+0/AMZN_body_token_weighted.npy",
+      "sha256": "64fbd28166f144bc7489e6df580e56f1e18b0123a884e5dd6ec6eba1ce9d217e",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 61568,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+0/AMZN_chunks.npy",
+      "sha256": "7c99426bfd0c8205ec8da0bbf561d1743bd33af437c974f3ff0c768ce655819a",
+      "shape": [
+        20,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+0/AMZN_equal_chunks.npy",
+      "sha256": "bd0bbd1607d9a7bc0efb7b34350f6178659beab835a4506118139ee030eb4c3c",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+0/GOOGL_body_token_weighted.npy",
+      "sha256": "ab38153b33a1b7011662437a67bc40e77420bed59ff1dde33fc2bfabf4b42051",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 141440,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+0/GOOGL_chunks.npy",
+      "sha256": "ed45cf7b13126dc8d442c742bafe5b8c704fb4d7462d02795ac78a364eca600f",
+      "shape": [
+        46,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+0/GOOGL_equal_chunks.npy",
+      "sha256": "c6fdde885414a710223797ef0feed0292181b766f1b084b6115bd1a162276c7f",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+0/META_body_token_weighted.npy",
+      "sha256": "11e95af3699a6e7541a5b98d7c3e56f17f8ca7a67355b4813ad25475fc8795cf",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 184448,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+0/META_chunks.npy",
+      "sha256": "e3f651ba892176b4e1e987a60f7bab640a62a7f6e6cea09f6696f4465014ba25",
+      "shape": [
+        60,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+0/META_equal_chunks.npy",
+      "sha256": "0d77964792fca86812dc6ff91f8ebe6cc5ded5bf61e38c2276d8c2bf84ef8259",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+0/MSFT_body_token_weighted.npy",
+      "sha256": "0753e16da9b4bc1603ba9df4c77d29828a038ff126f8df7fe24be8fa14b7fe25",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 205952,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+0/MSFT_chunks.npy",
+      "sha256": "f105289494fa1eba0d59d2128ae5ed42956a47c8f2844c29b36af9aaa80a949a",
+      "shape": [
+        67,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 0,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+0/MSFT_equal_chunks.npy",
+      "sha256": "7725499513303e4eb31a6c6e1a75451dd74d6e9cef15a09daa6543ef09fe1eb5",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+10/AAPL_body_token_weighted.npy",
+      "sha256": "c706df9e8590a06761f3e0d5932e186925159a9e0e9e7c8dd10f0fc68ede4d09",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 70784,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+10/AAPL_chunks.npy",
+      "sha256": "b36a730928047f6500c5009e842352ec87f386238d3a70c42cfae36c663f0dee",
+      "shape": [
+        23,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+10/AAPL_equal_chunks.npy",
+      "sha256": "26073367b56456dc4f2c6113687678e3f792b8aa0dbfd98f65e17d2b9fadad52",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+10/AMZN_body_token_weighted.npy",
+      "sha256": "30aa75bec849b989cc151ecbd5b0e58f16f77baa1f5fbf5858bc3fb96c64789c",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 61568,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+10/AMZN_chunks.npy",
+      "sha256": "a2163f8f2986a43de1d89612957ecefa18b404b5632c3390ebc50573575518b0",
+      "shape": [
+        20,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+10/AMZN_equal_chunks.npy",
+      "sha256": "cb2eb37c396b6e673baf0087ee4f8d079425f252743d76386c4f56dd1b2003ca",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+10/GOOGL_body_token_weighted.npy",
+      "sha256": "c1918b42198f4a22c299ece7fea026446122bbada4ff80ee0d883d0be70ab149",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 141440,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+10/GOOGL_chunks.npy",
+      "sha256": "348f3f4ae01ab90aedcf575525a6bbb7e3048f850cf965e1fc4861f8b147caef",
+      "shape": [
+        46,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+10/GOOGL_equal_chunks.npy",
+      "sha256": "e979d6d3c52c7bbf14ccb6484731f0e332f77bc3ee6d0e3149ece7d713867831",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+10/META_body_token_weighted.npy",
+      "sha256": "f2112c1aa16d6d3d32e753e0787e928a1dacea06d6d517031b12b272602e3a89",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 184448,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+10/META_chunks.npy",
+      "sha256": "04834639210c41fa060bbedd3844b832d3bea6abae2c7f6af4fd8c5a1ce8971a",
+      "shape": [
+        60,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+10/META_equal_chunks.npy",
+      "sha256": "e4fa3628801deb0ef1f9b01251acb6ff20593028bd558635cb70b9445295c43f",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+10/MSFT_body_token_weighted.npy",
+      "sha256": "3ba0e746874fb6c9e77562154e1771dd2614bf53108160bae28d4c6d8f64432c",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 205952,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+10/MSFT_chunks.npy",
+      "sha256": "05176fce92854e30d65ed2622a84e27f3f171ed5314ae93df1aa79333064f914",
+      "shape": [
+        67,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+10/MSFT_equal_chunks.npy",
+      "sha256": "d47587f5fc328052f9e3882552bd9a8f4d935a9e17cec1a7e8f0405b4caec052",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+5/AAPL_body_token_weighted.npy",
+      "sha256": "4189d87660c64b2fd6b2fc982366117ede221a738bcd02ca1d245fc2a15ff201",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 70784,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+5/AAPL_chunks.npy",
+      "sha256": "3d25684238d2d5c2de237e6ac4cefb703fcaaae519e7612224c94fb3d2a07fbb",
+      "shape": [
+        23,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+5/AAPL_equal_chunks.npy",
+      "sha256": "79d314fcf7c8918e458dce2d04b54e84d44adde668a1895b796d378b8e09e0e0",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+5/AMZN_body_token_weighted.npy",
+      "sha256": "c4c2a103cb7347983686c90c09e85dccfdef58127411eec929c71254dc729125",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 61568,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+5/AMZN_chunks.npy",
+      "sha256": "3927a44b78768eae06a827027bfddd882c8b2113cbbf7a4fe39599049bf81dc2",
+      "shape": [
+        20,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+5/AMZN_equal_chunks.npy",
+      "sha256": "a543ba0d62464405c4df34a492d55bdc9fcc8a241ad92065cba1590bdadbab1d",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+5/GOOGL_body_token_weighted.npy",
+      "sha256": "e02bf2faefc48fe9f70fcc92bc1f2c710b2931d155d6fc72cbb4cd8682c3d5a5",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 141440,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+5/GOOGL_chunks.npy",
+      "sha256": "dc4906220769c288863db6234d45be07bb32376720c48d6939f36f81f4ab7eb8",
+      "shape": [
+        46,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+5/GOOGL_equal_chunks.npy",
+      "sha256": "337eb4c12ecb404407daa98f15ece0ce96ab10f05061f2271939098d87bc1f2a",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+5/META_body_token_weighted.npy",
+      "sha256": "1e29cfa3558570f622739ea644fa5d85ef8efbe67b26d7850ae1557154e95d4e",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 184448,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+5/META_chunks.npy",
+      "sha256": "88e3a8a7877322e9277cf2f59a7c75cb28601aa726b97419efdaa11d51f82542",
+      "shape": [
+        60,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+5/META_equal_chunks.npy",
+      "sha256": "ab2f1707fc382d568f72c7ec12bb84de0312b8ac23a034b3c8f280524e350d18",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_+5/MSFT_body_token_weighted.npy",
+      "sha256": "57dfa2961132a6cf7de70d5a18672f06fd905a31154210362879920db3fa1c11",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 205952,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_+5/MSFT_chunks.npy",
+      "sha256": "584080090eb515703dd11cf3d087ff4e73522adaf61f896a41822740dcac5096",
+      "shape": [
+        67,
+        384
+      ]
+    },
+    {
+      "boundary_shift": 5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_+5/MSFT_equal_chunks.npy",
+      "sha256": "69f9c8dbd710687b5254e53a5663b6c6d2ac24aa969797cda6ba4d9ca2a9f5a9",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-10/AAPL_body_token_weighted.npy",
+      "sha256": "ae94de918d8b65ff47f86141c556a0116d5f2da9989fffcff84b517d9a2729ce",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 70784,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-10/AAPL_chunks.npy",
+      "sha256": "51ac5919e28840fafefe5ffcaf762aef975f9886a25029e99bb12ee070eb0ecc",
+      "shape": [
+        23,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-10/AAPL_equal_chunks.npy",
+      "sha256": "89940910f0d61fe591d5a3ca526ca1bebe14bec33bf2ca641464c6df6480a344",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-10/AMZN_body_token_weighted.npy",
+      "sha256": "3db763113cffe93200c9a3684c1bfa4b078fff5cacdff92ab2d507e671da7179",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 61568,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-10/AMZN_chunks.npy",
+      "sha256": "03d87e1ff6e02d866de441e41ead45e8412a6b6cb291656864948719c78a9bd3",
+      "shape": [
+        20,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-10/AMZN_equal_chunks.npy",
+      "sha256": "6f67a0caa560e4e4a3bc850eeadc8c2e6f8ef5769eb0f14d7e812d7b4b48f24b",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-10/GOOGL_body_token_weighted.npy",
+      "sha256": "c1f56b06db389ec7879d85d25a74ec2c886e4b2f890ddafded5fdf0297890780",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 141440,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-10/GOOGL_chunks.npy",
+      "sha256": "97a0cd0c3a8c482ec1a2489c7490c8d8132be237408a6806e3c0249aa3e9154a",
+      "shape": [
+        46,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-10/GOOGL_equal_chunks.npy",
+      "sha256": "28e247cd0bc201bcb1a05ea066f401c7a72449e660bcb2b17295ca04c058e984",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-10/META_body_token_weighted.npy",
+      "sha256": "a2c4b802a1cfefafe10d05bcb0af927999384f6538fcba47ed0d8fe27d7da70f",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 184448,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-10/META_chunks.npy",
+      "sha256": "54671769fe4056851c510c069cc694cb41d3df16bff8b0788ae852f8f8600702",
+      "shape": [
+        60,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-10/META_equal_chunks.npy",
+      "sha256": "e024b642199f10742dbdb942aaeb296cc60906e1a8e91e22f18e7382a55505a5",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-10/MSFT_body_token_weighted.npy",
+      "sha256": "2ae8af5603cb358e2f38ccc87192aa7cee3654d39a97ca89171a4736112ecee5",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 205952,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-10/MSFT_chunks.npy",
+      "sha256": "7b0cc365cdea4cf78611b304c70e5e3ba25cf7a25c78fe6c3774aab2c0a43abc",
+      "shape": [
+        67,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -10,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-10/MSFT_equal_chunks.npy",
+      "sha256": "52e684b03a2bbd7061aa8e3d11ed24edfb4c1681df074b451188e51e87a7706a",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-5/AAPL_body_token_weighted.npy",
+      "sha256": "e728153da0d2b96a2841addd0a49d3d9d0869348f3f37340e471b7a58f5f1b2b",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 70784,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-5/AAPL_chunks.npy",
+      "sha256": "d48da4560abe98a9dfb1498e87d701b880e955364480ab0f906ce5f5f293ada3",
+      "shape": [
+        23,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AAPL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-5/AAPL_equal_chunks.npy",
+      "sha256": "705b7a14edea84d945a4de31f2babe4cfd8f27fa2197eed2f152d90573afac21",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-5/AMZN_body_token_weighted.npy",
+      "sha256": "ee6c46846fbc8a769f5fc78a011a192b803b47a399555b5a79b9d4d5c0173c3f",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 61568,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-5/AMZN_chunks.npy",
+      "sha256": "2278988ffcedb31f3d25f30d74a89712f0b416d343818227ca7583f0721601ec",
+      "shape": [
+        20,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "AMZN",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-5/AMZN_equal_chunks.npy",
+      "sha256": "acc662330919279ee4cf885289728ef3a0b3447f109d70fe03e1ee7a8c81fb09",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-5/GOOGL_body_token_weighted.npy",
+      "sha256": "e217e92681b2776692a29b49f7b4a0a8383956a1ed20afcd9dc2d0c3141355d7",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 141440,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-5/GOOGL_chunks.npy",
+      "sha256": "231a9c05cf4b97c8ad4937405f10537a49283f2260afccc10b87060f0e0da2fc",
+      "shape": [
+        46,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "GOOGL",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-5/GOOGL_equal_chunks.npy",
+      "sha256": "c4453eb62c5dfddfa27ad318c7e5916e0d319641df5169cd23d8dcd9ae7fcf37",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-5/META_body_token_weighted.npy",
+      "sha256": "1555b967ac22c2c809119cd57c76ef8165666bd21f3b0fce279b9f71c9982f3d",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 184448,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-5/META_chunks.npy",
+      "sha256": "e776af6c70ac608528a206268983121672e79ff3b0d6a5c4b569fb238b26b00d",
+      "shape": [
+        60,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "META",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-5/META_equal_chunks.npy",
+      "sha256": "6a3983521b1aeac6e4c85526d54cfe11c57fcdc665c9340505ef2d3ebe0bf2e6",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "body_token_weighted",
+      "relative_path": "vectors/delta_-5/MSFT_body_token_weighted.npy",
+      "sha256": "f95e365bf176d9c71ccc43165ed43910877b66e83e1e280c2ca23c298f2e94b6",
+      "shape": [
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 205952,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "chunks",
+      "relative_path": "vectors/delta_-5/MSFT_chunks.npy",
+      "sha256": "a713f1f8cc7e3a246004612c47896b101fef922c3c18503ca2dc515cd6eea8f1",
+      "shape": [
+        67,
+        384
+      ]
+    },
+    {
+      "boundary_shift": -5,
+      "bytes": 3200,
+      "dtype": "float64",
+      "job_ticker": "MSFT",
+      "kind": "equal_chunks",
+      "relative_path": "vectors/delta_-5/MSFT_equal_chunks.npy",
+      "sha256": "2ef8dd4dd2eca8660e79c145fa8ac546df912cf76116149de161e6bb1e5bdad4",
+      "shape": [
+        384
+      ]
+    }
+  ],
+  "kind": "S3_VECTOR_FILE_HASH_INVENTORY_ONLY",
+  "source_manifest_sha256": "eab4abec64f65d9f9d48589eba20c59edc5c75f4d6ee2567db6765e58dfd1f47",
+  "vector_bytes_excluded": true
+}

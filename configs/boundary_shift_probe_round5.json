@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_shift_engineering_probe_candidate",
+  "purpose": "Exploratory fixed-text 128-base boundary-shift engineering contrast after round 4",
+  "status": "PROPOSED",
+  "researcher_accepted": false,
+  "real_inference_status": "NOT_RUN",
+  "input": {
+    "form": "10-K",
+    "section": "ITEM_1_BUSINESS",
+    "company_order": [
+      "AAPL",
+      "MSFT",
+      "AMZN",
+      "GOOGL",
+      "META"
+    ],
+    "corpus_index_sha256": "ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c",
+    "versions": [
+      {
+        "accession": "0000320193-25-000079",
+        "cik": "0000320193",
+        "form": "10-K",
+        "item1_sha256": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+        "section": "ITEM_1_BUSINESS",
+        "ticker": "AAPL"
+      },
+      {
+        "accession": "0000950170-25-100235",
+        "cik": "0000789019",
+        "form": "10-K",
+        "item1_sha256": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6",
+        "section": "ITEM_1_BUSINESS",
+        "ticker": "MSFT"
+      },
+      {
+        "accession": "0001018724-25-000004",
+        "cik": "0001018724",
+        "form": "10-K",
+        "item1_sha256": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+        "section": "ITEM_1_BUSINESS",
+        "ticker": "AMZN"
+      },
+      {
+        "accession": "0001652044-25-000014",
+        "cik": "0001652044",
+        "form": "10-K",
+        "item1_sha256": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+        "section": "ITEM_1_BUSINESS",
+        "ticker": "GOOGL"
+      },
+      {
+        "accession": "0001326801-25-000017",
+        "cik": "0001326801",
+        "form": "10-K",
+        "item1_sha256": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+        "section": "ITEM_1_BUSINESS",
+        "ticker": "META"
+      }
+    ]
+  },
+  "model_config": {
+    "path": "configs/smoke.yaml",
+    "sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869"
+  },
+  "provider": "CPUExecutionProvider",
+  "normalization": {
+    "normalize_chunks": true,
+    "normalize_documents": true,
+    "order": "L2-normalize each chunk, pool by declared weights, then L2-normalize each company vector"
+  },
+  "chunking": {
+    "reference_body_tokens": 128,
+    "boundary_shifts": [
+      -10,
+      -5,
+      0,
+      5,
+      10
+    ],
+    "overlap_tokens": 0,
+    "rule": "shift_all_internal_cuts",
+    "definition": "For T complete body token IDs, n=ceil(T/128); boundaries are 0, 128*j+delta for j=1..n-1, T. Slice consecutive token IDs once without re-tokenization, clipping, splitting, reordering or overlap.",
+    "long_tail_policy": "A negative shift may make the final body chunk exceed 128; retain it if the actual model input budget permits, otherwise fail preflight."
+  },
+  "pooling": [
+    "equal_chunks",
+    "body_token_weighted"
+  ],
+  "metric_family_reference": {
+    "path": "docs/SMALL_CHUNK_METRICS.md",
+    "sha256": "58a7b2f1389be691ef979f4fc4710f11d29027617c93f5a4eab580f73f3a6402"
+  },
+  "query_rewriting": false,
+  "generation": false,
+  "training": false,
+  "historical_128_map_sha256": "a3d80040c3ffd88fc666b11eab813d89a89d6a822fdd3f4f71bc895a28e1ee73"
+}

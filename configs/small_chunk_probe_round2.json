@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "new_engineering_probe_candidate",
+  "purpose": "Fixed-text small-step chunk-length sensitivity",
+  "status": "PROPOSED",
+  "researcher_accepted": false,
+  "real_inference_status": "NOT_RUN",
+  "input": {
+    "form": "10-K",
+    "section": "ITEM_1_BUSINESS",
+    "company_order": ["AAPL", "MSFT", "AMZN", "GOOGL", "META"],
+    "corpus_index_sha256": "ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c"
+  },
+  "model_config": {
+    "path": "configs/smoke.yaml",
+    "sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869"
+  },
+  "chunking": {
+    "reference_body_tokens": 128,
+    "candidate_body_tokens": [118, 123, 128, 133, 138],
+    "overlap_tokens": 0
+  },
+  "pooling": ["equal_chunks", "body_token_weighted"],
+  "query_rewriting": false,
+  "generation": false,
+  "training": false
+}

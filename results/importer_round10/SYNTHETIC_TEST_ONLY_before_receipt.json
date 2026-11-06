@@ -1,0 +1,25 @@
+{
+  "admitted_financial_observations": null,
+  "exit_records_seen": 1,
+  "input_sha256": "14e97f045bd13c53f4eaa55952f2fafc28ed3da1513f238e7522c2b9a0da97ec",
+  "issues": [
+    {
+      "code": "AMBIGUOUS_CONCURRENT_SECURITIES",
+      "detail": "overlaps row 1; no unique primary",
+      "row": 2,
+      "table": "cik_security_links"
+    }
+  ],
+  "provenance_or_license_verified": false,
+  "record_counts": {
+    "actions_and_exits": 1,
+    "cik_security_links": 3,
+    "daily_bars": 2,
+    "security_master": 3,
+    "sources": 1,
+    "text_evidence": 1
+  },
+  "returns_or_scores_computed": false,
+  "status": "REJECTED_STRUCTURE_ONLY",
+  "validator_source_sha256": "2b771961ae7a03948eff369772407117995c724b9a64cc88a24a9e6d67cd640c"
+}

@@ -1,0 +1,25 @@
+{
+  "attempts": [
+    {
+      "actual_batch_call_attempts": 145,
+      "actual_encoder_sessions": 1,
+      "attempt": 1,
+      "chunk_vectors_completed": 1080,
+      "command_wall_seconds_including_gates": 28.878761,
+      "company_vectors_completed": 50,
+      "exit_code": 0,
+      "failures": 0,
+      "logical_jobs_completed": 25,
+      "manifest_sha256": "eab4abec64f65d9f9d48589eba20c59edc5c75f4d6ee2567db6765e58dfd1f47",
+      "manifest_wall_seconds_from_output_creation": 9.66397200000938,
+      "output_directory_name": "20261031-s3-real5-run-v1",
+      "run_log_sha256": "e9f4ad41afbe00956d89feeeda560cb72ae4f8699149017f042023ca8e209f54",
+      "status": "COMPLETE"
+    }
+  ],
+  "cumulative_batch_call_attempts": 145,
+  "cumulative_encoder_sessions": 1,
+  "kind": "S3_REAL_MODEL_ATTEMPT_LEDGER",
+  "peak_memory": "UNKNOWN_NOT_MEASURED",
+  "retry_count": 0
+}

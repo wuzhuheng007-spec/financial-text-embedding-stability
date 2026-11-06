@@ -1,0 +1,17 @@
+{
+  "arms": {
+    "body_token_weighted": {
+      "cosine_matrix_equal": true,
+      "full_arm_equal": true,
+      "neighbor_order_equal": true
+    },
+    "equal_chunks": {
+      "cosine_matrix_equal": true,
+      "full_arm_equal": true,
+      "neighbor_order_equal": true
+    }
+  },
+  "kind": "S3_DELTA_ZERO_ROUND4_METRIC_COMPATIBILITY",
+  "note": "Read-only numerical compatibility for the exact delta-zero arms, after identity checks in separate vector audit.",
+  "status": "PASS"
+}

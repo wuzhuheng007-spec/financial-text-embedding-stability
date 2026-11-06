@@ -1,0 +1,144 @@
+{
+  "actions_and_exits": [
+    {
+      "event_date": "2025-01-03",
+      "event_type": "DELISTING",
+      "event_value": null,
+      "event_value_unit": null,
+      "missing_terminal_reason": "SYNTHETIC_TEST_ONLY_UNAVAILABLE",
+      "retrieved_at_utc": "2026-11-01T00:00:00Z",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "source_record_version": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_SECURITY",
+      "terminal_price": null
+    }
+  ],
+  "cik_security_links": [
+    {
+      "ambiguity_flag": false,
+      "cik": "0000000000",
+      "is_primary": true,
+      "primary_basis": "SYNTHETIC_TEST_ONLY",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_SECURITY",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    },
+    {
+      "ambiguity_flag": false,
+      "cik": "0000000000",
+      "is_primary": false,
+      "primary_basis": null,
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_CLASS_B",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    },
+    {
+      "ambiguity_flag": false,
+      "cik": "0000000000",
+      "is_primary": false,
+      "primary_basis": null,
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_CLASS_C",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    }
+  ],
+  "daily_bars": [
+    {
+      "action_source_id": "SYNTHETIC_TEST_ONLY",
+      "adjustment_basis": "split_only",
+      "close": 10.0,
+      "currency": "USD",
+      "exit_marker": false,
+      "missing_reason": null,
+      "price_definition": "regular_close",
+      "retrieved_at_utc": "2026-11-01T00:00:00Z",
+      "session_date": "2025-01-02",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "source_record_version": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_SECURITY"
+    },
+    {
+      "action_source_id": "SYNTHETIC_TEST_ONLY",
+      "adjustment_basis": "split_only",
+      "close": 11.0,
+      "currency": "USD",
+      "exit_marker": false,
+      "missing_reason": null,
+      "price_definition": "regular_close",
+      "retrieved_at_utc": "2026-11-01T00:00:00Z",
+      "session_date": "2025-01-03",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "source_record_version": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_SECURITY"
+    }
+  ],
+  "evidence_class": "SYNTHETIC_TEST_ONLY",
+  "required_security_sessions": {
+    "SYNTHETIC_SECURITY": [
+      "2025-01-02",
+      "2025-01-03"
+    ]
+  },
+  "security_master": [
+    {
+      "firm_id": "SYNTHETIC_FIRM",
+      "listing_status": "listed",
+      "mic": "XNYS",
+      "security_type": "common_share",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_SECURITY",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    },
+    {
+      "firm_id": "SYNTHETIC_FIRM",
+      "listing_status": "listed",
+      "mic": "XNYS",
+      "security_type": "common_share",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_CLASS_B",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    },
+    {
+      "firm_id": "SYNTHETIC_FIRM",
+      "listing_status": "listed",
+      "mic": "XNYS",
+      "security_type": "common_share",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "stable_security_id": "SYNTHETIC_CLASS_C",
+      "valid_from": "2020-01-01",
+      "valid_to": "2025-01-04"
+    }
+  ],
+  "sources": [
+    {
+      "access_basis": "SYNTHETIC_TEST_ONLY",
+      "acquired_at_utc": "2026-11-01T00:00:00Z",
+      "local_file_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "official_url": "https://example.invalid/synthetic",
+      "product": "SYNTHETIC_TEST_ONLY",
+      "product_version": "SYNTHETIC_TEST_ONLY",
+      "source_id": "SYNTHETIC_TEST_ONLY"
+    }
+  ],
+  "text_evidence": [
+    {
+      "accession": "SYNTHETIC_TEST_ONLY",
+      "cik": "0000000000",
+      "proxy_rule_id": null,
+      "public_no_later_than_utc": null,
+      "public_time_evidence_class": "UNKNOWN",
+      "public_time_utc": null,
+      "retrieved_at_utc": "2026-11-01T00:00:00Z",
+      "revision_status": "SYNTHETIC_TEST_ONLY",
+      "section": "Item 1 Business",
+      "section_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "source_id": "SYNTHETIC_TEST_ONLY",
+      "source_record_version": "SYNTHETIC_TEST_ONLY"
+    }
+  ]
+}
