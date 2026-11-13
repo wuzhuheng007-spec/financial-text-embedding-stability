@@ -1,0 +1,71 @@
+{
+  "schema": "m5_three_preparation_run_verification_safe_v1",
+  "date": "2026-11-13",
+  "scope": "ENGINEERING_ONLY_PREPARATION",
+  "execution_code_commit": "35cbe9b40cea3c493771c862d8a9e1ca31230713",
+  "accepted_preparation_policy_sha256": "14f22ae821d61d44848832fc5e73b5b27360f5947cafb4189ceb27603a38970e",
+  "private_decision_receipt_sha256_only": "cf701cb379b6849ceb5f89def2c7e38f3e9b2d16f6a1ac7971b032201bb8c56c",
+  "round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "candidate": {
+    "status": "CANDIDATE_SCREEN_BUILT_NOT_ADMITTED_AND_SAVED_OUTPUT_VERIFIED",
+    "source_ledger_sha256": "49f00380da610f85637ea77178a2eda9f784e0ffe1ac9db2dee79a40dac4337f",
+    "execution_code_sha256": "5ad2f34931574a98b5a306d1202a168faa14f40cc7975c14f2f72349053e7e85",
+    "run": {
+      "command": "python scripts/prepare_m5_candidate_screen.py run --source-dir artifacts/m5_identity_candidate_ledger_20261113_v1 --output-dir artifacts/m5_preparation_candidate_20261113_v1",
+      "exit_code": 0,
+      "wall_seconds": 43.212,
+      "safe_log_sha256": "09816db7cae1a75884078bfdd51a232f3806b3ac5be5c8141f1df35fe23b7f13"
+    },
+    "verify_output": {
+      "command": "python scripts/prepare_m5_candidate_screen.py verify-output --output-dir artifacts/m5_preparation_candidate_20261113_v1",
+      "exit_code": 0,
+      "wall_seconds": 19.333,
+      "safe_log_sha256": "da2e37733119d7b51fd5a489542da597db1b03ce2d0193ac9f220248d7850db7"
+    },
+    "saved_output_sha256": {
+      "private_index_hash_only": "2254c697a3a0a3df0edac16b403a7737f0285f9f6735d06e5a37595bcd212602",
+      "private_registry_hash_only": "6293d92721bf67a31f0b56a704ef27dbc894322d68a9f4a781406ec1287ddb86",
+      "summary_safe_json": "1f9c62a27884162302e6b40acefd9898bb81cb00a371a06a6e54b067d70d56b0",
+      "private_manifest_hash_only": "779474aa184b4cfcece779b7ce51acb759846a408449d9ef0e311f1932a9a4d9"
+    }
+  },
+  "daily": {
+    "status": "RUN_AND_SAVED_OUTPUT_VERIFIED_ENGINEERING_ONLY",
+    "source_inventory_sha256": "13cbec98b9ec2d6ef59a6b8f42b89a872b6789388861d114fe8413bbef6a64cd",
+    "execution_code_sha256": "b501f78497140ea3fb9298bc42bc2afcc7e6df8ba6c615877fcf950e1504ded9",
+    "normalizer_code_sha256": "97ded6befe05d0759d1c289618a31d1cf4eab6f965d34fb01768fef1b23cae1c",
+    "run": {
+      "command": "python scripts/prepare_m5_daily_rows.py run --output artifacts/m5_preparation_daily_20261113_v1",
+      "exit_code": 0,
+      "wall_seconds": 877.392,
+      "safe_log_sha256": "c2871aa6cffbc10b9560d404c04afc6d37b08f668b5436559491773abb8a5be8"
+    },
+    "verify_output": {
+      "command": "python scripts/prepare_m5_daily_rows.py verify-output --output artifacts/m5_preparation_daily_20261113_v1",
+      "exit_code": 0,
+      "wall_seconds": 245.304,
+      "safe_log_sha256": "579043f60f4f099a31232ce3676ca49293e5cfa4aaa23e68a7d75fde9d016e29"
+    },
+    "saved_output_sha256": {
+      "private_sqlite_file_hash_only": "9625bf39efda1156b4ed92ccc3bcc997d14f1ff1369416334216da894db80321",
+      "summary_safe_json": "07fe5604e8d80434559f74be2a3383715c72598a7d57ae4229c04f0d9d4959e2",
+      "private_manifest_hash_only": "e3ee26f1169c455a30927eb4d74d72152437bfc1f69b98c1590e75dd2ec93c89",
+      "mapping_logical_sha256": "76a22929cfb372f8a4bc8826304d415fac9c0c2ea9d86357cfa92aa86d686269"
+    },
+    "shareable_execution_summary_sha256": "63edf6e6bc341464c97e560eb1a270c06ee0dd03b29c56288d1678b5c4f39c28"
+  },
+  "software_checks": {
+    "candidate_synthetic_pytest_passed": 6,
+    "daily_synthetic_unittest_passed": 10,
+    "real_encoder_sessions": 0,
+    "financial_labels_or_models_run": false
+  },
+  "research_state": {
+    "preparation_rules_researcher_accepted": true,
+    "full_m5_protocol_researcher_accepted": false,
+    "formal_m5_cohort_count": null,
+    "admitted_observations": null,
+    "final_event_mask": null,
+    "financial_training_prediction_evaluation_or_backtest": "NOT_RUN"
+  }
+}

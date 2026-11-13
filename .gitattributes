@@ -1,0 +1,27 @@
+configs/m5_financial_protocol_round8.json text eol=lf
+.gitattributes text eol=lf
+scripts/audit_m5_horizon_round8.py text eol=lf
+tests/test_audit_m5_horizon_round8.py text eol=lf
+reports/2026-11-01_m5_execution_and_sources_round8.md text eol=lf
+configs/nyse_calendar_rules_round9.json text eol=lf
+scripts/build_nyse_calendar_round9.py text eol=lf
+scripts/audit_m5_calendar_coverage_round9.py text eol=lf
+scripts/validate_m5_import_round9.py text eol=lf
+tests/test_build_nyse_calendar_round9.py text eol=lf
+tests/test_audit_m5_calendar_coverage_round9.py text eol=lf
+tests/test_validate_m5_import_round9.py text eol=lf
+docs/M5_HISTORICAL_IMPORT_ROUND9.md text eol=lf
+docs/M5_DATA_ACCESS_CONFIRMATION_ROUND9.md text eol=lf
+reports/2026-11-01_round9_calendar_data_handoff.md text eol=lf
+scripts/audit_m5_issuer_history.py text eol=lf
+tests/test_audit_m5_issuer_history.py text eol=lf
+reports/2026-11-11_m5_issuer_history_local_intake.md text eol=lf
+scripts/audit_m5_delist_intake.py text eol=lf
+tests/test_audit_m5_delist_intake.py text eol=lf
+reports/2026-11-11_m5_delist_local_intake.md text eol=lf
+scripts/prepare_m5_daily_permno_upload.py text eol=lf
+tests/test_prepare_m5_daily_permno_upload.py text eol=lf
+docs/M5_WRDS_NEXT_DOWNLOAD.md text eol=lf
+
+# Preserve the reviewed publication bytes, including bound JSON.
+* -text

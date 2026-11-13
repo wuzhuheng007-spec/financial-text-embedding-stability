@@ -1,0 +1,38 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\title{Financial text embedding stability: research progress}
+\author{}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+\noindent Full source, reports and machine metrics: \url{https://github.com/wuzhuheng007-spec/financial-text-embedding-stability}.
+
+S2 and S3 have completed their fixed-input engineering runs and saved-output recomputation. Each contains 25 encoding tasks and 50 company vectors across ten settings. S2 saved 1,083 chunk vectors; S3 saved 1,080. Each run recorded one CPU encoder session and 145 batch attempts with no failed task. These are historical run counts, not computations performed for this publication. Exact run, input and metric identities are in the complete S2 (see repository), S3 (see repository) and synthesis (see repository) reports and the machine results under results/s2\_round4/ and results/s3\_round6/.
+
+S2 varies length, boundaries, chunk count and tails together. S3 holds chunk count but changes content allocation, first/tail lengths and length-based weights. Pooling comparisons reuse each task's chunk vectors. The results support descriptive comparisons for these texts and this model. They do not establish general stability, semantic improvement, a causal mechanism or financial value.
+
+\section*{Data received and admission work}
+
+The intake reports (see repository) cover the starting security set, subsequent security and issuer histories, CIK-CUSIP observation candidates, eight Daily segments, bounded Distribution exports and filtered exits. The attribute inventory (see repository) records 7,639 starting securities and 29,404 issue intervals. These are source units, not admitted companies or financial events. The CCM intake (see repository) adds a complete saved candidate-relation index with a separate readback check.
+
+The latest source comparison (see repository) found zero LO matches among four previously identified LINKTYPE exceptions. Their actual code meaning remains unresolved. The account page's selected values and a successful export do not prove the backend SQL, JOIN conditions or exact data release. Header CIK and primary-issue observations cannot automatically inherit CCM link dates.
+
+Official documentation was consulted on 13 November. The current CRSP guide (see repository), Legacy guide (see repository) and SAS special-missing documentation (see repository) provide general definitions but do not identify this export's exact conversion or release. A request to WRDS Support is open. The account-specific ticket and correspondence remain private; no official answer has been received in this publication record.
+
+\section*{Proposed financial study}
+
+The current candidate (see repository) keeps company filing events, evidence-based historical security links and a documented primary issue. Its clock is a retrospective proxy based on the first applicable session strictly after SEC Filing Date. It does not claim that the text and finalized price were available to a historical trader at that time.
+
+The remaining decisions concern the dated CIK/primary-issue bridge and market calendar; original filing and Item 1 versions; traded-close adjustments, distributions and exits; duplicate and missing-value treatment; and an exact full-protocol acceptance. The remaining-requirements table (see repository) assigns each missing item to the execution step it blocks. Formal company and event counts remain null. M5 is PROPOSED, researcher\_accepted=false and NOT\_RUN.
+
+\section*{Integrity record}
+
+The earlier accidental real-encoder regression tests on synthetic text remain a recorded deviation with an unknown exact forward count. A private quote once appeared in an unpushed intermediate commit; that history is excluded from this publication. No prior evidence or candidate bytes were changed to conceal either event.
+
+This synchronization copies source, tests, selected aggregate results and research documents. It does not rerun old audits, recompute labels, train, score or backtest. The public snapshot has a separate parent in the existing sharing history, and original development files remain local. Editorial changes follow the humanizer skill: direct descriptions, fewer repetitive qualifications, and no changes to supported claims or numerical evidence.
+
+\end{document}

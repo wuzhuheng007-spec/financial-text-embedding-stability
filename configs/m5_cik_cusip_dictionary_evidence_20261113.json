@@ -1,0 +1,208 @@
+{
+  "schema": "m5_cik_cusip_dictionary_evidence_v1",
+  "status": "SCREENSHOT_FIELD_LABELS_VERIFIED_WITH_LIMITS",
+  "scope": "ENGINEERING_ONLY_METADATA",
+  "evidence_kind": "USER_SUPPLIED_WRDS_INTERFACE_SCREENSHOTS",
+  "handoff_zip_sha256": "ac0e26fbafb88f9c597fcdeb87de1eab6507dfc3c46f2a571049f27083008d51",
+  "source_transcription_sha256": "4b7996bf0ef050bd6d5d0a287a1e7b5e33e58b20da72d139e239d2eea62ee7a0",
+  "authenticated_dictionary_page_retrieved_in_this_run": false,
+  "page_display": {
+    "title": "CIK-CUSIP Link Table",
+    "product_label": "wrdssec_common",
+    "library_label": "wrdssec",
+    "file_label": "wciklink_cusip",
+    "product_is_not_inferred_sql_schema": true,
+    "last_updated_on_displayed": "2026-11-11",
+    "update_frequency_displayed": "Daily",
+    "update_timezone": null,
+    "exact_release_identifier": null,
+    "prior_export_snapshot_binding": "NOT_VERIFIED",
+    "entry_url": "https://wrds-www.wharton.upenn.edu/pages/get-data/wrds-sec-analytics-suite/wrds-sec-linking-tables/cik-cusip-link-table/"
+  },
+  "fields": [
+    {
+      "name": "cik",
+      "page_type": "Char",
+      "label_verbatim": "(cik) SEC CIK Number",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "coname",
+      "page_type": "Char",
+      "label_verbatim": "(coname) Company Name",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "cusip_full",
+      "page_type": "Char",
+      "label_verbatim": "(cusip_full) 9-Digit CUSIP Number as Appears in SEC Filings of CIK Entity",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "cusip",
+      "page_type": "Char",
+      "label_verbatim": "(cusip) 8-Digit CUSIP Number as Appears in SEC Filings of CIK Entity",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "cikdate1",
+      "page_type": "Date",
+      "label_verbatim": "(cikdate1) First Filing Date of CIK-CUSIP Combination",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "cikdate2",
+      "page_type": "Date",
+      "label_verbatim": "(cikdate2) Last Filing Date of CIK-CUSIP Combination",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "tmatch",
+      "page_type": "Float",
+      "label_verbatim": "(tmatch) Total CUSIP Matches/Hits in SEC Filings",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "issuer",
+      "page_type": "Char",
+      "label_verbatim": "(issuer) CUSIP Issuer Info",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "issue",
+      "page_type": "Char",
+      "label_verbatim": "(issue) CUSIP Issue Info",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "issue_check",
+      "page_type": "Char",
+      "label_verbatim": "(issue_check) CUSIP Issuer Check Digit",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    },
+    {
+      "name": "validated",
+      "page_type": "Float",
+      "label_verbatim": "(validated) Validation Check: 0-Invalid CUSIP, 1-Name Mismatch, 2-Valid 8digit CUSIP Link, 3-Valid 9digit CUSIP Link",
+      "evidence_screenshot_sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977"
+    }
+  ],
+  "validated_codebook": [
+    {
+      "code": 0,
+      "label_verbatim": "Invalid CUSIP"
+    },
+    {
+      "code": 1,
+      "label_verbatim": "Name Mismatch"
+    },
+    {
+      "code": 2,
+      "label_verbatim": "Valid 8digit CUSIP Link"
+    },
+    {
+      "code": 3,
+      "label_verbatim": "Valid 9digit CUSIP Link"
+    }
+  ],
+  "time_semantics": {
+    "cikdate1": "FIRST_FILING_DATE_OF_CIK_CUSIP_COMBINATION",
+    "cikdate2": "LAST_FILING_DATE_OF_CIK_CUSIP_COMBINATION",
+    "continuous_historical_identity_validity_established": false,
+    "valid_time_start": null,
+    "valid_time_end": null,
+    "endpoint_inclusivity": null,
+    "exact_public_availability_timestamp": null
+  },
+  "current_query_form_only": {
+    "matching_names_9_digit_checked": true,
+    "matching_names_8_digit_checked": true,
+    "name_mismatch_checked": false,
+    "invalid_link_checked": false,
+    "historical_export_where_predicate": null,
+    "historical_export_where_predicate_status": "NOT_VERIFIED_FROM_CURRENT_FORM"
+  },
+  "known_limits": {
+    "cik_subject_role_in_schedule_13d_g": null,
+    "validation_algorithm_detail": null,
+    "complete_universe_coverage": null,
+    "historical_export_exact_snapshot": null,
+    "provider_license_or_use_scope": null,
+    "primary_security": null,
+    "listing_mic": null,
+    "security_eligibility": null,
+    "formal_m5_cohort_count": null,
+    "admitted_financial_observations": null
+  },
+  "scope_a_direction_accepted": true,
+  "full_m5_protocol_accepted": false,
+  "round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "round8_candidate_status": "PROPOSED",
+  "round8_candidate_researcher_accepted": false,
+  "round8_candidate_formal_experiment_status": "NOT_RUN",
+  "old_identity_ledger_rebuilt": false,
+  "real_wrds_rows_reparsed": false,
+  "model_or_financial_experiment_run": false,
+  "screenshot_file_identities": [
+    {
+      "role": "Query Form heading and stated Schedule 13D/G source",
+      "sha256": "3d1747b3b612863730858572778e60766b1b485afbf0d2e2cb50ce6fd208c12c",
+      "bytes": 528164,
+      "pixels": [
+        2048,
+        1001
+      ],
+      "capture_timestamp_utc": null
+    },
+    {
+      "role": "Current form validation categories and checkboxes",
+      "sha256": "45da3afd1028a59feb51ea6d8e2cd76ff5bf24e027fd4b54a659435055034e9f",
+      "bytes": 455027,
+      "pixels": [
+        2048,
+        1005
+      ],
+      "capture_timestamp_utc": null
+    },
+    {
+      "role": "Current variable selector and first/last filing-date labels",
+      "sha256": "8288711a438df8d1e30af0f73a1aef49fa1c94c275ef843344f00d837091a479",
+      "bytes": 436202,
+      "pixels": [
+        2048,
+        1016
+      ],
+      "capture_timestamp_utc": null
+    },
+    {
+      "role": "Output controls; not a submitted query result",
+      "sha256": "3a65c9ecc05f4e51ba772f33da815c3f4372424cd8d16a258db5c4242c2198bc",
+      "bytes": 596819,
+      "pixels": [
+        2048,
+        1006
+      ],
+      "capture_timestamp_utc": null
+    },
+    {
+      "role": "Variable Descriptions product/library/file/update metadata",
+      "sha256": "da6f81be6cb6f2bbdbae2f1de9e69d316d352481035514eb0478f34065197f9c",
+      "bytes": 381613,
+      "pixels": [
+        2048,
+        965
+      ],
+      "capture_timestamp_utc": null
+    },
+    {
+      "role": "All eleven variable rows including validated code meanings",
+      "sha256": "77e2ed26f31aa7f12726d17f22eefe72191a2280e0b9de6b45756a44886b3977",
+      "bytes": 447961,
+      "pixels": [
+        2048,
+        955
+      ],
+      "capture_timestamp_utc": null
+    }
+  ]
+}

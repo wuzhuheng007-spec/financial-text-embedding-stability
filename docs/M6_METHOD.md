@@ -1,6 +1,6 @@
 # M6: BM25 lexical controls and long-filing length sensitivity
 
-Status: engineering implementation; **M5 scientific protocol remains DRAFT**. No new financial experiment or demonstrated improvement. The original local execution contract and acceptance report are excluded from this public share; see the [M0–M7 evidence trace](EVIDENCE_TRACE_M0_M7.md) and [M6 result scope](../results/m6_real5_20261025/RESULTS_SCOPE.md) for shareable evidence and limits.
+Status: engineering implementation; **M5 scientific protocol remains DRAFT**. No new financial experiment or demonstrated improvement. See [execution contract](M6_PLAN_EVIDENCE.md) and [acceptance report](../reports/2026-10-24_M6_engineering.md).
 
 ## Revised route
 

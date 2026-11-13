@@ -1,0 +1,46 @@
+{
+  "schema": "m5_existing_attribute_inventory_config_v1",
+  "scope": "ENGINEERING_ONLY_ATTRIBUTE_INVENTORY",
+  "status": "PROPOSED_ENGINEERING_INVENTORY",
+  "source_identity": {
+    "identity_ledger_sha256": "49f00380da610f85637ea77178a2eda9f784e0ffe1ac9db2dee79a40dac4337f",
+    "issuer_index_sha256": "370318027c222965de32467641c00998e5c3eb985344db41891807c4e6a0a833",
+    "security_starting_sha256": "f70e8aad2989a6f6a524f38bc1f873f6edb41ac05d5e92cd6743d9e54925b7d3",
+    "security_later_sha256": "89b7439642702d8a3b9a4859f944009b058865c62f9ea6ffdab1f7a8d805d9fc",
+    "issuer_early_sha256": "368c7cd66dcb645163f14c2663556f3ded4f29b3ad8a87354c95659821ba1007",
+    "issuer_later_sha256": "10e956a8c5a4b11ae028adb7ccab9ed7fe0699e7d2a4460a0a7375a0ed825398",
+    "preparation_screen_code_sha256": "5ad2f34931574a98b5a306d1202a168faa14f40cc7975c14f2f72349053e7e85",
+    "definition_notes_sha256": "56cdbc455882ca08ada027717c6ba6ff9e62f03f4f4b5aed647d279901c5c206"
+  },
+  "fields": {
+    "security": ["securitytype", "securitysubtype", "sharetype", "issuertype", "usincflg", "shareclass", "primaryexch", "tradingstatusflg", "conditionaltype", "secinfostartdt", "secinfoenddt"],
+    "issuer": ["issuertype", "usincflg", "issinfostartdt", "issinfoenddt"]
+  },
+  "verified_field_presence": {
+    "security_starting": "ALL_LISTED_FIELDS_IN_BOUND_CSV_HEADER",
+    "security_later": "ALL_LISTED_FIELDS_IN_BOUND_CSV_HEADER",
+    "issuer_early": "ALL_LISTED_FIELDS_IN_BOUND_CSV_HEADER_AND_SAVED_PROJECTION",
+    "issuer_later": "ALL_LISTED_FIELDS_IN_BOUND_CSV_HEADER_AND_SAVED_PROJECTION"
+  },
+  "literal_handling": {
+    "security_csv": "EXISTING_INTAKE_PARSER_STRIPS_SURROUNDING_WHITESPACE",
+    "issuer_projection": "EXISTING_ISSUER_INTAKE_STRIPPED_VALUES",
+    "public_reference_code_comparison": "EXACT_CASE_SENSITIVE_AFTER_EXISTING_STRIP",
+    "outside_selected_public_reference_set": "NOT_A_CLAIM_THAT_VENDOR_CODE_IS_INVALID_OR_UNKNOWN",
+    "unknown_literal_output": "PRIVATE_VIEW_ONLY",
+    "date_endpoint_inclusivity": "UNKNOWN"
+  },
+  "definition_evidence": {
+    "reference": "CURRENT_PUBLIC_REFERENCE_NOT_EXTRACT_REVISION_PROOF",
+    "securitytype_securitysubtype_sharetype_issuertype_usincflg": "PARTIAL_CURRENT_PUBLIC_REFERENCE",
+    "other_code_fields": "BOUND_EXTRACT_DEFINITION_NOT_VERIFIED",
+    "endpoint_inclusivity": "UNKNOWN"
+  },
+  "research_rules": {
+    "ordinary_share_eligibility": null,
+    "historical_mic": null,
+    "primary_security": null,
+    "formal_cohort": null,
+    "full_m5_protocol_researcher_accepted": false
+  }
+}

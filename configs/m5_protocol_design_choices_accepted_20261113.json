@@ -1,0 +1,31 @@
+{
+  "accepted_choices": {
+    "clock": "Declared retrospective anchor at the first applicable regular trading session strictly after official SEC filing date; bind fixed original-filing Item 1 text bytes. No historical availability, first-public or no-lookahead claim.",
+    "identity": "Company filing event with source-supported historically dated CIK-security relation, documented primary issue and applicable market; retain H identity requirements.",
+    "price_and_estimand": "Traded-close, complete-required-window conditional company-event comparison; separate five- and twenty-one-session masks, common F0/F1/F2 rows within each horizon. No fill, endpoint shift or invented exit value; retain all attrition."
+  },
+  "design_choices_accepted_for_preparation": true,
+  "exact_message_utf8_sha256_excluding_file_terminal_lf": "d44562c39dd59531fc3b7ecbc5d58f6700ac3dfe3387522b162dca1c62fce9c3",
+  "financial_execution_authorized": false,
+  "full_protocol_accepted": false,
+  "interpretation_status": "Context-bound approval of the immediately preceding three-item recommendation; not a new unqualified acceptance of all inherited fields.",
+  "message_hash_authenticates_user_identity": false,
+  "not_newly_accepted": [
+    "Original round8 or either old H/R full config",
+    "Formal historical CIK, primary issue, market/MIC, interval endpoints or eligibility code rules",
+    "Exact adjustment, nonordinary-distribution, known-exit-terminal or calendar rules",
+    "Any formal cohort, event mask, financial label, fitted model or score",
+    "All carried-forward model/sample/split choices as a complete protocol"
+  ],
+  "observed_directly_in_local_codex_conversation": false,
+  "original_message_exact_utc": null,
+  "original_message_exact_utc_reason": "The UI did not expose an exact message timestamp.",
+  "prior_accepted_scope_preserved": [
+    "A_FIXED_BYTE_RETROSPECTIVE_DIRECTION",
+    "THREE_ENGINEERING_PREPARATION_RULES"
+  ],
+  "private_exact_decision_source": "Keep raw reply and contextual record in ignored local evidence; this sidecar contains no raw message.",
+  "schema": "m5_design_preparation_authorization_v1",
+  "selected_design_direction": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+  "source": "DIRECT_USER_APPROVAL_OBSERVED_IN_GPT_CONVERSATION_TRANSFERRED_TO_LOCAL_CODEX"
+}

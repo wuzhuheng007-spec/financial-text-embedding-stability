@@ -222,3 +222,5 @@ def raw_filer_cik(raw: bytes) -> str:
     if len(ciks) != 1:
         raise SecError(f"Expected one FILER CENTRAL INDEX KEY; found {len(ciks)}")
     return ciks[0].decode("ascii").zfill(10)
+
+

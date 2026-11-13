@@ -1,0 +1,405 @@
+{
+  "financial_execution_authorized": false,
+  "full_protocol_acceptance": false,
+  "operations": [
+    {
+      "op": "add",
+      "path": "/chronology/clarification_status",
+      "value": "PROPOSED_IMPLEMENTATION_OF_ACCEPTED_PROXY_NOT_SEPARATELY_FROZEN"
+    },
+    {
+      "expected": "A training label used for fitting must end and be finalized before the first validation decision; a validation label used for alpha selection or refit must end and be finalized before the first test decision; otherwise purge the event from that fit or validation set",
+      "op": "replace",
+      "path": "/chronology/purge",
+      "value": "Draft implementation clarification, pending exact full-version freeze: use each horizon fixed label-window endpoint on the declared session axis; retain only training endpoints strictly before the first validation anchor and permitted validation endpoints strictly before the first test anchor. Do not infer historical vendor finalization or text availability. Retrospective vintages remain separately bound."
+    },
+    {
+      "expected": "After validation selection, refit transforms and predictor on permitted training plus validation events whose labels are available before the first test decision",
+      "op": "replace",
+      "path": "/chronology/refit",
+      "value": "After validation selection, any proposed refit uses permitted training plus validation events whose fixed horizon endpoints precede the first test anchor; train-only/refit-only transforms remain unchanged. This is a retrospective temporal separation rule, not proof of historical data finalization or executable refit availability."
+    },
+    {
+      "op": "add",
+      "path": "/current_engineering_evidence/selected_design_preparation_only",
+      "value": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113"
+    },
+    {
+      "expected": "No full H/R design, event mask, sample, text-vintage, price/exit policy or financial protocol has researcher acceptance.",
+      "op": "replace",
+      "path": "/current_missing_evidence/approved_prediction_observation_count_reason",
+      "value": "Three design choices are accepted for preparation; dated identity, formal fixed-byte events, exact price/action rules and the complete version are not accepted or admitted. Counts remain null."
+    },
+    {
+      "expected": "Eight source-bound Daily segments and saved derivation exist, but canonical trade-close, adjustment, exit and common event-mask contracts are not accepted.",
+      "op": "replace",
+      "path": "/current_missing_evidence/complete_feature_and_label_price_reason",
+      "value": "Saved Daily derivation exists. Traded-close preference and per-horizon complete-window comparison are selected for preparation, but exact adjustment, distribution, market/calendar, exit semantics and actual masks remain unresolved."
+    },
+    {
+      "expected": "No formal original-accession, fiscal-period, Item 1 byte-version event manifest has been bound for this candidate.",
+      "op": "replace",
+      "path": "/current_missing_evidence/decision_time_item1_vintage_reason",
+      "value": "A formal original-accession/company-CIK/fiscal-period/Item 1 fixed-byte event manifest is missing. Its later extraction time must be disclosed; proof of historical availability at the proxy is not claimed or required by this retrospective design."
+    },
+    {
+      "expected": "Delisting candidates are saved, but terminal-outcome coverage and handling for the proposed cohort have not been accepted.",
+      "op": "replace",
+      "path": "/current_missing_evidence/delisting_outcome_reason",
+      "value": "Unknown or missing required exits remain unscored with retained attrition under the accepted conditional design. No terminal value is invented; use of a known terminal outcome still needs an explicit sourced rule. Full-cohort outcome coverage is not asserted."
+    },
+    {
+      "expected": "SEC filing and acceptance dates do not prove an exact first-public instant; a no-later-than source or an accepted proxy has not been selected for this design.",
+      "op": "replace",
+      "path": "/current_missing_evidence/first_public_dissemination_reason",
+      "value": "Not proven and not claimed. The accepted daily session proxy removes this historical-first-public requirement for this retrospective design only; official filing-date evidence is still required."
+    },
+    {
+      "op": "add",
+      "path": "/date_coverage_contract/per_horizon_mask",
+      "value": "Separate five- and twenty-one-session masks; each uses identical F0/F1/F2 events and labels within that horizon. Five-session admission does not require the twenty-one-session window."
+    },
+    {
+      "expected": "first session strictly after official filing date, then exactly h subsequent positions on an independent bound exchange calendar for a confirmed session pair",
+      "op": "replace",
+      "path": "/date_coverage_contract/position_reference",
+      "value": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time. Set each d+h at exactly h subsequent fixed session positions; no skipping gaps."
+    },
+    {
+      "op": "add",
+      "path": "/date_coverage_contract/required_total_window",
+      "value": "Every required fixed session from d-20 through d+h inclusive must have a source-valid finite positive traded close under an accepted adjustment policy. This is a planned mask, not a computed mask."
+    },
+    {
+      "expected": "the exact decision-session close bar must have a source timestamp or accepted no-later-than evidence by 18:00 ET; absent evidence makes the event ineligible, not historically verified",
+      "op": "replace",
+      "path": "/decision_and_label/close_availability_rule",
+      "value": "Bind the exact retrospective traded-close source bytes and vintage. Historical availability or vendor finalization by 18:00 is not an admission gate for this proxy and is not asserted; no automatic DlyPrc quote fallback."
+    },
+    {
+      "expected": "close on d+5 and vendor finalization",
+      "op": "replace",
+      "path": "/decision_and_label/label_available_after",
+      "value": "A horizon window logically ends at its fixed d+h close on the declared session axis. Exact historical vendor finalization is unknown and is not inferred from this proxy; this is not an as-of label-availability claim."
+    },
+    {
+      "expected": "Null with reason; block a broad-cohort evaluation until a delisting outcome rule and source cover exits, or separately approve a narrower estimand with explicit exclusions; never zero-fill or silently select survivors",
+      "op": "replace",
+      "path": "/decision_and_label/missing_or_delisted_label_policy",
+      "value": "For each horizon, an event with any missing required price or unresolved exit price/value is unscored with reason. Do not fill, move an endpoint, substitute successor securities or invent terminal value. Retain the pre-price starting-company and event denominators, all exits and year-by-reason attrition. Scored events support only a complete-observed-window conditional company-event comparison, not full-cohort performance."
+    },
+    {
+      "expected": "split-adjusted closing-price return C(i,d+5)/C(i,d)-1, where d is the decision session; dividends are excluded",
+      "op": "replace",
+      "path": "/decision_and_label/primary_label",
+      "value": "PROPOSED_FORM_NOT_COMPUTABLE_UNTIL_ADJUSTMENT_DEFINED: split-adjusted traded-close price change C(i,d+5)/C(i,d)-1; ordinary dividends excluded. Exact split adjustment and other distribution treatment remain null and block labels."
+    },
+    {
+      "expected": "18:00 America/New_York on the first regular trading session strictly after the official filing date, conditional on proof that the exact text and finalized d close bar were available by 18:00; otherwise the event is ineligible with a recorded reason",
+      "op": "replace",
+      "path": "/decision_and_label/recommended_decision",
+      "value": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time."
+    },
+    {
+      "expected": "retain all CIK and security exit events; missing terminal prices do not become zeros or silently remove firms",
+      "op": "replace",
+      "path": "/decision_and_label/security_join/delisting_rule",
+      "value": "Retain every starting company and filing/exit event in its denominator. Missing or unresolved exits remain unscored for each affected horizon; do not reselect starting companies by future price coverage. A separate accepted rule would be needed to use a known terminal value."
+    },
+    {
+      "op": "add",
+      "path": "/derived_from",
+      "value": {
+        "context_zip_sha256": "f7218987f3bfb76f170c771964a78c59c24ff5b7c5256a88713a4f95df0023fa",
+        "h_review_payload_sha256": "3d103aa5ec89e9a46c9fecab710dddf2b1be7fef772b2f6bf9560495e47b94bb",
+        "note": "Apply the checked changes to the original local H source; the review copy has redacted development CIK literals.",
+        "repository_h_source_sha256": "ce1526228ece9d5c1442273a5ef2116a8df0fda75077346ea31c3c21a99c3f00",
+        "source_round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38"
+      }
+    },
+    {
+      "expected": "H_DATED_COMPANY_PRIMARY_SECURITY",
+      "op": "replace",
+      "path": "/design_id",
+      "value": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113"
+    },
+    {
+      "expected": null,
+      "op": "replace",
+      "path": "/design_review/acceptance_source",
+      "value": "configs/m5_protocol_design_choices_accepted_20261113.json"
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/exact_historical_text_availability_proven",
+      "value": false
+    },
+    {
+      "expected": null,
+      "op": "remove",
+      "path": "/design_review/clock/exact_item1_public_or_no_later_than_by_18_et"
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/first_public_time_proven",
+      "value": false
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/fixed_text_bytes_required",
+      "value": true
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/historical_finalization_time_is_required_for_proxy",
+      "value": false
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/intraday_anchor_time",
+      "value": null
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/intraday_anchor_time_reason",
+      "value": "The accepted recommendation selected a daily session proxy; it did not freeze an intraday 18:00 cutoff."
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/proxy_researcher_accepted",
+      "value": true
+    },
+    {
+      "expected": "18:00 America/New_York on the first regular trading session strictly after the official filing date, conditional on proof that the exact text and finalized d close bar were available by 18:00; otherwise the event is ineligible with a recorded reason",
+      "op": "replace",
+      "path": "/design_review/clock/rule",
+      "value": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time."
+    },
+    {
+      "expected": "PROPOSED_AVAILABILITY_GATES_UNMET",
+      "op": "replace",
+      "path": "/design_review/clock/status",
+      "value": "DESIGN_DIRECTION_ACCEPTED_PROXY_SESSION_DETAILS_REQUIRE_SOURCE_BINDING"
+    },
+    {
+      "op": "add",
+      "path": "/design_review/clock/timezone",
+      "value": "America/New_York"
+    },
+    {
+      "expected": "No company-level admitted count or financial comparison until identity, clock, label and full protocol gates pass",
+      "op": "replace",
+      "path": "/design_review/conclusion_limit",
+      "value": "Company-event comparison conditional on the prespecified full observed window in each horizon, after dated company-primary identity, fixed text, calendar, adjustment and exact full protocol gates pass. No historical tradability, broad-company-cohort performance, causal or general model claim."
+    },
+    {
+      "op": "add",
+      "path": "/design_review/design_choices_accepted",
+      "value": true
+    },
+    {
+      "expected": null,
+      "op": "replace",
+      "path": "/design_review/horizon_mask_choice/selected",
+      "value": "SEPARATE_HORIZON_SPECIFIC_MASKS_COMMON_TO_F0_F1_F2"
+    },
+    {
+      "op": "add",
+      "path": "/design_review/horizon_mask_choice/selection_scope",
+      "value": "PREPARATION_DESIGN_ACCEPTED_FINAL_MASK_NOT_COMPUTED"
+    },
+    {
+      "expected": "CIK-CUSIP first/last filing observations do not establish continuous validity or company-level primary issue",
+      "op": "replace",
+      "path": "/design_review/identity_gate/why_blocked",
+      "value": "CIK-CUSIP filing observations and snapshot graph uniqueness do not prove dated company identity or company primary issue. The proxy clock and conditional outcome subset do not relax H identity requirements."
+    },
+    {
+      "expected": [
+        "date-supported CIK-security relation at each event",
+        "dated company-primary issue and applicable market evidence",
+        "original accession/fiscal period/Item1 version and 18:00 text/close evidence",
+        "accepted traded-close adjustment, distribution, exit and common-mask rules"
+      ],
+      "op": "replace",
+      "path": "/design_review/minimum_missing_roles",
+      "value": [
+        "source-supported dated CIK-security relation and company-primary issue at each event",
+        "dated applicable listing market, calendar and supported interval endpoint semantics",
+        "original accession, company CIK, fiscal period and fixed Item 1 extraction/version byte manifest",
+        "exact traded-close split-adjustment and nonordinary-distribution specification plus unknown/known exit handling",
+        "formal starting/event/attrition contract and accepted exact local full protocol bytes before financial execution"
+      ]
+    },
+    {
+      "expected": "Preserve original broad company cohort and exit-source gate; no complete-case substitution or survivor-only silent deletion",
+      "op": "replace",
+      "path": "/design_review/missing_exit_interpretation",
+      "value": "For each horizon, an event with any missing required price or unresolved exit price/value is unscored with reason. Do not fill, move an endpoint, substitute successor securities or invent terminal value. Retain the pre-price starting-company and event denominators, all exits and year-by-reason attrition. Scored events support only a complete-observed-window conditional company-event comparison, not full-cohort performance."
+    },
+    {
+      "expected": "finite positive close at every fixed session from d-20 through d+h, including d; missing sessions do not shift endpoints",
+      "op": "replace",
+      "path": "/design_review/required_price_window",
+      "value": "Every required fixed session from d-20 through d+h inclusive must have a source-valid finite positive traded close under an accepted adjustment policy. This is a planned mask, not a computed mask."
+    },
+    {
+      "expected": "m5_protocol_design_review_v1",
+      "op": "replace",
+      "path": "/design_review/schema",
+      "value": "m5_company_proxy_conditional_design_review_v1"
+    },
+    {
+      "expected": "ENGINEERING_ONLY_PROPOSED_DESIGN",
+      "op": "replace",
+      "path": "/design_review/scope",
+      "value": "ENGINEERING_ONLY_NEW_DRAFT_WITH_ACCEPTED_DESIGN_DIRECTION"
+    },
+    {
+      "expected": null,
+      "op": "replace",
+      "path": "/design_review/selected",
+      "value": true
+    },
+    {
+      "op": "add",
+      "path": "/design_review/selection_scope",
+      "value": "DESIGN_DIRECTION_ONLY_NOT_EXACT_FULL_VERSION_ACCEPTANCE"
+    },
+    {
+      "expected": "DlyClose; no automatic DlyPrc quote fallback",
+      "op": "replace",
+      "path": "/design_review/trade_close_field_preference",
+      "value": "DlyClose traded close; no DlyPrc quote fallback or invented fill."
+    },
+    {
+      "expected": "CIK company filing event with source-supported date-valid primary security; retrospective fixed-byte comparison, not historical tradability",
+      "op": "replace",
+      "path": "/design_review/unit_and_claim",
+      "value": "Historically supported company filing event to documented dated primary issue, with fixed text bytes and a declared filing-date/session proxy; outcome association conditional on the complete observed window for each horizon."
+    },
+    {
+      "expected": [
+        "Researcher freezes this protocol version and its data/vintage/exclusion choices",
+        "Point-in-time security master and filing/publication/revision evidence are available",
+        "Historical prices, identifiers and delisting/corporate-action policy cover the full feature and label windows",
+        "Exact model-time limitations and retrospective interpretation are accepted",
+        "All three arms use identical event rows and a chronological, purged split",
+        "A historical CIK-to-security primary-listing rule and effective-date identity must be verified before joining prices",
+        "A 21-session alternative must use its own fixed endpoint and is not the old 20-session local check",
+        "Numerical rank and both transform fits must pass in the training and permitted refit windows before any test score",
+        "Source-supported event-time CIK relation, primary issue and applicable market are required; candidate observation edges are insufficient",
+        "Both exact text and finalized d close must meet the proposed 18:00 ET availability gate or the event is excluded with reason"
+      ],
+      "op": "replace",
+      "path": "/execution_gates",
+      "value": [
+        "Researcher accepts and freezes the complete exact local new protocol bytes, inputs, text vintage, exclusions, formulas and numerical contracts; the three design choices alone are not that acceptance.",
+        "Verify dated CIK-security relation, documented company-primary issue and applicable event market/calendar. Do not replace them with strict snapshot uniqueness or choose securities by later price coverage.",
+        "Bind original accession, correct company CIK, fiscal period and exact Item 1 source/extraction bytes; disclose later snapshots and model-time limits. No historical 18:00 availability or first-public claim is made.",
+        "Define sourced traded-close, split-adjustment, other-distribution and known/unknown-exit semantics before any financial label; unknowns stay null and unscored.",
+        "Keep the fixed starting-company and event denominators; use separate complete d-20 through d+h windows for five and twenty-one sessions and preserve year-by-reason attrition.",
+        "For each horizon all F0/F1/F2 arms use identical event rows, chronological endpoint purging and training-only transforms. The two horizons may have different rows.",
+        "Pass numerical-rank and both transform-fit checks only after separate financial execution authorization; no held-out output selects identity, adjustment, mask, model or text settings."
+      ]
+    },
+    {
+      "op": "add",
+      "path": "/prediction_arms/common_sample_scope",
+      "value": "WITHIN_EACH_HORIZON_ACROSS_F0_F1_F2_NOT_ACROSS_HORIZONS"
+    },
+    {
+      "op": "add",
+      "path": "/preparation_authorization",
+      "value": {
+        "decision_record": "configs/m5_protocol_design_choices_accepted_20261113.json",
+        "design_choices_accepted": true,
+        "exact_local_new_protocol_sha256": null,
+        "exact_local_new_protocol_sha256_reason": "The unredacted new local repository candidate has not been created or frozen in this cloud task; record its hash in a separate receipt, not inside itself.",
+        "exact_user_message_sha256": "d44562c39dd59531fc3b7ecbc5d58f6700ac3dfe3387522b162dca1c62fce9c3",
+        "financial_execution_authorized": false,
+        "full_protocol_accepted": false
+      }
+    },
+    {
+      "expected": false,
+      "op": "replace",
+      "path": "/prior_accepted_scope/decision_source_reused_or_created_this_round",
+      "value": true
+    },
+    {
+      "op": "add",
+      "path": "/prior_accepted_scope/three_new_design_choices_for_preparation",
+      "value": true
+    },
+    {
+      "expected": "Proposed retrospective company filing-event price-return comparison with date-supported CIK-to-security identity and one documented primary issue; no historical tradability or economic-value claim",
+      "op": "replace",
+      "path": "/purpose",
+      "value": "Draft fixed-byte retrospective comparison of company filing events with documented dated primary securities, conditional on each horizon having a complete observed required price window; no broad-cohort, historical tradability, no-lookahead or economic-value claim."
+    },
+    {
+      "expected": "Require original accession/fiscal period, exact Item 1 version, eligible dated company-primary security, applicable market calendar, exact text and finalized d-close availability by proposed 18:00 ET, full lookback/label windows and accepted exit treatment; retain every exclusion reason",
+      "op": "replace",
+      "path": "/sample/admission",
+      "value": "Require original accession, issuer CIK, fiscal period, fixed Item 1 bytes and extraction/version evidence; dated company-primary relation, source-supported market/calendar, defined traded-close adjustment and the horizon-specific full required window. Keep starting companies independent of future prices and retain every event exclusion reason. No 18:00 historical-availability gate is asserted under the accepted retrospective proxy."
+    },
+    {
+      "expected": "one original 10-K Item 1 CIK/fiscal-period filing event with a date-valid CIK-security relation and one documented primary issue at the decision session",
+      "op": "replace",
+      "path": "/sample/event_unit",
+      "value": "One original company 10-K Item 1 CIK/fiscal-period filing event with source-supported event-time CIK-security relation and one documented dated primary issue; each horizon may retain a different complete-window subset."
+    },
+    {
+      "op": "add",
+      "path": "/sample/starting_and_event_denominators",
+      "value": "Keep source-bound starting-company denominator, potential filing-event denominator and each horizon-specific scored subset separately. No cohort count is admitted by this draft."
+    },
+    {
+      "op": "add",
+      "path": "/sample/starting_cohort_price_coverage_reselection",
+      "value": false
+    },
+    {
+      "expected": 3,
+      "op": "replace",
+      "path": "/schema_version",
+      "value": 4
+    },
+    {
+      "expected": null,
+      "op": "replace",
+      "path": "/selected_design",
+      "value": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113"
+    },
+    {
+      "op": "add",
+      "path": "/selected_design_scope",
+      "value": "DESIGN_DIRECTION_FOR_PREPARATION_ONLY"
+    },
+    {
+      "expected": "NONE_UNTIL_RESEARCHER_SELECTS_AND_ACCEPTS_A_VERSION",
+      "op": "replace",
+      "path": "/supersession_status",
+      "value": "NEW_DRAFT_ONLY_ORIGINAL_ROUND8_AND_OLD_H_R_PRESERVED"
+    },
+    {
+      "expected": "RETROSPECTIVE_FIXED_BYTES",
+      "op": "replace",
+      "path": "/time_interpretation/recommended",
+      "value": "RETROSPECTIVE_COMPANY_EVENTS_FIXED_BYTES_WITH_DECLARED_SESSION_PROXY"
+    },
+    {
+      "expected": "BLOCKED_PENDING_MODEL_TEXT_AND_MARKET_TIME_EVIDENCE",
+      "op": "replace",
+      "path": "/time_interpretation/strict_historical_as_of_status",
+      "value": "NOT_CLAIMED_BY_SELECTED_PROXY_SEPARATE_PROTOCOL_REQUIRED"
+    }
+  ],
+  "schema": "m5_checked_json_pointer_patch_v1",
+  "selected_design_direction": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+  "source_repository_h_sha256": "ce1526228ece9d5c1442273a5ef2116a8df0fda75077346ea31c3c21a99c3f00",
+  "source_review_h_sha256": "3d103aa5ec89e9a46c9fecab710dddf2b1be7fef772b2f6bf9560495e47b94bb",
+  "source_round8_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "target_repository_relative_path": "configs/m5_protocol_company_proxy_conditional_20261113.json"
+}

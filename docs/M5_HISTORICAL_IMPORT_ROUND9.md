@@ -1,5 +1,7 @@
 # M5 historical-data import contract (proposed, structure only)
 
+**Current acquisition note, 2026-11-12:** The `NO_REAL_DATA_IMPORTED` count below is the **round-9 snapshot**, not today's inventory. The [readiness reconciliation](M5_DATA_ADMISSION_READINESS_20261112.md) documents later locally received security/issuer, filtered Delist, Daily and Distribution extracts. None is an admitted canonical M5 event bundle or financial observation; this structural contract and the round-8 candidate remain unaccepted.
+
 **Status:** `PROPOSED / NO_REAL_DATA_IMPORTED / NO_FINANCIAL_LABELS`. This is a canonical staging contract, **not** a claim that any named vendor field, SQL table, entitlement or complete historical file has been obtained. The unchanged [round-8 M5 candidate](../configs/m5_financial_protocol_round8.json), SHA-256 `f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38`, remains `PROPOSED`, `researcher_accepted=false`, `NOT_RUN`. This document does not freeze its cohort, target, decision clock, security rule or exit-return treatment.
 
 ## Source mapping before a real import

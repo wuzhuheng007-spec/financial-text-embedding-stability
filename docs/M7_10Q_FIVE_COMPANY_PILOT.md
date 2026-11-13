@@ -1,7 +1,5 @@
 # Five-company 10-Q MD&A pilot candidates — not a completed corpus
 
-> **Historical M7 candidate snapshot.** The per-company status columns below describe the M7 discovery stage, not the latest M8–M10 review state. Later source/extraction and acceptance evidence is summarized in [EVIDENCE_TRACE_M8_M10.md](EVIDENCE_TRACE_M8_M10.md). Preserve this document as selection-rule provenance; do not use its old status cells as current review decisions.
-
 **Purpose:** prepare a section-consistent engineering pilot after AAPL human content review. This is not the M5 formal sample or a financial experiment. AAPL's nine start/end/table/body items were accepted in explicit researcher chat replies; the local browser form check remains open. The selection rule was fixed for this candidate search: in the existing AAPL, MSFT, AMZN, GOOGL, META order, choose each firm's original `10-Q` with the earliest SEC `filingDate` in calendar 2025. A same-date tie would require saved raw-header acceptance instants, then accession; no earliest-date tie appears in the saved metadata snapshots. Do not substitute `10-Q/A` or silently choose a later quarter.
 
 | Company (CIK) | Selected original 10-Q | Filed; report end | Fiscal focus; proposed interval | Primary source and current section status |

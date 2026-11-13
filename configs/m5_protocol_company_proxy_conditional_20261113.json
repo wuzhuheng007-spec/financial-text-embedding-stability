@@ -1,0 +1,358 @@
+{
+  "chronology": {
+    "clarification_status": "PROPOSED_IMPLEMENTATION_OF_ACCEPTED_PROXY_NOT_SEPARATELY_FROZEN",
+    "purge": "Draft implementation clarification, pending exact full-version freeze: use each horizon fixed label-window endpoint on the declared session axis; retain only training endpoints strictly before the first validation anchor and permitted validation endpoints strictly before the first test anchor. Do not infer historical vendor finalization or text availability. Retrospective vintages remain separately bound.",
+    "random_shuffle": false,
+    "refit": "After validation selection, any proposed refit uses permitted training plus validation events whose fixed horizon endpoints precede the first test anchor; train-only/refit-only transforms remain unchanged. This is a retrospective temporal separation rule, not proof of historical data finalization or executable refit availability.",
+    "split_unit": "decision session in America/New_York",
+    "test_decision_years": [
+      2025
+    ],
+    "training_decision_years": [
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "validation_decision_years": [
+      2024
+    ]
+  },
+  "current_engineering_evidence": {
+    "admitted_financial_observations": null,
+    "attribute_v3_safe_summary_sha256": "8335d595625356a9c67fdd2d7eb5cba2f52dc7b9ac962b80368fe9bc9b771a46",
+    "bound_issuer_history": "PRESENT_SOURCE_BOUND_ENGINEERING_ONLY",
+    "bound_starting_security_and_later_history": "PRESENT_SOURCE_BOUND_ENGINEERING_ONLY",
+    "distribution_and_delist_candidates": "PRESENT_NOT_TERMINAL_OUTCOME_POLICY",
+    "eight_historical_daily_segments": "PRESENT_WITH_SAVED_DERIVATION_NOT_FINANCIAL_LABELS",
+    "exact_historical_cusip_cik_observation_candidates": "PRESENT_NOT_VALID_TIME",
+    "formal_cohort_count": null,
+    "formal_original_item1_event_and_vintage_manifest": null,
+    "provider_release_specific_codebook": null,
+    "selected_design_preparation_only": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+    "xnyse_retrospective_calendar": "PRESENT_BASELINE_NOT_EVENT_MARKET_CONFIRMED"
+  },
+  "current_missing_evidence": {
+    "approved_prediction_observation_count": null,
+    "approved_prediction_observation_count_reason": "Three design choices are accepted for preparation; dated identity, formal fixed-byte events, exact price/action rules and the complete version are not accepted or admitted. Counts remain null.",
+    "complete_feature_and_label_price_manifest_sha256": null,
+    "complete_feature_and_label_price_reason": "Saved Daily derivation exists. Traded-close preference and per-horizon complete-window comparison are selected for preparation, but exact adjustment, distribution, market/calendar, exit semantics and actual masks remain unresolved.",
+    "decision_time_item1_vintage_manifest_sha256": null,
+    "decision_time_item1_vintage_reason": "A formal original-accession/company-CIK/fiscal-period/Item 1 fixed-byte event manifest is missing. Its later extraction time must be disclosed; proof of historical availability at the proxy is not claimed or required by this retrospective design.",
+    "delisting_outcome_manifest_sha256": null,
+    "delisting_outcome_reason": "Unknown or missing required exits remain unscored with retained attrition under the accepted conditional design. No terminal value is invented; use of a known terminal outcome still needs an explicit sourced rule. Full-cohort outcome coverage is not asserted.",
+    "dividend_manifest_reason": "Distribution candidates are saved; the proposed price return excludes ordinary dividends and the treatment of other distributions is unresolved.",
+    "dividend_manifest_sha256": null,
+    "first_public_dissemination_manifest_sha256": null,
+    "first_public_dissemination_reason": "Not proven and not claimed. The accepted daily session proxy removes this historical-first-public requirement for this retrospective design only; official filing-date evidence is still required.",
+    "global_model_training_cutoff_reason": "The official model card does not establish a cutoff across all pretraining and fine-tuning sources",
+    "global_model_training_cutoff_utc": null,
+    "historical_security_master_reason": "A bound 2020 acquisition security extract and histories exist; an eligible operating-common company master, dated CIK relation, primary issue and event market are unverified.",
+    "historical_security_master_sha256": null,
+    "independent_session_calendar_reason": "A retrospective XNYS baseline is saved; each issue's event-time listing market and applicable exchange calendar remain unverified.",
+    "independent_session_calendar_sha256": null
+  },
+  "date_coverage_contract": {
+    "horizons_from_candidate": [
+      "primary_horizon_subsequent_sessions",
+      "alternative_horizon_subsequent_sessions"
+    ],
+    "missing_price": "keep the d+h endpoint fixed on the reference axis; any missing required session price blocks that event and must not shift the endpoint",
+    "no_return_labels_in_coverage_audit": true,
+    "per_horizon_mask": "Separate five- and twenty-one-session masks; each uses identical F0/F1/F2 events and labels within that horizon. Five-session admission does not require the twenty-one-session window.",
+    "position_reference": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time. Set each d+h at exactly h subsequent fixed session positions; no skipping gaps.",
+    "required_future_window_prices": "require a finite positive close for every reference-axis session from d through d+h inclusive; no gap skipping or endpoint substitution",
+    "required_total_window": "Every required fixed session from d-20 through d+h inclusive must have a source-valid finite positive traded close under an accepted adjustment policy. This is a planned mask, not a computed mask.",
+    "without_independent_calendar": "The saved retrospective XNYS baseline is not event-market confirmation; report baseline-axis positions only and leave market-confirmed observations null."
+  },
+  "decision_and_label": {
+    "acceptance_time_is_public_time": false,
+    "alternative_horizon_subsequent_sessions": 21,
+    "close_availability_rule": "Bind the exact retrospective traded-close source bytes and vintage. Historical availability or vendor finalization by 18:00 is not an admission gate for this proxy and is not asserted; no automatic DlyPrc quote fallback.",
+    "label_available_after": "A horizon window logically ends at its fixed d+h close on the declared session axis. Exact historical vendor finalization is unknown and is not inferred from this proxy; this is not an as-of label-availability claim.",
+    "label_end": "regular-session close on d+5",
+    "label_is_executable_trade_return": false,
+    "label_start": "regular-session close on d",
+    "missing_or_delisted_label_policy": "For each horizon, an event with any missing required price or unresolved exit price/value is unscored with reason. Do not fill, move an endpoint, substitute successor securities or invent terminal value. Retain the pre-price starting-company and event denominators, all exits and year-by-reason attrition. Scored events support only a complete-observed-window conditional company-event comparison, not full-cohort performance.",
+    "primary_horizon_subsequent_sessions": 5,
+    "primary_label": "PROPOSED_FORM_NOT_COMPUTABLE_UNTIL_ADJUSTMENT_DEFINED: split-adjusted traded-close price change C(i,d+5)/C(i,d)-1; ordinary dividends excluded. Exact split adjustment and other distribution treatment remain null and block labels.",
+    "recommended_decision": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time.",
+    "security_join": {
+      "alternative_rule": "Unaccepted separate option: predecision 60-session dollar-volume ranking requires a complete predecision window, may fail early-2020 coverage, and changes security selection; do not activate automatically",
+      "delisting_rule": "Retain every starting company and filing/exit event in its denominator. Missing or unresolved exits remain unscored for each affected horizon; do not reselect starting companies by future price coverage. A separate accepted rule would be needed to use a known terminal value.",
+      "multiple_candidate_rule": "if multiple classes remain and no unique primary listing is documented, mark the event AMBIGUOUS_SECURITY and exclude it under the predeclared common mask; do not choose a class by future price coverage or realized label",
+      "recommended_rule": "Require event-time dated CIK-to-security evidence and one sourced primary common-share issue for that CIK, plus dated listing market and identifier history; a unique CUSIP observation candidate is insufficient",
+      "unit": "one time-valid listed common-share security identifier per CIK filing event"
+    },
+    "session_calendar": "VERIFIED_US_EQUITY_REGULAR_SESSIONS_REQUIRED",
+    "timezone": "America/New_York",
+    "total_return_alternative": "Require dividend, delisting and corporate-action data plus a prespecified reinvestment convention before claiming total return"
+  },
+  "derived_from": {
+    "context_zip_sha256": "f7218987f3bfb76f170c771964a78c59c24ff5b7c5256a88713a4f95df0023fa",
+    "h_review_payload_sha256": "3d103aa5ec89e9a46c9fecab710dddf2b1be7fef772b2f6bf9560495e47b94bb",
+    "note": "Apply the checked changes to the original local H source; the review copy has redacted development CIK literals.",
+    "repository_h_source_sha256": "ce1526228ece9d5c1442273a5ef2116a8df0fda75077346ea31c3c21a99c3f00",
+    "source_round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38"
+  },
+  "design_id": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+  "design_review": {
+    "acceptance_source": "configs/m5_protocol_design_choices_accepted_20261113.json",
+    "admitted_observation_count": null,
+    "clock": {
+      "exact_historical_text_availability_proven": false,
+      "finalized_close_available_by_18_et": null,
+      "first_public_time_proven": false,
+      "fixed_text_bytes_required": true,
+      "historical_finalization_time_is_required_for_proxy": false,
+      "intraday_anchor_time": null,
+      "intraday_anchor_time_reason": "The accepted recommendation selected a daily session proxy; it did not freeze an intraday 18:00 cutoff.",
+      "proxy_researcher_accepted": true,
+      "rule": "Use d = the first applicable regular trading session whose calendar date is strictly later than the official SEC filing date, on a source-supported event-market session axis. This is a declared retrospective analysis proxy, not first-public time, text availability, finalized-close availability or an executable trading time.",
+      "status": "DESIGN_DIRECTION_ACCEPTED_PROXY_SESSION_DETAILS_REQUIRE_SOURCE_BINDING",
+      "strict_historical_model_availability_claim": false,
+      "timezone": "America/New_York"
+    },
+    "conclusion_limit": "Company-event comparison conditional on the prespecified full observed window in each horizon, after dated company-primary identity, fixed text, calendar, adjustment and exact full protocol gates pass. No historical tradability, broad-company-cohort performance, causal or general model claim.",
+    "design_choices_accepted": true,
+    "endpoint_diagnostics_are_vendor_validity_proof": false,
+    "endpoint_sensitivity_diagnostics": [
+      "CLOSED_BOTH_ENDS",
+      "LEFT_CLOSED_RIGHT_OPEN"
+    ],
+    "exit_terminal_value_rule": null,
+    "financial_labels_computed": false,
+    "financial_training_or_scoring_run": false,
+    "formal_cohort_count": null,
+    "formal_original_filing_item1_event_manifest_sha256": null,
+    "horizon_mask_choice": {
+      "alternative": "SHARED_LONGEST_21_SESSION_MASK_FOR_BOTH_HORIZONS",
+      "impact": "The first uses different 5- and 21-session observation sets; the second changes the five-session target population.",
+      "recommended": "SEPARATE_HORIZON_SPECIFIC_MASKS_COMMON_TO_F0_F1_F2",
+      "selected": "SEPARATE_HORIZON_SPECIFIC_MASKS_COMMON_TO_F0_F1_F2",
+      "selection_scope": "PREPARATION_DESIGN_ACCEPTED_FINAL_MASK_NOT_COMPUTED"
+    },
+    "identity_gate": {
+      "admitted_count": null,
+      "dated_company_primary_issue_evidence": null,
+      "event_market_mic_evidence": null,
+      "event_time_cik_security_evidence": null,
+      "why_blocked": "CIK-CUSIP filing observations and snapshot graph uniqueness do not prove dated company identity or company primary issue. The proxy clock and conditional outcome subset do not relax H identity requirements."
+    },
+    "minimum_missing_roles": [
+      "source-supported dated CIK-security relation and company-primary issue at each event",
+      "dated applicable listing market, calendar and supported interval endpoint semantics",
+      "original accession, company CIK, fiscal period and fixed Item 1 extraction/version byte manifest",
+      "exact traded-close split-adjustment and nonordinary-distribution specification plus unknown/known exit handling",
+      "formal starting/event/attrition contract and accepted exact local full protocol bytes before financial execution"
+    ],
+    "missing_exit_interpretation": "For each horizon, an event with any missing required price or unresolved exit price/value is unscored with reason. Do not fill, move an endpoint, substitute successor securities or invent terminal value. Retain the pre-price starting-company and event denominators, all exits and year-by-reason attrition. Scored events support only a complete-observed-window conditional company-event comparison, not full-cohort performance.",
+    "nonordinary_distribution_rule": null,
+    "preparation_code_pattern": {
+      "issuertype": [
+        "ACOR",
+        "CORP"
+      ],
+      "primaryexch_to_mic_rule": null,
+      "securitysubtype": "COM",
+      "securitytype": "EQTY",
+      "sharetype": "NS",
+      "status": "UNACCEPTED_SOURCE_LITERAL_DIAGNOSTIC_NOT_ELIGIBILITY",
+      "usincflg_exclusion_rule": null
+    },
+    "reference_date": "2020-01-01",
+    "reference_date_status": "ROUND8_PROPOSED_NOT_NEWLY_ACCEPTED",
+    "required_price_window": "Every required fixed session from d-20 through d+h inclusive must have a source-valid finite positive traded close under an accepted adjustment policy. This is a planned mask, not a computed mask.",
+    "researcher_accepted": false,
+    "schema": "m5_company_proxy_conditional_design_review_v1",
+    "scope": "ENGINEERING_ONLY_NEW_DRAFT_WITH_ACCEPTED_DESIGN_DIRECTION",
+    "selected": true,
+    "selection_scope": "DESIGN_DIRECTION_ONLY_NOT_EXACT_FULL_VERSION_ACCEPTANCE",
+    "sixty_session_primary_alternative": "UNACCEPTED; the held 2019-11 to 2019-12 buffer cannot be presumed to cover 60 predecision sessions for early-2020 events",
+    "source_interval_endpoint_inclusivity": null,
+    "split_adjustment_formula": null,
+    "trade_close_field_preference": "DlyClose traded close; no DlyPrc quote fallback or invented fill.",
+    "unit_and_claim": "Historically supported company filing event to documented dated primary issue, with fixed text bytes and a declared filing-date/session proxy; outcome association conditional on the complete observed window for each horizon."
+  },
+  "development_evidence_only": {
+    "s2_candidate_sha256": "a307536980057c227d63fafb11b7b25b4615a2923455717616a7431f05d82388",
+    "s3_candidate_sha256": "a16dc7786e33c607eabb833eb1adb7f8c9652735cfb21eaa862f12a3661199e2",
+    "selection_policy": "Do not select a dense setting using S2/S3 outcomes; use the pre-existing 128-body-token equal-chunk reference"
+  },
+  "execution_gates": [
+    "Researcher accepts and freezes the complete exact local new protocol bytes, inputs, text vintage, exclusions, formulas and numerical contracts; the three design choices alone are not that acceptance.",
+    "Verify dated CIK-security relation, documented company-primary issue and applicable event market/calendar. Do not replace them with strict snapshot uniqueness or choose securities by later price coverage.",
+    "Bind original accession, correct company CIK, fiscal period and exact Item 1 source/extraction bytes; disclose later snapshots and model-time limits. No historical 18:00 availability or first-public claim is made.",
+    "Define sourced traded-close, split-adjustment, other-distribution and known/unknown-exit semantics before any financial label; unknowns stay null and unscored.",
+    "Keep the fixed starting-company and event denominators; use separate complete d-20 through d+h windows for five and twenty-one sessions and preserve year-by-reason attrition.",
+    "For each horizon all F0/F1/F2 arms use identical event rows, chronological endpoint purging and training-only transforms. The two horizons may have different rows.",
+    "Pass numerical-rank and both transform-fit checks only after separate financial execution authorization; no held-out output selects identity, adjustment, mask, model or text settings."
+  ],
+  "features": {
+    "dense": {
+      "body_chunk_length": 128,
+      "dimension_before_training_only_pca": 384,
+      "fit_failure_policy": "Block if the training embedding matrix has fewer than 32 supported components",
+      "model": "sentence-transformers/all-MiniLM-L6-v2 ONNX",
+      "normalization": "L2-normalize each chunk, equal-mean the chunk vectors, then L2-normalize the filing vector",
+      "onnx_sha256": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "overlap": 0,
+      "pca": {
+        "centering": "subtract the training-only column mean; do not scale input embedding coordinates before PCA",
+        "component_score": "(X - training_mean) @ V_k.T",
+        "component_sign": "for each row of V_k, make the largest-absolute-loading coordinate positive; ties use the lowest embedding-coordinate index",
+        "components": 32,
+        "dtype": "float64 after conversion from the pinned stored embedding dtype",
+        "failure": "block if numerical rank < 32, nonfinite singular values, nonconvergence, or singular values 32 and 33 are indistinguishable within rank tolerance",
+        "numerical_rank_tolerance": "max(n_rows,n_columns) * eps(float64) * largest_singular_value",
+        "random_state": null,
+        "repeat_policy": "one deterministic fit per allowed training window; fixed encoder reruns are runtime checks, not independent training seeds",
+        "solver": "numpy.linalg.svd(full_matrices=False) on the centered dense training matrix; no randomized algorithm"
+      },
+      "pooling": "equal_chunks",
+      "provider": "CPUExecutionProvider",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "tokenizer_sha256": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "training_only_pca_dimensions": 32
+    },
+    "lexical": {
+      "fit_boundary": "training documents only; refit on training plus validation before final test after hyperparameter choice; block if fitting rank is below 32",
+      "numeric_contract": {
+        "all_terms_out_of_vocabulary": "retain an all-zero lexical input and record OOV_ONLY; transform to zero SVD coordinates without imputation",
+        "dtype": "float64",
+        "empty_after_tokenization": "exclude event from all arms before splitting, with reason EMPTY_LEXICAL_DOCUMENT",
+        "idf": "log((1+N)/(1+df))+1, fitted on current training rows only",
+        "normalization": "L2 row normalization of TF-IDF before SVD",
+        "term_frequency": "raw count",
+        "tokenizer": "lowercase then regex [a-z][a-z0-9]+; no stopword removal or stemming",
+        "vocabulary": "fit only on current training rows; descending document frequency with ascending lexical ties; take at most 5000 terms",
+        "zero_tfidf_training_row": "fail and review common sample before any fit"
+      },
+      "representation": "Item 1 train-only TF-IDF: lowercase [a-z][a-z0-9]+, raw term counts, top 5000 terms by training-document frequency with lexical ties, IDF log((1+N)/(1+df))+1, row L2 normalization, then 32 train-only SVD dimensions",
+      "svd": {
+        "centering": false,
+        "component_score": "X @ V_k.T; equivalent to U_k times singular values on the training matrix",
+        "component_sign": "for each row of V_k, make the largest-absolute-loading coordinate positive; ties use the lowest feature index",
+        "components": 32,
+        "failure": "block if numerical rank < 32, nonfinite singular values, nonconvergence, or singular values 32 and 33 are indistinguishable within rank tolerance",
+        "input": "train-only TF-IDF matrix after row L2 normalization",
+        "numerical_rank_tolerance": "max(n_rows,n_columns) * eps(float64) * largest_singular_value",
+        "random_state": null,
+        "repeat_policy": "one deterministic fit per allowed training window; log library and BLAS versions; any randomized replacement requires a new proposed contract",
+        "solver": "numpy.linalg.svd(full_matrices=False) on a dense float64 matrix; no randomized algorithm"
+      }
+    },
+    "minimum_prior_closes_including_d": 21,
+    "shared_nontext": [
+      "C(d)/C(d-5)-1 using split-adjusted closes",
+      "C(d)/C(d-20)-1 using split-adjusted closes",
+      "population standard deviation (ddof=0) of C(t)/C(t-1)-1 for the twenty regular sessions ending at d"
+    ]
+  },
+  "formal_financial_experiment_status": "NOT_RUN",
+  "metrics": {
+    "aggregation_unit": "distinct original filing event; firm and calendar-time dependence must be reported",
+    "calculation_dtype": "float64",
+    "economic_value": "NOT_ESTIMATED; a separate accepted trading, execution and cost protocol would be required",
+    "primary": "F2 versus F0 common-row out-of-sample squared-error reduction: 1 - SSE(F2)/SSE(F0); undefined if the F0 denominator is zero",
+    "secondary": [
+      "1-SSE(F1)/SSE(F0) and 1-SSE(F2)/SSE(F1) on identical test events; null if a reference SSE is zero",
+      "MAE(F0)-MAE(F2) and MAE(F1)-MAE(F2) on identical test events; positive means F2 has lower absolute error",
+      "mean of defined calendar-month cross-sectional Spearman correlations, equal-weighting months with at least five distinct eligible firms; use the earliest eligible original filing per firm-month for this secondary metric, average ranks for exact ties, null month for constant predictions or labels, no fill"
+    ],
+    "undefined_and_failure_policy": {
+      "comparison_completion": "do not report a complete F0/F1/F2 result if any required arm, row, transform or score is unavailable",
+      "monthly_spearman_constant_or_too_few_firms": "null month with reason, omitted from defined-month mean with numerator and denominator reported",
+      "nonfinite_prediction_or_label": "fail affected arm and common-row comparison before scoring; retain failure ledger",
+      "reference_sse_zero": "null with reason; do not divide or replace with zero"
+    }
+  },
+  "prediction_arms": {
+    "F0": "three shared trailing-price features",
+    "F1": "F0 plus 32 train-only lexical SVD coordinates",
+    "F2": "F0 plus 32 train-only dense PCA coordinates",
+    "alpha_grid": [
+      0.1,
+      1.0,
+      10.0
+    ],
+    "common_sample_and_label": true,
+    "common_sample_scope": "WITHIN_EACH_HORIZON_ACROSS_F0_F1_F2_NOT_ACROSS_HORIZONS",
+    "hyperparameter_choice": "lowest validation MSE; exact ties choose the largest alpha",
+    "numeric_contract": {
+      "alpha_loss_scale": "sum of squared errors, not mean squared error",
+      "dtype": "float64",
+      "failure": "nonfinite feature/label, empty eligible split, linear solve failure or undefined validation score blocks all three-arm comparison; do not zero-fill or report a partial winner",
+      "intercept_penalized": false,
+      "random_state": null,
+      "repeat_policy": "one deterministic fit for each of the three alpha values in each arm, then one permitted final refit per arm; no test-based rerun or seed selection",
+      "ridge_objective": "minimize sum_i (y_i - intercept - x_i dot beta)^2 + alpha * sum_j beta_j^2 on standardized coordinates",
+      "solver": "deterministic float64 numpy.linalg.lstsq(rcond=None) on an augmented design with sqrt(alpha) coefficient penalty rows and an unpenalized intercept column",
+      "standardization": "training-window mean and population standard deviation (ddof=0), fitted separately within each arm; drop train-zero-variance columns and record indices; refit on permitted train+validation only"
+    },
+    "planned_post_selection_refits": 3,
+    "planned_validation_fits": 9,
+    "predictor": "ridge regression with intercept and train-only mean/standard-deviation scaling (ddof=0); drop zero-variance coordinates using the training window",
+    "tuning_budget": "same three alpha candidates for each arm; no test-set setting selection"
+  },
+  "preparation_authorization": {
+    "decision_record": "configs/m5_protocol_design_choices_accepted_20261113.json",
+    "design_choices_accepted": true,
+    "exact_local_new_protocol_sha256": null,
+    "exact_local_new_protocol_sha256_reason": "The unredacted new local repository candidate has not been created or frozen in this cloud task; record its hash in a separate receipt, not inside itself.",
+    "exact_user_message_sha256": "d44562c39dd59531fc3b7ecbc5d58f6700ac3dfe3387522b162dca1c62fce9c3",
+    "financial_execution_authorized": false,
+    "full_protocol_accepted": false
+  },
+  "prior_accepted_scope": {
+    "decision_source_reused_or_created_this_round": true,
+    "full_financial_protocol": false,
+    "retrospective_direction_A": true,
+    "three_engineering_preparation_rules": true,
+    "three_new_design_choices_for_preparation": true
+  },
+  "purpose": "Draft fixed-byte retrospective comparison of company filing events with documented dated primary securities, conditional on each horizon having a complete observed required price window; no broad-cohort, historical tradability, no-lookahead or economic-value claim.",
+  "researcher_accepted": false,
+  "sample": {
+    "admission": "Require original accession, issuer CIK, fiscal period, fixed Item 1 bytes and extraction/version evidence; dated company-primary relation, source-supported market/calendar, defined traded-close adjustment and the horizon-specific full required window. Keep starting companies independent of future prices and retain every event exclusion reason. No 18:00 historical-availability gate is asserted under the accepted retrospective proxy.",
+    "current_local_five_texts_role": "ENGINEERING_DEVELOPMENT_ONLY",
+    "development_cik_exclusions": [
+      "0000320193",
+      "0000789019",
+      "0001018724",
+      "0001652044",
+      "0001326801"
+    ],
+    "event_unit": "One original company 10-K Item 1 CIK/fiscal-period filing event with source-supported event-time CIK-security relation and one documented dated primary issue; each horizon may retain a different complete-window subset.",
+    "filing_decision_years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "illustrative_count_is_a_hard_cap": false,
+    "illustrative_filing_events_at_one_per_firm_year": 1200,
+    "planning_cohort": "At most 200 distinct CIKs from a verified proposed 2020-01-01 US exchange-listed operating-common-share company master with dated primary security; retain later exits and identifier changes",
+    "planning_cohort_hash_rule": "sort ascending by SHA-256(UTF-8('m5-r7-2026-11-01:' + ten_digit_CIK)); take the first 200 after excluding the five development CIKs",
+    "planning_cohort_master_as_of": "2020-01-01",
+    "planning_count_is_power_claim": false,
+    "section": "Item 1 Business",
+    "source_form": "original_10-K",
+    "starting_and_event_denominators": "Keep source-bound starting-company denominator, potential filing-event denominator and each horizon-specific scored subset separately. No cohort count is admitted by this draft.",
+    "starting_cohort_price_coverage_reselection": false
+  },
+  "schema_version": 4,
+  "selected_design": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+  "selected_design_scope": "DESIGN_DIRECTION_FOR_PREPARATION_ONLY",
+  "source_round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "status": "PROPOSED",
+  "supersedes_proposed_candidate_sha256": null,
+  "supersession_status": "NEW_DRAFT_ONLY_ORIGINAL_ROUND8_AND_OLD_H_R_PRESERVED",
+  "time_interpretation": {
+    "recommended": "RETROSPECTIVE_COMPANY_EVENTS_FIXED_BYTES_WITH_DECLARED_SESSION_PROXY",
+    "strict_alternative": "Bind a contemporaneously available complete model-file revision, training-data cutoff evidence, decision-time text vintage and point-in-time market data before any as-of claim",
+    "strict_historical_as_of_status": "NOT_CLAIMED_BY_SELECTED_PROXY_SEPARATE_PROTOCOL_REQUIRED"
+  }
+}

@@ -1,0 +1,46 @@
+# M5 company proxy: price, actions, and exit contract draft
+
+**Status:** `DRAFT_NOT_ACCEPTED / ENGINEERING_ONLY`. The transferred preparation decision favors a company filing event, a retrospective session anchor, a traded-close price target, complete required windows, separate 5- and 21-session masks, and the same rows for F0/F1/F2 within each horizon. It does **not** accept the exact full M5 protocol, source-specific adjustment and exit rules, an event mask, or any financial result. The original round-8 and H/R candidates remain historical proposals. No price return or label was computed for this document.
+
+## Held evidence and definition boundary
+
+| Role | What is held | What this does not establish |
+| --- | --- | --- |
+| Daily bars | The prior [admission readiness matrix](M5_DATA_ADMISSION_READINESS_20261112.md) records eight bounded Daily segment receipts and saved derivations for the acquisition buffer; it distinguishes received rows from a canonical close and event mask. | A unique economic observation per issue/session, a split-adjusted price, historically finalized 18:00 bar, or populated `d-20` to `d+h` window. The Daily SQL/JOIN explanation for repeated keys remains unresolved. |
+| Distributions | The prior [merged receipt](../reports/2026-11-12_m5_distribution_merged_intake.md) records two bounded extracts and retained multi-sequence events. The reviewed query has a ten-code `DisType` filter. | A complete corporate-action universe, a split-only adjustment series, or a dividend-inclusive return. A match between Distribution multi-sequence groups and Daily duplicate keys does not prove the backend JOIN. |
+| Exits | The prior [delisting intake](../reports/2026-11-11_m5_delist_local_intake.md) records retained event and successor fields. Its export is limited by a five-action filter and contains an undated Header join. | Complete terminal-outcome coverage, a price-only terminal value, historical successor identity, or a rule for missing exits. |
+| Public field definitions | The official [CRSP CIZ file-format guide](https://www.crsp.org/wp-content/uploads/guides/CRSP_US_Stock_%26_Indexes_Database_Guide_Flat_File_Format_2.0.pdf) and [legacy-to-CIZ cross-reference guide](https://www.crsp.org/wp-content/uploads/guides/CRSP_Cross_Reference_Guide_1.0_to_2.0.pdf) were opened on 2026-11-13. They define fields in `StkDlySecurityData`, `StkDistributions`, `StkDelists`, and `StkDlyCumulativeAdjFactor` and distinguish mapped fields. | These current public documents do not bind the exact version, values, source joins, or project license of the saved WRDS exports. |
+
+The official CIZ guide defines `DlyClose` as the last regular-session traded price. `DlyPrc` can instead use a bid/ask average when a trade is unavailable; `DlyPrcFlg` identifies price type. `DlyFacPrc` includes factors that affect the return calculation, so it is not certified here as a split-only cumulative factor. `DlyRetx` is described as price return without **ordinary** dividends; that wording alone does not resolve nonordinary actions or make it the proposed label. `DisExDt` is the first date the security trades without the right to the distribution, while `DisSeqNbr` distinguishes events on one ex-date. `DisFacPr` and `DlyCumFacPr` are described as cumulative price factors after distributions, with `DisFacPr=-1` for delisting distributions; neither is automatically a split-only conversion for this study. The guide distinguishes `DelistingDt`, `DelDlyDt`, `DelAmtDt`, `DelRet`, `DelNextPrc`, and `DelDivAmt`, which cannot be substituted for one another or for a traded close. [Official CIZ guide, printed pp. 10–12 and 16–18](https://www.crsp.org/wp-content/uploads/guides/CRSP_US_Stock_%26_Indexes_Database_Guide_Flat_File_Format_2.0.pdf).
+
+## Candidate target and unresolved executable fields
+
+For a company filing event bound to a dated primary security, let `d` be the first applicable regular session strictly after the official SEC Filing Date. Let `h` be 5 for the primary candidate or 21 for the alternative. The descriptive proposed price target is
+
+`R_price(i,d,h) = C_adj(i,d+h) / C_adj(i,d) - 1`.
+
+`C_adj` denotes a source-supported, split-adjusted **traded** close on a common unit basis. Its construction is **undefined** at present. Ordinary dividend cash is excluded from this intended price target. The expression is a mathematical objective, not an executable label or a claim that all corporate actions have been handled. In the proposed exact protocol, the following remain `null`:
+
+| Contract field | Current value | Smallest missing definition or evidence |
+| --- | --- | --- |
+| `split_adjustment_formula` | `null` | Identify the exact saved extract's split-event codes/factors, factor orientation and base, ex-date inclusion, multiple same-day and across-day composition, and a source-backed synthetic validation case. Do not equate `DlyFacPrc`, `DisFacPr`, or `DlyCumFacPr` with a split-only factor without an explicit derivation. |
+| `nonordinary_distribution_rule` | `null` | Define which spin-offs, rights, special cash, security payments and other actions affect a price-only comparison, with released field/code meanings and ordering when multiple events share an ex-date. Ordinary dividends being excluded does not settle these cases. |
+| `known_exit_terminal_value_rule` | `null` | Bind action type, last trading date, payment/next-price date, cash and security consideration, currency, corporate-action chain and applicable target interpretation. `DelRet` is a total-return field and cannot silently serve as a dividend-excluding price terminal value. |
+| `source_interval_endpoint_inclusivity` and applicable market calendar | `null` | Establish source-specific date semantics and issue-level market/calendar applicability before locating the fixed sessions; the retrospective XNYS baseline alone is insufficient for other markets. |
+
+No factor direction, date cutover or multi-event product/sum was chosen by the preparation decision. A separate [simple-split algebra proposal](M5_SIMPLE_SPLIT_PRICE_PROPOSAL_20261113.md) now records public source definitions, a narrow derived common-basis equation and synthetic checks. It remains unaccepted, does not bind saved-release fields or complex actions, and does not populate this candidate's `null` formula fields. Do not select a convention by comparing realized returns.
+
+## Complete-window and attrition rule for review
+
+For each horizon, evaluate the fixed applicable session sequence `d-20, ..., d, ..., d+h`. Every required session needs a finite positive traded close after an accepted adjustment; a missing middle session remains missing even if both endpoints exist. Keep the original `d+h` endpoint when a price is absent: no next-available-price substitution, quote-derived `DlyPrc` fallback, zero fill, successor substitution, or silent deletion. Record duplicate source rows and unresolved flags rather than making a financial row from a structural receipt. The 5-session mask must not require 21 future sessions merely because the alternative horizon does. F0, F1 and F2 must use the same event rows and label within **each** horizon.
+
+Retain the initial company/event denominator, then record candidate events, each exclusion or unresolved reason, and year-by-reason attrition before claiming a conditional comparison. A known but unresolved exit and an unobserved terminal value are distinct states; neither is a zero return. For the accepted preparation direction, events without a complete accepted window remain **unscored with a reason**. That would support only a conditional complete-window association once the complete protocol is accepted, not a full-cohort return or evidence that attrition is random. A separately proposed full-cohort exit target would need a different terminal rule and could change the estimand. A terminal-price formula is not a global prerequisite for complete-window cases under the present conditional direction; coverage of exit events and the event mask remain unverified.
+
+## Minimal remaining price and exit evidence
+
+1. Bind the saved Daily and Distribution export release, selected field definitions/flags, SQL/JOIN and source hashes to a canonical one-issue/one-session traded close. Preserve the unresolved repeated-key and Distribution-only exceptions.
+2. Obtain the source-specific split and other-action code/factor semantics sufficient to specify factor direction, ex-date inclusion, same-day composition and validation cases. Existing filtered Distribution rows should be reused; request only genuinely missing definitions or events.
+3. Determine whether the filtered Delist extract covers every action that can affect the chosen conditional target; define known-terminal versus unknown/missing handling without treating `DelRet` as a price-only terminal amount.
+4. Bind issue-level market/calendar and the original-filing event ledger before constructing complete windows or a year-by-reason attrition table. The calculation policy and exact full candidate require a separate version-bound research decision before any label, fit or score.
+
+No WRDS request, Encoder, new price return, financial training, prediction evaluation, or backtest was performed while preparing this draft.

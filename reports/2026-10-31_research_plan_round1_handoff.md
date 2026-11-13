@@ -1,0 +1,24 @@
+# Research planning round 1 handoff — 2026-10-31
+
+This is a local documentation and evidence-alignment round, not a new model or finance experiment. Continue from the [maintained research plan](../docs/RESEARCH_EXECUTION_PLAN.md), [M0–M7 trace](../docs/EVIDENCE_TRACE_M0_M7.md), [M8–M10 trace](../docs/EVIDENCE_TRACE_M8_M10.md), [TASKS](../TASKS.md), and [ROADMAP](../ROADMAP.md). The copied trace files are byte-identical to the existing curated share-branch files; their original historical readback language describes that earlier work, not a new full re-audit here.
+
+## Executed checks and source boundary
+
+| Planned item | Actual execution | Evidence or limit |
+| --- | --- | --- |
+| Workspace and remote identity | Inspected protected `quant` (unborn `master`, untracked original project), clean development base `c864027413b9b6545f4fbe04611d91720b76212a`, separate share head `2371e577243bbad91bdbc126f74c7e9845b434a9`, and remote heads. Created `codex/research-plan-round1-20261031` from the development head. | No reset, clean, stash, history merge or push. The public GitHub PR #2 page showed Draft against `main` on this date; GitHub CLI was unavailable. |
+| Saved results | Read `results/PROVENANCE.json`, `results/stability_metrics.json`, M6/M7 results and source traces. Rehashed protected M1 index (`ce54c348458e2c90abee0435f72fe84ff3895e7695c2a2f4ed212eb61035a18c`) and M2–M3 report (`912cbf75cf06148a2933fb924794f473f324ab480effc9ee68c21bd337831700`); rehashed M6 comparison, M7 tail diagnostic, M9 validation, and M10 index/evaluation/assistant saved outputs against the trace. | M1/M2 files are in the protected original directory, absent from this isolated checkout. This round inspected saved outputs only; it did not re-run models or independently validate every source byte. |
+| Source citations | Opened all eight official SEC filing-detail links and the pinned MiniLM revision tree cited in the copied traces, and read the public GitHub PR #2 page. | These pages corroborate accession/form and model-revision identity, not first-public availability, historical source bytes, training cutoff or financial results. No unidentified JFE paper was cited. |
+| Meeting source | Read the private desktop DOCX locally and recorded SHA-256 `7a032214816172e01e27dfc6606422a79419c53eaf6d227ca2c527bfb2dd4643`. | The transcript has recognition errors and no reliable speaker labels. It is excluded from Git, the source indexes and generation context. Its 5–10-token observation has no identified run package. |
+| Paper | Checked project research documents and relevant local file names for a unique JFE title, DOI or PDF. | `BLOCKED`: no unique paper identity. Obtain a title, link or PDF; do not attribute an unproven leak. |
+| Local compute | Used read-only GPU/CIM and current-interpreter package checks, listed local model files, and hashed the pinned MiniLM tokenizer and ONNX model. | Observed 12,227 MiB total/11,579 MiB free GPU memory and 33,476,489,216 bytes RAM at inspection. Current interpreter lacks a generator runtime; other environments may differ. University GPU access, queue, quota, model and approver remain `NOT_VERIFIED`. |
+| Documentation | Added the maintained plan, copied the two existing public trace documents unchanged, updated TASKS/ROADMAP and wrote this handoff. | All S1–S8 and finance comparisons are proposals. No new statistical or financial result. |
+
+## Decision queue and next entry condition
+
+1. Obtain the other member's exact small-token perturbation package: author, source bytes/hash, tokenizer and encoder revision, paired lengths, commands/config and raw machine results. Read and audit it before choosing any S2 settings; absence is `NOT_VERIFIED`, not a share-branch failure.
+2. Decide the admissible section/version universe, stability metric and independent unit, model candidates, and whether the proposed small-step/boundary/aggregation contrasts answer the primary representation question. Record a dated M5 decision before formal execution.
+3. For any financial extension, decide one target/horizon, decision clock, return and cost definitions, aligned price-only/lexical/embedding arms, and chronological validation with historical source availability and revision evidence.
+4. Supply the JFE paper's exact title/link/PDF and an official university resource page or written allocation terms. No paper-specific critique or university capacity claim is currently supported.
+
+**Smallest next executable task:** read-only audit of the member's exact small-token run package, once supplied. If the package does not arrive, the observation stays unverified; do not replace it with the historical 128/192 contrast or start a new experiment. Keep raw inputs, reviewer replies, source-derived nodes/vectors, model weights, personal meeting material, credentials and vendor responses outside the selected documentation commit.

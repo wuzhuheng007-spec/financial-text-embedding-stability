@@ -1,0 +1,42 @@
+# M9 English Form 10-Q MD&A review handoff
+
+## Scope and baseline
+
+This is a local, English-language researcher review delivery for the four fixed filings below. It prepares source-bound decisions; it does not add a human decision, accept a four-company corpus, run a five-company representation calculation, or run a financial experiment. The M8 input run and all historical AAPL decisions remain unchanged. Work began from clean commit `da5c76c71277d81d1f8e3c6735061edd263bc563` on `codex/m8-four-10q-review-20261026` and continued on `codex/m9-english-10q-review-20261027`.
+
+The [plan-to-evidence table](../artifacts/m9/20261027T011648Z-english-review/PLAN_TO_EVIDENCE.md) was written before revising the delivery. The final local run is `artifacts/m9/20261027T011648Z-english-review/`. M8 `review_v7` remains intact. English `review_en_v1`, `review_en_v2`, and `review_en_v3` remain as superseded drafts: v2 replaced YES/NO/UNCLEAR with the required item-level ACCEPT/REVISE/REJECT options; v3 added a bounded, hashed source-HTML excerpt before each selected heading; v4 replaced browser-blocked Markdown guide links with browser-readable HTML instructions. Use only `review_en_v4` for a new decision.
+
+## Filing and source verification
+
+| Company | Fixed accession | Report end | Filed | Saved original and extraction | Body HTML tables | Separate heading/layout tables | Researcher status |
+| --- | --- | --- | --- | --- | ---: | ---: | --- |
+| MSFT | `0000950170-25-010491` | 2024-12-31 | 2025-01-29 | Rehashed, programmatic candidate | 10 | 0 | `PENDING_HUMAN_REVIEW` |
+| AMZN | `0001018724-25-000036` | 2025-03-31 | 2025-05-02 | Rehashed, programmatic candidate | 6 | 2 | `PENDING_HUMAN_REVIEW` |
+| GOOGL | `0001652044-25-000043` | 2025-03-31 | 2025-04-25 | Rehashed, programmatic candidate | 14 | 0 | `PENDING_HUMAN_REVIEW` |
+| META | `0001326801-25-000054` | 2025-03-31 | 2025-05-01 | Rehashed, programmatic candidate | 14 | 0 | `PENDING_HUMAN_REVIEW` |
+
+The [saved-source integrity ledger](../artifacts/m9/20261027T011648Z-english-review/source_period_en_v4/source_integrity.json) rehashes each complete submission, raw-embedded primary HTML, normalized primary text, exact Item 2 section, prior M8 review page, and the 44 saved table source and flattened spans. The [current SEC index cross-check](../artifacts/m9/20261027T011648Z-english-review/OFFICIAL_SEC_INDEX_CROSSCHECK.md) separately confirms the fixed filing identity on official filing-detail pages. That current page check is not proof of historical first-public or tradable time.
+
+The earlier standalone HTML and the newly saved raw-embedded HTML differ by an exact XBRL wrapper and one prior-only 114-byte script element. M8 adjudication authorized extraction from the new complete raw snapshot for this unreviewed pilot. Historical snapshot equivalence and the script's origin or function remain unestablished. No source or historical decision record was replaced.
+
+The AAPL historical record still has nine source/page-bound item-level ACCEPT replies. Its separate overall signature and user-entered review time are absent; the older AAPL v4 browser export/reload gate remains open. The two append-only hash transcription corrections remain attached to their original record. This same-agent rehash is a self-check, not an independent audit.
+
+## Reporting-period evidence
+
+Run `python scripts/m9_period_evidence.py --output artifacts/m9/20261027T011648Z-english-review/source_period_en_v4` generated [229 deduplicated local period-phrase entries](../artifacts/m9/20261027T011648Z-english-review/source_period_en_v4/period_evidence.csv) with exact extracted-section character spans, excerpt/context hashes, evidence levels, and researcher-pending status. The [exception table](../artifacts/m9/20261027T011648Z-english-review/source_period_en_v4/period_exceptions.json) distinguishes Microsoft three- and six-month comparisons and Amazon three- and twelve-month comparisons. Annual 10-K cross-references are not whole-chapter annual periods; point-in-time `as of` phrases are not duration periods. Phrase-pattern coverage was checked against the saved sections, but semantic period completeness still needs researcher review. No whole-chapter coverage start or end was inferred, and the day after a prior report end is only a proxy.
+
+## English delivery and browser checks
+
+Open [the four-company review entry](../artifacts/m9/20261027T011648Z-english-review/review_en_v4/index.html) and follow [the browser-readable English review guide](../artifacts/m9/20261027T011648Z-english-review/review_en_v4/M9_ENGLISH_REVIEW_GUIDE.html). Each company page shows source identity and hashes, original and normalized beginning/ending context, source HTML tables beside exact flattened text, adjacent note candidates, period clues, and exceptions. The forms leave reviewer, time, item decisions, and overall decision blank. AMZN's two heading/layout tables are marked separately from its six body tables. The exact source text and financial values are retained; the English wrapper does not convert them into confirmed interpretations.
+
+The local browser was served only from `review_en_v4` on `127.0.0.1:8765`. All four company evidence pages are byte-identical to their v3 counterparts; the v4 entry, HTML instructions, guide, and blank forms were reopened in the browser. At a 1072-pixel viewport, the overview, four evidence pages, and four forms had 1057-pixel document width, no document-level horizontal overflow, no replacement characters, and no Han characters in authored visible page text. The first substantive table in each company was expanded; the table wrapper had horizontal scrolling where needed, and the rightmost cell was reached in the browser for MSFT, AMZN, GOOGL, and META. AMZN's separate heading/layout table was visibly checked. Detailed measurements and saved screenshots are in the [browser validation directory](../artifacts/m9/20261027T011648Z-english-review/browser_check/). The v3 Markdown guide URL was blocked by the in-app browser even though the local server returned it; v4 HTML guide and opening instructions both rendered successfully.
+
+An empty MSFT `review_en_v4` JSON was downloaded in the browser and re-imported successfully. All decision, reviewer, and review-time fields stayed blank; status remained `PENDING_HUMAN_REVIEW` and acceptance gate `NOT_MET`. Importing the saved v3 record into the v4 form displayed `Import rejected: Filing or page version mismatch: review_packet_version`. These records are software tests under `software_tests/`, not genuine researcher opinions. Browser locale rendered its native file chooser and date widget in Chinese; all authored page and form text remained English.
+
+## Checks, boundaries, and next decision
+
+The changed-code focused checks passed: source/period evidence 3 tests, final v4 review generation 3 tests, and language audit 5 tests. The first unrestricted `python -m pytest -q` invocation failed at collection because this machine's installed `finembed` resolved to an older `quant` checkout. With only this test process's `PYTHONPATH` prepended by this repository's `src`, the broader suite reported **124 passed, 3 skipped**. Two skips require pinned local model files that are absent from this curated checkout; the third was the opt-in real-source review test, subsequently run with `M9_REVIEW_OUTPUT=review_en_v4` and passed in the focused checks. The failed and successful logs are retained in the run. No model inference was repeated.
+
+The same agent checked source hashes, generated pages, browser rendering, and language scope; this is not an independent audit. Historical raw SEC files, model weights, and private original researcher statements remain local and outside the Git commit. The English pages embed each complete extracted Item 2 section, plus bounded source-HTML context and table previews; the pages remain local under the existing sharing scope and must be reviewed before any redistribution. No remote push occurred.
+
+The next genuine researcher item is **MSFT Item 2 beginning** only: compare the selected source HTML heading and preceding context, normalized primary text, extracted text opening, and excluded table-of-contents candidate. Record one explicit ACCEPT, REVISE, or REJECT for that item. All other MSFT items and all AMZN, GOOGL, and META decisions remain pending until separately provided.

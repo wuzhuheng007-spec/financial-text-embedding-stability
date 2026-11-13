@@ -1,0 +1,58 @@
+{
+  "schema": "m5_accepted_preparation_policy_v1",
+  "policy_layer": "ACCEPTED_ENGINEERING_PREPARATION_ONLY",
+  "preparation_rules_researcher_accepted": true,
+  "full_m5_protocol_researcher_accepted": false,
+  "formal_financial_experiment_status": "NOT_RUN",
+  "rule_ids": [
+    "candidate_link_screening",
+    "fixed_2020_starting_scope",
+    "derived_daily_and_availability"
+  ],
+  "candidate_link_screening": {
+    "provider_quality_codes_for_candidate_screen": [
+      2,
+      3
+    ],
+    "match_kind": "EXACT_CUSIP_UNDER_RECORDED_EXISTING_NORMALIZATION",
+    "existing_cusip8_exact_join_preserved": true,
+    "new_fuzzy_or_issuer_prefix_join_authorized": false,
+    "new_cross_width_truncation_authorized": false,
+    "code3_automatic_priority_over_code2": false,
+    "unknown_quality_status": "QUALITY_UNRESOLVED",
+    "parallel_and_conflicting_candidates": "RETAIN_WITH_REASONS",
+    "first_last_filing_date_semantics": "OBSERVATION_TIME",
+    "unique_candidate_is_historically_valid_or_accepted": false,
+    "retroactive_old_export_predicate_inference": false
+  },
+  "fixed_2020_starting_scope": {
+    "starting_acquisition_set": "EXISTING_BOUND_STARTING_SET_NOT_A_FORMAL_COHORT",
+    "new_baseline_date_accepted": false,
+    "existing_proposed_reference_date_can_be_used_as_diagnostic_only": true,
+    "operating_common_share_interpretation": "SOURCE_EVIDENCE_REQUIRED",
+    "market_and_primary_security": "SOURCE_EVIDENCE_REQUIRED_ELSE_NULL",
+    "new_primary_selection_algorithm_authorized": false,
+    "future_survival_or_price_coverage_selects_starting_membership": false,
+    "unresolved_subjects_retained_with_reasons": true,
+    "formal_cohort_count": null
+  },
+  "derived_daily_and_availability": {
+    "raw_sources": "IMMUTABLE",
+    "group_key": "EXISTING_PERMNO_PLUS_DLYCALDT_KEY_DEFINITION",
+    "collapse_condition": "ALL_PARSED_SOURCE_COLUMNS_EQUAL_WITHIN_SAME_KEY",
+    "parsed_string_equality_not_numeric_equivalence": true,
+    "provenance_map": "DERIVED_ROW_TO_ALL_SOURCE_ROWS_PRIVATE_ONLY",
+    "representative_for_equal_rows": "DETERMINISTIC_SOURCE_ORDER_ONLY",
+    "conflicting_keys": "QUARANTINE_NOT_PICK_BEST_PRICE",
+    "unknown_equality_evidence": "UNRESOLVED_NOT_COLLAPSED",
+    "missing_price_or_unknown_exit": "MISSING_WITH_REASON",
+    "fixed_horizon_positions": "DO_NOT_SHIFT",
+    "zero_fill_carry_forward_interpolation_or_successor_substitution_authorized": false,
+    "comparison_arms": "COMMON_AVAILABILITY_RULES",
+    "final_event_mask_status": "NOT_CERTIFIED",
+    "concrete_label_horizons_accepted_here": false,
+    "price_adjustment_or_price_vs_close_rule_accepted_here": false
+  },
+  "not_financial_execution": true,
+  "original_candidate_sha256_unchanged": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38"
+}

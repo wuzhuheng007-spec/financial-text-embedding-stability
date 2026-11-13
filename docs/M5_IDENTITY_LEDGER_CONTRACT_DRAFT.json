@@ -1,0 +1,175 @@
+{
+  "schema_id": "m5_identity_candidate_ledger_contract_draft_v1",
+  "contract_status": "DRAFT_ENGINEERING_NOT_A_VENDOR_SCHEMA_NOT_RESEARCHER_APPROVAL",
+  "candidate_protocol_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "purpose": "Preserve source-bound identity candidates and temporal/eligibility uncertainty; no cohort admission.",
+  "reference_asof_date_from_proposal": "2020-01-01",
+  "date_policy": {
+    "separate_domains": [
+      "source observation dates",
+      "source asserted valid-time dates",
+      "source acquisition timestamp",
+      "proposed research reference date"
+    ],
+    "allowed_date_semantics": [
+      "VALID_TIME",
+      "OBSERVATION_TIME",
+      "ASOF_SNAPSHOT",
+      "UNKNOWN"
+    ],
+    "boundary_states": [
+      "KNOWN",
+      "UNBOUNDED_WITH_SOURCE_EVIDENCE",
+      "UNKNOWN"
+    ],
+    "end_bound_semantics": [
+      "INCLUSIVE",
+      "EXCLUSIVE",
+      "UNKNOWN"
+    ],
+    "rules": [
+      "A first/last filing observation must not become a validity interval without source-definition evidence.",
+      "Blank endpoints do not imply infinity; record a boundary state separately.",
+      "Only documented interval endpoints may support a containment result.",
+      "Keep original dates and boundary semantics. Any derived half-open form requires an explicit, versioned conversion rule.",
+      "A later observation or current Header field must not be backfilled into a historical gap."
+    ]
+  },
+  "logical_tables_not_vendor_column_names": {
+    "source_manifest": {
+      "unit": "one source file/version",
+      "fields": [
+        "source_id",
+        "logical_role",
+        "source_file_sha256",
+        "source_bytes",
+        "prior_receipt_id",
+        "source_scope",
+        "dictionary_evidence_ref",
+        "column_mapping_sha256",
+        "private_path"
+      ]
+    },
+    "source_record": {
+      "unit": "one retained upstream logical record",
+      "fields": [
+        "source_record_id",
+        "source_id",
+        "private_source_row_locator",
+        "raw_record_ref",
+        "parse_status",
+        "exception_codes"
+      ]
+    },
+    "identity_candidate": {
+      "unit": "one explicitly supported candidate relation or candidate path; not an accepted identity",
+      "fields": [
+        "candidate_id",
+        "evidence_record_refs",
+        "raw_identifier_refs",
+        "normalized_identifiers_or_null",
+        "relation_kind",
+        "normalization_rule_ref",
+        "date_semantics",
+        "raw_date_refs",
+        "valid_from_or_null",
+        "valid_to_or_null",
+        "start_boundary_state",
+        "end_boundary_state",
+        "end_bound_semantics",
+        "temporal_evidence_ref",
+        "contains_proposal_asof_or_null",
+        "candidate_relation_status",
+        "exception_codes"
+      ]
+    },
+    "issue_evidence": {
+      "unit": "one source-qualified issue attribute observation",
+      "fields": [
+        "issue_ref_private",
+        "evidence_record_refs",
+        "raw_type_class_market_refs",
+        "interpreted_type_or_null",
+        "listing_mic_or_null",
+        "primary_flag_or_null",
+        "attribute_date_semantics",
+        "interpretation_evidence_ref",
+        "exception_codes"
+      ]
+    },
+    "identity_exception": {
+      "unit": "one code applied to one source record/relation/attribute",
+      "fields": [
+        "exception_id",
+        "exception_code",
+        "subject_kind",
+        "subject_ref_private",
+        "evidence_refs_private",
+        "blocking_dependency",
+        "resolution_state"
+      ]
+    }
+  },
+  "candidate_relation_statuses": [
+    "UNREVIEWED_SOURCE_RECORD",
+    "EXACT_DOCUMENTED_KEY_CANDIDATE",
+    "MULTIPLE_OBSERVED_CANDIDATES",
+    "TEMPORAL_SEMANTICS_UNKNOWN",
+    "OBSERVED_SOURCE_CONFLICT",
+    "UNMAPPED_SOURCE_FIELDS"
+  ],
+  "exception_codes_draft": [
+    "SOURCE_IDENTITY_MISMATCH",
+    "REQUIRED_SOURCE_UNAVAILABLE",
+    "FIELD_SEMANTICS_UNVERIFIED",
+    "DATE_SEMANTICS_UNKNOWN",
+    "OBSERVATION_SPAN_NOT_VALIDITY",
+    "BOUNDARY_SEMANTICS_UNKNOWN",
+    "DATE_PARSE_OR_RANGE_ISSUE",
+    "NORMALIZATION_UNVERIFIED",
+    "ONE_TO_MANY_OBSERVED_CANDIDATES",
+    "OVERLAPPING_ASSERTED_INTERVALS",
+    "ISSUE_ISSUER_CONTAINMENT_UNRESOLVED",
+    "SOURCE_ATTRIBUTE_CONFLICT",
+    "CLASS_SEMANTICS_UNKNOWN",
+    "PRIMARY_BASIS_UNKNOWN",
+    "LISTING_MARKET_OR_MIC_UNKNOWN",
+    "UNRESOLVED_SOURCE_POPULATION_SCOPE"
+  ],
+  "locked_policy_outputs": {
+    "researcher_accepted": false,
+    "formal_financial_experiment_status": "NOT_RUN",
+    "selected_formal_cohort": null,
+    "formal_cohort_distinct_cik_count": null,
+    "admitted_financial_observations": null,
+    "eligibility_under_unaccepted_policy": null,
+    "primary_security_selection_under_unaccepted_policy": null
+  },
+  "privacy": {
+    "private_only": [
+      "raw/normalized real identifiers",
+      "CIK-to-issue pairs",
+      "source record locators",
+      "per-row hashes",
+      "private paths",
+      "raw records",
+      "unredacted SQL or lists"
+    ],
+    "safe_export": [
+      "schema and mapping field names without private values",
+      "source roles/file-level hashes",
+      "aggregate counts with declared unit",
+      "overlap-aware exception counts",
+      "explicit unknowns and limitations",
+      "actual validation statuses"
+    ],
+    "no_research_results_from_ledger_counts": true
+  },
+  "summary_requirements": [
+    "Report source records, candidate relations and exceptions as different units.",
+    "Exception-code counts may overlap; report distinct affected-subject count separately.",
+    "Observed uniqueness in imported sources is not provider-wide uniqueness, historical primary status or final eligibility.",
+    "No-match and missing/unparsed source are distinct; do not turn missing source into zero matches.",
+    "No formal cohort or financial sample count is inferred from imported source rows or upload identifiers."
+  ]
+}

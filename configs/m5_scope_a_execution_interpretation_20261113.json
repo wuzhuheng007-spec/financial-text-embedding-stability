@@ -1,0 +1,60 @@
+{
+  "schema": "m5_scope_a_execution_interpretation_v1",
+  "status": "SCOPE_DIRECTION_RECORDED_ONLY",
+  "scope_direction_accepted": true,
+  "full_m5_protocol_accepted": false,
+  "formal_financial_experiment_status": "NOT_RUN",
+  "decision_source": {
+    "kind": "USER_TRANSFERRED_HANDOFF",
+    "handoff_zip_sha256": "91e9614d44dd5725a06cf3f7fb3dd4451fd7158902e73a4a4749b37688394f2f",
+    "decision_member_sha256": "2359ae11b0bfdfd62d8050a2d19a55c9ef883fc505f263038e927599d5b6d970",
+    "prior_options_packet_sha256_reported": "815a72f85ec5962bf4f787bfbab0836ce36cc13df06544a03296736f3e8fb3a0",
+    "prior_options_packet_verified_in_this_checkout": false,
+    "original_message_local_date_reported": "2026-11-13",
+    "original_message_timezone_reported": "Asia/Shanghai",
+    "original_message_exact_utc": null,
+    "original_message_time_of_day": null,
+    "source_reply_excluded_from_tracked_files": true,
+    "decision_maker_identity_independently_authenticated": false
+  },
+  "selected_direction": {
+    "option": "A",
+    "id": "FIXED_BYTE_RETROSPECTIVE_COMPARISON",
+    "allowed_interpretation": "Retrospective comparison under fixed, byte-identified model, text and data processing versions",
+    "allowed_descriptive_families": [
+      "representation_stability",
+      "bounded_downstream_association_after_separate_protocol_acceptance"
+    ],
+    "not_authorized_claims": [
+      "historically_tradable_prediction",
+      "absence_of_pretraining_lookahead",
+      "historically_available_complete_model_revision",
+      "general_financial_validity_or_economic_value"
+    ],
+    "global_model_training_cutoff_utc": null,
+    "strict_historical_as_of_model_proof_required_for_scope_a_preparation": false,
+    "strict_historical_as_of_claim_supported": false
+  },
+  "unchanged_round8_candidate": {
+    "path": "configs/m5_financial_protocol_round8.json",
+    "sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+    "status": "PROPOSED",
+    "researcher_accepted": false,
+    "formal_financial_experiment_status": "NOT_RUN"
+  },
+  "still_proposed_choices": [
+    "18:00 America/New_York text and close availability gate",
+    "up to 200 CIK planning cohort",
+    "5 subsequent-session primary and 21 subsequent-session alternative horizons"
+  ],
+  "remaining_gates": [
+    "historical CIK-to-security valid-time identity and primary share evidence",
+    "historical market, security type and eligibility evidence",
+    "canonical duplicate and conflicting Daily row policy",
+    "missing close, exit and terminal outcome policy",
+    "exact text version and decision-time price availability rule",
+    "version-bound acceptance of the full M5 protocol before financial execution"
+  ],
+  "formal_cohort_distinct_cik_count": null,
+  "admitted_financial_observations": null
+}

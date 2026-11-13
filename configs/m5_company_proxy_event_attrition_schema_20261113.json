@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:m5:company-proxy-event-attrition:schema:20261113",
+  "title": "M5 company event and horizon attrition preparation contract",
+  "description": "Schema only. It does not admit a cohort, certify historical identity, or authorize labels or financial execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "design_direction",
+    "source_config_sha256",
+    "starting_company_denominator",
+    "potential_original_filing_event_denominator",
+    "formal_admitted_count",
+    "first_failure_priority",
+    "events",
+    "horizon_attrition",
+    "annual_attrition"
+  ],
+  "properties": {
+    "status": {"const": "DRAFT_NOT_ACCEPTED_SCHEMA_ONLY"},
+    "design_direction": {"const": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113"},
+    "source_config_sha256": {"type": "null", "description": "The exact full candidate has not been frozen or accepted."},
+    "starting_company_denominator": {"type": ["integer", "null"], "minimum": 0},
+    "potential_original_filing_event_denominator": {"type": ["integer", "null"], "minimum": 0},
+    "formal_admitted_count": {"type": "null"},
+    "first_failure_priority": {"type": "null", "description": "A mutually exclusive attrition order needs a separate accepted rule."},
+    "events": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/event"}
+    },
+    "horizon_attrition": {
+      "type": "array",
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/attrition"}, {"properties": {"h": {"const": 5}}}]},
+        {"allOf": [{"$ref": "#/$defs/attrition"}, {"properties": {"h": {"const": 21}}}]}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "annual_attrition": {
+      "type": "array",
+      "description": "Future year-by-horizon diagnostics; empty in the present preparation template.",
+      "items": {"$ref": "#/$defs/annual_attrition"}
+    }
+  },
+  "$defs": {
+    "sha256_or_null": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "date_or_null": {"type": ["string", "null"], "format": "date"},
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_local_id", "company_cik", "company_cik_source", "accession",
+        "original_form", "fiscal_period", "official_filing_date",
+        "filing_date_correction_evidence", "fixed_text", "dated_identity",
+        "session_axis", "horizons", "exceptions"
+      ],
+      "properties": {
+        "event_local_id": {"type": ["string", "null"]},
+        "company_cik": {"type": ["string", "null"], "description": "Use authoritative company filing metadata, never the accession prefix alone."},
+        "company_cik_source": {"type": ["string", "null"]},
+        "accession": {"type": ["string", "null"]},
+        "original_form": {"type": ["string", "null"], "description": "Original 10-K only under the proposed contract."},
+        "fiscal_period": {"$ref": "#/$defs/date_or_null"},
+        "official_filing_date": {"$ref": "#/$defs/date_or_null"},
+        "filing_date_correction_evidence": {"type": ["string", "null"]},
+        "fixed_text": {"$ref": "#/$defs/fixed_text"},
+        "dated_identity": {"$ref": "#/$defs/dated_identity"},
+        "session_axis": {"$ref": "#/$defs/session_axis"},
+        "horizons": {
+          "type": "array",
+          "prefixItems": [
+            {"allOf": [{"$ref": "#/$defs/event_horizon"}, {"properties": {"h": {"const": 5}}}]},
+            {"allOf": [{"$ref": "#/$defs/event_horizon"}, {"properties": {"h": {"const": 21}}}]}
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "exceptions": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "fixed_text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_source_sha256", "item1_bytes_sha256", "extraction_code_sha256",
+        "extraction_config_sha256", "source_vintage", "extracted_at_utc",
+        "historical_availability_proven"
+      ],
+      "properties": {
+        "document_source_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "item1_bytes_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "extraction_code_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "extraction_config_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "source_vintage": {"type": ["string", "null"]},
+        "extracted_at_utc": {"type": ["string", "null"], "format": "date-time"},
+        "historical_availability_proven": {"const": false}
+      }
+    },
+    "dated_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "security_id", "cik_security_source", "relation_start", "relation_end",
+        "endpoint_semantics", "company_primary_issue_source", "primary_start",
+        "primary_end", "market_source", "market_id", "evidence_status"
+      ],
+      "properties": {
+        "security_id": {"type": ["string", "null"]},
+        "cik_security_source": {"type": ["string", "null"]},
+        "relation_start": {"$ref": "#/$defs/date_or_null"},
+        "relation_end": {"$ref": "#/$defs/date_or_null"},
+        "endpoint_semantics": {"type": ["string", "null"]},
+        "company_primary_issue_source": {"type": ["string", "null"]},
+        "primary_start": {"$ref": "#/$defs/date_or_null"},
+        "primary_end": {"$ref": "#/$defs/date_or_null"},
+        "market_source": {"type": ["string", "null"]},
+        "market_id": {"type": ["string", "null"]},
+        "evidence_status": {"enum": ["UNKNOWN", "OBSERVATION_ONLY", "DATE_SUPPORTED_PENDING_ADJUDICATION"]}
+      }
+    },
+    "session_axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar_id", "calendar_version_sha256", "proxy_d", "intraday_anchor_time"],
+      "properties": {
+        "calendar_id": {"type": ["string", "null"]},
+        "calendar_version_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "proxy_d": {"$ref": "#/$defs/date_or_null"},
+        "intraday_anchor_time": {"type": "null", "description": "No 18:00 or other intraday instant is inferred by the retrospective proxy."}
+      }
+    },
+    "event_horizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "h", "fixed_endpoint", "window_begin", "price_source_sha256",
+        "adjustment_contract_sha256", "mask_status", "same_events_all_three_arms",
+        "first_failure_reason", "all_exclusion_reasons"
+      ],
+      "properties": {
+        "h": {"enum": [5, 21]},
+        "fixed_endpoint": {"$ref": "#/$defs/date_or_null"},
+        "window_begin": {"$ref": "#/$defs/date_or_null"},
+        "price_source_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "adjustment_contract_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "mask_status": {"enum": ["NOT_EVALUATED", "UNSCORED_WITH_REASON", "STRUCTURAL_WINDOW_CANDIDATE_ONLY"]},
+        "same_events_all_three_arms": {"const": true},
+        "first_failure_reason": {"type": ["string", "null"]},
+        "all_exclusion_reasons": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "attrition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "h", "status", "year_axis", "calendar_year", "potential_original_filing_event_count",
+        "scored_event_count", "unscored_event_count", "exclusive_first_failure_counts",
+        "overlapping_reason_counts", "reconciliation_status"
+      ],
+      "properties": {
+        "h": {"enum": [5, 21]},
+        "status": {"enum": ["NOT_EVALUATED", "DIAGNOSTIC_NOT_ADMITTED"]},
+        "year_axis": {"type": "null", "description": "The overall horizon total has no annual reporting axis."},
+        "calendar_year": {"type": "null"},
+        "potential_original_filing_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "scored_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "unscored_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "exclusive_first_failure_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "overlapping_reason_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "reconciliation_status": {"enum": ["NOT_EVALUATED", "SOURCE_COUNTS_RECONCILED_NOT_ADMITTED"]}
+      }
+    },
+    "annual_attrition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "h", "year_axis", "calendar_year", "potential_original_filing_event_count",
+        "scored_event_count", "unscored_event_count", "exclusive_first_failure_counts",
+        "overlapping_reason_counts", "reconciliation_status"
+      ],
+      "properties": {
+        "h": {"enum": [5, 21]},
+        "year_axis": {"enum": ["OFFICIAL_FILING_DATE_YEAR", "PROXY_DECISION_SESSION_YEAR"]},
+        "calendar_year": {"type": "integer", "minimum": 2019, "maximum": 2026},
+        "potential_original_filing_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "scored_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "unscored_event_count": {"type": ["integer", "null"], "minimum": 0},
+        "exclusive_first_failure_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "overlapping_reason_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "reconciliation_status": {"enum": ["NOT_EVALUATED", "SOURCE_COUNTS_RECONCILED_NOT_ADMITTED"]}
+      }
+    }
+  }
+}

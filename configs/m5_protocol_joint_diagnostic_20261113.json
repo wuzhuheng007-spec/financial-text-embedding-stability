@@ -1,0 +1,51 @@
+{
+  "schema": "m5_protocol_joint_diagnostic_config_v1",
+  "scope": "ENGINEERING_ONLY_PROPOSED_DESIGNS",
+  "status": "PROPOSED_NOT_SELECTED",
+  "researcher_accepted": false,
+  "formal_financial_experiment_status": "NOT_RUN",
+  "original_round8_candidate_sha256": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+  "reference_date": "2020-01-01",
+  "reference_date_status": "PROPOSED_DIAGNOSTIC_ONLY",
+  "endpoint_conventions": ["CLOSED", "LEFT_CLOSED_RIGHT_OPEN"],
+  "code_pattern_source_role": "SECURITY_HISTORY_ROW_ONLY",
+  "code_pattern": {
+    "securitytype": ["EQTY"],
+    "securitysubtype": ["COM"],
+    "sharetype": ["NS"],
+    "issuertype": ["ACOR", "CORP"]
+  },
+  "quality_screen_status": "CANDIDATE_SCREEN_PASS",
+  "quality_codes": ["2", "3"],
+  "strata": {
+    "usincflg_public_values": ["Y", "N"],
+    "primaryexch_public_examples": ["A", "B", "I", "N", "Q", "R", "X"],
+    "primaryexch_other_bucket": "OTHER_UNMAPPED_NOT_INVALID",
+    "primaryexch_is_mic_or_company_primary": false
+  },
+  "relation_policy": {
+    "unit": "distinct_CIK_PERMNO_pair_in_fixed_saved_snapshot",
+    "duplicate_same_pair_edges": "retain_and_count_before_collapsing_for_graph_degree",
+    "strict_one_to_one": "exactly_one_distinct_CIK_for_PERMNO_and_exactly_one_distinct_PERMNO_for_CIK",
+    "historical_validity_established": false,
+    "primary_security_established": false,
+    "eligible_cohort_selected": false
+  },
+  "source_files": {
+    "attribute_view": "462837b5ed6b169933dad853c6433e2f16608e199132635bf586681814f544f2",
+    "attribute_manifest": "62dfe1964b0c856913c6d866a227c9438a7095100876a3e3e7ef1e291f366933",
+    "attribute_registry": "f203926bb6f2eead3e53e1dae6a4a55bd404b98ff94bb6c1c6ac6f881d0ba7de",
+    "attribute_summary": "8335d595625356a9c67fdd2d7eb5cba2f52dc7b9ac962b80368fe9bc9b771a46",
+    "candidate_view": "2254c697a3a0a3df0edac16b403a7737f0285f9f6735d06e5a37595bcd212602",
+    "candidate_manifest": "779474aa184b4cfcece779b7ce51acb759846a408449d9ef0e311f1932a9a4d9",
+    "candidate_registry": "6293d92721bf67a31f0b56a704ef27dbc894322d68a9f4a781406ec1287ddb86",
+    "candidate_summary": "1f9c62a27884162302e6b40acefd9898bb81cb00a371a06a6e54b067d70d56b0"
+  },
+  "result_gates": {
+    "H_time_valid_cik_primary_admitted_count": null,
+    "R_formal_admitted_count": null,
+    "researcher_selected_design": null,
+    "event_mask": null,
+    "financial_labels": "NOT_RUN"
+  }
+}

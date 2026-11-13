@@ -1,0 +1,22 @@
+# M5 research direction A: retrospective fixed-byte interpretation
+
+**Direction recorded; full financial protocol unaccepted.** A user-transferred handoff reports selection of option A from an earlier A/B direction question. The earlier reply itself was not directly observed in this Codex thread. Its exact text is preserved in the original handoff and a separate Git-ignored local source record; this shareable note records only the normalized direction. The handoff ZIP SHA-256 is `91e9614d44dd5725a06cf3f7fb3dd4451fd7158902e73a4a4749b37688394f2f`, and its decision-member SHA-256 is `2359ae11b0bfdfd62d8050a2d19a55c9ef883fc505f263038e927599d5b6d970`. The handoff reports a 2026-11-13 local decision date in `Asia/Shanghai`; the original message's exact time and UTC instant are unknown. The referenced preceding options packet is identified by a reported hash but is not independently present in this checkout. A file hash binds bytes, not the decision maker's identity.
+
+The [machine-readable interpretation sidecar](../configs/m5_scope_a_execution_interpretation_20261113.json) sets `scope_direction_accepted=true` and `full_m5_protocol_accepted=false`. The unchanged [round-8 candidate](../configs/m5_financial_protocol_round8.json), SHA-256 `f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38`, remains `PROPOSED / researcher_accepted=false / NOT_RUN`. Scope direction A is not acceptance of its sample, labels, predictor, split or missingness policy.
+
+## Execution and interpretation boundary
+
+Scope A permits preparation of a fixed-byte, retrospective comparison using exact model, tokenizer, text and data-processing versions. After a separately accepted full protocol and admitted data, it could describe representation sensitivity and bounded downstream association on the specified sample. It does not establish historically available or tradable prediction, absence of pretraining look-ahead, general financial validity or economic value. The global model training cutoff remains `UNKNOWN`. A strict historical as-of model proof is not a prerequisite for **scope-A preparation**; it would be required before a strict as-of claim. This narrower direction does not excuse an undocumented text version, a later-informed cohort, a changed price/exit rule, test-period tuning or a missing source clock.
+
+The candidate's 18:00 `America/New_York` text-and-finalized-close gate, up-to-200-CIK planning cohort, five-subsequent-session primary horizon and 21-session alternative remain **proposed**. Option A does not authorize changing them to a lag proxy, reducing the cohort by future coverage, constructing labels or fitting a model. The retrospective claim regime and the exact text/market availability evidence required by the eventual protocol must be reconciled before full acceptance. Any changed scientific rule needs a new versioned proposal and decision.
+
+## Remaining gates
+
+| Gate | Current state | Required next decision or evidence |
+| --- | --- | --- |
+| Historical CIK-to-issue identity | The [candidate ledger](M5_IDENTITY_CANDIDATE_LEDGER.md) retains observation and issuer edges; none is accepted as a dated CIK-to-issue bridge. | Obtain exact field/endpoint definitions and, if observations alone are insufficient, a source-supported valid-time bridge. |
+| Eligible primary security and market | Primary issue, MIC and eligibility remain `null` for retained intervals. | Verify historical share class, primary-issue and listing-market evidence, then freeze the ambiguity policy. |
+| Financial common sample | Saved Daily, Distribution, filtered Delist and calendar evidence has unresolved duplicates, exits and decision-time semantics. | Freeze canonical row/conflict, missing/terminal outcome, text and price-clock rules. |
+| Research execution | The original candidate is unaccepted; formal cohort and admitted observation counts are `null`. | Accept one exact complete M5 protocol version before any label, fit, score or backtest. |
+
+The [dated readiness reconciliation](M5_DATA_ADMISSION_READINESS_20261112.md) and [decision sheet](M5_RESEARCHER_DECISIONS_20261112.md) retain their 2026-11-12 historical state. Their dated 2026-11-13 addenda resolve only the A/B interpretation direction. The [minimum identity-definition request](M5_IDENTITY_DEFINITION_REQUEST_20261113.md) lists the next small evidence items without requesting another full CIK-CUSIP export.

@@ -1,0 +1,20 @@
+{
+  "status": "PASS_PUBLICATION_STATIC_CHECKS",
+  "python_ast_files": 144,
+  "json_files_before_publication_receipts": 54,
+  "bound_candidate_bytes_unchanged": {
+    "configs/m5_financial_protocol_round8.json": "f1fa28949353adea6aa179854441b48658415ef577a006fe76bd01c779ddaa38",
+    "configs/m5_protocol_company_proxy_conditional_20261113.json": "bb5649176ea913990b11082e9c5214bc5e3ffe96a98a3acd53f0e8d8f906ee51"
+  },
+  "scope": "syntax, JSON parse, configured-source equality, path/credential pattern scan; no model or data audit rerun",
+  "private_history_imported": false,
+  "new_model_runs": 0,
+  "new_financial_runs": 0,
+  "humanizer_scope": [
+    "README.md",
+    "SHARING_SCOPE.md",
+    "reports/2026-11-13_public_research_progress.md",
+    "reports/research_progress_20261113.tex"
+  ],
+  "whitespace_policy": "git -c core.whitespace=cr-at-eol,-blank-at-eof diff --check; preserves inherited source bytes"
+}

@@ -1,0 +1,37 @@
+{
+  "status": "DRAFT_NOT_ACCEPTED_SCHEMA_ONLY",
+  "design_direction": "H_COMPANY_PROXY_CLOCK_COMPLETE_WINDOW_20261113",
+  "source_config_sha256": null,
+  "starting_company_denominator": null,
+  "potential_original_filing_event_denominator": null,
+  "formal_admitted_count": null,
+  "first_failure_priority": null,
+  "events": [],
+  "horizon_attrition": [
+    {
+      "h": 5,
+      "status": "NOT_EVALUATED",
+      "year_axis": null,
+      "calendar_year": null,
+      "potential_original_filing_event_count": null,
+      "scored_event_count": null,
+      "unscored_event_count": null,
+      "exclusive_first_failure_counts": {},
+      "overlapping_reason_counts": {},
+      "reconciliation_status": "NOT_EVALUATED"
+    },
+    {
+      "h": 21,
+      "status": "NOT_EVALUATED",
+      "year_axis": null,
+      "calendar_year": null,
+      "potential_original_filing_event_count": null,
+      "scored_event_count": null,
+      "unscored_event_count": null,
+      "exclusive_first_failure_counts": {},
+      "overlapping_reason_counts": {},
+      "reconciliation_status": "NOT_EVALUATED"
+    }
+  ],
+  "annual_attrition": []
+}
