@@ -16,5 +16,7 @@
     "reports/2026-11-13_public_research_progress.md",
     "reports/research_progress_20261113.tex"
   ],
-  "whitespace_policy": "git -c core.whitespace=cr-at-eol,-blank-at-eof diff --check; preserves inherited source bytes"
+  "whitespace_policy": "git -c core.whitespace=cr-at-eol,-blank-at-eof diff --check; preserves inherited source bytes",
+  "manifest_basis": "committed Git blobs, not platform checkout line endings",
+  "publication_correction": "First snapshot manifest used working-tree bytes for historical files. This follow-up binds Git blob bytes; research content unchanged."
 }

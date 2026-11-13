@@ -12,7 +12,7 @@
       "path": ".gitattributes",
       "source_sha256": "8abcf08ec260717af2559d649fe5d28d99cd61a5dc41481cee82e87896584579",
       "published_sha256": "09a213ac2c977c47f333206630248cc2c5f040f37c168918f10bc6d34f438540",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": ".gitignore",
@@ -29,20 +29,20 @@
     {
       "path": "MANIFEST_SHA256.json",
       "source_sha256": "929ea8fa3b5fe5074046f8ad1e6c32bbcca8f7c8b593cd36d750045223a10086",
-      "published_sha256": "929ea8fa3b5fe5074046f8ad1e6c32bbcca8f7c8b593cd36d750045223a10086",
-      "adaptation": "none"
+      "published_sha256": "b7fa7c2ae5cb42572f5542a360d0157a64900a7425352ace177820b706b1b3d3",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "ROADMAP.md",
       "source_sha256": "f116246b8829f495a9e7387b623ebd9c448ce718a0434171ccd4385634887ed3",
       "published_sha256": "78e8426830010c40c2fd8779650731779fccf601f411e5b218f0cf278a366b27",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "START_HERE_M6_CN.md",
       "source_sha256": "6fce6fca36b974be6ea8d9c4cfc971011fd3c2b5a077dd1fddec39a0e9189ae9",
       "published_sha256": "f0052e790e1e8cce41c279adc5f83a85637cbca33a7a4a1734f3ca8418186beb",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "TASKS.md",
@@ -198,139 +198,139 @@
       "path": "docs/DATA_CONTRACT.md",
       "source_sha256": "405c775cd263a7806decb7daec288f1e5c70ee132374b63698c50ce8a6327adf",
       "published_sha256": "0ff5220626564487aa25d489ad06c43f2a0b3f1b84716c76d8cf7c8b521cbbde",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/EVIDENCE_TRACE_M0_M7.md",
       "source_sha256": "c3f27222fc289ac18fec3d71e672287547e1163a25264ad26e85b2b7640046a6",
       "published_sha256": "d98385fc75d338371d525821989137916a96b72df3162b9b18e5fa0eab166e3d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/EVIDENCE_TRACE_M8_M10.md",
       "source_sha256": "145469874875f42de13f8b15b56c422f43d597c4faea703274d523621168533c",
       "published_sha256": "338b54d20a6ee8e2ccf07c4d76345cbf478ae7a86e379099dee990ce96bfea86",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/FIVE_FIRMS_TEXT_LABEL_JOIN.md",
       "source_sha256": "1432c7c8b066e8548ebfce108095506ba3328f0cf8f63abf3c58769ecfcc375a",
       "published_sha256": "96a62a3cc5bea615a60616416532d6dcea5fa7bac6c1f73a32e02565b7b2f73d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M10_GENERATION_BACKENDS.md",
       "source_sha256": "d61f22d5e3f610e89dd6192fdc8a5130d02779b80986235e1c94a7457b03e7ef",
       "published_sha256": "1aec0aae3a4708da396460c8b145327933beb5bef3b6888e8beee413a61701e7",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M10_IMPLEMENTATION_PLAN.md",
       "source_sha256": "605a4d133ebdd079979cfc3613612d6adfcfee76aade157e5a0171fc53cba2b2",
       "published_sha256": "3bd6dbbdbfe3b699504774a68b81b379c9fe2de51c8888f2229958b88d7ba8bd",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M10_RAG_ASSISTANT.md",
       "source_sha256": "4fffa5c4ed518e5476c16fa85e281827542b15b623806b3be39969664fe09c8d",
       "published_sha256": "66c66fdf81b3d801f1f482ce1c17b3c1fbe98bfb118e43ecf964fb8f3df02d06",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M2_M3_METHOD.md",
       "source_sha256": "b67e468e0df00dc3ba869da5c6f3fa5dbcf201756e506e75327a279873854360",
       "published_sha256": "69baf62e599a6d4998d76f8ec996db217f599b0da5893ccb4002fc2db901c666",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M4_METHOD.md",
       "source_sha256": "5facc4db11f3759bf8b4da382a200adb9d044a0ad74c58526bd72a1ab4beedcd",
       "published_sha256": "e91ad688df733ed5e449328cd2a83bab63b2735f40321f4435e7e5395cc9e81b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_CCM_QUERY11905330_SOURCE_ROLES.md",
       "source_sha256": "906f6afaa077b131bda9201831dcec2ecdab8e94486e1668cef13007376f62cb",
       "published_sha256": "7eea69e8480cc0eee1986ceb4fcafb04187fca8a0e50e376ff570763584aa334",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_CCM_SOURCE_PROGRESS_20261113.md",
       "source_sha256": "38d37d3ddf7f5b172e8da962ea0a64e2ef856e353c49b1b9377a6d4f82fd4e81",
       "published_sha256": "f9c241d07d66134c7a8fee8632d242be0df7a3ed6050e69d07e2148c2c0303d0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_CCM_TARGETED_DEFINITION_GAPS_20261113.md",
       "source_sha256": "4df60e06d627c3d5b67c07c7d813710bbb1bd9b9a10dfa8ee3f964deeaca763f",
       "published_sha256": "2fc74c6c4a644d0a1009e4acdde6342d35bbe2d641dd9d1a707b7999a5707410",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_CIK_CUSIP_DICTIONARY_EVIDENCE_20261113.md",
       "source_sha256": "a46d7ca8ce7ee3bef7232a06094463bd5b79759addeb8cae6ad08d3175a962c4",
       "published_sha256": "f9c3a409377e62289512f216b708ce58f1a7964f421dbdea26971a372f18a8a1",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_COMPANY_PROXY_EVENT_AND_ATTRITION_CONTRACT_20261113.md",
       "source_sha256": "1e3b92890e61744650298a864986e15e463976780730a17feae9a2d4147db9d2",
       "published_sha256": "93ae8d5accfb78d277543847fb676d64192a4e0c5cd7b01f0d60c7a4b7ef7c56",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_COMPANY_PROXY_H_TO_NEW_DIFF_20261113.md",
       "source_sha256": "7b65e28d984dbf36922d237169a92ea90c2b6dbdcadf312117dc5cfb3c6a916d",
       "published_sha256": "5ae99b7cb82db5be9e453e3a951ec81c9846340beda8fa15a25a52a909fc7838",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_COMPANY_PROXY_PRICE_AND_EXIT_DRAFT_20261113.md",
       "source_sha256": "7fdc7055a569dd7680ccda5ffc6908821867d9e6af0ea5fd66cd4885c085ea89",
       "published_sha256": "4e7f1ae7aba0a0480f4115b87227503c6bc74f25b771d3bc4c2a709eb2a067af",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_COMPANY_PROXY_REMAINING_GATES_20261113.md",
       "source_sha256": "0b41a9f4159ae91bbc6789693fc155e51f012e8ce8146d8312a9f3cfaee96e23",
       "published_sha256": "3c3c9377bacffd4254566537ef2394d82b15ea9410da99ef13845a392ccf0ccb",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_DATA_ACCESS_CONFIRMATION_ROUND9.md",
       "source_sha256": "0ff152491badad1a307466c4f8d54b01fc212e8bd310b9ed262144a1f80fb7ec",
       "published_sha256": "5ab2e0cbbbcf27fa9bbc98a311b322747003ee75e4e2c18248a111ee504ce9d0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_DATA_ADMISSION_READINESS_20261112.md",
       "source_sha256": "55b09df7fbadd699f10e1f2aefb97e51c7715e7073063e6562eaddeaad443d5e",
       "published_sha256": "f5996239d4166f47ea6b38a988d8ef780b5cb8e490b76b295a0b1ece4a4116cd",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_EXISTING_ATTRIBUTE_EVIDENCE_20261113.md",
       "source_sha256": "207d35fce611c5061645eb81e41233b6d98dcd44abad5e2a2e75c58511fbc874",
       "published_sha256": "3079ae2172f202812b4175e3032d7b477744a4a6e8396a8350fb5c6eadc7a701",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_HISTORICAL_IMPORT_ROUND9.md",
       "source_sha256": "3fed0530fed06211622a0b8217657bf48f1232f72dbb4627623de16a77dc63a5",
       "published_sha256": "a14c0d48ca45de95fc18826e3b3b987cf7c98c2eda505b7eff211e36094ae11b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_IDENTITY_CANDIDATE_LEDGER.md",
       "source_sha256": "df289596eb5ad6942a542b8d1982ff086a4c91f2aeee332d4acd72688cf1cf7b",
       "published_sha256": "896cd7fe635a8f0aeefbe24ecd41f32862204f6b086fc41ba2a41f35dd61787c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_IDENTITY_DEFINITION_REQUEST_20261113.md",
       "source_sha256": "d3a448800fc24a289b18d4460488fe3719edf57f862f9f1fc3c29241971383a7",
       "published_sha256": "25c3320008b5bb60678c37032592cf186fa40899fdc86d3c5ae5984c66aa00bd",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_IDENTITY_LEDGER_CONTRACT_DRAFT.json",
@@ -342,151 +342,151 @@
       "path": "docs/M5_IDENTITY_NEXT_DECISIONS_20261113.md",
       "source_sha256": "802b5773c2d2e016a8804092c9eafd95a1fb429efeb2c8ac24221960ed8f0d94",
       "published_sha256": "2b7370099196e3977a46942b4fa6ef63784615a51b8347795112ba3d5cd519e9",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_MINIMUM_MATERIALS_20261112.md",
       "source_sha256": "7b65758a11fb9299fad9ff982863117687508f4e1f131b6ea57601d5a85713a8",
       "published_sha256": "3015005c0890b4ed46a5f0819083fbe2e37305eca616bc11f8d8a18c12a2272e",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_PREPARATION_RULES_ACCEPTED_20261113.md",
       "source_sha256": "9199f48dbd01bbac51988f77d72d8d2b5d461e5daad7d1202202faa57fe9f387",
       "published_sha256": "73406961481b3fe2ee1b4e10ecf42badd6c11d54289158cd0e78708e49c9dc2a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_PROTOCOL_DRAFT.md",
       "source_sha256": "a9c974e9300cfb3f256157c0250d1f85d315cfe40cd16a0b3c17f2675b5050d4",
       "published_sha256": "628579e4d671271968117b251235709ae07d90067c11fb1d178f0968442b3510",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_PROTOCOL_H_R_DIFF_20261113.md",
       "source_sha256": "a4a30bf9d69cc610d8aa0c0e286ec9b316ec4ecdf706952e6d8bfba7a7bb35d7",
       "published_sha256": "502b273a359bd06f168df1e2902987712d919e8a44b903f975ccfaffe1987b48",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_RESEARCHER_DECISIONS_20261112.md",
       "source_sha256": "667a81f72ee8f1fce63e523f82e14e50784859ce0effb66916b6e7d3d4f24fc5",
       "published_sha256": "c4c824bcb0bb657245038222666653b67586840981b9aff30a051aa7639db3fa",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_RESEARCH_SCOPE_A_DECISION_20261113.md",
       "source_sha256": "d113eec192667e3595c38e05c4a3208b1ec1a000cac2efc7a72eb3f7a473f5bd",
       "published_sha256": "faf92274774a82ea7a7b9c9787be1411f51575688cfc63d67addf3393b70d839",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_SIMPLE_SPLIT_PRICE_PROPOSAL_20261113.md",
       "source_sha256": "8ce9ac92f4e537c3409755ab20d6872f8caf6665588cf346aec87aa2dee26e51",
       "published_sha256": "e0c1fba991e1a9cc6d1eddab35105c5e2a361bb95a3a2370a886647aa10eb213",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_TRACKS.md",
       "source_sha256": "a953a1ba50769b681607e06169e2ddc869cd3386c77ffcc12d062a0ddda72391",
       "published_sha256": "e82c635939a0c3d1936b68fc718dbdf50d91ce605486beef8451a7271b08fc5b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_WRDS_DISTRIBUTIONS_NEXT_DOWNLOAD.md",
       "source_sha256": "e68a41b5a037c3acb9a74c0a2fd793ee038d2d5e3a21786cdf85e6a0e12e4029",
       "published_sha256": "022e27515a011d73b88880fd83effd28f3fe853c9848a3d406e42f8e6633b128",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M5_WRDS_NEXT_DOWNLOAD.md",
       "source_sha256": "133c45417ef33a6516a7436d22f4638f5884b85915dc4a2819caa07d0b66e418",
       "published_sha256": "4591d59571096a92ffb596d86b18526a5d6d76cf5e245821281ae4375a7ebe17",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M6_10Q_NEXT.md",
       "source_sha256": "a4b42ec0b5c496852f615d71fa867574541272ad8ab3dad2178117a3fb1fde91",
       "published_sha256": "765e8c3b3f889b53cdcde0214b83694cf77a59393256f504ba7ef8e8e185d16e",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M6_METHOD.md",
       "source_sha256": "e21aa7b56c3c2ac7f69c322cb5dbef722ec27d50d5563ba906fdf0ce8fb0748e",
       "published_sha256": "29005b2c47caf37b29a5ce821dbb5d98894249b5283c3662fd5696eb26b09064",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M6_PLAN_EVIDENCE.md",
       "source_sha256": "f2659cb838b1e187762236076f1a6c3f2e86361247a2e0b6af30e9661bb53535",
       "published_sha256": "f0e30034856281d5e9ea69ea27500a056ef54e37b22a5f3cc7380aeec83f8d84",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M7_10Q_FIVE_COMPANY_PILOT.md",
       "source_sha256": "95a01347188c6978bbdda270208e7764ac171613b96416da5fdfd23a069ae6b2",
       "published_sha256": "6b3881fecaf01a147ac56a7c02a13f17c80d019afa6b209f0d259609a28438a3",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M9_ENGLISH_REVIEW_GUIDE.md",
       "source_sha256": "104c731807a258f4a115a07567bb2ddd759f1d3b6f699867bb482599134de7af",
       "published_sha256": "c1debe6a75f5afd4dde6617c1bab7c28c980444a0ce83473d2d89145ce4a592a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/M9_STRUCTURED_SERIALIZATION_SENSITIVITY_DRAFT.md",
       "source_sha256": "2525f6cb3b55d43f190dc1de074fcaf21919603b115889497751ce97ea178d27",
       "published_sha256": "d323b92bcd68afde9bca5b7256bf96da97bcafd890e103e2ab52428fbf7f5682",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/PROTOCOL.md",
       "source_sha256": "eb4833d0d6a153e673959a39243d6cbbf89575ae6053afb96e3b85e2349cbad4",
       "published_sha256": "947d7e78c6561bb62d1731eb527a2b647288ba4f4b37fe532bdb8dda7676351b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/RESEARCH_EXECUTION_PLAN.md",
       "source_sha256": "7d99660bae5db40fc9e0b723dd3d6955a49d06852c5aa0bfb5d3ca5228f2e615",
       "published_sha256": "584a5ce8a162eaf7f8556c54e89a2da0900f33c6f081754c7333e2e778910375",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/S3_BOUNDARY_SHIFT_DECISION.md",
       "source_sha256": "13e74929332dccb5a5f8cd74b05ede99c841ab6cf299c9977a62549963dac420",
       "published_sha256": "783675053d8e6f3ed2f20baafb84c33a359e48506b75031ceac05c191b9087bb",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/S3_BOUNDARY_SHIFT_METRICS.md",
       "source_sha256": "fc4c55f23d1c2bbe29967ca657a97c38afa5456258355b958c8fc2d5e21051c9",
       "published_sha256": "202ffdc8121fad60783d86fb88f52d9beb5d27409ae3e579b2842a798dd49c0d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/SMALL_CHUNK_DECISION_RECORD.md",
       "source_sha256": "6835bdff9a8cbebf9d079f05978bb5932c69423993777152692265c955247ce2",
       "published_sha256": "7590f42b03b127668fc52e77843d6c8b86f28e2e347163e2d5691524c2d6cd88",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "docs/SMALL_CHUNK_METRICS.md",
       "source_sha256": "58a7b2f1389be691ef979f4fc4710f11d29027617c93f5a4eab580f73f3a6402",
       "published_sha256": "8fc25de6f3646ffa746097dab8d6e3631bd8d0d7f5384f45763b093c533ef9ef",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "figures/pca_variance_fraction.svg",
       "source_sha256": "5b680bb584258b477f7945c3d67cdbdfd2afe0b9892d951de38a20711aa9ce1d",
-      "published_sha256": "5b680bb584258b477f7945c3d67cdbdfd2afe0b9892d951de38a20711aa9ce1d",
-      "adaptation": "none"
+      "published_sha256": "7fe27beb52a3fb65593214530b6389d6bff7102888eac4fa6ebe02944df7c345",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "figures/stability_top2_overlap.svg",
       "source_sha256": "2484cc25f01eca11e7252dd85160aab64aeba719f949555eed4b480c3aff0fc2",
-      "published_sha256": "2484cc25f01eca11e7252dd85160aab64aeba719f949555eed4b480c3aff0fc2",
-      "adaptation": "none"
+      "published_sha256": "021686dbc2251024b198741d560ab24c49ee8ed308ec189706c4ce093b761212",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "pyproject.toml",
@@ -504,7 +504,7 @@
       "path": "reports/2026-10-19_M5_professor_agenda.md",
       "source_sha256": "7664a58814a8e0008989bf3bb9e997f9b4a0e798343a0dc212de8068c81f5df7",
       "published_sha256": "3f7faa34ba3225a9cdbc2b1c11bebc7e44a4e2de96741cd1e96ae5e5709348f0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-19_overleaf_progress.tex",
@@ -515,8 +515,8 @@
     {
       "path": "reports/2026-10-19_text_price_time_alignment.json",
       "source_sha256": "ddc210cb16320f6dc17767de416ef5398fa9a46882f5b5464b368a3a895d7382",
-      "published_sha256": "ddc210cb16320f6dc17767de416ef5398fa9a46882f5b5464b368a3a895d7382",
-      "adaptation": "none"
+      "published_sha256": "c6613dbe063abf1fc9aafd8262a7bc3d8692ecc9a1223854544e775ec4daa10f",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-19_text_price_time_alignment.md",
@@ -534,199 +534,199 @@
       "path": "reports/2026-10-24_M6_engineering.md",
       "source_sha256": "efc4b701ec05860e9dc61c9d2af69fc6d8896c0a61a563a66ef5b63001d6ec8b",
       "published_sha256": "d1b6d6a39573fd3f102097fe3de66dec072e1e00332dd8f8a55b8a2e669bc7de",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_AAPL_10Q_researcher_review_addendum.md",
       "source_sha256": "2dac8e4e733694621871d1e7e3e916a0c3b259fca56a936d36476765fc8b0a48",
       "published_sha256": "88992848e4f223918fea3c0d74c4a086e112e4543e78139ac599450acbc73a02",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_M6_publication_review.md",
       "source_sha256": "06e6b939c7dd531d3258b14a97e4aac6ac588eb61a86fecc5b3115f7806ce9b9",
       "published_sha256": "759ad770423105c5bc3667e14e9fa128ede339bb6ff945818d46622273b40a9d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_M6_real5_engineering.md",
       "source_sha256": "80e671dfe44e2fae14c9414c99b6b5bb727bb73144e13035d1c8052721d67537",
       "published_sha256": "da72541625d9674fca7f60e599ba2aca9061a464c41c7153687061408636ab24",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_M7_mechanism_and_10q.md",
       "source_sha256": "95a097247262a5caffc7f0fe0033d8789c73b25e87d0f95647f43fd75bcd4a5f",
       "published_sha256": "90ab2148f77731dd293631dbde17b8a776e48c8720b23c7c52decc5d82a57808",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_M7_research_note.md",
       "source_sha256": "0b32ffbdddc8400e117e90f7646fbc33c670d646d7c2da19c5775633738cc735",
       "published_sha256": "d8d4cf000dfb74ffefafa8678b82505d5090d4ec032a2674a1ced3597589e8ef",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-25_M7_review_closeout.md",
       "source_sha256": "2c1977418a2fc361eb56ce519a23c7183db112e6b2127182aff6f8a46f534ca3",
       "published_sha256": "335669d8b5f5b9e0c6ebcf698c6456f66781558929491882e3378b88e78770c3",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-26_M8_four_10q_ingestion.md",
       "source_sha256": "3f50a8dd7a6f387422cae7c6a762d9b0494f3c2ec0243e0b875b3abc435d699d",
       "published_sha256": "1cd39d7a32f14224e7654bf1d5c7fbd20a637ed96de3e13c2350c9da61602359",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_AMZN_consolidated_review_handoff.md",
       "source_sha256": "43ea3c194ca2b426fb1df97c15eb25816be65a68c2b28d938bfe46b9e1ff0893",
       "published_sha256": "d2df1191954a51bfd1ab6a40670f1979bbded80033d2f0aae76b299535466bfe",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_MDA1_4_decision_progress.md",
       "source_sha256": "6a63003e49734937826f85fcc3d6a46983c39669f204b090d498b64dc2583581",
       "published_sha256": "d1187852cd07ce2fcbc66dfeedc0e705589875edf5e2ac05032e00d38fdd99b3",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_PERIODS_decision_AMZN_opening.md",
       "source_sha256": "403c811e700999cd78a41c49722735c7bbb9d090c1c1aae3fe828edad7a0898c",
       "published_sha256": "9e2cf16610b3375b310067b8d796198340c66b4cdbe92565535b768d8a87d4f9",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_body_decision_progress.md",
       "source_sha256": "9c1fb373f8f16a1830c02316b54d9f828fa698c25b38b3187e4da845b72a0c73",
       "published_sha256": "ab94d43ac1298c8b2e307836411b3e2e38f8b9ac017f20971d184341ffc06893",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_body_review_aid.md",
       "source_sha256": "2cf0001db0dae44185be0c4c3dd3a95e4f1aba2361b03b4084d51187f3575f29",
       "published_sha256": "0c28a93e43d56361b8e549dc9fa9810a0ca777e39a17c67bcb7f249e81251d73",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_delegated_table_review_closeout.md",
       "source_sha256": "0128aa145959557b6725980f51494b53850e46bc9b25a49a60d0a182e9957375",
       "published_sha256": "6038ee04ac9b3831d7ab6cae4357ad6e461ce36f5e89ef44eed6c7a1026e343a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_end_decision_progress.md",
       "source_sha256": "c7041d647f89088dc10f940d89b70b00b92751c13cecd4417b789701acfc7d3b",
       "published_sha256": "0e9211fbf6690e2f0373336d04c75e10cbce6e3d97902b7d36ff4df9d9c71b5c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_period_semantic_coverage.md",
       "source_sha256": "6cf5a020086521a5a60a64b41fabbcef7abbc255bb856507484a56d0c6dbde3d",
       "published_sha256": "fedac10aa4e6891420e0f2c00e55de9dadf543429308c91b880d35395e0d747f",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_periods_materiality_handoff.md",
       "source_sha256": "26fbb53e1c0185f84a8798af0c50ca5289ba9bae0a577b6af2ee2f5823347009",
       "published_sha256": "f2ecbafd986d899370ff34a01376c43f8743f9c16c781f7ec751fee242adce34",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_MSFT_start_decision_progress.md",
       "source_sha256": "d17dd51cf5e74041947ecbf28514c99d3e5df7200a6305aedf5b15ed86cadabb",
       "published_sha256": "cb6eaf0a3cfee62bbd553f32237c18a2f7c1e13070ce90f7aee079261a8a927a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-27_M9_english_10q_review_handoff.md",
       "source_sha256": "73636d5f77e09fad2da502109b65be9496f6e399c5b59fb57876b3e14ac1bc42",
       "published_sha256": "0bf2682a63140cb0854efaea9b0a9c04ed6b0c606e771eacce37afecff56ad3f",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M10_local_rag_moe_engineering.md",
       "source_sha256": "836bcd88151e71c0433d4786e375d56a0b0cd1561debf1851fcd34cbc41dda5f",
       "published_sha256": "45aef4f11a737b47ee8869e36fe3af6fceb47cb44ca893633b7b9f242ccd5eb4",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M9_AMZN_GOOGL_grouped_item_accept.md",
       "source_sha256": "9490eafb150379279b90d25371bb09cb2a0dec42f6a41c6c76e7d0bee10a85cf",
       "published_sha256": "18a5d552bef45adaa54d58ebe20f57f269922a372fb53f00862d8c619830317c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M9_AMZN_GOOGL_overall_accept.md",
       "source_sha256": "28e84142aa9977e3318503be8dc677beb43d60692003915328db3f4a9be3bf30",
       "published_sha256": "edeb13d86d102919d01a9ed9a9c11b27a505e233de25ebce524cb7dd701255f6",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M9_AMZN_GOOGL_project_validation.md",
       "source_sha256": "cd180801eb4dc077032ca3d40b60c8bffb850f71ce33cb5bbc8277be2dc3f59d",
       "published_sha256": "dac9d93c12248085688de04be5d1d5bdb70e56fc335ecef823c8f10d249a1539",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M9_AMZN_GOOGL_scoped_handoff.md",
       "source_sha256": "ad4731f8e652b16188467762d066dd04ed7669d6c520666a5e6b87c5bd5476b8",
       "published_sha256": "d51d48585fa9d0a999a9f11f7e02b8e49deba02b450f3128f6cda6ce0011d657",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-28_M9_AMZN_structured_input_handoff.md",
       "source_sha256": "1d0272c725266bd428eb0f1084ce607c07a33d8475a8f88735c52ac8d01beb4b",
       "published_sha256": "7dfe24969268c887cbfbbd214c3ca5f3f29e60004462fefb79d46d9c1e62cf11",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_boundary_shift_probe_descriptive_results.md",
       "source_sha256": "793050a0a8ed200b10ba022cc2efa88cf00372fbdbca03850f1b3a2202f4cf5f",
       "published_sha256": "1e74cd017956084cde583f3f89892d5c181becb3f50b73669cfa394f094b2a9f",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round1_handoff.md",
       "source_sha256": "1434bfd0a48baad1c6c5da6f58367eeb9be67391b25f2e7bdc299107e727ee2f",
       "published_sha256": "01ffbbbb843b510c69367127f5d39f7ca312198405f292c9e25b284ae5ff2a10",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round2_handoff.md",
       "source_sha256": "46c6485913daa7d410d172e1fc4c67ef1c4b6cd7cb2fcc859c8aeff014cf87de",
       "published_sha256": "f5a04f8026334d6d70afc12726a663789a0cecd7e21f11a5583a611f17dd052d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round3_handoff.md",
       "source_sha256": "da70ed3e5d5e8969e4ff3363ff46b866ae8e9e721e2c9325c05dd28846cbb3bd",
       "published_sha256": "bcf7e7f87eba989d0cf3b89d2e3a13f3a5775942cc664b94b0ee61d4c9427e35",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round4_handoff.md",
       "source_sha256": "b1da05585ceaf3727c79400902ea13b8bc08bd33a7577a7571ee0fdae76267ca",
       "published_sha256": "00df2dc82a7f11eba66958c312444d9bcaa04a6528b6ac945f2955ce706cf864",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round5_handoff.md",
       "source_sha256": "f58a84822568f2715cc61bb012c9a5f8aa5ba07184c10f5ff84019c905ec0aa2",
       "published_sha256": "df3595f21d8d916daba889c37b4cf1a6c4509d816f08ac4a209f4a79e1892c90",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_research_plan_round6_handoff.md",
       "source_sha256": "84fd2eb944095adb0ed4e8bd78cd19d34d7ade0ff75ecb5af56a67c18525ef32",
       "published_sha256": "f46c1ee85904ae1d023af6751c00a71412d5469f738aa26d48898eda873dbc4c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_small_chunk_preflight_round3_summary.md",
       "source_sha256": "03890392e3afe4221f2d22c98aaa3325dacd3cde471f866348dc7aeab20602e7",
       "published_sha256": "53155b5d3adc5a0d85e9be6947a0a8e4c29cf4dc1fce1462bd871dadfc7d495c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-10-31_small_chunk_preflight_summary.md",
@@ -738,151 +738,151 @@
       "path": "reports/2026-10-31_small_chunk_probe_descriptive_results.md",
       "source_sha256": "3308783aab453467cf86fc7fbe0a61c59d74da98227e4b227f15634910db42fb",
       "published_sha256": "52df19fabb8358b6cae38a7bdb30c494d3d744184c4fff789bde1c4e82972e4c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-01_m5_execution_and_sources_round8.md",
       "source_sha256": "8fbe9e30f9577c605ea98358dbf43155030fe81504a07b2b7496fe97edab2233",
       "published_sha256": "26eec344e52d7486fd00131bdd961a2f6d4fadf5b98ae5a80e8141e54ffcdd4b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-01_round9_calendar_data_handoff.md",
       "source_sha256": "82a4691569b3f16415b28db7dd7479da9a0ff151619709be8fbf801680c6e0dd",
       "published_sha256": "1aa84daf7e54f96fda11efc0f479549923301ecd069e4d9c65e2e79c3a5716d3",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-01_s2_s3_m5_feasibility.md",
       "source_sha256": "14d9ea5a945809583b46328783ecc70c5e7ff9af202537f877c8f9df9d81ffe8",
       "published_sha256": "39110b4f9c8f60b02a12a1e60295f8e96bd8772ec42207f8ed0b85d7a04d69c0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-06_round10_multiclass_import_fix.md",
       "source_sha256": "08253133d584ee904d602f3de705584a20c5143dce5a3ca16ef14b6d6f3c152e",
       "published_sha256": "243d577d63f73e55b278dcd2554b2af56cd9ed03969b3da18095fd9018ef7c7b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-11_m5_delist_local_intake.md",
       "source_sha256": "4202a4a17439a209a4da7aa9e19e70cb599d19beaaee931f4196972d4d809422",
       "published_sha256": "808973202eac1683ed57ac7c691d20251ce4bd1ceb52bf2f236d418ae3a6c3af",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-11_m5_issuer_history_local_intake.md",
       "source_sha256": "dfd519ed51dbc970664334ddd16d79151a4ee8bbce9a5460e851f597f7e82c50",
       "published_sha256": "f5e066a9151249f5daf64c823c12edcc31dd847bace43fc2a5fb7a7c1c4ef4c0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-11_m5_wrds_three_file_local_intake.md",
       "source_sha256": "0894f23db88d6208855fb98773dfbbda7148a8d7c2c977b0d8185f492683cf39",
       "published_sha256": "3902204d9df4db3b004fd04f20a2d7bff5402ff2bd8e9070bc56d1cd9ae2372a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_admission_readiness_handoff.md",
       "source_sha256": "14062bd8d8ba65e28cf46031da551c1bcf9a2a38ead9104deb06848d0493508a",
       "published_sha256": "510bd377a6f054549f005976cce75bf004a15664e8f410d31773c4e6e5e6f8b7",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_daily_post_intake_review.md",
       "source_sha256": "56ee19b76647883f6cf9528817486ebaa575bdf70f08a10f8745e7ee528c8d49",
       "published_sha256": "f9b2762f1b50eb717d9ca993694dd9c1968b90e55eb8d32483cefa8303e9ec71",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_distribution_2020_single_group_review.md",
       "source_sha256": "cacc054143b719ff102a04f263233b02b2411ae0c80076263b42757d897c0cdf",
       "published_sha256": "1f7336c517a4a3aa7430a7d457134baa512a42f609c2994827f458644b9cb20d",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_distribution_first_intake.md",
       "source_sha256": "c85471666086cb1a26861eee13753157a6a2936da7f5dd2ab04927f46d3a1958",
       "published_sha256": "ff9660a2dffbddded0be038641b440979ad4235439dc031ac092fb18753e6021",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_distribution_merged_intake.md",
       "source_sha256": "e85552c5ddf8ded3acc4b0cea8fc1400f99f20e6e1e60c8c430f03e8b535d496",
       "published_sha256": "9283276f33662baa4ea0ae6a4a91bdf72e107ea520bfdc070aa5d9f269f22d95",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-12_m5_distribution_sql_source_review.md",
       "source_sha256": "f5e6299071526e7c6abc4572dde04f6a70ea6b892c16ff629990e81c23369b81",
       "published_sha256": "b731e13f1f9ad59b2fbd018acfd2f531e4b256fdd5beb9bc289a3fcacd2cb3c7",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_ccm_linktype_source_review.md",
       "source_sha256": "cf4d39426df8703ee978307d04ea815b1b315ad5bb542d903d703ae1c39e9f41",
       "published_sha256": "7e2c19978bf127056c6949c5ff72a8043dbbd2a9b7814eeccb69cdf7d6f8f03e",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_ccm_query11905330_intake.md",
       "source_sha256": "eb2340e96f66092a5cabd98fb2b4d59bf996d3fab41644b8427ec829b9d999e1",
       "published_sha256": "dc4be1702e7fff3a2de4e49b724e0f09a24504ca4bda233fe8d4fddc5002bb77",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_ccm_targeted_representation_review.md",
       "source_sha256": "91eddbd7bd732e7b5c57184b27448cfb66bcfe9c4c9a17a01fcb5398182488df",
       "published_sha256": "dfac920240f7a9bab286e77ddee8f74a6b37528b4bc3ea4f45464e8b19ea4e41",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_cik_cusip_dictionary_handoff.md",
       "source_sha256": "aee4d96030e327a4f4e921c6d5818a5be7fa2fba6260c2527afe0f630fefcff4",
       "published_sha256": "97ae3052cde368d2e0e89ea096264e736511c7c1dc8672a8b1ec690ce3e53b21",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_company_proxy_protocol_preparation_handoff.md",
       "source_sha256": "2bcea1a3e051f67a1780051aa65af91b9b5c0a1d9f3957aeba2565459076d285",
       "published_sha256": "10e5121187e7dcbad197753175902a4e1467fa5d4fffd9eb7a6275feeabd6b4f",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_existing_attribute_inventory_handoff.md",
       "source_sha256": "8f1da3ded8982829fbb3e58c963f03c443b1416bd6cbf32586473bb9e5ecf98a",
       "published_sha256": "34c4ad1725b42b59f9eab1603beab320554b11901d2ed173448d7fb2deac31e7",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_identity_candidate_ledger_handoff.md",
       "source_sha256": "91696ff988530ce520583d71334acefb611d19c580439dd3faa19c48dfa38311",
       "published_sha256": "938a758e28802fe563007e05aa7790500e41920a1c9228cd551324f6a4feb50a",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_protocol_design_feasibility_handoff.md",
       "source_sha256": "cd7f9b030f18f4278e614f0288d5a70a96208e3efce93f069b377c270a36da0b",
       "published_sha256": "7ed50d0aaf84f72f4cda771b4d3aa10403beb5b869909b8baf756b4e6e1c020c",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_scope_a_direction_handoff.md",
       "source_sha256": "4ab85c5864aa82341eb2c6c08cf99e2082421e2b84ddac77552e870bf5e262ad",
       "published_sha256": "989fc3900e7b2314ad30ee8209cf0ad1cdef4bd744951af4375a9653a0bcb6c0",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_source_closure_split_proposal_handoff.md",
       "source_sha256": "56c4fbc741e5d58f646ac76a081b5a8ec64cdce2799dc139b4890b51f20cd4c3",
       "published_sha256": "a9c1534c0c849c205ddf8e17bb9b679b63050bb0675ef50a2a611242d813d144",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/2026-11-13_m5_three_preparation_rules_handoff.md",
       "source_sha256": "8c4e96ca9eac916ac9ece440a281d84843044992bd27548099078345bf64a27f",
       "published_sha256": "0dd1b7a177fad82065f2e28592fe1fabdc4ceec262d7eec3eb76b412d9ae23ee",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "reports/m5_preparation_run_verification_safe_20261113.json",
@@ -893,26 +893,26 @@
     {
       "path": "results/PROVENANCE.json",
       "source_sha256": "50334045fb63f7d013f8735176ae21c21a1c7b7df457df1a11447663c2d77c34",
-      "published_sha256": "50334045fb63f7d013f8735176ae21c21a1c7b7df457df1a11447663c2d77c34",
-      "adaptation": "none"
+      "published_sha256": "cdb4e03c2b066f08c6c399eff32279960af9da013f76bb0703c13284acd325e9",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/RESULTS.md",
       "source_sha256": "88090f69278b3127227a3f40dc51d51e76dcbd5f5aaa88d7e84f8ecb96334df1",
       "published_sha256": "3addf40965d2f5358532b0dd0444419af9a8cea7fbb72d48dcc34844096b201b",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/embedding_cosine_128.csv",
       "source_sha256": "2b69ae5f5e565b0353d3fb611aec6adbd6e17875f7501ad51abe220dd205ec44",
-      "published_sha256": "2b69ae5f5e565b0353d3fb611aec6adbd6e17875f7501ad51abe220dd205ec44",
-      "adaptation": "none"
+      "published_sha256": "588668fed90cfb492d082c954ddc059e19da1fb8a4d8a395576b51a93ebb3290",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/embedding_cosine_192.csv",
       "source_sha256": "d004086c3428d869912d7aaf08bf924162d3f99bcb0a38be233c06af95d91c89",
-      "published_sha256": "d004086c3428d869912d7aaf08bf924162d3f99bcb0a38be233c06af95d91c89",
-      "adaptation": "none"
+      "published_sha256": "ffcf21ed625b02137efe26891cb8c299fd725252c3ca5b2a0661fe1f952f06a9",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/RESULTS_SCOPE.md",
@@ -923,50 +923,50 @@
     {
       "path": "results/m6_real5_20261025/SHA256.json",
       "source_sha256": "f9aac3d9f36a30a6f7633538f8a49630e92e5ae8ecc1d32e8cbb3dd4b9508912",
-      "published_sha256": "f9aac3d9f36a30a6f7633538f8a49630e92e5ae8ecc1d32e8cbb3dd4b9508912",
-      "adaptation": "none"
+      "published_sha256": "ef9b82e0ab5ac6287af76e9ce5652a7c3b3336421a8825bd021ff3bdc4ae04a9",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/comparison_metrics.json",
       "source_sha256": "e97b61786f8d1611a41206b75ce98b36baafe251ead0542e3d63e63350ebd524",
-      "published_sha256": "e97b61786f8d1611a41206b75ce98b36baafe251ead0542e3d63e63350ebd524",
-      "adaptation": "none"
+      "published_sha256": "53bd88af828ea6a3683cdda9b2efd3efa16a790513db3e00be89642c86f77498",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/directed_bm25_neighbors.csv",
       "source_sha256": "6cd14a0f42a2a038b502da43ad2ff19eaeb8a5680ef1494f7b37581e3e6962e2",
-      "published_sha256": "6cd14a0f42a2a038b502da43ad2ff19eaeb8a5680ef1494f7b37581e3e6962e2",
-      "adaptation": "none"
+      "published_sha256": "e4d5b007f6a1297b37c4ecb98f2302c745d7ba942d5449de97c842df78a89be9",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/length_chunks.svg",
       "source_sha256": "7e35bf2a4382a8150fbb7a2a3ea014f5718b9c4c00bcc18326cc5c0c1047daaa",
-      "published_sha256": "7e35bf2a4382a8150fbb7a2a3ea014f5718b9c4c00bcc18326cc5c0c1047daaa",
-      "adaptation": "none"
+      "published_sha256": "5b5aa3d87f1628b4ec48f72fbc18435bc21119fe8fd9fdb264a3d02fb67e698b",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/length_table.csv",
       "source_sha256": "da2a7157f70783f762612e7e3a1f1e5237b78d1693b541e638712013d2cd7eb0",
-      "published_sha256": "da2a7157f70783f762612e7e3a1f1e5237b78d1693b541e638712013d2cd7eb0",
-      "adaptation": "none"
+      "published_sha256": "3f8f5f096ddf605cc9520cecf766e46413ae2db79f454e65dcfd5987ac46d176",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/method_table.csv",
       "source_sha256": "7742985e00f2551c081c1bfd99b5c006f4f0d202b088d4032c336c588fd678d9",
-      "published_sha256": "7742985e00f2551c081c1bfd99b5c006f4f0d202b088d4032c336c588fd678d9",
-      "adaptation": "none"
+      "published_sha256": "847949427c64ce04818db46f278e8ccf7398d000e050f2fd0095b52a33d819cf",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/neighbor_changes.svg",
       "source_sha256": "4043ade77bc008960e70110d68f3e324c2ef3ce8548d8c0aee9edf22ecd501a5",
-      "published_sha256": "4043ade77bc008960e70110d68f3e324c2ef3ce8548d8c0aee9edf22ecd501a5",
-      "adaptation": "none"
+      "published_sha256": "133c4b6af8b24bb31ab03cc0d79ac1a2d6a3e1eba1e0361ad07e018c1cadb3d1",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/neighbors.csv",
       "source_sha256": "403943440d6ce714d00267e6bd10c20d8ba833967d4d7b2e5298f7f6d2d1d378",
-      "published_sha256": "403943440d6ce714d00267e6bd10c20d8ba833967d4d7b2e5298f7f6d2d1d378",
-      "adaptation": "none"
+      "published_sha256": "6b70f6f8eacce115394f0adb3e47aa36d09134ebf492d5f65e89e7a11365ae65",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/report.md",
@@ -977,110 +977,110 @@
     {
       "path": "results/m6_real5_20261025/sensitivity_diagnostics.json",
       "source_sha256": "3538b921c6c23c5c368d5d6377532fd01ef39fd0a1eeb40aa8f4920c8a42c94a",
-      "published_sha256": "3538b921c6c23c5c368d5d6377532fd01ef39fd0a1eeb40aa8f4920c8a42c94a",
-      "adaptation": "none"
+      "published_sha256": "989b41f4f37ce2c61fb2e1e8095d6a810fcd7f08e31e65a24483e3031f21dd38",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/similarity_heatmaps.svg",
       "source_sha256": "2773b69cf23321ed8da51f0bb67d653cf89e8d8b786bbb40d27ff368bc59ab79",
-      "published_sha256": "2773b69cf23321ed8da51f0bb67d653cf89e8d8b786bbb40d27ff368bc59ab79",
-      "adaptation": "none"
+      "published_sha256": "ff0c05a40616b5087dd7d920841a54c93ff9ea2bf65689ce2aa9cafa904c25c4",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/tfidf_same_tokenizer_cosine.csv",
       "source_sha256": "c786bde2f70f6e07b8cb6a15b915b818f48e1d50d8f13d512080a9425f6fbdd3",
-      "published_sha256": "c786bde2f70f6e07b8cb6a15b915b818f48e1d50d8f13d512080a9425f6fbdd3",
-      "adaptation": "none"
+      "published_sha256": "35c869dffc6cc0b56132fda89a15abafc653baa867831273244902dcc5a61b69",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/tfidf_same_tokenizer_fit.json",
       "source_sha256": "f2a02b608a46a32c911ab1c1002994158523fd4561734cd2c37658b887ec8b46",
-      "published_sha256": "f2a02b608a46a32c911ab1c1002994158523fd4561734cd2c37658b887ec8b46",
-      "adaptation": "none"
+      "published_sha256": "fbfa53abf3576bd3ac6457339362c97fe5336fc2dd583d8c1b227b8afef8f19d",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m6_real5_20261025/top2_overlap.csv",
       "source_sha256": "1f0007bf41f89006da3580e381673ab2f7e61d08f1916cb0a0cccd222d77ab65",
-      "published_sha256": "1f0007bf41f89006da3580e381673ab2f7e61d08f1916cb0a0cccd222d77ab65",
-      "adaptation": "none"
+      "published_sha256": "ee5972a31962b6d379af54b37e5c17f40e86af0b70d095f353b4b8831695c20d",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/RESULTS_SCOPE.md",
       "source_sha256": "24bf91c14efd321a9af17d8898255932b786753fa4e1adaa7fb3a53d08b075b4",
       "published_sha256": "ade751bb31d2fe2728f7144aecf5714846b7dbc08ef5531a63b1ac173cc1b091",
-      "adaptation": "publication path/line-ending adaptation; source bytes retained locally"
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/RESULTS_SHA256.json",
       "source_sha256": "ecaa1dc91264c3bd7db0359f33a5150dece5b5ee6d4238736d3e795dae775d90",
-      "published_sha256": "ecaa1dc91264c3bd7db0359f33a5150dece5b5ee6d4238736d3e795dae775d90",
-      "adaptation": "none"
+      "published_sha256": "14985205f4384d074c52e263c41acac1dd02f8e6e44aee17f10e0c720fceb2bf",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/bm25_normalization_diagnostics.csv",
       "source_sha256": "3707a23d5406feea8bbb2280dea2e7aaeae0a02f2be52e5d472a209c2975e8b4",
-      "published_sha256": "3707a23d5406feea8bbb2280dea2e7aaeae0a02f2be52e5d472a209c2975e8b4",
-      "adaptation": "none"
+      "published_sha256": "ba1840ed52fdfe0deeb5e5bfe20379fae9d766c0a6b9544bc6b40d12b0fab68a",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/bm25_peer_rankings.csv",
       "source_sha256": "d57ab23f9a780f98ca197e9479e37b1910b4f2131bd3ef67e076d0197a2c1d0a",
-      "published_sha256": "d57ab23f9a780f98ca197e9479e37b1910b4f2131bd3ef67e076d0197a2c1d0a",
-      "adaptation": "none"
+      "published_sha256": "69390ed298d57f051b974303f63bc3e3baf20dfb81a052eadb31360df11b39f2",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/bm25_scaling_residuals.svg",
       "source_sha256": "0a145a504a73eb590bbb2872af49d58f90147f91b665ca31cfbea863fb1b1ab3",
-      "published_sha256": "0a145a504a73eb590bbb2872af49d58f90147f91b665ca31cfbea863fb1b1ab3",
-      "adaptation": "none"
+      "published_sha256": "ccec021deab59f92c44d59ee2f5393b9ace3a4760f59da1c969ec5fe7db2c96f",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/tail_weight_diagnostics.csv",
       "source_sha256": "cecaff762cc17650c8b74db091284cd7681c0a6a02fc51bb7bd8a184086ad592",
-      "published_sha256": "cecaff762cc17650c8b74db091284cd7681c0a6a02fc51bb7bd8a184086ad592",
-      "adaptation": "none"
+      "published_sha256": "270746d11b0ad3d708644d6241a45ed739e45fcf397396dbb9955a0ec02097b9",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/tail_weight_effects.svg",
       "source_sha256": "92687070c0d3d7b757f409716ceb6ef73baa1211d127a3ad0f730fd86b34464d",
-      "published_sha256": "92687070c0d3d7b757f409716ceb6ef73baa1211d127a3ad0f730fd86b34464d",
-      "adaptation": "none"
+      "published_sha256": "c5c37785c599498cd8dffcf210dcb1e59fd291c178603797c912407870d53a54",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/m7_exploratory_20261025/tenq_pilot_coverage.csv",
       "source_sha256": "4aa703cd552c2b5fefb268a3f123c030b85c72a12b21d34ebb616c3ca5d33cf0",
-      "published_sha256": "4aa703cd552c2b5fefb268a3f123c030b85c72a12b21d34ebb616c3ca5d33cf0",
-      "adaptation": "none"
+      "published_sha256": "4f31c62603985630e680f13850102fe01c273b74fcbfa344b8f4a697c537cf56",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/pca_stock_loadings.csv",
       "source_sha256": "cdfa48b5d62c7b74f0f8233bb1201833ddb028e571d49ebda445018cda9042d6",
-      "published_sha256": "cdfa48b5d62c7b74f0f8233bb1201833ddb028e571d49ebda445018cda9042d6",
-      "adaptation": "none"
+      "published_sha256": "2c116d1acfe30a3f348e3f4c6cd72b13ddfa611a08fc06c062c31f8266e95913",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/pca_variance_fraction.csv",
       "source_sha256": "b36149ed6234ffe72b434c27c41c4eea27b9bc978d431d2008626e5187faebd2",
-      "published_sha256": "b36149ed6234ffe72b434c27c41c4eea27b9bc978d431d2008626e5187faebd2",
-      "adaptation": "none"
+      "published_sha256": "e312bb195a39b9dd825aab879d8271bc0d1aa8d90c9e49dbc95006515c1f8493",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/stability_metrics.json",
       "source_sha256": "6623988c00fd08711a4b986fd1d8c21d659d8fb02662353685cd40d70b014487",
-      "published_sha256": "6623988c00fd08711a4b986fd1d8c21d659d8fb02662353685cd40d70b014487",
-      "adaptation": "none"
+      "published_sha256": "cf02ecc82e56381ed72e24d0b15935f31668b1106eaa35d8a032a613c2d9cd2e",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/stability_top2_overlap.csv",
       "source_sha256": "39186677e7ec260390c5396d9fc711421c4dc195e40fea4f2ddce9ca42b64fe9",
-      "published_sha256": "39186677e7ec260390c5396d9fc711421c4dc195e40fea4f2ddce9ca42b64fe9",
-      "adaptation": "none"
+      "published_sha256": "3875a1fbab168ee51ca2dc5ca22db6c1528a2266838b2dc39893088f8e9e7e65",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "results/tfidf_cosine.csv",
       "source_sha256": "78578bba3a9cf07faa2562c104ff8b9cda377fc74e82d23d9582952b9f8434ec",
-      "published_sha256": "78578bba3a9cf07faa2562c104ff8b9cda377fc74e82d23d9582952b9f8434ec",
-      "adaptation": "none"
+      "published_sha256": "26c5a9183b57c00c5422587b69db8fc957bde1b8e55b05c7e48319faa83ed2bd",
+      "adaptation": "publication path/line-ending adaptation; exact source retained locally"
     },
     {
       "path": "run_five_firms_text_label_join.cmd",
