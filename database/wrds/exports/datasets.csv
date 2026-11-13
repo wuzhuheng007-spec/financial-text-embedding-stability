@@ -1,0 +1,14 @@
+dataset_id,title,unit,description,admission_status
+candidate_joint_coverage,Item 1 and literal finite-interval joint coverage,aggregate candidate filing rows only,Finite brackets and endpoint nonhits are only for frozen candidate PERMNO IDs; historical issuer/security validity and primary security remain unsupported for all 133.,NOT_A_FORMAL_M5_COHORT
+ccm_code_review,Bounded CCM code-definition comparison,aggregate exception comparisons only,Current visible dictionary has nine codes; eight stored page selections exclude LO. Four exceptions do not match LO; inclusion mechanism unresolved.,NOT_A_FORMAL_M5_COHORT
+ccm_endpoint,Endpoint representation reconciliation,representation counts only,"One exact spelling reconciled privately on 14 November, superseding the earlier shape-only count; native type, CSV conversion and open-end semantics remain unresolved.",NOT_A_FORMAL_M5_COHORT
+ccm_saved,Saved CCM candidate relation export,candidate source relation rows,Dataset role recorded from safe evidence,NOT_A_FORMAL_M5_COHORT
+cik_cusip_observations,CIK-CUSIP observations,observed reporting association,First/last reporting observations do not establish a historical validity interval.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE
+daily_saved,Saved CRSP daily export engineering view,saved logical rows and security-date groups,"Equal parsed source strings, not byte identity or approximate numeric equivalence. Preserve originals and traceable derivative.",NOT_A_FORMAL_M5_COHORT
+delisting,Delisting exports,delisting record,Saved exit evidence; accepted exit treatment remains a research decision.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE
+distributions,Distribution exports,distribution record,Bounded saved distribution exports; action definitions and completeness remain separate.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE
+issuer_history,Issuer history,issuer history interval,Issuer attributes and dates have distinct source roles.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE
+sec_candidate_discovery,Bounded SEC original-filing candidate discovery,aggregate filing-discovery counts,"Original metadata discovery, body download, extraction and formal admission are separate stages.",NOT_A_FORMAL_M5_COHORT
+security_history,Security history,security history interval,Historical intervals reported in intake evidence; no automatic identity admission.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE
+selected_identity_review,Selected-case identity-chain review aggregates,aggregate selected-case statuses only,Date-valid reporting-entity to security hop and accepted primary rule remain unsupported; case rows are not published.,NOT_A_FORMAL_M5_COHORT
+starting_security_set,Starting security-ID set,security identifier,Locally inventoried starting set; upload identifiers remain private.,REPORTED_LOCAL_INPUT_NOT_LOADED_HERE

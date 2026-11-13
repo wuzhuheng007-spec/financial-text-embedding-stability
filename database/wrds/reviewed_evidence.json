@@ -1,0 +1,1364 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "daily_saved",
+      "title": "Saved CRSP daily export engineering view",
+      "unit": "saved logical rows and security-date groups",
+      "description": "Equal parsed source strings, not byte identity or approximate numeric equivalence. Preserve originals and traceable derivative.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "title": "Saved CCM candidate relation export",
+      "unit": "candidate source relation rows",
+      "description": "Dataset role recorded from safe evidence",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "ccm_code_review",
+      "title": "Bounded CCM code-definition comparison",
+      "unit": "aggregate exception comparisons only",
+      "description": "Current visible dictionary has nine codes; eight stored page selections exclude LO. Four exceptions do not match LO; inclusion mechanism unresolved.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "ccm_endpoint",
+      "title": "Endpoint representation reconciliation",
+      "unit": "representation counts only",
+      "description": "One exact spelling reconciled privately on 14 November, superseding the earlier shape-only count; native type, CSV conversion and open-end semantics remain unresolved.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "sec_candidate_discovery",
+      "title": "Bounded SEC original-filing candidate discovery",
+      "unit": "aggregate filing-discovery counts",
+      "description": "Original metadata discovery, body download, extraction and formal admission are separate stages.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "candidate_joint_coverage",
+      "title": "Item 1 and literal finite-interval joint coverage",
+      "unit": "aggregate candidate filing rows only",
+      "description": "Finite brackets and endpoint nonhits are only for frozen candidate PERMNO IDs; historical issuer/security validity and primary security remain unsupported for all 133.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "selected_identity_review",
+      "title": "Selected-case identity-chain review aggregates",
+      "unit": "aggregate selected-case statuses only",
+      "description": "Date-valid reporting-entity to security hop and accepted primary rule remain unsupported; case rows are not published.",
+      "admission_status": "NOT_A_FORMAL_M5_COHORT"
+    },
+    {
+      "dataset_id": "starting_security_set",
+      "title": "Starting security-ID set",
+      "unit": "security identifier",
+      "description": "Locally inventoried starting set; upload identifiers remain private.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    },
+    {
+      "dataset_id": "security_history",
+      "title": "Security history",
+      "unit": "security history interval",
+      "description": "Historical intervals reported in intake evidence; no automatic identity admission.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    },
+    {
+      "dataset_id": "issuer_history",
+      "title": "Issuer history",
+      "unit": "issuer history interval",
+      "description": "Issuer attributes and dates have distinct source roles.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    },
+    {
+      "dataset_id": "cik_cusip_observations",
+      "title": "CIK-CUSIP observations",
+      "unit": "observed reporting association",
+      "description": "First/last reporting observations do not establish a historical validity interval.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    },
+    {
+      "dataset_id": "distributions",
+      "title": "Distribution exports",
+      "unit": "distribution record",
+      "description": "Bounded saved distribution exports; action definitions and completeness remain separate.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    },
+    {
+      "dataset_id": "delisting",
+      "title": "Delisting exports",
+      "unit": "delisting record",
+      "description": "Saved exit evidence; accepted exit treatment remains a research decision.",
+      "admission_status": "REPORTED_LOCAL_INPUT_NOT_LOADED_HERE"
+    }
+  ],
+  "source_evidence": [
+    {
+      "evidence_id": "daily_summary",
+      "artifact_id": "asset_d9510aa4c5b370d4cbf3",
+      "member_name": "results/daily_summary_safe.json",
+      "sha256": "07fe5604e8d80434559f74be2a3383715c72598a7d57ae4229c04f0d9d4959e2",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_daily_derived_preparation_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "daily_execution",
+      "artifact_id": "asset_d9510aa4c5b370d4cbf3",
+      "member_name": "results/daily_execution_summary_safe.json",
+      "sha256": "63edf6e6bc341464c97e560eb1a270c06ee0dd03b29c56288d1678b5c4f39c28",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_daily_preparation_execution_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "preparation_policy",
+      "artifact_id": "asset_d9510aa4c5b370d4cbf3",
+      "member_name": "configs/m5_preparation_rules_accepted_20261113.json",
+      "sha256": "14f22ae821d61d44848832fc5e73b5b27360f5947cafb4189ceb27603a38970e",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_accepted_preparation_policy_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "ccm_summary",
+      "artifact_id": "asset_e22732dbe4ad576342fd",
+      "member_name": "m5_ccm_summary_safe.json",
+      "sha256": "ccd9d5b4354f8ea67375edd662060c478ccad708a583daa817e307681f15af25",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_query11905330_safe_summary_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "ccm_execution",
+      "artifact_id": "asset_e22732dbe4ad576342fd",
+      "member_name": "execution_safe.json",
+      "sha256": "28923898590baeedf28be6898da93a2f979328dbbb5e9ccf793f684e2ab84de6",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_query11905330_execution_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "linktype_comparison",
+      "artifact_id": "asset_12dac6df0e24d0da3551",
+      "member_name": "m5_ccm_source_interpretation_safe.json",
+      "sha256": "0d5b42246f0d253e6c811485c99f4b51c0cdab0c7185b88ce43af2b7e9fe1a69",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_source_interpretation_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "linktype_execution",
+      "artifact_id": "asset_12dac6df0e24d0da3551",
+      "member_name": "execution_safe.json",
+      "sha256": "f9a8c06e84fbc5cb36e8a7a7fa55a882780330a0c3587ef59134b90a43886a88",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_source_execution_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "source_image_metadata",
+      "artifact_id": "asset_12dac6df0e24d0da3551",
+      "member_name": "m5_ccm_source_images_safe.json",
+      "sha256": "cff8031b55b27382bdf916a73f913d27de2df4193c187aef2e6a322b19f75e48",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_source_images_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "candidate_discovery_summary",
+      "artifact_id": "asset_3a794121b1ccca7aa337",
+      "member_name": "candidate_discovery_summary_safe.json",
+      "sha256": "378424894cc261eee7b4f832b1be95223e6b312c79e38dbbd558c6785020164d",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "M5_CANDIDATE_DISCOVERY_SAFE_AGGREGATE; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "candidate_discovery_verify",
+      "artifact_id": "asset_3a794121b1ccca7aa337",
+      "member_name": "candidate_discovery_verify_safe.json",
+      "sha256": "4104316643320adef177593651532aad1959cc583e425229cfb8c71555054057",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "M5_CANDIDATE_DISCOVERY_INDEPENDENT_READBACK_SAFE; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "endpoint_spelling",
+      "artifact_id": "asset_3a794121b1ccca7aa337",
+      "member_name": "r3_linkenddt_spelling_safe.json",
+      "sha256": "b9252baafa22e445605cfd1af3ab5fb7de372d4102f4defa2a7cd86f429e8eb8",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_ccm_linkenddt_safe_spelling_audit_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "candidate_endpoint_intersection",
+      "artifact_id": "asset_3a794121b1ccca7aa337",
+      "member_name": "r3_candidate_intersection_safe.json",
+      "sha256": "e11b527ae63914bfbf8a8b83cfbaba9cba079a65761102b5283a0e9f695c13ed",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_r3_ccm_endpoint_candidate_intersection_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "joint_coverage",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "joint_coverage_safe.json",
+      "sha256": "7c467d79bb3ee1818095538c102c2ed4572bce390e1609cb55fe49c74e2d25a9",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_source_closure_joint_coverage_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "joint_coverage_verify",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "joint_coverage_readback_safe.json",
+      "sha256": "a4492f5ebc577c05cbd1819cc3d6da358638ae214656d60fa83d5c93930451e0",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_source_closure_joint_coverage_readback_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "latest_source_status",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "source_status_safe.json",
+      "sha256": "4d4b6f1208efe5b42afac33020eeab84ff60b4610d0dc6666cea1904f952a8ba",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_source_closure_status_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "closure_input_identity",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "s0_inputs.json",
+      "sha256": "50981ed441415c3b09f346568d1491f4493557aca011ea0dfdcf114dfc1f4676",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_source_closure_s0_inputs_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "selected_case_aggregate_source",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "s3_identity_chain_safe.json",
+      "sha256": "f9778570e76bb27f2cfaf87fad5c842ccab48931d4d8abeca9c32e0324793f88",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "m5_s3_identity_chain_safe_v1; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "daily_code_identity",
+      "artifact_id": "asset_d9510aa4c5b370d4cbf3",
+      "member_name": "scripts/prepare_m5_daily_rows.py",
+      "sha256": "b501f78497140ea3fb9298bc42bc2afcc7e6df8ba6c615877fcf950e1504ded9",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "ccm_code_identity",
+      "artifact_id": "asset_e22732dbe4ad576342fd",
+      "member_name": "scripts/audit_m5_ccm_query11905330.py",
+      "sha256": "66a7ec17d8dbd69ebe46a2a9109c71759832e3331bb11d8348a51a8fcb44af69",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "linktype_code_identity",
+      "artifact_id": "asset_12dac6df0e24d0da3551",
+      "member_name": "scripts/review_m5_ccm_linktype_source.py",
+      "sha256": "11807c37aaa70a69248ca649438fbf154677f90da75bfb403c088c3e330b0df9",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "discovery_code_identity",
+      "artifact_id": "asset_3a794121b1ccca7aa337",
+      "member_name": "code/scripts/build_m5_candidate_discovery_20261114.py",
+      "sha256": "8d2423d09da65d3d1730c79729a80004093ff57509ca6d5a5f5beddb9e095e75",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "closure_code_identity",
+      "artifact_id": "asset_fa5d2bd73e31307a7193",
+      "member_name": "code/scripts/build_m5_joint_coverage_20261114.py",
+      "sha256": "ab45f60b45716f5b0a2c6ce808d56eed7427f27ed8edf5e7af66dde0dfc34578",
+      "verification_status": "REVIEWED_SAFE_MEMBER_HASH_VERIFIED",
+      "source_note": "; SAFE_SUMMARY_OR_CODE_IDENTITY_ONLY"
+    },
+    {
+      "evidence_id": "packet_image_001",
+      "artifact_id": "packet_image_001",
+      "member_name": "image_20261113-042607.png",
+      "sha256": "a020d3c377d3a8f4667b606c918d7b7ee595c7cd44de01de5c8c0d7b7b3b3216",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "ACCOUNT_LINKTYPE_DEFINITION_POPUP_WITH_NINE_CODES; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_002",
+      "artifact_id": "packet_image_002",
+      "member_name": "image_20261113-042644.png",
+      "sha256": "d9801f9141ddc6960bbc6fe0729658c2cac66e51d50c445179e67b7111376539",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_DESCRIPTIONS_PRODUCT_METADATA_AND_LOADED_QUERY_BANNER; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_003",
+      "artifact_id": "packet_image_003",
+      "member_name": "image_20261113-042651.png",
+      "sha256": "9cd972aefcf3898065570ac15cf16ae4a8d37007f0c8236b0253eeaf9c7fcf6c",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_LIST_LINK_FIELDS_AND_IDENTIFYING_FIELDS; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_004",
+      "artifact_id": "packet_image_004",
+      "member_name": "image_20261113-042657.png",
+      "sha256": "4ce83ddec15c4f420bc439c97893b5f65d49910e8748b750799bca083bd3be0a",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_LIST_COMPANY_HEADER_FIELDS; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_005",
+      "artifact_id": "packet_image_005",
+      "member_name": "image_20261113-042703.png",
+      "sha256": "64518ab2e51f98c78a91e8d6856ea6ab3027fae205fd088dab56bdf96fd1f9b9",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_LIST_COMPANY_PRIMARY_TAG_LABELS; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_006",
+      "artifact_id": "packet_image_006",
+      "member_name": "image_20261113-042710.png",
+      "sha256": "05ecd694487b52d70a8de30e51cdff6ef22ea173720c51acffd22e8992086f76",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_LIST_PRIUSA_AND_REMAINING_HEADER_LABELS; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_007",
+      "artifact_id": "packet_image_007",
+      "member_name": "image_20261113-043826.png",
+      "sha256": "57b2d6adc6ecd793397fc41d5182be203edce8bce25a67ec3d72c08b7ccfcd33",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "ACCOUNT_LINKENDDT_HELP_BODY_WITH_AMBIGUOUS_TERMINAL_DOT; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_008",
+      "artifact_id": "packet_image_008",
+      "member_name": "image_20261113-043905.png",
+      "sha256": "2c17c60a6c7e16d01e52cf5aeadbdbe0a0cb46ef793e7f8b27416f5ee82abd48",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "QUERY11905330_RESULT_INPUT_PARAMETERS_EXPANDED_PARTIAL; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_009",
+      "artifact_id": "packet_image_009",
+      "member_name": "image_20261113-043942.png",
+      "sha256": "92f98038bdb1597e06c32ecda281a7c65f9fe130e0306b36dd2b2edb93f4aa25",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "VARIABLE_DESCRIPTIONS_LINKPRIM_LABEL_ONLY; BOUND_PACKET_IMAGE_IDENTITY"
+    },
+    {
+      "evidence_id": "packet_image_010",
+      "artifact_id": "packet_image_010",
+      "member_name": "user_image_01.png",
+      "sha256": "e624a42711f6765577c223fd54a05451a54f3d48e5a05a8b81edb64ce89329ff",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "NON_VENDOR_ADVICE; NOT_VERIFIED"
+    },
+    {
+      "evidence_id": "packet_image_011",
+      "artifact_id": "packet_image_011",
+      "member_name": "user_image_02.png",
+      "sha256": "59175db4e6984617b28ac1405117691775e84b5817e098751d34d206be3c2f9c",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "FINAL_PAGE_EXPANDED_VARIABLES; NOT_VERIFIED"
+    },
+    {
+      "evidence_id": "packet_image_012",
+      "artifact_id": "packet_image_012",
+      "member_name": "user_image_03.png",
+      "sha256": "52a76bf1760943c0212886049608af08a70ef3beec9a7920057da30cc02b93a1",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "FINAL_PAGE_EXTRA10_AND_METHOD; NOT_VERIFIED"
+    },
+    {
+      "evidence_id": "packet_image_013",
+      "artifact_id": "packet_image_013",
+      "member_name": "user_image_04.png",
+      "sha256": "09a64138517750c2c2a57bbc1b3d0faedbfeb783468c6fb8268046ffcd384999",
+      "verification_status": "SOURCE_REPORTED_IMAGE_COPY_IDENTITY",
+      "source_note": "FINAL_PAGE_QUERY_URL_AND_EXTRA10; NOT_VERIFIED"
+    }
+  ],
+  "field_roles": [
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "PERMNO",
+      "role": "declared engineering grouping key; historical source identifiers are not published",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyCalDt",
+      "role": "declared engineering grouping key; historical source identifiers are not published",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyClose",
+      "role": "observed source columns; accepted financial meanings/adjustment policy remain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyPrc",
+      "role": "observed source columns; accepted financial meanings/adjustment policy remain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyFacPrc",
+      "role": "observed source columns; accepted financial meanings/adjustment policy remain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyPrcFlg",
+      "role": "observed source columns; accepted financial meanings/adjustment policy remain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "daily_saved",
+      "field_name": "DlyRetMissFlg",
+      "role": "observed source columns; accepted financial meanings/adjustment policy remain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "daily_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "gvkey",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "liid",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "linkdt",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "linkenddt",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "linkprim",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "linktype",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "lpermco",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "lpermno",
+      "role": "GUI-declared historical security-link candidate fields from ccmxpf_lnkhist; native execution chain unresolved",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "conm",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "tic",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "cusip",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "cik",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "sic",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "naics",
+      "role": "GUI-declared Compustat names header observations; do not inherit link validity dates",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    },
+    {
+      "dataset_id": "ccm_saved",
+      "field_name": "priusa",
+      "role": "GUI-declared comphead header observation; no accepted dated primary-security decision",
+      "date_semantics": "Do not infer historical validity or endpoint conversion beyond the bound source definition.",
+      "status": "SOURCE_ROLE_ONLY",
+      "evidence_id": "ccm_summary"
+    }
+  ],
+  "aggregate_results": [
+    {
+      "result_id": "daily_saved.raw_rows",
+      "dataset_id": "daily_saved",
+      "metric": "raw_rows",
+      "value": 10312828,
+      "unit": "saved logical CSV rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/raw_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.key_groups",
+      "dataset_id": "daily_saved",
+      "metric": "key_groups",
+      "value": 10310791,
+      "unit": "distinct security-date key groups",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/key_groups",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.derived_candidate_rows",
+      "dataset_id": "daily_saved",
+      "metric": "derived_candidate_rows",
+      "value": 10310791,
+      "unit": "engineering derived rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/derived_candidate_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.equal_key_groups",
+      "dataset_id": "daily_saved",
+      "metric": "equal_key_groups",
+      "value": 1995,
+      "unit": "duplicate key groups with all parsed source strings equal",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/equal_key_groups",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.rows_in_equal_groups",
+      "dataset_id": "daily_saved",
+      "metric": "rows_in_equal_groups",
+      "value": 4032,
+      "unit": "all source rows in equal duplicate groups",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/rows_in_equal_groups",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.conflict_key_groups",
+      "dataset_id": "daily_saved",
+      "metric": "conflict_key_groups",
+      "value": 0,
+      "unit": "conflicting key groups",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/conflict_key_groups",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.unresolved_key_groups",
+      "dataset_id": "daily_saved",
+      "metric": "unresolved_key_groups",
+      "value": 0,
+      "unit": "unresolved key groups",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "Not a formal financial sample. First 2019 segment freshly parsed; seven later segments reused bound full-field indexes.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/unresolved_key_groups",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "daily_saved.duplicate_excess_rows",
+      "dataset_id": "daily_saved",
+      "metric": "duplicate_excess_rows",
+      "value": 2037,
+      "unit": "excess source rows collapsed only in derivative",
+      "as_of": "2026-11-13",
+      "evidence_id": "daily_summary",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/per_segment/*/duplicate_extra_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.actual_csv_data_rows",
+      "dataset_id": "ccm_saved",
+      "metric": "actual_csv_data_rows",
+      "value": 123388,
+      "unit": "saved CCM logical rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Candidate relations only; neither historical CIK validity nor company-primary eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/actual_csv_data_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.index_entries",
+      "dataset_id": "ccm_saved",
+      "metric": "index_entries",
+      "value": 123388,
+      "unit": "preserved candidate relation entries",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Candidate relations only; neither historical CIK validity nor company-primary eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/index_entries",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.width_error_rows",
+      "dataset_id": "ccm_saved",
+      "metric": "width_error_rows",
+      "value": 0,
+      "unit": "CSV width-error rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Candidate relations only; neither historical CIK validity nor company-primary eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/width_error_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.distinct_source_eight_cell_relation_tuples",
+      "dataset_id": "ccm_saved",
+      "metric": "distinct_source_eight_cell_relation_tuples",
+      "value": 123388,
+      "unit": "distinct raw eight-cell relation tuples",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Candidate relations only; neither historical CIK validity nor company-primary eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/distinct_source_eight_cell_relation_tuples",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.actual_column_count",
+      "dataset_id": "ccm_saved",
+      "metric": "actual_column_count",
+      "value": 15,
+      "unit": "CSV columns",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/header/actual_column_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.seed_identifiers",
+      "dataset_id": "ccm_saved",
+      "metric": "seed_identifiers",
+      "value": 7639,
+      "unit": "starting security identifiers",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Offline candidate coverage only, not formal cohort membership.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/seed_coverage/seed_identifiers",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.seed_identifiers_present_in_export",
+      "dataset_id": "ccm_saved",
+      "metric": "seed_identifiers_present_in_export",
+      "value": 7639,
+      "unit": "starting security identifiers",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Offline candidate coverage only, not formal cohort membership.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/seed_coverage/seed_identifiers_present_in_export",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.seed_identifiers_absent_from_export",
+      "dataset_id": "ccm_saved",
+      "metric": "seed_identifiers_absent_from_export",
+      "value": 0,
+      "unit": "starting security identifiers",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Offline candidate coverage only, not formal cohort membership.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/seed_coverage/seed_identifiers_absent_from_export",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_saved.source_rows_hitting_seed",
+      "dataset_id": "ccm_saved",
+      "metric": "source_rows_hitting_seed",
+      "value": 8917,
+      "unit": "source rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "ccm_summary",
+      "scope": "Offline candidate coverage only, not formal cohort membership.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/seed_coverage/source_rows_hitting_seed",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_code_review.linktype_other_source_records",
+      "dataset_id": "ccm_code_review",
+      "metric": "linktype_other_source_records",
+      "value": 4,
+      "unit": "saved exception source rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "linktype_comparison",
+      "scope": "Exact normalized comparison to LO only; unmatched code remains undisclosed and undefined.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/linktype_other_source_records",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_code_review.metadata_code_lo_match_source_records",
+      "dataset_id": "ccm_code_review",
+      "metric": "metadata_code_lo_match_source_records",
+      "value": 0,
+      "unit": "saved exception source rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "linktype_comparison",
+      "scope": "Exact normalized comparison to LO only; unmatched code remains undisclosed and undefined.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/metadata_code_lo_match_source_records",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_code_review.unmatched_linktype_other_source_records",
+      "dataset_id": "ccm_code_review",
+      "metric": "unmatched_linktype_other_source_records",
+      "value": 4,
+      "unit": "saved exception source rows",
+      "as_of": "2026-11-13",
+      "evidence_id": "linktype_comparison",
+      "scope": "Exact normalized comparison to LO only; unmatched code remains undisclosed and undefined.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/unmatched_linktype_other_source_records",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_endpoint.source_rows",
+      "dataset_id": "ccm_endpoint",
+      "metric": "source_rows",
+      "value": 123388,
+      "unit": "saved CCM logical rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "endpoint_spelling",
+      "scope": "Newest receipt reconciles one exact spelling privately; raw spelling undisclosed. No CSV conversion or open-end semantics inferred.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/source_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_endpoint.single_ascii_letter_linkenddt_rows",
+      "dataset_id": "ccm_endpoint",
+      "metric": "single_ascii_letter_linkenddt_rows",
+      "value": 26386,
+      "unit": "source rows with one-letter endpoint representation",
+      "as_of": "2026-11-14",
+      "evidence_id": "endpoint_spelling",
+      "scope": "Newest receipt reconciles one exact spelling privately; raw spelling undisclosed. No CSV conversion or open-end semantics inferred.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/single_ascii_letter_linkenddt_rows",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "ccm_endpoint.distinct_single_ascii_letter_spellings",
+      "dataset_id": "ccm_endpoint",
+      "metric": "distinct_single_ascii_letter_spellings",
+      "value": 1,
+      "unit": "distinct source spellings retained privately",
+      "as_of": "2026-11-14",
+      "evidence_id": "endpoint_spelling",
+      "scope": "Newest receipt reconciles one exact spelling privately; raw spelling undisclosed. No CSV conversion or open-end semantics inferred.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/distinct_single_ascii_letter_spellings",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.scan_cik_denominator",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "scan_cik_denominator",
+      "value": 32,
+      "unit": "reporting entities in frozen bounded scan",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/scan_cik_denominator",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.nondevelopment_distinct_cik_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "nondevelopment_distinct_cik_count",
+      "value": 26,
+      "unit": "reporting entities with nondevelopment candidates",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/nondevelopment_distinct_cik_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.nondevelopment_original_10k_candidate_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "nondevelopment_original_10k_candidate_count",
+      "value": 133,
+      "unit": "original 10-K metadata candidates",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/nondevelopment_original_10k_candidate_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.development_only_original_10k_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "development_only_original_10k_count",
+      "value": 30,
+      "unit": "separate development filing rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/development_only_original_10k_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.original_filing_download_success_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "original_filing_download_success_count",
+      "value": 20,
+      "unit": "downloaded original submission bodies",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/original_filing_download_success_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.raw_header_supported_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "raw_header_supported_count",
+      "value": 18,
+      "unit": "candidate bodies with supported headers",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/raw_header_supported_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.item1_extraction_supported_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "item1_extraction_supported_count",
+      "value": 16,
+      "unit": "candidate Item 1 extractions",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "Bounded scan, not complete cohort or admitted event count; individual identifiers excluded.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/item1_extraction_supported_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "sec_candidate_discovery.formal_admitted_count",
+      "dataset_id": "sec_candidate_discovery",
+      "metric": "formal_admitted_count",
+      "value": 0,
+      "unit": "formally admitted events",
+      "as_of": "2026-11-14",
+      "evidence_id": "candidate_discovery_summary",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/formal_admitted_count",
+      "verification_status": "ZERO_ADMITTED_NOT_FINANCIAL_RUN"
+    },
+    {
+      "result_id": "candidate_joint_coverage.item1_other__finite_no_unresolved",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "item1_other__finite_no_unresolved",
+      "value": 15,
+      "unit": "nondevelopment candidate filing rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "Finite predicate uses frozen candidate security IDs only; not verified historical identity or eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/item1_by_finite_no_unresolved_cross_tab/item1_other__finite_no_unresolved",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.item1_other__other",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "item1_other__other",
+      "value": 102,
+      "unit": "nondevelopment candidate filing rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "Finite predicate uses frozen candidate security IDs only; not verified historical identity or eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/item1_by_finite_no_unresolved_cross_tab/item1_other__other",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.item1_supported__finite_no_unresolved",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "item1_supported__finite_no_unresolved",
+      "value": 5,
+      "unit": "nondevelopment candidate filing rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "Finite predicate uses frozen candidate security IDs only; not verified historical identity or eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/item1_by_finite_no_unresolved_cross_tab/item1_supported__finite_no_unresolved",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.item1_supported__other",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "item1_supported__other",
+      "value": 11,
+      "unit": "nondevelopment candidate filing rows",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "Finite predicate uses frozen candidate security IDs only; not verified historical identity or eligibility.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/item1_by_finite_no_unresolved_cross_tab/item1_supported__other",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.unresolved_endpoint_candidate_id_hit",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "unresolved_endpoint_candidate_id_hit",
+      "value": 113,
+      "unit": "candidate filing rows with structural unresolved-end hits",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/nondevelopment_set_counts/unresolved_endpoint_candidate_id_hit",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.candidate_finite_interval_literal_bracket_and_no_unresolved_hit",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "candidate_finite_interval_literal_bracket_and_no_unresolved_hit",
+      "value": 20,
+      "unit": "candidate filing rows satisfying literal finite predicate",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/nondevelopment_set_counts/candidate_finite_interval_literal_bracket_and_no_unresolved_hit",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "candidate_joint_coverage.item1_supported",
+      "dataset_id": "candidate_joint_coverage",
+      "metric": "item1_supported",
+      "value": 16,
+      "unit": "candidate Item 1 extractions",
+      "as_of": "2026-11-14",
+      "evidence_id": "joint_coverage",
+      "scope": "; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/nondevelopment_set_counts/item1_supported",
+      "verification_status": "STRUCTURAL_CANDIDATE_COVERAGE_ONLY"
+    },
+    {
+      "result_id": "selected_identity_review.selected_event_count",
+      "dataset_id": "selected_identity_review",
+      "metric": "selected_event_count",
+      "value": 3,
+      "unit": "selected candidate events",
+      "as_of": "2026-11-14",
+      "evidence_id": "selected_case_aggregate_source",
+      "scope": "Three selected cases are a workload-limited review, not a representative sample. No event-level records are published.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/selected_event_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "selected_identity_review.source_exact_item1_count",
+      "dataset_id": "selected_identity_review",
+      "metric": "source_exact_item1_count",
+      "value": 3,
+      "unit": "selected candidate events",
+      "as_of": "2026-11-14",
+      "evidence_id": "selected_case_aggregate_source",
+      "scope": "Three selected cases are a workload-limited review, not a representative sample. No event-level records are published.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/source_exact_item1_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "selected_identity_review.formal_historical_identity_supported_count",
+      "dataset_id": "selected_identity_review",
+      "metric": "formal_historical_identity_supported_count",
+      "value": 0,
+      "unit": "formally supported/admitted events",
+      "as_of": "2026-11-14",
+      "evidence_id": "selected_case_aggregate_source",
+      "scope": "Three selected cases are a workload-limited review, not a representative sample. No event-level records are published.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/formal_historical_identity_supported_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "selected_identity_review.formal_primary_security_supported_count",
+      "dataset_id": "selected_identity_review",
+      "metric": "formal_primary_security_supported_count",
+      "value": 0,
+      "unit": "formally supported/admitted events",
+      "as_of": "2026-11-14",
+      "evidence_id": "selected_case_aggregate_source",
+      "scope": "Three selected cases are a workload-limited review, not a representative sample. No event-level records are published.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/formal_primary_security_supported_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    },
+    {
+      "result_id": "selected_identity_review.formal_admitted_count",
+      "dataset_id": "selected_identity_review",
+      "metric": "formal_admitted_count",
+      "value": 0,
+      "unit": "formally supported/admitted events",
+      "as_of": "2026-11-14",
+      "evidence_id": "selected_case_aggregate_source",
+      "scope": "Three selected cases are a workload-limited review, not a representative sample. No event-level records are published.; SAFE_MANIFEST_HASH_AND_AGGREGATE_RECONCILIATION_NOT_PRIVATE_SOURCE_REPLAY",
+      "source_json_pointer": "/formal_admitted_count",
+      "verification_status": "SAVED_ENGINEERING_AGGREGATE"
+    }
+  ],
+  "audit_runs": [
+    {
+      "run_id": "daily_preparation_20261113_run",
+      "dataset_id": "daily_saved",
+      "operation": "run",
+      "exit_code": 0,
+      "code_sha256": "b501f78497140ea3fb9298bc42bc2afcc7e6df8ba6c615877fcf950e1504ded9",
+      "config_sha256": "14f22ae821d61d44848832fc5e73b5b27360f5947cafb4189ceb27603a38970e",
+      "input_sha256": "13cbec98b9ec2d6ef59a6b8f42b89a872b6789388861d114fe8413bbef6a64cd",
+      "summary_sha256": "63edf6e6bc341464c97e560eb1a270c06ee0dd03b29c56288d1678b5c4f39c28",
+      "evidence_id": "daily_execution",
+      "code_commit": "35cbe9b40cea3c493771c862d8a9e1ca31230713"
+    },
+    {
+      "run_id": "daily_preparation_20261113_verify",
+      "dataset_id": "daily_saved",
+      "operation": "verify",
+      "exit_code": 0,
+      "code_sha256": "b501f78497140ea3fb9298bc42bc2afcc7e6df8ba6c615877fcf950e1504ded9",
+      "config_sha256": "14f22ae821d61d44848832fc5e73b5b27360f5947cafb4189ceb27603a38970e",
+      "input_sha256": "13cbec98b9ec2d6ef59a6b8f42b89a872b6789388861d114fe8413bbef6a64cd",
+      "summary_sha256": "63edf6e6bc341464c97e560eb1a270c06ee0dd03b29c56288d1678b5c4f39c28",
+      "evidence_id": "daily_execution",
+      "code_commit": "35cbe9b40cea3c493771c862d8a9e1ca31230713"
+    },
+    {
+      "run_id": "ccm_intake_20261113_run",
+      "dataset_id": "ccm_saved",
+      "operation": "run",
+      "exit_code": 0,
+      "code_sha256": "66a7ec17d8dbd69ebe46a2a9109c71759832e3331bb11d8348a51a8fcb44af69",
+      "config_sha256": null,
+      "input_sha256": "ab660b8b6f31fcc424c759531c9c6009359ac3ea79c2c3b0fb9873ddb0bc1bcb",
+      "summary_sha256": "28923898590baeedf28be6898da93a2f979328dbbb5e9ccf793f684e2ab84de6",
+      "evidence_id": "ccm_execution",
+      "code_commit": "14000db11c32c76bbc4ed50c1ed9ff988d19c4bb"
+    },
+    {
+      "run_id": "ccm_intake_20261113_verify",
+      "dataset_id": "ccm_saved",
+      "operation": "verify",
+      "exit_code": 0,
+      "code_sha256": "66a7ec17d8dbd69ebe46a2a9109c71759832e3331bb11d8348a51a8fcb44af69",
+      "config_sha256": null,
+      "input_sha256": "ab660b8b6f31fcc424c759531c9c6009359ac3ea79c2c3b0fb9873ddb0bc1bcb",
+      "summary_sha256": "28923898590baeedf28be6898da93a2f979328dbbb5e9ccf793f684e2ab84de6",
+      "evidence_id": "ccm_execution",
+      "code_commit": "14000db11c32c76bbc4ed50c1ed9ff988d19c4bb"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_run",
+      "dataset_id": "ccm_code_review",
+      "operation": "run",
+      "exit_code": 0,
+      "code_sha256": "11807c37aaa70a69248ca649438fbf154677f90da75bfb403c088c3e330b0df9",
+      "config_sha256": null,
+      "input_sha256": "a020d3c377d3a8f4667b606c918d7b7ee595c7cd44de01de5c8c0d7b7b3b3216",
+      "summary_sha256": "f9a8c06e84fbc5cb36e8a7a7fa55a882780330a0c3587ef59134b90a43886a88",
+      "evidence_id": "linktype_execution",
+      "code_commit": "ea5d836400bbac0a9d0c1e5c0be41938cb7d608d"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_verify",
+      "dataset_id": "ccm_code_review",
+      "operation": "verify",
+      "exit_code": 0,
+      "code_sha256": "11807c37aaa70a69248ca649438fbf154677f90da75bfb403c088c3e330b0df9",
+      "config_sha256": null,
+      "input_sha256": "a020d3c377d3a8f4667b606c918d7b7ee595c7cd44de01de5c8c0d7b7b3b3216",
+      "summary_sha256": "f9a8c06e84fbc5cb36e8a7a7fa55a882780330a0c3587ef59134b90a43886a88",
+      "evidence_id": "linktype_execution",
+      "code_commit": "ea5d836400bbac0a9d0c1e5c0be41938cb7d608d"
+    },
+    {
+      "run_id": "candidate_discovery_20261114_safe_readback_reported",
+      "dataset_id": "sec_candidate_discovery",
+      "operation": "safe_readback_reported",
+      "exit_code": null,
+      "code_sha256": "8d2423d09da65d3d1730c79729a80004093ff57509ca6d5a5f5beddb9e095e75",
+      "config_sha256": null,
+      "input_sha256": "b3b157e77dc52e8d65568682504a9762e6455ee88d5b43a6a12794ca101f1276",
+      "summary_sha256": "378424894cc261eee7b4f832b1be95223e6b312c79e38dbbd558c6785020164d",
+      "evidence_id": "candidate_discovery_summary",
+      "code_commit": null
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "dataset_id": "candidate_joint_coverage",
+      "operation": "safe_readback_reported",
+      "exit_code": null,
+      "code_sha256": "ab45f60b45716f5b0a2c6ce808d56eed7427f27ed8edf5e7af66dde0dfc34578",
+      "config_sha256": null,
+      "input_sha256": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea",
+      "summary_sha256": "50981ed441415c3b09f346568d1491f4493557aca011ea0dfdcf114dfc1f4676",
+      "evidence_id": "closure_input_identity",
+      "code_commit": null
+    }
+  ],
+  "run_inputs": [
+    {
+      "run_id": "daily_preparation_20261113_run",
+      "input_role": "source_inventory",
+      "sha256": "13cbec98b9ec2d6ef59a6b8f42b89a872b6789388861d114fe8413bbef6a64cd"
+    },
+    {
+      "run_id": "daily_preparation_20261113_run",
+      "input_role": "normalizer_code",
+      "sha256": "97ded6befe05d0759d1c289618a31d1cf4eab6f965d34fb01768fef1b23cae1c"
+    },
+    {
+      "run_id": "daily_preparation_20261113_verify",
+      "input_role": "source_inventory",
+      "sha256": "13cbec98b9ec2d6ef59a6b8f42b89a872b6789388861d114fe8413bbef6a64cd"
+    },
+    {
+      "run_id": "daily_preparation_20261113_verify",
+      "input_role": "normalizer_code",
+      "sha256": "97ded6befe05d0759d1c289618a31d1cf4eab6f965d34fb01768fef1b23cae1c"
+    },
+    {
+      "run_id": "ccm_intake_20261113_run",
+      "input_role": "source_zip",
+      "sha256": "ab660b8b6f31fcc424c759531c9c6009359ac3ea79c2c3b0fb9873ddb0bc1bcb"
+    },
+    {
+      "run_id": "ccm_intake_20261113_run",
+      "input_role": "source_csv",
+      "sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9"
+    },
+    {
+      "run_id": "ccm_intake_20261113_run",
+      "input_role": "seed_file",
+      "sha256": "017224e43461409fa6f2ef007d182a5b0d870f02cd1edc4c528f0a901a543318"
+    },
+    {
+      "run_id": "ccm_intake_20261113_verify",
+      "input_role": "source_zip",
+      "sha256": "ab660b8b6f31fcc424c759531c9c6009359ac3ea79c2c3b0fb9873ddb0bc1bcb"
+    },
+    {
+      "run_id": "ccm_intake_20261113_verify",
+      "input_role": "source_csv",
+      "sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9"
+    },
+    {
+      "run_id": "ccm_intake_20261113_verify",
+      "input_role": "seed_file",
+      "sha256": "017224e43461409fa6f2ef007d182a5b0d870f02cd1edc4c528f0a901a543318"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_run",
+      "input_role": "dictionary_image",
+      "sha256": "a020d3c377d3a8f4667b606c918d7b7ee595c7cd44de01de5c8c0d7b7b3b3216"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_run",
+      "input_role": "target_ledger_file_only",
+      "sha256": "cfdd797502fa25af16306ec15b686a0f9c1d53056753a8edfad97bdccac1c17b"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_verify",
+      "input_role": "dictionary_image",
+      "sha256": "a020d3c377d3a8f4667b606c918d7b7ee595c7cd44de01de5c8c0d7b7b3b3216"
+    },
+    {
+      "run_id": "ccm_source_comparison_20261113_verify",
+      "input_role": "target_ledger_file_only",
+      "sha256": "cfdd797502fa25af16306ec15b686a0f9c1d53056753a8edfad97bdccac1c17b"
+    },
+    {
+      "run_id": "candidate_discovery_20261114_safe_readback_reported",
+      "input_role": "scope_manifest",
+      "sha256": "b3b157e77dc52e8d65568682504a9762e6455ee88d5b43a6a12794ca101f1276"
+    },
+    {
+      "run_id": "candidate_discovery_20261114_safe_readback_reported",
+      "input_role": "download_selection",
+      "sha256": "1cab1efccdf8bedea3a83468ce292393de6774fd8747643778b6e47b633903de"
+    },
+    {
+      "run_id": "candidate_discovery_20261114_safe_readback_reported",
+      "input_role": "candidate_ledger_file_only",
+      "sha256": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea"
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "input_role": "candidate_ledger",
+      "sha256": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea"
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "input_role": "scope_manifest",
+      "sha256": "b3b157e77dc52e8d65568682504a9762e6455ee88d5b43a6a12794ca101f1276"
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "input_role": "download_selection",
+      "sha256": "1cab1efccdf8bedea3a83468ce292393de6774fd8747643778b6e47b633903de"
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "input_role": "ccm_csv",
+      "sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9"
+    },
+    {
+      "run_id": "source_closure_20261114_safe_readback_reported",
+      "input_role": "previous_return_zip",
+      "sha256": "854280a1538f60d05c38bab7a8f4ea40fb3585518442b755a4e9204beac77ccd"
+    }
+  ],
+  "open_issues": [
+    {
+      "issue_id": "endpoint_conversion",
+      "dataset_id": null,
+      "description": "Native endpoint type, missing/special class, exact CSV conversion and date semantics remain undefined for the saved export. Do not substitute infinity or current date.",
+      "status": "SOURCE_PENDING",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref latest_source_status"
+    },
+    {
+      "issue_id": "saved_release_and_execution",
+      "dataset_id": null,
+      "description": "No original-query SQL/execution log in the checked registered locations; saved release and header-attribute time properties remain unresolved.",
+      "status": "SOURCE_PENDING",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref latest_source_status"
+    },
+    {
+      "issue_id": "linkprim_dictionary",
+      "dataset_id": null,
+      "description": "Older generic P/C definitions do not bind all observed codes or primary-security policy in the saved release.",
+      "status": "SOURCE_PENDING",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref latest_source_status"
+    },
+    {
+      "issue_id": "unmatched_linktype",
+      "dataset_id": null,
+      "description": "Four stored exception records remain unmatched to LO; no vendor-error or valid-bridge conclusion.",
+      "status": "FOUR_ROWS_UNMATCHED_TO_LO",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref linktype_comparison"
+    },
+    {
+      "issue_id": "historical_identity_primary_market",
+      "dataset_id": null,
+      "description": "Frozen candidate relationships and literal intervals do not establish dated entity/security identity, primary selection or market eligibility.",
+      "status": "UNSUPPORTED_FOR_FORMAL_ADMISSION",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref joint_coverage"
+    },
+    {
+      "issue_id": "price_calendar_exit",
+      "dataset_id": null,
+      "description": "Accepted price/action/exit and applicable-calendar evidence remain prerequisites for financial event admission.",
+      "status": "NOT_CHECKED_FOR_ALL_133_CANDIDATES",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref joint_coverage"
+    },
+    {
+      "issue_id": "official_source_reply",
+      "dataset_id": null,
+      "description": "A private two-row support packet is prepared but not sent; no support response is present. Do not publish support packet or treat a draft request as a reply.",
+      "status": "NOT_RECEIVED_IN_REVIEWED_PACKAGE",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref latest_source_status"
+    },
+    {
+      "issue_id": "formal_protocol_and_financial_run",
+      "dataset_id": null,
+      "description": "Zero formally admitted events in latest bounded preparation; formal cohort unresolved, full protocol not recorded as accepted, no financial labels/fits/prediction/return evaluation.",
+      "status": "NOT_RUN",
+      "required_source": "Resolve using evidence or explicit research rules as appropriate; source ref latest_source_status"
+    }
+  ],
+  "official_sources": [
+    {
+      "source_id": "wrds_download",
+      "title": "WRDS Data Download and Analysis Policy",
+      "url": "https://wrds-www.wharton.upenn.edu/pages/about/data-download-and-analysis-policy/",
+      "accessed_date": "2026-11-14",
+      "scope": "Off-platform data must follow vendor terms and secure private storage requirements."
+    },
+    {
+      "source_id": "wrds_coauthor",
+      "title": "WRDS Co-Authorship and Data Sharing Guide",
+      "url": "https://wrds-www.wharton.upenn.edu/pages/about/navigating-co-authorship-across-institutions-a-guide-to-data-sharing-and-compliance/",
+      "accessed_date": "2026-11-14",
+      "scope": "Code/documents can be shared without passwords; raw/proprietary/full data require applicable permission."
+    },
+    {
+      "source_id": "github_large_files",
+      "title": "GitHub large-file guidance",
+      "url": "https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github",
+      "accessed_date": "2026-11-14",
+      "scope": "Git is unsuitable as a large SQL database or backup service; capacity is distinct from redistribution rights."
+    }
+  ]
+}

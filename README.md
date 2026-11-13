@@ -4,6 +4,10 @@ This project studies how text processing changes company representations and pre
 
 The [14 November progress report](reports/2026-11-14_daily_progress.md) ([中文简述](reports/2026-11-14_daily_progress_zh.md), Asia/Shanghai) records a saved-vector neighbor diagnostic, the repaired F1–F4 evaluator contract, a bounded real 10-K candidate discovery ledger, and source-bound case review. Five candidates have both a conservatively extracted Item 1 and a finite candidate-ID interval without an unresolved-end hit. Historical issuer-to-security validity and the primary-security rule are still unsupported; the discovery ledger marks zero rows formally admitted, no formal cohort size is set, and financial evaluation remains `NOT_RUN`. The [public evidence map](results/m5_20261114_public/EVIDENCE_MAP.json) binds sanitized outputs to their local source versions.
 
+## WRDS material catalog and local database
+
+The [WRDS database guide](database/wrds/README.md) describes a populated, queryable [metadata catalog](database/wrds/catalog.sqlite), its [JSON/CSV views](database/wrds/exports/), and offline CSV/ZIP import tools. The public snapshot contains file identities, field roles, reviewed aggregate results and unresolved source issues. Licensed rows, original exports, account screenshots and private locators remain outside Git. GitHub stores this snapshot and its build code; it does not host a running SQL service.
+
 ## Current work
 
 The S2 experiment changed body chunk length across 118, 123, 128, 133 and 138 tokens. S3 shifted the internal cuts of a 128-token reference by -10, -5, 0, 5 and 10 tokens while preserving each document's chunk count. Both experiments retained every setting and compared equal-chunk with body-token-weighted pooling using the same chunk vectors. Saved vectors were read back to recompute the descriptive measures. These comparisons do not isolate causal contributions from boundaries, tails or chunk count, and they do not select a preferred pooling method.
@@ -39,3 +43,4 @@ This snapshot descends from the existing public sharing history. It does not imp
 Current overview prose was edited with the installed [blader/humanizer](https://github.com/blader/humanizer) skill. Numerical outputs, bound candidate configurations and historical evidence were not rewritten for style. This publication ran no encoder, training, financial scoring or backtest.
 
 No repository license is granted or implied. Third-party data, model and software terms continue to apply. See [sharing scope](SHARING_SCOPE.md).
+

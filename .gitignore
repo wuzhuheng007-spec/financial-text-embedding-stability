@@ -6,3 +6,20 @@ __pycache__/
 .cache/
 artifacts/
 
+
+# Licensed inputs and local databases never enter the public repository.
+.wrds_private/
+wrds_inputs/
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.db
+!database/wrds/catalog.sqlite
+/data/raw/
+/*.csv
+/*.sql
+/*.zip
+

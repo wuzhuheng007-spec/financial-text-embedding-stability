@@ -1,0 +1,38 @@
+{
+  "as_of": "2026-11-14",
+  "scope": "Public metadata catalog populated; private real rows not imported",
+  "source_base_commit": "fef17830bdc88ce1b954310d352c17645493ec03",
+  "commands_run": [
+    "python -B -m wrds_catalog build --inventory database/wrds/materials_inventory.json --reviewed database/wrds/reviewed_evidence.json --db database/wrds/catalog.sqlite",
+    "python -B -m wrds_catalog export --db database/wrds/catalog.sqlite --out database/wrds/exports",
+    "python -B -m unittest discover -s tests -p test_wrds_*.py -v"
+  ],
+  "python_version": "3.12.14",
+  "synthetic_tests_passed": 20,
+  "test_exit_code": 0,
+  "test_log_sha256": "2319d8f18a19bfdc9f36808eaccc0c75c297b4132186ef6a24165935a4124b2d",
+  "actual_counts": {
+    "artifacts": 228,
+    "datasets": 13,
+    "source_evidence": 35,
+    "aggregate_results": 43,
+    "audit_runs": 8,
+    "open_issues": 8
+  },
+  "byte_reproducible_build": true,
+  "catalog_sha256": "cc21c1da5c2828c8389ec8c10a46f2695404139e992e9cc36c14faceed18500d",
+  "catalog_bytes": 221184,
+  "known_exact_duplicate_transport_excess": 3,
+  "known_duplicate_content_groups": 3,
+  "licensed_rows_imported_here": 0,
+  "wrds_queries_submitted": 0,
+  "encoder_runs": 0,
+  "financial_experiments_run": 0,
+  "not_claimed": [
+    "Original exports uploaded to GitHub",
+    "All candidate screenshot relevance verified",
+    "All 330 quant entries are WRDS",
+    "A running GitHub SQL server",
+    "Formal M5 sample admission"
+  ]
+}

@@ -1,0 +1,4 @@
+source_id,title,url,accessed_date,scope
+github_large_files,GitHub large-file guidance,https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github,2026-11-14,Git is unsuitable as a large SQL database or backup service; capacity is distinct from redistribution rights.
+wrds_coauthor,WRDS Co-Authorship and Data Sharing Guide,https://wrds-www.wharton.upenn.edu/pages/about/navigating-co-authorship-across-institutions-a-guide-to-data-sharing-and-compliance/,2026-11-14,Code/documents can be shared without passwords; raw/proprietary/full data require applicable permission.
+wrds_download,WRDS Data Download and Analysis Policy,https://wrds-www.wharton.upenn.edu/pages/about/data-download-and-analysis-policy/,2026-11-14,Off-platform data must follow vendor terms and secure private storage requirements.
