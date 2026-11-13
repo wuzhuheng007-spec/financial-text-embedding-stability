@@ -1,0 +1,119 @@
+{
+  "schema": "m5_next_ccm_field_definition_evidence_v1",
+  "scope": "read-only source reconciliation for saved Query 11905330; not formal identity or event admission",
+  "query_id": 11905330,
+  "status": "LINKENDDT_EXPORT_CONVERSION_UNRESOLVED",
+  "formal_financial_experiment": "NOT_RUN",
+  "source_binding": {
+    "source_csv_sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9",
+    "targeted_ledger_sha256": "cfdd797502fa25af16306ec15b686a0f9c1d53056753a8edfad97bdccac1c17b",
+    "saved_complete_relation_index_sha256": "5d990d3d2dba1eb7203cbeebd24638e0b53923b48d8c5dbe50bb65c36b4e2879",
+    "account_linkenddt_help_image_sha256": "57b2d6adc6ecd793397fc41d5182be203edce8bce25a67ec3d72c08b7ccfcd33",
+    "result_page_url_anchored_image_sha256": "09a64138517750c2c2a57bbc1b3d0faedbfeb783468c6fb8268046ffcd384999",
+    "query_parameter_date_format_observed": "YYMMDDd10.",
+    "query_parameter_format_observed": "csv",
+    "saved_release_identity": null,
+    "native_query_sql_or_backend_execution_log": "NOT_FOUND_IN_REGISTERED_LOCAL_EVIDENCE",
+    "search_scope": [
+      "m5_ccm_query11905330_packet_20261113_v1",
+      "m5_ccm_query11905330_intake_20261113_v1",
+      "m5_ccm_query11905330_runlogs_20261113_v1",
+      "m5_ccm_linktype_source_packet_20261113_v2",
+      "m5_ccm_source_interpretation_20261113_v1",
+      "m5_ccm_source_review_runlogs_20261113_v1"
+    ],
+    "search_scope_sql_or_sas_file_count": 0,
+    "local_execution_log_role": "Python intake and verification only, not WRDS server query log"
+  },
+  "raw_export_audit": {
+    "safe_audit_file": "r3_linkenddt_spelling_safe.json",
+    "safe_audit_status": "PASS_RAW_CSV_TO_TARGETED_LEDGER_RECONCILIATION",
+    "source_rows": 123388,
+    "unparsed_single_ascii_letter_rows": 26386,
+    "distinct_single_ascii_letter_spellings": 1,
+    "raw_exact_spelling_retained_only_in_ignored_private_file": "r3_linkenddt_spelling_private.json",
+    "private_evidence_sha256": "0467c0c1b38da83b9ecb4a5ff724fb0b6f89ddb239930409603c4a0d7f153e0b",
+    "source_row_ordinals_and_raw_cells_reconciled": true,
+    "representation_is_source_semantics": false
+  },
+  "official_definitions_checked": [
+    {
+      "source": "account WRDS data-dictionary screenshot for crsp_a_ccm/ccmxpf_lnkhist/linkenddt",
+      "source_sha256": "57b2d6adc6ecd793397fc41d5182be203edce8bce25a67ec3d72c08b7ccfcd33",
+      "supports": "LINKENDDT marks the last date for which the link is valid",
+      "does_not_support": "The rendered terminal dot does not identify the saved CSV single-letter code or its conversion"
+    },
+    {
+      "source": "WRDS hosted CRSP/Compustat Merged Database Guide, older CCM format",
+      "url": "https://wrds-www.wharton.upenn.edu/documents/398/CRSP_-_Compustat_Merged_Database_CCM.pdf",
+      "direct_access_at_final_check": "HTTP 404 on 2026-11-14; search-index excerpt only. The separately accessible official 2018 CRSPAccess guide also shows an older 99999999 example.",
+      "supports": "An older documented link representation uses 99999999 for current links",
+      "does_not_support": "Equating this query's one-letter CSV cell with 99999999 or certifying the saved release"
+    },
+    {
+      "source": "CRSP March 2026 CCM release notes",
+      "url": "https://www.crsp.org/crsp_pdf/crsp-compustat-merged-database-release-notes-2026-03-monthly/",
+      "supports": "Published link edit examples show 99999999 current endpoints",
+      "does_not_support": "Query 11905330 backend release or CSV date-format conversion"
+    },
+    {
+      "source": "WRDS CCM macro, modified October 2026",
+      "url": "https://wrds-www.wharton.upenn.edu/pages/wrds-research/macros/wrds-macro-ccm/",
+      "supports": "A general SAS linking example treats missing LINKENDDT separately",
+      "does_not_support": "This export's raw one-letter value, missing class or accepted interval policy"
+    },
+    {
+      "source": "CRSPAccess Utilities and Programming Libraries Guide, version 3.86, modified March 2018, page 82",
+      "url": "https://www.crsp.org/wp-content/uploads/2023/09/CUPL3.86_Guide.pdf",
+      "supports": "Generic LINKPRIM descriptions identify P as Compustat primary and C as CRSP-assigned primary in that older guide",
+      "does_not_support": "The saved Query 11905330 release, all observed P/C/J/N codes in that release, or a current historical CIK-to-primary-security choice"
+    },
+    {
+      "source": "SAS 9.4 Language Reference: Concepts, missing values",
+      "url": "https://documentation.sas.com/api/docsets/lrcon/9.4/content/lrcon.pdf",
+      "supports": "SAS can print a special numeric missing value as a letter without a preceding period",
+      "does_not_support": "Proving that this WRDS CSV cell originated from a SAS special missing value or means current/open-ended"
+    }
+  ],
+  "structural_impact_already_bound": {
+    "source": "artifacts/m5_bridge_20261114_0238/p3_ccm_seed_intersection_safe.json",
+    "source_sha256": "6b559fd58a9248ab2beb714d65a4764ac12b3907fcff141e660c5c72d1c15494",
+    "unparsed_end_source_rows_directly_hitting_fixed_seed": 5901,
+    "fixed_seed_securities_directly_hit": 5738,
+    "fixed_seed_security_denominator": 7639,
+    "linktype_other_source_rows": 4,
+    "linktype_other_direct_fixed_seed_hits": 0,
+    "unit_warning": "These are structural source-row/security intersections, not historical valid-time links or filing-event counts"
+  },
+  "frozen_discovery_event_intersection": {
+    "safe_audit_file": "r3_candidate_intersection_safe.json",
+    "row_level_private_file": "r3_candidate_intersection_private.json",
+    "frozen_scan_scope_id": "63c56f1deb88a0b96bf2c6d39f42747f9b620d8a7ad1597db94d3f677bc0c883",
+    "event_ledger_sha256": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea",
+    "scope_manifest_sha256": "b3b157e77dc52e8d65568682504a9762e6455ee88d5b43a6a12794ca101f1276",
+    "private_row_level_evidence_sha256": "2374a22fb567676ab3df55e6da43c52328d393b1907be5704ac6637f8b8f4085",
+    "nondevelopment_discovered_event_denominator": 133,
+    "nondevelopment_distinct_ciks": 26,
+    "candidate_id_structural_hit_events": 113,
+    "candidate_id_structural_nonhit_events": 20,
+    "candidate_id_unknown_events": 0,
+    "hit_events_with_link_start_on_or_before_filing": 113,
+    "distinct_hit_ciks": 20,
+    "finite_end_source_rows_in_complete_export": 97002,
+    "candidate_id_finite_source_hit_events": 32,
+    "finite_interval_brackets_filing_events_under_literal_date_comparison": 20,
+    "unresolved_end_hit_with_finite_source_hit_events": 12,
+    "unresolved_end_hit_with_finite_bracketing_events": 0,
+    "development_only_events_without_candidate_id": 30,
+    "linktype_other_candidate_id_hit_events": 0,
+    "unit_warning": "A hit is only an intersection with the frozen candidate PERMNO set. Historical CIK-to-issue validity, primary status, endpoint meaning and actual event impact remain unknown for all events. A nonhit is not a global absence claim."
+  },
+  "conclusion": {
+    "raw_single_letter_to_open_endpoint": "NOT_ESTABLISHED",
+    "raw_single_letter_to_99999999": "NOT_ESTABLISHED",
+    "raw_single_letter_to_sas_special_missing": "POSSIBLE_BUT_NOT_ESTABLISHED_FOR_THIS_EXPORT",
+    "endpoint_rule": "UNRESOLVED_PRESERVE_RAW_NO_INFINITE_DATE_SUBSTITUTION",
+    "linkprim_saved_release_meanings": "UNRESOLVED_OLDER_GENERIC_P_C_GUIDE_ONLY",
+    "linktype_other_scope": "Zero direct hits only in current fixed seed; recheck if discovery/selection universe changes"
+  }
+}

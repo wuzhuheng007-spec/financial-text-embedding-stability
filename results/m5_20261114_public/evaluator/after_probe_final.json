@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "synthetic_only": true,
+  "input_schema_version": 2,
+  "evaluator_sha256": "c36e3d33a34b35f9b10aea267ce8c9f98dc71f8fbfceee83c35ea62b41916142",
+  "cases": [
+    {
+      "case": "control",
+      "accepted": true,
+      "scope": "synthetic_validation_only"
+    },
+    {
+      "case": "delayed_anchor",
+      "accepted": false,
+      "reason": "events event_id='E1' horizon='5': entry is not first regular session strictly after filing"
+    },
+    {
+      "case": "missing_train_label_end",
+      "accepted": false,
+      "reason": "fit FIT_BASE: hashed training input manifest needs training_rows with label_end"
+    },
+    {
+      "case": "unbound_market_stock",
+      "accepted": false,
+      "reason": "targets event_id='E2' horizon=5 target_type='market_relative': market relative must reference saved base target, not free stock_target"
+    },
+    {
+      "case": "cross_timezone_training_order",
+      "first": "2020-01-01T23:30:00-08:00",
+      "second": "2020-01-02T00:00:00+00:00",
+      "implementation_not_after": false,
+      "actual_not_after": false
+    }
+  ]
+}

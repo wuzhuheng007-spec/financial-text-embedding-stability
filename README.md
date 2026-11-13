@@ -2,6 +2,8 @@
 
 This project studies how text processing changes company representations and prepares a controlled test of whether text adds information to financial predictors. The completed results are engineering studies on five fixed SEC filings and one pinned MiniLM model. Formal M5 financial training, prediction evaluation and backtesting have not run.
 
+The [14 November progress report](reports/2026-11-14_daily_progress.md) ([中文简述](reports/2026-11-14_daily_progress_zh.md), Asia/Shanghai) records a saved-vector neighbor diagnostic, the repaired F1–F4 evaluator contract, a bounded real 10-K candidate discovery ledger, and source-bound case review. Five candidates have both a conservatively extracted Item 1 and a finite candidate-ID interval without an unresolved-end hit. Historical issuer-to-security validity and the primary-security rule are still unsupported; the discovery ledger marks zero rows formally admitted, no formal cohort size is set, and financial evaluation remains `NOT_RUN`. The [public evidence map](results/m5_20261114_public/EVIDENCE_MAP.json) binds sanitized outputs to their local source versions.
+
 ## Current work
 
 The S2 experiment changed body chunk length across 118, 123, 128, 133 and 138 tokens. S3 shifted the internal cuts of a 128-token reference by -10, -5, 0, 5 and 10 tokens while preserving each document's chunk count. Both experiments retained every setting and compared equal-chunk with body-token-weighted pooling using the same chunk vectors. Saved vectors were read back to recompute the descriptive measures. These comparisons do not isolate causal contributions from boundaries, tails or chunk count, and they do not select a preferred pooling method.
@@ -12,6 +14,7 @@ The current company-event proposal uses a retrospective filing-date proxy and re
 
 ## Read the evidence
 
+- [14 November daily progress](reports/2026-11-14_daily_progress.md) and [Chinese summary](reports/2026-11-14_daily_progress_zh.md)
 - [Current progress and remaining decisions](reports/2026-11-13_public_research_progress.md)
 - [S2 complete descriptive results](reports/2026-10-31_small_chunk_probe_descriptive_results.md) and [machine metrics](results/s2_round4/metrics.json)
 - [S3 complete descriptive results](reports/2026-10-31_boundary_shift_probe_descriptive_results.md) and [machine metrics](results/s3_round6/metrics.json)

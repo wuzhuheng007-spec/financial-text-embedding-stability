@@ -1,0 +1,24 @@
+{
+  "development_events_revalidated": 30,
+  "finite_no_unresolved_candidate_id_events": 20,
+  "formal_admitted_count": 0,
+  "input_sha256": {
+    "candidate_ledger": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea",
+    "r3_private": "2374a22fb567676ab3df55e6da43c52328d393b1907be5704ac6637f8b8f4085",
+    "r3_safe": "e11b527ae63914bfbf8a8b83cfbaba9cba079a65761102b5283a0e9f695c13ed",
+    "scope_manifest": "b3b157e77dc52e8d65568682504a9762e6455ee88d5b43a6a12794ca101f1276"
+  },
+  "item1_and_finite_no_unresolved_intersection": 5,
+  "item1_supported_events": 16,
+  "nondevelopment_events_revalidated": 133,
+  "private_output_sha256": {
+    "readiness": "c1f39c4e4fe80052c7d149b4e2722ea986d6f48e078f13f0d1c06cd3aa2aaff3",
+    "selection": "62843695e059344e7337a95668fc28f063e4441712e70b7e343c5d98ba93c737"
+  },
+  "readiness_rows_revalidated": 163,
+  "schema": "m5_source_closure_joint_coverage_readback_safe_v1",
+  "scope_warning": "All finite and endpoint conditions are candidate-ID structural predicates, not historical identity claims.",
+  "selected_events_revalidated": 3,
+  "status": "PASS",
+  "unresolved_end_candidate_id_hit_events": 113
+}

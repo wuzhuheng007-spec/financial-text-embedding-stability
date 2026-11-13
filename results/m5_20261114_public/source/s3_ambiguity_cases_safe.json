@@ -1,0 +1,42 @@
+{
+  "alternate_heading_count": 2,
+  "case_count": 4,
+  "cases": [
+    {
+      "anonymous_case": "A1",
+      "category": "alternate_heading_source_exact_candidate_only",
+      "filer_count": 1,
+      "formal_text_admitted": false,
+      "heading_template": "combined_items_1_and_2",
+      "provisional_source_exact_text_saved_privately": true
+    },
+    {
+      "anonymous_case": "A2",
+      "category": "two_distinct_filers_joint_report_policy_pending",
+      "filer_count": 2,
+      "formal_text_admitted": false,
+      "heading_template": "base_item1_heading",
+      "provisional_source_exact_text_saved_privately": true
+    },
+    {
+      "anonymous_case": "A3",
+      "category": "alternate_heading_source_exact_candidate_only",
+      "filer_count": 1,
+      "formal_text_admitted": false,
+      "heading_template": "multiline_en_dash",
+      "provisional_source_exact_text_saved_privately": true
+    },
+    {
+      "anonymous_case": "A4",
+      "category": "two_distinct_filers_joint_report_policy_pending",
+      "filer_count": 2,
+      "formal_text_admitted": false,
+      "heading_template": "base_item1_heading",
+      "provisional_source_exact_text_saved_privately": true
+    }
+  ],
+  "formal_text_admitted": 0,
+  "joint_two_filer_count": 2,
+  "schema": "m5_s3_ambiguity_review_safe_v1",
+  "source_bodies_rehashed": 4
+}

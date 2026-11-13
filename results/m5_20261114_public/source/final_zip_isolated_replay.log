@@ -1,0 +1,11 @@
+test_duplicate_conflict_is_not_silently_removed (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_duplicate_conflict_is_not_silently_removed) ... ok
+test_event_impact_remains_unknown_with_undated_screen (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_event_impact_remains_unknown_with_undated_screen) ... ok
+test_heading_fallback_accepts_observed_trailing_periods (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_heading_fallback_accepts_observed_trailing_periods) ... ok
+test_heading_fallback_rejects_toc_and_requires_unique_body (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_heading_fallback_rejects_toc_and_requires_unique_body) ... ok
+test_real_row_requires_real_accession_and_source_hash (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_real_row_requires_real_accession_and_source_hash) ... ok
+test_scope_is_deterministic_and_excludes_development (test_build_m5_candidate_discovery_20261114.CandidateDiscoveryTests.test_scope_is_deterministic_and_excludes_development) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+OK

@@ -1,0 +1,62 @@
+{
+  "events": [
+    {
+      "anonymous_event": "E1",
+      "cik_cusip_observation_only": true,
+      "descriptive_sec_class": "partnership_common_units",
+      "formal_admitted": false,
+      "historical_issuer_to_security": "UNSUPPORTED_FOR_FORMAL_ADMISSION",
+      "literal_dated_security_row_interior": true,
+      "literal_finite_ccm_row_interior": true,
+      "one_sec_filer": true,
+      "ordinary_share_eligibility": "UNRESOLVED",
+      "original_item1_candidate_source_exact": true,
+      "primary_security_selection": "UNSUPPORTED_NO_ACCEPTED_RESEARCH_RULE"
+    },
+    {
+      "anonymous_event": "E2",
+      "cik_cusip_observation_only": true,
+      "descriptive_sec_class": "common_stock",
+      "formal_admitted": false,
+      "historical_issuer_to_security": "UNSUPPORTED_FOR_FORMAL_ADMISSION",
+      "literal_dated_security_row_interior": true,
+      "literal_finite_ccm_row_interior": true,
+      "one_sec_filer": true,
+      "ordinary_share_eligibility": "UNRESOLVED",
+      "original_item1_candidate_source_exact": true,
+      "primary_security_selection": "UNSUPPORTED_NO_ACCEPTED_RESEARCH_RULE"
+    },
+    {
+      "anonymous_event": "E3",
+      "cik_cusip_observation_only": true,
+      "descriptive_sec_class": "common_stock",
+      "formal_admitted": false,
+      "historical_issuer_to_security": "UNSUPPORTED_FOR_FORMAL_ADMISSION",
+      "literal_dated_security_row_interior": true,
+      "literal_finite_ccm_row_interior": true,
+      "one_sec_filer": true,
+      "ordinary_share_eligibility": "UNRESOLVED",
+      "original_item1_candidate_source_exact": true,
+      "primary_security_selection": "UNSUPPORTED_NO_ACCEPTED_RESEARCH_RULE"
+    }
+  ],
+  "formal_admitted_count": 0,
+  "formal_historical_identity_supported_count": 0,
+  "formal_primary_security_supported_count": 0,
+  "literal_finite_ccm_interval_count": 3,
+  "one_filer_count": 3,
+  "schema": "m5_s3_identity_chain_safe_v1",
+  "selected_event_count": 3,
+  "source_binding": {
+    "ccm_csv_sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9",
+    "cik_cusip_source_sha256": "8507672060dfd5728f29732e829df6c9c4b9af7c690c25612494d232008244c0",
+    "frozen_ledger_sha256": "eea1a6470e250438d30a0f3d63101e15d2ea973ef4b1999dbe85fcd5295320ea",
+    "intersection_private_sha256": "2374a22fb567676ab3df55e6da43c52328d393b1907be5704ac6637f8b8f4085",
+    "issuer_early_source_sha256": "368c7cd66dcb645163f14c2663556f3ded4f29b3ad8a87354c95659821ba1007",
+    "screen_sha256": "2254c697a3a0a3df0edac16b403a7737f0285f9f6735d06e5a37595bcd212602",
+    "security_starting_source_sha256": "f70e8aad2989a6f6a524f38bc1f873f6edb41ac05d5e92cd6743d9e54925b7d3",
+    "selection_sha256": "62843695e059344e7337a95668fc28f063e4441712e70b7e343c5d98ba93c737"
+  },
+  "source_exact_item1_count": 3,
+  "status": "SOURCE_FACTS_REVIEWED_IDENTITY_CHAIN_INCOMPLETE"
+}

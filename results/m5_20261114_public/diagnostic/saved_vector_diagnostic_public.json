@@ -1,0 +1,61 @@
+{
+  "company_count": 5,
+  "date_timezone": "2026-11-14 Asia/Shanghai",
+  "encoder_forward_calls_this_diagnostic": 0,
+  "evidence_class": "REAL_SAVED_VECTORS_DESCRIPTIVE",
+  "formal_m5_financial_experiment": "NOT_RUN",
+  "input_manifest_sha256": "c240d12864bdbe95f21586d4068218a2d3623e1372ba403d521a01fdfdb82a4e",
+  "model_identity": {
+    "model_file_sha256": {
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "onnx/model.onnx": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037"
+    },
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "provider": "CPUExecutionProvider",
+    "reference_config_sha256": "d05d039580b47f9a7ed3aec1e88982a8de16a6af1df23686e8a93308203e7869",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "tokenizer_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+  },
+  "msft_top2_changed_comparison_count": 4,
+  "msft_top2_changed_comparisons": [
+    {
+      "arm": "length:123:equal_chunks",
+      "axis": "chunk_length",
+      "reference_arm": "length:128:equal_chunks"
+    },
+    {
+      "arm": "length:133:equal_chunks",
+      "axis": "chunk_length",
+      "reference_arm": "length:128:equal_chunks"
+    },
+    {
+      "arm": "length:138:equal_chunks",
+      "axis": "chunk_length",
+      "reference_arm": "length:128:equal_chunks"
+    },
+    {
+      "arm": "length:123:body_token_weighted",
+      "axis": "chunk_length",
+      "reference_arm": "length:128:body_token_weighted"
+    }
+  ],
+  "sample_role": "historical_development_five_2025_filings",
+  "schema": "m5_saved_vector_diagnostic_public_v1",
+  "scope_warning": "Five saved 2025 development filing texts and one pinned MiniLM revision; descriptive only, not a new encoder run, generalization or financial evaluation.",
+  "source_diagnostic_summary_sha256": "dc3ecb417dc3d5e506689dfe2ae41514160542af9ca1758ce5d99a6cd88755ee",
+  "source_manifest_sha256": {
+    "round4": "698942ddc8a7b395108a3ce2b72deab0f370ed3cd9de2bca827b693632182d5e",
+    "round6": "eab4abec64f65d9f9d48589eba20c59edc5c75f4d6ee2567db6765e58dfd1f47"
+  },
+  "source_neighbor_changes_sha256": "2f82d48ea4d7429721c63b5fa8198cb1b64d5a85ff9b9c4d107a7c7745f36308",
+  "text_hashes_by_ticker": {
+    "AAPL": "68e0a75303e8c595642a7bbae95f025aac556ada3d1b6b10b0b29fb745cb99ec",
+    "AMZN": "121f153d97d010b2036acd3a001173c7c8a5426c1582bb98560f6cce8109f21b",
+    "GOOGL": "7e2adaf0c7f14e5c7d28b8d4597fd268398324994569fe9e196582d0665fb69b",
+    "META": "647a4c678beb67ccce0ffdac9dde429f3c5be336281fd58a5bb972d624b74ede",
+    "MSFT": "4ac1db966b4ea0de05cc3916b20bac2c6616002804540e392338cf719ebb1da6"
+  },
+  "top_k": 2
+}

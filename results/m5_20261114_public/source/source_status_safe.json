@@ -1,0 +1,20 @@
+{
+  "csv_conversion_rule": null,
+  "formal_admitted_count": 0,
+  "formal_financial_experiment": "NOT_RUN",
+  "header_join_sql_and_attribute_time_properties": null,
+  "linkenddt_date_semantics": null,
+  "native_linkenddt_type": null,
+  "native_sql_or_execution_log_in_six_registered_local_directories": "NOT_AVAILABLE",
+  "private_pair_packet_prepared": true,
+  "private_pair_packet_sent": false,
+  "route_a": "Obtain original-query release-bound interpretation and row match from official support",
+  "route_b": "Create a separate versioned current snapshot only if original unavailable; compare versions; never silently replace old input",
+  "s1_safe_summary_sha256": "8042ae75da8327f2f645b2d53ef43f9cf7207e2d05ead710a10dfab9dc5fc9f5",
+  "saved_release_id": null,
+  "saved_release_linkprim_dictionary": null,
+  "schema": "m5_source_closure_status_safe_v1",
+  "source_reply_in_current_attached_package": false,
+  "special_or_missing_class": null,
+  "status": "SOURCE_PENDING"
+}

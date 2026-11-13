@@ -1,0 +1,22 @@
+{
+  "external_runtime_dependency": "PyYAML>=6.0,<7",
+  "private_data_required_for_six_tests": false,
+  "python": "3.11.9",
+  "pyyaml": "6.0.3",
+  "replay_command": "python -I -m unittest discover -s tests -p test_build_m5_candidate_discovery_20261114.py -v",
+  "replay_workdir": "local_only/dependency_replay",
+  "schema": "m5_discovery_minimal_dependency_closure_v1",
+  "source_sha256": {
+    "pyproject.toml": "60572b4dc5c3b33b0719ed13a8d1e67e27fd4a6a1fd12b6b81c8d182a791af53",
+    "scripts/build_m5_candidate_discovery_20261114.py": "8d2423d09da65d3d1730c79729a80004093ff57509ca6d5a5f5beddb9e095e75",
+    "src/finembed/__init__.py": "c8572aa8a562a6cde0704174851e21568b44e4aaa64dd9b80bbd55d5d55d33e7",
+    "src/finembed/config.py": "afc70c19f11cfdde5b51b97cf1cdfb7ecccc455110079f159435f58afc028c88",
+    "src/finembed/extract.py": "4b21f7e4476883ad51b9c60eba71a9d5ec67e96ff546890556c3355eec30338a",
+    "src/finembed/run.py": "d665e06d0af027e635e1d4862ff497f08f49f33b200a96342653015555eeb788",
+    "src/finembed/sec.py": "d9e3b43ce6f8773bc6826b39428ac9ab37f58ad87b301f4eca5d6d2cddb80067",
+    "tests/test_build_m5_candidate_discovery_20261114.py": "8c25758646d69e6dfcef8f7c0a5d348fe2db05046b6b7a0c53fcfde8053f9831"
+  },
+  "stdlib_imports": "No other external runtime dependency for these six tests",
+  "test_exit_code": 0,
+  "test_log_sha256": "d9fcee30a8033e657fd146e9489729f0fb8b3e3d2cf7f0c93b7d52accb87adff"
+}

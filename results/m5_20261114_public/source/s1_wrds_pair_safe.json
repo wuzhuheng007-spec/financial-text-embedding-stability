@@ -1,0 +1,28 @@
+{
+  "all_link_key_cells_present": true,
+  "csv_special_value_semantics": "UNRESOLVED",
+  "formal_financial_experiment": "NOT_RUN",
+  "native_sql_or_execution_log_in_registered_local_evidence": "NOT_AVAILABLE",
+  "private_csv_sha256": "74b0651b6b3706166b0e09aff08fd032a62bd5259b1ff91f5bfa360f941a9fe9",
+  "private_packet_sent": false,
+  "private_source_context_sha256": "439fc6054696fe267ef4fc618a4c92cfd2ddc63b786f82a398231e40f43ac22c",
+  "private_support_zip_crc": "PASS",
+  "private_support_zip_sha256": "deadc0812605c920d90c6de3327cf3d0474d41b9c8d37be9df4afcc1282b6246",
+  "query_id": 11905330,
+  "route_a": "original-query source explanation",
+  "route_b": "new snapshot only as separately versioned input",
+  "same_linktype_and_linkprim_between_pair": true,
+  "saved_release_id": null,
+  "schema": "m5_wrds_pair_safe_v1",
+  "selected_endpoint_classes": [
+    "single_ascii_letter",
+    "finite_iso_date"
+  ],
+  "selected_private_rows": 2,
+  "selected_single_letter_matches_targeted_ledger": true,
+  "selection_rule": "minimum one-based source CSV data-row ordinal in each endpoint class, requiring all seven original link-side key cells nonempty and a parseable LINKDT; finite control requires ISO date LINKENDDT",
+  "source_csv_data_rows": 123388,
+  "source_csv_sha256": "ad5481feb396a47e265951eacd59b4ff7cb84dba9e74e43e80392c0db836bfe9",
+  "status": "SOURCE_PENDING_PRIVATE_PACKET_PREPARED_NOT_SENT",
+  "targeted_ledger_sha256": "cfdd797502fa25af16306ec15b686a0f9c1d53056753a8edfad97bdccac1c17b"
+}
