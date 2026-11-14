@@ -1,0 +1,144 @@
+{
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "sources": [
+    {
+      "id": "KG",
+      "url": "https://github.com/DylanSand/financial-news-kg",
+      "commit": "cc19a5214ef74ae6056434459bb1681a244313c6",
+      "inspected": [
+        "README.md",
+        "src/fin_news_kg/schema.py",
+        "src/fin_news_kg/graph_builder.py",
+        "src/fin_news_kg/entity_resolver.py"
+      ],
+      "claim": "Typed evidence-bearing news relations; graph assembly canonicalizes unordered ticker pairs; resolver has no as-of date interface; rolling dates come from loaded news days",
+      "status": "VERIFIED_STATIC_CODE_ONLY",
+      "limitations": "Not executed; prebuilt data and full pipeline not validated"
+    },
+    {
+      "id": "AL",
+      "url": "https://math.nyu.edu/inmemoriam/avellaneda/AvellanedaLeeStatArb20090616.pdf",
+      "title": "Statistical Arbitrage in the U.S. Equities Market",
+      "authors": [
+        "Marco Avellaneda",
+        "Jeong-Hyun Lee"
+      ],
+      "version": "2009-06-15 author-hosted draft",
+      "user_ssrn_id": "1153505",
+      "claim": "PCA/sector ETF factor decomposition and residual mean reversion are methodological antecedents",
+      "status": "VERIFIED_AUTHOR_DRAFT",
+      "limitations": "SSRN and publisher full-text opens blocked; no claim of LLM results in this paper"
+    },
+    {
+      "id": "QWEN",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+      "claim": "Exact model identity; official card describes structured JSON capability",
+      "status": "VERIFIED_MODEL_CARD",
+      "limitations": "No exact comprehensive training cutoff established; no financial advantage validated"
+    },
+    {
+      "id": "QWEN_RELEASE",
+      "url": "https://qwenlm.github.io/blog/qwen2.5/",
+      "claim": "Official series release article dated 2024-09-19",
+      "status": "VERIFIED",
+      "limitations": "Series release date is not all-stage training cutoff or proof of any mutable current weight revision date"
+    },
+    {
+      "id": "DEEPSEEK",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "claim": "7B distillation uses Qwen2.5-Math-7B base and DeepSeek-R1 samples",
+      "status": "VERIFIED_MODEL_CARD",
+      "limitations": "Not a fully independent pretraining family from Qwen; task-specific fitness untested"
+    },
+    {
+      "id": "WRDS",
+      "url": "https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/",
+      "claim": "WRDS lists RavenPack analytics and mapping products",
+      "status": "VERIFIED_PRODUCT_PAGE",
+      "limitations": "Does not establish user subscription, text availability or exported field semantics"
+    },
+    {
+      "id": "HAR",
+      "url": "https://statmath.wu.ac.at/~hauser/LVs/FinEtricsQF/References/Corsi2009JFinEtrics_LMmodelRealizedVola.pdf",
+      "title": "A Simple Approximate Long-Memory Model of Realized Volatility",
+      "authors": [
+        "Fulvio Corsi"
+      ],
+      "year": 2009,
+      "doi": "10.1093/jjfinec/nbp001",
+      "claim": "HAR uses risk components over multiple horizons; relevant baseline when targets/data match",
+      "status": "VERIFIED_PRIMARY_PAPER_COPY"
+    },
+    {
+      "id": "LW",
+      "url": "https://econ-papers.upf.edu/en/onepaper.php?id=691",
+      "title": "Honey, I shrunk the sample covariance matrix",
+      "authors": [
+        "Olivier Ledoit",
+        "Michael Wolf"
+      ],
+      "claim": "Shrinkage covariance is an appropriate traditional comparator",
+      "status": "VERIFIED_INSTITUTIONAL_ABSTRACT",
+      "limitations": "No attempt to reproduce reported performance"
+    },
+    {
+      "id": "HF_MULTISOURCE",
+      "url": "https://huggingface.co/datasets/Brianferrell787/financial-news-multisource/blob/main/README.md",
+      "status": "PUBLIC_CARD_INSPECTED",
+      "claim": "Card includes access conditions and normalized dates; account access and data revision not verified.",
+      "claim_zh": "卡片含访问条件及归一化日期；未核验账户权限及数据版本。",
+      "dataset_revision": null,
+      "data_downloaded": false
+    },
+    {
+      "id": "HF_FNSPID_PREVIEW",
+      "url": "https://huggingface.co/datasets/ML-Algo/FNSPID",
+      "status": "PUBLIC_PREVIEW_INSPECTED",
+      "claim": "Some displayed Article cells are null; this does not establish corpus-wide completeness or upstream identity.",
+      "claim_zh": "部分公开预览正文为空，不代表全库情况或已核验上游身份。",
+      "dataset_revision": null,
+      "data_downloaded": false
+    },
+    {
+      "id": "JIN10_MCP",
+      "url": "https://mcp.jin10.com/app/doc.html",
+      "status": "OFFICIAL_DOCUMENTATION_INSPECTED",
+      "claim": "Official token-based MCP guide includes flash and news tools; user access, historical depth and limits unverified.",
+      "claim_zh": "官方有 Token/MCP 及快讯资讯工具说明；用户权限、历史深度、限额未验证。",
+      "endpoint": "https://mcp.jin10.com/mcp",
+      "authenticated": false
+    },
+    {
+      "id": "HF_AUTH",
+      "url": "https://huggingface.co/docs/hub/security-tokens",
+      "status": "OFFICIAL_DOCUMENTATION_INSPECTED",
+      "claim": "Tokens support read/fine-grained roles; no credential collected in this update.",
+      "claim_zh": "支持只读与细粒度权限；本轮没有收集凭据。"
+    }
+  ],
+  "hypotheses": [
+    "Company-specific event features improve future risk forecasts",
+    "Directed relation exposures add incremental information",
+    "Financial findings persist under representation perturbations"
+  ],
+  "hypothesis_status": "PROPOSED_NOT_TESTED",
+  "unverified_transcription_terms": [
+    "Garage",
+    "JACC",
+    "Identity AI",
+    "910 public datasets",
+    "Qwen-27B"
+  ],
+  "required_runtime_inputs_missing": [
+    "actual news product and sample",
+    "model weight revision and availability evidence",
+    "new financial cohort and complete protocol",
+    "price frequency and label specification"
+  ],
+  "prior_project_status_source": "visible conversation and previously read progress report; no new reproduction of private M5 source rows",
+  "new_model_inference": "NOT_RUN",
+  "new_financial_experiment": "NOT_RUN",
+  "external_writes": "GitHub documentation publication is authorized by the current user request; publication outcome is established by the remote commit receipt, not by this source register.",
+  "publication_scope": "Documentation synchronization and public-source inspection only; no authenticated dataset retrieval or model execution."
+}

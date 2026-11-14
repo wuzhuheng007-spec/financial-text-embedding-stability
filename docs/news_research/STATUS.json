@@ -1,0 +1,60 @@
+{
+  "schema": "news_research_roadmap_status_v1",
+  "version": "1.1",
+  "updated_date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "entry": "docs/news_research/README.md",
+  "read_order": [
+    "docs/news_research/README.md",
+    "docs/news_research/STATUS.json",
+    "docs/news_research/roadmap.zh.md",
+    "docs/news_research/roadmap.en.md",
+    "docs/news_research/source_access.md"
+  ],
+  "research_protocol": "PROPOSED",
+  "researcher_accepted": false,
+  "new_news_model_inference": "NOT_RUN",
+  "new_financial_experiment": "NOT_RUN",
+  "historical_m5_protocol_changed": false,
+  "source_access": {
+    "hugging_face": {
+      "candidate_documentation": "INSPECTED",
+      "account_connection": "NOT_ESTABLISHED",
+      "dataset_entitlements": "NOT_VERIFIED",
+      "download": "NOT_RUN"
+    },
+    "jin10": {
+      "official_documentation": "INSPECTED",
+      "account_connection": "NOT_ESTABLISHED",
+      "historical_coverage": "UNKNOWN",
+      "download": "NOT_RUN"
+    },
+    "wrds": {
+      "news_product_and_text_entitlement": "PENDING_CONFIRMATION",
+      "existing_identity_source_blockers": "UNCHANGED"
+    }
+  },
+  "next_stage": "N0/N1: source-bound text sample, event-company schema, extraction quality prototype",
+  "next_stage_zh": "N0/N1：有来源的小样本、公司级事件契约、抽取质量原型",
+  "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
+  "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
+  "planned_scope": [
+    "bilingual_roadmap",
+    "stable_navigation",
+    "public_source_access_register"
+  ],
+  "execution_scope": [
+    "documentation",
+    "public_source_inspection"
+  ],
+  "not_executed": [
+    "authenticated_source_setup",
+    "corpus_download",
+    "model_inference",
+    "financial_experiment",
+    "overleaf_update",
+    "slack_message"
+  ]
+}

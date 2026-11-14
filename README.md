@@ -4,6 +4,12 @@ This project studies how text processing changes company representations and pre
 
 The [14 November progress report](reports/2026-11-14_daily_progress.md) ([中文简述](reports/2026-11-14_daily_progress_zh.md), Asia/Shanghai) records a saved-vector neighbor diagnostic, the repaired F1–F4 evaluator contract, a bounded real 10-K candidate discovery ledger, and source-bound case review. Five candidates have both a conservatively extracted Item 1 and a finite candidate-ID interval without an unresolved-end hit. Historical issuer-to-security validity and the primary-security rule are still unsupported; the discovery ledger marks zero rows formally admitted, no formal cohort size is set, and financial evaluation remains `NOT_RUN`. The [public evidence map](results/m5_20261114_public/EVIDENCE_MAP.json) binds sanitized outputs to their local source versions.
 
+## News research roadmap / 新闻研究技术路线
+
+The [bilingual roadmap entry / 双语技术路线入口](docs/news_research/README.md) links the [English framework](docs/news_research/roadmap.en.md), [中文完整路线](docs/news_research/roadmap.zh.md), [source access / 来源接入](docs/news_research/source_access.md) and [current status](docs/news_research/STATUS.json). It proposes company-specific news extraction, directed spillovers, risk/covariance forecasting and eventual factor/arbitrage evaluation, while preserving representation stability as a central research question. Hugging Face and Jin10 are candidate news sources; authenticated access and formal news experiments have not run.
+
+后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。此次仅同步研究设计和公开来源说明，不改变既有 M5 准入或协议状态，也不启动自动采集。
+
 ## Current work
 
 The S2 experiment changed body chunk length across 118, 123, 128, 133 and 138 tokens. S3 shifted the internal cuts of a 128-token reference by -10, -5, 0, 5 and 10 tokens while preserving each document's chunk count. Both experiments retained every setting and compared equal-chunk with body-token-weighted pooling using the same chunk vectors. Saved vectors were read back to recompute the descriptive measures. These comparisons do not isolate causal contributions from boundaries, tails or chunk count, and they do not select a preferred pooling method.
@@ -39,3 +45,4 @@ This snapshot descends from the existing public sharing history. It does not imp
 Current overview prose was edited with the installed [blader/humanizer](https://github.com/blader/humanizer) skill. Numerical outputs, bound candidate configurations and historical evidence were not rewritten for style. This publication ran no encoder, training, financial scoring or backtest.
 
 No repository license is granted or implied. Third-party data, model and software terms continue to apply. See [sharing scope](SHARING_SCOPE.md).
+
