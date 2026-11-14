@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "status": "PROPOSED_IMPLEMENTATION_CONTRACT",
+  "required_dimensions": [
+    "issuer_id",
+    "metric",
+    "period_start",
+    "period_end",
+    "fiscal_year",
+    "fiscal_quarter",
+    "period_basis",
+    "scope",
+    "accounting_standard",
+    "adjustment_basis",
+    "currency",
+    "unit",
+    "scale",
+    "raw_value",
+    "normalized_value",
+    "value_role",
+    "source_url",
+    "source_locator",
+    "source_sha256",
+    "published_at",
+    "timestamp_precision",
+    "first_available_at",
+    "retrieved_at",
+    "source_version",
+    "missing_reason"
+  ],
+  "required_metrics": [
+    "revenue",
+    "operating_income",
+    "net_income",
+    "diluted_eps",
+    "gross_margin",
+    "operating_margin",
+    "operating_cash_flow",
+    "capex",
+    "free_cash_flow",
+    "cash_and_equivalents",
+    "debt",
+    "interest_expense"
+  ],
+  "guidance_fields": [
+    "metric",
+    "target_period_start",
+    "target_period_end",
+    "low",
+    "high",
+    "midpoint_derived",
+    "basis",
+    "source_locator"
+  ],
+  "consensus_fields": [
+    "metric",
+    "target_period",
+    "provider",
+    "snapshot_at",
+    "contributor_count_or_unknown",
+    "value",
+    "basis",
+    "provenance"
+  ],
+  "allowed_value_roles": [
+    "ACTUAL",
+    "PRIOR_PERIOD",
+    "MANAGEMENT_GUIDANCE",
+    "PRE_RELEASE_CONSENSUS",
+    "DERIVED"
+  ],
+  "missing_reasons": [
+    "NOT_DISCLOSED",
+    "NOT_FOUND",
+    "NOT_APPLICABLE",
+    "SOURCE_BLOCKED",
+    "BASIS_NOT_COMPARABLE"
+  ],
+  "rules": [
+    "Store missing values as null, never zero.",
+    "Consensus must precede release and match metric and period.",
+    "CapEx definition must be stored alongside value.",
+    "Store quarterly/YTD/FY distinctly.",
+    "Every derived number records formula and input row IDs.",
+    "Report context and price outcomes are distinct.",
+    "Exact source timestamps must not be invented."
+  ]
+}

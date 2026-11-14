@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.10",
+  "version": "1.11",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -37,8 +37,8 @@
       "existing_identity_source_blockers": "UNCHANGED"
     }
   },
-  "next_stage": "MACRO_TECH_RELEVANCE_SCREEN_AND_FACT_ADJUDICATION",
-  "next_stage_zh": "请用户点选宏观与科技事件关注度，再独立裁定事实与传导；金融协议仍待决定",
+  "next_stage": "MACRO_NEWS_AND_SIX_ISSUER_EARNINGS_COLLECTION",
+  "next_stage_zh": "按已明确范围采集六家财报、宏观指标及相关新闻；旧兴趣点选不是前置阻塞",
   "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
   "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
   "planned_scope": [
@@ -263,32 +263,7 @@
   "n1_constrained_decode_choice_ui_validation_log": "results/news_constrained_decode_20261115/human_choice_ui_validation.log",
   "n1_constrained_decode_human_adjudication": "SCREENING_REVIEWER_ASSIGNED_ZERO_OF_TEN_CHOICES_FULL_GOLD_NOT_RUN",
   "n1_constrained_decode_financial_evaluation": "NOT_RUN",
-  "active_research_scope": {
-    "name": "MACRO_SYSTEMIC_EVENTS_TO_TECH",
-    "user_scope_clarified": true,
-    "clarified_date": "2026-11-15",
-    "roadmap_zh": "docs/news_research/macro_tech/roadmap.zh.md",
-    "roadmap_en": "docs/news_research/macro_tech/roadmap.en.md",
-    "next_task": "docs/news_research/macro_tech/01_CODEX_TASK.txt",
-    "legacy_first10_role": "LEGACY_ENGINEERING_DEV",
-    "legacy_manual_screening_priority": "PAUSED_BY_SCOPE_CHANGE",
-    "legacy_backend_priority": "PAUSED_LEGACY_BACKEND",
-    "legacy_gate_result_preserved": true,
-    "event_card_target": 12,
-    "event_card_target_is_observed_count": false,
-    "event_collection": "TWELVE_SOURCE_BACKED_DEVELOPMENT_CANDIDATES",
-    "event_cards_observed": 12,
-    "source_bound_fact_statements": 24,
-    "event_clusters_observed": 12,
-    "pre_release_expectations_verified": 0,
-    "exact_first_public_instants_verified": 0,
-    "human_preference_selections_saved_initial": 0,
-    "analyst_draft_paths": 2,
-    "new_macro_inference": "NOT_RUN",
-    "human_gold": "NOT_RUN",
-    "financial_experiments": "NOT_RUN",
-    "full_financial_protocol_acceptance_unchanged": true
-  },
+  "active_research_scope": "MAJOR_NEWS_MACRO_INDICATORS_TECH_EARNINGS_AND_TRANSMISSION",
   "macro_tech_execution": {
     "plan_execution": "results/news_macro_tech_20261115/plan_execution.csv",
     "report_en": "reports/2026-11-15_macro_tech_candidates.en.md",
@@ -309,7 +284,14 @@
     "private_preference_page_is_published": false,
     "private_preference_visual_browser_check": "NOT_RUN",
     "candidate_count": 12,
-    "category_counts": {"MACRO_RELEASE": 2, "MONETARY_POLICY": 2, "TECH_POLICY": 2, "GEO_ENERGY": 2, "FINANCIAL_STABILITY": 2, "TECH_CHAIN": 2},
+    "category_counts": {
+      "MACRO_RELEASE": 2,
+      "MONETARY_POLICY": 2,
+      "TECH_POLICY": 2,
+      "GEO_ENERGY": 2,
+      "FINANCIAL_STABILITY": 2,
+      "TECH_CHAIN": 2
+    },
     "source_bound_fact_statements": 24,
     "unique_event_clusters": 12,
     "human_preference_responses_initial": 0,
@@ -324,5 +306,25 @@
     "research_protocol": "PROPOSED",
     "github_sync": "PUSHED_AND_KEY_FILES_READ_BACK_AT_38b5363",
     "local_handoff_zip": "CRC_PASS"
+  },
+  "earnings_scope_update": {
+    "date": "2026-11-15",
+    "user_scope": "ACCEPTED_BY_EXPLICIT_REQUEST",
+    "implementation": "PLANNED_NOT_RUN",
+    "core_issuers": [
+      "NVIDIA",
+      "AMD",
+      "Intel",
+      "CoreWeave",
+      "Samsung Electronics",
+      "SK hynix"
+    ],
+    "official_entry_review": "SIX_ENTRIES_OPENED_VALUES_NOT_AUDITED",
+    "task": "docs/news_research/earnings/01_CODEX_TASK.txt",
+    "roadmap_zh": "docs/news_research/earnings/roadmap.zh.md",
+    "roadmap_en": "docs/news_research/earnings/roadmap.en.md",
+    "new_model_inference": "NOT_RUN",
+    "financial_experiments": "NOT_RUN",
+    "old_preference_page_required": false
   }
 }

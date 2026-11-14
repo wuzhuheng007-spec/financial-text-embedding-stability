@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "review_date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "scope": "ENTRY_VERIFICATION_ONLY_NOT_NUMERIC_FACT_AUDIT",
+  "sources": [
+    {
+      "issuer": "NVIDIA",
+      "url": "https://investor.nvidia.com/financial-info/financial-reports/",
+      "status": "ENTRY_OPENED",
+      "note": "Quarterly-report entry opened; obtain exact release and statements.",
+      "financial_values_extracted": false
+    },
+    {
+      "issuer": "AMD",
+      "url": "https://ir.amd.com/financial-information/financial-results",
+      "status": "ENTRY_OPENED",
+      "note": "Results archive opened; release, tables and filing links.",
+      "financial_values_extracted": false
+    },
+    {
+      "issuer": "Intel",
+      "url": "https://www.intc.com/financial-info/financial-results",
+      "status": "ENTRY_OPENED",
+      "note": "Results archive opened; select precise reporting period.",
+      "financial_values_extracted": false
+    },
+    {
+      "issuer": "CoreWeave",
+      "url": "https://investors.coreweave.com/financials/quarterly-results/",
+      "status": "ENTRY_OPENED",
+      "note": "Opened; extracted page exposes archive framework, not complete figures.",
+      "financial_values_extracted": false
+    },
+    {
+      "issuer": "Samsung Electronics",
+      "url": "https://www.samsung.com/global/ir/financial-information/earnings-release/",
+      "status": "ENTRY_OPENED",
+      "note": "Earnings archive opened; distinguish preliminary and final disclosures.",
+      "financial_values_extracted": false
+    },
+    {
+      "issuer": "SK hynix",
+      "url": "https://www.skhynix.com/ir/UI-FR-IR06/",
+      "status": "ENTRY_OPENED",
+      "note": "Opened; dynamic page extraction incomplete; follow official release documents.",
+      "financial_values_extracted": false
+    }
+  ],
+  "screenshots": "UNVERIFIED_TOPIC_AND_LAYOUT_REFERENCES"
+}

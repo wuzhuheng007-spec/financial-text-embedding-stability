@@ -1,8 +1,17 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), execution update 1.10.
+Updated 2026-11-15 (Asia/Shanghai), scope update 1.11.
 
-**Active priority: macro/systemic events and transmission to the broad market and technology firms. 当前优先：宏观/系统性事件对大盘和科技股的传导。** The user has clarified the scope. The prior first-ten corpus is legacy engineering material; its manual screening and LMFE debugging are paused as the main task. Old failures remain recorded. 用户无需继续筛旧十篇；本轮已收集真实候选，下一步做人审与分层抽取准备。
+**Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [财报扩展中文路线](earnings/roadmap.zh.md) · [English earnings extension](earnings/roadmap.en.md)
+- [下一轮任务 / Next task](earnings/01_CODEX_TASK.txt) · [审核边界 / Review](earnings/02_REVIEW.md)
+- 核心公司：NVIDIA、AMD、Intel、CoreWeave、Samsung Electronics、SK hynix。范围已明确，无需先填旧兴趣页。六家官方入口已打开，财报数值采集尚未运行。
+- Core scope is explicit; the old preference form is not a prerequisite. Official entry pages were opened, but numerical earnings collection is not yet executed.
+
+以下为此前宏观候选阶段记录，保留其证据与状态；旧“先点选”的顺序由上述任务替代。The historical macro stage below is preserved; its preference-first sequencing is superseded.
+
+**Previous macro-stage priority: macro/systemic events and transmission to the broad market and technology firms. 当前优先：宏观/系统性事件对大盘和科技股的传导。** The user has clarified the scope. The prior first-ten corpus is legacy engineering material; its manual screening and LMFE debugging are paused as the main task. Old failures remain recorded. 用户无需继续筛旧十篇；本轮已收集真实候选，下一步做人审与分层抽取准备。
 
 - [中文新路线](macro_tech/roadmap.zh.md) · [English roadmap](macro_tech/roadmap.en.md)
 - [Executed Codex task / 本轮执行任务](macro_tech/01_CODEX_TASK.txt) · [Sources / 来源边界](macro_tech/SOURCE_REGISTER.md)
@@ -84,4 +93,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-请先在[私人点选页说明](macro_tech/preference_review_start.md)所指的页面选择事件关注度；下一步对选中的事件独立裁定事实、公布前预期、时间、公司关系与机制边，再制定小型抽取试验。历史证券身份与完整金融协议另行决定；旧十篇工程错误保留但已暂停为主线。Select relevant events in the private click-only page, then adjudicate dated facts, expectations, timing, identities and channel edges before a small extraction experiment. The legacy ten-article engineering path remains paused as the mainline.
+执行[财报与宏观输入采集](earnings/01_CODEX_TASK.txt)，先交付六家公司真实财报卡及逐字段缺口，再补宏观指标和相关新闻。Follow the earnings task to deliver six issuer cards with field-level evidence/gaps, then macro releases and related news. Financial admission remains separate.

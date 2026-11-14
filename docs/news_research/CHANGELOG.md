@@ -1,3 +1,11 @@
+# 2026-11-15 — Earnings and macro indicator extension / 财报与宏观指标扩展
+
+User specified six core issuers and revenue, earnings, guidance and capital spending. Added matched bilingual roadmaps, a field contract, official-entry registry and P0–P4 collection task. The preference form is no longer a prerequisite. Source entries were opened; no earnings values were ingested or financial/model experiments run in this update. Prior records remain unchanged.
+
+用户明确六家公司及财报字段。新增双语路线、字段契约、官方入口和P0–P4实采任务；旧兴趣页不再阻塞推进。本次仅核验入口并更新任务，没有完成财报数值入库、新模型或金融实验。
+
+---
+
 # 2026-11-15 — Source-bound macro/technology candidates / 宏观科技事件候选
 
 After the scope clarification, reviewed official agency, issuer and filing pages for a bounded 2026-05-15 to 2026-11-15 development window. Published [12 bilingual candidate cards](macro_tech/candidates.en.md) across six categories and [24 fact-to-source rows](../../results/news_macro_tech_20261115/source_evidence_index.csv), plus a four-object event contract, two conditional `AI_ANALYST_DRAFT` paths and a private click-only relevance page. The [catalog receipt](../../results/news_macro_tech_20261115/catalog_build_receipt.json) binds counts and input hash. An independent audit removed a June 17 follow-up fact from the June 14 G01 card; the [audit receipt](../../results/news_macro_tech_20261115/catalog_audit_receipt.json) records the correction. [Twelve targeted contract tests](../../results/news_macro_tech_20261115/contract_validation.log) passed. Page visual QA, human choices/gold, new macro model calls and financial evaluation remain **NOT_RUN** or zero as specified in the [report](../../reports/2026-11-15_macro_tech_candidates.en.md).
