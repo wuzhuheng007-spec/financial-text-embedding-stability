@@ -1,0 +1,132 @@
+{
+  "schema": "macro_tech_analyst_drafts_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "catalog_sha256": "bd6238942ca2dc5b724086ecbcf3d14cc2d1969f9d01b91cfd491e7188cbf3b1",
+  "author_role": "AI_ANALYST_DRAFT",
+  "model_calls": 0,
+  "human_gold": "NOT_RUN",
+  "financial_labels": "NOT_RUN",
+  "interpretation": "Conditional research hypotheses, not model output, causal identification or return forecasts",
+  "drafts": [
+    {
+      "event_id": "F02",
+      "event_cluster": "FED_FINANCIAL_STABILITY_REPORT_2026_11_13",
+      "role": "AI_ANALYST_DRAFT",
+      "FACT_CARD": {
+        "catalog_fact_indices": [
+          0,
+          1
+        ],
+        "source_urls": [
+          "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+          "https://www.federalreserve.gov/recentpostings.htm"
+        ]
+      },
+      "EXPECTATION": {
+        "pre_release_consensus": "UNKNOWN",
+        "surprise": "NOT_COMPUTED"
+      },
+      "CHANNEL_HYPOTHESES": {
+        "trigger_zh": "若报告中的数据中心债务与担保关系被投资者视为新的风险信息，且融资方随后重新定价。",
+        "trigger_en": "If investors treat the report’s data-center debt and guarantee discussion as new risk information and lenders then reprice financing.",
+        "paths": [
+          {
+            "path_id": "F02-H1",
+            "edges": [
+              {
+                "from": "Fed assessment of AI-infrastructure financing links",
+                "to": "possible credit-risk repricing",
+                "status": "ANALYST_INFERENCE",
+                "support": "The report documents debt and contingent links, not observed repricing",
+                "source_url": "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf"
+              },
+              {
+                "from": "possible credit-risk repricing",
+                "to": "possible change in data-center project funding terms",
+                "status": "ANALYST_INFERENCE",
+                "support": "Requires a later dated spread or loan-term observation; none collected",
+                "source_url": null
+              }
+            ]
+          }
+        ],
+        "counter_scenario_zh": "风险信息可能早被定价；现金流、合同或担保可能吸收冲击，融资条款也可能不变。",
+        "counter_scenario_en": "The information may already be priced; cash flow, contracts or guarantees may absorb stress, and funding terms may not move.",
+        "next_signal_zh": "核对报告发布时间之后、有可比口径的新债利差和具体贷款条款，再检查项目延期。",
+        "next_signal_en": "Check later comparable new-debt spreads and loan terms, then project delays, using a verified report timestamp."
+      },
+      "TECH_EXPOSURES": {
+        "scope": "AI_DATA_CENTERS",
+        "company_specific_relationship": "UNKNOWN",
+        "historical_security_identity": "NOT_CHECKED",
+        "direction": "UNKNOWN"
+      },
+      "limits": [
+        "The report is an assessment, not a realized crisis",
+        "No first-public clock time or market response is established"
+      ]
+    },
+    {
+      "event_id": "T01",
+      "event_cluster": "CRWV_DDTL55_2026_08_10",
+      "role": "AI_ANALYST_DRAFT",
+      "FACT_CARD": {
+        "catalog_fact_indices": [
+          0,
+          1
+        ],
+        "source_urls": [
+          "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/crwv-20260807.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/0001769628-26-000357-index.html",
+          "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Closes-2-6-Billion-Loan-Facility-Expanding-Financing-Flexibility-for-AI-Infrastructure/default.aspx"
+        ]
+      },
+      "EXPECTATION": {
+        "pre_release_consensus": "UNKNOWN",
+        "surprise": "NOT_COMPUTED"
+      },
+      "CHANNEL_HYPOTHESES": {
+        "trigger_zh": "若贷款可用额度实际提款，并按公司披露用途用于 GPU 服务器和相关基础设施。",
+        "trigger_en": "If the facility is actually drawn and proceeds are used for GPU servers and related infrastructure as disclosed.",
+        "paths": [
+          {
+            "path_id": "T01-H1",
+            "edges": [
+              {
+                "from": "announced $2.6bn delayed-draw facility",
+                "to": "possible funded GPU-server purchases",
+                "status": "SOURCE_STATED_INTENDED_USE",
+                "support": "Form 8-K Item 1.01 states the facility is primarily for customer-contract capex; actual draw is unverified",
+                "source_url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/crwv-20260807.htm"
+              },
+              {
+                "from": "possible funded GPU-server purchases",
+                "to": "possible deployed cloud capacity",
+                "status": "ANALYST_INFERENCE",
+                "support": "Deployment and customer delivery require later dated evidence",
+                "source_url": null
+              }
+            ]
+          }
+        ],
+        "counter_scenario_zh": "额度可能暂不提款，设备采购和部署可能延迟；融资成本和客户需求也可能改变。",
+        "counter_scenario_en": "The facility may remain undrawn, deployment may lag, and financing costs or customer demand may change.",
+        "next_signal_zh": "核对后续申报中的提款、实际资本开支、GPU 安装与客户交付，并按 Term SOFR 加利差计算融资成本。",
+        "next_signal_en": "Check later filings for drawdowns, capex, GPU installation and customer delivery; calculate financing cost from Term SOFR plus the stated margin."
+      },
+      "TECH_EXPOSURES": {
+        "scope": "CLOUD_AND_DATA_CENTERS",
+        "company": "CoreWeave",
+        "ticker_candidate": "CRWV",
+        "relationship_source": "2026-08-10 Form 8-K",
+        "historical_security_identity": "NOT_CHECKED",
+        "direction": "UNKNOWN"
+      },
+      "limits": [
+        "5.50% is the SOFR margin, not the all-in financing rate",
+        "Company announcement does not establish a market return or supplier stock effect"
+      ]
+    }
+  ]
+}

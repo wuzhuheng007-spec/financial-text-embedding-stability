@@ -1,0 +1,27 @@
+{
+  "schema": "macro_tech_catalog_build_receipt_v1",
+  "catalog_sha256": "bd6238942ca2dc5b724086ecbcf3d14cc2d1969f9d01b91cfd491e7188cbf3b1",
+  "candidate_selection_role": "DEVELOPMENT_RELEVANCE_CANDIDATES",
+  "retrieved_at_local": "2026-11-15T07:09:26+08:00",
+  "candidate_events": 12,
+  "source_bound_fact_statements": 24,
+  "unique_event_clusters": 12,
+  "category_counts": {
+    "MACRO_RELEASE": 2,
+    "MONETARY_POLICY": 2,
+    "TECH_POLICY": 2,
+    "GEO_ENERGY": 2,
+    "FINANCIAL_STABILITY": 2,
+    "TECH_CHAIN": 2
+  },
+  "missing_pre_release_expectations": 12,
+  "exact_first_public_instants_known": 0,
+  "market_labels": 0,
+  "model_calls": 0,
+  "outputs_sha256": {
+    "docs\\news_research\\macro_tech\\candidates.zh.md": "aacc8f2b2389efdfa1e16af1cf7ac90e5bf334913213f86af6902bb3ffa4cb58",
+    "docs\\news_research\\macro_tech\\candidates.en.md": "deaa9ae603c2441a7877f24ec15c1ee8148542b8ee8611303cace96a4f6df06e",
+    "results\\news_macro_tech_20261115\\source_evidence_index.csv": "fbd116af628999275669c500dfccfe7466d5141841261a95b9adcc5efe5fb5a1"
+  },
+  "limitations": "Finite source-bound development cards, not an admitted event panel or financial result"
+}

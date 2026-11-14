@@ -1,0 +1,17 @@
+test_g01_event_date_facts_use_june_14_source_only (test_macro_tech_catalog.CatalogContractTests.test_g01_event_date_facts_use_june_14_source_only) ... ok
+test_outcome_and_surprise_are_rejected (test_macro_tech_catalog.CatalogContractTests.test_outcome_and_surprise_are_rejected) ... ok
+test_saved_catalog_matches_bounded_receipt_counts (test_macro_tech_catalog.CatalogContractTests.test_saved_catalog_matches_bounded_receipt_counts) ... ok
+test_saved_drafts_are_bound_and_limited (test_macro_tech_catalog.CatalogContractTests.test_saved_drafts_are_bound_and_limited) ... ok
+test_unbound_date_source_is_rejected (test_macro_tech_catalog.CatalogContractTests.test_unbound_date_source_is_rejected) ... ok
+test_late_consensus_and_unit_change_are_rejected (test_macro_tech_expectation.ExpectationGateTests.test_late_consensus_and_unit_change_are_rejected) ... ok
+test_metric_period_and_source_binding_are_required (test_macro_tech_expectation.ExpectationGateTests.test_metric_period_and_source_binding_are_required) ... ok
+test_missing_consensus_stays_uncomputed (test_macro_tech_expectation.ExpectationGateTests.test_missing_consensus_stays_uncomputed) ... ok
+test_nonfinite_values_are_rejected (test_macro_tech_expectation.ExpectationGateTests.test_nonfinite_values_are_rejected) ... ok
+test_pre_release_consensus_is_subtracted (test_macro_tech_expectation.ExpectationGateTests.test_pre_release_consensus_is_subtracted) ... ok
+test_build_and_choice_contract (test_macro_tech_preference_ui.MacroPreferenceUiTest.test_build_and_choice_contract) ... ok
+test_catalog_guards (test_macro_tech_preference_ui.MacroPreferenceUiTest.test_catalog_guards) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.481s
+
+OK

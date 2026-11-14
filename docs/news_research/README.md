@@ -1,14 +1,14 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), scope revision 1.9.
+Updated 2026-11-15 (Asia/Shanghai), execution update 1.10.
 
-**Active priority: macro/systemic events and transmission to the broad market and technology firms. 当前优先：宏观/系统性事件对大盘和科技股的传导。** The user has clarified the scope. The prior first-ten corpus is legacy engineering material; its manual screening and LMFE debugging are paused as the main task. Old failures remain recorded. 用户无需继续筛旧十篇；先收集符合新范围的真实事件，再做人审与分层抽取。
+**Active priority: macro/systemic events and transmission to the broad market and technology firms. 当前优先：宏观/系统性事件对大盘和科技股的传导。** The user has clarified the scope. The prior first-ten corpus is legacy engineering material; its manual screening and LMFE debugging are paused as the main task. Old failures remain recorded. 用户无需继续筛旧十篇；本轮已收集真实候选，下一步做人审与分层抽取准备。
 
 - [中文新路线](macro_tech/roadmap.zh.md) · [English roadmap](macro_tech/roadmap.en.md)
-- [Next Codex task / 下一步执行任务](macro_tech/01_CODEX_TASK.txt) · [Sources / 来源边界](macro_tech/SOURCE_REGISTER.md)
-- [Current machine status / 当前状态](STATUS.json)
+- [Executed Codex task / 本轮执行任务](macro_tech/01_CODEX_TASK.txt) · [Sources / 来源边界](macro_tech/SOURCE_REGISTER.md)
+- [Current machine status / 当前状态](STATUS.json) · [Macro progress report / 宏观进度报告](../../reports/2026-11-15_macro_tech_candidates.en.md) · [中文报告](../../reports/2026-11-15_macro_tech_candidates.zh.md)
 
-The proposed first deliverable is up to twelve event-review cards; **collection, new macro inference and financial experiments are NOT_RUN**. Twelve is a work target, not an observed sample count. Full financial protocol acceptance is unchanged. 此次范围修订不代表金融协议已冻结。
+The bounded first deliverable is now complete: [12 source-backed development candidates](macro_tech/candidates.en.md) in six categories, with [24 fact-to-source rows](../../results/news_macro_tech_20261115/source_evidence_index.csv). A [private click-only preference page](macro_tech/preference_review_start.md) and two conditional `AI_ANALYST_DRAFT` paths are prepared. The page starts with zero saved choices; human fact gold remains zero; new macro model inference and financial experiments are **NOT_RUN**. Pre-release consensus, exact first-public instants, historical security identity and full financial protocol acceptance remain unresolved. 已完成 12 条开发候选和 24 条来源定位事实，不等于正式事件面板或金融有效性结果。
 
 ## Historical engineering record / 历史工程记录（以下旧“下一步”已由上述新任务替代）
 
@@ -84,4 +84,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-根据已保存的九个新 wire 错误实例、三次超时及一份 JSON 失败，单独审阅是否要改变提示词、输出契约或预算；任何新候选另立版本，避免重复盲目运行。推进原文优先的独立人工裁定与按事件簇隔离的评价。历史身份、时间与完整金融协议继续单列。Review the nine new wire error instances, three timeouts and one JSON failure to decide whether a separately versioned prompt, output contract or budget change is warranted. Avoid an unregistered rerun. Obtain article-first independent human adjudications and an event-grouped holdout. Historical identity, timing and the full financial protocol remain separate.
+请先在[私人点选页说明](macro_tech/preference_review_start.md)所指的页面选择事件关注度；下一步对选中的事件独立裁定事实、公布前预期、时间、公司关系与机制边，再制定小型抽取试验。历史证券身份与完整金融协议另行决定；旧十篇工程错误保留但已暂停为主线。Select relevant events in the private click-only page, then adjudicate dated facts, expectations, timing, identities and channel edges before a small extraction experiment. The legacy ten-article engineering path remains paused as the mainline.

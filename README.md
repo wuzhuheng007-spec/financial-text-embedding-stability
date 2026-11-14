@@ -6,9 +6,9 @@ The [14 November progress report](reports/2026-11-14_daily_progress.md) ([中文
 
 ## News research roadmap / 新闻研究技术路线
 
-The [bilingual roadmap entry / 双语技术路线入口](docs/news_research/README.md) links the [English framework](docs/news_research/roadmap.en.md), [中文完整路线](docs/news_research/roadmap.zh.md), [source access / 来源接入](docs/news_research/source_access.md) and [current status](docs/news_research/STATUS.json). It proposes company-specific news extraction, directed spillovers, risk/covariance forecasting and eventual factor/arbitrage evaluation, while preserving representation stability as a central research question. Hugging Face and Jin10 are candidate news sources; authenticated access and formal news experiments have not run.
+The [current news research entry / 新闻研究当前入口](docs/news_research/README.md) now prioritizes [macro/systemic event transmission to technology firms](docs/news_research/macro_tech/README.md). The [English](docs/news_research/macro_tech/candidates.en.md) and [中文](docs/news_research/macro_tech/candidates.zh.md) directories contain 12 source-backed development candidates across six categories, with 24 source-located fact statements. These are relevance-screening materials; human fact adjudication, historical security identity, model inference on this new scope and financial experiments have not run. The earlier company-news and embedding work remains documented as historical engineering and research preparation.
 
-后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。此次仅同步研究设计和公开来源说明，不改变既有 M5 准入或协议状态，也不启动自动采集。
+后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。本轮真实事件卡是开发候选，不改变既有 M5 准入或完整金融协议状态，也不启动自动采集。
 
 ## Current work
 

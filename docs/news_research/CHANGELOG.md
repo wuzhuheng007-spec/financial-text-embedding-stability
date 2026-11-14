@@ -1,3 +1,11 @@
+# 2026-11-15 — Source-bound macro/technology candidates / 宏观科技事件候选
+
+After the scope clarification, reviewed official agency, issuer and filing pages for a bounded 2026-05-15 to 2026-11-15 development window. Published [12 bilingual candidate cards](macro_tech/candidates.en.md) across six categories and [24 fact-to-source rows](../../results/news_macro_tech_20261115/source_evidence_index.csv), plus a four-object event contract, two conditional `AI_ANALYST_DRAFT` paths and a private click-only relevance page. The [catalog receipt](../../results/news_macro_tech_20261115/catalog_build_receipt.json) binds counts and input hash. An independent audit removed a June 17 follow-up fact from the June 14 G01 card; the [audit receipt](../../results/news_macro_tech_20261115/catalog_audit_receipt.json) records the correction. [Twelve targeted contract tests](../../results/news_macro_tech_20261115/contract_validation.log) passed. Page visual QA, human choices/gold, new macro model calls and financial evaluation remain **NOT_RUN** or zero as specified in the [report](../../reports/2026-11-15_macro_tech_candidates.en.md).
+
+范围修订后，在 2026-05-15 至 2026-11-15 的有界开发窗口内核验官方、公司与申报原件。发布[双语 12 张候选卡](macro_tech/candidates.zh.md)、[24 行事实来源索引](../../results/news_macro_tech_20261115/source_evidence_index.csv)、四对象契约、两条条件式分析草案及私人点选页。独立审计将 G01 6 月 14 日卡中误入的 6 月 17 日后续事实移出，当日事实改由 6 月 14 日英国官方声明支持。12 项针对性契约测试通过；视觉验收、人工事实 gold、新宏观模型和金融评价均未完成。候选发现不等于正式金融事件准入。
+
+---
+
 # 2026-11-15 — Macro/systemic-event scope clarification / 宏观系统事件范围修订
 
 User clarified interest in broad-market events and technology spillovers. Added bilingual macro_tech roadmaps, source boundaries and a bounded event-discovery task. Paused old first-ten preference screening and legacy decoder debugging as the main workstream; preserved their results. New event collection and macro/financial experiments are NOT_RUN. 用户要求转向宏观/政策/地缘/融资/杠杆事件及科技股传导；新增双语路线和选样任务。保留旧失败，暂停旧主线。12张候选卡是拟执行目标，不是已取得数据。

@@ -1,0 +1,880 @@
+{
+  "schema": "macro_tech_candidate_events_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "retrieved_at_local": "2026-11-15T07:09:26+08:00",
+  "window_start": "2026-05-15",
+  "window_end": "2026-11-15",
+  "role": "DEVELOPMENT_RELEVANCE_CANDIDATES",
+  "selection_method": "BOUNDED_RETROSPECTIVE_OFFICIAL_SOURCE_DISCOVERY_NO_RETURN_FILTER",
+  "category_quota_target": 2,
+  "remote_baseline_commit": "9e81ba3775125595c571de7c657c1526b9311686",
+  "scope_package_sha256": "13d5a26d48c46558a45197be17967d3dabe665884742e003f2e9971b6b500e96",
+  "source_inputs": [
+    {
+      "name": "finance_tech.json",
+      "sha256": "9ca67576e8a6b857ca1ebd34f8e7a2a7a4d02372fa90438904acfb82a539d957",
+      "visibility": "LOCAL_IGNORED"
+    },
+    {
+      "name": "macro_policy.json",
+      "sha256": "cc59e14569731e8b1bc26f3b61db82249a44f0e640193067c2fa94700e1c02a1",
+      "visibility": "LOCAL_IGNORED"
+    },
+    {
+      "name": "policy_geo.json",
+      "sha256": "03a8120d357f69823c4c689b4b8e9e7674ddaf361e8e1078acde050a756cd788",
+      "visibility": "LOCAL_IGNORED"
+    }
+  ],
+  "source_text_saved": false,
+  "model_calls": 0,
+  "financial_labels": "NOT_RUN",
+  "events": [
+    {
+      "id": "M01",
+      "event_cluster": "US_CPI_2026_10_RELEASE",
+      "category": "MACRO_RELEASE",
+      "date": "2026-11-10",
+      "title_zh": "美国劳工统计局公布 2026 年 10 月 CPI",
+      "title_en": "BLS releases October 2026 CPI",
+      "facts_zh": [
+        "10 月 CPI-U 环比季调上涨 0.4%；该份报告列出的 9 月涨幅为 0.6%。",
+        "剔除食品和能源的 CPI 环比季调上涨 0.3%；因 2025 年 10 月数据缺失，多数 2026 年 10 月同比涨幅无法公布。"
+      ],
+      "facts_en": [
+        "CPI-U rose 0.4% month over month, seasonally adjusted, in October; the release reports 0.6% for September.",
+        "CPI excluding food and energy rose 0.3% month over month, seasonally adjusted; most October 2026 year-over-year rates were unavailable because October 2025 data were missing."
+      ],
+      "tech_link_zh": "假设：通胀信息可能改变市场对利率路径的判断，再影响科技股估值；本卡没有公布前共识，不能确定意外程度或影响方向。",
+      "tech_link_en": "Hypothesis: inflation information could change expected rate paths and technology valuations; without a dated pre-release consensus, the surprise and impact direction are unknown.",
+      "source_urls": [
+        "https://www.bls.gov/news.release/archives/cpi_11102026.htm"
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm",
+          "source_title": "BLS Consumer Price Index, October 2026",
+          "locator": "Release header and opening paragraph, USDL-26-1685; Table A, All items, Sep. and Oct. 2026 seasonally adjusted columns",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm",
+          "source_title": "BLS Consumer Price Index, October 2026",
+          "locator": "Opening paragraph on all items less food and energy; October 2026 12-Month Percent Changes notice",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "release_time_text": "Embargo until 8:30 a.m. (ET) Tuesday, November 10, 2026",
+      "first_public_at": null,
+      "time_precision": "official_embargo_minute; first_observed_public_instant_unknown",
+      "expectation_status": "UNKNOWN",
+      "numeric_context": {
+        "headline_cpi_u_mom_sa": {
+          "actual": 0.4,
+          "actual_period": "2026-10",
+          "prior_reported_in_this_release": 0.6,
+          "prior_period": "2026-09",
+          "unit": "percent month-over-month, seasonally adjusted",
+          "actual_revision_status": "UNKNOWN",
+          "pre_release_consensus": null
+        },
+        "core_cpi_mom_sa": {
+          "actual": 0.3,
+          "actual_period": "2026-10",
+          "prior_reported_in_this_release": 0.3,
+          "prior_period": "2026-09",
+          "unit": "percent month-over-month, seasonally adjusted",
+          "actual_revision_status": "UNKNOWN",
+          "pre_release_consensus": null
+        },
+        "most_october_2026_yoy_rates": "UNAVAILABLE_IN_RELEASE_DUE_TO_MISSING_OCTOBER_2025_DATA"
+      },
+      "date_evidence": {
+        "url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm",
+        "locator": "Release header; embargo date"
+      },
+      "source_timing_note_zh": "BLS 原件注明 2026-11-10 08:30 ET 解禁；未保存独立的首次公开观测。",
+      "source_timing_note_en": "BLS gives an 08:30 ET embargo lift on 2026-11-10; no independent first-public capture was saved.",
+      "source_version_note": "BLS archived release USDL-26-1685, checked 2026-11-15 Asia/Shanghai; missing October 2025 base is stated in the release.",
+      "unknowns_zh": [
+        "公布前调查共识与准确首发时刻",
+        "利率重估和科技资产反应"
+      ],
+      "unknowns_en": [
+        "Pre-release survey consensus and exact first-public instant",
+        "Rate repricing and technology-asset response"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "M02",
+      "event_cluster": "US_EMPLOYMENT_2026_10_RELEASE",
+      "category": "MACRO_RELEASE",
+      "date": "2026-11-06",
+      "title_zh": "美国劳工统计局公布 2026 年 10 月就业报告",
+      "title_en": "BLS releases October 2026 Employment Situation",
+      "facts_zh": [
+        "10 月非农就业增加 165,000 人，失业率为 4.1%。",
+        "该报告把 8 月非农增量从 133,000 修订至 186,000 人、把 9 月从 29,000 修订至 60,000 人。"
+      ],
+      "facts_en": [
+        "October nonfarm payroll employment rose by 165,000 and the unemployment rate was 4.1%.",
+        "The release revised August payroll growth from 133,000 to 186,000 and September growth from 29,000 to 60,000."
+      ],
+      "tech_link_zh": "假设：就业及修订信息可能同时影响增长与利率预期，并传至科技股；公布前共识和净方向仍未知。",
+      "tech_link_en": "Hypothesis: payroll and revision information could change growth and rate expectations, with possible technology exposure; pre-release consensus and net direction remain unknown.",
+      "source_urls": [
+        "https://www.bls.gov/news.release/archives/empsit_11062026.htm"
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+          "source_title": "BLS Employment Situation, October 2026",
+          "locator": "Release header and opening paragraph, USDL-26-1632; Establishment Survey Data",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+          "source_title": "BLS Employment Situation, October 2026",
+          "locator": "Establishment Survey Data, revision paragraph beginning 'The change in total nonfarm payroll employment for August'",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "release_time_text": "Embargo until 8:30 a.m. (ET) Friday, November 6, 2026",
+      "first_public_at": null,
+      "time_precision": "official_embargo_minute; first_observed_public_instant_unknown",
+      "expectation_status": "UNKNOWN",
+      "numeric_context": {
+        "nonfarm_payroll_change": {
+          "actual": 165000,
+          "actual_period": "2026-10",
+          "unit": "persons, monthly change",
+          "pre_release_consensus": null,
+          "actual_revision_status": "UNKNOWN"
+        },
+        "unemployment_rate": {
+          "actual": 4.1,
+          "actual_period": "2026-10",
+          "unit": "percent, seasonally adjusted",
+          "pre_release_consensus": null,
+          "actual_revision_status": "UNKNOWN"
+        },
+        "revisions_in_release": [
+          {
+            "period": "2026-08",
+            "previously_reported": 133000,
+            "revised": 186000,
+            "unit": "persons, monthly nonfarm payroll change"
+          },
+          {
+            "period": "2026-09",
+            "previously_reported": 29000,
+            "revised": 60000,
+            "unit": "persons, monthly nonfarm payroll change"
+          }
+        ]
+      },
+      "date_evidence": {
+        "url": "https://www.bls.gov/news.release/archives/empsit_11062026.htm",
+        "locator": "Release header; embargo date"
+      },
+      "source_timing_note_zh": "BLS 原件注明 2026-11-06 08:30 ET 解禁；未保存独立的首次公开观测。",
+      "source_timing_note_en": "BLS gives an 08:30 ET embargo lift on 2026-11-06; no independent first-public capture was saved.",
+      "source_version_note": "BLS archived release USDL-26-1632, checked 2026-11-15 Asia/Shanghai; revisions are values shown in this version.",
+      "unknowns_zh": [
+        "公布前就业共识与准确首发时刻",
+        "增长和利率渠道的相对作用"
+      ],
+      "unknowns_en": [
+        "Pre-release jobs consensus and exact first-public instant",
+        "Relative growth and rate channels"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "P01",
+      "event_cluster": "FOMC_2026_09_16_DECISION",
+      "category": "MONETARY_POLICY",
+      "date": "2026-09-16",
+      "title_zh": "美联储 9 月会议上调目标利率区间",
+      "title_en": "FOMC raises the target range in September",
+      "facts_zh": [
+        "9 月 16 日 FOMC 将联邦基金利率目标区间上调 25 个基点至 3.75%–4.00%。",
+        "该决定以 12 票赞成、0 票反对通过。"
+      ],
+      "facts_en": [
+        "On September 16, the FOMC raised the federal funds target range by 25 basis points to 3.75%–4.00%.",
+        "The policy statement was approved by a 12–0 vote."
+      ],
+      "tech_link_zh": "假设：政策利率变化可能通过融资条件和折现率影响科技企业；公布前定价、公司暴露与净方向尚未核验。",
+      "tech_link_en": "Hypothesis: the rate change could affect technology firms through funding conditions and discount rates; prior pricing, firm exposure and net direction are unverified.",
+      "source_urls": [
+        "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+        "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+          "source_title": "Federal Reserve FOMC statement, September 16, 2026",
+          "locator": "Press release, September 16, 2026, policy-action paragraph",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+          "source_title": "Federal Reserve FOMC statement, September 16, 2026",
+          "locator": "Press release, September 16, 2026, approval-vote line",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "release_time_text": "For release at 2:00 p.m. EDT, September 16, 2026",
+      "first_public_at": null,
+      "time_precision": "official_release_minute; first_observed_public_instant_unknown",
+      "expectation_status": "UNKNOWN",
+      "numeric_context": {
+        "federal_funds_target_range": {
+          "actual_lower_percent": 3.75,
+          "actual_upper_percent": 4.0,
+          "change_basis_points": 25,
+          "prior_range_percent_from_2026_07_29_statement": [
+            3.5,
+            3.75
+          ],
+          "pre_release_consensus": null
+        }
+      },
+      "numeric_context_evidence": {
+        "prior_range": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"
+      },
+      "date_evidence": {
+        "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+        "locator": "Press release date and release-time line"
+      },
+      "source_timing_note_zh": "Fed 原件注明 2026-09-16 14:00 EDT 发布；未保存独立的首次公开观测。",
+      "source_timing_note_en": "The Fed gives a 14:00 EDT release time on 2026-09-16; no independent first-public capture was saved.",
+      "source_version_note": "Fed page last updated 2026-09-16; the separate July 29 statement supports the prior target range in numeric_context.",
+      "unknowns_zh": [
+        "会前政策定价与准确首次可知时刻",
+        "公司融资暴露和实际市场反应"
+      ],
+      "unknowns_en": [
+        "Pre-meeting policy pricing and exact first-known instant",
+        "Firm financing exposure and market response"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "P02",
+      "event_cluster": "FOMC_2026_10_28_DECISION",
+      "category": "MONETARY_POLICY",
+      "date": "2026-10-28",
+      "title_zh": "美联储 10 月会议维持目标利率区间",
+      "title_en": "FOMC maintains the target range in October",
+      "facts_zh": [
+        "10 月 28 日 FOMC 维持联邦基金利率目标区间在 3.75%–4.00%。",
+        "该决定以 10 票赞成、2 票反对通过；两名反对者倾向上调 25 个基点。"
+      ],
+      "facts_en": [
+        "On October 28, the FOMC maintained the federal funds target range at 3.75%–4.00%.",
+        "The statement was approved 10–2; the two dissenters preferred a 25-basis-point increase."
+      ],
+      "tech_link_zh": "假设：维持利率及表决分歧可能影响后续政策路径预期，进而改变科技股折现率；市场预期与实际反应未知。",
+      "tech_link_en": "Hypothesis: the hold and vote split could affect the expected policy path and technology discount rates; prior expectations and observed reactions are unknown.",
+      "source_urls": [
+        "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+          "source_title": "Federal Reserve FOMC statement, October 28, 2026",
+          "locator": "Press release, October 28, 2026, policy-action paragraph",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+          "source_title": "Federal Reserve FOMC statement, October 28, 2026",
+          "locator": "Press release, October 28, 2026, approval-vote and dissent paragraphs",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "release_time_text": "For release at 2:00 p.m. EDT, October 28, 2026",
+      "first_public_at": null,
+      "time_precision": "official_release_minute; first_observed_public_instant_unknown",
+      "expectation_status": "UNKNOWN",
+      "numeric_context": {
+        "federal_funds_target_range": {
+          "actual_lower_percent": 3.75,
+          "actual_upper_percent": 4.0,
+          "change_basis_points": 0,
+          "pre_release_consensus": null
+        }
+      },
+      "date_evidence": {
+        "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+        "locator": "Press release date and release-time line"
+      },
+      "source_timing_note_zh": "Fed 原件注明 2026-10-28 14:00 EDT 发布；未保存独立的首次公开观测。",
+      "source_timing_note_en": "The Fed gives a 14:00 EDT release time on 2026-10-28; no independent first-public capture was saved.",
+      "source_version_note": "Fed page last updated 2026-10-28.",
+      "unknowns_zh": [
+        "会前政策定价与准确首次可知时刻",
+        "表决分歧对后续预期的实际影响"
+      ],
+      "unknowns_en": [
+        "Pre-meeting policy pricing and exact first-known instant",
+        "Actual effect of dissent on later expectations"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "I01",
+      "event_cluster": "bis_advanced_computing_guidance_20260531",
+      "category": "TECH_POLICY",
+      "title_zh": "BIS 澄清先进计算产品的既有出口许可要求",
+      "title_en": "BIS clarifies existing export-license requirements for advanced computing items",
+      "facts_zh": [
+        "BIS 的 5 月 31 日指引说明，向总部或最终母公司位于 Country Group D:5 或澳门的实体出口先进计算产品需要许可，即使实体位于其他地区。",
+        "指引说明该许可要求始于 2023 年；合规的数据中心运营者无须仅因这份指引停止产品的既有使用、存放或维护。"
+      ],
+      "facts_en": [
+        "The May 31 BIS guidance says a license is required for exports of advanced computing items to entities headquartered, or ultimately parented, in Country Group D:5 or Macau, even if located elsewhere.",
+        "The guidance says the license requirement originated in 2023 and that compliant data-center operators need not stop existing use, storage or servicing solely because of the guidance."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.bis.gov/media/documents/bis-guidance-may-31-2026.pdf",
+          "source_title": "BIS advanced-computing license guidance, May 31, 2026",
+          "locator": "PDF page 1, title and paragraphs 1–2",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.bis.gov/media/documents/bis-guidance-may-31-2026.pdf",
+          "source_title": "BIS advanced-computing license guidance, May 31, 2026",
+          "locator": "PDF page 1, paragraphs 2 and 8",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "tech_link_zh": "假设：若许可处理改变受影响交易的交付安排，先进计算供应链可能受影响；公司与客户暴露尚未核验。",
+      "tech_link_en": "Hypothesis: If license handling changes delivery schedules for affected transactions, the advanced-computing supply chain may be affected; firm and customer exposures are unverified.",
+      "source_urls": [
+        "https://www.bis.gov/media/documents/bis-guidance-may-31-2026.pdf"
+      ],
+      "release_time_text": null,
+      "first_public_at": null,
+      "time_precision": "DATE_ONLY",
+      "source_version_note": "Official BIS PDF reviewed 2026-11-15 Asia/Shanghai; no immutable revision identifier on the source page. This is clarification of a pre-existing requirement, not a newly imposed blanket ban.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "UNKNOWN",
+      "event_status": "VERIFIED_SOURCE_CANDIDATE",
+      "date": "2026-05-31",
+      "date_evidence": {
+        "url": "https://www.bis.gov/media/documents/bis-guidance-may-31-2026.pdf",
+        "locator": "PDF title, May 31, 2026"
+      },
+      "source_timing_note_zh": "BIS 指引署日 2026-05-31，未给出首次公开的钟点和时区。",
+      "source_timing_note_en": "The BIS guidance is dated 2026-05-31; its first-public clock time and timezone are not shown.",
+      "unknowns_zh": [
+        "具体受影响客户与许可证处理",
+        "有日期依据的公司出口暴露"
+      ],
+      "unknowns_en": [
+        "Affected customers and license decisions",
+        "Dated issuer export exposures"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "I02",
+      "event_cluster": "doe_pjm_cost_allocation_support_20261009",
+      "category": "TECH_POLICY",
+      "title_zh": "DOE 支持 PJM 大负荷供电成本分配改革",
+      "title_en": "DOE supports PJM large-load power cost-allocation reforms",
+      "facts_zh": [
+        "DOE 于 10 月 9 日公告，已向 FERC 提交介入通知和立场声明，支持针对 PJM 可靠性后备采购的指导意见。",
+        "该声明主张让数据中心等新增大负荷承担相应发电和电网基础设施成本，并敦促 PJM 提交修订电价文件。"
+      ],
+      "facts_en": [
+        "DOE announced on October 9 that it had filed a notice of intervention and statement of position supporting FERC guidance for PJM reliability-backstop procurement.",
+        "The statement advocates assigning related generation and grid infrastructure costs to new large loads, including data centers, and urges PJM to submit tariff revisions."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.energy.gov/articles/energy-department-supports-fercs-call-pjm-protect-ratepayers-and-build-more-reliable-power",
+          "source_title": "DOE PJM news release, October 9, 2026",
+          "locator": "News release, date and opening paragraph",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.energy.gov/documents/notice-intervention-and-statement-position-united-states-department-energy",
+          "source_title": "DOE Notice of Intervention and Statement of Position",
+          "locator": "PDF pages 1–2, statement of position and requested revised tariff",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "tech_link_zh": "假设：若后续修订规则获得批准并实施，PJM 区域数据中心项目的供电成本分配可能变化；项目位置和合同暴露未知。",
+      "tech_link_en": "Hypothesis: If later tariff revisions are approved and implemented, power-cost allocation for data-center projects in PJM may change; facility locations and contracts are unknown.",
+      "source_urls": [
+        "https://www.energy.gov/articles/energy-department-supports-fercs-call-pjm-protect-ratepayers-and-build-more-reliable-power",
+        "https://www.energy.gov/documents/notice-intervention-and-statement-position-united-states-department-energy"
+      ],
+      "release_time_text": null,
+      "first_public_at": null,
+      "time_precision": "DATE_ONLY_WITH_EARLIER_DOCUMENT_DATE",
+      "source_version_note": "Official DOE news page and filing PDF reviewed 2026-11-15 Asia/Shanghai; no immutable version ID. This is DOE advocacy/FERC guidance, not a final adopted PJM tariff.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "UNKNOWN",
+      "event_status": "VERIFIED_SOURCE_CANDIDATE",
+      "date": "2026-10-09",
+      "date_evidence": {
+        "url": "https://www.energy.gov/articles/energy-department-supports-fercs-call-pjm-protect-ratepayers-and-build-more-reliable-power",
+        "locator": "DOE news release date, October 9, 2026"
+      },
+      "source_timing_note_zh": "DOE 新闻页署日 2026-10-09，底层呈文落款 10-07；首次公开时间未知。",
+      "source_timing_note_en": "The DOE page is dated 2026-10-09 and the underlying notice bears 10-07; first-public time is unknown.",
+      "unknowns_zh": [
+        "PJM 后续最终电价文件",
+        "项目所在地、合同及成本承担规则"
+      ],
+      "unknowns_en": [
+        "Later final PJM tariff",
+        "Facility location, contracts and cost allocation"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "G01",
+      "event_cluster": "us_iran_agreement_uk_response_20260614",
+      "category": "GEO_ENERGY",
+      "title_zh": "英国首相回应美伊协议；海峡重新开放仍待实施",
+      "title_en": "UK responds to US–Iran agreement; Strait reopening still pending",
+      "facts_zh": [
+        "英国首相府 6 月 14 日公开回应美伊达成协议，并强调霍尔木兹海峡重新开放仍取决于后续实施。",
+        "同一声明称核协议细节仍待敲定，技术谈判即将开始；海峡无通行费的航行自由仍待恢复。"
+      ],
+      "facts_en": [
+        "The UK Prime Minister’s Office publicly responded to a US–Iran agreement on June 14 and stressed that reopening the Strait of Hormuz still required implementation.",
+        "The same statement says nuclear-agreement details remained to be finalised, technical talks would begin, and toll-free navigation in the Strait still had to be restored."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.gov.uk/government/news/pm-response-to-the-peace-deal-between-the-united-states-and-iran-14-june-2026",
+          "source_title": "UK Prime Minister response to US-Iran agreement",
+          "locator": "Published 14 June 2026; first three body paragraphs",
+          "support_type": "OFFICIAL_STATEMENT"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.gov.uk/government/news/pm-response-to-the-peace-deal-between-the-united-states-and-iran-14-june-2026",
+          "source_title": "UK Prime Minister response to US-Iran agreement",
+          "locator": "Published 14 June 2026; body paragraphs 2–3",
+          "support_type": "OFFICIAL_STATEMENT"
+        }
+      ],
+      "tech_link_zh": "假设：若海峡通行实际恢复，能源供应预期可能变化，进而影响通胀与利率预期；尚无科技公司暴露或即时价格证据。",
+      "tech_link_en": "Hypothesis: If Strait traffic actually resumes, energy-supply expectations may change and then affect inflation and rate expectations; tech-firm exposure and immediate price evidence are absent.",
+      "source_urls": [
+        "https://www.gov.uk/government/news/pm-response-to-the-peace-deal-between-the-united-states-and-iran-14-june-2026"
+      ],
+      "release_time_text": null,
+      "first_public_at": null,
+      "time_precision": "EARLIEST_LOCATED_SOURCE_DATE_ONLY",
+      "source_version_note": "UK statement reviewed 2026-11-15 Asia/Shanghai. Both dated facts come from its June 14 page. A June 17 signing page found in initial discovery was removed from the June 14 fact layer after leakage audit; it cannot be treated as known on June 14. No later market discussion was backfilled.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "UNKNOWN",
+      "event_status": "VERIFIED_SOURCE_CANDIDATE",
+      "date": "2026-06-14",
+      "date_evidence": {
+        "url": "https://www.gov.uk/government/news/pm-response-to-the-peace-deal-between-the-united-states-and-iran-14-june-2026",
+        "locator": "GOV.UK Published 14 June 2026 field"
+      },
+      "source_timing_note_zh": "本轮找到的该声明公开日期为英国首相府 2026-06-14；精确时刻未知。后续签署信息不纳入当日事实层。",
+      "source_timing_note_en": "The located UK statement is dated 2026-06-14; exact clock time is unknown. Later signing information is excluded from the event-date fact layer.",
+      "unknowns_zh": [
+        "协议落实和海峡实际通航时间",
+        "能源、通胀及科技资产传导"
+      ],
+      "unknowns_en": [
+        "Implementation and actual Strait reopening time",
+        "Energy, inflation and technology transmission"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "G02",
+      "event_cluster": "ofac_iran_shadow_fleet_action_20261008",
+      "category": "GEO_ENERGY",
+      "title_zh": "美国财政部针对伊朗石油运输网络采取制裁行动",
+      "title_en": "US Treasury sanctions action targets Iranian petroleum shipping network",
+      "facts_zh": [
+        "美国财政部 10 月 8 日公告称，OFAC 对参与运输伊朗石油及石化产品的影子船队网络采取行动。",
+        "财政部新闻稿称此次行动针对 17 艘影子船队船舶；此数并非 OFAC 当日全部新增船舶数。"
+      ],
+      "facts_en": [
+        "On October 8, the US Treasury announced OFAC action against a shadow-fleet network moving Iranian petroleum and petrochemical products.",
+        "The Treasury release says this action targeted 17 shadow-fleet vessels; this is not a count of every vessel added by OFAC that day."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://home.treasury.gov/news/press-releases/sb0653/",
+          "source_title": "US Treasury shadow-fleet sanctions release",
+          "locator": "Release date; opening and designation-authority paragraphs",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://home.treasury.gov/news/press-releases/sb0653/",
+          "source_title": "US Treasury shadow-fleet sanctions release",
+          "locator": "SHADOW FLEET VESSELS heading and first paragraph; cross-check https://ofac.treasury.gov/recent-actions/20261008, heading/date/list sections",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "tech_link_zh": "假设：若制裁执行改变石油运输，能源供应与通胀预期可能受影响，继而影响科技估值；实际供给和市场反应未检验。",
+      "tech_link_en": "Hypothesis: If enforcement changes petroleum shipments, energy supply and inflation expectations could shift and affect tech valuations; actual supply and market responses are untested.",
+      "source_urls": [
+        "https://home.treasury.gov/news/press-releases/sb0653/",
+        "https://ofac.treasury.gov/recent-actions/20261008"
+      ],
+      "release_time_text": null,
+      "first_public_at": null,
+      "time_precision": "DATE_ONLY",
+      "source_version_note": "Official Treasury release and OFAC action page reviewed 2026-11-15 Asia/Shanghai; no immutable page version. Treasury wording about having neutralized the network is not treated as an independently established outcome.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "UNKNOWN",
+      "event_status": "VERIFIED_SOURCE_CANDIDATE",
+      "date": "2026-10-08",
+      "date_evidence": {
+        "url": "https://home.treasury.gov/news/press-releases/sb0653/",
+        "locator": "Treasury release date, October 8, 2026"
+      },
+      "source_timing_note_zh": "财政部和 OFAC 页面均署日 2026-10-08；精确公开时间未知。",
+      "source_timing_note_en": "Treasury and OFAC pages are dated 2026-10-08; exact public time is unknown.",
+      "unknowns_zh": [
+        "制裁执行后的实际运输变化",
+        "能源价格和科技资产反应"
+      ],
+      "unknowns_en": [
+        "Actual shipping changes after sanctions",
+        "Energy prices and technology-asset response"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "F01",
+      "event_cluster": "FED_STRESS_TEST_RESULTS_2026_06_24",
+      "category": "FINANCIAL_STABILITY",
+      "date": "2026-06-24",
+      "title_zh": "美联储发布 2026 年大型银行压力测试结果",
+      "title_en": "Federal Reserve releases 2026 large-bank stress-test results",
+      "facts_zh": [
+        "美联储称，32 家受测大型银行在假设严重衰退情景下均保持高于最低普通股一级资本要求。",
+        "该情景中的预测总损失超过 7,080 亿美元，合计资本比率下降 1.6 个百分点；这些是压力测试估计，并非已实现损失。"
+      ],
+      "facts_en": [
+        "The Federal Reserve said all 32 tested large banks stayed above minimum common-equity Tier 1 requirements in the hypothetical severe recession.",
+        "Projected losses in that scenario exceeded $708 billion and the aggregate capital ratio declined 1.6 percentage points; these are stress-test estimates, not realized losses."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260624a.htm",
+          "source_title": "Federal Reserve 2026 stress-test results",
+          "locator": "Press release, paragraph beginning All 32 banks tested, currently lines 12-13",
+          "support_type": "AGENCY_RELEASE"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260624a.htm",
+          "source_title": "Federal Reserve 2026 stress-test results",
+          "locator": "Press release, opening paragraph and July 2 wording correction note, currently lines 9-10 and 24-27",
+          "support_type": "AGENCY_RELEASE"
+        }
+      ],
+      "tech_link_zh": "假设：银行资本与信贷供给信息可能影响科技企业融资条件；本公告未识别任何具体科技公司的融资变化或股价影响。",
+      "tech_link_en": "Hypothesis: information about bank resilience could affect technology financing conditions; this release does not identify a specific technology company funding or price effect.",
+      "source_urls": [
+        "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260624a.htm",
+        "https://www.federalreserve.gov/publications/files/2026-dfast-results-20260624.pdf"
+      ],
+      "release_time_text": "For release at 4:00 p.m. EDT, June 24, 2026",
+      "first_public_at": null,
+      "time_precision": "official_release_minute; independent first-observed public instant unknown",
+      "source_version_note": "Current Fed page notes a July 2, 2026 edit removing the word loan from the introductory loss sentence; do not treat current bytes as the original release version.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "UNKNOWN",
+      "event_status": "VERIFIED_OFFICIAL_RELEASE",
+      "numeric_context": {
+        "banks_tested": 32,
+        "projected_losses_usd_billion": "more_than_708",
+        "aggregate_capital_ratio_decline_percentage_points": 1.6,
+        "scenario": "hypothetical_severely_adverse",
+        "pre_release_consensus": null
+      },
+      "date_evidence": {
+        "url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260624a.htm",
+        "locator": "Fed press release date and release-time line"
+      },
+      "source_timing_note_zh": "Fed 原件标注 2026-06-24 16:00 EDT 发布；未保存独立的首次公开观测。",
+      "source_timing_note_en": "The Fed page gives a 16:00 EDT release time on 2026-06-24; no independent first-public capture was saved.",
+      "unknowns_zh": [
+        "真实信贷供给变化",
+        "科技企业的银行融资依赖"
+      ],
+      "unknowns_en": [
+        "Actual credit-supply change",
+        "Technology firms’ bank-financing dependence"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "F02",
+      "event_cluster": "FED_FINANCIAL_STABILITY_REPORT_2026_11_13",
+      "category": "FINANCIAL_STABILITY",
+      "date": "2026-11-13",
+      "title_zh": "美联储发布金融稳定报告，讨论数据中心融资杠杆",
+      "title_en": "Federal Reserve financial stability report examines data-center financing leverage",
+      "facts_zh": [
+        "报告估计，截至 2026 年 10 月，先进计算相关债务发行已超过 6,800 亿美元；这是美联储报告中的估计。",
+        "报告描述大型科技企业的租赁、担保和其他义务与第三方数据中心开发商融资之间的联系，同时说明该类风险需要持续监测。"
+      ],
+      "facts_en": [
+        "The report estimates advanced-computing-related debt issuance above $680 billion by October 2026; this is a reported estimate.",
+        "The report describes connections between large technology firms’ leases or guarantees and third-party data-center financing, and says these links warrant monitoring."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+          "source_title": "Federal Reserve Financial Stability Report, November 2026",
+          "locator": "PDF Box 2.2, printed p.23, paragraph beginning Debt issuance to finance advanced computing infrastructure; see figure A note on coverage.",
+          "support_type": "AGENCY_ASSESSMENT"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+          "source_title": "Federal Reserve Financial Stability Report, November 2026",
+          "locator": "PDF Box 2.2 continued, printed pp.25-26, discussion of leases, guarantees and developer financing.",
+          "support_type": "AGENCY_ASSESSMENT"
+        }
+      ],
+      "tech_link_zh": "假设：若融资风险重新定价，数据中心建设和相关科技企业融资可能受到影响；报告发布本身不是融资危机或已识别的市场冲击。",
+      "tech_link_en": "Hypothesis: repricing financing risk could affect data-center buildout and related technology funding; the report release is not itself a financing crisis or identified market shock.",
+      "source_urls": [
+        "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+        "https://www.federalreserve.gov/recentpostings.htm"
+      ],
+      "release_time_text": "Listed by the Federal Reserve under 11/13/2026; exact clock time not shown",
+      "first_public_at": null,
+      "time_precision": "official_listing_date_only; first-observed public instant unknown",
+      "source_version_note": "PDF says information was generally available as of October 28, 2026 (front matter, currently line 50). Box 2.2 footnote 2 (currently lines 757-758) says the $680 billion estimate includes public issuance and trackable rule-144A private securities but excludes section 4(a)(2) placements; it is not complete private financing coverage.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "AGGREGATE_EXPOSURES_ONLY_NOT_COMPANY_MAPPED",
+      "event_status": "VERIFIED_OFFICIAL_ASSESSMENT_RELEASE",
+      "numeric_context": {
+        "advanced_computing_debt_issuance_usd_billion": "more_than_680",
+        "as_of": "2026-10",
+        "reported_by": "Federal Reserve report Box 2.2",
+        "pre_release_consensus": null
+      },
+      "date_evidence": {
+        "url": "https://www.federalreserve.gov/recentpostings.htm",
+        "locator": "Fed Recent Postings, Financial Stability Report entry dated 11/13/2026"
+      },
+      "source_timing_note_zh": "Fed 官方更新列表列为 2026-11-13；PDF 仅注明 2026 年 11 月，精确发布时刻未知。",
+      "source_timing_note_en": "The Fed recent-postings page lists 2026-11-13, while the PDF itself says November 2026; exact release time is unknown.",
+      "unknowns_zh": [
+        "报告发布的准确时刻",
+        "具体企业的债务与担保暴露"
+      ],
+      "unknowns_en": [
+        "Exact report release time",
+        "Specific firms’ debt and guarantee exposures"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "T01",
+      "event_cluster": "CRWV_DDTL55_2026_08_10",
+      "category": "TECH_CHAIN",
+      "date": "2026-08-10",
+      "title_zh": "CoreWeave 公告关闭 26 亿美元 GPU 基建设施贷款",
+      "title_en": "CoreWeave announces closing of $2.6 billion GPU-infrastructure loan facility",
+      "facts_zh": [
+        "CoreWeave 的间接子公司 8 月 7 日签订 26 亿美元延迟提款定期贷款协议；公司 8 月 10 日公告贷款已关闭，主要用途是客户合同相关 GPU 服务器与基础设施资本开支。",
+        "SEC 文件规定，SOFR 贷款的年利率为 Term SOFR 加 5.50 个百分点利差；另有基准利率贷款及未提款费用口径，5.50% 不是总融资利率。"
+      ],
+      "facts_en": [
+        "A CoreWeave subsidiary entered a $2.6 billion delayed-draw term-loan agreement on August 7; the company announced its closing on August 10, primarily for GPU-server and infrastructure capex tied to customer contracts.",
+        "The SEC filing sets the annual rate on SOFR loans at Term SOFR plus a 5.50-percentage-point margin; base-rate loans and undrawn fees have separate terms, so 5.50% is not the all-in borrowing rate."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/crwv-20260807.htm",
+          "source_title": "CoreWeave Form 8-K, accession 0001769628-26-000357",
+          "locator": "Form 8-K Items 1.01 and 7.01, currently lines 65-67 and 91-93",
+          "support_type": "ISSUER_FILING"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/crwv-20260807.htm",
+          "source_title": "CoreWeave Form 8-K, accession 0001769628-26-000357",
+          "locator": "Form 8-K Interest Rate and Fees, currently lines 72-74",
+          "support_type": "ISSUER_FILING"
+        }
+      ],
+      "tech_link_zh": "假设：贷款可能支持 GPU 部署与云算力交付；未来实际提款、设备交付、客户需求和利率变化均需另行验证。",
+      "tech_link_en": "Hypothesis: the facility may support GPU deployment and cloud capacity delivery; actual draws, equipment delivery, customer demand and rate changes need separate verification.",
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/crwv-20260807.htm",
+        "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000357/0001769628-26-000357-index.html",
+        "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Closes-2-6-Billion-Loan-Facility-Expanding-Financing-Flexibility-for-AI-Infrastructure/default.aspx"
+      ],
+      "release_time_text": "Company press release dated August 10, 2026; SEC 8-K accepted 2026-08-10 16:10:22 (timezone not stated on index)",
+      "first_public_at": null,
+      "time_precision": "company_release_date_only; SEC acceptance_second_without_page_timezone; first_public_unknown",
+      "source_version_note": "SEC accession 0001769628-26-000357; company IR release is same announcement cluster, not a second event.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "CRWV_DIRECT_CURRENT_TICKER_ONLY",
+      "event_status": "VERIFIED_COMPANY_ANNOUNCEMENT",
+      "numeric_context": {
+        "facility_principal_usd_billion": 2.6,
+        "sofr_loan_rate": "Term SOFR + 5.50 percentage points margin",
+        "base_rate_loan_rate": "base rate + 4.50 percentage points margin",
+        "undrawn_fee_annual": "0.50%",
+        "pre_release_consensus": null
+      },
+      "date_evidence": {
+        "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Closes-2-6-Billion-Loan-Facility-Expanding-Financing-Flexibility-for-AI-Infrastructure/default.aspx",
+        "locator": "CoreWeave IR news page dated August 10, 2026"
+      },
+      "source_timing_note_zh": "协议日期 2026-08-07，公告关闭日期 08-10；SEC 接收时间不是新闻首次公开的证明。",
+      "source_timing_note_en": "The agreement is dated 2026-08-07 and closing was announced 08-10; SEC acceptance is not proof of first news publication.",
+      "unknowns_zh": [
+        "贷款实际提款和 GPU 部署进度",
+        "总融资成本与客户交付时间"
+      ],
+      "unknowns_en": [
+        "Actual loan draws and GPU deployment",
+        "All-in financing cost and customer delivery timing"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    },
+    {
+      "id": "T02",
+      "event_cluster": "NVDA_Q2_FY2027_RESULTS_2026_08_26",
+      "category": "TECH_CHAIN",
+      "date": "2026-08-26",
+      "title_zh": "NVIDIA 公布 2027 财年第二季度业绩",
+      "title_en": "NVIDIA reports second-quarter fiscal 2027 results",
+      "facts_zh": [
+        "NVIDIA 公告 2027 财年第二季度总收入为 962 亿美元，较上年同期增长 106%。",
+        "同一公告列出数据中心收入为 890 亿美元，较上年同期增长 117%；这是已报告收入，不是市场共识。"
+      ],
+      "facts_en": [
+        "NVIDIA reported second-quarter fiscal 2027 revenue of $96.2 billion, up 106% from a year earlier.",
+        "The same release reported Data Center revenue of $89.0 billion, up 117% year over year; these are reported revenues, not a market consensus."
+      ],
+      "fact_evidence": [
+        {
+          "fact_index": 0,
+          "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/default.aspx",
+          "source_title": "NVIDIA Q2 FY2027 investor release",
+          "locator": "Release header and opening paragraph, currently lines 98-106",
+          "support_type": "ISSUER_STATEMENT"
+        },
+        {
+          "fact_index": 1,
+          "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/default.aspx",
+          "source_title": "NVIDIA Q2 FY2027 investor release",
+          "locator": "Release highlight and Data Center section, currently lines 104-105 and 141-145",
+          "support_type": "ISSUER_STATEMENT"
+        }
+      ],
+      "tech_link_zh": "假设：数据中心收入可能反映 AI 基础设施需求，并引起云、服务器和供电链条预期调整；没有带日期的公司合同链或公布前共识，不能指定其他公司的影响方向。",
+      "tech_link_en": "Hypothesis: Data Center revenue may inform expectations for AI infrastructure demand and cloud, server or power supply chains; without dated contractual links or pre-release consensus, other firms’ impact directions remain unknown.",
+      "source_urls": [
+        "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/default.aspx",
+        "https://www.sec.gov/Archives/edgar/data/1045810/0001045810-26-000073-index.htm"
+      ],
+      "release_time_text": "Company release dated August 26, 2026; SEC 8-K accepted 2026-08-26 16:21:19 (timezone not stated on index)",
+      "first_public_at": null,
+      "time_precision": "company_release_date_only; SEC acceptance_second_without_page_timezone; first_public_unknown",
+      "source_version_note": "SEC accession 0001045810-26-000073; fiscal-year label FY2027 is not calendar-year 2027.",
+      "expectation_status": "UNKNOWN",
+      "company_exposure_status": "NVDA_DIRECT_CURRENT_TICKER_ONLY",
+      "event_status": "VERIFIED_COMPANY_ANNOUNCEMENT",
+      "numeric_context": {
+        "revenue_usd_billion": 96.2,
+        "revenue_yoy_percent": 106,
+        "data_center_revenue_usd_billion": 89.0,
+        "data_center_revenue_yoy_percent": 117,
+        "pre_release_consensus": null
+      },
+      "date_evidence": {
+        "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/default.aspx",
+        "locator": "NVIDIA investor release date, August 26, 2026"
+      },
+      "source_timing_note_zh": "投资者公告日期 2026-08-26；SEC 接收时间不是公告首次公开的证明。",
+      "source_timing_note_en": "The IR announcement is dated 2026-08-26; SEC acceptance is not proof of first IR publication.",
+      "unknowns_zh": [
+        "公布前业绩共识与准确首发时刻",
+        "订单、供应链及收益反应"
+      ],
+      "unknowns_en": [
+        "Pre-release earnings consensus and exact first-public instant",
+        "Orders, supply chain and return response"
+      ],
+      "tech_link_status": "HYPOTHESIS",
+      "status": "SOURCE_BACKED_CANDIDATE",
+      "market_return_status": "NOT_RUN",
+      "surprise_status": "NOT_COMPUTED_NO_PRE_RELEASE_CONSENSUS"
+    }
+  ]
+}

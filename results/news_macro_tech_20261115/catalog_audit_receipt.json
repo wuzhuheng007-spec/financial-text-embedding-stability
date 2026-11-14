@@ -1,0 +1,26 @@
+{
+  "schema": "macro_tech_catalog_audit_receipt_v1",
+  "checked_at_local": "2026-11-15T07:16:53+08:00",
+  "timezone": "Asia/Shanghai",
+  "catalog_sha256": "bd6238942ca2dc5b724086ecbcf3d14cc2d1969f9d01b91cfd491e7188cbf3b1",
+  "catalog_role": "DEVELOPMENT_RELEVANCE_CANDIDATES",
+  "candidate_count": 12,
+  "fact_source_rows": 24,
+  "unique_event_clusters": 12,
+  "independent_readonly_review": "OFFICIAL_SOURCE_FACT_AND_TIMING_AUDIT",
+  "material_correction": {
+    "event_id": "G01",
+    "issue": "A 2026-06-14 candidate initially included a 2026-06-17 signing as its second dated fact.",
+    "resolution": "Both current facts and their evidence rows now use the UK statement published 2026-06-14. The June 17 signing is excluded from the event-date fact layer.",
+    "official_source": "https://www.gov.uk/government/news/pm-response-to-the-peace-deal-between-the-united-states-and-iran-14-june-2026",
+    "source_locator": "Published 14 June 2026; body paragraphs 1-3",
+    "superseded_render_location": "artifacts/macro_tech_20261115/superseded_pre_audit/"
+  },
+  "other_checked_limits": [
+    "I02 DOE source document is dated October 7 while the candidate DOE news page is dated October 9; exact first public instant remains unknown.",
+    "F01 Federal Reserve stress-test page notes a July 2 wording correction; a June 24 point-in-time page snapshot was not independently recovered.",
+    "No dated pre-release consensus or independently observed exact first-public instant is admitted for any of the 12 cards.",
+    "No market-return or causal-transmission claim follows from source verification."
+  ],
+  "result": "PASS_WITH_G01_CORRECTION; SOURCE_BOUND_DEVELOPMENT_ONLY"
+}

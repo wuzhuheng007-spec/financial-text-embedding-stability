@@ -1,0 +1,15 @@
+{
+  "schema": "macro_tech_preference_ui_receipt_v1",
+  "candidate_catalog_sha256": "bd6238942ca2dc5b724086ecbcf3d14cc2d1969f9d01b91cfd491e7188cbf3b1",
+  "candidate_count": 12,
+  "questions_per_card": 3,
+  "choice_export_schema": "macro_tech_preference_v1",
+  "initial_saved_preferences": 0,
+  "free_text_inputs": 0,
+  "prefilled_answers": false,
+  "human_gold_labels": 0,
+  "model_calls": 0,
+  "visual_browser_check": "NOT_RUN",
+  "private_page_sha256": "3b49dde51c5bc9ae6a550127496dcbf12d33fa934d2872f000e3426dcee29d7a",
+  "interpretation": "User preference screen only; not fact gold or market outcome."
+}
