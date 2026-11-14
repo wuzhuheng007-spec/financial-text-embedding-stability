@@ -8,6 +8,8 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import sys
+from types import ModuleType, SimpleNamespace
 
 import pytest
 
@@ -119,15 +121,17 @@ def test_native_worker_exit_stops_without_retry_or_later_launch(
         "at_utc": runner.utc_now(), "gpu_rows": [],
         "compute_process_query_available": False, "compute_processes": [],
     })
-    import torch
-    import transformers
-    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
     class FakeTokenizer:
         chat_template = "synthetic chat"
         def apply_chat_template(self, *_args, **_kwargs):
             return list(range(17))
-    monkeypatch.setattr(transformers.AutoTokenizer, "from_pretrained",
-                        lambda *_args, **_kwargs: FakeTokenizer())
+    fake_torch = ModuleType("torch")
+    fake_torch.cuda = SimpleNamespace(is_available=lambda: True)
+    fake_transformers = ModuleType("transformers")
+    fake_transformers.AutoTokenizer = SimpleNamespace(
+        from_pretrained=lambda *_args, **_kwargs: FakeTokenizer())
+    monkeypatch.setitem(sys.modules, "torch", fake_torch)
+    monkeypatch.setitem(sys.modules, "transformers", fake_transformers)
     launches = []
     def fake_worker(command, **kwargs):
         request_path = Path(command[command.index("--request") + 1])

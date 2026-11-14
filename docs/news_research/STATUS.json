@@ -72,7 +72,10 @@
     "v5_fixed_ten_development_run_ten_generation_starts_seven_responses_three_call_timeouts",
     "v5_independent_audit_passed_six_json_valid_zero_wire_valid_zero_canonical",
     "v4_v5_paired_status_comparison_passed_six_completed_response_pairs",
-    "blank_article_first_review_entry_prepared_zero_human_adjudications"
+    "blank_article_first_review_entry_prepared_zero_human_adjudications",
+    "targeted_repair_first_publication_commit_and_five_remote_blobs_verified",
+    "torchless_handoff_focused_synthetic_suite_twenty_seven_passed_overlapping_prior_checks",
+    "sanitized_handoff_zip_crc_passed"
   ],
   "not_executed": [
     "news_redownload",
@@ -201,6 +204,10 @@
   "n1_targeted_auditor_comparator_validation_log": "results/news_targeted_repair_20261115/audit_comparison_synthetic_test_log.txt",
   "n1_targeted_audited_aggregate": "results/news_targeted_repair_20261115/inference_aggregate.json",
   "n1_targeted_paired_comparison": "results/news_targeted_repair_20261115/paired_comparison.json",
+  "n1_targeted_torchless_handoff_validation_log": "results/news_targeted_repair_20261115/torchless_handoff_validation.log",
+  "n1_targeted_first_publication_verified_commit": "c3d6a4143bec96ad4dbdbc1cba6500db45e2646e",
+  "n1_targeted_remote_key_blobs_verified": 5,
+  "n1_targeted_handoff_zip_crc": "PASS",
   "n1_targeted_config": "configs/news_n1_smoke_v5_targeted.json",
   "n1_targeted_model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
   "n1_targeted_source_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",

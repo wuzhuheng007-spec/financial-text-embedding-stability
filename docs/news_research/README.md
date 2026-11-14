@@ -42,6 +42,7 @@ Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本�
 | [V5 pre-run gate](../../results/news_targeted_repair_20261115/prerun_gate_receipt.json) · [synthetic suite](../../results/news_targeted_repair_20261115/pre_run_validation.log) | 十篇全文上下文适配，合并 37 项合成测试通过；尚非模型结果 |
 | [Audited v5 run](../../results/news_targeted_repair_20261115/inference_aggregate.json) · [v4–v5 paired comparison](../../results/news_targeted_repair_20261115/paired_comparison.json) | 十篇均发起并开始生成；七份响应、三次超时，wire 合法 0/6；六个位置两版均有响应 |
 | [Blank human review preparation](../../results/news_targeted_repair_20261115/human_review_preparation.json) | 十篇原文优先入口；尚无人工裁定或抽取质量结果 |
+| [Torchless handoff check](../../results/news_targeted_repair_20261115/torchless_handoff_validation.log) | Python 3.11.9 无 `torch` 环境下五份聚焦合成测试 27/27 通过；与先前工程测试重叠，不是模型试验 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
