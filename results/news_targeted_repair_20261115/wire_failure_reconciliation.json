@@ -1,0 +1,43 @@
+{
+  "schema": "wire_failure_reconciliation_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "package_identity": "quant_news_targeted_repair_20261114.zip",
+  "result": "PASS",
+  "checks": {
+    "saved_responses": true,
+    "json_valid": true,
+    "wire_valid": true,
+    "wire_invalid": true,
+    "json_invalid": true,
+    "error_keyword_instances": true,
+    "unique_quotes": true,
+    "missing_quotes": true,
+    "private_export_identity": true,
+    "schema_identity": true,
+    "private_details_identity": true
+  },
+  "source_versions": {
+    "v4_audit_sha256": "6ff871a1dd48a68e18467141944f652f4b4feeff75874b9fd7db3ef2c36c642f",
+    "v4_config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "diagnostic_script_sha256": "24072a0ca2a4e4a5643edc9b993c66af8ae66f4051cc5dace9398819f24d43ca",
+    "adapted_repo_test_sha256": "3970683af88cb85cb37702a75d1f49bbaaca3aaba3c5da4e99ecdc2bfa10376b"
+  },
+  "private_receipt_hashes": {
+    "export_sha256": "4410b6f04acea7f555246ac3850d46f3941c663c10bdb95bbe14d3f166f06f46",
+    "export_map_sha256": "f6a86aeadbaa9cbb0051e9d92cf18a304d5f453cefa68ce3f087f9ac3b1cba74",
+    "details_sha256": "94ed0650a1e42dd64f2763d58b05cb981d2dc7dcb50e3b28972b5312e489389c",
+    "field_review_sha256": "d2435d97865dc699fb22312bac1b3e93d412d686982a4b13000797810b510807"
+  },
+  "model_calls_in_diagnosis": 0,
+  "limitations": [
+    "Saved responses from one reused development sample only.",
+    "Error instance counts are not article counts.",
+    "Original text, generated text and actual wrong values remain private.",
+    "No response was repaired and no canonical output was built."
+  ]
+}

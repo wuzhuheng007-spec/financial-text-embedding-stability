@@ -1,0 +1,91 @@
+{
+  "schema": "news_n1_targeted_pair_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "comparison_status": "PASS_BOUND_DEVELOPMENT_PAIR",
+  "fixed_target_articles": 10,
+  "shared_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "shared_model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "shared_contract_sha256": {
+    "schema": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "wire_schema": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "adapter": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+    "validator": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "old_pipeline": {
+    "pipeline_version": "wire_v2_exact_quote_host_binding_v1",
+    "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+    "audit_sha256": "6ff871a1dd48a68e18467141944f652f4b4feeff75874b9fd7db3ef2c36c642f",
+    "run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+    "attempted": 10,
+    "generation_started": 9,
+    "completed_responses": 9,
+    "json_valid": 8,
+    "wire_schema_valid_completed": 1,
+    "quotes_checked": 8,
+    "quotes_unique_exact": 7,
+    "canonical_constructible": 0,
+    "canonical_mechanical_valid": 0,
+    "attention_implementation": "sdpa",
+    "actual_sdpa_kernel": "UNKNOWN"
+  },
+  "new_pipeline": {
+    "pipeline_version": "wire_v2_exact_quote_targeted_prompt_v1",
+    "config_sha256": "f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719",
+    "audit_sha256": "c13db425b23c7dc882d00671e01ca20445cca543dd0ca61d8adee745335d53ba",
+    "run_status": "TARGETED_RUN_FINISHED",
+    "attempted": 10,
+    "generation_started": 10,
+    "completed_responses": 7,
+    "json_valid": 6,
+    "wire_schema_valid_completed": 0,
+    "quotes_checked": 0,
+    "quotes_unique_exact": 0,
+    "canonical_constructible": 0,
+    "canonical_mechanical_valid": 0,
+    "attention_implementation": "sdpa",
+    "actual_sdpa_kernel": "UNKNOWN"
+  },
+  "status_transition_counts": {
+    "INTERRUPTED_PROCESS_UNCLASSIFIED->WIRE_SCHEMA_INVALID": 1,
+    "JSON_PARSE_ERROR->WIRE_SCHEMA_INVALID": 1,
+    "QUOTE_UNRESOLVED->CALL_TIMEOUT": 1,
+    "WIRE_SCHEMA_INVALID->CALL_TIMEOUT": 2,
+    "WIRE_SCHEMA_INVALID->JSON_PARSE_ERROR": 1,
+    "WIRE_SCHEMA_INVALID->WIRE_SCHEMA_INVALID": 4
+  },
+  "paired_completed_response_positions": 6,
+  "paired_stage_counts": {
+    "denominator_completed_in_both_runs": 6,
+    "old_wire_valid": 0,
+    "new_wire_valid": 0,
+    "old_canonical_constructible": 0,
+    "new_canonical_constructible": 0,
+    "interpretation": "Mechanical stages on reused development articles, not event quality."
+  },
+  "prompt_token_new_minus_old": {
+    "count": 10,
+    "minimum": 644,
+    "median": 644.0,
+    "maximum": 644,
+    "mean": 644
+  },
+  "changed_components": [
+    "targeted_prompt",
+    "abnormal_worker_exit_policy"
+  ],
+  "metric_comparability": {
+    "wire_schema_and_host_quote_contract": "SAME_FROZEN_CONTRACT",
+    "event_semantic_quality": "NOT_EVALUATED_NO_HUMAN_GOLD",
+    "financial_predictive_value": "NOT_RUN"
+  },
+  "limitations": [
+    "The first ten articles were reused for development; no blind holdout or human event-quality adjudication.",
+    "The targeted prompt and abnormal-worker-exit policy changed together.",
+    "Status transitions include failures and unattempted positions; paired stage counts use only completed responses in both runs.",
+    "Host quote matching tests exact string presence, not whether it supports a company event or impact direction.",
+    "GPU observations do not establish the causal effect of SDPA or exact selected kernel.",
+    "No financial labels, predictions, or return evaluation."
+  ],
+  "private_pair_sha256": "89627761d975b96dd674ad1209d4b9373543d611aa54e48ae3f3345adaa4519b"
+}

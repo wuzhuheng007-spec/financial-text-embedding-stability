@@ -1,0 +1,438 @@
+{
+  "schema": "news_n1_targeted_runtime_aggregate_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "audit_status": "PASS",
+  "audit_issue_codes": [],
+  "pipeline_version": "wire_v2_exact_quote_targeted_prompt_v1",
+  "run_status": "TARGETED_RUN_FINISHED",
+  "run_started_at_utc": "2026-11-14T19:51:56+00:00",
+  "run_finished_at_utc": "2026-11-14T20:11:13+00:00",
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719",
+  "runner_sha256": "1b2d9d6eb7946a0f51b1cc4818b4e1aa9451257d07a21e584ce9b532988b479b",
+  "recovery": null,
+  "contract_sha256": {
+    "schema": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "wire_schema": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "prompt": "a0f9ceb41fd9ddfb45923d15f1352b62c2f24b142de94bcd1068cc7f4d06375e",
+    "adapter": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+    "validator": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "model_integrity_receipt_sha256": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+  "generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "configured_attention_implementation": "sdpa",
+  "actual_sdpa_kernel": "UNKNOWN",
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "full_text_token_preflight": {
+    "target_articles": 10,
+    "fit_with_output_reserve": 10,
+    "prompt_tokens": {
+      "count": 10,
+      "minimum": 2804,
+      "median": 3327.0,
+      "maximum": 4146
+    },
+    "configured_context_cap_tokens": 32768,
+    "effective_context_limit_tokens": 32768,
+    "reserved_output_tokens": 1024,
+    "maximum_prompt_plus_reserve_tokens": 5170,
+    "interpretation": "Context fit does not imply GPU-memory fit or identify an OOM cause."
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "model_calls_attempted": 10,
+    "worker_process_started": 10,
+    "model_load_completed": 10,
+    "generation_started": 10,
+    "model_calls_completed": 7,
+    "model_call_failures": 3,
+    "orphan_response_files": 0,
+    "raw_json_valid": 6,
+    "wire_schema_valid": 0,
+    "host_body_hash_valid": 0,
+    "quotes_checked": 0,
+    "quotes_unique_exact": 0,
+    "quotes_ambiguous": 0,
+    "quotes_not_found": 0,
+    "quotes_invalid": 0,
+    "canonical_constructible": 0,
+    "canonical_schema_valid": 0,
+    "canonical_mechanical_valid": 0,
+    "no_spans_requested": 0,
+    "empty_records_response": 0
+  },
+  "status_counts": {
+    "CALL_TIMEOUT": 3,
+    "JSON_PARSE_ERROR": 1,
+    "WIRE_SCHEMA_INVALID": 6
+  },
+  "stop_reason_counts": {
+    "EOS": 6,
+    "OUTPUT_TOKEN_BUDGET_POSSIBLY_TRUNCATED": 1
+  },
+  "wire_error_keyword_occurrences": {
+    "CONST": 4,
+    "ENUM": 2,
+    "MAXITEMS": 1,
+    "MINITEMS": 2
+  },
+  "wire_error_field_keyword_occurrences": {
+    "MARKET_OUTCOME_DIRECTION:CONST": 4,
+    "RECORDS.[].EVIDENCE_SPANS:MINITEMS": 2,
+    "RECORDS.[].UNKNOWN_REASON:ENUM": 2,
+    "RECORDS:MAXITEMS": 1
+  },
+  "canonical_error_keyword_occurrences": {},
+  "canonical_mechanical_issue_counts": {},
+  "quote_status_counts": {},
+  "quote_rates": {
+    "generation_started": {
+      "numerator": 10,
+      "conditional_denominator": 10,
+      "conditional_rate": 1.0,
+      "conditional_status": "EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 1.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 1.0
+    },
+    "model_calls_completed": {
+      "numerator": 7,
+      "conditional_denominator": 10,
+      "conditional_rate": 0.7,
+      "conditional_status": "EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.7,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.7
+    },
+    "raw_json_valid": {
+      "numerator": 6,
+      "conditional_denominator": 7,
+      "conditional_rate": 0.8571428571428571,
+      "conditional_status": "EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.6,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.6
+    },
+    "wire_schema_valid": {
+      "numerator": 0,
+      "conditional_denominator": 6,
+      "conditional_rate": 0.0,
+      "conditional_status": "EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "host_body_hash_valid": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "conditional_status": "NOT_EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_constructible": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "conditional_status": "NOT_EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_schema_valid": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "conditional_status": "NOT_EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_mechanical_valid": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "conditional_status": "NOT_EVALUATED",
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "attempted_status": "EVALUATED",
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "quote_unique_exact": {
+      "numerator": 0,
+      "quote_denominator": 0,
+      "quote_rate": null,
+      "quote_status": "NOT_EVALUATED",
+      "unit": "quotes_not_articles",
+      "zero_quotes_is_success": false
+    }
+  },
+  "wire_valid_output_distribution": {
+    "response_denominator": 0,
+    "article_disposition_counts": {},
+    "records_per_response_counts": {},
+    "empty_records_response_count": 0
+  },
+  "gpu_memory": {
+    "snapshot_count": 44,
+    "by_stage": {
+      "AFTER_GENERATION": {
+        "snapshots": 7,
+        "bytes": {
+          "free_bytes": {
+            "observed": 7,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "total_bytes": {
+            "observed": 7,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 7,
+            "minimum": 6295265280,
+            "maximum": 6295276544
+          },
+          "reserved_bytes": {
+            "observed": 7,
+            "minimum": 7813988352,
+            "maximum": 8581545984
+          },
+          "max_allocated_bytes": {
+            "observed": 7,
+            "minimum": 7709121536,
+            "maximum": 8509457408
+          },
+          "max_reserved_bytes": {
+            "observed": 7,
+            "minimum": 7813988352,
+            "maximum": 8581545984
+          }
+        }
+      },
+      "AFTER_MODEL_LOAD": {
+        "snapshots": 10,
+        "bytes": {
+          "free_bytes": {
+            "observed": 10,
+            "minimum": 1024794624,
+            "maximum": 1607716864
+          },
+          "total_bytes": {
+            "observed": 10,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 10,
+            "minimum": 6285648384,
+            "maximum": 6285648384
+          },
+          "reserved_bytes": {
+            "observed": 10,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          },
+          "max_allocated_bytes": {
+            "observed": 10,
+            "minimum": 6285648384,
+            "maximum": 6285648384
+          },
+          "max_reserved_bytes": {
+            "observed": 10,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          }
+        }
+      },
+      "BEFORE_GENERATION": {
+        "snapshots": 10,
+        "bytes": {
+          "free_bytes": {
+            "observed": 10,
+            "minimum": 968671232,
+            "maximum": 1607716864
+          },
+          "total_bytes": {
+            "observed": 10,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 10,
+            "minimum": 6285670912,
+            "maximum": 6285681664
+          },
+          "reserved_bytes": {
+            "observed": 10,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          },
+          "max_allocated_bytes": {
+            "observed": 10,
+            "minimum": 6285670912,
+            "maximum": 6285681664
+          },
+          "max_reserved_bytes": {
+            "observed": 10,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          }
+        }
+      },
+      "WORKER_CREATED": {
+        "snapshots": 10,
+        "bytes": {
+          "free_bytes": {
+            "observed": 10,
+            "minimum": 11561598976,
+            "maximum": 11561598976
+          },
+          "total_bytes": {
+            "observed": 10,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "reserved_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "max_allocated_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "max_reserved_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "WORKER_FINALLY": {
+        "snapshots": 7,
+        "bytes": {
+          "free_bytes": {
+            "observed": 7,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "total_bytes": {
+            "observed": 7,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 7,
+            "minimum": 6295265280,
+            "maximum": 6295276544
+          },
+          "reserved_bytes": {
+            "observed": 7,
+            "minimum": 7813988352,
+            "maximum": 8581545984
+          },
+          "max_allocated_bytes": {
+            "observed": 7,
+            "minimum": 7709121536,
+            "maximum": 8509457408
+          },
+          "max_reserved_bytes": {
+            "observed": 7,
+            "minimum": 7813988352,
+            "maximum": 8581545984
+          }
+        }
+      }
+    },
+    "peak_reset_stage_counts": {
+      "BEFORE_MODEL_LOAD": 10
+    },
+    "configured_attention": "sdpa",
+    "actual_sdpa_kernel": "UNKNOWN",
+    "interpretation": "CUDA snapshots are observed allocation counters, not a causal OOM attribution; SDPA configuration does not identify the selected kernel."
+  },
+  "gpu_host_observed": {
+    "before_free_mib": 7877,
+    "before_used_mib": 4068,
+    "final_free_mib": 8009,
+    "final_used_mib": 3936,
+    "recovery_free_mib": null,
+    "recovery_used_mib": null,
+    "after_attempt_snapshots": 10,
+    "own_worker_exits_observed": 3,
+    "caution": "Host free memory can change because of other processes; before/after difference is not causal GPU use."
+  },
+  "timing_seconds": {
+    "attempt_wall_includes_cold_load": {
+      "count": 10,
+      "minimum": 50.75,
+      "median": 98.21899999999732,
+      "maximum": 182.40599999998813
+    },
+    "generation_synced": {
+      "count": 7,
+      "minimum": 32.89100000000326,
+      "median": 72.84299999999348,
+      "maximum": 120.5
+    }
+  },
+  "response_set_sha256": "2433764cf6bf06a4892ba7e200b4a8d9a2780bea802ca4af0a323c40749a2fe0",
+  "private_receipt_hashes": {
+    "run_events_sha256": "ad610a24a6428d9ff9414f9594ae846235cf3eba440747b9359f4dcd3488fbdf",
+    "local_manifest_sha256": "4f2a9a1e356845b7dfdad570a03b61f6b07df60dd04fea85243d8e2eb6e562c7",
+    "token_preflight_sha256": "eca8b5b76f69218b6f06b067bc1a8541e449ace4f543680149035273d11482e9",
+    "shareable_summary_sha256": "70485c0ca3289ed7d2aeca536a1227a3edcc2a889dc6ea1c854d78749ddbcbce",
+    "gpu_host_preflight_sha256": "a612d47d4d5f5341806da9339ad99025edcbb2d3adbf5544f076a25686b66f9a",
+    "gpu_host_final_sha256": "df452a2a832a1e08de3bb11f403328ac9b272e99781aca7259105069c402f377",
+    "gpu_host_resume_preflight_sha256": null,
+    "original_runner_source_sha256": null,
+    "gpu_worker_set_sha256": "3cd124cd750788dcbc2cc485cfbab6f0e02ffdf0125bc6febc817dfae9ab61e1"
+  },
+  "limitations": [
+    "Same first ten development articles; no blind or independent test.",
+    "Host input binding is a program integrity check, not model hash copying skill.",
+    "Exact unique quotes and host offsets are not model offset accuracy or semantic support.",
+    "Old model-authored offset metric and new quote-grounding metric have different definitions.",
+    "Compared with v4, the targeted prompt and worker-stop policy changed; this is not a single-factor causal test.",
+    "CUDA allocation snapshots cannot isolate an OOM cause or prove a fused SDPA kernel.",
+    "No independent human extraction-quality adjudication or financial evaluation.",
+    "Abnormal worker exits stop subsequent calls; a retained orphan response file is not a completed model answer."
+  ]
+}

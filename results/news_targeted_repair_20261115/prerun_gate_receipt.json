@@ -1,0 +1,96 @@
+{
+  "schema": "news_n1_targeted_prerun_gate_v1",
+  "observed_at_utc": "2026-11-14T19:50:47+00:00",
+  "timezone": "Asia/Shanghai",
+  "status": "PASS_INTEGRITY_AND_CONTEXT_ONLY",
+  "model_calls": 0,
+  "full_text_articles_checked": 10,
+  "all_fit_with_output_budget": true,
+  "context_limit_tokens": 32768,
+  "reserved_new_tokens": 1024,
+  "prompt_tokens": [
+    {
+      "ordinal": 1,
+      "prompt_tokens": 3248,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 2,
+      "prompt_tokens": 3562,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 3,
+      "prompt_tokens": 2856,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 4,
+      "prompt_tokens": 3406,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 5,
+      "prompt_tokens": 3176,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 6,
+      "prompt_tokens": 2864,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 7,
+      "prompt_tokens": 3756,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 8,
+      "prompt_tokens": 3437,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 9,
+      "prompt_tokens": 4146,
+      "fits_with_output_budget": true
+    },
+    {
+      "ordinal": 10,
+      "prompt_tokens": 2804,
+      "fits_with_output_budget": true
+    }
+  ],
+  "prompt_tokens_min": 2804,
+  "prompt_tokens_median": 3327.0,
+  "prompt_tokens_max": 4146,
+  "config_sha256": "f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719",
+  "runner_sha256": "1b2d9d6eb7946a0f51b1cc4818b4e1aa9451257d07a21e584ce9b532988b479b",
+  "preflight_script_sha256": "ed99cadeeaaefb2b4638a1f343b11768d896fb511cf6c4cb71c1749e15be307a",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "prompt_sha256": "a0f9ceb41fd9ddfb45923d15f1352b62c2f24b142de94bcd1068cc7f4d06375e",
+  "adapter_sha256": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_file_hashes_sha256": "515cc4186a7431ffd2ae609f4d03157ebe3c23eb952d1a8e03cc835201d6620e",
+  "tokenizer_chat_template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "runtime": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.6.2",
+    "jsonschema": "4.26.0"
+  },
+  "attention_requested": "sdpa",
+  "actual_attention_kernel": "UNKNOWN",
+  "gpu_free_mib": 7895,
+  "gpu_used_mib": 4050,
+  "gpu_total_mib": 12227,
+  "active_compute_process_count": 7,
+  "own_news_python_process_count": 0,
+  "future_gpu_fit_guaranteed": false,
+  "model_forward_or_generation_executed": false
+}

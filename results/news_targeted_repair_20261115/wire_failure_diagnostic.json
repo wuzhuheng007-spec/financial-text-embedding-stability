@@ -1,0 +1,54 @@
+{
+  "schema": "wire_failure_diagnostic_v1",
+  "model_calls": 0,
+  "counts": {
+    "responses": 9,
+    "json_valid": 8,
+    "wire_invalid": 7,
+    "wire_valid": 1,
+    "json_invalid": 1
+  },
+  "error_instances": 14,
+  "error_groups": [
+    {
+      "path": "/article_disposition",
+      "keyword": "enum",
+      "instances": 4
+    },
+    {
+      "path": "/article_evidence/*/role",
+      "keyword": "enum",
+      "instances": 4
+    },
+    {
+      "path": "/market_outcome_direction",
+      "keyword": "const",
+      "instances": 1
+    },
+    {
+      "path": "/records/*/evidence_spans/*/role",
+      "keyword": "enum",
+      "instances": 4
+    },
+    {
+      "path": "/records/*/unknown_reason",
+      "keyword": "not",
+      "instances": 1
+    }
+  ],
+  "enum_patterns": {
+    "other_unlisted_string": 12
+  },
+  "quotes_from_wire_valid_only": {
+    "UNIQUE_EXACT": 7,
+    "NOT_FOUND": 1
+  },
+  "limitations": [
+    "No repair or canonical construction.",
+    "Quotes are not independent articles or semantic accuracy.",
+    "Raw values and response-level details are private."
+  ],
+  "input_export_sha256": "4410b6f04acea7f555246ac3850d46f3941c663c10bdb95bbe14d3f166f06f46",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "private_details_sha256": "94ed0650a1e42dd64f2763d58b05cb981d2dc7dcb50e3b28972b5312e489389c"
+}

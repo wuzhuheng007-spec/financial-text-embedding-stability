@@ -1,0 +1,109 @@
+{
+  "schema": "news_targeted_prompt_freeze_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "source_v4_diagnostic": "results/news_targeted_repair_20261115/wire_failure_diagnostic.json",
+  "source_v4_diagnostic_sha256": "a52b19b5de76687f5eb5bcea0a4c096b69e6c7407affffa6614a755e697429b2",
+  "v4_audit_sha256": "6ff871a1dd48a68e18467141944f652f4b4feeff75874b9fd7db3ef2c36c642f",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "prompt_v3_sha256": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+  "prompt_v4_targeted_sha256": "a0f9ceb41fd9ddfb45923d15f1352b62c2f24b142de94bcd1068cc7f4d06375e",
+  "label_table_renderer_sha256": "e5b0c568c6076ad80f949a334d5bfae1ecf3c7efe2fa0fb702459b9843969d3d",
+  "v4_config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+  "v5_config_sha256": "f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719",
+  "diagnostic_error_instances": 14,
+  "targets": [
+    {
+      "field": "/article_disposition",
+      "instances": 4,
+      "prompt_location": "BEGIN_ALLOWED_LABELS and linked disposition/reason rules"
+    },
+    {
+      "field": "/article_evidence/*/role",
+      "instances": 4,
+      "prompt_location": "BEGIN_ALLOWED_LABELS and exact evidence-role instruction"
+    },
+    {
+      "field": "/records/*/evidence_spans/*/role",
+      "instances": 4,
+      "prompt_location": "BEGIN_ALLOWED_LABELS and exact evidence-role instruction"
+    },
+    {
+      "field": "/market_outcome_direction",
+      "instances": 1,
+      "prompt_location": "NO -> NOT_REPORTED linked rule"
+    },
+    {
+      "field": "/records/*/unknown_reason",
+      "instances": 1,
+      "prompt_location": "UNKNOWN impact -> non-NONE supported reason rule"
+    }
+  ],
+  "other_observed_failures": [
+    {
+      "stage": "quote",
+      "count": 1,
+      "prompt_location": "short exact body substring including leading words; no paraphrase"
+    },
+    {
+      "stage": "json",
+      "count": 1,
+      "prompt_location": "concise free-text fields without limiting event count; 1024-token budget unchanged"
+    }
+  ],
+  "config_changed_fields": [
+    {
+      "field": "baseline_commit",
+      "v4": "bbfa7741e231ab44226b4726a73993f58a468ea4",
+      "v5": "6318de6d53ba218d82587990c4cc89f14b15879f"
+    },
+    {
+      "field": "baseline_config_sha256",
+      "v4": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+      "v5": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3"
+    },
+    {
+      "field": "contract.prompt_path",
+      "v4": "docs/news_research/company_event_prompt_v3_quotes.md",
+      "v5": "docs/news_research/company_event_prompt_v4_targeted.md"
+    },
+    {
+      "field": "contract.prompt_sha256",
+      "v4": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+      "v5": "a0f9ceb41fd9ddfb45923d15f1352b62c2f24b142de94bcd1068cc7f4d06375e"
+    },
+    {
+      "field": "created_date",
+      "v4": "2026-11-14",
+      "v5": "2026-11-15"
+    },
+    {
+      "field": "experiment_id",
+      "v4": "news_grounding_runtime_wire_v2_sdpa_v1",
+      "v5": "news_targeted_repair_prompt_v4_20261115"
+    },
+    {
+      "field": "pipeline_version",
+      "v4": "wire_v2_exact_quote_host_binding_v1",
+      "v5": "wire_v2_exact_quote_targeted_prompt_v1"
+    },
+    {
+      "field": "purpose",
+      "v4": "development-only wire-v2 exact-quote grounding and SDPA runtime diagnosis; no extraction accuracy or financial claim",
+      "v5": "single targeted prompt repair on the fixed first ten development articles; no extraction-quality or financial claim"
+    },
+    {
+      "field": "runtime_policy",
+      "v4": "separate local environment; offline inference; one worker per article; no automatic retry or resume; stop on OOM",
+      "v5": "separate local offline environment; one worker per article; zero retry or automatic resume; stop after OOM, native process crash, nonzero worker exit or missing response; preserve committed launch journal"
+    },
+    {
+      "field": "schema",
+      "v4": "news_n1_smoke_config_v4_grounded",
+      "v5": "news_n1_smoke_config_v5_targeted"
+    }
+  ],
+  "example_in_prompt": false,
+  "model_calls_for_design": 0,
+  "interpretation": "One prompt candidate targets observed development errors; no semantic labels, schema, validator, model or generation budget were changed."
+}

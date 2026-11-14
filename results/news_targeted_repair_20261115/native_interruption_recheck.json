@@ -1,0 +1,37 @@
+{
+  "schema": "news_n1_old_native_interruption_recheck_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "old_run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+  "interrupted_ordinal": 2,
+  "phase_events": [
+    "WORKER_PROCESS_STARTED",
+    "CUDA_PEAK_RESET",
+    "CUDA_MEMORY"
+  ],
+  "model_loaded_marker": false,
+  "generation_started_marker": false,
+  "response_saved": false,
+  "stderr_saved": false,
+  "worker_exit_code_recorded_by_original_parent": false,
+  "original_last_event": "WORKER_LAUNCH_COMMITTED",
+  "contemporaneous_os_events": [
+    {
+      "application": "python.exe",
+      "module": "c10.dll",
+      "exception_code": "0xc0000005"
+    },
+    {
+      "application": "codex.exe",
+      "exception_code": "0xc0000409"
+    }
+  ],
+  "causal_relationship": "UNKNOWN",
+  "oom_classification_supported": false,
+  "evidence_sha256": {
+    "old_public_interruption_observation": "b6b6d17735f67c91112a6148651ab1392c6e82b65c1a60d994b4f5846f730334",
+    "old_private_phase_02": "2625ce266226b04f25bb0a19899197071f24466800f95746b662065e1619d114",
+    "old_private_prestate_events": "247f60cc9fae4fcc60ebf8de50accb81bc1e2018502bb493daaeca5784cc31df"
+  },
+  "interpretation": "A committed second launch has only a worker-created CUDA snapshot. No saved stderr, exit code, model-loaded marker, generation-start marker, or response establishes its exact failure mechanism. The OS events are contemporaneous, not process-linked proof."
+}

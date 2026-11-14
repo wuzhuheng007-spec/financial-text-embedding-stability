@@ -1,0 +1,16 @@
+{
+  "schema": "news_n1_human_review_preparation_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "development_articles": 10,
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+  "dataset_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+  "review_code_sha256": "ad066fc4a012bba183cc625b5110e28834bbb5215397cacd78ba2286738c38dc",
+  "private_manifest_sha256": "3fb34b6a42d2421eec87b175d63d182a3e05af1bffd42b4e925aec4e88011e05",
+  "ai_draft_embedded": false,
+  "adjudications_prefilled": false,
+  "annotation_completed": 0,
+  "interpretation": "Local article-first blank review entry only; prior model exposure must be disclosed by each reviewer. No quality result."
+}

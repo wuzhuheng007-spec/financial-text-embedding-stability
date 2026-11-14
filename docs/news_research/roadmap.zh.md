@@ -2,7 +2,9 @@
 
 [English full text](roadmap.en.md) · [项目入口](README.md) · [来源接入](source_access.md)
 
-更新：2026-11-14（Asia/Shanghai）。版本：1.6。研究状态 **PROPOSED**；原作者有界样本和官方固定 Qwen 3B 快照继续固定。[v3 开发复测](../../reports/2026-11-14_news_schema_repair.zh.md)尝试三次后停止，两份已保存响应虽符合 Schema，但均未通过最终机械检查。[旧引用只读诊断](../../results/news_grounding_runtime_20261114/old_failure_diagnosis.json)确认三条引用中两条原文唯一逐字存在、一条重复、零条缺失，而旧模型自报位置均不匹配。独立的 [v4 有界开发运行](../../reports/2026-11-14_news_grounding_runtime.zh.md)尝试固定十篇、保存九份响应，一次调用因外部进程中断而无响应。[独立审计](../../results/news_grounding_runtime_20261114/inference_aggregate.json)通过：JSON 可解析 8/9、wire 合法 1/8、引用唯一逐字匹配 7/8、wire 合法响应中 canonical 可构造 0/1。主机计算的位置和附加绑定不是模型准确率。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
+更新：2026-11-15（Asia/Shanghai）。版本：1.7。研究状态 **PROPOSED**；原作者有界样本和官方固定 Qwen 3B 快照继续固定。[v3 开发复测](../../reports/2026-11-14_news_schema_repair.zh.md)尝试三次后停止，两份已保存响应虽符合 Schema，但均未通过最终机械检查。[旧引用只读诊断](../../results/news_grounding_runtime_20261114/old_failure_diagnosis.json)确认三条引用中两条原文唯一逐字存在、一条重复、零条缺失，而旧模型自报位置均不匹配。独立的 [v4 有界开发运行](../../reports/2026-11-14_news_grounding_runtime.zh.md)尝试固定十篇、保存九份响应，一次调用因外部进程中断而无响应。[独立审计](../../results/news_grounding_runtime_20261114/inference_aggregate.json)通过：JSON 可解析 8/9、wire 合法 1/8、引用唯一逐字匹配 7/8、wire 合法响应中 canonical 可构造 0/1。主机计算的位置和附加绑定不是模型准确率。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
+
+[11 月 15 日定向修复报告](../../reports/2026-11-15_news_targeted_repair.zh.md)记录保存的 v4 响应的离线逐字段诊断，以及冻结的一个提示词候选。[A–E 台账](../../results/news_targeted_repair_20261115/plan_execution.csv)区分设计、真实模型调用与审计。[已审计 v5 运行](../../results/news_targeted_repair_20261115/inference_aggregate.json)对固定十篇开发材料均开始生成，保存七份响应、三次超时；六份响应 JSON 合法，但无一通过 wire Schema，也没有完整公司事件输出。这十篇仍是重复使用的开发材料，机械检查不能支持抽取质量或金融结论。
 
 ## 1. 研究定位
 
@@ -72,6 +74,8 @@ Hugging Face 与金十是候选新闻来源，见第 12 节及来源接入登记
 用证据约束的结构化抽取，输出以下并列维度：事件类别、涉及主体、受影响公司、影响方向、影响强度、不确定性、公司相关性、事件新颖度、预期持续区间、直接/间接影响、引用文本和信息不足状态。
 
 当前 [N1 JSON Schema](company_event_output.schema.json)继续冻结：一篇文章版本可有多个事件×目标公司条目，也可明确记录无事件或无支持公司的状态。业务影响、文章已报道的市场结果和未观测未来收益分别表示；证据使用原始正文 Unicode 字符索引并由校验器检查。[原提示词](company_event_prompt.md)在首次开发冒烟产生九份不符合 Schema 的响应；[版本化候选提示词](company_event_prompt_v2.md)把完整 Schema 和一个虚构格式示例直接放入 System 消息。两项添加属于同一个候选变化，不能拆开归因。机械回执与抽取准确率分开，人工栏仍为空。
+
+当前 wire v2 流程要求模型给出原正文引用，仅在引用唯一逐字匹配后由主机计算字符位置。[定向提示词](company_event_prompt_v4_targeted.md)针对[旧响应诊断](../../results/news_targeted_repair_20261115/wire_failure_diagnostic.json)中的五组失败字段，不改语义标签。独立的 v5 运行规则在 OOM 或原生 worker 故障时停止；该生命周期变化也限制 v4–v5 差异的因果解释。仍需独立公司事件人工裁定。
 
 同一事件可产生多个公司条目。新品对发布方的影响也应按文本判断；不能把所有竞争关系机械设成负面。没有被新闻直接讨论的公司，可以由当时可用关系图产生候选受影响对象，但间接路径必须有出处，并标成推断假设，不伪装为原文事实。
 

@@ -1,0 +1,11 @@
+N1 v5 targeted runner pre-run engineering checks, 2026-11-15 Asia/Shanghai.
+No real model calls in these checks.
+Command: pinned isolated Python -m pytest -q -p no:cacheprovider tests/test_news_n1_targeted_runner.py
+Result: 9 passed in 7.13s.
+Command: pinned isolated Python scripts/preflight_news_n1_targeted.py with fixed sample/manifest and pinned local snapshot.
+Result: PASS_INTEGRITY_AND_CONTEXT_ONLY; 10 full articles context-fit; no own news Python process; model calls 0; forward/generation false.
+Runner SHA-256: 1b2d9d6eb7946a0f51b1cc4818b4e1aa9451257d07a21e584ce9b532988b479b
+Preflight SHA-256: ed99cadeeaaefb2b4638a1f343b11768d896fb511cf6c4cb71c1749e15be307a
+Config SHA-256: f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719
+Prompt SHA-256: a0f9ceb41fd9ddfb45923d15f1352b62c2f24b142de94bcd1068cc7f4d06375e
+See prerun_gate_receipt.json for measured token/GPU/process observations. These are engineering checks, not extraction-quality trials.

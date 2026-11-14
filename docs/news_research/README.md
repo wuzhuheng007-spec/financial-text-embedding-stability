@@ -1,8 +1,8 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.6
+Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本：1.7
 
-**Status / 状态：PROPOSED。** 旧 v3 开发复测尝试三次后因 OOM 停止，保存两份机械检查未通过的响应。v4 另版采用模型给原文引用、主机严格唯一匹配后计算位置，并请求 SDPA。真实有界 v4 运行尝试固定十篇、保存九份响应，其中一次原生进程中断；八份 JSON 可解析，一份符合 wire Schema，八条引用中七条唯一匹配、一条未找到，**canonical 可构造 0/1**。这是重复开发材料的工程结果，不是抽取质量或金融有效性结论。The earlier v3 retest stopped at OOM after three attempts and saved two mechanically invalid responses. The separate v4 version asks the model for body quotes, computes offsets only after unique exact matches, and requests SDPA. The bounded v4 run attempted the fixed ten articles and saved nine responses, with one native-process interruption; eight parsed as JSON, one passed the wire Schema, and seven of eight quotes were unique while one was missing, so **0/1** wire-valid response was canonically constructible. These are reused-development engineering results, not extraction-quality or financial-validity findings. Human adjudication and financial experiments remain **NOT_RUN**.
+**Status / 状态：PROPOSED。** 对 v4 保存的九份响应完成离线逐字段诊断：七份 wire 不合法响应中的 14 个错误实例落在五组字段；唯一 wire 合法响应仍因一条引用缺失而无法构造 canonical。另立一个定向提示词及 v5 配置后，对固定十篇开发材料进行一次有界运行，独立审计通过：十篇均尝试并开始生成，保存七份响应，三次超时；七份中六份 JSON 合法，**wire 合法 0/6，完整公司事件输出 0**。这不是抽取质量或金融有效性结论。Offline field-level diagnosis of saved v4 responses found 14 error instances across five field groups in the seven wire-invalid responses; the sole wire-valid response still lacked one quote and could not be canonically constructed. A single targeted prompt and separate v5 config were then used for one bounded run on the same ten development articles. The independent audit passed: all ten were attempted and generation-started, seven responses were saved, three calls timed out, six of seven responses were JSON-valid, **zero of six were wire-valid and no complete company-event output was obtained**. These engineering observations do not establish extraction quality or financial validity. Independent human adjudication and financial experiments remain **NOT_RUN**.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -35,6 +35,13 @@ Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本�
 | [V4 pre-run synthetic validation](../../results/news_grounding_runtime_20261114/pre_run_validation.log) · [candidate replay](../../results/news_grounding_runtime_20261114/candidate_validation_replay.json) | 52 项 pytest 测试含旧 33 项；候选 15 项断言单列，均不是新的真实模型结果 |
 | [Audited v4 run](../../results/news_grounding_runtime_20261114/inference_aggregate.json) · [paired status comparison](../../results/news_grounding_runtime_20261114/paired_comparison.json) | 十篇固定开发材料的尝试、响应、wire、引用和 canonical 分阶段数量；仅一篇有新旧完整配对响应 |
 | [Native interruption observation](../../results/news_grounding_runtime_20261114/native_interruption_observation.json) · [recovery validation](../../results/news_grounding_runtime_20261114/recovery_validation.log) | 第 2 次调用中断与恢复版本证据；进程崩溃因果关系 UNKNOWN |
+| [Targeted repair English report](../../reports/2026-11-15_news_targeted_repair.en.md) · [中文报告](../../reports/2026-11-15_news_targeted_repair.zh.md) | v4 失败字段诊断、唯一提示词候选及 v5 有界复测状态 |
+| [A–E targeted ledger](../../results/news_targeted_repair_20261115/plan_execution.csv) · [offline diagnostic](../../results/news_targeted_repair_20261115/wire_failure_diagnostic.json) · [reconciliation](../../results/news_targeted_repair_20261115/wire_failure_reconciliation.json) | 逐项计划—实际、14 个错误实例的字段组及旧聚合对账；原值留本机 |
+| [Native interruption recheck](../../results/news_targeted_repair_20261115/native_interruption_recheck.json) | 旧第 2 次调用无 stderr/退出码/响应，原生错误关系仍 UNKNOWN |
+| [Targeted prompt](company_event_prompt_v4_targeted.md) · [v5 config](../../configs/news_n1_smoke_v5_targeted.json) · [targeting receipt](../../results/news_targeted_repair_20261115/prompt_targeting_receipt.json) | 一个针对性候选，保留固定模型、输入、Schema、校验器及生成预算；停止规则另版记录 |
+| [V5 pre-run gate](../../results/news_targeted_repair_20261115/prerun_gate_receipt.json) · [synthetic suite](../../results/news_targeted_repair_20261115/pre_run_validation.log) | 十篇全文上下文适配，合并 37 项合成测试通过；尚非模型结果 |
+| [Audited v5 run](../../results/news_targeted_repair_20261115/inference_aggregate.json) · [v4–v5 paired comparison](../../results/news_targeted_repair_20261115/paired_comparison.json) | 十篇均发起并开始生成；七份响应、三次超时，wire 合法 0/6；六个位置两版均有响应 |
+| [Blank human review preparation](../../results/news_targeted_repair_20261115/human_review_preparation.json) | 十篇原文优先入口；尚无人工裁定或抽取质量结果 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
@@ -56,4 +63,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-复核 OOM 诊断并另立后续运行决定；在独立人工裁定和隔离事件簇样本上评价抽取质量前，不解释两份开发响应为泛化表现。历史身份、时间与完整金融协议继续单列。Review the OOM diagnostics and make a separate decision about any later run. Obtain independent human adjudications and an event-grouped holdout before assessing extraction quality; the two development responses do not establish general performance. Historical identity, timing and the full financial protocol remain separate.
+根据已保存的九个新 wire 错误实例、三次超时及一份 JSON 失败，单独审阅是否要改变提示词、输出契约或预算；任何新候选另立版本，避免重复盲目运行。推进原文优先的独立人工裁定与按事件簇隔离的评价。历史身份、时间与完整金融协议继续单列。Review the nine new wire error instances, three timeouts and one JSON failure to decide whether a separately versioned prompt, output contract or budget change is warranted. Avoid an unregistered rerun. Obtain article-first independent human adjudications and an event-grouped holdout. Historical identity, timing and the full financial protocol remain separate.
