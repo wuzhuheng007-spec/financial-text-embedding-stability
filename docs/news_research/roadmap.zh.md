@@ -1,3 +1,9 @@
+# 当前路线入口更新（2026-11-15）
+
+用户已明确转向宏观与系统性事件对大盘、科技行业和公司的传导。请优先读取[新路线](macro_tech/roadmap.zh.md)及[下一轮任务](macro_tech/01_CODEX_TASK.txt)。下方保留旧路线作历史资料；旧十篇和LMFE问题不再是当前主线。
+
+---
+
 # 整体技术路线：公司级新闻情绪、跨公司风险传播与稳定性
 
 [English full text](roadmap.en.md) · [项目入口](README.md) · [来源接入](source_access.md)

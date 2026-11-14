@@ -1,3 +1,9 @@
+# 2026-11-15 — Macro/systemic-event scope clarification / 宏观系统事件范围修订
+
+User clarified interest in broad-market events and technology spillovers. Added bilingual macro_tech roadmaps, source boundaries and a bounded event-discovery task. Paused old first-ten preference screening and legacy decoder debugging as the main workstream; preserved their results. New event collection and macro/financial experiments are NOT_RUN. 用户要求转向宏观/政策/地缘/融资/杠杆事件及科技股传导；新增双语路线和选样任务。保留旧失败，暂停旧主线。12张候选卡是拟执行目标，不是已取得数据。
+
+---
+
 # Change history / 修改记录
 
 ## 1.8 — 2026-11-15（Asia/Shanghai）

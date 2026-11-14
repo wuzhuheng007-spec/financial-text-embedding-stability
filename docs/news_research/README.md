@@ -1,3 +1,17 @@
+# News research — current scope / 新闻研究当前方向
+
+Updated 2026-11-15 (Asia/Shanghai), scope revision 1.9.
+
+**Active priority: macro/systemic events and transmission to the broad market and technology firms. 当前优先：宏观/系统性事件对大盘和科技股的传导。** The user has clarified the scope. The prior first-ten corpus is legacy engineering material; its manual screening and LMFE debugging are paused as the main task. Old failures remain recorded. 用户无需继续筛旧十篇；先收集符合新范围的真实事件，再做人审与分层抽取。
+
+- [中文新路线](macro_tech/roadmap.zh.md) · [English roadmap](macro_tech/roadmap.en.md)
+- [Next Codex task / 下一步执行任务](macro_tech/01_CODEX_TASK.txt) · [Sources / 来源边界](macro_tech/SOURCE_REGISTER.md)
+- [Current machine status / 当前状态](STATUS.json)
+
+The proposed first deliverable is up to twelve event-review cards; **collection, new macro inference and financial experiments are NOT_RUN**. Twelve is a work target, not an observed sample count. Full financial protocol acceptance is unchanged. 此次范围修订不代表金融协议已冻结。
+
+## Historical engineering record / 历史工程记录（以下旧“下一步”已由上述新任务替代）
+
 # News research roadmap / 新闻研究技术路线
 
 Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本：1.8

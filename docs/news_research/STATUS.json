@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.8",
+  "version": "1.9",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -37,8 +37,8 @@
       "existing_identity_source_blockers": "UNCHANGED"
     }
   },
-  "next_stage": "Resolve the pinned-tokenizer prefix-callback counterexamples or separately version a staged extraction design; rerun a bounded compatibility gate before any new model call. The assigned human reviewer can start the click-only article screen, while full company-event gold and a grouped holdout remain necessary for quality claims. Historical financial admission is separate.",
-  "next_stage_zh": "先解决固定 tokenizer 前缀回调的反例，或另立版本提出分步抽取设计；任何新模型调用前都须重新通过有界兼容性门槛。已认领的真人可开始点选式文章初筛，但完整公司事件 gold 与事件簇留出集仍是质量结论前提；历史金融准入另行处理。",
+  "next_stage": "MACRO_TECH_EVENT_DISCOVERY",
+  "next_stage_zh": "宏观与系统事件选样、科技传导框架；先交付相关候选卡",
   "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
   "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
   "planned_scope": [
@@ -188,7 +188,12 @@
   "n1_grounding_quotes_unique_exact": 7,
   "n1_grounding_quotes_not_found": 1,
   "n1_grounding_canonical_constructible": 0,
-  "n1_grounding_terminal_status_counts": {"WIRE_SCHEMA_INVALID": 7, "JSON_PARSE_ERROR": 1, "QUOTE_UNRESOLVED": 1, "INTERRUPTED_PROCESS_UNCLASSIFIED": 1},
+  "n1_grounding_terminal_status_counts": {
+    "WIRE_SCHEMA_INVALID": 7,
+    "JSON_PARSE_ERROR": 1,
+    "QUOTE_UNRESOLVED": 1,
+    "INTERRUPTED_PROCESS_UNCLASSIFIED": 1
+  },
   "n1_grounding_paired_completed_response_positions": 1,
   "n1_grounding_pre_run_context_fit_articles": 10,
   "n1_grounding_cuda_snapshots_available": 46,
@@ -257,5 +262,24 @@
   "n1_constrained_decode_choice_ui_receipt": "results/news_constrained_decode_20261115/human_choice_ui_receipt.json",
   "n1_constrained_decode_choice_ui_validation_log": "results/news_constrained_decode_20261115/human_choice_ui_validation.log",
   "n1_constrained_decode_human_adjudication": "SCREENING_REVIEWER_ASSIGNED_ZERO_OF_TEN_CHOICES_FULL_GOLD_NOT_RUN",
-  "n1_constrained_decode_financial_evaluation": "NOT_RUN"
+  "n1_constrained_decode_financial_evaluation": "NOT_RUN",
+  "active_research_scope": {
+    "name": "MACRO_SYSTEMIC_EVENTS_TO_TECH",
+    "user_scope_clarified": true,
+    "clarified_date": "2026-11-15",
+    "roadmap_zh": "docs/news_research/macro_tech/roadmap.zh.md",
+    "roadmap_en": "docs/news_research/macro_tech/roadmap.en.md",
+    "next_task": "docs/news_research/macro_tech/01_CODEX_TASK.txt",
+    "legacy_first10_role": "LEGACY_ENGINEERING_DEV",
+    "legacy_manual_screening_priority": "PAUSED_BY_SCOPE_CHANGE",
+    "legacy_backend_priority": "PAUSED_LEGACY_BACKEND",
+    "legacy_gate_result_preserved": true,
+    "event_card_target": 12,
+    "event_card_target_is_observed_count": false,
+    "event_collection": "NOT_RUN",
+    "new_macro_inference": "NOT_RUN",
+    "human_gold": "NOT_RUN",
+    "financial_experiments": "NOT_RUN",
+    "full_financial_protocol_acceptance_unchanged": true
+  }
 }

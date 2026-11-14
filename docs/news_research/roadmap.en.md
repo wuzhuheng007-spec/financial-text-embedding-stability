@@ -1,3 +1,9 @@
+# Current roadmap update (2026-11-15)
+
+The user has clarified a macro/systemic-event focus for broad-market and technology transmission. Read the [current roadmap](macro_tech/roadmap.en.md) and [next task](macro_tech/01_CODEX_TASK.txt). The prior roadmap below is retained as history; the old ten-article corpus and LMFE issue are no longer the primary task.
+
+---
+
 # Technical roadmap: company-specific news, risk spillovers and representation stability
 
 [中文全文](roadmap.zh.md) · [Project entry point](README.md) · [Source access](source_access.md)
