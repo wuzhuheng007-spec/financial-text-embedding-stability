@@ -1,0 +1,90 @@
+{
+  "schema": "news_decode_v5_evidence_recheck_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "model_calls": 0,
+  "v5_aggregate_sha256": "c13db425b23c7dc882d00671e01ca20445cca543dd0ca61d8adee745335d53ba",
+  "v5_local_manifest_sha256": "4f2a9a1e356845b7dfdad570a03b61f6b07df60dd04fea85243d8e2eb6e562c7",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "config_sha256": "f62625156bb1866c5d809a5831a1625999a111258f31ffacf2ae090083053719",
+  "wire_input_sha256_by_ordinal": {
+    "1": "de2f05e2c542e76d68109391673425c21361d6e6445e47ff42359a75e1955355",
+    "2": "0cd7bdc18a1838f6b0c141dee3ae8e1f2531085f4dfcc524f7179193166f6f2e",
+    "3": "0080082f6e6e9212b7e834c959e4b15316bcea1db2e8e99be335d3ca3e1b653e",
+    "5": "fd80f9ba19ae5aa99a6434552dd739d2bb16ec4bb5e29a89d4d2be7b1becf184",
+    "6": "c81274f4a6365ecf3f90988d3a6b43704722604950f1abad9aa4c4ec544d11f5",
+    "8": "230e37e6e74e0f1063004737084b8dc7d49628a038d7a7da8e1664ba33441c9b"
+  },
+  "json_valid_responses_reviewed": 6,
+  "schema_error_instances": 9,
+  "field_keyword_occurrences": {
+    "MARKET_OUTCOME_DIRECTION:CONST": 4,
+    "RECORDS.[].EVIDENCE_SPANS:MINITEMS": 2,
+    "RECORDS.[].UNKNOWN_REASON:ENUM": 2,
+    "RECORDS:MAXITEMS": 1
+  },
+  "observed_shape_counts": {
+    "MARKET_OUTCOME_DIRECTION:CONST:string": 4,
+    "RECORDS.[].EVIDENCE_SPANS:MINITEMS:array_length_1": 2,
+    "RECORDS.[].UNKNOWN_REASON:ENUM:json_null": 2,
+    "RECORDS:MAXITEMS:array_length_1": 1
+  },
+  "actual_generated_values_reviewed_private": true,
+  "timeouts": [
+    {
+      "ordinal": 4,
+      "wall_seconds": 181.40599999998813,
+      "last_saved_worker_phase": "GENERATION_STARTED",
+      "generation_started_at_asia_shanghai": "2026-11-15T03:56:07+08:00",
+      "before_generation_free_bytes": 968671232,
+      "before_generation_allocated_bytes": 6285676032,
+      "before_generation_reserved_bytes": 6438256640,
+      "phase_sha256": "feb02e6bd50d450ad99cd18fd2bf64e920b72170cae511cd9d6a2ba7e6e9d006",
+      "intermediate_token_timing_saved": false
+    },
+    {
+      "ordinal": 7,
+      "wall_seconds": 181.51600000000326,
+      "last_saved_worker_phase": "GENERATION_STARTED",
+      "generation_started_at_asia_shanghai": "2026-11-15T04:02:05+08:00",
+      "before_generation_free_bytes": 1183363072,
+      "before_generation_allocated_bytes": 6285678592,
+      "before_generation_reserved_bytes": 6438256640,
+      "phase_sha256": "f30dcaf2edb4b97cfe64cf73388347e3a34922097c66eb9bc8ec1ef2abee2c09",
+      "intermediate_token_timing_saved": false
+    },
+    {
+      "ordinal": 9,
+      "wall_seconds": 182.40599999998813,
+      "last_saved_worker_phase": "GENERATION_STARTED",
+      "generation_started_at_asia_shanghai": "2026-11-15T04:06:07+08:00",
+      "before_generation_free_bytes": 1595129856,
+      "before_generation_allocated_bytes": 6285681664,
+      "before_generation_reserved_bytes": 6438256640,
+      "phase_sha256": "dd7e87c1746487357235ba26025d9ba208c22bbad27f6a3eca30c06f5d99425d",
+      "intermediate_token_timing_saved": false
+    }
+  ],
+  "post_generation_cuda_mem_get_info": {
+    "source": "torch.cuda.mem_get_info in frozen v5 runner",
+    "saved_response_snapshots": 7,
+    "free_bytes_zero_snapshots": 7,
+    "interpretation": "Seven returned CUDA API values of zero free bytes. This is not an OOM or a causal explanation of timeouts."
+  },
+  "current_gpu_observation": {
+    "observed_at_local": "2026-11-15T05:46:50.196885+08:00",
+    "query_available": true,
+    "total_mib": 12227,
+    "used_mib": 2572,
+    "free_mib": 9373,
+    "compute_process_rows": 5
+  },
+  "limitations": [
+    "No model call, old result repair, or human annotation.",
+    "Timeouts have no saved intermediate token counts or interval timing after generation started.",
+    "Current GPU use is a later host snapshot with other processes; it cannot explain the old timeouts.",
+    "Raw generated labels and article/response text remain local."
+  ],
+  "private_details_sha256": "f719d9b8d9e9ade243d5cb04181fbca7fbfc43ddf0c74fd48be28bf8f179a31a"
+}

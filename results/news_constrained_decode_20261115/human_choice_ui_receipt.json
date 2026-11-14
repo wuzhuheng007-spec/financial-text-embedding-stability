@@ -1,0 +1,15 @@
+{
+  "schema": "n1_choice_review_ui_receipt_v1",
+  "model_calls": 0,
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "review_manifest_sha256": "3fb34b6a42d2421eec87b175d63d182a3e05af1bffd42b4e925aec4e88011e05",
+  "article_pages": 10,
+  "question_count": 8,
+  "core_question_count": 6,
+  "initial_human_adjudications": 0,
+  "ai_draft_embedded": false,
+  "article_text_embedded": false,
+  "free_text_inputs": 0,
+  "private_page_sha256": "9df927addb493539b0deff66a743aec4458bb92fbe40f481889f69c2b06aa8e6",
+  "interpretation": "Click-only article screening, not full company-event gold; private exports stay local."
+}

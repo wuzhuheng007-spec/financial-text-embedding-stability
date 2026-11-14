@@ -1,0 +1,1430 @@
+[
+  {
+    "name": "root_COMPANY_EVENTS_FOUND_NO",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "root_COMPANY_EVENTS_FOUND_YES",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "YES",
+      "market_outcome_direction": "UP",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "root_COMPANY_EVENTS_FOUND_UNKNOWN",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "UNKNOWN",
+      "market_outcome_direction": "UNKNOWN",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "root_NO_IDENTIFIABLE_EVENT_NO",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_IDENTIFIABLE_EVENT",
+      "article_unknown_reason": "NO_EVENT",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_NO_IDENTIFIABLE_EVENT_YES",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_IDENTIFIABLE_EVENT",
+      "article_unknown_reason": "NO_EVENT",
+      "market_outcome_reported": "YES",
+      "market_outcome_direction": "UP",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_NO_IDENTIFIABLE_EVENT_UNKNOWN",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_IDENTIFIABLE_EVENT",
+      "article_unknown_reason": "NO_EVENT",
+      "market_outcome_reported": "UNKNOWN",
+      "market_outcome_direction": "UNKNOWN",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_NO_SUPPORTED_COMPANY_NO",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_SUPPORTED_COMPANY",
+      "article_unknown_reason": "NO_COMPANY_LINK",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_NO_SUPPORTED_COMPANY_YES",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_SUPPORTED_COMPANY",
+      "article_unknown_reason": "NO_COMPANY_LINK",
+      "market_outcome_reported": "YES",
+      "market_outcome_direction": "UP",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_NO_SUPPORTED_COMPANY_UNKNOWN",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "NO_SUPPORTED_COMPANY",
+      "article_unknown_reason": "NO_COMPANY_LINK",
+      "market_outcome_reported": "UNKNOWN",
+      "market_outcome_direction": "UNKNOWN",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_UNDETERMINED_NO",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "UNDETERMINED",
+      "article_unknown_reason": "OTHER",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_UNDETERMINED_YES",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "UNDETERMINED",
+      "article_unknown_reason": "OTHER",
+      "market_outcome_reported": "YES",
+      "market_outcome_direction": "UP",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "root_UNDETERMINED_UNKNOWN",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "UNDETERMINED",
+      "article_unknown_reason": "OTHER",
+      "market_outcome_reported": "UNKNOWN",
+      "market_outcome_direction": "UNKNOWN",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": []
+    }
+  },
+  {
+    "name": "record_indirect_0_inference_0_unknown_0",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_0_inference_0_unknown_1",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "UNKNOWN",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "AMBIGUOUS_DIRECTION",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_0_inference_1_unknown_0",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "ANNOTATOR_INFERENCE",
+          "inference_premise": "Synthetic premise in the same article.",
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_0_inference_1_unknown_1",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "UNKNOWN",
+          "impact_path": "DIRECT",
+          "statement_status": "ANNOTATOR_INFERENCE",
+          "inference_premise": "Synthetic premise in the same article.",
+          "unknown_reason": "AMBIGUOUS_DIRECTION",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_1_inference_0_unknown_0",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "INDIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": [
+            {
+              "role": "RELATIONSHIP",
+              "text": "Synthetic company relationship."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_1_inference_0_unknown_1",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "UNKNOWN",
+          "impact_path": "INDIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "AMBIGUOUS_DIRECTION",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": [
+            {
+              "role": "RELATIONSHIP",
+              "text": "Synthetic company relationship."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_1_inference_1_unknown_0",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "INDIRECT",
+          "statement_status": "ANNOTATOR_INFERENCE",
+          "inference_premise": "Synthetic premise in the same article.",
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": [
+            {
+              "role": "RELATIONSHIP",
+              "text": "Synthetic company relationship."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "record_indirect_1_inference_1_unknown_1",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "UNKNOWN",
+          "impact_path": "INDIRECT",
+          "statement_status": "ANNOTATOR_INFERENCE",
+          "inference_premise": "Synthetic premise in the same article.",
+          "unknown_reason": "AMBIGUOUS_DIRECTION",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": [
+            {
+              "role": "RELATIONSHIP",
+              "text": "Synthetic company relationship."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unbounded_article_evidence_21",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 0."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 1."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 2."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 3."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 4."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 5."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 6."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 7."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 8."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 9."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 10."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 11."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 12."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 13."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 14."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 15."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 16."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 17."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 18."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 19."
+        },
+        {
+          "role": "EVENT",
+          "text": "Synthetic evidence 20."
+        }
+      ],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "unbounded_records_21",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        },
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "unicode_quotes_backslash_newline",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "公司甲 announced \"A\\B\".\nNext line.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "公司甲 \"A\\B\"\nNext line."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    },
+    "serialization": "raw_unicode"
+  },
+  {
+    "name": "long_spaces_inside_string",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Twenty-five spaces:                          end.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "pretty_long_indent",
+    "expected_valid": true,
+    "object": {
+      "schema_version": "n1_company_event_wire_v2",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "article_unknown_reason": "NONE",
+      "market_outcome_reported": "NO",
+      "market_outcome_direction": "NOT_REPORTED",
+      "date_conflict": "UNKNOWN",
+      "identity_conflict": "UNKNOWN",
+      "future_return_status": "NOT_OBSERVED",
+      "article_evidence": [],
+      "records": [
+        {
+          "event_description": "Acme launched a product.",
+          "event_type": "product_launch",
+          "target_company_text": "Acme",
+          "ticker_candidate": null,
+          "company_role": "SUBJECT",
+          "identity_status": "TEXT_ONLY",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "impact_path": "DIRECT",
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "inference_premise": null,
+          "unknown_reason": "NONE",
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "relationship_evidence_spans": []
+        }
+      ]
+    },
+    "serialization": "pretty_long_indent"
+  },
+  {
+    "name": "reordered_properties",
+    "expected_valid": true,
+    "object": {
+      "records": [
+        {
+          "relationship_evidence_spans": [],
+          "evidence_spans": [
+            {
+              "role": "EVENT",
+              "text": "Acme launched a product."
+            },
+            {
+              "role": "TARGET_COMPANY",
+              "text": "Acme"
+            }
+          ],
+          "unknown_reason": "NONE",
+          "inference_premise": null,
+          "statement_status": "EXPLICIT_IN_ARTICLE",
+          "impact_path": "DIRECT",
+          "business_impact_direction": "NO_CLEAR_IMPACT",
+          "identity_status": "TEXT_ONLY",
+          "company_role": "SUBJECT",
+          "ticker_candidate": null,
+          "target_company_text": "Acme",
+          "event_type": "product_launch",
+          "event_description": "Acme launched a product."
+        }
+      ],
+      "article_evidence": [],
+      "future_return_status": "NOT_OBSERVED",
+      "identity_conflict": "UNKNOWN",
+      "date_conflict": "UNKNOWN",
+      "market_outcome_direction": "NOT_REPORTED",
+      "market_outcome_reported": "NO",
+      "article_unknown_reason": "NONE",
+      "article_disposition": "COMPANY_EVENTS_FOUND",
+      "schema_version": "n1_company_event_wire_v2"
+    }
+  }
+]

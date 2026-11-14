@@ -1,0 +1,1 @@
+choice UI contract smoke PASS: empty state, private export, roundtrip, hash guard, option guard, progress

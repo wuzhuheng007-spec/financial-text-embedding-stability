@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.7",
+  "version": "1.8",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -15,7 +15,7 @@
   ],
   "research_protocol": "PROPOSED",
   "researcher_accepted": false,
-  "new_news_model_inference": "V5_TARGETED_DEVELOPMENT_RUN_AUDITED_ZERO_WIRE_VALID",
+  "new_news_model_inference": "V5_AUDITED_V6_NOT_RUN_CONSTRAINED_DECODING_GATE_FAILED",
   "new_financial_experiment": "NOT_RUN",
   "historical_m5_protocol_changed": false,
   "source_access": {
@@ -37,17 +37,16 @@
       "existing_identity_source_blockers": "UNCHANGED"
     }
   },
-  "next_stage": "Review the nine v5 wire error instances, three call timeouts and one JSON failure, then explicitly decide whether any separately versioned prompt, output-contract or budget change is warranted. Obtain article-first independent human adjudication and an event-grouped holdout before extraction-quality claims. Historical financial admission remains separate.",
-  "next_stage_zh": "复查 v5 的九个 wire 错误实例、三次调用超时和一份 JSON 失败，再明确决定是否需要另立版本更改提示词、输出契约或预算。抽取质量结论仍需原文优先的独立人工裁定及事件簇隔离留出评价；历史金融准入另行处理。",
+  "next_stage": "Resolve the pinned-tokenizer prefix-callback counterexamples or separately version a staged extraction design; rerun a bounded compatibility gate before any new model call. The assigned human reviewer can start the click-only article screen, while full company-event gold and a grouped holdout remain necessary for quality claims. Historical financial admission is separate.",
+  "next_stage_zh": "先解决固定 tokenizer 前缀回调的反例，或另立版本提出分步抽取设计；任何新模型调用前都须重新通过有界兼容性门槛。已认领的真人可开始点选式文章初筛，但完整公司事件 gold 与事件簇留出集仍是质量结论前提；历史金融准入另行处理。",
   "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
   "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
   "planned_scope": [
-    "saved_v4_field_level_failure_diagnosis_and_reconciliation",
-    "unclassified_native_interruption_review",
-    "one_schema_derived_targeted_prompt_candidate",
-    "versioned_fail_closed_v5_runtime_and_synthetic_gate",
-    "one_bounded_fixed_ten_development_retest_and_independent_audit",
-    "blank_article_first_human_review_preparation",
+    "saved_v5_field_and_timeout_evidence_review",
+    "fixed_wire_v2_compiler_finite_differential_and_hash_guard",
+    "one_pinned_lm_format_enforcer_character_and_tokenizer_compatibility_gate",
+    "one_bounded_fixed_ten_constrained_run_only_if_gate_passes",
+    "existing_article_first_human_review_handoff",
     "safe_bilingual_sync"
   ],
   "execution_scope": [
@@ -75,10 +74,19 @@
     "blank_article_first_review_entry_prepared_zero_human_adjudications",
     "targeted_repair_first_publication_commit_and_five_remote_blobs_verified",
     "torchless_handoff_focused_synthetic_suite_twenty_seven_passed_overlapping_prior_checks",
-    "sanitized_handoff_zip_crc_passed"
+    "sanitized_handoff_zip_crc_passed",
+    "v5_six_json_valid_nine_field_error_instances_privately_rechecked",
+    "v5_three_timeout_phases_and_saved_cuda_values_rechecked_without_causal_claim",
+    "fixed_wire_v2_compiler_4573_finite_synthetic_decisions_match_source",
+    "fixed_wire_v2_compiler_wrong_source_hash_rejected",
+    "lmfe_0_11_3_configured_character_gate_63_of_63_matched_source",
+    "pinned_qwen_token_callback_rejected_three_tested_source_valid_sequences",
+    "v6_real_model_run_not_started_after_failed_backend_gate",
+    "click_only_private_article_screen_prepared_reviewer_assigned_zero_saved_selections"
   ],
   "not_executed": [
     "news_redownload",
+    "v6_constrained_model_run_after_failed_backend_gate",
     "paid_model_call",
     "independent_human_adjudication",
     "extraction_quality_metrics",
@@ -228,5 +236,26 @@
   "n1_targeted_canonical_conditional_status": "NOT_EVALUATED_ZERO_WIRE_VALID",
   "n1_targeted_paired_completed_response_positions": 6,
   "n1_targeted_human_adjudication": "NOT_STARTED",
-  "n1_targeted_financial_evaluation": "NOT_RUN"
+  "n1_targeted_financial_evaluation": "NOT_RUN",
+  "n1_constrained_decode_report_en": "reports/2026-11-15_news_constrained_decode.en.md",
+  "n1_constrained_decode_report_zh": "reports/2026-11-15_news_constrained_decode.zh.md",
+  "n1_constrained_decode_plan_actual_ledger": "results/news_constrained_decode_20261115/plan_execution.csv",
+  "n1_constrained_decode_v5_evidence_recheck": "results/news_constrained_decode_20261115/v5_evidence_recheck.json",
+  "n1_constrained_decode_human_guide": "docs/news_research/human_review_start_20261115.md",
+  "n1_constrained_decode_compiler_receipt": "results/news_constrained_decode_20261115/compiler_gate_run1/compiler_validation.json",
+  "n1_constrained_decode_candidate_schema": "results/news_constrained_decode_20261115/compiler_gate_run1/decoding_schema_candidate.json",
+  "n1_constrained_decode_compiler_finite_cases": 4573,
+  "n1_constrained_decode_compiler_finite_status": "PASS_NOT_BACKEND_PROOF",
+  "n1_constrained_decode_backend_lock": "configs/news_n1_lmfe_backend_v1.lock.json",
+  "n1_constrained_decode_backend_receipt": "results/news_constrained_decode_20261115/backend_compatibility_receipt.json",
+  "n1_constrained_decode_backend_status": "FAIL_TOKEN_PREFIX_COMPATIBILITY_TESTED_PATH",
+  "n1_constrained_decode_character_cases": 63,
+  "n1_constrained_decode_character_mismatches": 0,
+  "n1_constrained_decode_alternative_serialization_reachability": "UNKNOWN_AFTER_BOUNDED_PROBE",
+  "n1_constrained_decode_model_calls": 0,
+  "n1_constrained_decode_model_run_status": "NOT_RUN_BY_GATE",
+  "n1_constrained_decode_choice_ui_receipt": "results/news_constrained_decode_20261115/human_choice_ui_receipt.json",
+  "n1_constrained_decode_choice_ui_validation_log": "results/news_constrained_decode_20261115/human_choice_ui_validation.log",
+  "n1_constrained_decode_human_adjudication": "SCREENING_REVIEWER_ASSIGNED_ZERO_OF_TEN_CHOICES_FULL_GOLD_NOT_RUN",
+  "n1_constrained_decode_financial_evaluation": "NOT_RUN"
 }

@@ -1,0 +1,81 @@
+{
+  "schema": "lmfe_char_gate_probe_v1",
+  "model_calls": 0,
+  "compiled_schema_sha256": "f7bc9df682ca365131c0b97592bfa4bc0beaf23ad63a6c90dc1d67007cec4c5f",
+  "source_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "sentinels_sha256": "73e42341770a2aaf6f3ee60ba9bd89508e44212690448599e06564847bebfd10",
+  "backend_config": {
+    "max_json_array_length": 20,
+    "max_consecutive_whitespaces": 12,
+    "force_json_field_order": false,
+    "alphabet_length": 92
+  },
+  "rows": [
+    {
+      "name": "unbounded_article_evidence_21",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "compact",
+      "backend_accepts": false,
+      "rejection_index": 1278,
+      "rejection_kind": "CHARACTER_NOT_ALLOWED",
+      "duration_seconds": 0.016,
+      "warnings": []
+    },
+    {
+      "name": "unbounded_records_21",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "compact",
+      "backend_accepts": false,
+      "rejection_index": 10101,
+      "rejection_kind": "CHARACTER_NOT_ALLOWED",
+      "duration_seconds": 0.641,
+      "warnings": []
+    },
+    {
+      "name": "unicode_quotes_backslash_newline",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "raw_unicode",
+      "backend_accepts": false,
+      "rejection_index": 344,
+      "rejection_kind": "CHARACTER_NOT_ALLOWED",
+      "duration_seconds": 0.031,
+      "warnings": []
+    },
+    {
+      "name": "long_spaces_inside_string",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "compact",
+      "backend_accepts": false,
+      "rejection_index": 375,
+      "rejection_kind": "CHARACTER_NOT_ALLOWED",
+      "duration_seconds": 0.016,
+      "warnings": []
+    },
+    {
+      "name": "pretty_long_indent",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "pretty_long_indent",
+      "backend_accepts": false,
+      "rejection_index": 13,
+      "rejection_kind": "CHARACTER_NOT_ALLOWED",
+      "duration_seconds": 0.016,
+      "warnings": []
+    },
+    {
+      "name": "reordered_properties",
+      "expected_valid": true,
+      "source_accepts": true,
+      "serialization": "compact",
+      "backend_accepts": true,
+      "rejection_index": null,
+      "rejection_kind": null,
+      "duration_seconds": 0.343,
+      "warnings": []
+    }
+  ]
+}

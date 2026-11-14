@@ -1,0 +1,149 @@
+{
+  "schema": "news_lmfe_backend_compatibility_receipt_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "gate_status": "FAIL_TOKEN_PREFIX_COMPATIBILITY",
+  "model_calls": 0,
+  "model_run": "NOT_RUN",
+  "backend_lock": "news_n1_lmfe_backend_v1.lock.json",
+  "source_wire_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "compiled_schema_sha256": "f7bc9df682ca365131c0b97592bfa4bc0beaf23ad63a6c90dc1d67007cec4c5f",
+  "default_parser_limit_probe_sha256": "589378aa97d58490b045f59dd30cf703f7414de13cbe2c1ca8537a6d16038c92",
+  "char_token_probe_sha256": "0faf7c91de7430c48d0919fd2fc5d3620da526a6dafe0b06b3681b660bd2ab9c",
+  "private_detailed_witness_sha256": "ef408e58773451ad84939e5da42a088db556855f451ddfd30d13669c37f32ed0",
+  "default_parser_legal_mismatches": [
+    "unbounded_article_evidence_21",
+    "unbounded_records_21",
+    "unicode_quotes_backslash_newline",
+    "long_spaces_inside_string",
+    "pretty_long_indent"
+  ],
+  "configured_character_probe": {
+    "cases": 63,
+    "source_accepted": 29,
+    "source_rejected": 34,
+    "mismatches": 0,
+    "warning_cases": 0,
+    "tokenizer_alphabet_characters": 17805
+  },
+  "token_callback": {
+    "results": [
+      {
+        "name": "root_NO_IDENTIFIABLE_EVENT_NO",
+        "source_accepts": true,
+        "input_tokens": 74,
+        "decoded_text_matches_input": true,
+        "generation_prefix_verified": 74,
+        "first_disallowed_token_index": null,
+        "empty_allowed_set": false,
+        "premature_eos": false,
+        "eos_at_end": true
+      },
+      {
+        "name": "valid_company_event",
+        "source_accepts": true,
+        "input_tokens": 184,
+        "decoded_text_matches_input": true,
+        "generation_prefix_verified": 79,
+        "first_disallowed_token_index": 79,
+        "empty_allowed_set": false,
+        "premature_eos": false,
+        "eos_at_end": false,
+        "synthetic_witness": {
+          "token_id": 47891,
+          "token_alone_decoded": ".\",\"",
+          "prefix_tail": "\",\"article_evidence\":[],\"records\":[{\"event_description\":\"Acme launched a product",
+          "would_be_tail": "rticle_evidence\":[],\"records\":[{\"event_description\":\"Acme launched a product.\",\"",
+          "allowed_token_count": 148529,
+          "state_can_end": false,
+          "eos_allowed": []
+        }
+      },
+      {
+        "name": "unicode_quotes_backslash_newline",
+        "source_accepts": true,
+        "input_tokens": 196,
+        "decoded_text_matches_input": true,
+        "generation_prefix_verified": 75,
+        "first_disallowed_token_index": 75,
+        "empty_allowed_set": true,
+        "premature_eos": false,
+        "eos_at_end": false,
+        "synthetic_witness": {
+          "token_id": 100043,
+          "token_alone_decoded": "甲",
+          "prefix_tail": "status\":\"NOT_OBSERVED\",\"article_evidence\":[],\"records\":[{\"event_description\":\"公司",
+          "would_be_tail": "tatus\":\"NOT_OBSERVED\",\"article_evidence\":[],\"records\":[{\"event_description\":\"公司甲",
+          "allowed_token_count": 0,
+          "state_can_end": false,
+          "eos_allowed": []
+        }
+      },
+      {
+        "name": "unbounded_article_evidence_21",
+        "source_accepts": true,
+        "input_tokens": 468,
+        "decoded_text_matches_input": true,
+        "generation_prefix_verified": 363,
+        "first_disallowed_token_index": 363,
+        "empty_allowed_set": false,
+        "premature_eos": false,
+        "eos_at_end": false,
+        "synthetic_witness": {
+          "token_id": 47891,
+          "token_alone_decoded": ".\",\"",
+          "prefix_tail": "nthetic evidence 20.\"}],\"records\":[{\"event_description\":\"Acme launched a product",
+          "would_be_tail": "tic evidence 20.\"}],\"records\":[{\"event_description\":\"Acme launched a product.\",\"",
+          "allowed_token_count": 148529,
+          "state_can_end": false,
+          "eos_allowed": []
+        }
+      },
+      {
+        "name": "no_market_wrong_direction",
+        "source_accepts": false,
+        "input_tokens": 182,
+        "decoded_text_matches_input": true,
+        "generation_prefix_verified": 40,
+        "first_disallowed_token_index": 40,
+        "empty_allowed_set": false,
+        "premature_eos": false,
+        "eos_at_end": false
+      }
+    ],
+    "initial_and_reset_checks": {
+      "empty_prompt_allowed_nonempty": true,
+      "empty_prompt_can_end": false,
+      "empty_prompt_eos_allowed": false,
+      "two_distinct_prompt_lengths": true,
+      "independent_article_callback_objects": true,
+      "article_one_prefix_state_count": 1,
+      "article_two_prefix_state_count": 1,
+      "article_one_initial_allowed_nonempty": true,
+      "article_two_initial_allowed_nonempty": true,
+      "article_one_initial_can_end": false,
+      "article_two_initial_can_end": false,
+      "eos_disallowed_at_both_starts": true
+    },
+    "effective_eos_ids": [
+      151645,
+      151643
+    ],
+    "interpretation": "Several original-Schema-valid synthetic serialized outputs were rejected by the pinned tokenizer callback. The no-record case completed with both EOS IDs; the invalid market-direction case was rejected. This does not prove the same objects are unreachable by every alternative serialization or tokenization."
+  },
+  "alternative_serialization_probe": {
+    "status": "INTERRUPTED_AFTER_BOUNDED_WALL_OBSERVATION",
+    "start_local": "2026-11-15T05:54:28+08:00",
+    "stop_observed_local": "2026-11-15T05:57:13+08:00",
+    "elapsed_approx_seconds": 165,
+    "own_test_process_ids_stopped": [
+      221996,
+      214320
+    ],
+    "result_file_written": false,
+    "object_reachability_by_other_tokenization": "UNKNOWN",
+    "internal_slow_call_cause": "UNKNOWN"
+  },
+  "decision": "No real model launch: fixed original protocol has not passed the bounded actual prefix callback gate for this backend/tokenizer/configuration. Keep frozen validator and all prior results. A separately proposed extraction design or backend fix requires its own gate.",
+  "backend_lock_sha256": "b5b9fcdd0c1b5d406ae74cb39de504d533a93616e32d9c8e037a27cdb880b33f"
+}

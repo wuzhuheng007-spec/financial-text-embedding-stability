@@ -1,8 +1,10 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本：1.7
+Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本：1.8
 
 **Status / 状态：PROPOSED。** 对 v4 保存的九份响应完成离线逐字段诊断：七份 wire 不合法响应中的 14 个错误实例落在五组字段；唯一 wire 合法响应仍因一条引用缺失而无法构造 canonical。另立一个定向提示词及 v5 配置后，对固定十篇开发材料进行一次有界运行，独立审计通过：十篇均尝试并开始生成，保存七份响应，三次超时；七份中六份 JSON 合法，**wire 合法 0/6，完整公司事件输出 0**。这不是抽取质量或金融有效性结论。Offline field-level diagnosis of saved v4 responses found 14 error instances across five field groups in the seven wire-invalid responses; the sole wire-valid response still lacked one quote and could not be canonically constructed. A single targeted prompt and separate v5 config were then used for one bounded run on the same ten development articles. The independent audit passed: all ten were attempted and generation-started, seven responses were saved, three calls timed out, six of seven responses were JSON-valid, **zero of six were wire-valid and no complete company-event output was obtained**. These engineering observations do not establish extraction quality or financial validity. Independent human adjudication and financial experiments remain **NOT_RUN**.
+
+**Current constrained-decoding gate / 当前约束解码门槛：** 固定 wire-v2 候选编译器在 4,573 个有限合成对象上与原 Schema 判定一致；LM Format Enforcer 0.11.3 在显式设置下的 63 个字符级测试也一致，但固定 Qwen tokenizer 的实际前缀回调拒绝三条原规则认可的测试序列。因此门槛为 **FAIL_TOKEN_PREFIX_COMPATIBILITY**，**未启动新模型运行**；替代序列化可达性仍未知。The pinned candidate matches 4,573 finite synthetic decisions, and the configured backend matches 63 character-level cases. The actual pinned-Qwen prefix callback disallowed three tested source-valid sequences, so the gate failed and **no new model run began**. Alternative serialization reachability is unknown. No extraction-quality or financial claim follows.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -43,6 +45,10 @@ Last updated / 更新日期：2026-11-15（Asia/Shanghai） · Version / 版本�
 | [Audited v5 run](../../results/news_targeted_repair_20261115/inference_aggregate.json) · [v4–v5 paired comparison](../../results/news_targeted_repair_20261115/paired_comparison.json) | 十篇均发起并开始生成；七份响应、三次超时，wire 合法 0/6；六个位置两版均有响应 |
 | [Blank human review preparation](../../results/news_targeted_repair_20261115/human_review_preparation.json) | 十篇原文优先入口；尚无人工裁定或抽取质量结果 |
 | [Torchless handoff check](../../results/news_targeted_repair_20261115/torchless_handoff_validation.log) | Python 3.11.9 无 `torch` 环境下五份聚焦合成测试 27/27 通过；与先前工程测试重叠，不是模型试验 |
+| [Constrained-decoding English report](../../reports/2026-11-15_news_constrained_decode.en.md) · [中文报告](../../reports/2026-11-15_news_constrained_decode.zh.md) | 固定原协议的解码兼容性门槛、有限编译检查、模型运行条件及证据边界 |
+| [A–E decode ledger](../../results/news_constrained_decode_20261115/plan_execution.csv) · [compiler receipt](../../results/news_constrained_decode_20261115/compiler_gate_run1/compiler_validation.json) · [v5 evidence recheck](../../results/news_constrained_decode_20261115/v5_evidence_recheck.json) | 逐项计划—实际、4,573 个有限合成判定与旧失败/资源证据 |
+| [Pinned LMFE lock](../../configs/news_n1_lmfe_backend_v1.lock.json) · [backend compatibility receipt](../../results/news_constrained_decode_20261115/backend_compatibility_receipt.json) | 固定版本、字符级和 token 级门槛反例；无新模型调用 |
+| [Human review start / 人工审阅说明](human_review_start_20261115.md) · [choice UI receipt](../../results/news_constrained_decode_20261115/human_choice_ui_receipt.json) | 十篇私人原文的点选式文章初筛，保存选择 0/10；不是完整公司事件 gold 或模型评估结果 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
