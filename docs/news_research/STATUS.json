@@ -321,6 +321,8 @@
     "market_labels": 0,
     "financial_experiments": "NOT_RUN",
     "historical_security_identity": "NOT_ADMITTED",
-    "research_protocol": "PROPOSED"
+    "research_protocol": "PROPOSED",
+    "github_sync": "PUSHED_AND_KEY_FILES_READ_BACK_AT_38b5363",
+    "local_handoff_zip": "CRC_PASS"
   }
 }
