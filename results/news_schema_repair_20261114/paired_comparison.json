@@ -1,0 +1,210 @@
+{
+  "schema": "news_schema_repair_paired_comparison_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "comparison_status": "PASS_BOUND_DEVELOPMENT_PAIR",
+  "fixed_target_articles": 10,
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+  "old_config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+  "new_config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+  "old_prompt_sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3",
+  "new_prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+  "old_audit_sha256": "fd8e960d1a6ca24ec66372a47b877cc3f8911982b958cd2548e12760590d6ae6",
+  "new_audit_sha256": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b",
+  "old_private_manifest_sha256": "6af672780df9eb7e47368d1f21b6d5912bf9eefc251a0a08a77792565f284ebc",
+  "new_private_manifest_sha256": "d0cdda2a6060d6e671a2f5b8d87abd52c3a038a4bf3188d877ff0942e91c5fbd",
+  "private_pair_sha256": "95e2e174c3421e3d9be572e453196c9074fbdcb3d8e189c452da8e1dad54955f",
+  "old": {
+    "status_counts": {
+      "CALL_TIMEOUT": 1,
+      "SCHEMA_INVALID": 9
+    },
+    "attempted": 10,
+    "completed_responses": 9,
+    "metric_rates": {
+      "json_parse_valid": {
+        "numerator": 9,
+        "conditional_denominator": 9,
+        "conditional_rate": 1.0,
+        "attempted_denominator": 10,
+        "attempted_rate": 0.9,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.9
+      },
+      "schema_valid": {
+        "numerator": 0,
+        "conditional_denominator": 9,
+        "conditional_rate": 0.0,
+        "attempted_denominator": 10,
+        "attempted_rate": 0.0,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.0
+      },
+      "binding_valid": {
+        "numerator": 0,
+        "conditional_denominator": 0,
+        "conditional_rate": null,
+        "attempted_denominator": 10,
+        "attempted_rate": 0.0,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.0
+      },
+      "mechanical_valid": {
+        "numerator": 0,
+        "conditional_denominator": 0,
+        "conditional_rate": null,
+        "attempted_denominator": 10,
+        "attempted_rate": 0.0,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.0
+      },
+      "evidence_spans_exact": {
+        "numerator": 0,
+        "span_denominator": 0,
+        "span_rate": null,
+        "unit": "evidence_spans_not_articles"
+      }
+    },
+    "schema_valid_output_distribution": {
+      "schema_valid_response_denominator": 0,
+      "article_disposition_counts": {},
+      "records_per_response_counts": {},
+      "empty_records_response_count": 0,
+      "nonempty_all_unknown_direction_response_count": 0,
+      "limits": "Distributions include schema-valid raw outputs only; no semantic correctness claim."
+    }
+  },
+  "new": {
+    "status_counts": {
+      "MECHANICAL_INVALID": 2,
+      "NOT_ATTEMPTED_AFTER_OOM_STOP": 7,
+      "OOM_STOP": 1
+    },
+    "attempted": 3,
+    "completed_responses": 2,
+    "metric_rates": {
+      "json_parse_valid": {
+        "numerator": 2,
+        "conditional_denominator": 2,
+        "conditional_rate": 1.0,
+        "attempted_denominator": 3,
+        "attempted_rate": 0.6666666666666666,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.2
+      },
+      "schema_valid": {
+        "numerator": 2,
+        "conditional_denominator": 2,
+        "conditional_rate": 1.0,
+        "attempted_denominator": 3,
+        "attempted_rate": 0.6666666666666666,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.2
+      },
+      "binding_valid": {
+        "numerator": 2,
+        "conditional_denominator": 2,
+        "conditional_rate": 1.0,
+        "attempted_denominator": 3,
+        "attempted_rate": 0.6666666666666666,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.2
+      },
+      "mechanical_valid": {
+        "numerator": 0,
+        "conditional_denominator": 2,
+        "conditional_rate": 0.0,
+        "attempted_denominator": 3,
+        "attempted_rate": 0.0,
+        "fixed_target_denominator": 10,
+        "fixed_target_rate": 0.0
+      },
+      "evidence_spans_exact": {
+        "numerator": 0,
+        "span_denominator": 3,
+        "span_rate": 0.0,
+        "unit": "evidence_spans_not_articles"
+      }
+    },
+    "schema_valid_output_distribution": {
+      "schema_valid_response_denominator": 2,
+      "article_disposition_counts": {
+        "COMPANY_EVENTS_FOUND": 1,
+        "NO_SUPPORTED_COMPANY": 1
+      },
+      "records_per_response_counts": {
+        "0": 1,
+        "1": 1
+      },
+      "empty_records_response_count": 1,
+      "nonempty_all_unknown_direction_response_count": 0,
+      "limits": "Distributions include schema-valid raw outputs only; no semantic correctness claim."
+    },
+    "synthetic_demo_copy_indicators": {
+      "response_denominator": 2,
+      "exact_demo_object_count": 0,
+      "demo_input_binding_reused_count": 0,
+      "demo_company_and_event_marker_count": 0,
+      "interpretation": "These are strict copying indicators, not semantic error counts."
+    }
+  },
+  "status_transition_counts": {
+    "CALL_TIMEOUT->NOT_ATTEMPTED_AFTER_OOM_STOP": 1,
+    "SCHEMA_INVALID->MECHANICAL_INVALID": 2,
+    "SCHEMA_INVALID->NOT_ATTEMPTED_AFTER_OOM_STOP": 6,
+    "SCHEMA_INVALID->OOM_STOP": 1
+  },
+  "paired_status_coverage": 10,
+  "new_response_provenance": {
+    "new_response_files_checked": 2,
+    "paired_response_text_equal_count": 0,
+    "paired_response_text_comparison_denominator": 2,
+    "interpretation": "File identity and run-window checks reject direct reuse. Equal generated text alone does not prove reuse."
+  },
+  "prompt_token_change": {
+    "count": 10,
+    "minimum": 1831,
+    "median": 1831.0,
+    "maximum": 1831,
+    "mean": 1831.0,
+    "increased": 10,
+    "unchanged": 0,
+    "decreased": 0
+  },
+  "timing": {
+    "old_run_wall_seconds": 809.0,
+    "new_run_wall_seconds": 384.0,
+    "old_attempt_wall_seconds": {
+      "count": 10,
+      "minimum": 35.48499999998603,
+      "median": 57.03100000000268,
+      "maximum": 182.34400000001187,
+      "mean": 78.94369999999762
+    },
+    "new_attempt_wall_seconds": {
+      "count": 3,
+      "minimum": 54.73399999999674,
+      "median": 153.51599999997416,
+      "maximum": 163.375,
+      "mean": 123.8749999999903
+    },
+    "paired_completed_attempt_wall_seconds_new_minus_old": {
+      "count": 2,
+      "minimum": 114.92199999999139,
+      "median": 116.47649999998976,
+      "maximum": 118.03099999998813,
+      "mean": 116.47649999998976
+    },
+    "interpretation": "Per-call wall seconds include subprocess startup, cold model load, tokenization and generation; timeout and prompt-length changes affect comparisons. These are not stable throughput or causal quality estimates."
+  },
+  "limitations": [
+    "The first ten articles were reused after inspecting prior outputs; this is development material, not a blind test.",
+    "The complete Schema and synthetic example changed together; any difference cannot be attributed to one component.",
+    "Format, binding and span checks are mechanical; independent human extraction-quality labels are absent.",
+    "Historical financial admission, prediction and return evaluation remain NOT_RUN."
+  ]
+}

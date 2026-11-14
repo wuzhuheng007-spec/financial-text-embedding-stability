@@ -1,0 +1,32 @@
+{
+  "schema": "news_schema_repair_oom_failure_receipt_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "run_finished_at_utc": "2026-11-14T07:16:52+00:00",
+  "run_status": "OOM_STOP",
+  "attempts_committed": 3,
+  "completed_responses": 2,
+  "failed_attempt_number": 3,
+  "failure_exception": "torch.AcceleratorError: CUDA error: out of memory",
+  "worker_returncode": 1,
+  "phase_sequence": [
+    "WORKER_PROCESS_STARTED",
+    "MODEL_LOADED",
+    "GENERATION_STARTED"
+  ],
+  "response_saved_for_failed_attempt": false,
+  "retries_allowed": 0,
+  "retries_observed": 0,
+  "fixed_target_articles": 10,
+  "not_attempted_after_oom_stop": 7,
+  "source_hashes": {
+    "config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+    "local_manifest_sha256": "d0cdda2a6060d6e671a2f5b8d87abd52c3a038a4bf3188d877ff0942e91c5fbd",
+    "run_events_sha256": "eaa9ede85eb3242bbcd6faeb527fad6ad0f2e099edf4608794c24c4b45a49885",
+    "failed_attempt_phase_sha256": "546843dcc959136c8a97af1bbc9fe4273bb7432724206e47630041d0fad80b4e",
+    "failed_attempt_stderr_sha256": "1806db3660fe7f292a25b82a5600e59d5d23f16ee4692c7d0512ce3bcc0caab2",
+    "new_smoke_receipt_sha256": "ac48b9331a41f157688379ffeca7556b614d0955d5d0ea746f0aedcf7ec95303",
+    "new_inference_aggregate_sha256": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b"
+  },
+  "limits": "Sanitized local failure evidence; the fixed-ten run ended early and seven articles were not attempted."
+}

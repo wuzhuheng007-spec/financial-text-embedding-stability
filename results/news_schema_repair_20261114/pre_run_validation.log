@@ -1,0 +1,7 @@
+Schema-repair pre-run validation; synthetic tests only, no model calls
+Python 3.11.9; pytest 9.1.1
+Command: python -m pytest tests/test_fnspid_bounded_sample.py tests/test_news_company_event_contract.py tests/test_news_n1_smoke_runner.py tests/test_news_schema_prompt_v2.py -q
+...........................                                              [100%]
+27 passed in 1.11s
+pytest exit_code=0
+py_compile exit_code=0

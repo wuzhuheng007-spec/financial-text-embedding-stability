@@ -1,0 +1,42 @@
+{
+  "schema": "news_schema_repair_prerun_public_v1",
+  "checked_at_utc": "2026-11-14T07:10:18+00:00",
+  "checks": {
+    "old_run_offline_diagnosed": true,
+    "candidate_byte_hash_bound": true,
+    "sample_schema_validator_unchanged": true,
+    "model_files_rehashed": 11,
+    "cuda_available": true,
+    "pip_check_pass": true,
+    "prompt_token_fits_count": 10,
+    "new_run_dir_absent": true
+  },
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "baseline_config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+  "candidate_config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+  "candidate_prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+  "auditor_sha256": "5d5b5ee14eaa3ac3712947ea21651a29b62e5b59db43b5f394307e40074034d4",
+  "old_diagnosis_sha256": "e461a5f31b832aff5af0ccc3ea80ef0db192f37c292f663dc5856a682f3d9283",
+  "prompt_token_preflight_sha256": "443fe44eaf4d10b2fbbebda8a81642a2440f75a9e0f420ce924ce891a3583d1d",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_generation_config_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "budget": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "generation": {
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "gpu_absolute_determinism_claimed": false
+  },
+  "private_gate_sha256": "9fe26b239215e3f7b877525b77bd905af402087d8dae5699276d9da70d74f02a",
+  "scope": "Offline gate before the single paired development rerun; zero new model calls at this point."
+}

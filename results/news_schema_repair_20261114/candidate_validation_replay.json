@@ -1,0 +1,31 @@
+{
+  "schema": "news_schema_repair_candidate_replay_v1",
+  "checked_at_utc": "2026-11-14T07:07:33+00:00",
+  "scope": "offline prompt/config integration only; no inference or quality claim",
+  "input_zip_sha256": "e9e5d0d4c9547eb6d52c5e56de01a7a26048d14cd16922209d92d67a00607a23",
+  "attached_candidate_validation_sha256": "fbb609493f88dd315725ccbe7e11c261cd5ec0a0be1277bdb3169f530c7406e8",
+  "attached_candidate_validation_status": "PASS_OFFLINE_ONLY",
+  "baseline_config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+  "candidate_config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+  "candidate_prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+  "frozen_schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "frozen_validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "synthetic_example_sha256": "2736c98e6623fff3a2a9585890157c1718398c47ba91ba74ce0056f2647d7cc0",
+  "test_file_sha256": "80c47abed1fe5b6613b05f3a1052539c82eb5a869d71a15694d46436aa4d5498",
+  "validation_log_sha256": "811e0bac287584981314d6772c1be5af7c957b552db26ab4358d735e1098f155",
+  "protected_fields_unchanged": true,
+  "candidate_prompt_byte_exact_from_attached_zip": true,
+  "candidate_config_byte_exact_from_attached_zip": true,
+  "embedded_schema_deep_equal_frozen": true,
+  "synthetic_example_mechanically_valid": true,
+  "actual_development_messages_rendered": 10,
+  "rendered_system_contains_complete_schema_and_example": true,
+  "synthetic_example_absent_from_actual_user_messages": true,
+  "two_focused_synthetic_tests_passed": true,
+  "model_calls": 0,
+  "notes": [
+    "The complete Schema and demonstration are both in the rendered system message.",
+    "This candidate changes the prompt as a combined schema-plus-example intervention; effects cannot be separately attributed.",
+    "The first-ten development inputs have already been used for design and are not a blind test."
+  ]
+}

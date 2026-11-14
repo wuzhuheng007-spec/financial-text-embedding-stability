@@ -2,7 +2,7 @@
 
 [English full text](roadmap.en.md) · [项目入口](README.md) · [来源接入](source_access.md)
 
-更新：2026-11-14（Asia/Shanghai）。版本：1.4。研究状态 **PROPOSED**；已有原作者有界样本和 N1 输出契约继续固定。本轮已核验独立 CUDA 环境与官方固定 Qwen 3B 快照，对前十篇开发材料启动首次抽取冒烟；实际响应与机械检查见[本轮报告](../../reports/2026-11-14_news_first_inference.zh.md)。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
+更新：2026-11-14（Asia/Shanghai）。版本：1.5。研究状态 **PROPOSED**；原作者有界样本、N1 输出 Schema 与官方固定 Qwen 3B 快照继续固定。[首次开发冒烟](../../reports/2026-11-14_news_first_inference.zh.md)保存九份响应，均不符合 Schema；[离线归类](../../results/news_schema_repair_20261114/old_error_aggregate.json)已核对具体错误。完整契约提示词复测在第 3 次尝试时因 OOM 停止：两份已保存响应均符合 Schema，但均未通过最终机械检查，其余七篇未尝试。详见[本轮报告](../../reports/2026-11-14_news_schema_repair.zh.md)和[审计比较](../../results/news_schema_repair_20261114/paired_comparison.json)。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
 
 ## 1. 研究定位
 
@@ -71,7 +71,7 @@ Hugging Face 与金十是候选新闻来源，见第 12 节及来源接入登记
 
 用证据约束的结构化抽取，输出以下并列维度：事件类别、涉及主体、受影响公司、影响方向、影响强度、不确定性、公司相关性、事件新颖度、预期持续区间、直接/间接影响、引用文本和信息不足状态。
 
-当前 [N1 JSON Schema](company_event_output.schema.json) 与[提示词](company_event_prompt.md)固定有界工程输出契约：一篇文章版本可有多个事件×目标公司条目，也可明确记录无事件或无支持公司的状态。业务影响、文章已经报道的市场结果和未观测的未来收益分别表示；证据使用原始正文的 Unicode 字符索引并由校验器检查。前十篇开发冒烟使用此固定契约；[机械回执](../../results/news_first_inference_20261114/smoke_receipt.json)与抽取准确率分开。人工栏仍为空。
+当前 [N1 JSON Schema](company_event_output.schema.json)继续冻结：一篇文章版本可有多个事件×目标公司条目，也可明确记录无事件或无支持公司的状态。业务影响、文章已报道的市场结果和未观测未来收益分别表示；证据使用原始正文 Unicode 字符索引并由校验器检查。[原提示词](company_event_prompt.md)在首次开发冒烟产生九份不符合 Schema 的响应；[版本化候选提示词](company_event_prompt_v2.md)把完整 Schema 和一个虚构格式示例直接放入 System 消息。两项添加属于同一个候选变化，不能拆开归因。机械回执与抽取准确率分开，人工栏仍为空。
 
 同一事件可产生多个公司条目。新品对发布方的影响也应按文本判断；不能把所有竞争关系机械设成负面。没有被新闻直接讨论的公司，可以由当时可用关系图产生候选受影响对象，但间接路径必须有出处，并标成推断假设，不伪装为原文事实。
 
@@ -85,7 +85,7 @@ Hugging Face 与金十是候选新闻来源，见第 12 节及来源接入登记
 
 建议先以 `Qwen/Qwen2.5-7B-Instruct` 为结构化抽取工程基线，对照 `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`。选择理由是规模可控且身份明确，不是已证明前者更擅长金融预测。后者基于 Qwen2.5-Math-7B，经 DeepSeek-R1 数据蒸馏，因此二者不是完全独立的预训练家族。
 
-原 [v1 冒烟配置](../../configs/news_n1_smoke_v1.json)记录的是缺模型门槛。当前 [v2 配置](../../configs/news_n1_smoke_v2.json)绑定官方 `Qwen/Qwen2.5-3B-Instruct` revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`，用于前十篇回顾性开发检查。[来源计划](../../results/news_first_inference_20261114/model_source_plan.json)、[本机完整性](../../results/news_first_inference_20261114/model_integrity_receipt.json)和[运行回执](../../results/news_first_inference_20261114/smoke_receipt.json)分别记录不同门槛。这个较小的冒烟不替代拟议的 7B 模型对照，也不构成抽取质量结论。
+原 [v1 冒烟配置](../../configs/news_n1_smoke_v1.json)记录缺模型门槛。[首次运行 v2 配置](../../configs/news_n1_smoke_v2.json)绑定官方 `Qwen/Qwen2.5-3B-Instruct` revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`；[提示词复测 v3 配置](../../configs/news_n1_smoke_v3_prompt_complete.json)保持模型、前十篇输入、Schema 和全部生成预算，变化仅为提示词及实验标记。[模型完整性](../../results/news_first_inference_20261114/model_integrity_receipt.json)、[首次运行回执](../../results/news_first_inference_20261114/smoke_receipt.json)、[候选离线回读](../../results/news_schema_repair_20261114/candidate_validation_replay.json)和 [v3 审计聚合回执](../../results/news_schema_repair_20261114/new_inference_aggregate.json)分别记录不同证据门槛。v3 在三次尝试后因 OOM 终止；两份格式合规但最终机械检查失败的响应不能支持十篇完整比较。这项较小的开发工作不替代拟议的 7B 模型对照，也不构成抽取质量结论。
 
 Qwen 官方发布文章日期为 2024-09-19；这是系列发布记录，不是全部训练材料的截止日期。最终必须核对确切权重 revision 的公开/冻结记录，不能仅凭模型名称或系列发布日期判定时间有效性。当前已读模型卡不足以证明所有预训练、SFT、RL 和蒸馏数据的精确时间上限。
 

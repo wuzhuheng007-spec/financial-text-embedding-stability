@@ -1,0 +1,110 @@
+{
+  "schema": "news_n1_smoke_public_receipt_v1",
+  "run_started_at_utc": "2026-11-14T07:10:28+00:00",
+  "run_finished_at_utc": "2026-11-14T07:16:52+00:00",
+  "run_status": "OOM_STOP",
+  "development_articles": 10,
+  "input_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "input_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_preference": "Qwen/Qwen2.5-3B-Instruct",
+  "model_snapshot_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_weight_sha256": {
+    "model-00001-of-00002.safetensors": "67347b23fb4165b652eb6611f5e1f2a06dfcddba8e909df1b2b0b1857bee06c2",
+    "model-00002-of-00002.safetensors": "a40d941d0e7e0b966ad8b62bb6d6b7c88cce1299197b599d9d0a4ce59aabfc1d"
+  },
+  "model_generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "tokenizer_special_ids": {
+    "tokenizer_bos_token_id": null,
+    "tokenizer_eos_token_id": 151645,
+    "tokenizer_pad_token_id": 151643,
+    "effective_eos_token_id": [
+      151645,
+      151643
+    ],
+    "effective_pad_token_id": 151643
+  },
+  "attention_implementation": "eager",
+  "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+  "model_context_limit_tokens": 32768,
+  "model_runtime": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.6.2",
+    "jsonschema": "4.26.0"
+  },
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "model_calls_attempted": 3,
+    "worker_process_started": 3,
+    "model_load_completed": 3,
+    "generation_started": 3,
+    "model_calls_completed": 2,
+    "model_call_failures": 1,
+    "json_parse_valid": 2,
+    "schema_valid": 2,
+    "binding_valid": 2,
+    "mechanical_valid": 0,
+    "evidence_spans_checked": 3,
+    "evidence_spans_exact": 0
+  },
+  "mechanical_rates": {
+    "json_parse_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "schema_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "binding_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "mechanical_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 2,
+      "conditional_rate": 0.0,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.0
+    }
+  },
+  "metric_denominators": {
+    "input_too_long": "context_preflight_checked_articles",
+    "json_parse_valid": "model_calls_completed",
+    "schema_valid": "json_parse_valid",
+    "binding_valid": "schema_valid",
+    "mechanical_valid": "schema_valid",
+    "evidence_spans_exact": "evidence_spans_checked"
+  },
+  "limitations": [
+    "First ten source-order articles were already used for field design; development set only.",
+    "Per-article wall seconds include subprocess start, cold model load and tokenization; synchronized generation seconds are recorded separately.",
+    "No independent human gold labels or extraction accuracy metrics.",
+    "No financial labels, prediction or return evaluation."
+  ]
+}

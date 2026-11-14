@@ -1,0 +1,60 @@
+{
+  "schema": "news_n1_smoke_config_v2",
+  "created_date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "purpose": "retrospective development repair: complete-schema prompt plus synthetic format example; no extraction accuracy claim",
+  "source": {
+    "dataset": "Zihan1004/FNSPID",
+    "dataset_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+    "target_file": "Stock_news/nasdaq_exteral_data.csv",
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "first_usable_articles": 10,
+    "set_role": "DEVELOPMENT_NOT_BLIND_TEST"
+  },
+  "contract": {
+    "schema_path": "docs/news_research/company_event_output.schema.json",
+    "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "prompt_path": "docs/news_research/company_event_prompt_v2.md",
+    "prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+    "validator_path": "scripts/validate_news_company_event.py",
+    "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "model_preference": "Qwen/Qwen2.5-3B-Instruct",
+  "model_path_policy": "explicit official local Hugging Face snapshot at pinned revision; no hub resolution during inference",
+  "device": "cuda",
+  "dtype": "float16",
+  "context_cap_tokens": 32768,
+  "generation": {
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "gpu_absolute_determinism_claimed": false
+  },
+  "budget": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "model_input_fields": [
+    "input_binding",
+    "source_date",
+    "source_ticker_candidate",
+    "title",
+    "body"
+  ],
+  "forbidden_model_inputs": [
+    "AI review draft",
+    "human adjudication",
+    "precomputed summaries",
+    "price and returns",
+    "later article versions"
+  ],
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "attention_implementation": "eager",
+  "runtime_policy": "separate local environment; offline inference; one worker per article; no automatic retry or resume",
+  "experiment_id": "news_schema_repair_prompt_v2",
+  "baseline_commit": "585904f29d03d378b194cc714c84bd5be41db98f",
+  "baseline_config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3"
+}

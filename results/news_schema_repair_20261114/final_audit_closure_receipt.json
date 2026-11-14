@@ -1,0 +1,46 @@
+{
+  "schema": "news_schema_repair_final_audit_closure_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "timeline_utc": {
+    "pre_run_gate_checked": "2026-11-14T07:10:18+00:00",
+    "new_run_started": "2026-11-14T07:10:28+00:00",
+    "new_run_finished": "2026-11-14T07:16:52+00:00",
+    "post_run_step": "Auditor validation was hardened after the model calls; old and new immutable run records were re-audited read-only with the final code. The model was not called for closure."
+  },
+  "auditor_versions": {
+    "pre_run_gate_auditor_sha256": "5d5b5ee14eaa3ac3712947ea21651a29b62e5b59db43b5f394307e40074034d4",
+    "final_auditor_sha256": "466f9e458b7780c84d5d229251db41606b62afaabd454a9f3138951f9f3c8601",
+    "final_comparator_sha256": "027b11ba32218698d11d8febaaf30f34a04a8836185723c963f535c43ac30b08",
+    "auditor_changed_after_gate": true,
+    "runner_changed_after_gate": false
+  },
+  "frozen_run_input_sha256": {
+    "sample": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "sample_manifest": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "baseline_config": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+    "candidate_config": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+    "candidate_prompt": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+    "schema": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "validator": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+    "runner": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3"
+  },
+  "verification": {
+    "frozen_inputs_match_pre_run_gate_current_files_and_new_run": true,
+    "model_revision_and_generation_config_match_gate_and_run": true,
+    "old_audit_read_only_replay_identical": true,
+    "new_audit_read_only_replay_identical": true,
+    "pair_read_only_replay_identical": true,
+    "old_and_new_audit_status": "PASS",
+    "new_run_status": "OOM_STOP",
+    "new_run_event_worker_launches_after_finish": 0
+  },
+  "source_and_final_output_sha256": {
+    "pre_run_gate_receipt": "83132b39a9b559bbcc88b9e9b28e426ccd2c1366cb5948856bf95825b2896eab",
+    "old_inference_aggregate": "fd8e960d1a6ca24ec66372a47b877cc3f8911982b958cd2548e12760590d6ae6",
+    "new_inference_aggregate": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b",
+    "paired_comparison": "7a762549950a7497f727dc23df0a8171996b8de2e152f32b864944863a19e354",
+    "final_validation_log": "7b25ff58391163791b7ac66acb6a3aa8bdf17911b5a572894767a030417849d3"
+  },
+  "interpretation": "The pre-run gate identifies the auditor version before inference. Post-run auditor hardening changed only verification code; frozen model inputs and runner remained hash-identical. The final aggregates were rechecked without new model calls."
+}

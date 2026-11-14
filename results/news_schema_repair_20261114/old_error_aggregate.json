@@ -1,0 +1,111 @@
+{
+  "schema": "news_old_schema_error_aggregate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "checked_at_utc": "2026-11-14T07:07:47+00:00",
+  "scope": "Offline revalidation of unchanged first-run raw responses; zero new model calls.",
+  "source_commit": "585904f29d03d378b194cc714c84bd5be41db98f",
+  "source_hashes": {
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+    "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+    "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "prompt_sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3",
+    "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "prior_aggregate_sha256": "fd8e960d1a6ca24ec66372a47b877cc3f8911982b958cd2548e12760590d6ae6",
+  "response_set_sha256": "007b3661993d4cc2311c096658465f63e409922cb088c7f7433c386bdb36d509",
+  "requests_rechecked": 10,
+  "responses_revalidated": 9,
+  "schema_invalid_responses": 9,
+  "schema_error_instances": 87,
+  "schema_error_keyword_occurrences": {
+    "ADDITIONALPROPERTIES": 8,
+    "CONST": 5,
+    "ENUM": 18,
+    "REQUIRED": 45,
+    "TYPE": 11
+  },
+  "schema_error_keyword_unique_responses": {
+    "ADDITIONALPROPERTIES": 3,
+    "CONST": 5,
+    "ENUM": 9,
+    "REQUIRED": 8,
+    "TYPE": 9
+  },
+  "hotspot_occurrences": {
+    "ROOT_OR_OTHER": 4,
+    "article_disposition": 9,
+    "article_evidence": 51,
+    "input_binding": 9,
+    "market_outcome_reported": 9,
+    "schema_version": 5
+  },
+  "hotspot_unique_responses": {
+    "ROOT_OR_OTHER": 4,
+    "article_disposition": 9,
+    "article_evidence": 7,
+    "input_binding": 9,
+    "market_outcome_reported": 9,
+    "schema_version": 5
+  },
+  "diagnostic_occurrences": {
+    "BINDING_STRING_NOT_OBJECT": 9,
+    "DISPOSITION_NONCANONICAL_STRING": 9,
+    "EVIDENCE_SPAN_EXTRA_FIELD": 8,
+    "EVIDENCE_SPAN_MISSING_END": 8,
+    "EVIDENCE_SPAN_MISSING_ROLE": 25,
+    "EVIDENCE_SPAN_MISSING_START": 8,
+    "EVIDENCE_WRONG_TYPE": 2,
+    "MARKET_FLAG_BOOLEAN_NOT_TRISTATE": 9,
+    "ROOT_MISSING_SCHEMA_VERSION": 4,
+    "SCHEMA_VERSION_WRONG_CONSTANT": 5
+  },
+  "diagnostic_unique_responses": {
+    "BINDING_STRING_NOT_OBJECT": 9,
+    "DISPOSITION_NONCANONICAL_STRING": 9,
+    "EVIDENCE_SPAN_EXTRA_FIELD": 3,
+    "EVIDENCE_SPAN_MISSING_END": 3,
+    "EVIDENCE_SPAN_MISSING_ROLE": 5,
+    "EVIDENCE_SPAN_MISSING_START": 3,
+    "EVIDENCE_WRONG_TYPE": 2,
+    "MARKET_FLAG_BOOLEAN_NOT_TRISTATE": 9,
+    "ROOT_MISSING_SCHEMA_VERSION": 4,
+    "SCHEMA_VERSION_WRONG_CONSTANT": 5
+  },
+  "missing_required_field_occurrences": {
+    "end": 8,
+    "role": 25,
+    "schema_version": 4,
+    "start": 8
+  },
+  "prompt_interface_observation": {
+    "requests_rechecked": 10,
+    "same_system_content_all_requests": true,
+    "complete_schema_embedded_in_system": false,
+    "company_events_found_literal_in_system": false,
+    "schema_link_outside_sent_messages": true
+  },
+  "timeout_observation": {
+    "calls": 1,
+    "known_phase_sequence": [
+      "WORKER_PROCESS_STARTED",
+      "MODEL_LOADED",
+      "GENERATION_STARTED"
+    ],
+    "response_saved": false,
+    "wall_clock_cap_seconds": 180,
+    "parent_elapsed_seconds_includes_cleanup": 182.34400000001187,
+    "generated_token_count": null,
+    "pure_generation_seconds": null,
+    "failure_reason_beyond_wall_timeout": "UNKNOWN"
+  },
+  "interpretation": [
+    "Error instances and unique responses are different denominators; one response can have multiple errors.",
+    "The sent System message lacked the complete schema and COMPANY_EVENTS_FOUND literal; this is an observed interface gap, not proof that it caused every error.",
+    "This audit does not repair model output or compute extraction accuracy; semantic and financial evaluation remain NOT_RUN."
+  ],
+  "new_model_calls": 0,
+  "private_details_sha256": "9b468ce2d817e00211ba1d0e96511fdf5e9def533187ece6547170022a2f5863"
+}

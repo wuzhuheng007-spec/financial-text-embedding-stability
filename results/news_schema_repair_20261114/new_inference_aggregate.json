@@ -1,0 +1,109 @@
+{
+  "schema": "news_first_inference_aggregate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "audit_status": "PASS",
+  "audit_issue_codes": [],
+  "run_status": "OOM_STOP",
+  "run_started_at_utc": "2026-11-14T07:10:28+00:00",
+  "run_finished_at_utc": "2026-11-14T07:16:52+00:00",
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "development_set": "fixed first ten source-order articles used previously for field design",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+  "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "prompt_sha256": "c7db51884f1fe4a6f713c2aa0565e10fc99360975d3b04b961f5a08efe923534",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_integrity_receipt_sha256": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+  "environment_receipt_sha256": "e89a8cf98a8ebd3d2a767818b78b90477c8e860999f3da9d866bf58482adc080",
+  "generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "attention_implementation": "eager",
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "worker_launch_committed": 3,
+    "worker_process_started": 3,
+    "model_load_completed": 3,
+    "generation_started": 3,
+    "response_files_read_back": 2,
+    "attempt_finished_events": 3,
+    "json_parse_valid": 2,
+    "schema_valid": 2,
+    "binding_valid": 2,
+    "mechanical_valid": 0,
+    "evidence_spans_checked": 3,
+    "evidence_spans_exact": 0
+  },
+  "status_counts": {
+    "MECHANICAL_INVALID": 2,
+    "NOT_ATTEMPTED_AFTER_OOM_STOP": 7,
+    "OOM_STOP": 1
+  },
+  "stop_reason_counts": {
+    "EOS": 2
+  },
+  "mechanical_rates": {
+    "json_parse_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_numerator": 2,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "schema_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_numerator": 2,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "binding_valid": {
+      "conditional_numerator": 2,
+      "conditional_denominator": 2,
+      "conditional_rate": 1.0,
+      "attempted_numerator": 2,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.6666666666666666
+    },
+    "mechanical_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 2,
+      "conditional_rate": 0.0,
+      "attempted_numerator": 0,
+      "attempted_denominator": 3,
+      "attempted_rate": 0.0
+    }
+  },
+  "schema_error_keyword_counts": {},
+  "schema_error_path_counts": {},
+  "mechanical_issue_code_counts": {
+    "ARTICLE_REASON_INCONSISTENT": 1,
+    "SPAN_SLICE_MISMATCH": 1
+  },
+  "response_set_sha256": "02a6eff492dce92c99cdeb4ecc64bbca193dc8c2485abbfe13fe6e1cb90c5ade",
+  "private_receipt_hashes": {
+    "run_events_sha256": "eaa9ede85eb3242bbcd6faeb527fad6ad0f2e099edf4608794c24c4b45a49885",
+    "local_manifest_sha256": "d0cdda2a6060d6e671a2f5b8d87abd52c3a038a4bf3188d877ff0942e91c5fbd",
+    "token_preflight_sha256": "8841aaee1cba037ffa76519ed9838a9f4f9cadcbfe1fb4876af8ec4c9eb445d3",
+    "shareable_summary_sha256": "ac48b9331a41f157688379ffeca7556b614d0955d5d0ea746f0aedcf7ec95303"
+  },
+  "limits": [
+    "First ten development articles only; no independent human gold labels.",
+    "JSON/schema/span checks are mechanical, not extraction accuracy.",
+    "No historical financial admission, prediction or return evaluation."
+  ]
+}

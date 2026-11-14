@@ -20,11 +20,8 @@ import sys
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_RUN = REPO / "artifacts/news_first_inference_20261114/qwen3b_aa8e725_run1"
 DEFAULT_OUTPUT = REPO / "results/news_first_inference_20261114/inference_aggregate.json"
-CONFIG = REPO / "configs/news_n1_smoke_v2.json"
+DEFAULT_CONFIG = REPO / "configs/news_n1_smoke_v2.json"
 RUNNER = REPO / "scripts/run_news_n1_smoke.py"
-VALIDATOR = REPO / "scripts/validate_news_company_event.py"
-SCHEMA = REPO / "docs/news_research/company_event_output.schema.json"
-PROMPT = REPO / "docs/news_research/company_event_prompt.md"
 SAMPLE = REPO / "artifacts/news_n1_20261114/upstream_nasdaq_bf9189c_run1/raw_fields_with_body.jsonl"
 SAMPLE_MANIFEST = REPO / "artifacts/news_n1_20261114/upstream_nasdaq_bf9189c_run1/local_manifest.json"
 MODEL_RECEIPT = REPO / "results/news_first_inference_20261114/model_integrity_receipt.json"
@@ -40,9 +37,6 @@ def schema_property_names(node: object) -> set[str]:
     for value in node.values():
         names.update(schema_property_names(value))
     return names
-
-
-ALLOWED_SCHEMA_PATH_SEGMENTS = schema_property_names(json.loads(SCHEMA.read_text(encoding="utf-8")))
 
 
 class AuditError(RuntimeError):
@@ -99,7 +93,7 @@ def rate(n: int, d: int) -> float | None:
     return n / d if d else None
 
 
-def safe_schema_path(value: str) -> str:
+def safe_schema_path(value: str, allowed_segments: set[str]) -> str:
     parts = value.split("/")
     safe = []
     for part in parts:
@@ -107,7 +101,7 @@ def safe_schema_path(value: str) -> str:
             continue
         if part.isdecimal():
             safe.append("*")
-        elif part in ALLOWED_SCHEMA_PATH_SEGMENTS:
+        elif part in allowed_segments:
             safe.append(part)
         else:
             safe.append("REDACTED")
@@ -127,6 +121,44 @@ def expected_stop_reason(ids: list[int], eos: int | list[int] | None, cap: int) 
     return "OTHER_STOP"
 
 
+def status_consistency_issues(run_dir: Path, status_by_ordinal: dict[int, str],
+                              by_ordinal: dict[int, dict], launched: set[int],
+                              finished_statuses: dict[int, list[str]],
+                              derived_response_statuses: dict[int, str],
+                              run_status: str) -> list[str]:
+    """Bind published ordinal statuses to attempt events and response checks."""
+    if set(status_by_ordinal) != set(range(1, 11)):
+        return ["ARTICLE_STATUS_COVERAGE_MISMATCH"]
+    not_attempted_status = (
+        "NOT_ATTEMPTED_AFTER_RUN_ERROR" if run_status == "PREFLIGHT_OR_RUN_ERROR" else
+        "NOT_ATTEMPTED_AFTER_PREFLIGHT" if run_status == "SMOKE_RUN_FINISHED" else
+        "NOT_ATTEMPTED_AFTER_" + run_status)
+    issues = []
+    for ordinal in range(1, 11):
+        actual_status = status_by_ordinal[ordinal]
+        response_exists = (run_dir / f"response_{ordinal:02d}.json").is_file()
+        if ordinal in launched:
+            if (finished_statuses.get(ordinal) != [actual_status]
+                    or (response_exists and derived_response_statuses.get(ordinal) != actual_status)
+                    or (not response_exists and actual_status not in
+                        {"CALL_TIMEOUT", "OOM_STOP", "MODEL_CALL_ERROR",
+                         "ATTEMPTED_UNCLASSIFIED_RUN_ERROR"})):
+                issues.append("ARTICLE_STATUS_RESPONSE_OR_EVENT_MISMATCH")
+            if actual_status == "OOM_STOP":
+                stderr_path = run_dir / f"stderr_{ordinal:02d}.txt"
+                if (not stderr_path.is_file()
+                        or "out of memory" not in stderr_path.read_text(
+                            encoding="utf-8", errors="replace").lower()):
+                    issues.append("OOM_FAILURE_EVIDENCE_MISMATCH")
+        elif ((not by_ordinal[ordinal]["fits_with_output_budget"] and
+               actual_status != "INPUT_TOO_LONG") or
+              (by_ordinal[ordinal]["fits_with_output_budget"] and
+               actual_status != not_attempted_status) or
+              ordinal in finished_statuses):
+            issues.append("ARTICLE_STATUS_PREFLIGHT_OR_ATTEMPT_MISMATCH")
+    return issues
+
+
 def check_finished(run_dir: Path) -> tuple[list[dict], dict, dict]:
     events = read_events(run_dir / "run_events.jsonl")
     if not events or events[-1].get("event") != "RUN_FINISHED":
@@ -144,25 +176,46 @@ def check_finished(run_dir: Path) -> tuple[list[dict], dict, dict]:
     return events, local, shareable
 
 
-def audit(run_dir: Path) -> tuple[dict, dict]:
+def repository_path(value: str) -> Path:
+    """Keep config-selected contract files inside the audited repository."""
+    if not isinstance(value, str) or not value:
+        raise AuditError("CONTRACT_PATH_INVALID")
+    path = (REPO / value).resolve()
+    if not path.is_relative_to(REPO.resolve()) or not path.is_file():
+        raise AuditError("CONTRACT_PATH_INVALID")
+    return path
+
+
+def audit(run_dir: Path, config_path: Path = DEFAULT_CONFIG) -> tuple[dict, dict]:
     run_dir = run_dir.resolve()
     ignored_root = (REPO / "artifacts").resolve()
     if not run_dir.is_relative_to(ignored_root):
         raise AuditError("RUN_DIR_OUTSIDE_IGNORED_ARTIFACTS")
+    config_path = config_path.resolve()
+    if not config_path.is_relative_to(REPO.resolve()):
+        raise AuditError("CONFIG_OUTSIDE_REPOSITORY")
     events, local, shareable = check_finished(run_dir)
-    config = read_json(CONFIG)
+    config = read_json(config_path)
     model_receipt = read_json(MODEL_RECEIPT)
     issues: list[str] = []
+    contract = config.get("contract", {})
+    schema_path = repository_path(contract.get("schema_path"))
+    prompt_path = repository_path(contract.get("prompt_path"))
+    validator_path = repository_path(contract.get("validator_path"))
+    allowed_schema_paths = schema_property_names(read_json(schema_path))
 
     bindings = {
         "input_sample_sha256": sha256(SAMPLE),
         "input_manifest_sha256": sha256(SAMPLE_MANIFEST),
-        "config_sha256": sha256(CONFIG),
+        "config_sha256": sha256(config_path),
         "runner_sha256": sha256(RUNNER),
-        "schema_sha256": sha256(SCHEMA),
-        "prompt_sha256": sha256(PROMPT),
-        "validator_sha256": sha256(VALIDATOR),
+        "schema_sha256": sha256(schema_path),
+        "prompt_sha256": sha256(prompt_path),
+        "validator_sha256": sha256(validator_path),
     }
+    for kind in ("schema", "prompt", "validator"):
+        if contract.get(f"{kind}_sha256") != bindings[f"{kind}_sha256"]:
+            issues.append("CONFIG_CONTRACT_HASH_MISMATCH")
     for key, actual in bindings.items():
         if local.get(key) != actual or shareable.get(key) != actual:
             issues.append("RUN_INPUT_OR_CODE_BINDING_MISMATCH")
@@ -170,13 +223,32 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
     for public_key, model_key in (
             ("input_sample_sha256", "sample_sha256"),
             ("input_manifest_sha256", "sample_manifest_sha256"),
-            ("config_sha256", "smoke_config_sha256"),
             ("runner_sha256", "runner_sha256"),
             ("schema_sha256", "schema_sha256"),
-            ("prompt_sha256", "prompt_sha256"),
             ("validator_sha256", "validator_sha256")):
         if local.get(public_key) != expected_model.get(model_key):
             issues.append("PRERUN_GATE_BINDING_MISMATCH")
+    if config.get("experiment_id") == "news_schema_repair_prompt_v2":
+        baseline = read_json(DEFAULT_CONFIG)
+        if (config.get("baseline_config_sha256") != sha256(DEFAULT_CONFIG)
+                or sha256(DEFAULT_CONFIG) != expected_model.get("smoke_config_sha256")
+                or baseline.get("contract", {}).get("prompt_sha256") != expected_model.get("prompt_sha256")):
+            issues.append("PROMPT_REPAIR_BASELINE_BINDING_MISMATCH")
+        invariant_keys = ("source", "model_preference", "model_path_policy", "device", "dtype",
+                          "context_cap_tokens", "generation", "budget", "model_input_fields",
+                          "forbidden_model_inputs", "model_revision", "attention_implementation",
+                          "runtime_policy")
+        if any(config.get(key) != baseline.get(key) for key in invariant_keys):
+            issues.append("PROMPT_REPAIR_INVARIANT_MISMATCH")
+        if any(contract.get(f"{kind}_{suffix}") != baseline["contract"].get(f"{kind}_{suffix}")
+               for kind in ("schema", "validator") for suffix in ("path", "sha256")):
+            issues.append("PROMPT_REPAIR_FROZEN_CONTRACT_MISMATCH")
+        if (contract.get("prompt_sha256") == baseline["contract"].get("prompt_sha256")
+                or contract.get("prompt_path") == baseline["contract"].get("prompt_path")):
+            issues.append("PROMPT_REPAIR_PROMPT_NOT_VERSIONED")
+    elif (local.get("config_sha256") != expected_model.get("smoke_config_sha256")
+          or local.get("prompt_sha256") != expected_model.get("prompt_sha256")):
+        issues.append("PRERUN_GATE_BINDING_MISMATCH")
     model = local.get("model", {})
     revision = config.get("model_revision")
     if (model.get("snapshot_revision") != revision
@@ -225,17 +297,21 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
     statuses = local.get("article_statuses", [])
     if len(statuses) != 10 or sorted(s.get("ordinal") for s in statuses) != list(range(1, 11)):
         issues.append("ARTICLE_STATUS_COVERAGE_MISMATCH")
+    status_by_ordinal = {s.get("ordinal"): s.get("status") for s in statuses}
+    finished_statuses: dict[int, list[str]] = {}
+    for event in finished_events:
+        finished_statuses.setdefault(event.get("ordinal"), []).append(event.get("status"))
     status_counts = Counter(safe_code(str(s.get("status", "UNKNOWN"))) for s in statuses)
     if (local["counts"].get("input_too_long") != sum(not a["fits_with_output_budget"] for a in articles)
             or any(not by_ordinal[e["ordinal"]]["fits_with_output_budget"] for e in launch_events)):
         issues.append("INPUT_TOO_LONG_COUNT_OR_LAUNCH_MISMATCH")
 
     runner = load_module(RUNNER, "n1_runner_for_postrun_audit")
-    validator = load_module(VALIDATOR, "n1_validator_for_postrun_audit")
+    validator = load_module(validator_path, "n1_validator_for_postrun_audit")
     source_manifest = read_json(SAMPLE_MANIFEST)
     rows = runner.first_ten_inputs(SAMPLE, SAMPLE_MANIFEST, config["source"]["sample_sha256"])
     by_row = {row["ordinal"]: row for row in rows}
-    prompt_text = PROMPT.read_text(encoding="utf-8")
+    prompt_text = prompt_path.read_text(encoding="utf-8")
     phase_counts = Counter()
     response_count = json_count = schema_count = binding_count = mechanical_count = 0
     span_count = exact_span_count = 0
@@ -244,6 +320,7 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
     schema_paths = Counter()
     mechanical_issues = Counter()
     response_hashes = []
+    derived_response_statuses: dict[int, str] = {}
     private_attempts = []
     for e in launch_events:
         ordinal = e["ordinal"]
@@ -300,6 +377,7 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
                 parsed_output = None
             parsed_path = run_dir / f"parsed_{ordinal:02d}.json"
             if parsed_output is None:
+                derived_response_statuses[ordinal] = "JSON_PARSE_ERROR"
                 if parsed_path.is_file():
                     issues.append("PARSED_FILE_WITH_INVALID_JSON_RESPONSE")
             else:
@@ -310,7 +388,11 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
                     if parsed.get("output") != parsed_output:
                         issues.append("PARSED_OUTPUT_DIFFERS_FROM_RESPONSE")
                     check = validator.validate_output(parsed_output, expected_input["body"],
-                                                      expected_input["input_binding"], SCHEMA)
+                                                      expected_input["input_binding"], schema_path)
+                    derived_response_statuses[ordinal] = (
+                        "SCHEMA_INVALID" if not check["schema_valid"] else
+                        "MECHANICAL_INVALID" if not check["mechanical_valid"] else
+                        "MECHANICAL_VALID")
                     if parsed.get("validation") != check:
                         issues.append("MECHANICAL_RECHECK_MISMATCH")
                     schema_count += int(check["schema_valid"])
@@ -320,11 +402,16 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
                     exact_span_count += check["evidence_span_exact_match_count"] or 0
                     for err in check["schema_error_codes"]:
                         schema_keywords[safe_code(str(err.get("keyword", "UNKNOWN")).upper())] += 1
-                        schema_paths[safe_schema_path(str(err.get("path", "/")))] += 1
+                        schema_paths[safe_schema_path(str(err.get("path", "/")),
+                                                      allowed_schema_paths)] += 1
                     for code in check["mechanical_issue_codes"]:
                         mechanical_issues[safe_code(str(code))] += 1
             item["stop_reason"] = safe_code(str(raw.get("stop_reason", "UNKNOWN")))
         private_attempts.append(item)
+
+    issues.extend(status_consistency_issues(run_dir, status_by_ordinal, by_ordinal,
+                                            launched, finished_statuses,
+                                            derived_response_statuses, local["run_status"]))
 
     known_files = {f"{e['ordinal']:02d}" for e in launch_events}
     for prefix in ("request", "response", "phase", "parsed"):
@@ -422,13 +509,14 @@ def audit(run_dir: Path) -> tuple[dict, dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", type=Path, default=DEFAULT_RUN)
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
     if args.output.exists():
         print("OUTPUT_ALREADY_EXISTS", file=sys.stderr)
         return 2
     try:
-        public, private = audit(args.run_dir)
+        public, private = audit(args.run_dir, args.config)
     except AuditError as exc:
         print(str(exc), file=sys.stderr)
         return 2

@@ -1,8 +1,8 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.4
+Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.5
 
-**Status / 状态：PROPOSED。** 本轮已在独立环境核验官方固定版本 Qwen 3B，并对已有前 10 篇开发材料执行真实有界抽取：9 份响应保存并回读，1 次超时，完整 Schema 通过数为 0。人工裁定、抽取准确率与金融实验仍 **NOT_RUN**。An official pinned Qwen 3B snapshot and isolated CUDA environment were verified. The bounded run on the existing first ten development articles saved and read back nine responses, had one timeout, and yielded zero schema-valid responses. Human adjudication, extraction accuracy and financial experiments remain **NOT_RUN**.
+**Status / 状态：PROPOSED。** 首次固定开发冒烟保存并回读 9 份响应，1 次超时，Schema 通过 0/9。旧响应已离线归类。完整 Schema 加虚构示例的新提示词复测在第 3 次尝试时因 OOM 停止：2 份响应均符合 Schema，但最终机械检查均未通过；其余 7 篇未尝试。这是重复开发材料的有限格式结果。人工裁定、抽取准确率与金融实验仍 **NOT_RUN**。The first fixed development smoke saved nine responses, had one timeout and passed the Schema on 0/9 responses. Its errors were classified offline. The complete-Schema-plus-invented-example retest stopped at OOM on attempted call 3: both saved responses passed Schema but failed the final mechanical check; seven articles were not attempted. This is a limited format result on reused development material. Human adjudication, extraction accuracy and financial experiments remain **NOT_RUN**.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -23,6 +23,12 @@ Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本�
 | [First inference English report](../../reports/2026-11-14_news_first_inference.en.md) · [中文报告](../../reports/2026-11-14_news_first_inference.zh.md) | 独立环境、官方模型、首次真实开发冒烟与有限结论 |
 | [A–F execution ledger](../../results/news_first_inference_20261114/plan_execution.csv) · [aggregate smoke receipt](../../results/news_first_inference_20261114/smoke_receipt.json) | 逐项计划—实际和脱敏调用/机械检查状态 |
 | [Model source plan](../../results/news_first_inference_20261114/model_source_plan.json) · [local integrity](../../results/news_first_inference_20261114/model_integrity_receipt.json) · [CUDA environment](../../results/news_first_inference_20261114/environment_receipt.json) | 固定版本来源、文件哈希、运行环境的不同证据层 |
+| [Schema repair English report](../../reports/2026-11-14_news_schema_repair.en.md) · [中文报告](../../reports/2026-11-14_news_schema_repair.zh.md) | 旧错误离线归类、冻结候选与配对开发复测 |
+| [A–D execution ledger](../../results/news_schema_repair_20261114/plan_execution.csv) · [old error audit](../../results/news_schema_repair_20261114/old_error_aggregate.json) | 逐项计划—实际与旧响应的错误实例／唯一响应数 |
+| [Prompt v2](company_event_prompt_v2.md) · [candidate config](../../configs/news_n1_smoke_v3_prompt_complete.json) · [offline candidate replay](../../results/news_schema_repair_20261114/candidate_validation_replay.json) | 新提示词与实验配置的固定哈希和离线检查 |
+| [Audited v3 aggregate](../../results/news_schema_repair_20261114/new_inference_aggregate.json) · [paired comparison](../../results/news_schema_repair_20261114/paired_comparison.json) | OOM 停止后的尝试、完成响应、格式和机械检查分母及聚合配对状态 |
+| [Sanitized OOM receipt](../../results/news_schema_repair_20261114/oom_failure_receipt.json) · [final validation log](../../results/news_schema_repair_20261114/final_validation.log) | 第 3 次尝试的 CUDA 内存不足阶段与来源绑定；33 项最终合成测试及只读重放，和运行前 27 项有重叠 |
+| [Final audit closure](../../results/news_schema_repair_20261114/final_audit_closure_receipt.json) | 运行前及运行后 auditor 版本、冻结的模型输入/runner、只读重放一致性 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
@@ -44,4 +50,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-回读首次真实开发冒烟的私有响应与失败原因，需要调整时另建版本；独立完成人工裁定后，才在独立样本上评价抽取质量。历史身份、时间与完整金融协议继续单列。Review the private responses and failures from the first real development smoke, version any contract changes, and complete independent human adjudication before evaluating extraction quality on a separate sample. Historical identity, timing and the full financial protocol remain separate.
+复核 OOM 诊断并另立后续运行决定；在独立人工裁定和隔离事件簇样本上评价抽取质量前，不解释两份开发响应为泛化表现。历史身份、时间与完整金融协议继续单列。Review the OOM diagnostics and make a separate decision about any later run. Obtain independent human adjudications and an event-grouped holdout before assessing extraction quality; the two development responses do not establish general performance. Historical identity, timing and the full financial protocol remain separate.

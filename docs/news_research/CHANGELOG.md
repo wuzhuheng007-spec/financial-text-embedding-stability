@@ -1,5 +1,12 @@
 # Change history / 修改记录
 
+## 1.5 — 2026-11-14（Asia/Shanghai）
+
+- 原封重验首次运行的九份真实响应：87 条 Schema 错误实例按关键词、字段和唯一响应数分别统计；确认旧 System 消息缺完整 Schema，不能据此断言全部错误的原因。Revalidated the nine unchanged first-run responses: 87 Schema error instances were counted by keyword, field and unique response; the old System message lacked the full Schema, which does not prove a complete causal explanation.
+- 将完整冻结 Schema 和一个虚构格式示例放入新提示词的 System 消息，另建候选配置；模型、样本、Schema、validator 和生成预算保持不变。The new System prompt includes the complete frozen Schema and one invented format example; the model, inputs, Schema, validator and generation limits remain fixed.
+- 单次 v3 复测在第 3 次尝试时因 OOM 停止；2 份 EOS 响应均通过 JSON、Schema 和绑定检查，但 2 份均未通过最终机械检查，7 篇未尝试。两份响应上的严格示例复制标志为 0/2；这是旧开发样本的有限结果。The single v3 retest stopped at OOM on attempted call 3; both EOS responses passed JSON, Schema and binding checks, but both failed the final mechanical check, and seven articles were not attempted. Strict demo-copy indicators were 0/2 on the completed responses; this is a limited result on reused development material. See the [audited aggregate](../../results/news_schema_repair_20261114/new_inference_aggregate.json) and [paired comparison](../../results/news_schema_repair_20261114/paired_comparison.json).
+- [脱敏 OOM 回执](../../results/news_schema_repair_20261114/oom_failure_receipt.json)确认第 3 次在生成阶段发生 CUDA 内存不足且无重试；[最终验证日志](../../results/news_schema_repair_20261114/final_validation.log)记录 33 项合成测试及旧/新/配对回执只读重放一致。运行前 27 项与最终测试重叠，不相加。The sanitized OOM receipt confirms CUDA out of memory after generation began with no retry; the final log records 33 synthetic tests and identical read-only old, new and paired replays. The 27 pre-run tests overlap with the final suite.
+
 ## 1.4 — 2026-11-14（Asia/Shanghai）
 
 - 在独立环境安装官方 CUDA PyTorch 与必需依赖，真实 FP16 矩阵运算和同步通过；记录版本锁与依赖检查。Installed official CUDA PyTorch and required packages in an isolated environment; an actual FP16 matrix multiplication and synchronization passed, with versions and dependency checks recorded.
