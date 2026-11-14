@@ -2,7 +2,7 @@
 
 [中文全文](roadmap.zh.md) · [Project entry point](README.md) · [Source access](source_access.md)
 
-Updated: 2026-11-14, Asia/Shanghai. Version: 1.1. Research status: **PROPOSED**. This documentation update does not execute or approve the complete financial experiment. New news-model inference, financial evaluation and backtesting remain **NOT_RUN**.
+Updated: 2026-11-14, Asia/Shanghai. Version: 1.2. Research status: **PROPOSED**. A bounded original-author news text sample is now available for engineering and annotation-field checks. The complete financial protocol is not approved. New news-model inference, financial evaluation and backtesting remain **NOT_RUN**.
 
 ## 1. Research position
 
@@ -180,8 +180,8 @@ The transcript terms Garage, JACC, Identity AI, 910 public datasets and Qwen-27B
 
 ## 12. Hugging Face and Jin10 source extension
 
-The user has identified Hugging Face and Jin10 as acceptable candidate news platforms. Account possession is not a completed connection or proof of access to each dataset. This update checks public documentation only; no authenticated news retrieval, corpus download or account change was performed.
+The user has identified Hugging Face and Jin10 as acceptable candidate news platforms. Account possession is not a completed connection or proof of access to each dataset. An original-author FNSPID file was accessed anonymously at a pinned revision for one bounded local text sample; no account authentication, full-corpus download or account change was performed. The sampled file's upstream license statements conflict on commercial use, and article-text redistribution rights remain unverified; see [source_access.md](source_access.md).
 
 Hugging Face can supply bounded historical engineering samples. Register each dataset ID, immutable revision, source subset, time precision and upstream rights. A normalized date/trading anchor is not necessarily the original publication instant. Use Jin10's official access route for news/flash candidates; historical depth and account-specific limits need a real authorized response before claiming 2020–2026 coverage. Keep original language and distinguish translated versions.
 
-See [source_access.md](source_access.md) for inspected candidates, secure local setup and staged admission, and [sources.json](sources.json) for machine-readable evidence. Never commit account screenshots, credentials or restricted article text. New source adapters must preserve the same event-company identity, version and availability contracts as WRDS.
+See [source_access.md](source_access.md) for inspected candidates, the bounded FNSPID receipt and staged admission, and [sources.json](sources.json) for machine-readable evidence. The [sample profile](../../results/news_n1_20261114/sample_profile.json) describes only the first 100 saved records; it does not establish population coverage, original publication instants or historical securities. Never commit account screenshots, credentials or restricted article text. New source adapters must preserve the same event-company identity, version and availability contracts as WRDS.

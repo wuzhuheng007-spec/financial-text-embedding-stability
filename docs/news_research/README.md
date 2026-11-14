@@ -1,8 +1,8 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.1
+Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.2
 
-**Status / 状态：PROPOSED。** 技术路线已写入文档；新新闻模型及金融实验尚未运行。Documentation is available; new news-model inference and financial experiments have not run.
+**Status / 状态：PROPOSED。** 原作者 FNSPID 固定版本的匿名有界正文工程样本已保存本机；公司事件字段检查为 Codex 草稿。新新闻模型、抽取质量指标和金融实验均 **NOT_RUN**。An anonymous bounded original-author FNSPID text sample is retained locally; the company-event field check is a Codex draft. New news-model inference, extraction-quality metrics and financial experiments are **NOT_RUN**.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -12,6 +12,10 @@ Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本�
 | [Machine-readable status / 机器状态](STATUS.json) | 当前文档与执行状态、下一步、固定路径 |
 | [Source evidence / 来源依据](sources.json) | 已读来源、版本和证据边界 |
 | [Change history / 修改记录](CHANGELOG.md) | 中英同步的变更记录 |
+| [N1 annotation field template / N1 标注字段模板](event_annotation_template.md) | 公司—事件、证据位置及无法判断原因；不是人工金标准或模型输出 |
+| [Bounded sample receipt / 有界样本回执](../../results/news_n1_20261114/source_sample_receipt.json) | 来源版本、限额、哈希和本机原文边界 |
+| [Aggregate profile / 脱敏字段概况](../../results/news_n1_20261114/sample_profile.json) | 仅描述本轮扫描和保存的记录 |
+| [Field-check receipt / 字段检查回执](../../results/news_n1_20261114/field_review_receipt.json) | 固定顺序前 10 条的 Codex 草稿检查，不是人工金标准 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
@@ -33,4 +37,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-确认一个实际新闻来源的小样本及字段 → 固定公司级事件输出契约 → 做抽取质量原型；保持现有 M5 阻塞独立登记。Verify a small real news sample and its fields, freeze the company-event output contract, then prototype extraction quality while tracking existing M5 blockers separately.
+对已取得的小样本进行独立人工裁定 → 固定公司级事件标注与输出契约 → 做抽取质量原型；历史身份、时间与完整金融协议继续单列。Adjudicate the acquired sample independently, freeze the company-event annotation/output contract, then prototype extraction quality; track historical identity, timing and the full financial protocol separately.

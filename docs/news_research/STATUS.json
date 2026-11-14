@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.1",
+  "version": "1.2",
   "updated_date": "2026-11-14",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -21,9 +21,10 @@
   "source_access": {
     "hugging_face": {
       "candidate_documentation": "INSPECTED",
-      "account_connection": "NOT_ESTABLISHED",
-      "dataset_entitlements": "NOT_VERIFIED",
-      "download": "NOT_RUN"
+      "account_connection": "NOT_ESTABLISHED_OR_NEEDED_FOR_OPEN_FNSPID_FILE",
+      "dataset_entitlements": "GATED_DATASETS_NOT_VERIFIED",
+      "download": "BOUNDED_ANONYMOUS_ORIGINAL_AUTHOR_FNSPID_SAMPLE",
+      "original_author_fnspid_revision": "bf9189c41527198897d1af3e17b1a0095279fc45"
     },
     "jin10": {
       "official_documentation": "INSPECTED",
@@ -36,25 +37,38 @@
       "existing_identity_source_blockers": "UNCHANGED"
     }
   },
-  "next_stage": "N0/N1: source-bound text sample, event-company schema, extraction quality prototype",
-  "next_stage_zh": "N0/N1：有来源的小样本、公司级事件契约、抽取质量原型",
+  "next_stage": "N1: human adjudication of the bounded field-check draft, then an extraction-quality prototype; separately resolve original publication timing, historical identity and the full financial protocol before financial evaluation.",
+  "next_stage_zh": "N1：人工裁定有界字段检查草稿，再做抽取质量原型；金融评估前另行解决原始发布时间、历史身份与完整协议。",
   "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
   "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
   "planned_scope": [
-    "bilingual_roadmap",
-    "stable_navigation",
-    "public_source_access_register"
+    "pinned_original_source_check",
+    "bounded_anonymous_news_sample",
+    "aggregate_field_profile",
+    "company_event_field_check_draft"
   ],
   "execution_scope": [
-    "documentation",
-    "public_source_inspection"
+    "pinned_original_source_and_license_inspection",
+    "anonymous_bounded_csv_range_read",
+    "local_raw_sample_and_hash",
+    "aggregate_profile",
+    "first_10_ai_assistant_field_review_draft"
   ],
   "not_executed": [
     "authenticated_source_setup",
-    "corpus_download",
-    "model_inference",
+    "full_corpus_download",
+    "independent_human_gold_labels",
+    "extractor_model_inference",
+    "extraction_quality_metrics",
     "financial_experiment",
     "overleaf_update",
     "slack_message"
-  ]
+  ],
+  "n1_field_design_check": "AI_ASSISTANT_DRAFT_FIRST_10_REVIEWED",
+  "n1_field_review_receipt": "results/news_n1_20261114/field_review_receipt.json",
+  "n1_independent_human_gold_labels": false,
+  "n1_extraction_quality_metrics": "NOT_RUN",
+  "historical_financial_admission": false,
+  "current_source_bound_text_sample": "AVAILABLE_BOUNDED_FIRST_100_RECORDS",
+  "current_sample_receipt": "results/news_n1_20261114/source_sample_receipt.json"
 }

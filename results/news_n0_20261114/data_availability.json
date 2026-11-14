@@ -1,0 +1,120 @@
+{
+  "schema": "news_n0_data_availability_v1",
+  "audit_date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "scope": "registered local project locations and official public product documentation; no account probe or new download",
+  "input_versions": {
+    "roadmap_zip_sha256": "a4df9286b315ad6fa91fe5089a99701cb3a1d5308eabcb850821f88d83f4370e",
+    "repository_commit_at_local_scan": "fef17830bdc88ce1b954310d352c17645493ec03",
+    "repository_commit_after_roadmap_sync": "41657a44c7bfebd6e2627e3ab97f541c502b5252",
+    "news_source_access_document_sha256": "3ad14a2276b363eb8580903bdca5ac968a6ea24e22e9b210ec9a157ed716d249",
+    "news_status_document_sha256": "d35993ef80568a6991321797ce4dbdaf3b8a32dd05ecbc77e165129c1707654d"
+  },
+  "registered_search": {
+    "artifact_roots": [
+      "current_checkout/artifacts",
+      "sibling_publish_checkout/artifacts",
+      "quant/artifacts"
+    ],
+    "additional_filename_only_roots": ["quant/configs", "quant/docs", "quant/output"],
+    "additional_filename_only_pattern": "news|ravenpack|factiva|article",
+    "additional_filename_only_result": "NO_MATCH",
+    "current_checkout_content_roots_before_new_N0_outputs": ["README.md", "SHARING_SCOPE.md", "docs", "configs", "reports", "results", "src", "scripts"],
+    "current_checkout_news_product_or_article_field_result": "NO_MATCH_BEFORE_N0_OUTPUT_CREATED",
+    "artifact_text_extensions": [".json", ".md", ".txt", ".sql"],
+    "artifact_text_size_limit_bytes": 2000000,
+    "metadata_filename_filter": "registry|receipt|manifest|source|query|catalog|inventory|schema|summary_safe|status_safe|README_RETURN",
+    "excluded_path_pattern": "private|local_only",
+    "small_csv_contents_included_in_final_readback": false,
+    "row_values_printed_copied_or_transmitted": false,
+    "case_insensitive_content_pattern": "ravenpack|factiva|refinitiv|newswire|news[_ -]?(article|text|body|headline)|article[_ -]?(id|version|body)|headline[_ -]?(text|body)|nexis|eventregistry|newsapi",
+    "selected_metadata_file_counts": {
+      "current_checkout_artifacts": 33,
+      "sibling_publish_artifacts": 427,
+      "quant_artifacts": 44
+    },
+    "ignored_local_receipt": "artifacts/news_n0_20261114/metadata_scan_receipt.json",
+    "ignored_local_receipt_sha256": "79f991fc7e5463056d1540c7679ce998a1932c90f6d5b464fcffd5be232645eb",
+    "result": "NO_REGISTERED_LOCAL_NEWS_TEXT_FOUND",
+    "matching_declarations_only": [
+      "current_checkout/artifacts/m5_bridge_20261114_0238/README_RETURN.md:11",
+      "current_checkout/artifacts/m5_next_20261114_0325/audited_return/README_RETURN.md:11"
+    ],
+    "negative_scope_warning": "This is a bounded metadata and registered-path check, not a whole-machine search or an account-entitlement determination.",
+    "self_correction": "An earlier wider keyword pass also read small local CSV strings in memory, including private files, without outputting row values. The final supporting readback excludes all CSV and private/local_only paths."
+  },
+  "registered_non_news_examples": [
+    {
+      "path": "sibling_publish_checkout/artifacts/m5_wrds_intake_20261111_v1/m5_wrds_intake_registry.json",
+      "sha256": "8482df5d3dfccc72e5513179aa1b91f0847321488c0c1c9161f95d8e10cf08ec",
+      "role": "Query 11894962 security history, not a news product",
+      "license_or_export_terms_verified": false
+    },
+    {
+      "path": "sibling_publish_checkout/artifacts/m5_ccm_query11905330_intake_20261113_v1/m5_ccm_registry_private.json",
+      "sha256": "b62855f6a703ae6921559d617c58b5957f7acd13c7862851ae7441282222ce3a",
+      "role": "Query 11905330 CCM/Compustat link fields, not news articles"
+    }
+  ],
+  "public_product_evidence": {
+    "product_catalog_url": "https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/",
+    "catalog_role": "PRODUCT_CATALOG_ONLY",
+    "catalog_codes_seen": ["ravenpack_common", "ravenpack_dj", "ravenpack_full", "ravenpack_web", "ravenpack_trial"],
+    "data_dictionaries": "LOGIN_REQUIRED_NOT_INSPECTED",
+    "account_entitlement": "UNKNOWN",
+    "permitted_export_and_sharing": "UNKNOWN"
+  },
+  "additional_candidate_sources": [
+    {
+      "id": "hf_financial_news_multisource",
+      "source_url": "https://huggingface.co/datasets/Brianferrell787/financial-news-multisource/blob/main/README.md",
+      "status": "GATED_CARD_ONLY_ACCESS_NOT_REQUESTED",
+      "supported": "Access request and source-use conditions are visible; common schema lists date, text and extra_fields.",
+      "unverified": "Project entitlement, exact fixed revision/subset, full body coverage, article/version IDs, historical point-in-time availability and redistribution rights for any sampled text."
+    },
+    {
+      "id": "hf_fnspid_mirror",
+      "source_url": "https://huggingface.co/datasets/ML-Algo/FNSPID",
+      "status": "PUBLIC_CARD_AND_PREVIEW_ONLY_NO_INPUT_ADMITTED",
+      "supported": "Card declares CC BY-NC-4.0; some visible preview rows have null Article.",
+      "unverified": "Full-corpus body coverage, usable full viewer, upstream and third-party text rights, fixed sampled input."
+    },
+    {
+      "id": "jin10_official_mcp",
+      "source_url": "https://mcp.jin10.com/app/doc.html",
+      "status": "PUBLIC_DOCUMENTATION_ONLY_TOKEN_NOT_CONFIGURED",
+      "supported": "Official guide lists token-based connection and flash/news tools with example responses.",
+      "unverified": "Account entitlement, actual response fields, historical depth, revision IDs, quotas and research storage/redistribution rights.",
+      "terms_url": "https://flash.jin10.com/agreement"
+    }
+  ],
+  "actual_news_input": {
+    "product_and_table": null,
+    "article_and_version_ids": null,
+    "headline_field": null,
+    "body_field": null,
+    "published_at_and_precision": null,
+    "vendor_received_at_and_precision": null,
+    "revision_at_and_precision": null,
+    "entity_ids_and_historical_security_mapping": null,
+    "coverage": null,
+    "source_bound_authorized_sample": null,
+    "raw_text_available_in_subscribed_product": "UNKNOWN"
+  },
+  "user_confirmation": {
+    "date": "2026-11-14",
+    "additional_authorized_news_product_or_sample_reported": false,
+    "hugging_face_login_user_reported_after_initial_audit": true,
+    "hugging_face_login_independently_verified": false,
+    "gated_dataset_access_verified": false,
+    "browser_check_status": "COMPUTER_USE_STOPPED_URL_UNCERTAIN",
+    "scope_warning": "The user reported a Hugging Face login but no article sample. Account and dataset entitlement were not independently verified; no credential value is stored in this record."
+  },
+  "gate": {
+    "n0_registered_inventory": "COMPLETE_WITH_BOUNDED_SCOPE",
+    "n0_real_news_sample": "BLOCKED_PENDING_NEW_AUTHORIZED_INPUT",
+    "n1_real_article_extraction": "NOT_RUN",
+    "financial_labels_fits_predictions_and_backtests": "NOT_RUN",
+    "existing_m5_protocol_changed": false
+  }
+}

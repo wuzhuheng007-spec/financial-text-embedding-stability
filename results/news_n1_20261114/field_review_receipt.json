@@ -1,0 +1,56 @@
+{
+  "schema": "news_n1_company_event_field_check_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "source_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "guide": "docs/news_research/event_annotation_template.md",
+  "reviewer_kind": "AI_ASSISTANT_SEQUENTIAL_REVIEW_DRAFT",
+  "reviewed_usable_body_articles_in_saved_order": 10,
+  "draft_records": 11,
+  "record_dispositions": {
+    "COMPANY_EVENT_RECORD": 8,
+    "NO_SUPPORTED_COMPANY": 1,
+    "NO_IDENTIFIABLE_EVENT": 2
+  },
+  "impact_directions_draft": {
+    "NO_CLEAR_IMPACT": 4,
+    "POSITIVE": 2,
+    "UNKNOWN": 4,
+    "NEGATIVE": 1
+  },
+  "field_nonempty_in_reviewed_articles": {
+    "Unnamed: 0": 10,
+    "Date": 10,
+    "Article_title": 10,
+    "Stock_symbol": 10,
+    "Url": 10,
+    "Publisher": 0,
+    "Author": 0,
+    "Article": 10,
+    "Lsa_summary": 10,
+    "Luhn_summary": 10,
+    "Textrank_summary": 10,
+    "Lexrank_summary": 10
+  },
+  "observed_ambiguities": {
+    "stored_date_conflicts_with_article_date_in_at_least_one": true,
+    "source_ticker_without_named_target_in_at_least_one": true,
+    "market_outcome_style_articles_in_review": true
+  },
+  "private_annotations": {
+    "relative_path": "artifacts/news_n1_20261114/upstream_nasdaq_bf9189c_run1/assistant_review_draft_v2.jsonl",
+    "sha256": "e3d41ba4e3a6c63b87bc8d852d8319e0318b092eff62dac042a3013eaefee87d",
+    "evidence_offset_and_body_hash_replay": "PASS",
+    "published": false
+  },
+  "status": {
+    "field_design_check": "DRAFT_COMPLETE",
+    "independent_human_gold_labels": false,
+    "extractor_model_inference": "NOT_RUN",
+    "extraction_quality_metrics": "NOT_RUN",
+    "historical_security_identity_verified": false,
+    "publication_instant_verified": false,
+    "financial_experiment": "NOT_RUN"
+  },
+  "scope_warning": "This is a fixed-order first-10 AI assistant review draft. It is not a human-adjudicated benchmark or a general extraction accuracy estimate."
+}

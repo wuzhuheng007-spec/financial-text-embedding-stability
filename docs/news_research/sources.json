@@ -115,6 +115,47 @@
       "status": "OFFICIAL_DOCUMENTATION_INSPECTED",
       "claim": "Tokens support read/fine-grained roles; no credential collected in this update.",
       "claim_zh": "支持只读与细粒度权限；本轮没有收集凭据。"
+    },
+    {
+      "id": "FNSPID_ORIGINAL_GITHUB_README",
+      "url": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset/blob/4054842ec476953b30ee874d4b7e8eea786a21fa/README.md",
+      "commit": "4054842ec476953b30ee874d4b7e8eea786a21fa",
+      "status": "PINNED_ORIGINAL_AUTHOR_README_INSPECTED",
+      "claim": "Points to Stock_news/nasdaq_exteral_data.csv on original-author Hugging Face; dated commercial/research release note conflicts with later commercial restriction.",
+      "limitations": "The conflicting README wording does not independently grant commercial or third-party article-text redistribution rights."
+    },
+    {
+      "id": "FNSPID_ORIGINAL_LICENSE",
+      "url": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset/blob/4054842ec476953b30ee874d4b7e8eea786a21fa/LICENSE",
+      "commit": "4054842ec476953b30ee874d4b7e8eea786a21fa",
+      "status": "PINNED_ORIGINAL_AUTHOR_LICENSE_INSPECTED",
+      "claim": "Repository LICENSE contains CC BY-NC-4.0.",
+      "limitations": "Rights to underlying third-party article text are not separately established."
+    },
+    {
+      "id": "FNSPID_UPSTREAM_HF",
+      "url": "https://huggingface.co/datasets/Zihan1004/FNSPID/blob/bf9189c41527198897d1af3e17b1a0095279fc45/Stock_news/nasdaq_exteral_data.csv",
+      "dataset_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+      "target_file": "Stock_news/nasdaq_exteral_data.csv",
+      "status": "ANONYMOUS_BOUNDED_SAMPLE_ACQUIRED",
+      "claim": "A pinned HTTP 206 Range read produced 100 complete logical records with 100 nonempty nonsentinel Article values in the first-record sample.",
+      "receipt": "results/news_n1_20261114/source_sample_receipt.json",
+      "limitations": "Provider-displayed whole-file size and hash were not verified by a full download; sample counts do not estimate corpus coverage."
+    },
+    {
+      "id": "FNSPID_HF_CARD",
+      "url": "https://huggingface.co/datasets/Zihan1004/FNSPID/blob/bf9189c41527198897d1af3e17b1a0095279fc45/README.md",
+      "dataset_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+      "status": "PINNED_ORIGINAL_AUTHOR_CARD_INSPECTED",
+      "claim": "The card declares CC BY-NC-4.0 and says commercial use requires separate permission.",
+      "limitations": "No independent conclusion on underlying publisher text redistribution rights."
+    },
+    {
+      "id": "CC_BY_NC_4_OFFICIAL",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "status": "OFFICIAL_LICENSE_SUMMARY_INSPECTED",
+      "claim": "Explains attribution and noncommercial restrictions for material covered by CC BY-NC-4.0.",
+      "limitations": "Other rights may limit use; it does not resolve FNSPID third-party article rights."
     }
   ],
   "hypotheses": [
@@ -131,14 +172,15 @@
     "Qwen-27B"
   ],
   "required_runtime_inputs_missing": [
-    "actual news product and sample",
     "model weight revision and availability evidence",
     "new financial cohort and complete protocol",
-    "price frequency and label specification"
+    "price frequency and label specification",
+    "verified historical news publication/receipt timestamps",
+    "dated company-security identity for sampled news"
   ],
   "prior_project_status_source": "visible conversation and previously read progress report; no new reproduction of private M5 source rows",
   "new_model_inference": "NOT_RUN",
   "new_financial_experiment": "NOT_RUN",
   "external_writes": "GitHub documentation publication is authorized by the current user request; publication outcome is established by the remote commit receipt, not by this source register.",
-  "publication_scope": "Documentation synchronization and public-source inspection only; no authenticated dataset retrieval or model execution."
+  "publication_scope": "Pinned upstream-source inspection and anonymous bounded local news sample; raw article text remains local. No model inference or financial experiment."
 }

@@ -1,5 +1,11 @@
 # Change history / 修改记录
 
+## 1.2 — 2026-11-14（Asia/Shanghai）
+
+- 核对原作者 GitHub/Hugging Face 固定版本及 README/LICENSE 商业使用措辞差异；没有推定新闻正文再分发权。Pinned the original-author GitHub/HF releases and recorded the README/LICENSE commercial-use conflict without inferring article-text redistribution rights.
+- 匿名分段读取一份有界真实 CSV 样本，原始字段和正文只留本机；发布来源回执与脱敏统计。Read one bounded real CSV sample anonymously; kept raw fields/text local and published a source receipt plus aggregate profile.
+- 建立公司—事件标注模板，并对固定顺序前 10 条生成 Codex 字段检查草稿；独立人工金标准、模型推理和金融评估仍未运行。Added a company-event template and a first-10 Codex field-check draft; independent human gold labels, model inference and financial evaluation remain unrun.
+
 ## 1.1 — 2026-11-14（Asia/Shanghai）
 
 - 将先前路线整理为逐章对应的中文、英文文档。Published corresponding full Chinese and English roadmaps.

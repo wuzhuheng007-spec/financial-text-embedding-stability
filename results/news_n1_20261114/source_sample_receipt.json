@@ -1,0 +1,91 @@
+{
+  "schema": "news_n1_source_sample_receipt_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "source": {
+    "original_github_repository": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset",
+    "original_github_main_commit": "4054842ec476953b30ee874d4b7e8eea786a21fa",
+    "hugging_face_dataset": "Zihan1004/FNSPID",
+    "hugging_face_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+    "target_file": "Stock_news/nasdaq_exteral_data.csv",
+    "pinned_resolve_url": "https://huggingface.co/datasets/Zihan1004/FNSPID/resolve/bf9189c41527198897d1af3e17b1a0095279fc45/Stock_news/nasdaq_exteral_data.csv",
+    "provider_linked_size_bytes": 23232979597,
+    "provider_linked_etag_sha256": "1a7a3eb8e6b97ec19f286f2cfca3371542bddb272ab1eb8f36e33ad98fa5c4da",
+    "whole_file_hash_locally_verified": false,
+    "readme_url": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset/blob/4054842ec476953b30ee874d4b7e8eea786a21fa/README.md",
+    "license_url": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset/blob/4054842ec476953b30ee874d4b7e8eea786a21fa/LICENSE",
+    "dataset_card_url": "https://huggingface.co/datasets/Zihan1004/FNSPID/blob/bf9189c41527198897d1af3e17b1a0095279fc45/README.md"
+  },
+  "license_boundary": {
+    "repo_license_and_hf_card": "CC-BY-NC-4.0; noncommercial research processing basis asserted by the upstream project",
+    "github_readme_conflict": "A dated top note says commercial/research rights were released, while later text and LICENSE restrict commercial use; no commercial permission inferred.",
+    "third_party_article_text_redistribution": "NOT_VERIFIED; raw text retained locally only"
+  },
+  "execution": {
+    "access": "ANONYMOUS_NO_TOKEN",
+    "head_http_status": 302,
+    "head_repo_commit": "bf9189c41527198897d1af3e17b1a0095279fc45",
+    "range_get_http_status": 206,
+    "response_content_range": "bytes 0-51380223/23232979597",
+    "requested_range": "bytes=0-51380223",
+    "limits": {
+      "logical_rows": 1000,
+      "saved_nonempty_body_rows": 100,
+      "transfer_bytes": 52428800,
+      "preflight_reserved_bytes": 1048576,
+      "preflight_consumed_bytes": 16384,
+      "main_range_bytes": 51380224
+    },
+    "request_policy": {
+      "head_max_attempts": 2,
+      "get_max_attempts_before_body": 2,
+      "retry_after_body": false,
+      "connect_timeout_seconds": 10,
+      "read_timeout_seconds": 30,
+      "trust_env": false,
+      "authorization_header": false
+    },
+    "complete_logical_rows_scanned": 100,
+    "saved_nonempty_article_rows": 100,
+    "rows_with_width_mismatch": 0,
+    "stop_reason": "SAVED_BODY_LIMIT",
+    "observed_client_bytes_consumed_including_preflight": 737280,
+    "range_budget_bytes_including_reserved_preflight": 52428800,
+    "input_field_count": 12,
+    "actual_run_script_sha256": "a696fcd6ee50399df60e32894170a91aa7b109d7692435bfc4bc1dbe4eaf3de1",
+    "actual_profile_script_sha256": "9cb77907caf15b13b39d65beba3a1f83e8897e004dc19e89591fa06004e14ad7",
+    "python_requests_version": "2.34.2"
+  },
+  "local_only_artifacts": {
+    "sample_relative_path": "artifacts/news_n1_20261114/upstream_nasdaq_bf9189c_run1/raw_fields_with_body.jsonl",
+    "sample_format": "JSONL of raw CSV field values in source order; not byte-identical CSV source slices",
+    "sample_bytes": 697251,
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "manifest_relative_path": "artifacts/news_n1_20261114/upstream_nasdaq_bf9189c_run1/local_manifest.json",
+    "manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "raw_text_published": false,
+    "local_profile_sha256": "766dac2d14e58da21a828a14d5c5594d1475b45f3ec642888d1d9027c50717ea"
+  },
+  "profile_relative_path": "results/news_n1_20261114/sample_profile.json",
+  "profile_sha256": "d9dea439935106482b47f15a640df991a2a26405b2b6438c8a13c96c29de7263",
+  "interpretation": {
+    "text_engineering_sample": "AVAILABLE_BOUNDED_FIRST_RECORDS",
+    "full_article_completeness": "NOT_INDEPENDENTLY_VERIFIED",
+    "publication_instant": "NOT_VERIFIED",
+    "historical_company_security_identity": "NOT_VERIFIED",
+    "formal_financial_admission": false,
+    "news_model_inference": "NOT_RUN",
+    "financial_experiment": "NOT_RUN",
+    "scope": "Counts describe this 100-record bounded run only, not FNSPID corpus coverage."
+  },
+  "reusable_code": {
+    "sampler": "scripts/sample_fnspid_news.py",
+    "profiler": "scripts/profile_fnspid_sample.py",
+    "version_relation": "Tracked reusable scripts are successors, not byte-identical to the exact locally executed scripts whose hashes are recorded above.",
+    "real_source_redownload_with_tracked_code": false,
+    "validation_log": "results/news_n1_20261114/code_validation.log",
+    "synthetic_test_status": "7_PASSED",
+    "python_compile_status": "PASS"
+  },
+  "profile_publication_note": "Public profile differs from exact local profile only by CRLF-to-LF line-ending normalization; parsed JSON is identical."
+}
