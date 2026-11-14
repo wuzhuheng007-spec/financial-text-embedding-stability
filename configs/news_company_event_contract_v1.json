@@ -1,0 +1,32 @@
+{
+  "contract_version": "n1_company_event_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "files": {
+    "schema": {
+      "path": "docs/news_research/company_event_output.schema.json",
+      "sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470"
+    },
+    "prompt": {
+      "path": "docs/news_research/company_event_prompt.md",
+      "sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3"
+    },
+    "validator": {
+      "path": "scripts/validate_news_company_event.py",
+      "sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+    }
+  },
+  "span_unit": "original Article Unicode code points [start,end)",
+  "normalization_applied": false,
+  "normalization_mapping_ref": null,
+  "model_input_fields": [
+    "input_binding",
+    "source_date",
+    "source_ticker_candidate",
+    "title",
+    "body"
+  ],
+  "processing_boundary": "Model response JSON is schema and span checked. Timeout, parse error, schema invalidity and runtime failure are separate runner statuses; none is an article unknown value.",
+  "development_scope": "Fixed first 10 saved source-order articles; not a blind or independent human gold set.",
+  "future_return_label": "NOT_OBSERVED"
+}

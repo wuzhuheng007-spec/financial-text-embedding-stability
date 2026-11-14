@@ -2,7 +2,7 @@
 
 [中文全文](roadmap.zh.md) · [Project entry point](README.md) · [Source access](source_access.md)
 
-Updated: 2026-11-14, Asia/Shanghai. Version: 1.2. Research status: **PROPOSED**. A bounded original-author news text sample is now available for engineering and annotation-field checks. The complete financial protocol is not approved. New news-model inference, financial evaluation and backtesting remain **NOT_RUN**.
+Updated: 2026-11-14, Asia/Shanghai. Version: 1.3. Research status: **PROPOSED**. The bounded original-author sample has been replayed and an N1 engineering output contract is fixed. Human adjudication is pending. No version-bound local generative model was found in checked locations; new extraction-model inference, financial evaluation and backtesting remain **NOT_RUN**.
 
 ## 1. Research position
 
@@ -66,11 +66,13 @@ WRDS is a platform. The exact news product, text/headline fields, version and ac
 
 Inspect a small sample and its access conditions first. Then freeze the query and use resumable partitions supported by the provider. Do not assume a universal requirement to download all history in one query. Preserve contemporary article versions when resolving revisions and syndication; never backfill later text into an earlier forecast.
 
-Hugging Face and Jin10 are now also candidate sources; see Section 12 and the source-access register. Their addition does not establish a downloaded or admitted news sample.
+Hugging Face and Jin10 are candidate sources; see Section 12 and the source-access register. A bounded original-author FNSPID sample has since been saved for text engineering, without formal financial admission.
 
 ## 4. Company-specific event measurement
 
 Use evidence-constrained structured extraction. Keep event category, entities, affected companies, direction, magnitude, uncertainty, relevance, novelty, expected duration, direct/indirect impact, quoted evidence and insufficient-information status as separate fields.
+
+The current [N1 JSON Schema](company_event_output.schema.json) and [prompt](company_event_prompt.md) freeze a bounded engineering output contract: one article version may have multiple event-by-target-company records or an explicit no-event/no-supported-company disposition. Business impact, already reported market outcome and unobserved future returns are separate. Evidence uses original-body Unicode character offsets checked by the validator. This is a mechanical contract, not an extraction-quality result; the first ten reviewed articles are development material, human fields remain blank and real model inference is **NOT_RUN**.
 
 One event may create several company records. Judge a product launch's effect on its issuer from the text as well; do not assign a negative effect to every competitor by rule. A point-in-time relationship graph may propose affected companies not explicitly discussed, but the indirect path must have evidence and remain a hypothesis rather than an asserted statement from the article.
 
@@ -83,6 +85,8 @@ An initial budget of 200 event-company annotations is proposed across event type
 ## 5. Model strategy and look-ahead
 
 Use `Qwen/Qwen2.5-7B-Instruct` as a proposed structured-extraction engineering baseline, compared with `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`. This choice reflects identifiable, manageable candidates, not demonstrated financial superiority. The latter is based on Qwen2.5-Math-7B and distilled using DeepSeek-R1 samples; the pair is not a comparison of fully independent pretraining families.
+
+The current bounded smoke [configuration](../../configs/news_n1_smoke_v1.json) prefers an existing local `Qwen/Qwen2.5-3B-Instruct` snapshot for a first-ten development check. That is a smaller engineering gate, not a replacement for the proposed model comparison. No complete version-bound local generative snapshot was found in checked locations, so real smoke inference remains **NOT_RUN**.
 
 The Qwen series announcement is dated 2024-09-19. That is a release record, not a comprehensive training-data cutoff. Verify the actual weight revision's publication/freeze history; a name or series release date is insufficient. The inspected model cards do not establish exact temporal bounds for every pretraining, SFT, RL and distillation stage.
 

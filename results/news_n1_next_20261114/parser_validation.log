@@ -1,0 +1,12 @@
+P1 parser boundary validation
+Synthetic tests only; no news data or network access
+Python 3.11.9
+$ python -m pytest tests/test_fnspid_bounded_sample.py -q
+...........                                                              [100%]
+11 passed in 0.27s
+exit_code=0
+$ python -m py_compile scripts/sample_fnspid_news.py tests/test_fnspid_bounded_sample.py
+(no stdout)
+exit_code=0
+sha256 scripts/sample_fnspid_news.py 6c1a9c2942ecde8d2080d108d3c99a62caf438493a0cc69615c67db18f6068a0
+sha256 tests/test_fnspid_bounded_sample.py 4b5ed3922370865961bd43c72f55d661b0bdbe7a3164a41ed73272fa7bfa8275

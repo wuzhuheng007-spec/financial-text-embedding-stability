@@ -108,6 +108,80 @@ def test_range_end_inside_quoted_record_preserves_completed_rows(tmp_path: Path)
         "main_bytes_consumed"] == len(payload)
 
 
+def test_complete_eof_accepts_last_row_without_newline(tmp_path: Path):
+    payload = b"Article,Article_title\nComplete,First"
+    full_path = tmp_path / "full.jsonl"
+    full, meter = acquire.parse_csv_prefix(
+        small_chunks(payload, 2), full_path, max_rows=1000, max_bodies=100,
+        max_bytes=len(payload), range_is_prefix=False)
+    assert full["complete_logical_rows_scanned"] == 1
+    assert full["saved_nonempty_body_rows"] == 1
+    assert full["stop_reason"] == "SOURCE_EOF_BEFORE_ROW_OR_BODY_LIMIT"
+    assert meter["final_unterminated_physical_line_chars"] == len("Complete,First")
+    assert json.loads(full_path.read_text(encoding="utf-8"))["fields"] == [
+        "Complete", "First"]
+
+    prefix_path = tmp_path / "prefix.jsonl"
+    prefix, prefix_meter = acquire.parse_csv_prefix(
+        small_chunks(payload, 2), prefix_path, max_rows=1000, max_bodies=100,
+        max_bytes=len(payload), range_is_prefix=True)
+    assert prefix["complete_logical_rows_scanned"] == 0
+    assert prefix["saved_nonempty_body_rows"] == 0
+    assert prefix["stop_reason"] == "RANGE_END_IN_PARTIAL_PHYSICAL_LINE"
+    assert prefix_meter["trailing_incomplete_physical_line_chars"] == len(
+        "Complete,First")
+
+
+def test_complete_eof_accepts_quoted_multiline_last_row(tmp_path: Path):
+    payload = 'Article,Article_title\n"First line\nSecond, café",Title'.encode("utf-8")
+    target = tmp_path / "multiline.jsonl"
+    result, meter = acquire.parse_csv_prefix(
+        small_chunks(payload, 1), target, max_rows=1000, max_bodies=100,
+        max_bytes=len(payload), range_is_prefix=False)
+    assert result["complete_logical_rows_scanned"] == 1
+    assert result["saved_nonempty_body_rows"] == 1
+    assert result["stop_reason"] == "SOURCE_EOF_BEFORE_ROW_OR_BODY_LIMIT"
+    assert meter["trailing_incomplete_utf8_bytes"] == 0
+    assert json.loads(target.read_text(encoding="utf-8"))["fields"] == [
+        "First line\nSecond, café", "Title"]
+
+
+def test_truncated_prefix_utf8_is_not_a_complete_row(tmp_path: Path):
+    payload = b"Article,Article_title\nComplete,First\n" + b"Incomplete,\xe2\x82"
+    prefix_path = tmp_path / "prefix_utf8.jsonl"
+    result, meter = acquire.parse_csv_prefix(
+        small_chunks(payload, 1), prefix_path, max_rows=1000, max_bodies=100,
+        max_bytes=len(payload), range_is_prefix=True)
+    assert result["complete_logical_rows_scanned"] == 1
+    assert result["saved_nonempty_body_rows"] == 1
+    assert result["stop_reason"] == "RANGE_END_IN_PARTIAL_UTF8_SEQUENCE"
+    assert meter["trailing_incomplete_utf8_bytes"] == 2
+    assert len(prefix_path.read_text(encoding="utf-8").splitlines()) == 1
+
+    full_state = {}
+    with pytest.raises(UnicodeDecodeError):
+        acquire.parse_csv_prefix(
+            small_chunks(payload, 1), tmp_path / "bad_utf8.jsonl",
+            max_rows=1000, max_bodies=100, max_bytes=len(payload),
+            range_is_prefix=False, state=full_state)
+    assert full_state["result"]["complete_logical_rows_scanned"] == 1
+    assert full_state["meter"]["bytes_consumed"] == len(payload)
+    assert full_state["meter"]["trailing_incomplete_utf8_bytes"] == 2
+
+
+def test_complete_eof_rejects_unclosed_quote_after_completed_row(tmp_path: Path):
+    payload = b'Article,Article_title\nComplete,First\n"Unclosed,Second'
+    state = {}
+    with pytest.raises(csv.Error, match="unexpected end of data"):
+        acquire.parse_csv_prefix(
+            small_chunks(payload, 1), tmp_path / "bad_quote.jsonl",
+            max_rows=1000, max_bodies=100, max_bytes=len(payload),
+            range_is_prefix=False, state=state)
+    assert state["result"]["complete_logical_rows_scanned"] == 1
+    assert state["result"]["saved_nonempty_body_rows"] == 1
+    assert state["meter"]["bytes_consumed"] == len(payload)
+
+
 def test_run_manifest_keeps_partial_counts_without_network(tmp_path: Path, monkeypatch):
     payload = b'Article,Article_title\n"Complete",First\n"Unfinished\n'
     monkeypatch.setattr(acquire, "__file__", str(tmp_path / "scripts" / "sample_fnspid_news.py"))

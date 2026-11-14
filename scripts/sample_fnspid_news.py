@@ -49,11 +49,13 @@ def is_usable_body(value: str) -> bool:
     return value.strip().lower() not in NULLISH_BODIES
 
 
-def complete_physical_lines(chunks, meter: dict, max_bytes: int):
-    """Yield only newline-terminated lines; csv.reader joins quoted lines.
+def complete_physical_lines(chunks, meter: dict, max_bytes: int, *,
+                            range_is_prefix: bool = True):
+    """Feed CSV physical lines, distinguishing a byte prefix from real EOF.
 
-    A partial physical line at the end of the byte range is withheld. The
-    caller records only rows completed by csv.reader before the range ends.
+    A Range prefix cannot certify its final physical line, so withhold that
+    line. At complete-file EOF, finalize UTF-8 and pass a legal unterminated
+    final line to ``csv.reader``. The reader joins quoted multiline records.
     """
     decoder = codecs.getincrementaldecoder("utf-8-sig")("strict")
     pending = ""
@@ -74,7 +76,17 @@ def complete_physical_lines(chunks, meter: dict, max_bytes: int):
             pending = pending[end + 1 :]
         if len(pending) > MAX_PHYSICAL_LINE_CHARS:
             raise RuntimeError("PHYSICAL_LINE_TOO_LONG")
-    meter["trailing_incomplete_physical_line_chars"] = len(pending)
+    meter["trailing_incomplete_utf8_bytes"] = len(decoder.getstate()[0])
+    if range_is_prefix:
+        meter["trailing_incomplete_physical_line_chars"] = len(pending)
+        return
+    pending += decoder.decode(b"", final=True)
+    if pending:
+        if len(pending) > MAX_PHYSICAL_LINE_CHARS:
+            raise RuntimeError("PHYSICAL_LINE_TOO_LONG")
+        meter["final_unterminated_physical_line_chars"] = len(pending)
+        yield pending
+    meter["trailing_incomplete_physical_line_chars"] = 0
 
 
 def parse_csv_prefix(chunks, sample_path: Path, *, max_rows: int, max_bodies: int,
@@ -94,13 +106,16 @@ def _parse_csv_prefix_impl(chunks, sample_path: Path, *, max_rows: int,
                            max_bodies: int, max_bytes: int, range_is_prefix: bool,
                            state: dict | None) -> tuple[dict, dict]:
     meter = {"bytes_consumed": 0, "prefix_sha256": hashlib.sha256(),
-             "trailing_incomplete_physical_line_chars": None}
+             "trailing_incomplete_physical_line_chars": None,
+             "trailing_incomplete_utf8_bytes": None,
+             "final_unterminated_physical_line_chars": 0}
     result = {"header": None, "complete_logical_rows_scanned": 0,
               "saved_nonempty_body_rows": 0, "rows_with_width_mismatch": 0,
               "rows_with_empty_or_sentinel_body": 0, "stop_reason": None}
     if state is not None:
         state.update(result=result, meter=meter)
-    reader = csv.reader(complete_physical_lines(chunks, meter, max_bytes), strict=True)
+    reader = csv.reader(complete_physical_lines(
+        chunks, meter, max_bytes, range_is_prefix=range_is_prefix), strict=True)
     header = next(reader)
     result["header"] = header
     if len(header) != len(set(header)) or "Article" not in header:
@@ -128,11 +143,23 @@ def _parse_csv_prefix_impl(chunks, sample_path: Path, *, max_rows: int,
         except csv.Error as exc:
             if (range_is_prefix and meter["bytes_consumed"] == max_bytes
                     and "unexpected end of data" in str(exc).lower()):
-                result["stop_reason"] = "RANGE_END_IN_PARTIAL_QUOTED_RECORD"
+                result["stop_reason"] = (
+                    "RANGE_END_IN_PARTIAL_UTF8_SEQUENCE"
+                    if meter["trailing_incomplete_utf8_bytes"] else
+                    "RANGE_END_IN_PARTIAL_QUOTED_RECORD"
+                )
             else:
                 raise
     if result["stop_reason"] is None:
-        result["stop_reason"] = "RANGE_EXHAUSTED_BEFORE_ROW_OR_BODY_LIMIT"
+        if range_is_prefix:
+            if meter["trailing_incomplete_utf8_bytes"]:
+                result["stop_reason"] = "RANGE_END_IN_PARTIAL_UTF8_SEQUENCE"
+            elif meter["trailing_incomplete_physical_line_chars"]:
+                result["stop_reason"] = "RANGE_END_IN_PARTIAL_PHYSICAL_LINE"
+            else:
+                result["stop_reason"] = "RANGE_EXHAUSTED_BEFORE_ROW_OR_BODY_LIMIT"
+        else:
+            result["stop_reason"] = "SOURCE_EOF_BEFORE_ROW_OR_BODY_LIMIT"
     meter["prefix_sha256"] = meter["prefix_sha256"].hexdigest()
     return result, meter
 
@@ -163,7 +190,10 @@ def transfer_record(meter: dict, advertised_bytes: int) -> dict:
             "consumed_prefix_sha256": digest.hexdigest() if hasattr(digest, "hexdigest") else digest,
             "advertised_range_budget_bytes": advertised_bytes,
             "trailing_incomplete_physical_line_chars":
-            meter["trailing_incomplete_physical_line_chars"]}
+            meter["trailing_incomplete_physical_line_chars"],
+            "trailing_incomplete_utf8_bytes": meter["trailing_incomplete_utf8_bytes"],
+            "final_unterminated_physical_line_chars":
+            meter["final_unterminated_physical_line_chars"]}
 
 
 def run(output_dir: Path, *, max_rows: int = MAX_ROWS, max_bodies: int = MAX_BODIES,

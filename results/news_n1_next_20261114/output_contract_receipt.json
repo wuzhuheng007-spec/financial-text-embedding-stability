@@ -1,0 +1,46 @@
+{
+  "schema": "news_n1_output_contract_receipt_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "contract_config_path": "configs/news_company_event_contract_v1.json",
+  "contract_config_sha256": "b016dc8185f0d1ee5a5e9d6b7bdebef1c8e6ba034a3cc03f6cae42c2a330bb39",
+  "files": {
+    "schema": {
+      "path": "docs/news_research/company_event_output.schema.json",
+      "sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470"
+    },
+    "prompt": {
+      "path": "docs/news_research/company_event_prompt.md",
+      "sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3"
+    },
+    "validator": {
+      "path": "scripts/validate_news_company_event.py",
+      "sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+    }
+  },
+  "extra_builder": {
+    "path": "scripts/build_news_human_review_pack.py",
+    "sha256": "0c742cb9eec69077ca097c86ffcc218731ddca55916523760aafcc02518a16ea"
+  },
+  "mechanical_validation": {
+    "json_schema_draft": "2020-12",
+    "span_unit": "original Article Unicode code points [start,end)",
+    "binding_and_body_hash_checked": true,
+    "unknown_distinct_from_runner_failure": true,
+    "synthetic_test_command": "python -m pytest tests/test_news_company_event_contract.py -q",
+    "synthetic_test_result": "6 passed in 0.97s",
+    "interpretation": "Synthetic contract and validator checks only; no model or human-label accuracy."
+  },
+  "private_human_adjudication_pack": {
+    "local_relative_path": "artifacts/news_n1_next_20261114/human_review_batch_v1",
+    "manifest_sha256": "d9b5f12c777fa0ef44cf4b24037bf8ce43fe90f86b3cd896cfd0b97f6e4d2256",
+    "first_view": "01_REVIEW_FIRST.html",
+    "ai_draft_separate_view": "02_AI_DRAFT_REFERENCE.html",
+    "article_count": 10,
+    "ai_draft_record_count": 11,
+    "human_fields_prefilled": false,
+    "human_adjudication_status": "NOT_STARTED",
+    "development_set": true,
+    "raw_content_published": false
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "news_n1_local_model_gate_v1",
+  "checked_at_utc": "2026-11-14T05:50:01+00:00",
+  "scope": "Targeted registered/default local model caches and ChatGPT project workspaces; not a whole-machine proof of absence.",
+  "preferred_model": "Qwen/Qwen2.5-3B-Instruct",
+  "searched_location_aliases": [
+    "default_huggingface_hub",
+    "quant_model_cache",
+    "sibling_publish_model_cache",
+    "default_ollama_cache_and_cli",
+    "default_lmstudio_cache",
+    "ChatGPT_project_weight_filenames",
+    "targeted_E_project_and_appdata_weight_filenames"
+  ],
+  "observed": {
+    "preferred_qwen_snapshot": "NOT_FOUND_IN_CHECKED_LOCATIONS",
+    "version_bound_generative_weights": "NOT_FOUND_IN_CHECKED_LOCATIONS",
+    "existing_embedding_model": "all-MiniLM-L6-v2 ONNX in project caches; not a generative event extractor",
+    "default_hf_hub_other_directory": "models--microsoft--infoxlm-large (no Qwen snapshot)",
+    "compute": {
+      "detected": true,
+      "name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "memory_total_mib": 12227,
+      "memory_free_mib_at_check": 8975,
+      "driver_version": "591.97"
+    },
+    "runtime_packages": {
+      "python": "3.11.9",
+      "torch": null,
+      "transformers": null,
+      "tokenizers": "0.23.3",
+      "safetensors": null,
+      "jsonschema": "4.26.0"
+    }
+  },
+  "blocking_requirements": [
+    "A complete, existing local generative model snapshot with verifiable revision or weight hashes and chat template",
+    "Compatible local torch and transformers runtime for the selected model"
+  ],
+  "input_binding": {
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "config_sha256": "3bbcdfdeadc6319b4b9dd669b1589a5be12aeaf7811d95dab3b24a0dd9fba57a",
+    "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "prompt_sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3",
+    "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "smoke_receipt": "results/news_n1_next_20261114/model_smoke_receipt.json",
+  "smoke_receipt_sha256": "92c8a5cf07def95a4a6af43af53c2d9a18de75c0bc811702c7921ec6fe295644",
+  "model_calls_attempted": 0,
+  "context_token_preflight": "NOT_RUN_NO_TOKENIZER",
+  "model_inference": "NOT_RUN",
+  "human_adjudication": "SEPARATE_PENDING",
+  "financial_experiment": "NOT_RUN",
+  "credential_used": false,
+  "model_downloaded": false,
+  "paid_call_made": false,
+  "runner_path": "scripts/run_news_n1_smoke.py",
+  "runner_sha256": "365c75177f50a887e7020b51a7fd219be0ad0371ea1e6e4e0c1fb42a6c713790",
+  "runner_validation_log": "results/news_n1_next_20261114/model_runner_validation.log",
+  "runner_validation_log_sha256": "4b00ab9d5a4942bdf36ff14e40e47662d0162ed520b5e587c7c248cb6ac5fda3",
+  "runner_synthetic_tests_passed": 5
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "news_n1_smoke_public_receipt_v1",
+  "run_started_at_utc": "2026-11-14T05:49:37+00:00",
+  "run_finished_at_utc": "2026-11-14T05:49:37+00:00",
+  "run_status": "NOT_RUN_NO_VERSION_BOUND_LOCAL_MODEL",
+  "development_articles": 10,
+  "input_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "input_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "3bbcdfdeadc6319b4b9dd669b1589a5be12aeaf7811d95dab3b24a0dd9fba57a",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "prompt_sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_preference": "Qwen/Qwen2.5-3B-Instruct",
+  "model_snapshot_revision": null,
+  "model_weight_sha256": null,
+  "model_context_limit_tokens": null,
+  "model_runtime": {
+    "python": "3.11.9",
+    "torch": null,
+    "transformers": null,
+    "tokenizers": "0.23.3",
+    "safetensors": null,
+    "jsonschema": "4.26.0"
+  },
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 0,
+    "input_too_long": 0,
+    "model_calls_attempted": 0,
+    "model_calls_completed": 0,
+    "model_call_failures": 0,
+    "json_parse_valid": 0,
+    "schema_valid": 0,
+    "binding_valid": 0,
+    "mechanical_valid": 0,
+    "evidence_spans_checked": 0,
+    "evidence_spans_exact": 0
+  },
+  "metric_denominators": {
+    "input_too_long": "context_preflight_checked_articles",
+    "json_parse_valid": "model_calls_completed",
+    "schema_valid": "json_parse_valid",
+    "binding_valid": "schema_valid",
+    "mechanical_valid": "schema_valid",
+    "evidence_spans_exact": "evidence_spans_checked"
+  },
+  "limitations": [
+    "First ten source-order articles were already used for field design; development set only.",
+    "No independent human gold labels or extraction accuracy metrics.",
+    "No financial labels, prediction or return evaluation."
+  ]
+}

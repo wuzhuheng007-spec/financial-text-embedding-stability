@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quant:news:n1:company-event-output:v1",
+  "title": "N1 retrospective company-event extraction output",
+  "description": "One article-version response containing zero or more event-by-target-company records. Runner failures are recorded outside this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_binding",
+    "article_disposition",
+    "article_unknown_reason",
+    "market_outcome_reported",
+    "market_outcome_direction",
+    "date_conflict",
+    "identity_conflict",
+    "future_return_status",
+    "article_evidence",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {"const": "n1_company_event_v1"},
+    "input_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset", "dataset_revision", "source_row_ordinal", "source_article_version_id", "body_sha256", "normalization_applied", "normalization_mapping_ref"],
+      "properties": {
+        "dataset": {"type": "string", "minLength": 1},
+        "dataset_revision": {"type": "string", "minLength": 1},
+        "source_row_ordinal": {"type": "integer", "minimum": 1},
+        "source_article_version_id": {"type": ["string", "null"]},
+        "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "normalization_applied": {"const": false},
+        "normalization_mapping_ref": {"type": "null"}
+      }
+    },
+    "article_disposition": {
+      "enum": ["COMPANY_EVENTS_FOUND", "NO_IDENTIFIABLE_EVENT", "NO_SUPPORTED_COMPANY", "UNDETERMINED"]
+    },
+    "article_unknown_reason": {"$ref": "#/$defs/unknown_reason"},
+    "market_outcome_reported": {"$ref": "#/$defs/tri_state"},
+    "market_outcome_direction": {"enum": ["UP", "DOWN", "MIXED", "FLAT", "UNKNOWN", "NOT_REPORTED"]},
+    "date_conflict": {"$ref": "#/$defs/tri_state"},
+    "identity_conflict": {"$ref": "#/$defs/tri_state"},
+    "future_return_status": {"const": "NOT_OBSERVED"},
+    "article_evidence": {"type": "array", "items": {"$ref": "#/$defs/span"}},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/company_event"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"article_disposition": {"const": "COMPANY_EVENTS_FOUND"}}},
+      "then": {"properties": {"records": {"minItems": 1}}},
+      "else": {"properties": {"records": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"market_outcome_reported": {"const": "NO"}}},
+      "then": {"properties": {"market_outcome_direction": {"const": "NOT_REPORTED"}}}
+    },
+    {
+      "if": {"properties": {"market_outcome_reported": {"const": "YES"}}},
+      "then": {"properties": {"market_outcome_direction": {"not": {"const": "NOT_REPORTED"}}}}
+    }
+  ],
+  "$defs": {
+    "tri_state": {"enum": ["YES", "NO", "UNKNOWN"]},
+    "unknown_reason": {"enum": ["NONE", "NO_USABLE_TEXT", "NO_EVENT", "NO_COMPANY_LINK", "AMBIGUOUS_TARGET", "AMBIGUOUS_DIRECTION", "INSUFFICIENT_RELATION_EVIDENCE", "TIME_AMBIGUITY", "OTHER"]},
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Original, unnormalized Article Unicode code-point offsets [start,end), not tokenizer offsets.",
+      "required": ["role", "start", "end", "text"],
+      "properties": {
+        "role": {"enum": ["EVENT", "TARGET_COMPANY", "BUSINESS_IMPACT", "RELATIONSHIP", "MARKET_OUTCOME", "DATE_CONFLICT", "IDENTITY_CONFLICT"]},
+        "start": {"type": "integer", "minimum": 0},
+        "end": {"type": "integer", "minimum": 1},
+        "text": {"type": "string", "minLength": 1}
+      }
+    },
+    "company_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_description", "event_type", "target_company_text", "ticker_candidate",
+        "company_role", "identity_status", "business_impact_direction", "impact_path",
+        "statement_status", "inference_premise", "unknown_reason", "evidence_spans",
+        "relationship_evidence_spans"
+      ],
+      "properties": {
+        "event_description": {"type": "string", "minLength": 1},
+        "event_type": {"type": "string", "minLength": 1},
+        "target_company_text": {"type": "string", "minLength": 1},
+        "ticker_candidate": {"type": ["string", "null"]},
+        "company_role": {"enum": ["SUBJECT", "TARGET", "COUNTERPARTY", "OTHER", "UNKNOWN"]},
+        "identity_status": {"enum": ["TEXT_ONLY", "CANDIDATE_TICKER"]},
+        "business_impact_direction": {"enum": ["POSITIVE", "NEGATIVE", "MIXED", "NO_CLEAR_IMPACT", "UNKNOWN"]},
+        "impact_path": {"enum": ["DIRECT", "INDIRECT", "UNKNOWN"]},
+        "statement_status": {"enum": ["EXPLICIT_IN_ARTICLE", "ANNOTATOR_INFERENCE", "UNKNOWN"]},
+        "inference_premise": {"type": ["string", "null"]},
+        "unknown_reason": {"$ref": "#/$defs/unknown_reason"},
+        "evidence_spans": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/span"}},
+        "relationship_evidence_spans": {"type": "array", "items": {"$ref": "#/$defs/span"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"impact_path": {"const": "INDIRECT"}}},
+          "then": {"properties": {"relationship_evidence_spans": {"minItems": 1}}}
+        },
+        {
+          "if": {"properties": {"statement_status": {"const": "ANNOTATOR_INFERENCE"}}},
+          "then": {"properties": {"inference_premise": {"type": "string", "minLength": 1}}}
+        }
+      ]
+    }
+  }
+}

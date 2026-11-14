@@ -1,0 +1,130 @@
+{
+  "schema": "fnspid_bounded_sample_profile_v2",
+  "source_dataset": "Zihan1004/FNSPID",
+  "source_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+  "source_file": "Stock_news/nasdaq_exteral_data.csv",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "acquisition_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "profile_script_sha256": "cfe8abf075bd54b3c06f85059cdc81271074bb947f47848ddaf17e0872f69175",
+  "scope": "Saved rows in a bounded first-record scan; no corpus inference",
+  "complete_logical_rows_scanned": 100,
+  "saved_rows": 100,
+  "stop_reason": "SAVED_BODY_LIMIT",
+  "raw_columns_in_order": [
+    "Unnamed: 0",
+    "Date",
+    "Article_title",
+    "Stock_symbol",
+    "Url",
+    "Publisher",
+    "Author",
+    "Article",
+    "Lsa_summary",
+    "Luhn_summary",
+    "Textrank_summary",
+    "Lexrank_summary"
+  ],
+  "field_presence_saved_rows": {
+    "Unnamed: 0": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Date": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Article_title": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Stock_symbol": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Url": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Publisher": {
+      "present": 0,
+      "missing_or_sentinel": 100
+    },
+    "Author": {
+      "present": 0,
+      "missing_or_sentinel": 100
+    },
+    "Article": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Lsa_summary": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Luhn_summary": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Textrank_summary": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    },
+    "Lexrank_summary": {
+      "present": 100,
+      "missing_or_sentinel": 0
+    }
+  },
+  "duplicate_exact_nonmissing_saved_rows": {
+    "url": {
+      "present": 100,
+      "unique": 100,
+      "duplicate_excess": 0
+    },
+    "title": {
+      "present": 100,
+      "unique": 90,
+      "duplicate_excess": 10
+    },
+    "body_sha256": {
+      "present": 100,
+      "unique": 96,
+      "duplicate_excess": 4
+    }
+  },
+  "stock_symbol_saved_rows": {
+    "present_rows": 100,
+    "distinct_nonmissing_candidates": 1,
+    "historical_security_identity_verified": false
+  },
+  "date_saved_rows": {
+    "string_format_counts": {
+      "seconds_with_literal_UTC": 100
+    },
+    "literal_utc_midnight_count": 99,
+    "parseable_utc_date_min": "2023-05-24",
+    "parseable_utc_date_max": "2023-12-16",
+    "publication_instant_verified": false,
+    "source_timestamp_precision_verified": false,
+    "comment": "A stored UTC midnight string does not establish an intraday publication time."
+  },
+  "url_domain_counts_saved_rows": {
+    "www.nasdaq.com": 100
+  },
+  "article_saved_rows": {
+    "nonempty_nonsentinel_rows": 100,
+    "embedded_newline_rows": 100,
+    "length_chars_min": 374,
+    "length_chars_median": 4338.0,
+    "length_chars_max": 13302,
+    "html_tag_pattern_rows": 0,
+    "full_article_vs_excerpt_independently_verified": false
+  },
+  "summary_columns": [
+    "Lsa_summary",
+    "Luhn_summary",
+    "Textrank_summary",
+    "Lexrank_summary"
+  ],
+  "sentiment_label_columns": [],
+  "provenance_note": "Article, title and named summary columns are distinct; no row values are in this profile."
+}

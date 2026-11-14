@@ -1,5 +1,12 @@
 # Change history / 修改记录
 
+## 1.3 — 2026-11-14（Asia/Shanghai）
+
+- 不重新取样，按原始样本、运行脚本与草稿哈希回读；新版画像与旧版 13 组相同语义聚合字段一致。Replayed the existing sample, executed script and review-draft hashes without redownloading; 13 comparable aggregate profile groups matched.
+- 修复完整 CSV 的无末尾换行 EOF 边界，保留 Range 截断、坏编码及坏引号的区分；原有 7 项加新增 4 项解析器测试共 11 项通过。Fixed the full-file no-newline EOF edge while preserving prefix/malformed distinctions; seven prior plus four new parser tests passed, 11 total.
+- 固定公司事件 JSON Schema、提示词、证据切片校验与独立空白人工裁定材料。Fixed the company-event schema, prompt, span validator and separate blank human-adjudication materials.
+- 完成本机模型门槛检查与离线 runner；已检查位置没有可绑定版本的生成模型，实际调用 0 次，推理和金融实验均 NOT_RUN。Completed the local model gate and offline runner; no version-bound generative model was found in checked locations, zero real calls were made, and inference/finance remain NOT_RUN.
+
 ## 1.2 — 2026-11-14（Asia/Shanghai）
 
 - 核对原作者 GitHub/Hugging Face 固定版本及 README/LICENSE 商业使用措辞差异；没有推定新闻正文再分发权。Pinned the original-author GitHub/HF releases and recorded the README/LICENSE commercial-use conflict without inferring article-text redistribution rights.

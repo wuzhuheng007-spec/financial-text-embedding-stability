@@ -1,8 +1,8 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.2
+Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.3
 
-**Status / 状态：PROPOSED。** 原作者 FNSPID 固定版本的匿名有界正文工程样本已保存本机；公司事件字段检查为 Codex 草稿。新新闻模型、抽取质量指标和金融实验均 **NOT_RUN**。An anonymous bounded original-author FNSPID text sample is retained locally; the company-event field check is a Codex draft. New news-model inference, extraction-quality metrics and financial experiments are **NOT_RUN**.
+**Status / 状态：PROPOSED。** 已回读本机有界新闻样本、修复 CSV EOF 边界并固定 N1 工程输出契约；人工裁定仍为空。本机已核查位置未找到可绑定版本的生成模型，因此真实模型抽取、质量指标和金融实验均 **NOT_RUN**。The saved bounded sample was replayed, the CSV EOF edge was repaired and an N1 engineering output contract was fixed. Human adjudication remains blank. No version-bound generative model was found in checked local locations; real extraction inference, quality metrics and financial experiments are **NOT_RUN**.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -16,6 +16,10 @@ Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本�
 | [Bounded sample receipt / 有界样本回执](../../results/news_n1_20261114/source_sample_receipt.json) | 来源版本、限额、哈希和本机原文边界 |
 | [Aggregate profile / 脱敏字段概况](../../results/news_n1_20261114/sample_profile.json) | 仅描述本轮扫描和保存的记录 |
 | [Field-check receipt / 字段检查回执](../../results/news_n1_20261114/field_review_receipt.json) | 固定顺序前 10 条的 Codex 草稿检查，不是人工金标准 |
+| [N1 output schema / N1 输出 Schema](company_event_output.schema.json) · [prompt / 提示词](company_event_prompt.md) | 公司事件、市场结果、未知状态和原文 Unicode 证据位置的工程契约 |
+| [Current English progress](../../reports/2026-11-14_news_n1_next.en.md) · [中文进度](../../reports/2026-11-14_news_n1_next.zh.md) | 计划—实际、解析器修复、样本回读和模型门槛 |
+| [P0–P4 execution ledger](../../results/news_n1_next_20261114/plan_execution.csv) | 每项计划、实际、证据、状态和偏差 |
+| [Input replay](../../results/news_n1_next_20261114/input_replay.json) · [model gate](../../results/news_n1_next_20261114/model_gate.json) | 输入哈希/画像对照与本机模型缺口 |
 
 ## Stable entry and future updates / 固定入口与后续更新
 
@@ -37,4 +41,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-对已取得的小样本进行独立人工裁定 → 固定公司级事件标注与输出契约 → 做抽取质量原型；历史身份、时间与完整金融协议继续单列。Adjudicate the acquired sample independently, freeze the company-event annotation/output contract, then prototype extraction quality; track historical identity, timing and the full financial protocol separately.
+取得完整可核验版本的离线生成模型及兼容环境后，对首 10 篇开发材料做有界抽取冒烟；人工裁定独立进行，完成后再评价抽取质量。历史身份、时间与完整金融协议继续单列。Obtain a complete version-bound offline generative model and compatible runtime for the bounded first-10 development smoke. Adjudicate the human pack independently before extraction-quality evaluation; track historical identity, timing and the full financial protocol separately.
