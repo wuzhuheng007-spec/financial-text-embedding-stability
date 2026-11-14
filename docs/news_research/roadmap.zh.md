@@ -2,7 +2,7 @@
 
 [English full text](roadmap.en.md) · [项目入口](README.md) · [来源接入](source_access.md)
 
-更新：2026-11-14（Asia/Shanghai）。版本：1.3。研究状态 **PROPOSED**；已有原作者有界样本已回读，N1 工程输出契约已固定，人工裁定仍待进行。本机已核查位置未找到可绑定版本的生成模型；新抽取模型推理、金融评估与回测均 **NOT_RUN**。
+更新：2026-11-14（Asia/Shanghai）。版本：1.4。研究状态 **PROPOSED**；已有原作者有界样本和 N1 输出契约继续固定。本轮已核验独立 CUDA 环境与官方固定 Qwen 3B 快照，对前十篇开发材料启动首次抽取冒烟；实际响应与机械检查见[本轮报告](../../reports/2026-11-14_news_first_inference.zh.md)。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
 
 ## 1. 研究定位
 
@@ -71,7 +71,7 @@ Hugging Face 与金十是候选新闻来源，见第 12 节及来源接入登记
 
 用证据约束的结构化抽取，输出以下并列维度：事件类别、涉及主体、受影响公司、影响方向、影响强度、不确定性、公司相关性、事件新颖度、预期持续区间、直接/间接影响、引用文本和信息不足状态。
 
-当前 [N1 JSON Schema](company_event_output.schema.json) 与[提示词](company_event_prompt.md)固定有界工程输出契约：一篇文章版本可有多个事件×目标公司条目，也可明确记录无事件或无支持公司的状态。业务影响、文章已经报道的市场结果和未观测的未来收益分别表示；证据使用原始正文的 Unicode 字符索引并由校验器检查。这是机械契约，不是抽取质量结果；前 10 篇是开发材料，人工栏仍为空，真实模型推理 **NOT_RUN**。
+当前 [N1 JSON Schema](company_event_output.schema.json) 与[提示词](company_event_prompt.md)固定有界工程输出契约：一篇文章版本可有多个事件×目标公司条目，也可明确记录无事件或无支持公司的状态。业务影响、文章已经报道的市场结果和未观测的未来收益分别表示；证据使用原始正文的 Unicode 字符索引并由校验器检查。前十篇开发冒烟使用此固定契约；[机械回执](../../results/news_first_inference_20261114/smoke_receipt.json)与抽取准确率分开。人工栏仍为空。
 
 同一事件可产生多个公司条目。新品对发布方的影响也应按文本判断；不能把所有竞争关系机械设成负面。没有被新闻直接讨论的公司，可以由当时可用关系图产生候选受影响对象，但间接路径必须有出处，并标成推断假设，不伪装为原文事实。
 
@@ -85,7 +85,7 @@ Hugging Face 与金十是候选新闻来源，见第 12 节及来源接入登记
 
 建议先以 `Qwen/Qwen2.5-7B-Instruct` 为结构化抽取工程基线，对照 `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`。选择理由是规模可控且身份明确，不是已证明前者更擅长金融预测。后者基于 Qwen2.5-Math-7B，经 DeepSeek-R1 数据蒸馏，因此二者不是完全独立的预训练家族。
 
-当前有界冒烟[配置](../../configs/news_n1_smoke_v1.json)优先考虑已有本机 `Qwen/Qwen2.5-3B-Instruct` 快照，用于前 10 篇开发材料的工程检查；这不替代上述拟议模型对照。已核查位置未找到完整且版本可绑定的本机生成模型，真实冒烟推理仍 **NOT_RUN**。
+原 [v1 冒烟配置](../../configs/news_n1_smoke_v1.json)记录的是缺模型门槛。当前 [v2 配置](../../configs/news_n1_smoke_v2.json)绑定官方 `Qwen/Qwen2.5-3B-Instruct` revision `aa8e72537993ba99e69dfaafa59ed015b17504d1`，用于前十篇回顾性开发检查。[来源计划](../../results/news_first_inference_20261114/model_source_plan.json)、[本机完整性](../../results/news_first_inference_20261114/model_integrity_receipt.json)和[运行回执](../../results/news_first_inference_20261114/smoke_receipt.json)分别记录不同门槛。这个较小的冒烟不替代拟议的 7B 模型对照，也不构成抽取质量结论。
 
 Qwen 官方发布文章日期为 2024-09-19；这是系列发布记录，不是全部训练材料的截止日期。最终必须核对确切权重 revision 的公开/冻结记录，不能仅凭模型名称或系列发布日期判定时间有效性。当前已读模型卡不足以证明所有预训练、SFT、RL 和蒸馏数据的精确时间上限。
 

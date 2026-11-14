@@ -1,0 +1,13 @@
+{
+  "schema": "news_first_inference_hardware_inventory_v1",
+  "observed_at_utc": "2026-11-14T06:39:51+00:00",
+  "observation_phase": "postrun_same_session_verification",
+  "source_command": "nvidia-smi --query-gpu=name,driver_version,memory.total,memory.free,compute_cap --format=csv,noheader,nounits",
+  "gpu_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+  "driver_version": "591.97",
+  "gpu_total_mib": 12227,
+  "gpu_free_mib_at_observation": 5974,
+  "compute_capability": "12.0",
+  "data_volume_free_bytes_at_observation": 304936177664,
+  "limits": "A postrun hardware inventory; free GPU/disk capacity is time-varying and not the prerun value."
+}

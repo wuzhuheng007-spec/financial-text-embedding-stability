@@ -1,0 +1,88 @@
+{
+  "schema": "news_first_inference_model_source_plan_v1",
+  "checked_at_utc": "2026-11-14T06:16:55+00:00",
+  "scope": "Anonymous, read-only official remote metadata and license check; this plan contains no local model download or verification result.",
+  "source": {
+    "repo_id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "api_url": "https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/revision/aa8e72537993ba99e69dfaafa59ed015b17504d1?blobs=true",
+    "api_http_status": 200,
+    "private": false,
+    "gated": false,
+    "pinned_tree_url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/tree/aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "pinned_model_card_url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/README.md",
+    "pinned_license_url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/aa8e72537993ba99e69dfaafa59ed015b17504d1/LICENSE",
+    "commit_url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/commit/aa8e72537993ba99e69dfaafa59ed015b17504d1"
+  },
+  "license": {
+    "card_metadata_license": "other",
+    "card_license_name": "qwen-research",
+    "pinned_license_name": "Qwen RESEARCH LICENSE AGREEMENT",
+    "research_use": "Non-commercial research or evaluation only under the pinned LICENSE",
+    "commercial_use": "Separate license request required by the pinned LICENSE",
+    "redistribution_note": "Do not infer broader permission or publish model weights in this research repository."
+  },
+  "selected_files": [
+    {
+      "filename": "LICENSE",
+      "remote_size_bytes": 7388,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "README.md",
+      "remote_size_bytes": 4930,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "config.json",
+      "remote_size_bytes": 661,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "generation_config.json",
+      "remote_size_bytes": 242,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "merges.txt",
+      "remote_size_bytes": 1671839,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "model-00001-of-00002.safetensors",
+      "remote_size_bytes": 3968658944,
+      "remote_lfs_sha256": "67347b23fb4165b652eb6611f5e1f2a06dfcddba8e909df1b2b0b1857bee06c2"
+    },
+    {
+      "filename": "model-00002-of-00002.safetensors",
+      "remote_size_bytes": 2203268048,
+      "remote_lfs_sha256": "a40d941d0e7e0b966ad8b62bb6d6b7c88cce1299197b599d9d0a4ce59aabfc1d"
+    },
+    {
+      "filename": "model.safetensors.index.json",
+      "remote_size_bytes": 35581,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "tokenizer.json",
+      "remote_size_bytes": 7031645,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "tokenizer_config.json",
+      "remote_size_bytes": 7305,
+      "remote_lfs_sha256": null
+    },
+    {
+      "filename": "vocab.json",
+      "remote_size_bytes": 2776833,
+      "remote_lfs_sha256": null
+    }
+  ],
+  "selected_file_count": 11,
+  "selected_total_bytes": 6183463416,
+  "selected_weight_bytes": 6171926992,
+  "model_file_budget_bytes": 8589934592,
+  "selection_note": "Exact 11 files used for config, generation defaults, tokenizer, two safetensors shards/index, README and LICENSE. Excludes .gitattributes and alternate weight formats.",
+  "verification_boundary": "Only remote LFS SHA-256 values are supplied for the two weight shards. Other files have no remote LFS SHA-256 in this API response. Local sizes, hashes, safetensors readability and CUDA load must be checked separately after download."
+}

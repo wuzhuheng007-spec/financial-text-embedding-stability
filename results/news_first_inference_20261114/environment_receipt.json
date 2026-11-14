@@ -1,0 +1,68 @@
+{
+  "schema": "news_first_inference_environment_receipt_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "scope": "Isolated local inference environment and CUDA gate; no model generation result in this receipt.",
+  "os_arch": "Windows AMD64",
+  "python_version": "3.11.9",
+  "environment_type": "isolated_venv",
+  "installed_versions": {
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "huggingface_hub": "0.36.0",
+    "safetensors": "0.6.2",
+    "jsonschema": "4.26.0",
+    "pytest": "9.1.1",
+    "requests": "2.34.2"
+  },
+  "full_installed_lock": "configs/news_first_inference_runtime_lock.txt",
+  "full_installed_lock_sha256": "09e315f4d6a3f8e3a55f511e2e41a2201fac5a33e07e141b1b1ebec3722b502c",
+  "torch_install_source": {
+    "official_index": "https://download.pytorch.org/whl/cu128",
+    "package": "torch==2.11.0+cu128",
+    "reported_wheel_bytes_from_source_plan": 2753148611,
+    "reported_wheel_bytes_are_not_measured_network_transfer": true
+  },
+  "pip_check": {
+    "status": "PASS",
+    "exact_output": "No broken requirements found.",
+    "source_log_sha256": "989b79a797a3749a9715977d0285f762f3c4d5d229ef40d6bbf283e1de6e9b45"
+  },
+  "cuda_probe": {
+    "checked_at_utc": "2026-11-14T06:17:57+00:00",
+    "torch_version": "2.11.0+cu128",
+    "torch_compiled_cuda": "12.8",
+    "cuda_available": true,
+    "device_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "capability": [
+      12,
+      0
+    ],
+    "matmul_shape": [
+      1024,
+      1024
+    ],
+    "matmul_dtype": "torch.float16",
+    "finite_fraction": 1.0,
+    "synchronize_called_in_executed_probe": true,
+    "gate_status": "PASS_FP16_MATMUL_SYNC",
+    "source_log_sha256": "8683c97d500d62766b709d69082d4865f83d52d6cdda2cac850abbd5585f9bc5"
+  },
+  "filesystem_measurements": {
+    "measurement_kind": "sum of regular file logical sizes; excludes symlink targets and is not allocated disk space or network transfer",
+    "venv_file_count": 28236,
+    "venv_logical_file_bytes": 4754009798,
+    "pip_cache_file_count": 201,
+    "pip_cache_logical_file_bytes": 2798699362,
+    "data_volume_free_bytes_at_prerun_gate": 304936181760,
+    "measured_at_utc": "2026-11-14T06:23:24+00:00",
+    "source_log_sha256": "e471ce59a8f660d629abfa3ee3f817939d0e7ac23b3f74d5786e2e71e717afa8"
+  },
+  "network_transfer_bytes": "NOT_MEASURED",
+  "prerun_gate": {
+    "checked_at_utc": "2026-11-14T06:20:28+00:00",
+    "status": "PASS",
+    "source_log_sha256": "85cf8480ab1df454d5cff634243902ec6ceaa52bd67d782793aa23a1223143e8"
+  },
+  "source_and_install_plan_sha256": "7d9628bd16e15be5d639a04b4a4e1bf67309920d313c73cc8e12a86ab2dca24e"
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "news_first_inference_aggregate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "audit_status": "PASS",
+  "audit_issue_codes": [],
+  "run_status": "SMOKE_RUN_FINISHED",
+  "run_started_at_utc": "2026-11-14T06:20:37+00:00",
+  "run_finished_at_utc": "2026-11-14T06:34:06+00:00",
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "development_set": "fixed first ten source-order articles used previously for field design",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "3fbda468d51e52663e2345a0aa3661b34fb303fc1d06d1ce254f675bc38497f3",
+  "runner_sha256": "7116b484b3a3cba7a413f3044345d9f351bced5f6a50a27d5ac677f7245bc3b3",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "prompt_sha256": "77b3e12d4c350ed4af2684d45272abcad3c329bf91b42628a85c845d74e1c8e3",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_integrity_receipt_sha256": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+  "environment_receipt_sha256": "e89a8cf98a8ebd3d2a767818b78b90477c8e860999f3da9d866bf58482adc080",
+  "generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "attention_implementation": "eager",
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "worker_launch_committed": 10,
+    "worker_process_started": 10,
+    "model_load_completed": 10,
+    "generation_started": 10,
+    "response_files_read_back": 9,
+    "attempt_finished_events": 10,
+    "json_parse_valid": 9,
+    "schema_valid": 0,
+    "binding_valid": 0,
+    "mechanical_valid": 0,
+    "evidence_spans_checked": 0,
+    "evidence_spans_exact": 0
+  },
+  "status_counts": {
+    "CALL_TIMEOUT": 1,
+    "SCHEMA_INVALID": 9
+  },
+  "stop_reason_counts": {
+    "EOS": 9
+  },
+  "mechanical_rates": {
+    "json_parse_valid": {
+      "conditional_numerator": 9,
+      "conditional_denominator": 9,
+      "conditional_rate": 1.0,
+      "attempted_numerator": 9,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.9
+    },
+    "schema_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 9,
+      "conditional_rate": 0.0,
+      "attempted_numerator": 0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0
+    },
+    "binding_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_numerator": 0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0
+    },
+    "mechanical_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_numerator": 0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0
+    }
+  },
+  "schema_error_keyword_counts": {
+    "ADDITIONALPROPERTIES": 8,
+    "CONST": 5,
+    "ENUM": 18,
+    "REQUIRED": 45,
+    "TYPE": 11
+  },
+  "schema_error_path_counts": {
+    "/": 4,
+    "/article_disposition": 9,
+    "/article_evidence": 2,
+    "/article_evidence/*": 49,
+    "/input_binding": 9,
+    "/market_outcome_reported": 9,
+    "/schema_version": 5
+  },
+  "mechanical_issue_code_counts": {},
+  "response_set_sha256": "007b3661993d4cc2311c096658465f63e409922cb088c7f7433c386bdb36d509",
+  "private_receipt_hashes": {
+    "run_events_sha256": "19d450e62248a7552b1807a2b8d2d2b3e811357c180db1e159ff4d924745bfe1",
+    "local_manifest_sha256": "6af672780df9eb7e47368d1f21b6d5912bf9eefc251a0a08a77792565f284ebc",
+    "token_preflight_sha256": "b0023a56f45224d1482fadaf02187dd0ea095af981f5102fc0be60bd950aeda9",
+    "shareable_summary_sha256": "c7eda429039c766e413d00d144c41041a8ed7d416e4067bc49720c462c9e6adf"
+  },
+  "limits": [
+    "First ten development articles only; no independent human gold labels.",
+    "JSON/schema/span checks are mechanical, not extraction accuracy.",
+    "No historical financial admission, prediction or return evaluation."
+  ]
+}

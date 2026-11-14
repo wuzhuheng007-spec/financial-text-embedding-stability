@@ -1,5 +1,12 @@
 # Change history / 修改记录
 
+## 1.4 — 2026-11-14（Asia/Shanghai）
+
+- 在独立环境安装官方 CUDA PyTorch 与必需依赖，真实 FP16 矩阵运算和同步通过；记录版本锁与依赖检查。Installed official CUDA PyTorch and required packages in an isolated environment; an actual FP16 matrix multiplication and synchronization passed, with versions and dependency checks recorded.
+- 匿名下载官方固定 revision 的 Qwen2.5-3B-Instruct 11 个指定文件，核对本地哈希、两份远端 LFS 哈希、权重索引与 safetensors 可读性，并绑定 `generation_config.json`。Downloaded eleven selected files of the pinned official Qwen2.5-3B-Instruct revision anonymously; verified local hashes, two remote LFS hashes, index and shard readability, and bound `generation_config.json`.
+- 固定 v2 冒烟配置与持久化阶段记录；在目标环境重放既有 22 项并新增 3 项 runner 测试，共 25 项不同的合成测试通过。Fixed a v2 smoke configuration and durable phase records; the prior 22 plus three new runner checks passed, 25 distinct synthetic tests total.
+- 首次对固定前十篇开发材料完成真实有界推理：十篇全文预检、十次生成开始、九份原始响应回读、一条超时；九份均可解析 JSON，但无一符合冻结 Schema。保存失败与机械检查，不将其称为抽取准确率或金融结果。Ran the first real bounded inference on the fixed ten development articles: ten full-text preflights and generation starts, nine raw responses read back, one timeout; all nine parsed as JSON and none met the frozen Schema. Preserved failures and mechanical checks without an accuracy or financial claim.
+
 ## 1.3 — 2026-11-14（Asia/Shanghai）
 
 - 不重新取样，按原始样本、运行脚本与草稿哈希回读；新版画像与旧版 13 组相同语义聚合字段一致。Replayed the existing sample, executed script and review-draft hashes without redownloading; 13 comparable aggregate profile groups matched.

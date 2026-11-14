@@ -105,6 +105,7 @@ def test_no_model_gate_writes_zero_call_safe_receipt(tmp_path: Path, monkeypatch
     safe = (output_dir / "shareable_summary.json").read_text(encoding="utf-8")
     assert "Synthetic body" not in safe
     assert "request_01.json" not in {x.name for x in output_dir.iterdir()}
+    assert json.loads(safe)["mechanical_rates"]["json_parse_valid"]["attempted_rate"] is None
 
 
 def test_budget_and_model_source_guards(tmp_path: Path):
@@ -116,3 +117,57 @@ def test_budget_and_model_source_guards(tmp_path: Path):
         runner.load_config(path)
     with pytest.raises(FileNotFoundError, match="LOCAL_MODEL_DIRECTORY_MISSING"):
         runner.local_model_identity(tmp_path / "missing")
+
+
+def test_v2_fixed_revision_and_generation_budget(tmp_path: Path):
+    path = REPO / "configs/news_n1_smoke_v2.json"
+    assert runner.DEFAULT_CONFIG == path
+    config = runner.load_config(path)
+    assert config["model_revision"] == runner.PINNED_MODEL_REVISION
+    assert config["attention_implementation"] == "eager"
+    bad = json.loads(path.read_text(encoding="utf-8"))
+    bad["model_revision"] = "0" * 40
+    target = tmp_path / "bad_revision.json"
+    target.write_text(json.dumps(bad), encoding="utf-8")
+    with pytest.raises(ValueError, match="UNAPPROVED_PINNED_V2_CONFIG"):
+        runner.load_config(target)
+    with pytest.raises(ValueError, match="REAL_MODEL_REQUIRES_PINNED_V2_CONFIG"):
+        runner.run(REPO / "configs/news_n1_smoke_v1.json", tmp_path / "unused_sample",
+                   tmp_path / "unused_manifest", tmp_path / "artifacts/unused_run",
+                   tmp_path / "unused_model")
+
+
+def test_model_identity_requires_pinned_generation_config(tmp_path: Path):
+    snapshot = (tmp_path / "models--Qwen--Qwen2.5-3B-Instruct" / "snapshots"
+                / runner.PINNED_MODEL_REVISION)
+    snapshot.mkdir(parents=True)
+    (snapshot / "config.json").write_text(
+        '{"model_type":"qwen2","max_position_embeddings":32768}', encoding="utf-8")
+    (snapshot / "tokenizer_config.json").write_text(
+        '{"chat_template":"test {{ messages }}"}', encoding="utf-8")
+    (snapshot / "tokenizer.json").write_text("{}", encoding="utf-8")
+    (snapshot / "model.safetensors").write_bytes(b"synthetic weight marker")
+    with pytest.raises(FileNotFoundError, match="GENERATION_CONFIG_MISSING"):
+        runner.local_model_identity(snapshot, runner.PINNED_MODEL_REVISION)
+    (snapshot / "generation_config.json").write_text(
+        '{"eos_token_id":151645}', encoding="utf-8")
+    identity = runner.local_model_identity(snapshot, runner.PINNED_MODEL_REVISION)
+    assert identity["generation_config_sha256"] == runner.sha256_file(
+        snapshot / "generation_config.json")
+    with pytest.raises(ValueError, match="MODEL_REVISION_MISMATCH"):
+        runner.local_model_identity(snapshot, "0" * 40)
+
+
+def test_durable_phases_distinguish_launch_load_generation_and_stop(tmp_path: Path):
+    phases = tmp_path / "phase.jsonl"
+    runner.durable_event(phases, "WORKER_PROCESS_STARTED")
+    runner.durable_event(phases, "MODEL_LOADED")
+    phases.write_text(phases.read_text(encoding="utf-8") + '{"partial":', encoding="utf-8")
+    counts = {"worker_process_started": 0, "model_load_completed": 0,
+              "generation_started": 0}
+    events = runner.record_worker_phases(counts, phases)
+    assert events == ["WORKER_PROCESS_STARTED", "MODEL_LOADED"]
+    assert counts == {"worker_process_started": 1, "model_load_completed": 1,
+                      "generation_started": 0}
+    assert runner.stop_reason([1, 151645], 151645, 1024) == "EOS"
+    assert runner.stop_reason([1, 2], 151645, 2) == "OUTPUT_TOKEN_BUDGET_POSSIBLY_TRUNCATED"

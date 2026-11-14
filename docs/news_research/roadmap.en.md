@@ -2,7 +2,7 @@
 
 [中文全文](roadmap.zh.md) · [Project entry point](README.md) · [Source access](source_access.md)
 
-Updated: 2026-11-14, Asia/Shanghai. Version: 1.3. Research status: **PROPOSED**. The bounded original-author sample has been replayed and an N1 engineering output contract is fixed. Human adjudication is pending. No version-bound local generative model was found in checked locations; new extraction-model inference, financial evaluation and backtesting remain **NOT_RUN**.
+Updated: 2026-11-14, Asia/Shanghai. Version: 1.4. Research status: **PROPOSED**. The bounded original-author sample and N1 output contract remain fixed. An isolated CUDA environment and official pinned Qwen 3B snapshot were verified for a first-ten development extraction smoke; its actual response and mechanical status is recorded in the [current report](../../reports/2026-11-14_news_first_inference.en.md). Human adjudication, extraction accuracy, financial evaluation and backtesting remain **NOT_RUN**.
 
 ## 1. Research position
 
@@ -72,7 +72,7 @@ Hugging Face and Jin10 are candidate sources; see Section 12 and the source-acce
 
 Use evidence-constrained structured extraction. Keep event category, entities, affected companies, direction, magnitude, uncertainty, relevance, novelty, expected duration, direct/indirect impact, quoted evidence and insufficient-information status as separate fields.
 
-The current [N1 JSON Schema](company_event_output.schema.json) and [prompt](company_event_prompt.md) freeze a bounded engineering output contract: one article version may have multiple event-by-target-company records or an explicit no-event/no-supported-company disposition. Business impact, already reported market outcome and unobserved future returns are separate. Evidence uses original-body Unicode character offsets checked by the validator. This is a mechanical contract, not an extraction-quality result; the first ten reviewed articles are development material, human fields remain blank and real model inference is **NOT_RUN**.
+The current [N1 JSON Schema](company_event_output.schema.json) and [prompt](company_event_prompt.md) freeze a bounded engineering output contract: one article version may have multiple event-by-target-company records or an explicit no-event/no-supported-company disposition. Business impact, already reported market outcome and unobserved future returns are separate. Evidence uses original-body Unicode character offsets checked by the validator. The first-ten development smoke uses this fixed contract; its [mechanical receipt](../../results/news_first_inference_20261114/smoke_receipt.json) is separate from extraction accuracy. Human fields remain blank.
 
 One event may create several company records. Judge a product launch's effect on its issuer from the text as well; do not assign a negative effect to every competitor by rule. A point-in-time relationship graph may propose affected companies not explicitly discussed, but the indirect path must have evidence and remain a hypothesis rather than an asserted statement from the article.
 
@@ -86,7 +86,7 @@ An initial budget of 200 event-company annotations is proposed across event type
 
 Use `Qwen/Qwen2.5-7B-Instruct` as a proposed structured-extraction engineering baseline, compared with `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B`. This choice reflects identifiable, manageable candidates, not demonstrated financial superiority. The latter is based on Qwen2.5-Math-7B and distilled using DeepSeek-R1 samples; the pair is not a comparison of fully independent pretraining families.
 
-The current bounded smoke [configuration](../../configs/news_n1_smoke_v1.json) prefers an existing local `Qwen/Qwen2.5-3B-Instruct` snapshot for a first-ten development check. That is a smaller engineering gate, not a replacement for the proposed model comparison. No complete version-bound local generative snapshot was found in checked locations, so real smoke inference remains **NOT_RUN**.
+The original [v1 smoke configuration](../../configs/news_n1_smoke_v1.json) documented a no-model gate. The current [v2 configuration](../../configs/news_n1_smoke_v2.json) binds the official `Qwen/Qwen2.5-3B-Instruct` revision `aa8e72537993ba99e69dfaafa59ed015b17504d1` for a first-ten retrospective development check. The [source plan](../../results/news_first_inference_20261114/model_source_plan.json), [local integrity](../../results/news_first_inference_20261114/model_integrity_receipt.json) and [run receipt](../../results/news_first_inference_20261114/smoke_receipt.json) record distinct gates. This smaller smoke does not replace the proposed 7B model comparison or establish extraction quality.
 
 The Qwen series announcement is dated 2024-09-19. That is a release record, not a comprehensive training-data cutoff. Verify the actual weight revision's publication/freeze history; a name or series release date is insufficient. The inspected model cards do not establish exact temporal bounds for every pretraining, SFT, RL and distillation stage.
 
