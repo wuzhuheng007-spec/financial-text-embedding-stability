@@ -1,0 +1,41 @@
+{
+  "schema": "news_grounding_old_failure_aggregate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "scope": "Two saved v3 development responses and the third attempted worker; no new model calls",
+  "source_hashes": {
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+    "prior_audit_sha256": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b",
+    "prior_manifest_sha256": "d0cdda2a6060d6e671a2f5b8d87abd52c3a038a4bf3188d877ff0942e91c5fbd",
+    "failed_phase_sha256": "546843dcc959136c8a97af1bbc9fe4273bb7432724206e47630041d0fad80b4e",
+    "failed_stderr_sha256": "1806db3660fe7f292a25b82a5600e59d5d23f16ee4692c7d0512ce3bcc0caab2",
+    "private_details_sha256": "277099f41c32de4758cd513d8db17f57c18359b446870484ea7f7ae783dd5e92"
+  },
+  "old_quote_diagnosis": {
+    "quotes_checked": 3,
+    "unique_exact_text": 2,
+    "multiple_exact_text": 1,
+    "missing_exact_text": 0,
+    "original_reported_offsets_exact": 0,
+    "method": "Unchanged Unicode code-point substring search, including overlapping occurrences; no normalization or repair"
+  },
+  "old_reason_diagnosis": {
+    "article_reason_inconsistent_confirmed": 1,
+    "actual_disposition_and_reason": "PRIVATE_ROW_LEVEL_DETAIL"
+  },
+  "old_oom_diagnosis": {
+    "failed_attempt": 3,
+    "worker_phases": [
+      "WORKER_PROCESS_STARTED",
+      "MODEL_LOADED",
+      "GENERATION_STARTED"
+    ],
+    "raw_response_saved": false,
+    "exception": "torch.AcceleratorError: CUDA error: out of memory",
+    "gpu_memory_at_failure": null,
+    "cause_beyond_reported_allocation_failure": "UNKNOWN",
+    "limitations": "No old per-phase GPU telemetry; neither the exact allocation pressure nor a causal effect of prompt length can be isolated."
+  },
+  "old_output_unchanged": true
+}

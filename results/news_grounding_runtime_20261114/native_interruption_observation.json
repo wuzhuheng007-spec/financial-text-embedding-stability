@@ -1,0 +1,35 @@
+{
+  "schema": "news_grounding_interruption_observation_v1",
+  "observed_at_local": "2026-11-14T16:22:43.106502+08:00",
+  "timezone": "Asia/Shanghai",
+  "prior_run_last_event": "WORKER_LAUNCH_COMMITTED",
+  "last_ordinal": 2,
+  "last_worker_phase": "WORKER_CREATED",
+  "last_worker_phase_utc": "2026-11-14T16:18:49+08:00",
+  "completed_responses_before_interruption": 1,
+  "attempts_committed_before_interruption": 2,
+  "os_application_error": {
+    "event_time_local": "2026-11-14T16:18:57.8247304+08:00",
+    "event_id": 1000,
+    "exception_code": "0xc0000005",
+    "application": "python.exe",
+    "causal_attribution": "UNKNOWN",
+    "module": "c10.dll"
+  },
+  "process_check": {
+    "observed_at_local": "2026-11-14T16:22:43.1151808+08:00",
+    "matching_news_python_processes": 0
+  },
+  "private_evidence": {
+    "run_events_sha256": "247f60cc9fae4fcc60ebf8de50accb81bc1e2018502bb493daaeca5784cc31df",
+    "phase_02_sha256": "2625ce266226b04f25bb0a19899197071f24466800f95746b662065e1619d114"
+  },
+  "interpretation": "The run stopped before ordinal 2 produced a response. Windows reported contemporaneous python.exe and codex.exe crashes; their causal relationship and the exact process termination chain are UNKNOWN.",
+  "concurrent_host_error": {
+    "event_id": 1000,
+    "event_time_local": "2026-11-14T16:18:58.4860133+08:00",
+    "application": "codex.exe",
+    "exception_code": "0xc0000409",
+    "relationship_to_python_crash": "UNKNOWN"
+  }
+}

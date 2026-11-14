@@ -1,0 +1,12 @@
+Recovery validation (synthetic only; model calls 0)
+runner_sha256_before=9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed
+original_runner_source_sha256=df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071
+command: python -m py_compile scripts/run_news_n1_grounding.py
+py_compile=PASS
+command: python -m pytest -q tests/test_news_n1_grounding_runner.py
+........                                                                 [100%]
+8 passed in 8.89s
+runner_sha256_after=9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed
+source_unchanged=True
+actual_interrupted_run_read_only_gate=PASS (2 launches, 1 response; source/config/input bind; no mutation)
+model_calls=0

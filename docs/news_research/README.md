@@ -1,8 +1,8 @@
 # News research roadmap / 新闻研究技术路线
 
-Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.5
+Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本：1.6
 
-**Status / 状态：PROPOSED。** 首次固定开发冒烟保存并回读 9 份响应，1 次超时，Schema 通过 0/9。旧响应已离线归类。完整 Schema 加虚构示例的新提示词复测在第 3 次尝试时因 OOM 停止：2 份响应均符合 Schema，但最终机械检查均未通过；其余 7 篇未尝试。这是重复开发材料的有限格式结果。人工裁定、抽取准确率与金融实验仍 **NOT_RUN**。The first fixed development smoke saved nine responses, had one timeout and passed the Schema on 0/9 responses. Its errors were classified offline. The complete-Schema-plus-invented-example retest stopped at OOM on attempted call 3: both saved responses passed Schema but failed the final mechanical check; seven articles were not attempted. This is a limited format result on reused development material. Human adjudication, extraction accuracy and financial experiments remain **NOT_RUN**.
+**Status / 状态：PROPOSED。** 旧 v3 开发复测尝试三次后因 OOM 停止，保存两份机械检查未通过的响应。v4 另版采用模型给原文引用、主机严格唯一匹配后计算位置，并请求 SDPA。真实有界 v4 运行尝试固定十篇、保存九份响应，其中一次原生进程中断；八份 JSON 可解析，一份符合 wire Schema，八条引用中七条唯一匹配、一条未找到，**canonical 可构造 0/1**。这是重复开发材料的工程结果，不是抽取质量或金融有效性结论。The earlier v3 retest stopped at OOM after three attempts and saved two mechanically invalid responses. The separate v4 version asks the model for body quotes, computes offsets only after unique exact matches, and requests SDPA. The bounded v4 run attempted the fixed ten articles and saved nine responses, with one native-process interruption; eight parsed as JSON, one passed the wire Schema, and seven of eight quotes were unique while one was missing, so **0/1** wire-valid response was canonically constructible. These are reused-development engineering results, not extraction-quality or financial-validity findings. Human adjudication and financial experiments remain **NOT_RUN**.
 
 | 入口 / Entry | 内容 / Content |
 | --- | --- |
@@ -29,6 +29,12 @@ Last updated / 更新日期：2026-11-14（Asia/Shanghai） · Version / 版本�
 | [Audited v3 aggregate](../../results/news_schema_repair_20261114/new_inference_aggregate.json) · [paired comparison](../../results/news_schema_repair_20261114/paired_comparison.json) | OOM 停止后的尝试、完成响应、格式和机械检查分母及聚合配对状态 |
 | [Sanitized OOM receipt](../../results/news_schema_repair_20261114/oom_failure_receipt.json) · [final validation log](../../results/news_schema_repair_20261114/final_validation.log) | 第 3 次尝试的 CUDA 内存不足阶段与来源绑定；33 项最终合成测试及只读重放，和运行前 27 项有重叠 |
 | [Final audit closure](../../results/news_schema_repair_20261114/final_audit_closure_receipt.json) | 运行前及运行后 auditor 版本、冻结的模型输入/runner、只读重放一致性 |
+| [Grounding runtime English report](../../reports/2026-11-14_news_grounding_runtime.en.md) · [中文报告](../../reports/2026-11-14_news_grounding_runtime.zh.md) | 新 wire、严格引用定位、GPU 运行及实际结果边界 |
+| [A–E grounding ledger](../../results/news_grounding_runtime_20261114/plan_execution.csv) · [old failure diagnosis](../../results/news_grounding_runtime_20261114/old_failure_diagnosis.json) | 计划—实际、旧三条引用与 OOM 的只读定位 |
+| [Wire v2 Schema](company_event_wire_v2.schema.json) · [quote prompt](company_event_prompt_v3_quotes.md) · [v4 config](../../configs/news_n1_smoke_v4_grounded.json) | 候选输出接口、输入版本、注意力实现请求与有界预算 |
+| [V4 pre-run synthetic validation](../../results/news_grounding_runtime_20261114/pre_run_validation.log) · [candidate replay](../../results/news_grounding_runtime_20261114/candidate_validation_replay.json) | 52 项 pytest 测试含旧 33 项；候选 15 项断言单列，均不是新的真实模型结果 |
+| [Audited v4 run](../../results/news_grounding_runtime_20261114/inference_aggregate.json) · [paired status comparison](../../results/news_grounding_runtime_20261114/paired_comparison.json) | 十篇固定开发材料的尝试、响应、wire、引用和 canonical 分阶段数量；仅一篇有新旧完整配对响应 |
+| [Native interruption observation](../../results/news_grounding_runtime_20261114/native_interruption_observation.json) · [recovery validation](../../results/news_grounding_runtime_20261114/recovery_validation.log) | 第 2 次调用中断与恢复版本证据；进程崩溃因果关系 UNKNOWN |
 
 ## Stable entry and future updates / 固定入口与后续更新
 

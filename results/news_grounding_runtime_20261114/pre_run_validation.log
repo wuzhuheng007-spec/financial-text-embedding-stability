@@ -1,0 +1,15 @@
+N1 grounding final pre-run validation; synthetic tests only; no model calls
+Date/timezone: 2026-11-14T16:14:54+08:00
+Runtime: isolated Python 3.11 environment
+scripts/run_news_n1_grounding.py SHA256 before=df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071 after=df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071
+scripts/exact_quote_adapter.py SHA256 before=c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d after=c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d
+scripts/summarize_news_grounding_runtime.py SHA256 before=9c93f3f9bb2e54d76da754660e9ea0247715f1ae9415460a4c24507bd5269e10 after=9c93f3f9bb2e54d76da754660e9ea0247715f1ae9415460a4c24507bd5269e10
+scripts/compare_news_grounding_runtime.py SHA256 before=bedb74e8acce756e98c139f5924b37fc9995be1f6cddb9bf1bac442c3fbac1fa after=bedb74e8acce756e98c139f5924b37fc9995be1f6cddb9bf1bac442c3fbac1fa
+configs/news_n1_smoke_v4_grounded.json SHA256 before=64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3 after=64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3
+Command: python -m pytest tests/test_fnspid_bounded_sample.py tests/test_news_company_event_contract.py tests/test_news_n1_smoke_runner.py tests/test_news_schema_prompt_v2.py tests/test_compare_news_schema_repair_runs.py tests/test_summarize_news_first_inference.py tests/test_news_grounding_candidate_contract.py tests/test_news_n1_grounding_runner.py tests/test_summarize_news_grounding_runtime.py tests/test_compare_news_grounding_runtime.py -q
+....................................................                     [100%]
+52 passed in 8.87s
+pytest exit_code=0
+Command: python -m py_compile scripts/run_news_n1_grounding.py scripts/exact_quote_adapter.py scripts/summarize_news_grounding_runtime.py scripts/compare_news_grounding_runtime.py
+py_compile exit_code=0
+Model calls: 0

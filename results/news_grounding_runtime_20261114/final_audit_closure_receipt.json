@@ -1,0 +1,85 @@
+{
+  "schema": "news_grounding_runtime_final_audit_closure_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "created_at_utc": "2026-11-14T08:42:56.416020+00:00",
+  "scope": "Read-only saved-receipt closure; no model calls or financial evaluation.",
+  "run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+  "audit_status": "PASS",
+  "comparison_status": "PASS_BOUND_DEVELOPMENT_PAIR",
+  "test_suite": {
+    "passed": 20,
+    "log_sha256": "c3af7f18a747e06b924e6a2030e7ba198137e5c1238f8056f15d082039cc3dcf",
+    "note": "Final 20-test suite counted once; earlier development reruns and old receipt replays are not added.",
+    "reported_distinct_suite_count": 1
+  },
+  "verification": {
+    "old_v3_audit_byte_identical": true,
+    "old_v3_pair_byte_identical": true,
+    "v4_public_and_private_audit_byte_identical": true,
+    "v4_public_and_private_pair_byte_identical": true,
+    "all_ten_statuses_accounted_for": true,
+    "original_runner_source_verified": true
+  },
+  "frozen_sha256": {
+    "sample": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "sample_manifest": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "config": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+    "original_runner_source": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "recovery_runner": "9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed",
+    "contract": {
+      "schema": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+      "wire_schema": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+      "prompt": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+      "adapter": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+      "validator": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+    },
+    "model_integrity_receipt": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+    "auditor": "93841c548b04365a7ecb301541ccd425a03f8a35ad8d72e7cb8d145780160139",
+    "comparator": "c9b44ab7745b1804d571debdd9ca9086c9d7404aa051e1b1dc209ffd50ebc4e8",
+    "runner_tests": "1cd2ca15b4992ab4dcd8f4374c2bdbb2ecd805e56e36383e9d312dd5ef30c0c0",
+    "auditor_tests": "d73f93c66f43dac50dc896dca3c329269711aba60c8adeca3c0e58b79d6119d3",
+    "comparator_tests": "01c565f767291e70044708e7f6e204fbf9462cb98e563fe66ecf694766ffc9ad"
+  },
+  "receipt_sha256": {
+    "old_v3_audit": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b",
+    "old_v3_pair": "7a762549950a7497f727dc23df0a8171996b8de2e152f32b864944863a19e354",
+    "v4_public_audit": "6ff871a1dd48a68e18467141944f652f4b4feeff75874b9fd7db3ef2c36c642f",
+    "v4_public_pair": "29ecf3c2b2fcaa4ab1b4a94160f39453c9965c2fb4fcc8f3d4d1d65bf5235eec",
+    "v4_private_manifest": "73cf2c89da4ea52b5241565481234fe223da1f8601373f4f1867802ba1b4db39",
+    "v4_run_events": "291cf6059ba6fb0be4f0f942501b1206bc061c9e6300e44119eba38a5ec4aac4",
+    "v4_private_summary": "3c9c31469bebacf5c74dfe20bd6a6bff1b82b93636d4981cd244cad1ae96d1af",
+    "v4_token_preflight": "311b86b120bb142301517d77eb24a86430ff644a0884e5a2d6a86a84e2c43d32",
+    "post_run_validation_log": "41685c9e2df474df377dfd761d8f1ad14f652dd38df236866ec8515f09ffaf87"
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "model_calls_attempted": 10,
+    "worker_process_started": 10,
+    "model_load_completed": 9,
+    "generation_started": 9,
+    "model_calls_completed": 9,
+    "model_call_failures": 1,
+    "raw_json_valid": 8,
+    "wire_schema_valid": 1,
+    "host_body_hash_valid": 1,
+    "quotes_checked": 8,
+    "quotes_unique_exact": 7,
+    "quotes_ambiguous": 0,
+    "quotes_not_found": 1,
+    "quotes_invalid": 0,
+    "canonical_constructible": 0,
+    "canonical_schema_valid": 0,
+    "canonical_mechanical_valid": 0,
+    "no_spans_requested": 0,
+    "empty_records_response": 0
+  },
+  "limitations": [
+    "First ten reused development articles only; no blind quality adjudication.",
+    "Unique exact host quotes do not measure model-authored offsets or semantic support.",
+    "Prompt, output contract, host adapter and attention backend changed jointly.",
+    "No financial labels, predictions or return evaluation."
+  ]
+}

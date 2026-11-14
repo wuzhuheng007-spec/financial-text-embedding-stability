@@ -1,0 +1,55 @@
+{
+  "schema": "news_grounding_prerun_gate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "status": "PASS",
+  "checked_at_utc": "2026-11-14T08:16:41+00:00",
+  "baseline_commit": "bbfa7741e231ab44226b4726a73993f58a468ea4",
+  "source_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "source_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+  "contract_sha256": {
+    "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "prompt_sha256": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+    "adapter_sha256": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+    "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "code_sha256": {
+    "scripts/run_news_n1_grounding.py": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "scripts/summarize_news_grounding_runtime.py": "9c93f3f9bb2e54d76da754660e9ea0247715f1ae9415460a4c24507bd5269e10",
+    "scripts/compare_news_grounding_runtime.py": "bedb74e8acce756e98c139f5924b37fc9995be1f6cddb9bf1bac442c3fbac1fa",
+    "configs/news_n1_smoke_v4_grounded.json": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3"
+  },
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_files_verified_against_prior_receipt": 11,
+  "model_files_all_match_prior_receipt": true,
+  "model_integrity_receipt_sha256": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+  "pre_run_validation_log_sha256": "be8bc9c4b46f22d2d9bb8ea88064cb459ccae43a398bad56b27c75d551abb799",
+  "token_preflight": {
+    "articles": 10,
+    "fit": 10,
+    "minimum": 2160,
+    "median": 2683.0,
+    "maximum": 3502,
+    "context_limit": 32768,
+    "reserved_output_tokens": 1024,
+    "new_minus_v3_prompt_tokens_min": -1519,
+    "new_minus_v3_prompt_tokens_max": -1514
+  },
+  "gpu_at_gate": {
+    "source": "nvidia-smi",
+    "total_mib": 12227,
+    "used_mib": 4581,
+    "free_mib": 7364,
+    "active_compute_process_count": 7,
+    "previous_news_worker_count": 0
+  },
+  "model_calls_in_gate": 0,
+  "new_run_output_dir_absent": true,
+  "private_gate_sha256": "557b124d62de61c06053197bffdea5ed664e33409de1a6572244cee07e6bfb11",
+  "limitations": [
+    "Tokenizer context fit is not GPU-memory fit.",
+    "The nvidia-smi snapshot is contemporaneous and includes other processes; it does not assign OOM cause."
+  ]
+}

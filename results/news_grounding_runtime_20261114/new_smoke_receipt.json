@@ -1,0 +1,186 @@
+{
+  "schema": "news_n1_grounding_public_receipt_v1",
+  "pipeline_version": "wire_v2_exact_quote_host_binding_v1",
+  "run_started_at_utc": "2026-11-14T08:16:58+00:00",
+  "run_finished_at_utc": "2026-11-14T08:39:43+00:00",
+  "run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+  "development_articles": 10,
+  "input_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "input_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+  "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "prompt_sha256": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+  "adapter_sha256": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+  "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1",
+  "model_preference": "Qwen/Qwen2.5-3B-Instruct",
+  "model_snapshot_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_weight_sha256": {
+    "model-00001-of-00002.safetensors": "67347b23fb4165b652eb6611f5e1f2a06dfcddba8e909df1b2b0b1857bee06c2",
+    "model-00002-of-00002.safetensors": "a40d941d0e7e0b966ad8b62bb6d6b7c88cce1299197b599d9d0a4ce59aabfc1d"
+  },
+  "model_generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "tokenizer_special_ids": {
+    "tokenizer_bos_token_id": null,
+    "tokenizer_eos_token_id": 151645,
+    "tokenizer_pad_token_id": 151643,
+    "effective_eos_token_id": [
+      151645,
+      151643
+    ],
+    "effective_pad_token_id": 151643
+  },
+  "attention_implementation": "sdpa",
+  "runner_sha256": "9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed",
+  "recovery": {
+    "version": "external_interruption_resume_v1",
+    "original_runner_sha256": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "original_runner_source_sha256": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "recovery_runner_sha256": "9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed",
+    "interrupted_ordinal": 2,
+    "interrupted_status": "INTERRUPTED_PROCESS_UNCLASSIFIED",
+    "prestate_sha256": {
+      "local_manifest": "7a53cb943eb03df07f1e9417035f032117c40f018c4056c72d2bd14cb53da2b8",
+      "shareable_summary": "a3101b46683471ca469b4f56dad587a7f95235952f480972b604783c8de85f9e",
+      "run_events": "247f60cc9fae4fcc60ebf8de50accb81bc1e2018502bb493daaeca5784cc31df"
+    },
+    "phase_02_sha256": "2625ce266226b04f25bb0a19899197071f24466800f95746b662065e1619d114",
+    "original_wall_budget_seconds": 1800,
+    "wall_seconds_elapsed_at_recovery": 869.909456,
+    "interpretation": "A prior committed call was externally interrupted before a response; it was not retried or classified as OOM."
+  },
+  "model_context_limit_tokens": 32768,
+  "model_runtime": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.6.2",
+    "jsonschema": "4.26.0"
+  },
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "model_calls_attempted": 10,
+    "worker_process_started": 10,
+    "model_load_completed": 9,
+    "generation_started": 9,
+    "model_calls_completed": 9,
+    "model_call_failures": 1,
+    "json_parse_valid": 8,
+    "wire_schema_valid": 1,
+    "host_body_hash_valid": 1,
+    "quotes_checked": 8,
+    "quote_unique": 7,
+    "quote_ambiguous": 0,
+    "quote_not_found": 1,
+    "quote_invalid": 0,
+    "canonical_constructible": 0,
+    "canonical_schema_valid": 0,
+    "canonical_mechanical_valid": 0,
+    "no_spans_requested": 0,
+    "empty_records_response": 0
+  },
+  "stage_rates": {
+    "json_parse_valid": {
+      "conditional_numerator": 8,
+      "conditional_denominator": 9,
+      "conditional_rate": 0.8888888888888888,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.8,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.8
+    },
+    "wire_schema_valid": {
+      "conditional_numerator": 1,
+      "conditional_denominator": 8,
+      "conditional_rate": 0.125,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.1,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.1
+    },
+    "canonical_constructible": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 1,
+      "conditional_rate": 0.0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_schema_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_mechanical_valid": {
+      "conditional_numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    }
+  },
+  "quote_rate": {
+    "unique_numerator": 7,
+    "quote_denominator": 8,
+    "unique_rate": 0.875,
+    "zero_quote_outputs_are_grounding_success": false
+  },
+  "gpu_memory_summary": {
+    "actual_sdpa_kernel": "UNKNOWN",
+    "worker_snapshot_count": 46,
+    "worker_snapshot_available": 46,
+    "maximum_allocated_bytes": 8447246336,
+    "maximum_reserved_bytes": 8518631424,
+    "minimum_free_bytes": 0,
+    "host_before_free_mib": 7265,
+    "host_before_used_mib": 4680,
+    "host_total_mib": 12227,
+    "host_before_active_compute_process_count": 7,
+    "host_after_last_free_mib": 11363,
+    "host_after_last_used_mib": 582,
+    "host_after_last_observed_at_utc": "2026-11-14T08:39:43+00:00",
+    "host_recovery_free_mib": 11473,
+    "host_recovery_used_mib": 472,
+    "host_recovery_observed_at_utc": "2026-11-14T08:31:44+00:00",
+    "host_final_free_mib": 11363,
+    "host_final_used_mib": 582,
+    "host_final_observed_at_utc": "2026-11-14T08:39:43+00:00"
+  },
+  "metric_denominators": {
+    "input_too_long": "context_preflight_checked_articles",
+    "json_parse_valid": "model_calls_completed",
+    "wire_schema_valid": "json_parse_valid",
+    "canonical_constructible": "wire_schema_valid",
+    "canonical_schema_valid": "canonical_constructible",
+    "canonical_mechanical_valid": "canonical_constructible",
+    "quote_unique": "quotes_checked (quotes, not articles)",
+    "host_body_hash_valid": "wire_schema_valid (host integrity, not model ability)"
+  },
+  "limitations": [
+    "First ten source-order articles were already used for field design; development set only.",
+    "Per-article wall seconds include subprocess start, cold model load and tokenization; synchronized generation seconds are recorded separately.",
+    "Host-computed input binding and quote offsets are not model performance metrics.",
+    "Exact quote presence does not establish that the quote supports the event or impact claim.",
+    "SDPA is configured; the actual selected PyTorch attention kernel is UNKNOWN without a reliable trace.",
+    "No independent human gold labels or extraction accuracy metrics.",
+    "No financial labels, prediction or return evaluation."
+  ]
+}

@@ -2,7 +2,7 @@
 
 [English full text](roadmap.en.md) · [项目入口](README.md) · [来源接入](source_access.md)
 
-更新：2026-11-14（Asia/Shanghai）。版本：1.5。研究状态 **PROPOSED**；原作者有界样本、N1 输出 Schema 与官方固定 Qwen 3B 快照继续固定。[首次开发冒烟](../../reports/2026-11-14_news_first_inference.zh.md)保存九份响应，均不符合 Schema；[离线归类](../../results/news_schema_repair_20261114/old_error_aggregate.json)已核对具体错误。完整契约提示词复测在第 3 次尝试时因 OOM 停止：两份已保存响应均符合 Schema，但均未通过最终机械检查，其余七篇未尝试。详见[本轮报告](../../reports/2026-11-14_news_schema_repair.zh.md)和[审计比较](../../results/news_schema_repair_20261114/paired_comparison.json)。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
+更新：2026-11-14（Asia/Shanghai）。版本：1.6。研究状态 **PROPOSED**；原作者有界样本和官方固定 Qwen 3B 快照继续固定。[v3 开发复测](../../reports/2026-11-14_news_schema_repair.zh.md)尝试三次后停止，两份已保存响应虽符合 Schema，但均未通过最终机械检查。[旧引用只读诊断](../../results/news_grounding_runtime_20261114/old_failure_diagnosis.json)确认三条引用中两条原文唯一逐字存在、一条重复、零条缺失，而旧模型自报位置均不匹配。独立的 [v4 有界开发运行](../../reports/2026-11-14_news_grounding_runtime.zh.md)尝试固定十篇、保存九份响应，一次调用因外部进程中断而无响应。[独立审计](../../results/news_grounding_runtime_20261114/inference_aggregate.json)通过：JSON 可解析 8/9、wire 合法 1/8、引用唯一逐字匹配 7/8、wire 合法响应中 canonical 可构造 0/1。主机计算的位置和附加绑定不是模型准确率。人工裁定、抽取准确率、金融评估与回测均 **NOT_RUN**。
 
 ## 1. 研究定位
 

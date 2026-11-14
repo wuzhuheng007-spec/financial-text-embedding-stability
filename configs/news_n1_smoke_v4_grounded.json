@@ -1,0 +1,73 @@
+{
+  "schema": "news_n1_smoke_config_v4_grounded",
+  "created_date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "purpose": "development-only wire-v2 exact-quote grounding and SDPA runtime diagnosis; no extraction accuracy or financial claim",
+  "source": {
+    "dataset": "Zihan1004/FNSPID",
+    "dataset_revision": "bf9189c41527198897d1af3e17b1a0095279fc45",
+    "target_file": "Stock_news/nasdaq_exteral_data.csv",
+    "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+    "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+    "first_usable_articles": 10,
+    "set_role": "DEVELOPMENT_NOT_BLIND_TEST"
+  },
+  "contract": {
+    "schema_path": "docs/news_research/company_event_output.schema.json",
+    "schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "wire_schema_path": "docs/news_research/company_event_wire_v2.schema.json",
+    "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "prompt_path": "docs/news_research/company_event_prompt_v3_quotes.md",
+    "prompt_sha256": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+    "adapter_path": "scripts/exact_quote_adapter.py",
+    "adapter_sha256": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+    "validator_path": "scripts/validate_news_company_event.py",
+    "validator_sha256": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "pipeline_version": "wire_v2_exact_quote_host_binding_v1",
+  "model_preference": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_path_policy": "explicit official local Hugging Face snapshot at pinned revision; no hub resolution during inference",
+  "device": "cuda",
+  "dtype": "float16",
+  "attention_implementation": "sdpa",
+  "context_cap_tokens": 32768,
+  "generation": {
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "use_cache": true,
+    "gpu_absolute_determinism_claimed": false
+  },
+  "generation_output_flags": {
+    "output_attentions": false,
+    "output_hidden_states": false,
+    "output_scores": false
+  },
+  "budget": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "model_input_fields": [
+    "source_date",
+    "source_ticker_candidate",
+    "title",
+    "body"
+  ],
+  "host_binding_policy": "retain original input_binding privately; omit it from model input and attach it only after valid wire output and exact-quote grounding",
+  "forbidden_model_inputs": [
+    "AI review draft",
+    "human adjudication",
+    "precomputed summaries",
+    "price and returns",
+    "later article versions",
+    "host input_binding hash"
+  ],
+  "runtime_policy": "separate local environment; offline inference; one worker per article; no automatic retry or resume; stop on OOM",
+  "experiment_id": "news_grounding_runtime_wire_v2_sdpa_v1",
+  "baseline_commit": "bbfa7741e231ab44226b4726a73993f58a468ea4",
+  "baseline_config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f"
+}

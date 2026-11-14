@@ -1,0 +1,17 @@
+N1 v4 grounding final closure validation, 2026-11-14 Asia/Shanghai.
+All closure operations read saved receipts; no model calls.
+Final synthetic runner/auditor/comparator suite: 20 passed in 14.01s
+The 20 tests are one suite; old receipt replays are separate checks, not additional independent tests.
+Old v3 audit read-only replay byte identical (native Windows CRLF): True
+Old v3 paired comparison read-only replay byte identical: True
+V4 postrun public and private audit replay byte identical: True
+V4 paired public and private comparison replay byte identical: True
+V4 audit status: PASS; run status: GROUNDED_RUN_FINISHED_WITH_INTERRUPTION
+V4 attempted=10, responses=9, parsed JSON=8, wire valid=1, canonical constructible=0.
+Quote diagnostics: 8 quote spans, 7 unique exact, 1 not found; host offsets are not old model offsets.
+Ordinal 2 remains INTERRUPTED_PROCESS_UNCLASSIFIED; crash causality is UNKNOWN.
+Comparison status: PASS_BOUND_DEVELOPMENT_PAIR; paired completed positions: 1
+Original runner source SHA-256: df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071
+Recovery runner SHA-256: 9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed
+Auditor SHA-256: 93841c548b04365a7ecb301541ccd425a03f8a35ad8d72e7cb8d145780160139
+Comparator SHA-256: c9b44ab7745b1804d571debdd9ca9086c9d7404aa051e1b1dc209ffd50ebc4e8

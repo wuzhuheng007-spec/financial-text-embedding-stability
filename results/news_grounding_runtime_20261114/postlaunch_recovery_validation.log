@@ -1,0 +1,10 @@
+Postlaunch recovery validation (synthetic stub only; model calls 0)
+runner_sha256_before=9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed
+test_file_sha256=1cd2ca15b4992ab4dcd8f4374c2bdbb2ecd805e56e36383e9d312dd5ef30c0c0
+command: python -m pytest -q tests/test_news_n1_grounding_runner.py::test_synthetic_worker_stages_are_saved_without_real_model_calls
+.                                                                        [100%]
+1 passed in 10.09s
+runner_sha256_after=9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed
+runner_source_unchanged=True
+assertions: no ordinal1/2 relaunch, original 1800s budget, prior event bytes retained, interrupted ordinal2 unclassified, no response2
+model_calls=0

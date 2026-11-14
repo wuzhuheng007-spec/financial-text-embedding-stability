@@ -1,0 +1,66 @@
+{
+  "schema": "news_grounding_runtime_pair_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "comparison_status": "PASS_BOUND_DEVELOPMENT_PAIR",
+  "fixed_target_articles": 10,
+  "shared_sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "shared_model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "old_pipeline": {
+    "config_sha256": "163ff6d63d68ca03feac687f9aa493a5d724f7369125200ce3f4d1bed8ed783f",
+    "audit_sha256": "81c8f52cd59721cc5a5b394f7596967e4c4e8da7de588c080020d594c1b0730b",
+    "run_status": "OOM_STOP",
+    "attempted": 3,
+    "completed_responses": 2,
+    "schema_valid_completed": 2,
+    "model_authored_spans_checked": 3,
+    "model_authored_spans_exact": 0,
+    "attention_implementation": "eager"
+  },
+  "new_pipeline": {
+    "pipeline_version": "wire_v2_exact_quote_host_binding_v1",
+    "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+    "audit_sha256": "6ff871a1dd48a68e18467141944f652f4b4feeff75874b9fd7db3ef2c36c642f",
+    "run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+    "attempted": 10,
+    "completed_responses": 9,
+    "wire_schema_valid_completed": 1,
+    "quotes_checked": 8,
+    "quotes_unique_exact": 7,
+    "canonical_constructible": 0,
+    "canonical_mechanical_valid": 0,
+    "no_spans_requested": 0,
+    "attention_implementation": "sdpa",
+    "actual_sdpa_kernel": "UNKNOWN"
+  },
+  "status_transition_counts": {
+    "MECHANICAL_INVALID->INTERRUPTED_PROCESS_UNCLASSIFIED": 1,
+    "MECHANICAL_INVALID->WIRE_SCHEMA_INVALID": 1,
+    "NOT_ATTEMPTED_AFTER_OOM_STOP->JSON_PARSE_ERROR": 1,
+    "NOT_ATTEMPTED_AFTER_OOM_STOP->QUOTE_UNRESOLVED": 1,
+    "NOT_ATTEMPTED_AFTER_OOM_STOP->WIRE_SCHEMA_INVALID": 5,
+    "OOM_STOP->WIRE_SCHEMA_INVALID": 1
+  },
+  "paired_completed_response_positions": 1,
+  "prompt_token_new_minus_old": {
+    "count": 10,
+    "minimum": -1519,
+    "median": -1515.5,
+    "maximum": -1514,
+    "mean": -1515.6
+  },
+  "metric_comparability": {
+    "old_model_authored_offset_exactness_vs_new_host_quote_grounding": "NOT_COMPARABLE",
+    "old_model_echoed_binding_vs_new_host_attached_binding": "NOT_COMPARABLE",
+    "new_quote_grounding_definition": "Unique exact substring, computed by host; it checks string presence only.",
+    "old_offset_definition": "Model authored character start/end checked against original body."
+  },
+  "limitations": [
+    "The first ten articles were reused for development; no blind holdout or human event-quality adjudication.",
+    "Prompt, wire output contract, host adapter, and attention implementation changed jointly.",
+    "Status transitions include failures and unattempted positions; they are not a full response pair when either run lacks an answer.",
+    "GPU observations do not establish the causal effect of SDPA or exact selected kernel.",
+    "No financial labels, predictions, or return evaluation."
+  ],
+  "private_pair_sha256": "06c05d67f9401db73a9ae92e06a2a7dca00995168d6e6559936a29e8302512aa"
+}

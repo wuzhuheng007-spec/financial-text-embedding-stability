@@ -1,0 +1,418 @@
+{
+  "schema": "news_grounding_runtime_aggregate_v1",
+  "date": "2026-11-14",
+  "timezone": "Asia/Shanghai",
+  "audit_status": "PASS",
+  "audit_issue_codes": [],
+  "pipeline_version": "wire_v2_exact_quote_host_binding_v1",
+  "run_status": "GROUNDED_RUN_FINISHED_WITH_INTERRUPTION",
+  "run_started_at_utc": "2026-11-14T08:16:58+00:00",
+  "run_finished_at_utc": "2026-11-14T08:39:43+00:00",
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "sample_sha256": "77ef3cbc244dd0f6f4c5e544db3df87606359e04922ae4e7b2365c3f8fd486af",
+  "sample_manifest_sha256": "a94297c02bf2a272e215bee509610a5b27f4f61f4a189dc4ee89706d4209250e",
+  "config_sha256": "64d61006eb3332fc34440b18a47bf87693ed1e488b9feacd6d9be6bf9ddc13e3",
+  "runner_sha256": "9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed",
+  "recovery": {
+    "version": "external_interruption_resume_v1",
+    "original_runner_sha256": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "original_runner_source_sha256": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "recovery_runner_sha256": "9c038ccf904a1184db6f1859d56beef4ab4d27bc89f0dd3ea1c67c2c31ae71ed",
+    "interrupted_ordinal": 2,
+    "interrupted_status": "INTERRUPTED_PROCESS_UNCLASSIFIED",
+    "prestate_sha256": {
+      "local_manifest": "7a53cb943eb03df07f1e9417035f032117c40f018c4056c72d2bd14cb53da2b8",
+      "shareable_summary": "a3101b46683471ca469b4f56dad587a7f95235952f480972b604783c8de85f9e",
+      "run_events": "247f60cc9fae4fcc60ebf8de50accb81bc1e2018502bb493daaeca5784cc31df"
+    },
+    "phase_02_sha256": "2625ce266226b04f25bb0a19899197071f24466800f95746b662065e1619d114",
+    "original_wall_budget_seconds": 1800,
+    "wall_seconds_elapsed_at_recovery": 869.909456,
+    "interpretation": "A prior committed call was externally interrupted before a response; it was not retried or classified as OOM."
+  },
+  "contract_sha256": {
+    "schema": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+    "wire_schema": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+    "prompt": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+    "adapter": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+    "validator": "8a98de4ef71871bc055a62835a8fe932a0f14d224710b266bb46612a3be3bbe1"
+  },
+  "model_integrity_receipt_sha256": "f72b3f53f0547c8a659d6b89ddd0a7776f9f092c24aff55daf7d50aafd483678",
+  "generation_config_source_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+  "effective_generation_config_sha256": "5b0bfa7321353dcac73ec98f6cf52f41dfee08280e2b55729850419abb79eab2",
+  "configured_attention_implementation": "sdpa",
+  "actual_sdpa_kernel": "UNKNOWN",
+  "budgets": {
+    "max_model_calls": 10,
+    "max_new_tokens": 1024,
+    "per_call_timeout_seconds": 180,
+    "total_timeout_seconds": 1800,
+    "retries": 0
+  },
+  "full_text_token_preflight": {
+    "target_articles": 10,
+    "fit_with_output_reserve": 10,
+    "prompt_tokens": {
+      "count": 10,
+      "minimum": 2160,
+      "median": 2683.0,
+      "maximum": 3502
+    },
+    "configured_context_cap_tokens": 32768,
+    "effective_context_limit_tokens": 32768,
+    "reserved_output_tokens": 1024,
+    "maximum_prompt_plus_reserve_tokens": 4526,
+    "interpretation": "Context fit does not imply GPU-memory fit or identify an OOM cause."
+  },
+  "counts": {
+    "articles_considered": 10,
+    "context_preflight_checked_articles": 10,
+    "input_too_long": 0,
+    "model_calls_attempted": 10,
+    "worker_process_started": 10,
+    "model_load_completed": 9,
+    "generation_started": 9,
+    "model_calls_completed": 9,
+    "model_call_failures": 1,
+    "raw_json_valid": 8,
+    "wire_schema_valid": 1,
+    "host_body_hash_valid": 1,
+    "quotes_checked": 8,
+    "quotes_unique_exact": 7,
+    "quotes_ambiguous": 0,
+    "quotes_not_found": 1,
+    "quotes_invalid": 0,
+    "canonical_constructible": 0,
+    "canonical_schema_valid": 0,
+    "canonical_mechanical_valid": 0,
+    "no_spans_requested": 0,
+    "empty_records_response": 0
+  },
+  "status_counts": {
+    "INTERRUPTED_PROCESS_UNCLASSIFIED": 1,
+    "JSON_PARSE_ERROR": 1,
+    "QUOTE_UNRESOLVED": 1,
+    "WIRE_SCHEMA_INVALID": 7
+  },
+  "stop_reason_counts": {
+    "EOS": 8,
+    "OUTPUT_TOKEN_BUDGET_POSSIBLY_TRUNCATED": 1
+  },
+  "wire_error_keyword_occurrences": {
+    "CONST": 1,
+    "ENUM": 12,
+    "NOT": 1
+  },
+  "canonical_error_keyword_occurrences": {},
+  "canonical_mechanical_issue_counts": {},
+  "quote_status_counts": {
+    "QUOTE_NOT_FOUND": 1,
+    "UNIQUE_EXACT": 7
+  },
+  "quote_rates": {
+    "raw_json_valid": {
+      "numerator": 8,
+      "conditional_denominator": 9,
+      "conditional_rate": 0.8888888888888888,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.8,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.8
+    },
+    "wire_schema_valid": {
+      "numerator": 1,
+      "conditional_denominator": 8,
+      "conditional_rate": 0.125,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.1,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.1
+    },
+    "host_body_hash_valid": {
+      "numerator": 1,
+      "conditional_denominator": 1,
+      "conditional_rate": 1.0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.1,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.1
+    },
+    "canonical_constructible": {
+      "numerator": 0,
+      "conditional_denominator": 1,
+      "conditional_rate": 0.0,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_schema_valid": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "canonical_mechanical_valid": {
+      "numerator": 0,
+      "conditional_denominator": 0,
+      "conditional_rate": null,
+      "attempted_denominator": 10,
+      "attempted_rate": 0.0,
+      "fixed_target_denominator": 10,
+      "fixed_target_rate": 0.0
+    },
+    "quote_unique_exact": {
+      "numerator": 7,
+      "quote_denominator": 8,
+      "quote_rate": 0.875,
+      "unit": "quotes_not_articles",
+      "zero_quotes_is_success": false
+    }
+  },
+  "wire_valid_output_distribution": {
+    "response_denominator": 1,
+    "article_disposition_counts": {
+      "COMPANY_EVENTS_FOUND": 1
+    },
+    "records_per_response_counts": {
+      "1": 1
+    },
+    "empty_records_response_count": 0
+  },
+  "gpu_memory": {
+    "snapshot_count": 46,
+    "by_stage": {
+      "AFTER_GENERATION": {
+        "snapshots": 9,
+        "bytes": {
+          "free_bytes": {
+            "observed": 9,
+            "minimum": 0,
+            "maximum": 4227858432
+          },
+          "total_bytes": {
+            "observed": 9,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 9,
+            "minimum": 6295253504,
+            "maximum": 6295275008
+          },
+          "reserved_bytes": {
+            "observed": 9,
+            "minimum": 7289700352,
+            "maximum": 8518631424
+          },
+          "max_allocated_bytes": {
+            "observed": 9,
+            "minimum": 7198099456,
+            "maximum": 8447246336
+          },
+          "max_reserved_bytes": {
+            "observed": 9,
+            "minimum": 7289700352,
+            "maximum": 8518631424
+          }
+        }
+      },
+      "AFTER_MODEL_LOAD": {
+        "snapshots": 9,
+        "bytes": {
+          "free_bytes": {
+            "observed": 9,
+            "minimum": 1095819264,
+            "maximum": 5123342336
+          },
+          "total_bytes": {
+            "observed": 9,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 9,
+            "minimum": 6285648384,
+            "maximum": 6285648384
+          },
+          "reserved_bytes": {
+            "observed": 9,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          },
+          "max_allocated_bytes": {
+            "observed": 9,
+            "minimum": 6285648384,
+            "maximum": 6285648384
+          },
+          "max_reserved_bytes": {
+            "observed": 9,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          }
+        }
+      },
+      "BEFORE_GENERATION": {
+        "snapshots": 9,
+        "bytes": {
+          "free_bytes": {
+            "observed": 9,
+            "minimum": 1065017344,
+            "maximum": 5123342336
+          },
+          "total_bytes": {
+            "observed": 9,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 9,
+            "minimum": 6285665792,
+            "maximum": 6285676544
+          },
+          "reserved_bytes": {
+            "observed": 9,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          },
+          "max_allocated_bytes": {
+            "observed": 9,
+            "minimum": 6285665792,
+            "maximum": 6285676544
+          },
+          "max_reserved_bytes": {
+            "observed": 9,
+            "minimum": 6438256640,
+            "maximum": 6438256640
+          }
+        }
+      },
+      "WORKER_CREATED": {
+        "snapshots": 10,
+        "bytes": {
+          "free_bytes": {
+            "observed": 10,
+            "minimum": 11561598976,
+            "maximum": 11561598976
+          },
+          "total_bytes": {
+            "observed": 10,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "reserved_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "max_allocated_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          },
+          "max_reserved_bytes": {
+            "observed": 10,
+            "minimum": 0,
+            "maximum": 0
+          }
+        }
+      },
+      "WORKER_FINALLY": {
+        "snapshots": 9,
+        "bytes": {
+          "free_bytes": {
+            "observed": 9,
+            "minimum": 22339584,
+            "maximum": 4227858432
+          },
+          "total_bytes": {
+            "observed": 9,
+            "minimum": 12820480000,
+            "maximum": 12820480000
+          },
+          "allocated_bytes": {
+            "observed": 9,
+            "minimum": 6295253504,
+            "maximum": 6295275008
+          },
+          "reserved_bytes": {
+            "observed": 9,
+            "minimum": 7289700352,
+            "maximum": 8518631424
+          },
+          "max_allocated_bytes": {
+            "observed": 9,
+            "minimum": 7198099456,
+            "maximum": 8447246336
+          },
+          "max_reserved_bytes": {
+            "observed": 9,
+            "minimum": 7289700352,
+            "maximum": 8518631424
+          }
+        }
+      }
+    },
+    "peak_reset_stage_counts": {
+      "BEFORE_MODEL_LOAD": 10
+    },
+    "configured_attention": "sdpa",
+    "actual_sdpa_kernel": "UNKNOWN",
+    "interpretation": "CUDA snapshots are observed allocation counters, not a causal OOM attribution; SDPA configuration does not identify the selected kernel."
+  },
+  "gpu_host_observed": {
+    "before_free_mib": 7265,
+    "before_used_mib": 4680,
+    "final_free_mib": 11363,
+    "final_used_mib": 582,
+    "recovery_free_mib": 11473,
+    "recovery_used_mib": 472,
+    "after_attempt_snapshots": 9,
+    "own_worker_exits_observed": 0,
+    "caution": "Host free memory can change because of other processes; before/after difference is not causal GPU use."
+  },
+  "timing_seconds": {
+    "attempt_wall_includes_cold_load": {
+      "count": 9,
+      "minimum": 37.64100000000326,
+      "median": 56.609000000025844,
+      "maximum": 89.17200000002049
+    },
+    "generation_synced": {
+      "count": 9,
+      "minimum": 21.812000000005355,
+      "median": 40.15700000000652,
+      "maximum": 70.73399999999674
+    }
+  },
+  "response_set_sha256": "d64e284265953966e2019978a2ee9f31e4765772f14611566b8d2482cc8e19cb",
+  "private_receipt_hashes": {
+    "run_events_sha256": "291cf6059ba6fb0be4f0f942501b1206bc061c9e6300e44119eba38a5ec4aac4",
+    "local_manifest_sha256": "73cf2c89da4ea52b5241565481234fe223da1f8601373f4f1867802ba1b4db39",
+    "token_preflight_sha256": "311b86b120bb142301517d77eb24a86430ff644a0884e5a2d6a86a84e2c43d32",
+    "shareable_summary_sha256": "3c9c31469bebacf5c74dfe20bd6a6bff1b82b93636d4981cd244cad1ae96d1af",
+    "gpu_host_preflight_sha256": "9b8eef2be39d17a8f113206ecb36bb84c75d7a8b06fd9038f7db9acb9be536af",
+    "gpu_host_final_sha256": "d92a55175cecd86638cc4cfcdb6e566e2b6d60db59df188af7922f374c7ba435",
+    "gpu_host_resume_preflight_sha256": "7cf8f10fcec9c363e9c0e0625c9b63e6d09743d461d9d6d0a1539541d98bc421",
+    "original_runner_source_sha256": "df563dea6878e0373d2ee512f197b45337cefcec2c065e03ce63b51904829071",
+    "gpu_worker_set_sha256": "c429edbc3b32485cd99c6d73e80ea5dbdd98d81df8898dd4c3ddb5ac2440a0fc"
+  },
+  "limitations": [
+    "Same first ten development articles; no blind or independent test.",
+    "Host input binding is a program integrity check, not model hash copying skill.",
+    "Exact unique quotes and host offsets are not model offset accuracy or semantic support.",
+    "Old model-authored offset metric and new quote-grounding metric have different definitions.",
+    "Prompt, wire contract, host adapter and attention backend changed together.",
+    "CUDA allocation snapshots cannot isolate an OOM cause or prove a fused SDPA kernel.",
+    "No independent human extraction-quality adjudication or financial evaluation."
+  ]
+}

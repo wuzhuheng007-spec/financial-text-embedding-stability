@@ -1,0 +1,32 @@
+{
+  "status": "PASS_SYNTHETIC_ONLY",
+  "checks": {
+    "canonical_roundtrip": true,
+    "input_not_mutated": true,
+    "frozen_validator_accepts_constructed_example": true,
+    "unicode_codepoint_offsets": true,
+    "overlapping_matches_ambiguous": true,
+    "no_case_or_whitespace_normalization": true,
+    "empty_quote_invalid": true,
+    "reason_contradiction_rejected": true,
+    "model_metadata_rejected": true,
+    "wrong_body_hash_rejected": true,
+    "missing_quote_blocks_canonical": true,
+    "repeated_quote_blocks_canonical": true,
+    "zero_spans_not_a_grounding_success": true,
+    "canonical_validator_still_catches_missing_role": true,
+    "actual_message_contains_complete_wire_schema": true
+  },
+  "check_count": 15,
+  "real_model_calls": 0,
+  "canonical_schema_sha256": "451264cabdd148ed67a806ac9be5f110dc1f991ed48041792df8594dcb40b470",
+  "wire_schema_sha256": "afc517b5c6ef96e06d89380905e51843cecc6b34aa31888c5ca14e0ee07b2022",
+  "prompt_sha256": "c04bf2cf3d4e689ccd2a9571ad404baf11bd0eb012822a7a842e6d4f1f0ed565",
+  "adapter_sha256": "c8f8fea6d2c39c870ec1f0e2ef6f8d6132f79e103af0de6e1f72a386e9ee677d",
+  "limitations": [
+    "No GPU memory measurement",
+    "No real private response inspected",
+    "Exact quotation is not semantic correctness",
+    "Host metadata binding is not model copying accuracy"
+  ]
+}
