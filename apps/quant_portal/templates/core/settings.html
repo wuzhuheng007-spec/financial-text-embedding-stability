@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block title %}个人设置 · Quant 观察台{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">ACCOUNT</p><h1>个人设置</h1><p class="muted">这些设置只影响当前账户。</p></div>
+  <span class="status-pill neutral">本机个人测试</span>
+</div>
+<section class="card narrow-card">
+  {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+      {% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}
+    {% endfor %}
+    <button class="button button-primary" type="submit">保存设置</button>
+  </form>
+</section>
+{% endblock %}

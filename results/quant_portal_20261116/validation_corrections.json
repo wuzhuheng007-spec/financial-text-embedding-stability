@@ -1,0 +1,40 @@
+{
+  "schema": "quant_portal_validation_corrections_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "software_tests": {
+    "first_root_replay": {
+      "environment": "DEBUG=1, PERSONAL_MODE=1, isolated test database",
+      "tests": 17,
+      "passed": 16,
+      "failed": 1,
+      "failure": "test_personal_review_card_never_enters_shared_mode assumed PERSONAL_MODE=False in its first assertion",
+      "classification": "TEST_SETUP_ERROR; app behavior did not change"
+    },
+    "correction": "The shared-mode assertion now explicitly overrides PERSONAL_MODE=False; the personal-mode assertion explicitly overrides True.",
+    "final_root_replay": {
+      "environment": "DEBUG=1, PERSONAL_MODE=1, isolated test database",
+      "tests": 17,
+      "passed": 17,
+      "log": "results/quant_portal_20261116/focused_tests_final.log",
+      "django_check": "PASS",
+      "migration_check": "NO_CHANGES_DETECTED"
+    },
+    "backend_cross_mode_replay": "The same 17 tests passed with PERSONAL_MODE=0 and =1; these are repeated configurations, not 34 independent test cases."
+  },
+  "browser_visual_acceptance": {
+    "status": "INTERRUPTED_NOT_RUN",
+    "reason": "The user pressed Escape during computer-use registration-page QA; no subsequent browser interaction was performed.",
+    "desktop_end_to_end": "NOT_RUN",
+    "viewport_390px": "NOT_RUN",
+    "owner_invite_consumed": false,
+    "qa_invite_consumed": false
+  },
+  "non_ui_http_checks": {
+    "readyz": 200,
+    "registration": 200,
+    "css": 200,
+    "admin_login": 404,
+    "source": "results/quant_portal_20261116/ops_receipt_redacted.json; backend local HTTP check"
+  }
+}

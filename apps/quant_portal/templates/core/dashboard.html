@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% block title %}市场观察 · Quant 观察台{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">LOCAL TEST · READ ONLY</p>
+    <h1>科技股观察台</h1>
+    <p class="muted">管理自己的关注范围，查看获准展示的缓存快照和历史财报事实。</p>
+  </div>
+  <span class="status-pill neutral">本机个人使用 · 无交易</span>
+</div>
+
+<section class="notice" aria-labelledby="availability-title">
+  <div class="notice-symbol" aria-hidden="true">!</div>
+  <div>
+    <h2 id="availability-title">行情与新闻未接入公共展示</h2>
+    <p>moomoo 与金十资料需要分别核对服务器采集、缓存和对外展示权限。当前页面刷新只读取本站缓存；空白或旧数据不代表市场没有变化。dot 当前未连接。</p>
+  </div>
+</section>
+
+<div class="status-grid" aria-label="数据来源状态">
+  <section class="status-card card">
+    <div class="card-top"><h2>moomoo 行情</h2><span class="status-pill warning">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div>
+    <p class="muted">最近成功接收：{% if provider_states.moomoo.last_success_at %}<time datetime="{{ provider_states.moomoo.last_success_at|date:'c' }}">{{ provider_states.moomoo.last_success_at|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</p>
+  </section>
+  <section class="status-card card">
+    <div class="card-top"><h2>金十新闻</h2><span class="status-pill warning">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div>
+    <p class="muted">最近成功接收：{% if provider_states.jin10.last_success_at %}<time datetime="{{ provider_states.jin10.last_success_at|date:'c' }}">{{ provider_states.jin10.last_success_at|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</p>
+  </section>
+  <section class="status-card card">
+    <div class="card-top"><h2>dot 自动跟踪</h2><span class="status-pill warning">NOT_CONNECTED</span></div>
+    <p class="muted">没有持续接入的证据。</p>
+  </section>
+</div>
+
+<div class="main-grid">
+  <section class="card" aria-labelledby="watchlist-title">
+    <div class="section-head"><div><p class="eyebrow">YOUR WATCHLIST</p><h2 id="watchlist-title">我的自选股</h2></div><span class="small-tag">仅当前账户</span></div>
+    <form method="post" action="{% url 'watchlist_add' %}" class="watch-form">
+      {% csrf_token %}
+      {% for field in watchlist_form %}
+        <div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>
+      {% endfor %}
+      <button class="button button-primary" type="submit">加入自选</button>
+    </form>
+    {% if watchlist_form.non_field_errors %}<div class="form-errors" role="alert">{{ watchlist_form.non_field_errors }}</div>{% endif %}
+    {% if watch_rows %}
+      <div class="watch-items">
+        {% for row in watch_rows %}
+        <article class="watch-item">
+          <div class="watch-symbol"><strong>{{ row.item.symbol }}</strong><span>{{ row.item.display_name|default:'名称待核实' }}</span></div>
+          <span class="asset-tag">{{ row.item.get_asset_type_display|default:row.item.asset_type }}</span>
+          <form method="post" action="{% url 'watchlist_remove' row.item.pk %}">{% csrf_token %}<button class="text-button destructive" type="submit" aria-label="移除 {{ row.item.symbol }}">移除</button></form>
+          <div class="watch-data">{% if row.snapshot %}<strong>{{ row.snapshot.price_text|default:'价格未知' }}{% if row.snapshot.currency %} {{ row.snapshot.currency }}{% endif %}</strong> · 数据时间：{% if row.snapshot.provider_time %}<time datetime="{{ row.snapshot.provider_time|date:'c' }}">{{ row.snapshot.provider_time|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %} · 延迟：{{ row.snapshot.delay_status|default:'未知' }} · 市场：{{ row.snapshot.market_state|default:'未知' }}{% else %}<span class="muted">行情未接入，暂无获准展示的缓存数据。</span>{% endif %}</div>
+        </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state"><strong>还没有自选股</strong><p>从上方添加关注对象。添加证券不会自动启动行情采集。</p></div>
+    {% endif %}
+  </section>
+
+  <section class="card" aria-labelledby="snapshot-title">
+    <div class="section-head"><div><p class="eyebrow">APPROVED CACHE</p><h2 id="snapshot-title">行情快照</h2></div><span class="small-tag">缓存只读</span></div>
+    {% if snapshots %}
+      <div class="snapshot-list">
+        {% for symbol, snapshot in snapshots.items %}
+        <article class="snapshot-item">
+          <div><strong>{{ symbol }}</strong><p class="muted">{{ snapshot.provider|default:'来源未知' }} · {{ snapshot.market_state|default:'市场状态未知' }}</p></div>
+          <div class="snapshot-value"><strong>{% if snapshot.price_text %}{{ snapshot.price_text }}{% else %}未接入{% endif %}</strong><span>{{ snapshot.currency|default:'币种未知' }}</span></div>
+          <div class="snapshot-meta">数据时间：{% if snapshot.provider_time %}<time datetime="{{ snapshot.provider_time|date:'c' }}">{{ snapshot.provider_time|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}<br>延迟状态：{{ snapshot.delay_status|default:'未知' }}</div>
+        </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state"><strong>暂无获准展示的行情</strong><p>行情供应商状态见上方。本站不会生成模拟价格，也不会在刷新时直接向供应商请求。</p></div>
+    {% endif %}
+  </section>
+</div>
+
+<section class="card facts-section" aria-labelledby="facts-title">
+  <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史财期 · 非最新财报</span></div>
+  {% if personal_mode %}<p class="muted">本机个人开发视图。以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
+  {% if fact_cards %}
+    <div class="fact-grid">
+      {% for card in fact_cards %}
+      <article class="fact-card">
+        <div class="fact-head"><h3>{{ card.issuer }}</h3><span class="status-pill neutral">{% if card.evidence_state == 'CODEX_REVIEW_DEVELOPMENT' %}Codex 开发核对{% else %}{{ card.evidence_state|default:'状态未知' }}{% endif %}</span></div>
+        <p class="fact-period">财期：{{ card.fiscal_period|default:'未知' }}</p>
+        <dl class="fact-detail">
+          <div><dt>指标</dt><dd>{{ card.metric|default:'未知' }}</dd></div>
+          <div><dt>原文数值</dt><dd>{% if card.value_text %}{{ card.value_text }}{% else %}未知{% endif %}</dd></div>
+          {% if card.unit_text %}<div><dt>单位字段</dt><dd>{{ card.unit_text }}</dd></div>{% endif %}
+          <div><dt>币种字段</dt><dd>{{ card.currency|default:'UNKNOWN' }}</dd></div>
+          <div><dt>会计/调整口径</dt><dd>{{ card.basis_text|default:'UNKNOWN' }}</dd></div>
+          <div><dt>来源日期</dt><dd>{% if card.source_date %}<time datetime="{{ card.source_date|date:'Y-m-d' }}">{{ card.source_date|date:'Y-m-d' }}</time>{% else %}未知{% endif %}{% if card.source_time_precision == 'DATE_ONLY' %}（仅日期）{% endif %}</dd></div>
+          <div><dt>发布时间</dt><dd>{% if card.as_of %}<time datetime="{{ card.as_of|date:'c' }}">{{ card.as_of|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</dd></div>
+        </dl>
+        {% if card.source_url %}<a href="{{ card.source_url }}" target="_blank" rel="noopener noreferrer" class="source-link">查看原始来源 ↗</a>{% else %}<span class="muted">来源链接待核实</span>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state"><strong>暂无可公开展示的事实卡</strong><p>研究线的私人原件、事实草稿和授权资料不会自动转入多人页面。</p></div>
+  {% endif %}
+</section>
+{% endblock %}

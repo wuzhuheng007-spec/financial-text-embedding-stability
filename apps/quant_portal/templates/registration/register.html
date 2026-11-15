@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block title %}受邀注册 · Quant 观察台{% endblock %}
+{% block content %}
+<section class="auth-card card" aria-labelledby="register-title">
+  <p class="eyebrow">PRIVATE INVITATION</p>
+  <h1 id="register-title">创建测试账户</h1>
+  <p class="muted">此链接仅用于一次受邀注册。你的自选股和设置仅在你的账户下保存。</p>
+  {% if invite_email %}<p class="invite-email">邀请邮箱：<strong>{{ invite_email }}</strong></p>{% endif %}
+  {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{% if field.name == 'email' %}邮箱{% elif field.name == 'invite_code' %}邀请码{% elif field.name == 'password1' %}设置密码{% elif field.name == 'password2' %}确认密码{% else %}{{ field.label }}{% endif %}</label>
+      {{ field }}
+      {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+      {% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}
+    {% endfor %}
+    <button class="button button-primary" type="submit">创建账户</button>
+  </form>
+</section>
+{% endblock %}

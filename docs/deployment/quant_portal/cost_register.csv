@@ -1,0 +1,8 @@
+component,assumption,billing_basis,estimated_amount,status,source_url
+ECS instance,"single Linux 4-vCPU 16-GiB host; region and instance family not selected",instance type and duration,UNKNOWN,NOT_PURCHASED,https://www.alibabacloud.com/help/en/ecs/instance-types
+system and data disk,"capacity and disk class not selected",capacity and duration,UNKNOWN,NOT_PURCHASED,https://www.alibabacloud.com/help/en/ecs/user-guide/use-the-ecs-instance-in-the-console
+public traffic or bandwidth,"billing mode and traffic unknown",outbound traffic or fixed bandwidth,UNKNOWN,NOT_PURCHASED,https://www.alibabacloud.com/help/en/ecs/billing-item-faqs
+backup or snapshot,"retention and snapshot size unknown",snapshot storage and operations,UNKNOWN,NOT_PURCHASED,https://www.alibabacloud.com/help/en/ecs/view-billing-details
+domain,"registrar and domain not selected",registration and renewal,UNKNOWN,NOT_PURCHASED,
+model calls,"public app makes no model calls by default",provider-specific,UNKNOWN,DISABLED,
+market and news data licensing,"moomoo and Jin10 public output disabled pending express rights",provider-specific,UNKNOWN,NOT_AUTHORIZED_FOR_PUBLIC_OUTPUT,

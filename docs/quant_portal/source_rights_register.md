@@ -1,0 +1,16 @@
+# Invitation app source rights register
+
+Checked 2026-11-16 (Asia/Shanghai). This is an operational gate for the new application, not a legal grant. `UNKNOWN` means the team has no source-specific permission evidence for the proposed use. An authenticated feed and a login wall do not change this gate.
+
+| Source or content | Personal research | Server collection | Server cache | Invited-user display | AI processing | Redistribution | Evidence and decision |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| moomoo market data and news | Account- and market-permission-dependent | UNKNOWN | UNKNOWN | **OFF** | UNKNOWN | **OFF** | [Moomoo Terms, Schedule I](https://www.moomoo.com/terms) restricts market data to personal use and disallows dissemination without prior written provider consent. [OpenAPI permissions](https://open.moomoo.com/api/overview/api-authority) addresses access, not onward display. Seek a written grant covering this exact app and audience. |
+| Jin10 flash, calendar and news | Agreement-dependent | UNKNOWN | UNKNOWN | **OFF** | UNKNOWN | **OFF** | [Jin10 agreement](https://flash.jin10.com/agreement), [copyright notice](https://www.jin10.com/about/index.html) and [MCP guide](https://mcp.jin10.com/app/doc.html). Existing private bounded calls do not establish server or user-facing rights. |
+| Private WRDS, licensed news and local research database | Local entitlement only | **OFF** | **OFF** | **OFF** | **OFF** | **OFF** | [Repository sharing scope](../../SHARING_SCOPE.md); separate contract and product-specific review required. |
+| Official SEC issuer filings and issuer IR | Public source access is documented | Source-specific review | Source-specific review | **Curated factual summaries only after review** | Source-specific review | No raw-document mirroring by default | Original filing URL and document version must accompany any reviewed summary. Public availability alone is not a blanket reuse assessment. |
+| Existing redacted research summary cards | Internal and GitHub summary already shared | Not an upstream feed | Cache of approved summaries only | **Allowed after per-card source review** | No automatic model processing | Summary under existing repository sharing scope | [Financial text report](../../reports/2026-11-15_market_observer_financial_text_v2.en.md) and [sharing scope](../../SHARING_SCOPE.md). This does not authorize importing private source bodies. |
+| App demonstration labels and security identifiers | Yes | Not applicable | Yes | **ON, marked demo** | Not applicable | App-authored content only | No fabricated prices, returns, earnings, provider news or live status. |
+
+The backend must enforce this register through a deny-by-default display flag on cached content. Page refresh reads the app database only. Provider adapters and model workers are not enabled by a user visit. A source time, receive time, delay and stale state must remain distinct when permitted data are later connected. `dot` remains disconnected until verified independently.
+
+Before any live invited-user release with provider content, record the written permission, exact product/fields, recipient class, retention, territory, rate limit, display wording, AI use and redistribution conditions; update the implementation gate and test it. No such provider permission is recorded in this round.

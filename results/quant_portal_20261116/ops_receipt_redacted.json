@@ -1,0 +1,58 @@
+{
+  "schema_version": "quant_portal_ops_receipt_v1",
+  "run_date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "release_config": "configs/quant_portal_release_v1.json",
+  "app_dir": "apps/quant_portal",
+  "source_input": {
+    "file": "results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json",
+    "sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+    "nature": "historical development fact summaries; not live earnings or a prediction"
+  },
+  "native_personal_test": {
+    "start": "PASS_EXACT_NO_ARGUMENT_COMMAND_AFTER_FIRST_RUN_PIPE_FIX",
+    "first_no_argument_start": "FAILED_DEPENDENCY_INSTALL_STDOUT_WAS_MISTAKEN_FOR_PYTHON_PATH_DEPENDENCIES_INSTALLED",
+    "correction": "suppress pip progress from Resolve-Python function return",
+    "stop_process_tree": "PASS_PORT_8765_RELEASED",
+    "status": "RUNNING_READY_HTTP_200_CSS_HTTP_200",
+    "binding": "127.0.0.1:8765",
+    "listener_pid_at_final_check": 268720,
+    "migration_core_0004": "APPLIED",
+    "provenance_checked_basis_currency_backfills": 11,
+    "sqlite_fact_card_rows": 11,
+    "private_invite_file": "apps/quant_portal/var/personal_invite.txt",
+    "invite_contents_published": false,
+    "provider_calls": 0
+  },
+  "compose_static_check": {
+    "base_config_quiet": "PASS",
+    "production_config_quiet": "PASS",
+    "db_migrate_worker_published_ports": 0,
+    "web_host_binding": "127.0.0.1:8080",
+    "caddy_public_ports": [80, 443],
+    "runtime_container_acceptance": "NOT_RUN_DOCKER_LINUX_ENGINE_UNAVAILABLE"
+  },
+  "production_static_build_preflight": {
+    "initial_issue": "DEBUG=1 build-time collectstatic selected development storage while runtime uses manifest storage",
+    "correction": "Dockerfile now runs collectstatic with DEBUG=0 and a nonsecret build-only key/host",
+    "native_pinned_environment_collectstatic": "PASS",
+    "manifest_file": "apps/quant_portal/staticfiles/staticfiles.json (ignored local build artifact)",
+    "core_portal_css_mapped": true,
+    "container_build": "NOT_RUN"
+  },
+  "local_backup_restore": {
+    "online_backup": "PASS",
+    "first_scratch_probe": "FAILED_WINDOWS_OPEN_SQLITE_HANDLE_ON_TEMP_CLEANUP",
+    "correction": "close SQLite connections explicitly with contextlib.closing",
+    "rerun_scratch_probe": "PASS",
+    "final_backup_created_at_utc": "2026-11-15T20:41:02Z",
+    "final_restore_after_core_0004": "PASS",
+    "final_restore_checked_at_utc": "2026-11-15T20:41:05.677279+00:00",
+    "integrity": "ok",
+    "tables": 19,
+    "live_database_modified": false,
+    "private_evidence": "apps/quant_portal/backups/last_restore_probe.json"
+  },
+  "load_30_100_300": "NOT_RUN_LOCAL_CONTAINER_ENGINE_UNAVAILABLE_AND_MULTIPLAYER_DEFERRED",
+  "cloud_deployed": false
+}

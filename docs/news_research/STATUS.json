@@ -1,7 +1,7 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.24",
-  "updated_date": "2026-11-15",
+  "version": "1.25",
+  "updated_date": "2026-11-16",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/sync-research-progress-20261113",
@@ -733,6 +733,36 @@
     "redacted_handoff_zip": "LOCAL_CRC_AND_SHA_READBACK_VERIFIED",
     "dot_connection": "NOT_CONNECTED",
     "live_quote_connection_changed": false,
+    "formal_m5_financial_experiment": "NOT_RUN"
+  }
+,
+  "quant_portal_personal_v1": {
+    "date": "2026-11-16",
+    "timezone": "Asia/Shanghai",
+    "baseline_commit": "2802244db3f30d8fce38a43ef57281e1b11735ad",
+    "priority": "PERSONAL_LOCAL_TEST_FIRST_MULTIPLAYER_AND_ALIBABA_FUTURE_PLAN",
+    "app_dir": "apps/quant_portal",
+    "readme": "docs/quant_portal/README.md",
+    "report_en": "reports/2026-11-16_quant_portal_personal.en.md",
+    "report_zh": "reports/2026-11-16_quant_portal_personal.zh.md",
+    "plan_execution": "results/quant_portal_20261116/plan_execution.csv",
+    "local_service": "RUNNING_LOOPBACK_127.0.0.1_8765_READY_AND_CSS_HTTP_200",
+    "first_owner_registration": "PENDING_OWNER_ONE_TIME_INVITE",
+    "historical_local_fact_summaries": 11,
+    "fact_scope": "TWO_PINNED_SEC_EXHIBITS_SAME_TEAM_CODEX_REVIEW_DEVELOPMENT",
+    "editable_watchlist_candidates_on_registration": 6,
+    "provider_public_output": "DISABLED_MOOMOO_JIN10_NO_FEED",
+    "synthetic_test_cases": 17,
+    "test_configuration_replays": "PERSONAL_MODE_OFF_AND_ON_NOT_ADDITIVE",
+    "local_backup_scratch_restore": "PASS_AFTER_RECORDED_FIRST_FAILURE",
+    "browser_desktop_390px_visual": "INTERRUPTED_NOT_RUN",
+    "docker_container_acceptance": "NOT_RUN_LOCAL_VIRTUALIZATION_BLOCKED",
+    "cloud_deployed": false,
+    "load_30_100_300": "NOT_RUN_DEFERRED",
+    "apache_2_license": "PROPOSED_NOT_APPLIED",
+    "new_model_fit": 0,
+    "april_july_labels_reopened": false,
+    "financial_text_20000_character_gap": "UNRESOLVED",
     "formal_m5_financial_experiment": "NOT_RUN"
   }
 }

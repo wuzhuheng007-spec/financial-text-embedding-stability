@@ -1,0 +1,3 @@
+$ErrorActionPreference = 'Stop'
+& (Join-Path $PSScriptRoot 'local.ps1') stop
+exit $LASTEXITCODE

@@ -1,0 +1,125 @@
+{
+  "schema": "portal_dependency_inventory_v1",
+  "evidence": "installed distribution metadata in isolated local Python environment",
+  "requirements_lock_sha256": "09e217e1628ed45432ad68da31dd06d0286da8ab7805b64524dd8f79ae76b021",
+  "packages": [
+    {
+      "name": "asgiref",
+      "version": "3.13.0",
+      "license_expression": null,
+      "license_classifier": [],
+      "project_url": [
+        "Documentation, https://asgi.readthedocs.io/",
+        "Further Documentation, https://docs.djangoproject.com/en/stable/topics/async/#async-adapter-functions",
+        "Changelog, https://github.com/django/asgiref/blob/master/CHANGELOG.txt"
+      ]
+    },
+    {
+      "name": "Django",
+      "version": "5.2.19",
+      "license_expression": "BSD-3-Clause",
+      "license_classifier": [],
+      "project_url": [
+        "Homepage, https://www.djangoproject.com/",
+        "Documentation, https://docs.djangoproject.com/",
+        "Release notes, https://docs.djangoproject.com/en/stable/releases/",
+        "Funding, https://www.djangoproject.com/fundraising/",
+        "Source, https://github.com/django/django",
+        "Tracker, https://code.djangoproject.com/"
+      ]
+    },
+    {
+      "name": "gunicorn",
+      "version": "27.0.1",
+      "license_expression": "MIT",
+      "license_classifier": [],
+      "project_url": [
+        "Homepage, https://gunicorn.org",
+        "Documentation, https://gunicorn.org",
+        "Issue tracker, https://github.com/benoitc/gunicorn/issues",
+        "Source code, https://github.com/benoitc/gunicorn",
+        "Changelog, https://gunicorn.org/news/"
+      ]
+    },
+    {
+      "name": "psycopg",
+      "version": "3.3.9",
+      "license_expression": "LGPL-3.0-only",
+      "license_classifier": [],
+      "project_url": [
+        "Homepage, https://psycopg.org/",
+        "Documentation, https://psycopg.org/psycopg3/docs/",
+        "Changes, https://psycopg.org/psycopg3/docs/news.html",
+        "Code, https://github.com/psycopg/psycopg",
+        "Issue Tracker, https://github.com/psycopg/psycopg/issues",
+        "Funding, https://github.com/sponsors/dvarrazzo"
+      ]
+    },
+    {
+      "name": "psycopg-binary",
+      "version": "3.3.9",
+      "license_expression": "LGPL-3.0-only",
+      "license_classifier": [],
+      "project_url": [
+        "Homepage, https://psycopg.org/",
+        "Documentation, https://psycopg.org/psycopg3/docs/",
+        "Changes, https://psycopg.org/psycopg3/docs/news.html",
+        "Code, https://github.com/psycopg/psycopg",
+        "Issue Tracker, https://github.com/psycopg/psycopg/issues",
+        "Funding, https://github.com/sponsors/dvarrazzo"
+      ]
+    },
+    {
+      "name": "sqlparse",
+      "version": "0.6.1",
+      "license_expression": null,
+      "license_classifier": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "project_url": [
+        "Home, https://github.com/andialbrecht/sqlparse",
+        "Documentation, https://sqlparse.readthedocs.io/",
+        "Release Notes, https://sqlparse.readthedocs.io/en/latest/changes.html",
+        "Source, https://github.com/andialbrecht/sqlparse",
+        "Tracker, https://github.com/andialbrecht/sqlparse/issues"
+      ]
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license_expression": "PSF-2.0",
+      "license_classifier": [],
+      "project_url": [
+        "Bug Tracker, https://github.com/python/typing_extensions/issues",
+        "Changes, https://github.com/python/typing_extensions/blob/main/CHANGELOG.md",
+        "Documentation, https://typing-extensions.readthedocs.io/",
+        "Home, https://github.com/python/typing_extensions",
+        "Q & A, https://github.com/python/typing/discussions",
+        "Repository, https://github.com/python/typing_extensions"
+      ]
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6",
+      "license_expression": null,
+      "license_classifier": [],
+      "project_url": [
+        "Bug Reports, https://github.com/python/tzdata/issues",
+        "Source, https://github.com/python/tzdata",
+        "Documentation, https://tzdata.python.org"
+      ]
+    },
+    {
+      "name": "whitenoise",
+      "version": "6.12.0",
+      "license_expression": "MIT",
+      "license_classifier": [],
+      "project_url": [
+        "Changelog, https://whitenoise.readthedocs.io/en/stable/changelog.html",
+        "Documentation, https://whitenoise.readthedocs.io/",
+        "Repository, https://github.com/evansd/whitenoise"
+      ]
+    }
+  ],
+  "note": "Metadata is a review aid; collect exact license texts and obligations before final release."
+}

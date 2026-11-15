@@ -1,0 +1,12 @@
+# Fully version-pinned runtime dependencies for Python 3.11.
+# Resolved in an isolated environment on 2026-11-16 (Asia/Shanghai).
+# The container base image is pinned separately in Dockerfile.
+asgiref==3.13.0
+Django==5.2.19
+gunicorn==27.0.1
+psycopg==3.3.9
+psycopg-binary==3.3.9
+sqlparse==0.6.1
+typing_extensions==4.16.0
+tzdata==2026.6
+whitenoise==6.12.0

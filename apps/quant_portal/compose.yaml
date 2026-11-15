@@ -1,0 +1,119 @@
+name: quant-portal
+
+x-app-env: &app-env
+  POSTGRES_HOST: db
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: ${POSTGRES_DB:-quant_portal}
+  POSTGRES_USER: ${POSTGRES_USER:-quant_portal}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in private .env}
+  SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in private .env}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS:?set ALLOWED_HOSTS in private .env}
+  CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:?set CSRF_TRUSTED_ORIGINS in private .env}
+  DEBUG: ${DEBUG:-0}
+  PUBLIC_MARKET_DATA_ENABLED: "0"
+
+x-log-limit: &log-limit
+  driver: local
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:16-bookworm@sha256:a49f7438ba03589f9b1ca062f2da82e899b48ea1dc50d2449fa09a70be83ebca
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-quant_portal}
+      POSTGRES_USER: ${POSTGRES_USER:-quant_portal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in private .env}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - private
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging: *log-limit
+
+  migrate:
+    build: .
+    image: ${PORTAL_IMAGE:-quant-portal-app:local}
+    command: ["python", "manage.py", "migrate", "--noinput"]
+    environment: *app-env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - private
+    volumes:
+      - media_data:/app/var/media
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    security_opt:
+      - no-new-privileges:true
+    logging: *log-limit
+
+  web:
+    build: .
+    image: ${PORTAL_IMAGE:-quant-portal-app:local}
+    environment: *app-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - public
+      - private
+    ports:
+      - "127.0.0.1:${APP_HTTP_PORT:-8080}:8000"
+    volumes:
+      - media_data:/app/var/media
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz/', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+      start_period: 20s
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging: *log-limit
+
+  worker:
+    build: .
+    image: ${PORTAL_IMAGE:-quant-portal-app:local}
+    command: ["python", "manage.py", "run_worker"]
+    environment: *app-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - private
+    volumes:
+      - media_data:/app/var/media
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging: *log-limit
+
+networks:
+  public:
+  private:
+    internal: true
+
+volumes:
+  db_data:
+  media_data:

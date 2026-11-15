@@ -1,0 +1,36 @@
+# Add only after a DNS name, HTTPS and a private .env have been configured.
+services:
+  web:
+    environment:
+      DEBUG: "0"
+      TRUSTED_REVERSE_PROXY: "1"
+      PUBLIC_MARKET_DATA_ENABLED: "0"
+
+  caddy:
+    image: caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?set a DNS name in private .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - public
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  caddy_data:
+  caddy_config:

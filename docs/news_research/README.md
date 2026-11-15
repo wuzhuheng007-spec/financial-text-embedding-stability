@@ -1,6 +1,8 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), training-period financial text input and fact cards / status 1.24.
+Updated 2026-11-16 (Asia/Shanghai), personal local portal test and preserved research line / status 1.25.
+
+The [personal Quant Portal test](../quant_portal/README.md) has local first registration, an editable watchlist and historical SEC-derived development fact summaries. The [English](../../reports/2026-11-16_quant_portal_personal.en.md) and [Chinese](../../reports/2026-11-16_quant_portal_personal.zh.md) reports and [P0–P7 ledger](../../results/quant_portal_20261116/plan_execution.csv) separate locally verified software from interrupted browser visual QA and unrun cloud/load work. Moomoo/Jin10 public output, live data, new financial fitting and formal M5 remain off. The existing private research Site is unchanged.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
 

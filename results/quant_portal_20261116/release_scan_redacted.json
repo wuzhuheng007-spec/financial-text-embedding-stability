@@ -1,0 +1,89 @@
+{
+  "schema_version": "location_only_release_scan_v1",
+  "scope": "reachable Git objects and optionally tracked plus app worktree files",
+  "values_emitted": false,
+  "unique_history_objects_seen": 2005,
+  "large_blobs_skipped": 0,
+  "findings": [
+    {
+      "scope": "reachable_history",
+      "path": "results/news_event_impact_20261115/plan_execution.csv",
+      "blob_id": "4cf0fb31e9c6",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "results/news_shortfacts_20261115/plan_execution.csv",
+      "blob_id": "7fd04d64a489",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "scripts/news_shortfacts_v2/public_receipts.py",
+      "blob_id": "564b4adf2b55",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-10-25_M6_real5_engineering.md",
+      "blob_id": "6bdbdc415cc8",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-10-25_M7_mechanism_and_10q.md",
+      "blob_id": "42668c37af90",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-10-28_M9_AMZN_GOOGL_scoped_handoff.md",
+      "blob_id": "d51189275084",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-10-28_M9_AMZN_structured_input_handoff.md",
+      "blob_id": "d3e3fabc5ff2",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-11-13_m5_protocol_design_feasibility_handoff.md",
+      "blob_id": "e614ecf88621",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "reachable_history",
+      "path": "reports/2026-10-25_M7_mechanism_and_10q.md",
+      "blob_id": "8cc5d88b0460",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "worktree",
+      "path": "apps/quant_portal/.env.example",
+      "category": "credential_assignment_shape"
+    },
+    {
+      "scope": "worktree",
+      "path": "results/news_event_impact_20261115/plan_execution.csv",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "worktree",
+      "path": "results/news_shortfacts_20261115/plan_execution.csv",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "worktree",
+      "path": "scripts/news_shortfacts_v2/public_receipts.py",
+      "category": "private_home_path"
+    },
+    {
+      "scope": "worktree",
+      "path": "scripts/quant_portal_release_scan.py",
+      "category": "private_home_path"
+    }
+  ],
+  "note": "Pattern matches are review leads, not verified credential leaks; this scan cannot prove the absence of secrets."
+}

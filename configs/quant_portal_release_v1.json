@@ -1,0 +1,35 @@
+{
+  "schema_version": "quant_portal_release_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "2802244db3f30d8fce38a43ef57281e1b11735ad",
+  "branch": "codex/sync-research-progress-20261113",
+  "application_directory": "apps/quant_portal",
+  "deployment_target": "single 4-vCPU 16-GiB Linux host on Alibaba Cloud, not provisioned in this round",
+  "audience": "personal local test first; invitation-only multiuser is a later plan",
+  "scope_update": "User reprioritized during this round: complete a personally usable local version before multiuser/cloud acceptance.",
+  "source_scope": "approved display summaries or explicitly marked demonstration content only",
+  "provider_public_output": {
+    "moomoo": false,
+    "jin10": false,
+    "private_research_database": false
+  },
+  "external_provider_request_budget": 0,
+  "paid_api_budget": 0,
+  "model_fit_budget": 0,
+  "historical_april_july_label_read_budget": 0,
+  "pressure_test_future_plan": {
+    "synthetic_users": [30, 100, 300],
+    "test_data": "demo only; no real upstream calls",
+    "targets": {
+      "error_rate_max": 0.01,
+      "p95_ms_max_by_users": {"30": 1000, "100": 2000, "300": 5000}
+    },
+    "interpretation": "local measured capacity only; no production concurrency claim"
+  },
+  "research_line": {
+    "financial_text_20000_character_model_input_gap": "UNRESOLVED",
+    "new_model_fit": "NOT_RUN",
+    "formal_m5": "NOT_RUN"
+  }
+}

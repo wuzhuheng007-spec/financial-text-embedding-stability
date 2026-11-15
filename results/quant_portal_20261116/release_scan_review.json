@@ -1,0 +1,23 @@
+{
+  "schema": "quant_portal_location_scan_review_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "scanner_receipt": "results/quant_portal_20261116/release_scan_redacted.json",
+  "scope": "Reachable Git objects, tracked worktree files and explicitly listed new application/release files; private var, backups, environment and database files were excluded.",
+  "raw_matches": {
+    "reachable_history_private_home_path_mentions": 9,
+    "worktree_private_home_path_matches": 4,
+    "worktree_credential_assignment_shape_matches": 1,
+    "hf_token_shape_matches": 0,
+    "cloud_access_key_shape_matches": 0
+  },
+  "manual_classification": {
+    "new_app_env_example": "Only conspicuous CHANGE_ME placeholders were found; no generated credential was present.",
+    "new_scanner_self_match": "The scanner source contains a generic private-home-path detection pattern, not a user's path value.",
+    "other_worktree_path_mentions": "Three pre-existing tracked research files contain local path references; they were not changed or republished as new content by this task.",
+    "history_path_mentions": "Nine location leads in reachable history; no history rewrite was attempted. These are path mentions, not verified credential values.",
+    "new_literal_user_home_search": "No literal user-specific home path found under the intended new release files."
+  },
+  "conclusion": "No recognized credential-value pattern was found in the reviewed scan scope. This pattern scan does not prove absence of every secret or confer data reuse rights.",
+  "secret_values_recorded": false
+}

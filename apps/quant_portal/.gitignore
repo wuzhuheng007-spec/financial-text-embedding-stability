@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.venv/
+var/
+staticfiles/
+backups/
+load_results/
+screenshots/
+local_private/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+*.log
