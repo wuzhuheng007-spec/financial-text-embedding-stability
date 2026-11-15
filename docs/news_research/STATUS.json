@@ -909,8 +909,9 @@
     "prior_validation_result_exposure": true,
     "personal_app_modified": false,
     "page_updated": false,
-    "github_sync": "PENDING_AT_REPORT_FREEZE",
-    "redacted_handoff_zip": "PENDING_AT_REPORT_FREEZE",
+    "github_sync": "PUSHED_REMOTE_SHA_AND_KEY_BLOBS_READ_BACK_CONFIRMED",
+    "redacted_handoff_zip": "LOCAL_REDACTED_CRC_AND_CONTENT_READBACK_PASS",
+    "sync_receipt": "results/market_observer_financial_text_v23_20261116/git_sync_receipt_redacted.json",
     "formal_m5_financial_experiment": "NOT_RUN",
     "next_rule_candidate": "STRICT_PERIOD_UNIT_TABLE_HEADER_CLASSIFIER_BEFORE_TOPIC_NUMERIC_DATA_LOGIC_NOT_RUN"
   }

@@ -33,4 +33,5 @@ results/market_observer_financial_text_v23_20261116/evaluation_frozen_r2_evalfix
 results/market_observer_financial_text_v23_20261116/postrun_interpretation_frozen_r2_evalfix1_redacted.json
 results/market_observer_financial_text_v23_20261116/postrun_false_header_diagnosis_redacted.json
 results/market_observer_financial_text_v23_20261116/focused_tests_final_redacted.json
-# Add an append-only sync receipt here only after actual remote readback, if packaged.
+results/market_observer_financial_text_v23_20261116/git_sync_receipt_redacted.json
+# The receipt records the verified first push and prepublication ZIP check.

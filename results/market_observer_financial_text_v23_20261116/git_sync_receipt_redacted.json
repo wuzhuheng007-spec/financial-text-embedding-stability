@@ -1,0 +1,31 @@
+{
+  "schema": "financial_text_v23_git_sync_receipt_redacted_v1",
+  "observed_at_utc": "2026-11-15T23:16:32Z",
+  "timezone_for_research_date": "Asia/Shanghai",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "verified_snapshot_commit": "011b09da43209c84a232823026ccaf6dec85e568",
+  "remote_head_at_readback": "011b09da43209c84a232823026ccaf6dec85e568",
+  "remote_head_method": "git ls-remote --heads origin plus git fetch and Git blob readback",
+  "key_blob_sha256": {
+    "configs/market_observer_financial_text_v23_20261116.json": "87f7060d1eb6b53af53fd325948bb1118ff4aa8a57ca27d88eabb61fe12e039b",
+    "scripts/market_observer_financial_text_v23/structure.py": "bd16bfeb8f062d20aada9fb7878271f26afd527e7e5850180db19077c7c889e7",
+    "scripts/market_observer_financial_text_v23/evaluate.py": "c9bd58eb92b1f8394e84cdf4006e2e75c1c6fd14fe698be385ac062e87c0665c",
+    "results/market_observer_financial_text_v23_20261116/build_frozen_r2_redacted.json": "9e4d3b3949c0b1b840535090b809e253804ed4ab14d16852a163e8f88a7c7f4e",
+    "results/market_observer_financial_text_v23_20261116/postrun_interpretation_frozen_r2_evalfix1_redacted.json": "79a3a80e456c1a789f329f067f5e5fcdd1a4eed6d086937ec0dfb0369949cbf4",
+    "reports/2026-11-16_market_observer_financial_text_v23.zh.md": "4f80db0f890698c7db0855b9a7daa68f8694b952e54084640340095ba64c83dc",
+    "docs/news_research/STATUS.json": "17ce158f7504fa73fa7d4dfc6ebce486cf86ae8383bf08e2c62dbe6c6d3c8f2d"
+  },
+  "key_blob_matches_local_commit": true,
+  "redacted_prepublication_handoff": {
+    "snapshot_commit": "011b09da43209c84a232823026ccaf6dec85e568",
+    "allowlisted_git_files": 33,
+    "zip_crc": "PASS",
+    "git_blob_content_readback": "PASS",
+    "zip_sha256": "23731d8dfb2e39e020476974c8296aa2495e0c8686a0264ac8823dfe03615747",
+    "private_source_documents_included": false,
+    "private_model_inputs_included": false,
+    "credentials_included": false
+  },
+  "note": "This receipt describes the first pushed snapshot and its prepublication package. The final handoff package is built from the later commit that includes this receipt."
+}
