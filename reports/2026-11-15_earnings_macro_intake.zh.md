@@ -12,9 +12,9 @@
 | P1 | 六家财报与同口径比较 | 六张卡、72 个必需字段检查：57 个原文值、3 个有公式的派生值、12 个明确缺口；核验 35 份公司来源原件；36 项限定增长比较中计算 32 项 | 完成，有缺口 |
 | P2 | 三张宏观卡和最多六条独立公司新闻 | 完成三张官方宏观卡、六条公司事件；市场观察表为空 | 完成，有缺口 |
 | P3 | 本机三栏页面与传导示例 | 生成财报／宏观／新闻页面和两条 `AI_ANALYST_DRAFT` 条件路径；未做浏览器视觉验收 | 部分完成 |
-| P4 | 原件回读、测试、双语同步 | 六份输入草稿、41 份来源原件及结果一致性回读通过；四项针对性测试通过；远端同步在核验后另行记录 | 报告创建时进行中 |
+| P4 | 原件回读、测试、双语同步 | 六份输入草稿、41 份来源原件及结果一致性回读通过；四项针对性测试通过；首次推送后六份关键远端文件逐字节一致 | 完成，有限制 |
 
-逐项证据见 [`plan_execution.csv`](../results/news_earnings_macro_20261115/plan_execution.csv)；数字由 [`assembly_receipt.json`](../results/news_earnings_macro_20261115/assembly_receipt.json)、[`source_manifest.json`](../results/news_earnings_macro_20261115/source_manifest.json) 和 [`growth_calculations.json`](../results/news_earnings_macro_20261115/growth_calculations.json) 绑定输入版本与来源。这些是开发覆盖数，不是正式研究样本数。
+逐项证据见 [`plan_execution.csv`](../results/news_earnings_macro_20261115/plan_execution.csv)；数字由 [`assembly_receipt.json`](../results/news_earnings_macro_20261115/assembly_receipt.json)、[`source_manifest.json`](../results/news_earnings_macro_20261115/source_manifest.json) 和 [`growth_calculations.json`](../results/news_earnings_macro_20261115/growth_calculations.json) 绑定输入版本与来源。[远端回读收据](../results/news_earnings_macro_20261115/sync_receipt.json)记录首次提交后六份关键文件的逐字节一致性。这些是开发覆盖数，不是正式研究样本数。
 
 ## 有限结果
 

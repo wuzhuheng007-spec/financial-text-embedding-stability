@@ -1,0 +1,48 @@
+{
+  "schema": "earnings_macro_remote_readback_v1",
+  "checked_at_utc": "2026-11-15T00:10:11.370685+00:00",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "first_publication_commit": "8051469b3e5ee7cf58e5e9b9d67eee01dba8b5b4",
+  "remote_branch_head_at_check": "8051469b3e5ee7cf58e5e9b9d67eee01dba8b5b4",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7177,
+      "sha256": "2f49bcbc4c692985d935759d229cae18f3dbb0c94a70fc3523cee8d6325cb6a7",
+      "status": "EXACT_BYTE_MATCH"
+    },
+    {
+      "path": "docs/news_research/STATUS.json",
+      "bytes": 21473,
+      "sha256": "436ebdcfcc0a3da88a02281879237a0adee286902e070bf6573ea6ec8fd7fa5f",
+      "status": "EXACT_BYTE_MATCH"
+    },
+    {
+      "path": "reports/2026-11-15_earnings_macro_intake.en.md",
+      "bytes": 8442,
+      "sha256": "aae17a8af9aff76922006bd0ff650f5b7b79fe13f6e8f147c758c199bd8de253",
+      "status": "EXACT_BYTE_MATCH"
+    },
+    {
+      "path": "results/news_earnings_macro_20261115/company_cards.json",
+      "bytes": 281138,
+      "sha256": "4cf24137bf6edbeccfe10278fd1aef26f0918ecc5db38dd8a0405ed3e56b1287",
+      "status": "EXACT_BYTE_MATCH"
+    },
+    {
+      "path": "results/news_earnings_macro_20261115/source_manifest.json",
+      "bytes": 26267,
+      "sha256": "e276b83750f2cd0bb2fb085f20735f486cfa91dc721eb1b21259ad8b248ad47b",
+      "status": "EXACT_BYTE_MATCH"
+    },
+    {
+      "path": "scripts/assemble_earnings_intake.py",
+      "bytes": 16379,
+      "sha256": "eef0212ea08a5593df59e5bcf3ea248a8ff5e929e0ee84e42e209fdf152147bb",
+      "status": "EXACT_BYTE_MATCH"
+    }
+  ],
+  "result": "PASS",
+  "scope": "Six key public files; Git content-addressed commit and branch head verified"
+}

@@ -338,6 +338,8 @@
     "assembly_receipt": "results/news_earnings_macro_20261115/assembly_receipt.json",
     "source_manifest": "results/news_earnings_macro_20261115/source_manifest.json",
     "real_readback_audit": "results/news_earnings_macro_20261115/integrity_audit.json",
+    "github_initial_publication_commit": "8051469b3e5ee7cf58e5e9b9d67eee01dba8b5b4",
+    "github_remote_readback": "results/news_earnings_macro_20261115/sync_receipt.json",
     "company_cards": 6,
     "required_metric_checks": 72,
     "reported_values": 57,
