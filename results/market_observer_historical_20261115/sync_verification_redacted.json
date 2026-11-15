@@ -1,0 +1,17 @@
+{
+  "schema": "market_observer_historical_sync_receipt_v1",
+  "branch": "codex/sync-research-progress-20261113",
+  "remote": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability.git",
+  "main_publication_commit": "24826168f8048edea41de65eb91cfeca41d68f15",
+  "ls_remote_branch_sha_after_push": "24826168f8048edea41de65eb91cfeca41d68f15",
+  "key_remote_blob_checks": {
+    "reports/2026-11-15_market_observer_historical_v1.en.md": "83bc03dd045810a245403b2f9cf07875e7af6b7a",
+    "results/market_observer_historical_20261115/price_direction_v3_redacted.json": "82ca7348b30750da9685cf4a5d761524b08a23fb",
+    "configs/market_observer_historical_v1.json": "cbbf61ffbfb76bfd47f657ff9158c30d61e04718"
+  },
+  "local_handoff_zip_sha256": "b226014e9570be5737ba809b4699e04211007029e7153cc37b90dba208ed7baf",
+  "local_handoff_zip_crc": "PASS",
+  "local_handoff_manifest_files_verified": 37,
+  "private_source_files_published": false,
+  "note": "This receipt verifies the main publication commit and local handoff. The final ledger-only follow-up commit is checked separately after push."
+}
