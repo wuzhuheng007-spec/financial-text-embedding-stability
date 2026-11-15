@@ -1,0 +1,33 @@
+{
+  "schema": "market_observer_official_development_plan_v1",
+  "execution_date": "2026-11-15",
+  "execution_timezone": "Asia/Shanghai",
+  "base_commit": "8f6d0b2dddc5b3c5f4112375e2fd90e83e07772f",
+  "source_window": ["2025-04-01", "2026-07-31"],
+  "corpus_scope": "NVDA/MU SEC 8-K, 10-Q and 10-K plus earnings exhibits and issuer releases; dated FOMC statements",
+  "comparison_text_source": "NVDA/MU SEC accession-fixed 8-K, 10-Q and 10-K filing bodies with SEC earnings exhibits only",
+  "comparison_text_source_freeze_reason": "FOMC dated HTML historical version is unconfirmed; exclude from C pending version evidence. Clarified before model fitting or validation outcome inspection.",
+  "excluded_from_model_input": ["Jin10 candidates", "FOMC pages with unconfirmed historic version", "other macro series", "mutable issuer pages with unverified version", "post-window development cards"],
+  "new_http_request_budget_total": 100,
+  "corpus_acquisition_cap": 80,
+  "reserve_for_targeted_gap_closure": 20,
+  "price_redownload": false,
+  "real_time_subscription": false,
+  "comparison": {
+    "label": "next-session open-to-close direction",
+    "decision_instant": "09:30 America/New_York on session t-1 for label session t",
+    "price_feature_latest_session": "t-2",
+    "announcement_date_proxy": "first full US regular session F strictly after official announcement date D; eligible from start of session F+1",
+    "announcement_lookback_sessions": 20,
+    "splits_by_label_day": {
+      "train": ["2025-04-01", "2026-03-31"],
+      "validation": ["2026-04-01", "2026-05-31"],
+      "contaminated_test_not_scored": ["2026-06-01", "2026-07-31"]
+    },
+    "methods": ["A_train_majority", "B_frozen_price_volume", "C_B_plus_SEC_text_tfidf"],
+    "l2_grid": [0.1, 1.0, 10.0],
+    "selection_metric": "validation balanced accuracy",
+    "coverage_gate": "C fits only on common NVDA/MU train and validation label dates with dated original-version SEC bodies and audited full SEC filing coverage across each row's 20-session lookback; unknown and fetch failure are missing, not no-announcement",
+    "role": "reused-validation retrospective development, no independent test or profitability inference"
+  }
+}

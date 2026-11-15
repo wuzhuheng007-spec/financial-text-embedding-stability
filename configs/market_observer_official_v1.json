@@ -1,0 +1,24 @@
+{
+  "schema_version": "official_corpus_scope_v1",
+  "window_start": "2025-04-01",
+  "window_end": "2026-07-31",
+  "sources": ["SEC_FILINGS", "ISSUER_EARNINGS", "FOMC_STATEMENTS"],
+  "sec_symbols": ["NVDA", "MU"],
+  "sec_forms": ["8-K", "10-Q", "10-K"],
+  "max_new_http_requests": 80,
+  "max_sec_requests": 65,
+  "max_fed_requests": 15,
+  "max_exhibit_requests": 12,
+  "request_timeout_seconds": 25,
+  "per_document_max_bytes": 12000000,
+  "per_source_min_interval_seconds": 0.6,
+  "stop_source_on_status": [401, 403, 429],
+  "retry_count": 0,
+  "fomc_expected_dates": [
+    "2025-05-07", "2025-06-18", "2025-07-30", "2025-09-17",
+    "2025-10-29", "2025-12-10", "2026-01-28", "2026-03-18",
+    "2026-04-29", "2026-06-17", "2026-07-29"
+  ],
+  "time_policy": "SEC acceptance, official release clock, web update, and current retrieval are distinct; historical first availability is unknown",
+  "text_policy": "SEC accession archive HTML and official FOMC statement HTML; immutable raw bytes plus extracted UTF-8 text; no Qwen facts"
+}

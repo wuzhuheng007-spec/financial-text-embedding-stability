@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), historical observer development / status 1.21.
+Updated 2026-11-15 (Asia/Shanghai), official announcement development / status 1.22.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [Official-announcement English development report](../../reports/2026-11-15_market_observer_official_v1.en.md) · [中文报告](../../reports/2026-11-15_market_observer_official_v1.zh.md) · [P0–P7 plan–actual](../../results/market_observer_official_20261115/plan_execution.csv) · [source coverage](../../results/market_observer_official_20261115/corpus_coverage_redacted.json) · [A/B/C comparison](../../results/market_observer_official_20261115/text_comparison_redacted.json). A bounded official corpus contains 39 SEC filing bodies, ten selected SEC earnings exhibits and 11 FOMC statements. The older price basis was audited; SEC-only C ran on NVDA/MU's reused validation dates under a conservative announcement-date proxy. Strict historical first visibility remains unproved, standalone issuer IR completeness is unknown, and June–July was not rescored. The page handoff is a static file; formal M5 and live prediction remain `NOT_RUN`. 本轮做了真实公告正文采集和条件式 C 开发比较，不是独立预测有效性或盈利证明。
 
 - [Historical market observer English report](../../reports/2026-11-15_market_observer_historical_v1.en.md) · [中文报告](../../reports/2026-11-15_market_observer_historical_v1.zh.md) · [计划—实际](../../results/market_observer_historical_20261115/plan_execution.csv) · [price A/B result](../../results/market_observer_historical_20261115/price_direction_v3_redacted.json) · [news/source receipt](../../results/market_observer_historical_20261115/news_official_redacted.json). Real historical daily bars were retrieved for TQQQ, NVDA, MU and three additional ETFs. A retrospective price-and-volume direction baseline ran on three pilots; its June–July interval is contaminated by prior exploration. The news-augmented model is `NOT_RUN` because full historical coverage and first availability are unverified. Historical prices/news and live observer state are separate. 真实历史行情及首轮价格基线已完成；不代表独立预测验证、新闻增量有效、正式 M5 或交易成功。
 

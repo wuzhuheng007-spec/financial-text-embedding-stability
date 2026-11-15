@@ -1,0 +1,97 @@
+{
+  "checked_at_utc": "2026-11-15T06:47:23.297669+00:00",
+  "documents_checked": 60,
+  "earnings_exhibit_checks": [
+    {
+      "document_id": "sec:0001045810:0001045810-25-000115:EARNINGS_EXHIBIT:75ed627af1c9",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000024:EARNINGS_EXHIBIT:0bb59b34e8d7",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000044:EARNINGS_EXHIBIT:913290429b61",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-26-000004:EARNINGS_EXHIBIT:a654b348821e",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-26-000051:EARNINGS_EXHIBIT:1c6eafef1b93",
+      "earnings_and_outlook_markers_present": true
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-26-000013:EARNINGS_EXHIBIT:bee82c2bf90a",
+      "earnings_and_outlook_markers_present": true
+    }
+  ],
+  "extracted_text_hashes_checked": 60,
+  "failures": [],
+  "fixed_order_identity_samples": [
+    {
+      "document_id": "sec:0001045810:0001045810-25-000082:PRIMARY",
+      "identity_markers_present": true,
+      "raw_sha256": "b48b73b93bf4b178d3d8224dbeb4d4c02f8ec6e79bb6ed7f5e14d0bacb52d1e9",
+      "source_kind": "SEC_FILINGS",
+      "text_sha256": "7415a293db56b8b7e3361e9c99d89ad5090514ff41955dcd50b2b114dd108961"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-26-000060:PRIMARY",
+      "identity_markers_present": true,
+      "raw_sha256": "e29aeff5c88515ee8dfe3cd74de5c8bbca323829ad5c034682cdef35598429ea",
+      "source_kind": "SEC_FILINGS",
+      "text_sha256": "823e314312be966f445e41eac990de0bf92a5eca486d027c4da80fee9151ca0f"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000115:EARNINGS_EXHIBIT:75ed627af1c9",
+      "identity_markers_present": true,
+      "raw_sha256": "bd42e9a2896a1cb923bad9d11e9de38cc104169b762e34bdade7f28bee46b6e6",
+      "source_kind": "ISSUER_EARNINGS",
+      "text_sha256": "9e3475017f62824b3fe8736117f8a72b4fbcc532ee6626f0b8e362c3b303e9ae"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-26-000013:EARNINGS_EXHIBIT:bee82c2bf90a",
+      "identity_markers_present": true,
+      "raw_sha256": "026079eae2809aa918632165b17e2b19ac44b5ae2108565782106168a41e21c6",
+      "source_kind": "ISSUER_EARNINGS",
+      "text_sha256": "99f278ba6085a82a5e98c91464acdc98baf4ce2de76f979e0bf50bfb67f574c7"
+    },
+    {
+      "document_id": "fed:fomc:2025-05-07",
+      "identity_markers_present": true,
+      "raw_sha256": "36b1afe8ab8fa5625970c3b086fc32708a0c4f32ca7b60d8eac1cf21964158f1",
+      "source_kind": "FOMC_STATEMENTS",
+      "text_sha256": "0aedf83a98799b96a769a9fc9d47e20a2ff914c4a4cca0af467c564bdc409e0f"
+    },
+    {
+      "document_id": "fed:fomc:2026-07-29",
+      "identity_markers_present": true,
+      "raw_sha256": "58868d9cf11255896a43880e35c7c1526250089df0eb3ac0091bc883daa9454a",
+      "source_kind": "FOMC_STATEMENTS",
+      "text_sha256": "e3cf748f51bd9b095a076786054d60eb24cfd2ac1b18cab056b723b32881c28f"
+    }
+  ],
+  "identity_check_limit": "Keyword and hash verification of saved bodies, not independent verification of historical public availability or source completeness",
+  "manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "raw_hashes_checked": 60,
+  "schema_version": "official_corpus_validation_v1",
+  "status": "PASS"
+}

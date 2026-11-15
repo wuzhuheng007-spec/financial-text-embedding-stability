@@ -1,0 +1,159 @@
+{
+  "schema": "historical_price_time_audit_v1",
+  "run_at_utc": "2026-11-15T06:44:03.856739+00:00",
+  "status": "READ_ONLY_RETROSPECTIVE_AUDIT",
+  "new_price_or_action_api_business_calls": 0,
+  "source_code_sha256": "a22f102f0df27bb1617219dd4309757aad39cbd51fbda20efdd3324c388894e1",
+  "frozen_config_sha256": "8330e1d1d7fdadb18ee7a1e2f317414df896533d63e151502dc17999fb2c1898",
+  "audit_code_sha256": "d2c5bfcc85361fe24ccbf3f902ed9c7b9d423c63b345a5f1348684de8811c4c1",
+  "prior_action_alignment_redacted_sha256": "41daa21135ca9fbdaea722c093bd5536f82a22335914070cf8cfc681573aa9c1",
+  "prior_corporate_action_redacted_sha256": "e86dc8070a69c67d2911125dd1c65bf49911356af18e65d44acb414905825f19",
+  "independent_split_source": {
+    "symbol": "US.TQQQ",
+    "effective_date": "2025-11-20",
+    "ratio": "2:1",
+    "url": "https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5",
+    "status": "official ProShares page checked in this audit; states TQQQ 2:1 effective before market open 2025-11-20"
+  },
+  "threshold_log_units": 0.0001,
+  "feature_match_tolerance_abs": 1e-11,
+  "decision_contract": "For this round's retrospective proxy, fix a hypothetical decision at 09:30 America/New_York on t-1. The old v3 did not record an exact decision clock; its last completed feature session was t-2. No historical as-of execution or bar availability is verified.",
+  "safe_t_minus_1_revision": "Only in a separate later version: set the decision after the t-1 close bar is finalized and available, record that availability, then use t-1 daily features. Never describe that as a pre-close decision.",
+  "source_caveat": "Bars and action factors were retrieved retrospectively on 2026-11-15; this is a software and price-basis audit, not a proof of historical point-in-time visibility.",
+  "price_basis_conclusion": "No correction to frozen v3 features is indicated by the saved provider bars and dated rehab factors. Large adjusted/raw changes coincide with action dates; the reconstructed as-of-action features match v3 within numerical precision. Use v3 unchanged for a paired retrospective news comparison, with source and visibility limits retained.",
+  "symbols": {
+    "US.TQQQ": {
+      "input_sha256": {
+        "adjusted": "95bc357fa85450ba62c9ea12b4cd044144768b468b9e2c4a038addc528dc3470",
+        "unadjusted": "c6ec74f984c4431fc476b5011d9006197f6793678c13a96f13f4e626c3071e96",
+        "predictions": "a37de6687f477c0b6341706ac070a7e673d2158188dd244357f63f2d0314eca3",
+        "rehab": "1dce23a6e304740c9c32a11d3b2fb4459341ef4a0a024137fabd85a1233d394d"
+      },
+      "price_bars": 335,
+      "audited_prediction_rows": 313,
+      "first_label_day": "2025-05-02",
+      "last_label_day": "2026-07-31",
+      "t_minus_2_date_alignment_errors": 0,
+      "frozen_feature_recompute_max_error": 0,
+      "asof_action_rebuild_feature_max_error": 1.0225491564597178e-09,
+      "adjusted_raw_ratio_vs_rehab_product_max_abs_error": 9.330731187695562e-10,
+      "forward_vs_raw_feature_difference_over_1bp_counts": {
+        "price_return_1d": 6,
+        "price_return_5d": 30,
+        "price_return_20d": 120,
+        "price_volatility_20d": 20,
+        "volume_log_change_1d": 1,
+        "volume_log_change_5d": 5
+      },
+      "forward_vs_raw_feature_max_abs_differences": {
+        "price_return_1d_difference": 0.69314718157035,
+        "price_return_5d_difference": 0.6931471815824946,
+        "price_return_20d_difference": 0.6931471815801462,
+        "price_volatility_20d_difference": 0.13921271585446562,
+        "volume_log_change_1d_difference": 0.6931471805599472,
+        "volume_log_change_5d_difference": 0.6931471805599472,
+        "intraday_log_return_difference": 2.8550684169278973e-11
+      },
+      "labels_changed_by_adjustment": 0,
+      "intraday_log_return_max_abs_difference": 2.8550684169278973e-11,
+      "significant_feature_dates_count": 120,
+      "adjusted_raw_close_ratio_jumps_over_1bp": 6,
+      "ratio_jumps_not_on_registered_window_action": 0,
+      "window_rehab_action_dates_count": 6,
+      "post_window_rehab_date": "2026-09-23",
+      "post_window_action_type": [
+        "DIVIDEND"
+      ],
+      "post_window_forward_factorA": 0.998069899,
+      "uniform_future_factor_cancel_log_return_max_error": 2.3592239273284576e-16,
+      "source_factor_semantics_independently_verified": false
+    },
+    "US.NVDA": {
+      "input_sha256": {
+        "adjusted": "661a264550d4d37013ea5dfc3c2cea1f108ed21b751b5cc76ce692855471a4bd",
+        "unadjusted": "703cac8fceaaa0731bbea5bf01b9c4efbb61bce035a54b04597cdee79addf8b3",
+        "predictions": "b2fef286c28fdd56d8ecd6e1810ce82ede194eb2f61db705686f284c7c4d1189",
+        "rehab": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c"
+      },
+      "price_bars": 335,
+      "audited_prediction_rows": 313,
+      "first_label_day": "2025-05-02",
+      "last_label_day": "2026-07-31",
+      "t_minus_2_date_alignment_errors": 0,
+      "frozen_feature_recompute_max_error": 0,
+      "asof_action_rebuild_feature_max_error": 4.3367798241433775e-10,
+      "adjusted_raw_ratio_vs_rehab_product_max_abs_error": 6.207853120443474e-10,
+      "forward_vs_raw_feature_difference_over_1bp_counts": {
+        "price_return_1d": 1,
+        "price_return_5d": 5,
+        "price_return_20d": 20
+      },
+      "forward_vs_raw_feature_max_abs_differences": {
+        "price_return_1d_difference": 0.0011648233319530021,
+        "price_return_5d_difference": 0.0011648233339602854,
+        "price_return_20d_difference": 0.0011648233343839465,
+        "price_volatility_20d_difference": 5.5534255695596085e-05,
+        "volume_log_change_1d_difference": 0,
+        "volume_log_change_5d_difference": 0,
+        "intraday_log_return_difference": 5.7255467728056786e-12
+      },
+      "labels_changed_by_adjustment": 0,
+      "intraday_log_return_max_abs_difference": 5.7255467728056786e-12,
+      "significant_feature_dates_count": 20,
+      "adjusted_raw_close_ratio_jumps_over_1bp": 1,
+      "ratio_jumps_not_on_registered_window_action": 0,
+      "window_rehab_action_dates_count": 5,
+      "post_window_rehab_date": "2026-09-10",
+      "post_window_action_type": [
+        "DIVIDEND"
+      ],
+      "post_window_forward_factorA": 0.998882281,
+      "uniform_future_factor_cancel_log_return_max_error": 2.3592239273284576e-16,
+      "source_factor_semantics_independently_verified": false
+    },
+    "US.MU": {
+      "input_sha256": {
+        "adjusted": "a6d6d2180c9122164308b22d71567ef4a0cf2267d6b7217b2850b22c99da6380",
+        "unadjusted": "9634b743313f04635ae617dda923cd7aad21adb538fc743fc57ccd296ecadfb0",
+        "predictions": "6194311f7152250f2ab3430e26f7dbfd66a2721d40f1f34ebe5371c32e14ae7c",
+        "rehab": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a"
+      },
+      "price_bars": 335,
+      "audited_prediction_rows": 313,
+      "first_label_day": "2025-05-02",
+      "last_label_day": "2026-07-31",
+      "t_minus_2_date_alignment_errors": 0,
+      "frozen_feature_recompute_max_error": 0,
+      "asof_action_rebuild_feature_max_error": 6.368363614228656e-10,
+      "adjusted_raw_ratio_vs_rehab_product_max_abs_error": 9.699947511876417e-10,
+      "forward_vs_raw_feature_difference_over_1bp_counts": {
+        "price_return_1d": 5,
+        "price_return_5d": 25,
+        "price_return_20d": 98
+      },
+      "forward_vs_raw_feature_max_abs_differences": {
+        "price_return_1d_difference": 0.0009408300845530349,
+        "price_return_5d_difference": 0.0009408300872362219,
+        "price_return_20d_difference": 0.0009408300918094525,
+        "price_volatility_20d_difference": 6.579564855831513e-05,
+        "volume_log_change_1d_difference": 0,
+        "volume_log_change_5d_difference": 0,
+        "intraday_log_return_difference": 8.763039772985426e-12
+      },
+      "labels_changed_by_adjustment": 0,
+      "intraday_log_return_max_abs_difference": 8.763039772985426e-12,
+      "significant_feature_dates_count": 98,
+      "adjusted_raw_close_ratio_jumps_over_1bp": 5,
+      "ratio_jumps_not_on_registered_window_action": 0,
+      "window_rehab_action_dates_count": 5,
+      "post_window_rehab_date": "2026-10-14",
+      "post_window_action_type": [
+        "DIVIDEND"
+      ],
+      "post_window_forward_factorA": 0.999842633,
+      "uniform_future_factor_cancel_log_return_max_error": 2.7755575615628914e-16,
+      "source_factor_semantics_independently_verified": false
+    }
+  },
+  "private_row_receipt_sha256": "ac4b4a1701376804fc7beae6965fa2c8e8f32f42b5b2832276ed477bbe051239"
+}

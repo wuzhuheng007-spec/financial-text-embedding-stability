@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.21",
+  "version": "1.22",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -16,7 +16,7 @@
   "research_protocol": "PROPOSED",
   "researcher_accepted": false,
   "new_news_model_inference": "SHORTFACTS_V2_SIX_REAL_LOCAL_QWEN_RESPONSES_REUSED_DEVELOPMENT_PASSAGES_ONLY",
-  "new_financial_experiment": "RETROSPECTIVE_MARKET_OBSERVER_PRICE_DIRECTION_DEVELOPMENT_ONLY",
+  "new_financial_experiment": "RETROSPECTIVE_MARKET_OBSERVER_OFFICIAL_ANNOUNCEMENT_DATE_PROXY_DEVELOPMENT_ONLY",
   "formal_m5_financial_experiment": "NOT_RUN",
   "historical_m5_protocol_changed": false,
   "source_access": {
@@ -628,5 +628,34 @@
     "formal_m5_financial_experiment": "NOT_RUN",
     "trading": "NOT_RUN",
     "dot_connection": "NOT_AVAILABLE_FILE_HANDOFF_ONLY"
+  },
+  "market_observer_official_v1": {
+    "date": "2026-11-15",
+    "timezone": "Asia/Shanghai",
+    "status": "OFFICIAL_CORPUS_BUILT_AND_RETROSPECTIVE_SEC_DATE_PROXY_ABC_VALIDATION_DEVELOPMENT",
+    "requested_window": ["2025-04-01", "2026-07-31"],
+    "report_en": "reports/2026-11-15_market_observer_official_v1.en.md",
+    "report_zh": "reports/2026-11-15_market_observer_official_v1.zh.md",
+    "plan_execution": "results/market_observer_official_20261115/plan_execution.csv",
+    "price_audit": "results/market_observer_historical_official_20261115/price_audit_redacted.json",
+    "corpus_coverage": "results/market_observer_official_20261115/corpus_coverage_redacted.json",
+    "corpus_validation": "results/market_observer_official_20261115/corpus_validation_redacted.json",
+    "text_config": "configs/market_observer_official_text_v1.json",
+    "comparison": "results/market_observer_official_20261115/text_comparison_redacted.json",
+    "comparison_validation": "results/market_observer_official_20261115/text_comparison_validation_redacted.json",
+    "dot_handoff": "results/market_observer_official_20261115/dot_progress_redacted.json",
+    "new_corpus_http_requests": 57,
+    "sec_primary_bodies": 39,
+    "sec_earnings_exhibits_identified_and_saved": 10,
+    "fomc_statement_bodies": 11,
+    "strict_historical_first_availability_verified": 0,
+    "C_scope": "SEC_ACCESSION_TEXT_ONLY_RETROSPECTIVE_DATE_PROXY",
+    "ABC_common_train_validation": {"NVDA": [229, 36], "MU": [229, 23]},
+    "validation_reused": true,
+    "contaminated_june_july_rescored": false,
+    "formal_m5_financial_experiment": "NOT_RUN",
+    "trading": "NOT_RUN",
+    "dot_connection": "NOT_AVAILABLE_FILE_HANDOFF_ONLY",
+    "page_status": "NOT_UPDATED"
   }
 }
