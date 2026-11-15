@@ -796,6 +796,7 @@
     "april_july_labels_reopened": false,
     "financial_text_20000_character_gap": "UNRESOLVED",
     "formal_m5_financial_experiment": "NOT_RUN",
-    "github_sync": "PENDING_FINAL_SELECTIVE_PUBLICATION"
+    "github_sync": "PUSHED_REMOTE_SHA_AND_KEY_BLOBS_READ_BACK_CONFIRMED",
+    "handoff_zip": "LOCAL_REDACTED_CRC_AND_CONTENT_READBACK_PASS"
   }
 }
