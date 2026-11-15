@@ -1,0 +1,18 @@
+{
+  "schema": "jin10_mcp_configuration_baseline_v1",
+  "checked_at_utc": "2026-11-15T00:46:57.909976+00:00",
+  "codex_cli_version": "0.147.0",
+  "config_location": "~/.codex/config.toml",
+  "official_endpoint": "https://mcp.jin10.com/mcp",
+  "bearer_token_env_var": "JIN10_MCP_TOKEN",
+  "existing_other_mcp_config_preserved": [
+    "node_repl"
+  ],
+  "config_written": true,
+  "credential_present_in_probe_process": false,
+  "credential_present_in_user_environment": false,
+  "current_session_jin10_tool_discovered": false,
+  "authentication_success": "NOT_TESTED",
+  "tools_callable": "NOT_TESTED",
+  "restart_readability": "NOT_TESTED"
+}

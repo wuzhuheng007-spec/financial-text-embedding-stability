@@ -1,0 +1,14 @@
+DOC_VALIDATION_SCHEMA=jin10_docs_validation_v1
+FILES_CHECKED=10
+markdown_relative_links PASS
+status_version_1_13 PASS
+guidance_19_bound PASS
+probe_rows_bound PASS
+calendar_null_consensus_bound PASS
+store_253_bound PASS
+display_12_50_bound PASS
+ledger_eight_phases PASS
+bilingual_reports_exist PASS
+git_diff_check PASS
+
+Source inputs: docs/news_research/STATUS.json; results/news_jin10_20261115/{guidance_v2/guidance_coverage_v2.json,probe_redacted_run2.json,probe_profile_run2.json,store_validation.json,dashboard_static_validation.json,plan_execution.csv}. These are document and receipt-consistency checks, not live provider calls or research experiments.

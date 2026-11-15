@@ -1,0 +1,57 @@
+{
+  "schema": "jin10_probe_structural_profile_v1",
+  "input_private_paths": {
+    "tools_list": "artifacts/jin10_20261115/probe_second/tools_list.json",
+    "flash_captures": "artifacts/jin10_20261115/probe_second/flash_captures.json",
+    "calendar_captures": "artifacts/jin10_20261115/probe_second/calendar_captures.json"
+  },
+  "input_sha256": {
+    "tools_list": "16bc7c4518a47f06e7871355de3a6af82ed216354538e83e5eff4a4bfb3d2eea",
+    "flash_captures": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d",
+    "calendar_captures": "4551297393d2037810a9ed239dd8d9b6ea11f12273ec96b8e929865e8d9529ed"
+  },
+  "flash": {
+    "pages": 2,
+    "items_scanned": 40,
+    "independent_id_field_present": 0,
+    "nonempty_content": 40,
+    "nonempty_title": 1,
+    "nonempty_url": 40,
+    "unique_url_count": 40,
+    "url_shape_counts": {
+      "https://flash.jin10.com/detail/...": 40
+    },
+    "time_precision_counts": {
+      "SECOND_WITH_TIMEZONE": 40
+    }
+  },
+  "calendar": {
+    "pages": 1,
+    "items_scanned": 213,
+    "time_field_semantics": "pub_time is provider's theoretical scheduled publication time",
+    "pub_time_precision_counts": {
+      "MINUTE_NO_TIMEZONE": 213
+    },
+    "missing_values": {
+      "actual": {
+        "null": 5,
+        "empty_string": 0
+      },
+      "consensus": {
+        "null": 129,
+        "empty_string": 0
+      },
+      "previous": {
+        "null": 0,
+        "empty_string": 0
+      },
+      "revised": {
+        "null": 164,
+        "empty_string": 0
+      }
+    },
+    "duplicate_title_pub_time_count": 0
+  },
+  "scope": "Only captured pages; no whole-service coverage inference",
+  "content_or_row_values_published": false
+}

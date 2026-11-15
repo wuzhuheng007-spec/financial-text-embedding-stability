@@ -1,0 +1,81 @@
+{
+  "schema": "guidance_v2_coverage_receipt",
+  "source_cutoff_utc": "2026-11-14T23:47:54.6036273Z",
+  "counts": {
+    "first_available_independent": 0,
+    "guidance_rows": 19,
+    "issuer_AMD": 3,
+    "issuer_COREWEAVE": 4,
+    "issuer_INTEL": 3,
+    "issuer_NVIDIA": 5,
+    "issuer_SAMSUNG_ELECTRONICS": 2,
+    "issuer_SK_HYNIX": 2,
+    "numeric_guidance": 15,
+    "published_date_or_clock_known": 19,
+    "qualitative_only": 4,
+    "target_bounds_intel_inferred": 3,
+    "target_bounds_present": 18,
+    "target_bounds_unknown": 1
+  },
+  "changes": [
+    {
+      "guidance_id": "INTEL:guidance:01:5ae5e3c7c2",
+      "field": "first_available_at",
+      "old_status": "ISSUER_CLOCK_MISCLASSIFIED",
+      "new_value": null,
+      "reason": "Issuer-stated release clock is not an independently observed first-available time"
+    },
+    {
+      "guidance_id": "INTEL:guidance:02:5ae5e3c7c2",
+      "field": "first_available_at",
+      "old_status": "ISSUER_CLOCK_MISCLASSIFIED",
+      "new_value": null,
+      "reason": "Issuer-stated release clock is not an independently observed first-available time"
+    },
+    {
+      "guidance_id": "INTEL:guidance:02:5ae5e3c7c2",
+      "field": "currency",
+      "old_value": "USD",
+      "new_value": "NONE",
+      "reason": "Percent margin is dimensionless"
+    },
+    {
+      "guidance_id": "INTEL:guidance:03:5ae5e3c7c2",
+      "field": "first_available_at",
+      "old_status": "ISSUER_CLOCK_MISCLASSIFIED",
+      "new_value": null,
+      "reason": "Issuer-stated release clock is not an independently observed first-available time"
+    },
+    {
+      "guidance_id": "SAMSUNG_ELECTRONICS:guidance:01:13dfeff069",
+      "field": "published_at/timestamp_precision",
+      "old_status": "UNKNOWN",
+      "new_value": "2026-10-29 DATE_ONLY",
+      "reason": "Official page date header: Korea on October 29, 2026"
+    },
+    {
+      "guidance_id": "SAMSUNG_ELECTRONICS:guidance:02:13dfeff069",
+      "field": "published_at/timestamp_precision",
+      "old_status": "UNKNOWN",
+      "new_value": "2026-10-29 DATE_ONLY",
+      "reason": "Official page date header: Korea on October 29, 2026"
+    },
+    {
+      "guidance_id": "SK_HYNIX:guidance:01:4d74b877a0",
+      "field": "published_at/timestamp_precision",
+      "old_status": "UNKNOWN",
+      "new_value": "2026-10-28 DATE_ONLY",
+      "reason": "Official page date header: Seoul, October 28, 2026"
+    },
+    {
+      "guidance_id": "SK_HYNIX:guidance:02:4d74b877a0",
+      "field": "published_at/timestamp_precision",
+      "old_status": "UNKNOWN",
+      "new_value": "2026-10-28 DATE_ONLY",
+      "reason": "Official page date header: Seoul, October 28, 2026"
+    }
+  ],
+  "core_metric_check_count_reference_only": 72,
+  "guidance_counts_are_separate_from_core_metrics": true,
+  "source_capture_note": "Official current captures, not historical first-availability snapshots"
+}

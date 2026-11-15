@@ -64,6 +64,11 @@ def guidance_value(item: dict) -> str:
     return f"{value} {item.get('unit') or ''}"
 
 
+def guidance_period(item: dict) -> str:
+    start, end = item.get("target_period_start"), item.get("target_period_end")
+    return f"{start} to {end}" if start and end else "target dates unknown"
+
+
 def gap_text(item: object) -> str:
     if isinstance(item, str):
         return item
@@ -85,10 +90,14 @@ def company_panel(card: dict, growth: dict[str, dict]) -> str:
                     f'<td>{source_detail(row)}</td></tr>')
     guidance = card.get("guidance") or []
     guidance_html = "".join(
-        f'<li><strong>{h(item.get("metric"))}</strong> · {h(item.get("target_period_start"))} to '
-        f'{h(item.get("target_period_end"))} · '
+        f'<li><strong>{h(item.get("metric"))}</strong> · {h(guidance_period(item))} · '
         f'{h(guidance_value(item))} · {h(item.get("basis"))} · '
-        f'{link(item["source_url"], "source")}</li>' for item in guidance)
+        f'{link(item["source_url"], "source")} · '
+        f'period basis: {h(item.get("target_period_date_status") or "unreviewed")} · '
+        f'published: {h(item.get("published_at") or "unknown")} '
+        f'({h(item.get("timestamp_precision") or "unknown precision")}) · '
+        f'first observed: {h(item.get("first_available_status") or "unknown")}</li>'
+        for item in guidance)
     if not guidance_html:
         guidance_html = '<li class="missing">No source-bound numeric guidance in this card.</li>'
     other_html = "".join(

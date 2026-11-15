@@ -1,0 +1,22 @@
+{
+  "schema": "jin10_shape_binding_receipt_v1",
+  "tools_list_sha256": "16bc7c4518a47f06e7871355de3a6af82ed216354538e83e5eff4a4bfb3d2eea",
+  "tools": {
+    "list_flash": {
+      "kind": "FLASH",
+      "input_schema_sha256": "1ed9c2a98c86ed27dfaa2838a02dea71b828d5cbade0c971a96607cdb351a97c",
+      "response_witness_sha256": "f60afae283afca3992a12586abbee797f3b537c590c4f9c721d2881c02fa0f8b",
+      "shape_sha256": "898e5035f8a7a50499e36cca6b9da46348dd54bb67e33f771d6b2209c92a7f64",
+      "capture_file_sha256": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d",
+      "url_identity_basis": "PROVIDER_DESCRIBED_ORIGINAL_URL_AND_HTTPS_DETAIL_SHAPE"
+    },
+    "list_calendar": {
+      "kind": "CALENDAR",
+      "input_schema_sha256": "cd1a463c46d6264134447db17a8c3c7abe5b9a2488c6d759fea66da1f96b133e",
+      "response_witness_sha256": "8c8546d9b9e857eea21ba636e7253309a4b6df9f0bfc519ad0ed4fc96f8357ae",
+      "shape_sha256": "7858994e2dcfa5871ceeebe1d8a63df29e04bf50835df9c689f1552036368476",
+      "capture_file_sha256": "4551297393d2037810a9ed239dd8d9b6ea11f12273ec96b8e929865e8d9529ed",
+      "url_identity_basis": "NO_URL_COMPOSITE_COLLISION_FLAGGED"
+    }
+  }
+}

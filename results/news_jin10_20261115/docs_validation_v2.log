@@ -1,0 +1,13 @@
+DOC_VALIDATION_SCHEMA=jin10_docs_validation_v2
+FILES_CHECKED=9
+markdown_relative_links PASS
+status_version_1_13 PASS
+probe_20_213_20_bound PASS
+calendar_null_consensus_129_bound PASS
+store_v2_253_bound PASS
+verified_fact_status_253_bound PASS
+display_12_50_bound PASS
+guidance_19_bound PASS
+ledger_eight_phases PASS
+Source receipts: probe_redacted_run2.json; probe_profile_run2.json; store_validation_v2.json; dashboard_static_validation_v2.json; guidance_v2/guidance_coverage_v2.json.
+These are document checks, not additional provider calls or research experiments.

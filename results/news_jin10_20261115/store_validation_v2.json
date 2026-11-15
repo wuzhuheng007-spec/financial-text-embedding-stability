@@ -1,0 +1,50 @@
+{
+  "schema": "jin10_private_store_validation_v1",
+  "input_capture_sha256": {
+    "flash": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d",
+    "calendar": "4551297393d2037810a9ed239dd8d9b6ea11f12273ec96b8e929865e8d9529ed",
+    "tools_list": "16bc7c4518a47f06e7871355de3a6af82ed216354538e83e5eff4a4bfb3d2eea"
+  },
+  "database_private_path": "artifacts/jin10_20261115/jin10_v2.sqlite",
+  "counts": {
+    "streams": 2,
+    "runs": 2,
+    "request_attempts": 0,
+    "raw_responses": 3,
+    "logical_items": 253,
+    "item_versions": 253,
+    "item_fetches": 253,
+    "event_clusters": 0
+  },
+  "per_tool": {
+    "list_calendar": {
+      "raw_pages": 1,
+      "logical_items": 213,
+      "versions": 213
+    },
+    "list_flash": {
+      "raw_pages": 2,
+      "logical_items": 40,
+      "versions": 40
+    }
+  },
+  "source_item_locators_reread": 253,
+  "raw_response_hashes_reread": 3,
+  "calendar_published_time_mislabels": 0,
+  "calendar_scheduled_time_records": 213,
+  "verified_fact_not_verified_records": 253,
+  "flash_key_kinds": {
+    "CHECKED_URL": 40
+  },
+  "calendar_key_kinds": {
+    "TIME_TITLE_OR_CONTENT_PREFIX": 213
+  },
+  "stream_status": {
+    "flash": "CAPTURED_PARTIAL",
+    "calendar": "COMPLETE_FOR_REQUESTED_RANGE"
+  },
+  "flash_has_replay_checkpoint": true,
+  "calendar_has_replay_checkpoint": false,
+  "network_requests_in_offline_import": 0,
+  "scope": "Read-only audit of the bounded probe import; no new provider call"
+}

@@ -1,0 +1,101 @@
+{
+  "schema": "jin10_probe_redacted_v1",
+  "source": "jin10_mcp",
+  "endpoint": "https://mcp.jin10.com/mcp",
+  "executed_at_utc": "2026-11-15T00:52:51.766832Z",
+  "session": {
+    "initialize_http_status": 200,
+    "initialized_http_status": 202,
+    "tools_list_http_status": 200,
+    "negotiated_protocol_version": "2025-11-25",
+    "session_id_present": false
+  },
+  "tools_list_names": [
+    "get_kline",
+    "get_news",
+    "get_quote",
+    "list_calendar",
+    "list_flash",
+    "list_news",
+    "search_flash",
+    "search_news"
+  ],
+  "input_schema_sha256": {
+    "list_calendar": "cd1a463c46d6264134447db17a8c3c7abe5b9a2488c6d759fea66da1f96b133e",
+    "list_flash": "1ed9c2a98c86ed27dfaa2838a02dea71b828d5cbade0c971a96607cdb351a97c"
+  },
+  "attempts": [
+    {
+      "tool_name": "list_flash",
+      "arguments": {},
+      "attempted_at_utc": "2026-11-15T00:52:48.450142Z",
+      "received_at_utc": "2026-11-15T00:52:49.470783Z",
+      "http_status": 200,
+      "elapsed_ms": 1031,
+      "response_json_utf8_bytes": 25526,
+      "business_status": 200,
+      "items": 20,
+      "item_fields": [
+        "content",
+        "time",
+        "url"
+      ],
+      "has_more": true,
+      "next_cursor_present": true,
+      "business_error": null,
+      "error": null
+    },
+    {
+      "tool_name": "list_calendar",
+      "arguments": {},
+      "attempted_at_utc": "2026-11-15T00:52:49.470783Z",
+      "received_at_utc": "2026-11-15T00:52:50.850802Z",
+      "http_status": 200,
+      "elapsed_ms": 1375,
+      "response_json_utf8_bytes": 84142,
+      "business_status": 200,
+      "items": 213,
+      "item_fields": [
+        "actual",
+        "affect_txt",
+        "consensus",
+        "previous",
+        "pub_time",
+        "revised",
+        "star",
+        "title"
+      ],
+      "has_more": null,
+      "next_cursor_present": false,
+      "business_error": null,
+      "error": null
+    },
+    {
+      "tool_name": "list_flash",
+      "arguments": {
+        "cursor": "REDACTED"
+      },
+      "attempted_at_utc": "2026-11-15T00:52:50.852818Z",
+      "received_at_utc": "2026-11-15T00:52:51.757248Z",
+      "http_status": 200,
+      "elapsed_ms": 907,
+      "response_json_utf8_bytes": 19343,
+      "business_status": 200,
+      "items": 20,
+      "item_fields": [
+        "content",
+        "time",
+        "title",
+        "url"
+      ],
+      "has_more": true,
+      "next_cursor_present": true,
+      "business_error": null,
+      "error": null
+    }
+  ],
+  "fatal_error": null,
+  "total_http_requests_including_handshake": 6,
+  "private_capture_relative": "artifacts/jin10_20261115/probe_second",
+  "interpretation": "A bounded current retrieval, not proof of ongoing availability, prerelease consensus, or redistribution rights"
+}

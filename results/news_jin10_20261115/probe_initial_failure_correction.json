@@ -1,0 +1,18 @@
+{
+  "schema": "jin10_probe_incident_correction_v1",
+  "corrects_receipt": "results/news_jin10_20261115/probe_redacted.json",
+  "observed_http_requests_including_handshake": 4,
+  "observed_sequence": [
+    "initialize_response_received",
+    "initialized_notification_accepted",
+    "tools_list_response_received",
+    "first_list_flash_response_received_then_local_parse_failed"
+  ],
+  "local_error": "AttributeError: tuple object has no attribute get",
+  "cause": "The probe called unwrap_mcp_payload as a dictionary-returning function while the ingestion module had changed its return to (data, locator).",
+  "first_flash_http_status": "NOT_RECORDED",
+  "first_flash_item_count": "NOT_RECORDED",
+  "first_flash_raw_response_saved": false,
+  "original_receipt_attempts_field_understates_tool_calls": true,
+  "subsequent_action": "A corrected bounded probe was run once and saved separately in probe_redacted_run2.json; this incident is not included in run2 item counts."
+}

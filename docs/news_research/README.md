@@ -1,9 +1,12 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), source-bound intake 1.12.
+Updated 2026-11-15 (Asia/Shanghai), Jin10 development intake 1.13.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
 
+- [Jin10 MCP bounded-intake English report](../../reports/2026-11-15_jin10_mcp_intake.en.md) · [中文进度](../../reports/2026-11-15_jin10_mcp_intake.zh.md) · [逐项计划—实际](../../results/news_jin10_20261115/plan_execution.csv) · [source-rights boundary / 来源权限](jin10/source_rights.md)
+- Jin10 MCP configuration has been written using `JIN10_MCP_TOKEN`. The earlier [configuration baseline](../../results/news_jin10_20261115/configuration_baseline.json) lacked a credential; the later [bounded live receipt](../../results/news_jin10_20261115/probe_redacted_run2.json) verifies fresh-process authentication, one calendar call and two flash pages that both still have more. The captured pages were [imported offline into private SQLite](../../results/news_jin10_20261115/store_validation_v2.json), with no new provider call; the [v2 display template](../../results/news_jin10_20261115/dashboard_v2_template.html) is a development view. 金十新进程有界调用与私人离线导入已完成，但快讯分页未完。
+- [Guidance timing v2](../../results/news_jin10_20261115/guidance_v2/README.md) keeps 19 guidance rows separate from the earlier 72 core metric checks; independent first availability remains unknown. 指引时间已另版修复，不更改旧冻结财报卡或正式金融准入状态。
 - [财报扩展中文路线](earnings/roadmap.zh.md) · [English earnings extension](earnings/roadmap.en.md)
 - [本轮英文报告 / English intake report](../../reports/2026-11-15_earnings_macro_intake.en.md) · [中文简报](../../reports/2026-11-15_earnings_macro_intake.zh.md) · [执行台账](../../results/news_earnings_macro_20261115/plan_execution.csv)
 - 核心公司：NVIDIA、AMD、Intel、CoreWeave、Samsung Electronics、SK hynix。已形成六张有来源财报开发卡、三张宏观卡和六条独立公司新闻；正式金融准入与收益实验仍为 `NOT_RUN`。旧兴趣页不是前置条件。
@@ -93,4 +96,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-下一步取得有日期依据的来源／公布前共识快照与历史公司—证券身份链，决定完整金融协议后，才可把开发卡升级为正式准入事件。Next, obtain point-in-time source and prerelease consensus evidence, establish dated issuer-to-security identity, and settle the full financial protocol before admitting events. A bounded company-event extraction quality study may use the cards as development input; it must preserve the earlier model-failure record.
+金十开发分支下一步：待可用且获准的本机浏览器表面做视觉验收；确认配额及保存/展示条款前不启动持续采集。研究准入下一步仍需有日期依据的来源／公布前共识快照、历史公司—证券身份链和完整金融协议。The next Jin10 development step is browser visual acceptance when a permitted local surface is available, without another provider request. Recurring collection awaits confirmed quota and storage/display terms. Formal research admission still requires point-in-time source and prerelease consensus evidence, dated issuer-to-security identity, and the complete financial protocol. A bounded company-event extraction quality study may use the cards as development input; it must preserve the earlier model-failure record.

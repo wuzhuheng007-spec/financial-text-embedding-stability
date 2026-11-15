@@ -7,7 +7,7 @@ Checked / 核对日期：2026-11-14（Asia/Shanghai）。Scope / 范围：公开
 | [HF financial-news-multisource](https://huggingface.co/datasets/Brianferrell787/financial-news-multisource/blob/main/README.md) | 卡片包含申请访问及不再分发正文的条件；日期字段可能经过归一化。Card includes access conditions and no redistribution of article text; dates may be normalized. | 确认访问，固定 revision/subset，检查原始时间与正文。Confirm access; pin revision/subset and inspect original timing/text. |
 | [原作者 FNSPID / Original-author FNSPID](https://huggingface.co/datasets/Zihan1004/FNSPID/tree/bf9189c41527198897d1af3e17b1a0095279fc45) | 已对 `Stock_news/nasdaq_exteral_data.csv` 匿名分段读取并保存本机样本；下文列出来源、许可差异与限额。An anonymous bounded sample of that exact file is retained locally; provenance, license conflict and limits follow. | 检查公司事件字段；核实历史身份及原始发布时间后才能讨论金融准入。Check company-event fields; verify historical identity and original timing before financial admission. |
 | [HF ML-Algo/FNSPID](https://huggingface.co/datasets/ML-Algo/FNSPID) | 公开预览的部分 Article 字段为空；不能推广为全库无正文。Some preview rows have null Article fields; this is not a corpus-wide result. | 核验具体分发版本、原始出处与小样本。Verify distribution identity, upstream source and a bounded sample. |
-| [金十官方 MCP / Official Jin10 MCP](https://mcp.jin10.com/app/doc.html) | 官方说明 Token 接入及快讯/资讯工具。Official guide documents token-based access and flash/news tools. | 安全配置后核对实际历史深度、分页、字段和限额。After secure setup, inspect actual history, paging, fields and limits. |
+| [金十官方 MCP / Official Jin10 MCP](https://mcp.jin10.com/app/doc.html) | 官方说明 Token 接入及快讯/资讯工具；本机配置已写入，后续新进程的有界认证与工具调用成功。Official guide documents token access and flash/news tools; the local config is written and a later bounded fresh-process call authenticated. | 两页快讯仍有下一游标；历史深度、长期稳定、配额和保存/展示条款未确认。Both flash pages still had a next cursor; history depth, stability, quota and storage/display terms remain unconfirmed. |
 | [WRDS RavenPack](https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/) | 官方有产品介绍，不能据此认定账户正文权限。Product listing does not establish account entitlement to text. | 使用实际查询回执核对。Check actual query receipts and fields. |
 
 ## Hugging Face
@@ -26,9 +26,9 @@ The observed header separates `Article` from four named summary fields and conta
 
 ## Jin10 / 金十
 
-接入地址采用官方文档中的 `https://mcp.jin10.com/mcp`。具体启用步骤以平台当前说明和安全凭据配置为准。已有用户账号截图不等于 Token 已配置。工具可用性不等于已有完整历史数据库，也不等于已获正文再发布授权。
+接入地址采用官方文档中的 `https://mcp.jin10.com/mcp`。已用 `JIN10_MCP_TOKEN` 环境变量合并本机配置；[配置回执](../../results/news_jin10_20261115/configuration_baseline.json)记录较早的凭据缺失状态。其后[真实有界回执](../../results/news_jin10_20261115/probe_redacted_run2.json)记录新进程协商成功、`list_flash` 两页和 `list_calendar` 一次；两页快讯都有下一游标。官方页面上的 ID 和游标只是 Demo；公开指南未列日历工具，也未说明 MCP 配额或留存期。详见[来源权限登记](jin10/source_rights.md)。工具可用性不等于已有完整历史数据库，也不等于已获正文再发布授权。
 
-Use the official endpoint `https://mcp.jin10.com/mcp` and the platform's current setup instructions with secure credentials. An account screenshot does not configure a token. Tool availability establishes neither a complete historical database nor permission to republish article text.
+The official endpoint is `https://mcp.jin10.com/mcp`, with `JIN10_MCP_TOKEN` as the local credential variable. The [configuration receipt](../../results/news_jin10_20261115/configuration_baseline.json) records earlier credential absence. A later [bounded live receipt](../../results/news_jin10_20261115/probe_redacted_run2.json) records successful fresh-process negotiation, two `list_flash` pages and one `list_calendar` call; both flash pages had another cursor. The guide's ID/cursor are demos; it does not list `list_calendar` or an MCP quota/retention term. See the [source-rights register](jin10/source_rights.md). Tool availability establishes neither a complete historical database nor permission to republish text.
 
 ## 统一的小样本准入 / Common bounded-sample admission
 

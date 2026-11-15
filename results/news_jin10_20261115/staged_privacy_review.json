@@ -1,0 +1,11 @@
+{
+  "schema": "jin10_staged_privacy_review_v1",
+  "staged_files_scanned": 57,
+  "flash_bodies_compared": 40,
+  "calendar_rows_compared": 213,
+  "flash_body_matches": 0,
+  "complete_calendar_row_matches": 0,
+  "credential_pattern_hits": 0,
+  "private_or_database_paths_staged": [],
+  "result": "PASS"
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "jin10_bounded_execution_manifest_v1",
+  "created_at_utc": "2026-11-15T01:05:39.461394Z",
+  "report_timezone": "Asia/Shanghai",
+  "remote_baseline_commit": "3620fc97f707ea6a5ff8818b092900e9dbacd14c",
+  "private_probe_capture_sha256": {
+    "tools_list": "16bc7c4518a47f06e7871355de3a6af82ed216354538e83e5eff4a4bfb3d2eea",
+    "flash_captures": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d",
+    "calendar_captures": "4551297393d2037810a9ed239dd8d9b6ea11f12273ec96b8e929865e8d9529ed"
+  },
+  "code_sha256": {
+    "scripts/build_earnings_dashboard.py": "d94ba52268241219113bd2d29b4c651955c4a34bd56b68adc5be38c8c090588c",
+    "scripts/build_jin10_dashboard_v2.py": "4eada47a27b90380a4d7cebe646a224ce05a5f47c6172ae16e3faeae3e056479",
+    "scripts/jin10_guidance_v2.py": "220a7d7461adeb699c47e9635ed404c7bc84cfa738dcc12aa895d12898dae362",
+    "scripts/jin10_mcp_http.py": "6c83c0069f910957cfe792f1355b6334c808ce02a631cd7bab4f375503971926",
+    "scripts/jin10_probe_once.py": "e873cb9897800a3d07aafaa9e51deadddf4ae049a90ef45a81e6b567a5a84e2a",
+    "scripts/jin10_profile_probe.py": "e23fd89e514400c53709d5a2e84ac90a2ba421d37b6f75c3cb4c5542b00c0da4",
+    "scripts/jin10_confirm_shapes.py": "b3230ac1c89fc598d43dbfecb4fae86a7921149eafe18fa3239ea921134f86dd",
+    "scripts/jin10_validate_local_store.py": "1b498395e37db44995f2e969b003fb6fecc97aab8d0e5ec750256fe94217d8b7",
+    "scripts/jin10_validate_dashboard.py": "0e0fe5764f5c4d5b43be9353fe4d72eb7dd7204f606e1b13b83d83b102057605",
+    "scripts/jin10_validate_docs.py": "f3ebe3843169eb643a8705e938adc0d0fad3470378c03119b94e3ceca1492ee6",
+    "scripts/jin10_review_staged.py": "d8824402d802ce566a528b6b84cc8546fc0546c5f82bd67b4da6b38018e28cc8",
+    "scripts/jin10_mcp/schema.py": "f8e00136801391c1850b5a6c9855a076a41ab74c17399d8cfd5963d943c1c0b8",
+    "scripts/jin10_mcp/store.py": "960ecf031804ea313e7010a4cb93a15797957518b314eea085455bf9193f3468",
+    "scripts/jin10_mcp/engine.py": "6383e4cacc9b18988ce375d1f41bb58699edb83ad2804a597b9f3c7a9cfeb935",
+    "scripts/jin10_mcp/export.py": "ec173496880326ebbdeb833fa6b6d7892bc145c535edcbc38f63020d2f94d728",
+    "scripts/jin10_mcp/cli.py": "517976007e11a369c38eb79daf2b63fccc8dd204370e7fa9fa1d2cf8a3507b14"
+  },
+  "focused_test_source_sha256": {
+    "tests/test_jin10_mcp_http.py": "29ea3ddb66877cef2e47e9d3e2899625d0702bc3eadd575458e0a1e7409fe8d3",
+    "tests/test_jin10_probe.py": "02a5abb8c57908b8992bc0fad1264c024c0a5f84add428fe803ee55e8cf503f6",
+    "tests/test_jin10_ingest.py": "9e5bd33336ce87f3caf5f3d78706bf89d255072894338fac802251660d5d6be0",
+    "tests/test_jin10_guidance_v2.py": "534f62aded0e573a105b4a73fcf8cf3fdafff7665981cc9aa4fb4c824f0893f4",
+    "tests/test_jin10_dashboard_v2.py": "99665f7de2145d186a670f83f494030eb9a9f3273565a1e76875464aadb7dd0a"
+  },
+  "frozen_old_input_sha256": {
+    "results/news_earnings_macro_20261115/company_cards.json": "4cf24137bf6edbeccfe10278fd1aef26f0918ecc5db38dd8a0405ed3e56b1287",
+    "results/news_earnings_macro_20261115/macro_cards.json": "ca2f7bc95cba4e9ba1f8965748651030c35f71ec93a9b6dd5b30828119a1c2ec",
+    "results/news_earnings_macro_20261115/news_events.json": "a8991ef56518485d800372fbbcccc87c71dbf802a0a9549ef996f966b85ed53a",
+    "results/news_earnings_macro_20261115/assembly_receipt.json": "c17d1546e8943b9d7d2d1eaf6e50cfdd28f748310b0458626376fd08062213cd"
+  },
+  "sanitized_receipt_sha256": {
+    "results/news_jin10_20261115/probe_redacted_run2.json": "af6cbe3b3dc0b45b3be0c6846465b469673f06b3516372da682fb5408edd43fc",
+    "results/news_jin10_20261115/probe_profile_run2.json": "ff5d395625fd0311331b0b240d2209a92fb7651125a59086e95c44a331e6fdbf",
+    "results/news_jin10_20261115/shape_binding_receipt.json": "460ab62ca0f436060c1d199c625627aed80b3cb3ea5e52c7bb1f39c5d1fb6ef1",
+    "results/news_jin10_20261115/store_validation_v2.json": "064d4deb3c2edfc7d6235d06072808cf9bdd06c3138ae644081b4d9a47727847",
+    "results/news_jin10_20261115/dashboard_static_validation_v2.json": "f829566018f51e1e6156e0dbd7b5934e2913cecc540706f9156c698962c4e55b",
+    "results/news_jin10_20261115/guidance_v2/guidance_coverage_v2.json": "2fab1e2743ddf4bdc4a0485376ad07b7cb85cfdbf3b97cbb3f87c1bee417039c",
+    "results/news_jin10_20261115/final_validation_v2.log": "5e2107678001aa322191e96e8247b4fa81bf7522e32d90f282772135a45209c3",
+    "results/news_jin10_20261115/legacy_dashboard_regression.log": "68d662c6a85c67397691a31db63087b1d850ad4867d59336ae46efd3f7f8d0c1",
+    "results/news_jin10_20261115/docs_validation_v2.log": "67662b71a381d42b6d221a73ec1cc102cc17812dd10b05abfc98a01d1e2e77d0"
+  },
+  "private_provider_text_included": false,
+  "interpretation": "File identity map only; hashes do not establish source completeness or financial validity"
+}

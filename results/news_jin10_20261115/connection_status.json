@@ -1,0 +1,29 @@
+{
+  "schema": "jin10_connection_status_v1",
+  "observed_at_utc": "2026-11-15T00:59:03Z",
+  "config_written": true,
+  "codex_cli_version": "0.147.0",
+  "config_location": "~/.codex/config.toml",
+  "config_endpoint": "https://mcp.jin10.com/mcp",
+  "config_bearer_token_env_var": "JIN10_MCP_TOKEN",
+  "other_mcp_config_preserved": true,
+  "credential_value_printed_or_logged": false,
+  "credential_present_in_windows_user_environment": true,
+  "credential_inherited_by_current_codex_desktop_process": false,
+  "credential_available_to_new_child_process": true,
+  "direct_protocol_authentication": "SUCCESS",
+  "initialize_http_status": 200,
+  "initialized_notification_http_status": 202,
+  "tools_list_http_status": 200,
+  "negotiated_protocol_version": "2025-11-25",
+  "mcp_session_id_returned": false,
+  "list_flash_call": "SUCCESS_BOUNDED_PROBE",
+  "list_calendar_call": "SUCCESS_BOUNDED_PROBE",
+  "current_desktop_dynamic_jin10_tool_loaded": false,
+  "codex_after_restart_connector_authentication": "NOT_TESTED",
+  "evidence": [
+    "results/news_jin10_20261115/probe_redacted_run2.json",
+    "results/news_jin10_20261115/probe_initial_failure_correction.json"
+  ],
+  "interpretation": "Direct MCP protocol calls succeeded from a fresh process. Existing Codex desktop MCP tools were not hot loaded; restart behavior remains untested."
+}
