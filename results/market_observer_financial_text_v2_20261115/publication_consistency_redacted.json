@@ -1,0 +1,12 @@
+{
+  "schema": "financial_text_v2_publication_consistency_v1",
+  "checked_at_utc": "2026-11-15T11:17:22.150777+00:00",
+  "staged_file_count_before_receipt": 60,
+  "numeric_and_status_checks": "PASS",
+  "local_document_links": "PASS",
+  "staged_private_path_and_credential_patterns": "ABSENT",
+  "source_card_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "v2_retention_sha256": "2cdb00d715447b1850b1db6473308376943e21d05a2abbb1e5bcc62211681e0f",
+  "v21_retention_sha256": "ded21f38db2bd676115b2901fb80d1067f7afa6be9c682059eba9a6601d11ac9",
+  "limitations": "Pattern and structure checks cannot establish redistribution rights or semantic accuracy; SEC numeric facts are reviewed in separate source receipts."
+}

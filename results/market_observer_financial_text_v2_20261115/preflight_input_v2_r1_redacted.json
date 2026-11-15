@@ -1,0 +1,169 @@
+{
+  "schema": "market_observer_financial_text_v2_preflight_v1",
+  "phase": "input_v2_r1",
+  "captured_at_utc": "2026-11-15T10:42:29.655406+00:00",
+  "git_head": "c127bc88cfd2809063a5cd74d61bb863ad96ec00",
+  "branch": "codex/sync-research-progress-20261113",
+  "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "staged_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "workspace_status_sha256": "1a00ca2109aa37f81b5b13519c3d365c39dc0e6f106c27612c47fae026c14029",
+  "workspace_status_entry_count": 34,
+  "code_config_and_receipt_sha256": {
+    "configs/market_observer_financial_text_v2.json": "16fb87e1dbc82f8b3268aa4227bb4af93b5259e4da8941cbece1c376b2795c93",
+    "artifacts/market_observer_official_20261115/corpus_manifest.json": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+    "configs/market_observer_official_text_v1.json": "11840cc43930cade51e10392d0dd05edcb4e5e251ecdd1e873d70492ab92b7ba",
+    "scripts/market_observer_official_v1/text_comparison.py": "d8f2b97e0b66a7d91a6c8fb63b8f01da59972a1c3d8c5f588c0379339d8b9bfe",
+    "scripts/market_observer_official_v1/build_corpus.py": "205544d6f6ad14d40534f6b497d176df6fe27fe375dd1100b4bb1d8fa591320b",
+    "scripts/market_observer_official_repro_v1/text_input_audit.py": "df9488e9b60874afaf0eb1327dffa645d31dcfd33092c1b9191410bbf653aac8",
+    "results/market_observer_official_repro_20261115/text_input_audit_redacted.json": "9ae10a0bbffedd75bf0388fa70b13484eb90ccce73dab8d5a36163f42fe1f373",
+    "results/market_observer_official_repro_20261115/incremental_redacted.json": "34db5df273ad919c2aa289c420c2d55250e52c3fbaf86c8579b7e2d0097a8acf",
+    "results/market_observer_historical_20261115/test_contamination_redacted.json": "43e632dbacaf3e18275f3d90cc6967b98b0e50de76ac9580a027488dc22c04ce",
+    "tests/test_market_observer_financial_text_v2.py": "5292383dc9460632901c9decd77e51dcdf473d0129b8994885828dd641714ca8",
+    "scripts/market_observer_financial_text_v2/__init__.py": "1cc439e4a6dceee3856bda57b5ea0b7483f1a0c1948c9a05cbc154e3a12fde8f",
+    "scripts/market_observer_financial_text_v2/adapter.py": "f26b64172ccabd2207243b78ab5b5445ac35e67f2c072cc1fc519fe59c97d78f",
+    "scripts/market_observer_financial_text_v2/build.py": "1ec2dc681ad1e9e42475166a7f5bb58b437a374e018d46fa12ffd7d1db4223fa",
+    "scripts/market_observer_financial_text_v2/freeze_content_checklist.py": "e063eca90e548090ea8a403c5f9c58dd2ae8e136a3b8b39bfaf56fc786a1236f",
+    "scripts/market_observer_financial_text_v2/parser.py": "ed446600d6bea10120937fcdabf450e0a064d025624d2ed63638277123001acf",
+    "scripts/market_observer_financial_text_v2/preflight.py": "8e860f5237181e13080a01a3cdc31703f3c89e7e4b536ff8f15ed11edd8fbf3d"
+  },
+  "source_documents": [
+    {
+      "document_id": "sec:0001045810:0001045810-25-000115:EARNINGS_EXHIBIT:75ed627af1c9",
+      "symbol": "NVDA",
+      "announcement_date": "2025-05-28",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "bd42e9a2896a1cb923bad9d11e9de38cc104169b762e34bdade7f28bee46b6e6",
+      "old_extracted_sha256": "9e3475017f62824b3fe8736117f8a72b4fbcc532ee6626f0b8e362c3b303e9ae"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000115:PRIMARY",
+      "symbol": "NVDA",
+      "announcement_date": "2025-05-28",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "e3df43c930bb41229e0a9688a2c2626c21d6198844b751134c0fbc1d5b557e23",
+      "old_extracted_sha256": "7b551efd1cdcbe1fcb1704284a4791922789770f143d61c6591078164ce5871f"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909",
+      "old_extracted_sha256": "9a6c6c8bc97878eaf261fe561bc75ec0f8c9f521de048043d28efd5c847899dc"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000019:PRIMARY",
+      "symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "4e0a145c2bb4a3abc3275547d8f7d71581e4fc5436973e93c4573df6062175b5",
+      "old_extracted_sha256": "3362960082e3b32993642d91cbf9c74049cbf5c5ee4dac5f7be67ed2be471edb"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "old_extracted_sha256": "f229b36365c9bcca175d891c036860cdedb6cca1d961616f7cc8e80f89e9a1d7"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000207:PRIMARY",
+      "symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "ae33d00bc1068367d46676c7aed9b7db0c7ed90e949fb96f762d6ccef29d4dc2",
+      "old_extracted_sha256": "7520ab79fc8e0d2a3aae4638f6978f8aec3fdeab2611cf7a6562a1b8e89fd52b"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000024:EARNINGS_EXHIBIT:0bb59b34e8d7",
+      "symbol": "MU",
+      "announcement_date": "2025-09-23",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "f56b0855675066ea5c2d1bdc7ca9d0a85827258b30b121b24b026eaec58abc94",
+      "old_extracted_sha256": "0f99c2fa93d71f788d9452ddec212b749719230c9a0808954b23361e8466a91d"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000024:PRIMARY",
+      "symbol": "MU",
+      "announcement_date": "2025-09-23",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "b73215d6bbc0889e04335d098bc7a6e4879de9dd3b90e6c85862da80e38c5783",
+      "old_extracted_sha256": "429a3ce85cd4337cd39bd7614fe4eff231fe0010159f25d55a051fbebcdf419c"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "old_extracted_sha256": "d6958704e3e025ac79f60866978880b7572ee9bdf3c3cd099a0f3967a8365010"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-25-000228:PRIMARY",
+      "symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "a740451ce3c1b163cc6cbbede5f1f6bdb621d41d06093a7109a04ede9b9629f0",
+      "old_extracted_sha256": "37de15d46ee5fb60b3fc6eb5d12e3e890173c2e958d2299af99d5d7acb273baa"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000044:EARNINGS_EXHIBIT:913290429b61",
+      "symbol": "MU",
+      "announcement_date": "2025-12-17",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "5b33bfbd681ceff71fa271f001e6db6167c9f0b206e12418b2f56d495e853126",
+      "old_extracted_sha256": "923581cb8a6af662a394852fe3285d037ed2845bae613161ecf177abe1268e8a"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-25-000044:PRIMARY",
+      "symbol": "MU",
+      "announcement_date": "2025-12-17",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "fb70177c402fbfc8501ebea286450aaf79420daaf14c1d47434127bf7bf9238d",
+      "old_extracted_sha256": "442561b46cc81028a7f7051de4e6334399969afa42d61708ff52385a1c6da3dd"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "old_extracted_sha256": "d54379b18cb3268aed266ec3d215f42749156d5b141ab3e7f4bc8b044d479708"
+    },
+    {
+      "document_id": "sec:0001045810:0001045810-26-000019:PRIMARY",
+      "symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "0cd6a3a6ce0e164eacd82cc1c68858d71d572d92b0c4dd5123879b2bd8b2945e",
+      "old_extracted_sha256": "a12f6602aa355fb64bfa97e01b1e02464d819c459cd6ed092efb95e713c3f63b"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-26-000004:EARNINGS_EXHIBIT:a654b348821e",
+      "symbol": "MU",
+      "announcement_date": "2026-03-18",
+      "source_kind": "ISSUER_EARNINGS",
+      "raw_sha256": "c0cddc9a257f35c65d5fab33296857b9d43d6c56a1985c0124032b528ef0f4a9",
+      "old_extracted_sha256": "c3ac229cd286fcabd69a6c43c4ea4e2cf4e158ef83d36364bc0074a562f615e1"
+    },
+    {
+      "document_id": "sec:0000723125:0000723125-26-000004:PRIMARY",
+      "symbol": "MU",
+      "announcement_date": "2026-03-18",
+      "source_kind": "SEC_FILINGS",
+      "raw_sha256": "703c6270ff24c7d36f58b2f0332ca6ffe6f13ac43fecc6eca39c8034c82e58a1",
+      "old_extracted_sha256": "6a937f79739fd00b68e37ae74c40e3894576b905d046d48605706384cf655d90"
+    }
+  ],
+  "source_document_count": 16,
+  "earnings_exhibit_count": 8,
+  "associated_primary_count": 8,
+  "runtime": {
+    "python": "3.11.9",
+    "beautifulsoup4": "4.15.0"
+  },
+  "no_new_downloads": true,
+  "no_validation_or_test_bodies_or_labels_opened": true,
+  "no_model_fit": true
+}

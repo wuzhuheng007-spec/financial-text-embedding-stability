@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.23",
+  "version": "1.24",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -16,7 +16,7 @@
   "research_protocol": "PROPOSED",
   "researcher_accepted": false,
   "new_news_model_inference": "SHORTFACTS_V2_SIX_REAL_LOCAL_QWEN_RESPONSES_REUSED_DEVELOPMENT_PASSAGES_ONLY",
-  "new_financial_experiment": "RETROSPECTIVE_OFFICIAL_ANNOUNCEMENT_REPRO_AND_INCREMENTAL_DEVELOPMENT_ONLY",
+  "new_financial_experiment": "NO_NEW_FIT_FINANCIAL_TEXT_INPUT_ENGINEERING_ONLY_PRIOR_DEVELOPMENT_PRESERVED",
   "formal_m5_financial_experiment": "NOT_RUN",
   "historical_m5_protocol_changed": false,
   "source_access": {
@@ -699,5 +699,36 @@
     "dot_connection": "NOT_CONNECTED",
     "formal_m5_financial_experiment": "NOT_RUN",
     "trading": "NOT_RUN"
+  },
+  "market_observer_financial_text_v2": {
+    "date": "2026-11-15",
+    "timezone": "Asia/Shanghai",
+    "status": "TRAINING_ONLY_SOURCE_BOUND_FACT_CARDS_AND_VERSIONED_INPUT_RETENTION_AUDIT",
+    "base_commit": "c127bc88cfd2809063a5cd74d61bb863ad96ec00",
+    "plan_execution": "results/market_observer_financial_text_v2_20261115/plan_execution.csv",
+    "report_en": "reports/2026-11-15_market_observer_financial_text_v2.en.md",
+    "report_zh": "reports/2026-11-15_market_observer_financial_text_v2.zh.md",
+    "public_fact_cards": "results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json",
+    "original_v2_retention": "results/market_observer_financial_text_v2_20261115/retention_redacted.json",
+    "corrected_v21_retention": "results/market_observer_financial_text_v21_20261115/retention_redacted.json",
+    "site_acceptance": "results/market_observer_financial_text_v2_20261115/site_acceptance_redacted.json",
+    "train_period_earnings_exhibits": 8,
+    "matched_primary_filings": 8,
+    "checklist_topics": 72,
+    "deterministic_fact_candidates": 71,
+    "codex_review_source_supported": 60,
+    "codex_review_ambiguous": 11,
+    "strict_complete_old_model_input": 34,
+    "strict_complete_v2_model_input": 18,
+    "strict_complete_v21_full_blocks": 34,
+    "strict_complete_v21_model_input": 18,
+    "model_fit_calls_this_round": 0,
+    "new_downloads": 0,
+    "april_july_source_bodies_or_labels_reopened": false,
+    "prior_validation_result_exposure": true,
+    "page_status": "EXISTING_OWNER_ONLY_SITE_VERSION_3_DEPLOYED_LOCAL_DESKTOP_AND_390PX_CHECKED",
+    "dot_connection": "NOT_CONNECTED",
+    "live_quote_connection_changed": false,
+    "formal_m5_financial_experiment": "NOT_RUN"
   }
 }

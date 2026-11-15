@@ -1,0 +1,9 @@
+{
+  "schema": "financial_text_v2_focused_test_receipt_v1",
+  "recorded_at_utc": "2026-11-15T11:13:46.087042+00:00",
+  "command": "python -m unittest tests.test_market_observer_financial_text_v2 tests.test_market_observer_financial_fact_cards_v2 tests.test_market_observer_financial_fact_cards_review_v2 tests.test_market_observer_financial_fact_comparisons tests.test_market_observer_financial_fact_comparisons_v4 tests.test_market_observer_financial_text_retention tests.test_market_observer_financial_text_v21 tests.test_market_observer_financial_text_v21_retention",
+  "result": "PASS",
+  "synthetic_software_tests": 33,
+  "log_sha256": "ab5e08d6b77efa0c9569f34d1b7493f0f45ca30ee0dcd9d507ea127a932bc460",
+  "limitations": "These are focused overlapping software checks, not independent extraction tests or model fits. Prior partial suite runs are not added to 33."
+}

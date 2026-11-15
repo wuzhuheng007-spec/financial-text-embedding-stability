@@ -1,0 +1,53 @@
+{
+  "schema": "market_observer_financial_text_v2_site_acceptance_v1",
+  "checked_at_utc": "2026-11-15T11:08:50+00:00",
+  "scope": "Existing owner-only Site; historical training-period NVDA and MU financial fact cards only",
+  "site_url": "https://quant-observer-research-nov15.soliddhole4.chatgpt.site/?tab=financial",
+  "site_project_id": "appgprj_6af945da759c8191bc178314191016b7",
+  "site_version_number": 3,
+  "site_source_commit_sha": "97311b47ee5a8de94679af6eb4611aabb48ef8ac",
+  "site_deployment_id": "appgdep_6af9927a8d708191920df1d80b26d168",
+  "deployment_status": "succeeded",
+  "owner_only_access_rechecked": true,
+  "public_fact_card_input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "deployed_archive_fact_card_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "fact_card_schema": "market_observer_financial_fact_cards_redacted_v4",
+  "historical_cards": 8,
+  "source_supported_facts": 60,
+  "unknown_items": 11,
+  "source_bound_prior_fiscal_quarter_comparisons": 32,
+  "derived_guidance_ranges": 8,
+  "desktop_local_browser_check": {
+    "viewport_width_px": 1440,
+    "visual_status": "PASS",
+    "checks": "Fact cards, historical periods, numeric values and units, unknown states, source links and status banners visible"
+  },
+  "mobile_local_browser_check": {
+    "viewport_width_px": 390,
+    "document_scroll_width_px": 390,
+    "full_page_horizontal_overflow": false,
+    "first_fact_table_viewport_width_px": 320,
+    "first_fact_table_scroll_width_px": 520,
+    "internal_table_horizontal_scroll": true,
+    "visual_status": "PASS"
+  },
+  "source_link_check": {
+    "rendered_sec_links": 68,
+    "url_shape": "SEC Archives HTTPS allowlist",
+    "external_http_clickthrough": "NOT_RUN"
+  },
+  "remote_verification": {
+    "native_deployment_status": "succeeded",
+    "current_live_url_matches": true,
+    "saved_site_version_source_commit_matches": true,
+    "private_authenticated_browser_readback": "NOT_RUN"
+  },
+  "page_claims": {
+    "historic_training_material": true,
+    "codex_review_development_draft": true,
+    "dot_connected": false,
+    "live_quote_connected": false,
+    "model_fitted_or_return_comparison": false
+  },
+  "private_screenshots": "Stored locally only and excluded from this receipt"
+}

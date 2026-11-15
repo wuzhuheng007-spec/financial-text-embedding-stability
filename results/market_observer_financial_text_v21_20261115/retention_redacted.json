@@ -1,0 +1,232 @@
+{
+  "schema": "financial_text_v21_retention_redacted_v1",
+  "created_at_utc": "2026-11-15T11:10:57.400181+00:00",
+  "role": "TRAINING_CONTENT_ENGINEERING_NOT_EXTRACTION_ACCURACY_OR_PREDICTIVE_EVALUATION",
+  "input_sha256": {
+    "manifest": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+    "old_config": "11840cc43930cade51e10392d0dd05edcb4e5e251ecdd1e873d70492ab92b7ba",
+    "prior_text_audit": "9ae10a0bbffedd75bf0388fa70b13484eb90ccce73dab8d5a36163f42fe1f373",
+    "frozen_reviewed_checklist": "2445061c69a10ae8014b72ecf503249d703cb75fccec81ea7eba1c6343842ae8",
+    "fact_review_v4": "523fd9e58256fdf179d55e11faa2d4b0ae8193cc873585d7b7263c8bbd1f92b9",
+    "fact_review_v2": "8a7d3623a0e2353781f80a2a48385378ba80633634963167740722bf0bccce31",
+    "old_aggregate_metadata_only": "58cd4cd098fc8384d346aaa27bb5ad5bdff05cf9ef8fcce7ad860e26956d915e",
+    "fact_candidates_v2": "4b349b448ac7238d7182e49ec4a3d3906ed10eddad8f49b9a1df12cd277c6f5f",
+    "v21_blocks": "37f7088f21a68cf6d922218822427a0910945b0d0223880d70712fb4ec8142b5",
+    "v21_event_inputs": "116bdd25632b7f79eb96cfccf68a60798a144fcd11c6ac57b91bfb1fb48cece4",
+    "v21_documents": "c452fee2b251f72939f3bff6ceedfeec020d640e0b4feb5a4dfde4e4d0c076b8",
+    "v21_build": "a29b24f2b725f11c5eb391f5fc4b716298682efb292b087d97f6c2d658e732d9"
+  },
+  "old_builder_reconstruction": {
+    "selected_train_source_documents": 16,
+    "reconstructed_old_event_groups": 8,
+    "event_text_sha256_by_id": {
+      "sec:0001045810:0001045810-25-000115": "45ced6ff3d764b9168f7a1932d2dd4b3e2d5205ee56e50ff3325bbd55c1ec686",
+      "sec:0000723125:0000723125-25-000019": "73960c21248ea84d476e03734c4123a6426e4c1889c20bf6f92ed4d59a438ca5",
+      "sec:0001045810:0001045810-25-000207": "5ac738033add27052ff1522904e4b928072b66ffdab38335a5967dd9ac05e267",
+      "sec:0000723125:0000723125-25-000024": "c49aab121533c108af76d88c7436e9cf0eef311617441f703784c660da040e14",
+      "sec:0001045810:0001045810-25-000228": "e82677b6bdfd7691097dec1189f585eb6e8079fdc15a605e03eb75e03f1b6037",
+      "sec:0000723125:0000723125-25-000044": "0535e05d3575aa2b663cd906eb0c1a83b631a5fc3631143dfb8ca7e4593d440c",
+      "sec:0001045810:0001045810-26-000019": "bce7fd2d7641cf108152632a6bb852357d15e4daa610c21e94468c35f9022115",
+      "sec:0000723125:0000723125-26-000004": "78081e37aa9690e65a7b6ae156b611ddff5ca47d80e81f21d3c874bd4783e6f9"
+    }
+  },
+  "old_train_metadata_only_check": {
+    "train_metadata_rows": 458,
+    "selected_earnings_events_in_train_rows": 8,
+    "selected_earnings_event_group_day_uses": 147,
+    "aggregate_clipped_train_rows": 0,
+    "no_body_label_or_price_fields": true
+  },
+  "denominators": {
+    "source_documents": 16,
+    "earnings_documents": 8,
+    "frozen_checklist_topics": 72,
+    "reviewed_candidate_facts": 71,
+    "core_field_slots": 355,
+    "facts_with_source_bound_prior_fiscal_quarter": 32,
+    "comparison_field_slots": 128,
+    "assessed_field_slots_total": 483
+  },
+  "checklist_source_status_counts": {
+    "LOCATED": 67,
+    "BASIS_AMBIGUOUS": 4,
+    "NOT_FOUND": 1
+  },
+  "checklist_span_retention": {
+    "old": {
+      "COMPLETE": 49,
+      "AMBIGUOUS": 4,
+      "LOST": 18,
+      "ORIGINAL_NOT_LOCATED": 1
+    },
+    "v21_selected": {
+      "COMPLETE": 52,
+      "AMBIGUOUS": 4,
+      "LOST": 15,
+      "ORIGINAL_NOT_LOCATED": 1
+    },
+    "v21_full_blocks": {
+      "COMPLETE": 67,
+      "AMBIGUOUS": 4,
+      "ORIGINAL_NOT_LOCATED": 1
+    }
+  },
+  "reviewed_fact_retention": {
+    "old": {
+      "COMPLETE": 34,
+      "AMBIGUOUS": 21,
+      "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN": 8,
+      "LOST": 4,
+      "PARTIAL": 4
+    },
+    "v21_selected": {
+      "COMPLETE": 18,
+      "AMBIGUOUS": 21,
+      "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN": 7,
+      "PARTIAL": 24,
+      "LOST": 1
+    },
+    "v21_full_blocks": {
+      "COMPLETE": 34,
+      "AMBIGUOUS": 21,
+      "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN": 16
+    }
+  },
+  "frozen_v2_comparison_sha256": "2cdb00d715447b1850b1db6473308376943e21d05a2abbb1e5bcc62211681e0f",
+  "frozen_v2_strict_complete": {
+    "selected": 18,
+    "full_blocks": 18
+  },
+  "v21_strict_complete_delta_from_v2": {
+    "selected": 0,
+    "full_blocks": 16
+  },
+  "reviewed_fact_transition_old_to_v21_selected": {
+    "COMPLETE -> COMPLETE": 18,
+    "AMBIGUOUS -> AMBIGUOUS": 21,
+    "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN -> COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN": 6,
+    "LOST -> PARTIAL": 2,
+    "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN -> PARTIAL": 2,
+    "COMPLETE -> PARTIAL": 16,
+    "PARTIAL -> PARTIAL": 4,
+    "LOST -> COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN": 1,
+    "LOST -> LOST": 1
+  },
+  "field_retention": {
+    "old": {
+      "metric:PRESENT": 59,
+      "value:PRESENT": 59,
+      "period:PRESENT": 63,
+      "unit:PRESENT": 56,
+      "basis:PRESENT": 40,
+      "comparison_value:PRESENT": 32,
+      "comparison_period:PRESENT": 32,
+      "comparison_unit:PRESENT": 32,
+      "comparison_basis:PRESENT": 32,
+      "basis:UNKNOWN_REFERENCE": 31,
+      "metric:MISSING": 12,
+      "value:MISSING": 12,
+      "unit:MISSING": 8,
+      "period:PARTIAL": 8,
+      "unit:UNKNOWN_REFERENCE": 7
+    },
+    "v21_selected": {
+      "metric:PRESENT": 63,
+      "value:PRESENT": 63,
+      "period:PRESENT": 43,
+      "unit:PRESENT": 62,
+      "basis:PRESENT": 40,
+      "comparison_value:PRESENT": 32,
+      "comparison_period:PRESENT": 32,
+      "comparison_unit:PRESENT": 32,
+      "comparison_basis:PRESENT": 32,
+      "basis:UNKNOWN_REFERENCE": 31,
+      "metric:MISSING": 8,
+      "value:MISSING": 8,
+      "period:PARTIAL": 28,
+      "unit:UNKNOWN_REFERENCE": 7,
+      "unit:MISSING": 2
+    },
+    "v21_full_blocks": {
+      "metric:PRESENT": 71,
+      "value:PRESENT": 71,
+      "period:PRESENT": 71,
+      "unit:PRESENT": 64,
+      "basis:PRESENT": 40,
+      "comparison_value:PRESENT": 32,
+      "comparison_period:PRESENT": 32,
+      "comparison_unit:PRESENT": 32,
+      "comparison_basis:PRESENT": 32,
+      "basis:UNKNOWN_REFERENCE": 31,
+      "unit:UNKNOWN_REFERENCE": 7
+    }
+  },
+  "document_retention": {
+    "old": {
+      "earning_documents_with_any_complete_reviewed_fact": 8,
+      "earning_documents_with_all_located_checklist_spans_complete": 0
+    },
+    "v21_selected": {
+      "earning_documents_with_any_complete_reviewed_fact": 8,
+      "earning_documents_with_all_located_checklist_spans_complete": 1
+    },
+    "v21_full_blocks": {
+      "earning_documents_with_any_complete_reviewed_fact": 8,
+      "earning_documents_with_all_located_checklist_spans_complete": 8
+    }
+  },
+  "candidate_to_review_field_change_counts": {
+    "basis": 48,
+    "period": 24,
+    "value": 12,
+    "unit": 12
+  },
+  "candidate_nonnull_field_rejected_or_changed_counts": {
+    "basis": 48,
+    "value": 12
+  },
+  "source_supported_facts_with_basis_unknown": 20,
+  "possible_unlinked_footnote_fact_count": 10,
+  "old_incomplete_v21_complete_examples": [],
+  "v21_still_incomplete_examples": [
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-05-28",
+      "topic": "net_income",
+      "old_status": "AMBIGUOUS",
+      "v21_selected_status": "AMBIGUOUS",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000115/q1fy26pr.htm"
+    },
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-05-28",
+      "topic": "eps",
+      "old_status": "AMBIGUOUS",
+      "v21_selected_status": "AMBIGUOUS",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000115/q1fy26pr.htm"
+    },
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-05-28",
+      "topic": "operating_cash_flow",
+      "old_status": "LOST",
+      "v21_selected_status": "PARTIAL",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000115/q1fy26pr.htm"
+    }
+  ],
+  "source_supported_facts_with_incomplete_v21_input": 35,
+  "old_train_aggregate_clipped_rows_by_symbol": {
+    "US.NVDA": 0,
+    "US.MU": 0
+  },
+  "old_train_aggregate_note": "Only saved event/date/hash metadata without body, label or price fields was read for train participation; zero clipping also matches the saved prior audit hash above. Mixed qualified-row files were not opened.",
+  "limitations": [
+    "Mechanical source-element and reviewed field-string presence is conservative; semantic support was same-team CODEX_REVIEW and is not independent human gold.",
+    "Only actual adapter block text counts as mechanically retained; a source fragment seen only in raw_text is AMBIGUOUS_REFORMATTED, not COMPLETE.",
+    "A mechanically exact source fragment does not independently prove semantic period/column support; the v2.1 header copies are table-bound and full source relationships still require review.",
+    "Unresolved supporting footnote references block COMPLETE status; footnote text is not automatically attached to each table cell.",
+    "P1 checklist topic-span retention and P3 reviewed-fact field retention are separate; a fact is graded on its own reviewed field evidence, not every topic-level candidate span.",
+    "COMPLETE_KNOWN_FIELDS_BASIS_UNKNOWN is not strict complete financial context: metric, value, period and unit survived, but accounting basis remains unknown in source review.",
+    "No model fit, validation-period input, price label, or predictive comparison in this run."
+  ]
+}

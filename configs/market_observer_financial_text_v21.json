@@ -1,0 +1,69 @@
+{
+  "schema": "market_observer_financial_text_v21_plan_v1",
+  "execution_date_timezone": "Asia/Shanghai",
+  "baseline_commit": "c127bc88cfd2809063a5cd74d61bb863ad96ec00",
+  "branch": "codex/sync-research-progress-20261113",
+  "role": "TRAINING_PERIOD_INPUT_ENGINEERING_AFFECTED_BY_PRIOR_VALIDATION_EXPOSURE",
+  "supersedes_for_input_only": "market_observer_financial_text_v2_plan_v1; original v2 blocks, adapter text, and retention results remain frozen",
+  "v21_correction": {
+    "reason": "Training-only source audit found FQ period labels and later statement header rows omitted from v2 data-row context; formatted rows also broke verbatim evidence matching.",
+    "change": "Recognize explicit FQn-yy period labels; scan source table header rows until first topic-bearing numeric data row; copy exact header and source row strings into each data-row model text with column mapping.",
+    "fixed_budget_characters_per_event": 20000,
+    "same_training_documents": 16,
+    "same_reviewed_candidate_facts": 71,
+    "validation_or_test_bodies_or_labels_reopened_this_round": false,
+    "model_fit_calls": 0
+  },
+  "prior_validation_exposure": "The rule designer previously inspected 2026-04 through 2026-05 development results. This revision is not independent of those outcomes.",
+  "source_manifest": "artifacts/market_observer_official_20261115/corpus_manifest.json",
+  "source_scope": {
+    "symbols": ["NVDA", "MU"],
+    "announcement_date_start": "2025-04-01",
+    "announcement_date_end": "2026-03-31",
+    "source_kind": "ISSUER_EARNINGS",
+    "document_selection": "Every saved FULL_BODY SEC_ARCHIVE_HASHED earnings exhibit in the date interval, plus its accession-matched SEC primary filing; sort by announcement_date, symbol, event_id, document_id",
+    "expected_earnings_exhibits_before_run": 8,
+    "expected_matched_primary_filings_before_run": 8,
+    "verify_saved_raw_sha256": true,
+    "verify_saved_extracted_sha256": true,
+    "new_downloads": 0,
+    "excluded": ["2026-04-01 through 2026-07-31 bodies and labels", "news from other publishers", "later development cards", "new models"]
+  },
+  "checklist": {
+    "role": "CODEX_REFERENCE_DRAFT_NOT_INDEPENDENT_GOLD",
+    "freeze_before_v2_comparison": true,
+    "topics": ["revenue", "net_income", "earnings_per_share", "gross_margin", "next_quarter_or_full_year_guidance", "capital_expenditures", "operating_cash_flow", "free_cash_flow", "important_segment_revenue"],
+    "statuses": ["LOCATED", "NOT_FOUND", "BASIS_AMBIGUOUS", "PARSE_FAILED", "NOT_APPLICABLE"],
+    "not_found_meaning": "Search did not locate supporting evidence in the saved official document; it is not a nondisclosure conclusion."
+  },
+  "v2_input": {
+    "source_precedence": ["earnings_exhibit", "associated_primary_filing"],
+    "selection": "Deterministic heading, topic-keyword and table rules with surrounding context, preserving source document and order",
+    "preserve": ["exact_numeric_text", "minus_and_parenthesized_negative", "percent", "currency", "range", "magnitude", "table_row_header", "table_column_header", "period", "units", "financial_basis", "footnotes", "negation", "risk_conditions", "guidance_assumptions"],
+    "content_types": ["historical_result", "future_guidance", "year_over_year_comparison", "management_commentary", "other"],
+    "removal": "Only explicit structural or fixed-rule boilerplate removal with a recorded reason; no silent truncation",
+    "full_blocks_persisted": true,
+    "clean_offset_is_not_raw_offset": true,
+    "model_adapter_max_characters": 20000,
+    "model_adapter_policy": "Select complete ranked blocks within the budget and record every omitted block and reason; do not fit or infer this round"
+  },
+  "facts": {
+    "candidate_method": "deterministic_rule",
+    "review_role": "CODEX_REVIEW",
+    "separate_candidate_and_review": true,
+    "unknown_fields_remain_null": true,
+    "consensus_surprise_without_point_in_time_snapshot": "NOT_CREATED",
+    "stock_reaction_used_as_evidence": false,
+    "fact_card_used_in_return_model": false
+  },
+  "retention_comparison": {
+    "baseline_builder": "configs/market_observer_official_text_v1.json",
+    "reference": "frozen_training_earnings_checklist",
+    "full_retention_requires": ["metric", "value", "period", "unit", "necessary_basis"],
+    "statuses": ["COMPLETE", "PARTIAL", "LOST", "AMBIGUOUS", "ORIGINAL_NOT_LOCATED"],
+    "denominators": ["document", "fact", "field"],
+    "model_fit_calls": 0,
+    "prediction_or_validation_scoring": "NOT_RUN"
+  },
+  "publication": "Public repository and existing owner-only Site receive redacted summaries and reviewed short fact values with source links; raw SEC bodies, full private quotes, labels and private predictions remain local."
+}

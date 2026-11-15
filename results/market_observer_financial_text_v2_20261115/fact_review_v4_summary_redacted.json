@@ -1,0 +1,26 @@
+{
+  "schema": "market_observer_financial_fact_review_summary_v4",
+  "supersedes_v3": "Rowspan-aware fiscal headers and prior-quarter adjacency check; basis normalized for public display.",
+  "scope": "eight NVDA/MU training-period SEC earnings exhibits; no validation/test source or labels",
+  "review_role": "CODEX_REVIEW_NOT_INDEPENDENT_HUMAN_GOLD",
+  "source_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "candidate_sha256": "4b349b448ac7238d7182e49ec4a3d3906ed10eddad8f49b9a1df12cd277c6f5f",
+  "previous_review_sha256": "8a7d3623a0e2353781f80a2a48385378ba80633634963167740722bf0bccce31",
+  "private_review_sha256": "523fd9e58256fdf179d55e11faa2d4b0ae8193cc873585d7b7263c8bbd1f92b9",
+  "public_cards_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "document_count": 8,
+  "candidate_count": 71,
+  "reviewed_count": 71,
+  "source_supported_count": 60,
+  "ambiguous_count": 11,
+  "comparison_status_counts": {
+    "SOURCE_BOUND_PRIOR_FISCAL_QUARTER": 32,
+    "UNKNOWN_OR_NOT_REQUIRED": 39
+  },
+  "fit_count": 0,
+  "limits": [
+    "Comparison is prior fiscal quarter from the same saved source row and GAAP column where bound; not prerelease market consensus.",
+    "Comparisons for guidance/cash/segment facts stay null unless independently source-bound.",
+    "This is a train-material content review, not an independent extraction accuracy estimate."
+  ]
+}
