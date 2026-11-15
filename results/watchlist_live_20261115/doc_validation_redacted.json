@@ -1,0 +1,13 @@
+{
+  "schema": "watchlist_live_document_check_v1",
+  "execution_date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "markdown_files_checked": 7,
+  "relative_links_checked": 327,
+  "broken_relative_links": 0,
+  "json_files_parsed": 12,
+  "source": "private one-off local link and JSON parser check",
+  "external_url_content_checked_separately": "official issuer, fund and moomoo documentation cited in source register",
+  "research_numbers_in_reports": "crosschecked against watchlist config, mapping receipt, bounded live probe, service status and combined test log",
+  "private_data_in_receipt": false
+}

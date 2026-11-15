@@ -9,13 +9,13 @@ saved historical replay cannot be relabeled a contemporaneous prediction.
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timedelta, timezone
 from typing import Callable, Protocol
 
 from .evaluation import (
     HORIZON_MINUTES, MOMENTUM_LOOKBACK_MINUTES, FrozenInputSnapshot,
-    FrozenPrediction, MinuteBar, RegularSession, SnapshotEvidence,
+    FrozenPrediction, MinuteBar, OutcomeResult, RegularSession, SnapshotEvidence,
     bar_from_store_row, digest, evaluate_outcome, freeze_input_snapshot,
     minute_ceil, momentum_baseline, outcome_to_store_record,
     prediction_from_store_row, stored_utc, utc, utc_text,
@@ -25,6 +25,7 @@ from .events import (
     source_evidence_from_claim_row,
 )
 from .learning import propose_reviews, review_to_store_record
+from .price_safety import PriceSeriesEvidence, evaluate_with_price_safety
 from .store import Store
 
 
@@ -297,8 +298,15 @@ def record_rule_observation(store: Store, *, trigger: EventTrigger,
 
 def evaluate_due_prediction(store: Store, *, prediction_id: str,
                             session: RegularSession, as_of: datetime,
-                            qqq_instrument_id: str) -> OutcomeReceipt:
-    """Persist a due descriptive outcome and open review items idempotently."""
+                            qqq_instrument_id: str,
+                            instrument_series: PriceSeriesEvidence | None = None,
+                            qqq_series: PriceSeriesEvidence | None = None) -> OutcomeReceipt:
+    """Persist a due outcome only when action coverage supports a mature label.
+
+    The optional series evidence keeps historical pending records readable.
+    Without *both* inventories, a mature price label is withheld. A live caller
+    must provide dated, reviewed inventories for the exact two instruments.
+    """
 
     row = store.get_prediction(prediction_id)
     if row is None:
@@ -306,10 +314,42 @@ def evaluate_due_prediction(store: Store, *, prediction_id: str,
     prediction: FrozenPrediction = prediction_from_store_row(row)
     observed = _stored_bars(store, prediction.instrument_id, session.session_id)
     benchmark = _stored_bars(store, qqq_instrument_id, session.session_id)
-    outcome = evaluate_outcome(prediction, session=session,
-                               instrument_bars=observed, qqq_bars=benchmark,
-                               as_of=as_of, price_basis=prediction.price_basis,
-                               qqq_instrument_id=qqq_instrument_id)
+    if (instrument_series is None) != (qqq_series is None):
+        raise ValueError("both instrument and QQQ price-series inventories are required")
+    if instrument_series is None:
+        candidate = evaluate_outcome(prediction, session=session,
+                                     instrument_bars=observed, qqq_bars=benchmark,
+                                     as_of=as_of, price_basis=prediction.price_basis,
+                                     qqq_instrument_id=qqq_instrument_id)
+        outcome = candidate if candidate.status != "MATURED" else replace(
+            candidate, status="ACTION_COVERAGE_PENDING",
+            reason="Dated corporate-action inventories for both price series are missing",
+            start_bar_id=None, end_bar_id=None, return_value=None,
+            qqq_return=None, excess_return=None, direction_hit=None,
+            baseline_hit=None, data_quality_status="UNKNOWN",
+            input_hash=None, input_manifest_json=None)
+    else:
+        guarded = evaluate_with_price_safety(
+            prediction, session=session, instrument_bars=observed,
+            qqq_bars=benchmark, as_of=as_of, price_basis=prediction.price_basis,
+            instrument_series=instrument_series, qqq_series=qqq_series,
+            qqq_instrument_id=qqq_instrument_id)
+        if guarded.outcome is None:
+            gate_manifest = {
+                "prediction_id": prediction.prediction_id,
+                "gate_status": guarded.status,
+                "instrument_source_hash": instrument_series.source_hash,
+                "qqq_source_hash": qqq_series.source_hash,
+                "instrument_checked_at": utc_text(instrument_series.checked_at),
+                "qqq_checked_at": utc_text(qqq_series.checked_at),
+            }
+            outcome = OutcomeResult(
+                prediction.prediction_id, guarded.status, guarded.reason,
+                None, None, None, None, None, None, None, None,
+                "UNAVAILABLE", None, "UNKNOWN", digest(gate_manifest),
+                json.dumps(gate_manifest, sort_keys=True, separators=(",", ":")))
+        else:
+            outcome = guarded.outcome
     record = outcome_to_store_record(outcome)
     prior = store.connection.execute("SELECT outcome_id FROM outcomes WHERE outcome_id=?",
                                      (record["outcome_id"],)).fetchone()

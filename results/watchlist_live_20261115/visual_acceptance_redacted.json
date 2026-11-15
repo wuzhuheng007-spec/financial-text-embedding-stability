@@ -1,0 +1,26 @@
+{
+  "schema": "market_observer_watchlist_visual_acceptance_v1",
+  "execution_date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "input": "previously saved private observer SQLite; no provider calls for page check",
+  "page": "artifacts/market_observer_watchlist_v2/dashboard_private.html",
+  "publicly_uploaded_page_or_screenshots": false,
+  "browser": "headless Microsoft Edge",
+  "desktop": {
+    "viewport_css_px": 1440,
+    "document_scroll_width_css_px": 1425,
+    "horizontal_overflow": false,
+    "private_screenshot": "artifacts/market_observer_watchlist_v2/desktop_1440.png"
+  },
+  "mobile": {
+    "viewport_css_px": 390,
+    "document_scroll_width_css_px": 390,
+    "horizontal_overflow": false,
+    "private_screenshot": "artifacts/market_observer_watchlist_v2/mobile_card_390.png"
+  },
+  "visual_review": "same-execution Codex visual inspection of both screenshots",
+  "observed": "priority ETF cards, source/mapping details, explicit unknown data time, market/delay/freshness, unconfirmed push, separate reference indices, no linked prediction or mature outcome claim",
+  "saved_news_links": "no explicit event-to-watchlist links in current private snapshot; card reports unknown coverage",
+  "live_price_update_verified": false,
+  "browser_qa_process_remaining": false
+}

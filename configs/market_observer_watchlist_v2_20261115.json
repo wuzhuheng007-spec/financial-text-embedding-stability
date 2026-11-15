@@ -1,0 +1,628 @@
+{
+  "schema": "market_observer_watchlist_v2",
+  "version": "2026-11-15.v2",
+  "timezone": "Asia/Shanghai",
+  "source_role": "USER_REQUESTED_OBSERVATION_SCOPE_NOT_PROVIDER_MAPPING",
+  "display_order": [
+    "priority_etfs",
+    "benchmark",
+    "magnificent_seven",
+    "memory",
+    "space",
+    "related"
+  ],
+  "groups": {
+    "priority_etfs": [
+      "ETF:TQQQ",
+      "ETF:SOXX",
+      "ETF:SPY"
+    ],
+    "magnificent_seven": [
+      "COMPANY:APPLE",
+      "COMPANY:MICROSOFT",
+      "COMPANY:NVIDIA",
+      "COMPANY:AMAZON",
+      "COMPANY:ALPHABET",
+      "COMPANY:META",
+      "COMPANY:TESLA"
+    ],
+    "memory": [
+      "COMPANY:SNDK_ISSUER",
+      "COMPANY:MICRON",
+      "COMPANY:SK_HYNIX"
+    ],
+    "space": [
+      "COMPANY:SPACEX"
+    ],
+    "benchmark": [
+      "ETF:QQQ"
+    ],
+    "related": [
+      "COMPANY:AMD",
+      "COMPANY:INTEL",
+      "COMPANY:COREWEAVE",
+      "COMPANY:BROADCOM",
+      "COMPANY:SAMSUNG_ELECTRONICS"
+    ]
+  },
+  "entities": {
+    "ETF:TQQQ": {
+      "name": "TQQQ",
+      "kind": "ETF",
+      "security_ids": [
+        "SEC:TQQQ:US"
+      ],
+      "reference_index_id": "INDEX:NASDAQ_100",
+      "daily_target_leverage": 3,
+      "return_label_policy": "OWN_ACTUAL_QUOTE_OR_BAR_ONLY",
+      "objective_source_url": "https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq"
+    },
+    "ETF:SOXX": {
+      "name": "SOXX",
+      "kind": "ETF",
+      "security_ids": [
+        "SEC:SOXX:US"
+      ],
+      "reference_index_id": "INDEX:NYSE_SEMICONDUCTOR",
+      "return_label_policy": "OWN_ACTUAL_QUOTE_OR_BAR_ONLY",
+      "objective_source_url": "https://www.ishares.com/us/products/239705/ishares-semiconductor-etf-soxx"
+    },
+    "ETF:SPY": {
+      "name": "SPY",
+      "kind": "ETF",
+      "security_ids": [
+        "SEC:SPY:US"
+      ],
+      "reference_index_id": "INDEX:SP_500",
+      "return_label_policy": "OWN_ACTUAL_QUOTE_OR_BAR_ONLY",
+      "objective_source_url": "https://www.ssga.com/us/en/institutional/etfs/state-street-spdr-sp-500-etf-trust-spy"
+    },
+    "ETF:QQQ": {
+      "name": "QQQ",
+      "kind": "ETF",
+      "security_ids": [
+        "SEC:QQQ:US"
+      ],
+      "reference_index_id": "INDEX:NASDAQ_100",
+      "return_label_policy": "OWN_ACTUAL_QUOTE_OR_BAR_ONLY",
+      "objective_source_url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-qqq-trust-series-1.html"
+    },
+    "COMPANY:APPLE": {
+      "name": "Apple",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:AAPL:US"
+      ]
+    },
+    "COMPANY:MICROSOFT": {
+      "name": "Microsoft",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:MSFT:US"
+      ]
+    },
+    "COMPANY:NVIDIA": {
+      "name": "NVIDIA",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:NVDA:US"
+      ]
+    },
+    "COMPANY:AMAZON": {
+      "name": "Amazon",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:AMZN:US"
+      ]
+    },
+    "COMPANY:ALPHABET": {
+      "name": "Alphabet",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:GOOGL:US",
+        "SEC:GOOG:US"
+      ],
+      "primary_watch_security_id": "SEC:GOOGL:US",
+      "primary_selection_basis": "USER_WATCHLIST_CHOICE_NOT_ISSUER_PRIMARY_SECURITY"
+    },
+    "COMPANY:META": {
+      "name": "Meta",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:META:US"
+      ]
+    },
+    "COMPANY:TESLA": {
+      "name": "Tesla",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:TSLA:US"
+      ]
+    },
+    "COMPANY:SNDK_ISSUER": {
+      "name": "SNDK",
+      "kind": "COMPANY_CANDIDATE",
+      "security_ids": [
+        "SEC:SNDK:US"
+      ]
+    },
+    "COMPANY:MICRON": {
+      "name": "Micron",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:MU:US"
+      ]
+    },
+    "COMPANY:SK_HYNIX": {
+      "name": "SK hynix",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:000660:KR_CANDIDATE",
+        "SEC:SKHY:US_CANDIDATE"
+      ],
+      "cross_market_price_policy": "SEPARATE_SERIES_NO_CONCATENATION"
+    },
+    "COMPANY:SPACEX": {
+      "name": "SpaceX",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:SPCX:US"
+      ],
+      "issuer_security_relation": "CURRENT_PROVIDER_AND_OFFICIAL_ISSUER_CROSSCHECK"
+    },
+    "COMPANY:AMD": {
+      "name": "AMD",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:AMD:US"
+      ]
+    },
+    "COMPANY:INTEL": {
+      "name": "Intel",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:INTC:US"
+      ]
+    },
+    "COMPANY:COREWEAVE": {
+      "name": "CoreWeave",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:CRWV:US"
+      ]
+    },
+    "COMPANY:BROADCOM": {
+      "name": "Broadcom",
+      "kind": "COMPANY",
+      "security_ids": [
+        "SEC:AVGO:US"
+      ]
+    },
+    "COMPANY:SAMSUNG_ELECTRONICS": {
+      "name": "Samsung Electronics",
+      "kind": "COMPANY",
+      "security_ids": []
+    }
+  },
+  "indices": {
+    "INDEX:NASDAQ_100": {
+      "name": "Nasdaq-100 Index",
+      "kind": "INDEX",
+      "provider_code": null
+    },
+    "INDEX:NYSE_SEMICONDUCTOR": {
+      "name": "NYSE Semiconductor Index",
+      "kind": "INDEX",
+      "provider_code": null
+    },
+    "INDEX:SP_500": {
+      "name": "S&P 500 Index",
+      "kind": "INDEX",
+      "provider_code": null
+    }
+  },
+  "securities": {
+    "SEC:TQQQ:US": {
+      "entity_id": "ETF:TQQQ",
+      "requested_ticker": "TQQQ",
+      "market_hint": "US",
+      "type_candidate": "ETF",
+      "provider_code": null
+    },
+    "SEC:SOXX:US": {
+      "entity_id": "ETF:SOXX",
+      "requested_ticker": "SOXX",
+      "market_hint": "US",
+      "type_candidate": "ETF",
+      "provider_code": null
+    },
+    "SEC:SPY:US": {
+      "entity_id": "ETF:SPY",
+      "requested_ticker": "SPY",
+      "market_hint": "US",
+      "type_candidate": "ETF",
+      "provider_code": null
+    },
+    "SEC:QQQ:US": {
+      "entity_id": "ETF:QQQ",
+      "requested_ticker": "QQQ",
+      "market_hint": "US",
+      "type_candidate": "ETF",
+      "provider_code": null
+    },
+    "SEC:AAPL:US": {
+      "entity_id": "COMPANY:APPLE",
+      "requested_ticker": "AAPL",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:MSFT:US": {
+      "entity_id": "COMPANY:MICROSOFT",
+      "requested_ticker": "MSFT",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:NVDA:US": {
+      "entity_id": "COMPANY:NVIDIA",
+      "requested_ticker": "NVDA",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:AMZN:US": {
+      "entity_id": "COMPANY:AMAZON",
+      "requested_ticker": "AMZN",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:GOOGL:US": {
+      "entity_id": "COMPANY:ALPHABET",
+      "requested_ticker": "GOOGL",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:GOOG:US": {
+      "entity_id": "COMPANY:ALPHABET",
+      "requested_ticker": "GOOG",
+      "market_hint": "US",
+      "type_candidate": "SHARE_CLASS_ALIAS",
+      "provider_code": null,
+      "watch_enabled": false
+    },
+    "SEC:META:US": {
+      "entity_id": "COMPANY:META",
+      "requested_ticker": "META",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:TSLA:US": {
+      "entity_id": "COMPANY:TESLA",
+      "requested_ticker": "TSLA",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:SNDK:US": {
+      "entity_id": "COMPANY:SNDK_ISSUER",
+      "requested_ticker": "SNDK",
+      "market_hint": "US",
+      "type_candidate": "SHARE_CANDIDATE",
+      "provider_code": null
+    },
+    "SEC:MU:US": {
+      "entity_id": "COMPANY:MICRON",
+      "requested_ticker": "MU",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:000660:KR_CANDIDATE": {
+      "entity_id": "COMPANY:SK_HYNIX",
+      "requested_ticker": "000660",
+      "market_hint": "KR",
+      "type_candidate": "ORDINARY_SHARE_ISSUER_CROSSCHECKED",
+      "provider_code": null
+    },
+    "SEC:SKHY:US_CANDIDATE": {
+      "entity_id": "COMPANY:SK_HYNIX",
+      "requested_ticker": "SKHY",
+      "market_hint": "US",
+      "type_candidate": "ADR_ISSUER_CROSSCHECKED",
+      "provider_code": null
+    },
+    "SEC:AMD:US": {
+      "entity_id": "COMPANY:AMD",
+      "requested_ticker": "AMD",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:INTC:US": {
+      "entity_id": "COMPANY:INTEL",
+      "requested_ticker": "INTC",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:CRWV:US": {
+      "entity_id": "COMPANY:COREWEAVE",
+      "requested_ticker": "CRWV",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:AVGO:US": {
+      "entity_id": "COMPANY:BROADCOM",
+      "requested_ticker": "AVGO",
+      "market_hint": "US",
+      "type_candidate": "SHARE",
+      "provider_code": null
+    },
+    "SEC:SPCX:US": {
+      "entity_id": "COMPANY:SPACEX",
+      "requested_ticker": "SPCX",
+      "market_hint": "US",
+      "type_candidate": "CLASS_A_COMMON_STOCK",
+      "provider_code": null
+    }
+  },
+  "news_aliases": {
+    "GOOGL": "COMPANY:ALPHABET",
+    "GOOG": "COMPANY:ALPHABET",
+    "TSLA": "COMPANY:TESLA",
+    "SPACEX": "COMPANY:SPACEX",
+    "SK HYNIX": "COMPANY:SK_HYNIX",
+    "SPCX": "COMPANY:SPACEX",
+    "SKHY": "COMPANY:SK_HYNIX",
+    "000660": "COMPANY:SK_HYNIX"
+  },
+  "news_event_policy": "ONE_EVENT_ID_PER_SOURCE_EVENT; ENTITY_AND_SECURITY_LINKS_SEPARATE; ALIAS_MATCH_IS_CANDIDATE_ONLY",
+  "etf_holdings_policy": "DATED_OFFICIAL_WEIGHT_FILE_REQUIRED_FOR_WEIGHTED_EFFECT; OTHERWISE_QUALITATIVE_ONLY",
+  "earnings_fields": [
+    "revenue",
+    "net_income",
+    "eps",
+    "gross_margin",
+    "capital_expenditure",
+    "operating_cash_flow",
+    "free_cash_flow",
+    "segment_results",
+    "next_quarter_guidance",
+    "full_year_guidance"
+  ],
+  "earnings_value_roles": [
+    "ACTUAL",
+    "PRIOR_ACTUAL",
+    "GUIDANCE",
+    "PRE_RELEASE_CONSENSUS"
+  ],
+  "missing_consensus_policy": "UNKNOWN_NO_BEAT_CLAIM",
+  "memory_topics": [
+    "DRAM",
+    "NAND",
+    "HBM",
+    "enterprise_SSD",
+    "price",
+    "capacity",
+    "inventory",
+    "customer_orders",
+    "capital_expenditure"
+  ],
+  "memory_price_policy": "PRODUCT_SPECIFIC_NO_CATEGORY_WIDE_GENERALIZATION",
+  "macro_topics": [
+    "interest_rates",
+    "CPI",
+    "employment",
+    "policy",
+    "energy",
+    "geopolitical_conflict"
+  ],
+  "relationship_policy": "SAME_PERSON_IS_NOT_SAME_COMPANY; MARKET_MOVES_ARE_NOT_SOURCE_CORROBORATION",
+  "mapping_history_policy": "CURRENT_PROVIDER_AND_ISSUER_EVIDENCE_DOES_NOT_BACKFILL_HISTORICAL_IDENTITY",
+  "mapping_evidence": {
+    "prior_12": {
+      "raw_sha256": "0675dab3eb8b7615636d41ed7277b3044ffaa31edf77c576604a695bb0978c64",
+      "public_receipt": "results/market_observer_v1_20261115/moomoo_connection_receipt.json"
+    },
+    "new_9": {
+      "raw_sha256": "91daa1e15df16dcbaa0579425b85e98a60e0f61d43d3c160179f985b8dbb7218",
+      "public_receipt": "results/watchlist_live_20261115/security_mapping_redacted.json"
+    }
+  },
+  "verified_current_mappings": {
+    "SEC:000660:KR_CANDIDATE": {
+      "provider_code": "KR.000660",
+      "provider_market": "KR",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:AAPL:US": {
+      "provider_code": "US.AAPL",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:AMD:US": {
+      "provider_code": "US.AMD",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:AMZN:US": {
+      "provider_code": "US.AMZN",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:AVGO:US": {
+      "provider_code": "US.AVGO",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:CRWV:US": {
+      "provider_code": "US.CRWV",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:GOOG:US": {
+      "provider_code": "US.GOOG",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:GOOGL:US": {
+      "provider_code": "US.GOOGL",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:INTC:US": {
+      "provider_code": "US.INTC",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:META:US": {
+      "provider_code": "US.META",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:MSFT:US": {
+      "provider_code": "US.MSFT",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:MU:US": {
+      "provider_code": "US.MU",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:NVDA:US": {
+      "provider_code": "US.NVDA",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:QQQ:US": {
+      "provider_code": "US.QQQ",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:SKHY:US_CANDIDATE": {
+      "provider_code": "US.SKHY",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:SNDK:US": {
+      "provider_code": "US.SNDK",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:SOXX:US": {
+      "provider_code": "US.SOXX",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:SPCX:US": {
+      "provider_code": "US.SPCX",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:SPY:US": {
+      "provider_code": "US.SPY",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:06:33.908356Z",
+      "evidence_id": "prior_12",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:TQQQ:US": {
+      "provider_code": "US.TQQQ",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    "SEC:TSLA:US": {
+      "provider_code": "US.TSLA",
+      "provider_market": "US",
+      "source_tool": "quote_stock_basicinfo",
+      "recorded_at_utc": "2026-11-15T04:30:05.027584Z",
+      "evidence_id": "new_9",
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    }
+  }
+}

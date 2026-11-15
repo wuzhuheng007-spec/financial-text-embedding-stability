@@ -1,0 +1,121 @@
+{
+  "account_identifiers_included": false,
+  "account_subscription_quota": {
+    "http_status": 404,
+    "request_count": 1,
+    "requested_at_utc": "2026-11-15T04:48:41.019212Z",
+    "state": "UNKNOWN"
+  },
+  "bounded_sessions": [
+    {
+      "config_hash": "9cb800314891bccf55eb86b9234dc7985b6fc88bae0378f5e86af40ba2adf15e",
+      "ended_at": "2026-11-15T04:49:30.378897Z",
+      "mode": "LIVE_PUSH",
+      "session_id": "add8d925-3d4e-4750-9939-ab941f4ae14d",
+      "started_at": "2026-11-15T04:48:54.935857Z",
+      "status": "STOPPED_BY_USER"
+    },
+    {
+      "config_hash": "6e489928128a33d582882186ba3545d1efea9e119a3467c03ac584f8899e2f69",
+      "ended_at": "2026-11-15T04:52:22.576350Z",
+      "mode": "LIVE_PUSH",
+      "session_id": "171532a1-d440-4cb4-b645-2634ce01ac72",
+      "started_at": "2026-11-15T04:51:36.606585Z",
+      "status": "STOPPED_BY_USER"
+    },
+    {
+      "config_hash": "5a8548e9b159f1efb04e5c85c4b247cb083644854ece6e6e1509f3ffcf959ced",
+      "ended_at": "2026-11-15T04:53:06.690218Z",
+      "mode": "LIVE_PUSH",
+      "session_id": "e2a8845d-6356-4976-ae8d-94ce10acaf10",
+      "started_at": "2026-11-15T04:52:31.009526Z",
+      "status": "STOPPED_BY_USER"
+    }
+  ],
+  "collection_gaps": [
+    {
+      "coverage_status": "INCOMPLETE",
+      "reason": "UNRESOLVED_DISCONNECT",
+      "source": "MOOMOO_WEBAPI_WS",
+      "stream_key": "push"
+    }
+  ],
+  "distinct_persisted_quote_rows": 1,
+  "eligible_complete_one_minute_bars": 0,
+  "execution_timezone": "Asia/Shanghai",
+  "final_subscription": {
+    "acknowledged_count": 1,
+    "active_after_stop": 0,
+    "kind": "QUOTE",
+    "release_state": "ACKNOWLEDGED",
+    "subscription_ack_code": 0,
+    "control_response_protocol": "IDLESS_RET_CODE",
+    "unsubscribe_ack_code": 0,
+    "symbol": "US.TQQQ"
+  },
+  "formal_predictions_or_outcomes_run": false,
+  "live_market_open_updates_verified": false,
+  "oauth": {
+    "credential_state": "QUOTE_READ_AUTHORIZED",
+    "encrypted_at_rest": true,
+    "granted_scope_classes": [
+      "quote:read",
+      "accid:<redacted>"
+    ],
+    "previous_broader_grant_rejected_and_discarded": true,
+    "token_exported": false
+  },
+  "official_sources": [
+    "https://open.moomoo.com/api/quote/push/auth",
+    "https://open.moomoo.com/api/quote/push/subscribe",
+    "https://open.moomoo.com/api/quote/push/data-format",
+    "https://open.moomoo.com/api/quote/naming-dictionary",
+    "https://open.moomoo.com/api/quote/quotas/subscription"
+  ],
+  "persisted_quote_metadata": [
+    {
+      "delay_status": "UNKNOWN",
+      "input_hash": "99fd25c960562b3b408d9df30d023065cc792f6c28db06f5d7b15e7ce048aa48",
+      "instrument_id": "US.TQQQ",
+      "kind": "QUOTE",
+      "market_session": "UNKNOWN",
+      "persisted_at": "2026-11-15T04:51:38.145036Z",
+      "provider": "MOOMOO_WEBAPI_WS",
+      "provider_time": "2026-11-13T22:00:00.063000Z",
+      "received_at": "2026-11-15T04:51:38.144527Z",
+      "schema_version": "market_observer_v1",
+      "source_timezone": "UTC_UNIX_MS"
+    }
+  ],
+  "private_input_locators": [
+    "artifacts/market_observer_live/probe_tqqq_v3.json",
+    "artifacts/market_observer_live/push_status_v3.json",
+    "artifacts/market_observer_live/quota_probe_20261115.json",
+    "artifacts/market_observer_live/diagnose_one_subscription.json",
+    "artifacts/market_observer_v1/observer.sqlite"
+  ],
+  "private_input_sha256": {
+    "config_v3": "57d9a025351fe1f0af875637dedcefbf687d7bf17cddd2749a381752d368aeef",
+    "push_status_v3": "c8d1f8bf6e39ee4b6f8374494ab8f2b0bb7a871c61ce375d6c63ee15e4c33bca",
+    "quota_probe": "4d02aa7a86e516d265e5cc9bde221f4081d64ea4d039cdcbc00d74a6c8146830",
+    "structural_diagnostic": "85e656ff3151aecc50c917738bab65b6a366e2566d90181230362feef0ff4c6f"
+  },
+  "provider_market_state": {
+    "code": 11,
+    "display_state_during_run": "CONNECTED_MARKET_CLOSED",
+    "market": "US",
+    "official_enum": "AFTER_HOURS_END"
+  },
+  "raw_quote_values_included": false,
+  "schema": "market_observer_live_probe_redacted_v1",
+  "structural_diagnostic": {
+    "auth_result": "SUCCESS",
+    "observed_control_envelope": "IDLESS_RET_CODE",
+    "push_frame_types_observed": [
+      "MARKET_STATE",
+      "QUOTE"
+    ],
+    "subscription_result": "NO_MATCHED_ACK"
+  },
+  "token_included": false
+}

@@ -1,7 +1,6 @@
 """Bounded, read-only observation loop with honest feed and coverage states.
 
-No provider implementation is bundled here. A live PUSH source must first be
-verified against actual entitlements and injected by a separate adapter.
+A live source must be separately authorized, officially mapped and injected.
 """
 
 from __future__ import annotations
@@ -44,8 +43,15 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValueError("unknown observer service configuration schema")
     if config["feed_mode"] not in {"NO_FEED", "LIVE_PUSH"}:
         raise ValueError("feed_mode must be NO_FEED or LIVE_PUSH")
-    if config["feed_mode"] == "LIVE_PUSH" and not config.get("quote_push_verified"):
-        raise ValueError("LIVE_PUSH requires verified quote push capability")
+    if config["feed_mode"] == "LIVE_PUSH":
+        live = config.get("live_push") or {}
+        if live.get("entitlement_state") in {"BOUNDED_PROBE", "BOUNDED_ACCOUNT_QUOTA_PROBE"}:
+            if (config.get("quote_push_verified") or
+                    config.get("max_runtime_minutes") is None or
+                    not 0 < config["max_runtime_minutes"] <= 15):
+                raise ValueError("bounded probe requires unverified status and at most 15 minutes")
+        elif not config.get("quote_push_verified"):
+            raise ValueError("LIVE_PUSH requires verified quote push or a capped bounded probe")
     if config.get("news_poll_interval_seconds") is not None and not config.get("news_quota_confirmed"):
         raise ValueError("news polling requires verified quota and retention terms")
     if config.get("news_quota_confirmed") and not config.get("max_provider_requests_per_session"):
@@ -125,9 +131,28 @@ def process_message(store: Store, message: dict[str, Any], provider_name: str) -
     raise ValueError(f"unknown provider message kind {kind!r}")
 
 
-def _write_dashboard(store: Store, dashboard_path: Path) -> None:
+def _view_context(config: dict[str, Any], repo_root: Path) -> dict[str, Any]:
+    """Load local display metadata only; never trigger a provider request."""
+    context: dict[str, Any] = {}
+    if config.get("watchlist_path"):
+        from .watchlist import load_watchlist
+        path = (repo_root / config["watchlist_path"]).resolve()
+        if not path.is_relative_to(repo_root.resolve()):
+            raise ValueError("watchlist path must stay within repository")
+        context["watchlist"] = load_watchlist(path)
+    live = config.get("live_push") or {}
+    if live.get("status_path"):
+        status_path = private_output_path(live["status_path"], repo_root)
+        if status_path.is_file():
+            context["live_status"] = json.loads(status_path.read_text(encoding="utf-8"))
+    return context
+
+
+def _write_dashboard(store: Store, dashboard_path: Path, *, config: dict[str, Any],
+                     repo_root: Path) -> None:
     from .dashboard import render_dashboard
-    html = render_dashboard(store.dashboard_snapshot(include_private_text=True))
+    html = render_dashboard(store.dashboard_snapshot(include_private_text=True),
+                            **_view_context(config, repo_root))
     temporary = dashboard_path.with_name(dashboard_path.name + ".tmp")
     temporary.write_text(html, encoding="utf-8")
     os.replace(temporary, dashboard_path)
@@ -161,7 +186,7 @@ def run_service(*, config: dict[str, Any], repo_root: Path, session_id: str,
                 if store.heartbeat(session_id, status):
                     status = "STOPPED_BY_USER"
                     break
-                _write_dashboard(store, dashboard_path)
+                _write_dashboard(store, dashboard_path, config=config, repo_root=repo_root)
                 if database_bytes(db_path) >= config["max_disk_mib"] * 1024 * 1024:
                     store.record_gap(source.provider_name if source else "LOCAL", "storage",
                                      "DISK_CAP_REACHED")
@@ -192,12 +217,14 @@ def run_service(*, config: dict[str, Any], repo_root: Path, session_id: str,
                                              started_at=gap_started, ended_at=utc_now(),
                                              coverage_status="RECOVERY_UNVERIFIED")
                             gap_started = None
-                        status = "CONNECTED_WAITING_FOR_DATA"
+                        status = getattr(source, "connection_state", "CONNECTED_WAITING_FOR_DATA")
                     message = source.next_message(float(config["heartbeat_seconds"]))
                     if message is not None:
                         process_message(store, message, source.provider_name)
                         events += 1
-                        status = "CONNECTED_DATA_RECEIVED"
+                        status = getattr(source, "connection_state", "CONNECTED_DATA_RECEIVED")
+                    else:
+                        status = getattr(source, "connection_state", status)
                 except (AuthorizationError, QuotaError) as exc:
                     gap_started = gap_started or utc_now()
                     store.record_gap(source.provider_name, "push", type(exc).__name__,
@@ -230,5 +257,5 @@ def run_service(*, config: dict[str, Any], repo_root: Path, session_id: str,
                 store.record_gap(source.provider_name if source else "LOCAL", "push",
                                  "UNRESOLVED_DISCONNECT", started_at=gap_started)
             store.end_session(session_id, status)
-            _write_dashboard(store, dashboard_path)
+            _write_dashboard(store, dashboard_path, config=config, repo_root=repo_root)
         return status

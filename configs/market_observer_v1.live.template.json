@@ -1,0 +1,31 @@
+{
+  "schema": "market_observer_service_config_v1",
+  "db_path": "artifacts/market_observer_v1/observer.sqlite",
+  "dashboard_path": "artifacts/market_observer_v1/dashboard_live.html",
+  "feed_mode": "LIVE_PUSH",
+  "quote_push_verified": false,
+  "news_quota_confirmed": false,
+  "news_poll_interval_seconds": null,
+  "max_provider_requests_per_session": 0,
+  "heartbeat_seconds": 5,
+  "max_disk_mib": 256,
+  "max_events_per_session": 10000,
+  "max_reconnect_attempts": 5,
+  "reconnect_initial_seconds": 1,
+  "reconnect_max_seconds": 30,
+  "max_runtime_minutes": 15,
+  "watchlist_path": "configs/market_observer_watchlist_v2_20261115.json",
+  "observation_pool": [],
+  "live_push": {
+    "provider": "MOOMOO_WEBAPI_WS",
+    "endpoint": "wss://webapi-quote.moomoo.com/ws",
+    "scope": "quote:read",
+    "entitlement_state": "BOUNDED_PROBE",
+    "entitlement_evidence": null,
+    "subscription_key_budget": 1,
+    "mapping_receipt_path": null,
+    "mapping_receipt_sha256": null,
+    "status_path": "artifacts/market_observer_live/push_status.json",
+    "subscriptions": []
+  }
+}

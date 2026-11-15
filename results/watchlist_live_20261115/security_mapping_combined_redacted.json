@@ -1,0 +1,186 @@
+{
+  "schema": "market_observer_combined_current_mapping_v1",
+  "watchlist_version": "2026-11-15.v2",
+  "source_config": "configs/market_observer_watchlist_v2_20261115.json",
+  "evidence": {
+    "prior_12": {
+      "raw_sha256": "0675dab3eb8b7615636d41ed7277b3044ffaa31edf77c576604a695bb0978c64",
+      "public_receipt": "results/market_observer_v1_20261115/moomoo_connection_receipt.json"
+    },
+    "new_9": {
+      "raw_sha256": "91daa1e15df16dcbaa0579425b85e98a60e0f61d43d3c160179f985b8dbb7218",
+      "public_receipt": "results/watchlist_live_20261115/security_mapping_redacted.json"
+    }
+  },
+  "rows": [
+    {
+      "security_id": "SEC:000660:KR_CANDIDATE",
+      "requested_symbol": "000660",
+      "provider_code": "KR.000660",
+      "provider_market": "KR",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:AAPL:US",
+      "requested_symbol": "AAPL",
+      "provider_code": "US.AAPL",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:AMD:US",
+      "requested_symbol": "AMD",
+      "provider_code": "US.AMD",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:AMZN:US",
+      "requested_symbol": "AMZN",
+      "provider_code": "US.AMZN",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:AVGO:US",
+      "requested_symbol": "AVGO",
+      "provider_code": "US.AVGO",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:CRWV:US",
+      "requested_symbol": "CRWV",
+      "provider_code": "US.CRWV",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:GOOG:US",
+      "requested_symbol": "GOOG",
+      "provider_code": "US.GOOG",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:GOOGL:US",
+      "requested_symbol": "GOOGL",
+      "provider_code": "US.GOOGL",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:INTC:US",
+      "requested_symbol": "INTC",
+      "provider_code": "US.INTC",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:META:US",
+      "requested_symbol": "META",
+      "provider_code": "US.META",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:MSFT:US",
+      "requested_symbol": "MSFT",
+      "provider_code": "US.MSFT",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:MU:US",
+      "requested_symbol": "MU",
+      "provider_code": "US.MU",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:NVDA:US",
+      "requested_symbol": "NVDA",
+      "provider_code": "US.NVDA",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:QQQ:US",
+      "requested_symbol": "QQQ",
+      "provider_code": "US.QQQ",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:SKHY:US_CANDIDATE",
+      "requested_symbol": "SKHY",
+      "provider_code": "US.SKHY",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:SNDK:US",
+      "requested_symbol": "SNDK",
+      "provider_code": "US.SNDK",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:SOXX:US",
+      "requested_symbol": "SOXX",
+      "provider_code": "US.SOXX",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:SPCX:US",
+      "requested_symbol": "SPCX",
+      "provider_code": "US.SPCX",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:SPY:US",
+      "requested_symbol": "SPY",
+      "provider_code": "US.SPY",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "prior_12"
+    },
+    {
+      "security_id": "SEC:TQQQ:US",
+      "requested_symbol": "TQQQ",
+      "provider_code": "US.TQQQ",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    },
+    {
+      "security_id": "SEC:TSLA:US",
+      "requested_symbol": "TSLA",
+      "provider_code": "US.TSLA",
+      "provider_market": "US",
+      "identity_scope": "CURRENT_ONLY",
+      "evidence_id": "new_9"
+    }
+  ],
+  "watchlist_config_sha256": "43ab6b3efd05c370207f44d1fb00a14402018fbaec1d7b1915c35e1b581c40f2"
+}

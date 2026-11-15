@@ -72,7 +72,188 @@ def _news(items: Any) -> str:
     return "".join(cards)
 
 
-def render_dashboard(snapshot: dict[str, Any] | None = None) -> str:
+def _watchlist_section(snapshot: dict[str, Any], watchlist: dict[str, Any],
+                       quote_rows: list[dict[str, Any]],
+                       live_status: dict[str, Any] | None = None) -> str:
+    """Render the v2 observation scope without promoting candidate associations."""
+    from .watchlist import validate_watchlist
+
+    validate_watchlist(watchlist)
+    instruments = {row.get("symbol"): row for row in snapshot.get("instruments", [])
+                   if isinstance(row, dict) and row.get("symbol")}
+    live = live_status if isinstance(live_status, dict) else {}
+    last_market_codes = live.get("market_state_codes")
+    market_labels = {0: "NOT_OPEN_OR_UNSUPPORTED", 6: "CLOSED", 11: "AFTER_HOURS_END"}
+    last_market_signal = ", ".join(
+        f"{market} {market_labels.get(code, 'UNCLASSIFIED')} ({code})"
+        for market, code in sorted(last_market_codes.items())
+        if isinstance(market, str) and isinstance(code, int) and not isinstance(code, bool)
+    ) if isinstance(last_market_codes, dict) else ""
+    enabled = {row.get("provider_code") for row in live.get("enabled_subscriptions", [])
+               if isinstance(row, dict) and row.get("provider_code")}
+    skipped = {row.get("provider_code"): row.get("reason")
+               for row in live.get("skipped_subscriptions", [])
+               if isinstance(row, dict) and row.get("provider_code")}
+    by_code: dict[str, dict[str, Any]] = {}
+    for row in quote_rows:
+        code = row.get("instrument_id")
+        if isinstance(code, str) and (code not in by_code or
+                                      str(row.get("provider_time") or "") >
+                                      str(by_code[code].get("provider_time") or "")):
+            by_code[code] = row
+    entity_events: dict[str, set[str]] = {}
+    for link in snapshot.get("event_entity_links", []):
+        if isinstance(link, dict) and link.get("entity_id") and link.get("event_id"):
+            entity_events.setdefault(str(link["entity_id"]), set()).add(str(link["event_id"]))
+    news_ids_by_event: dict[str, set[Any]] = {}
+    for link in snapshot.get("event_news_links", []):
+        if isinstance(link, dict) and link.get("event_id") and link.get("news_id") is not None:
+            news_ids_by_event.setdefault(str(link["event_id"]), set()).add(link["news_id"])
+    news_by_id = {item.get("id"): item for item in snapshot.get("news", []) if isinstance(item, dict)}
+    outcomes_by_prediction = {row.get("prediction_id"): row for row in snapshot.get("outcomes", [])
+                              if isinstance(row, dict) and row.get("prediction_id")}
+    group_names = {
+        "priority_etfs": "Priority ETFs",
+        "benchmark": "QQQ benchmark ETF",
+        "magnificent_seven": "Magnificent Seven",
+        "memory": "Memory and storage",
+        "space": "SpaceX",
+        "related": "Related issuers",
+    }
+    blocks: list[str] = [
+        "<section class='watchlist-intro'><h2>Observation pool v2</h2>"
+        "<p>Entity, security and ETF records are separate. Ticker matches suggest a company link only; "
+        "a price move does not verify news. The market-data fields below come from this local snapshot.</p>"
+        "<p>ETF and constituent returns overlap and are not independent event confirmations. "
+        "Dated official holdings are required before weighted exposure analysis.</p>"
+        "<p>Push connection: " + _s(live.get("connection_state") or "NOT_TESTED") +
+        " · status observed: " + _time(live.get("observed_at_utc")) +
+        ". Subscription status is a connection receipt, not proof of live price updates.</p>"
+        "<p>Last provider market signal: " + _s(last_market_signal or "UNKNOWN") +
+        ". The signal time was not separately recorded; a disconnected receipt is historical.</p></section>"
+    ]
+    for group in watchlist["display_order"]:
+        cards: list[str] = []
+        for entity_id in watchlist["groups"][group]:
+            entity = watchlist["entities"][entity_id]
+            security_parts: list[str] = []
+            verified_codes: set[str] = set()
+            for security_id in entity["security_ids"]:
+                security = watchlist["securities"][security_id]
+                ticker = security["requested_ticker"]
+                mapping = watchlist["verified_current_mappings"][security_id]
+                runtime = instruments.get(ticker) or {}
+                runtime_verified = str(runtime.get("resolution_status") or "").startswith("VERIFIED")
+                runtime_code = runtime.get("provider_code") if runtime_verified else None
+                provider_code = runtime_code or mapping["provider_code"]
+                mapping_status = ("VERIFIED_PRIVATE_STORE_CURRENT_ONLY" if runtime_code == mapping["provider_code"]
+                                  else "VERIFIED_CONFIG_RECEIPT_CURRENT_ONLY" if not runtime_code
+                                  else "CONFLICT_PRIVATE_STORE_VS_CONFIG")
+                if runtime_code and runtime_code != mapping["provider_code"]:
+                    provider_code = None
+                if provider_code:
+                    verified_codes.add(str(provider_code))
+                quote = by_code.get(str(provider_code)) if provider_code else None
+                subscription = ("Enabled in last connection receipt" if provider_code in enabled else
+                                "Skipped: " + str(skipped[provider_code]) if provider_code in skipped else
+                                "Not confirmed")
+                mapping_label = ("Conflicting mappings; quote suppressed" if provider_code is None else
+                                 "Current mapping verified")
+                role = "share-class alias; not separately watched" if security.get("watch_enabled") is False else \
+                    security["type_candidate"].replace("_", " ").lower()
+                security_parts.append(
+                    "<li><strong>" + _s(ticker) + "</strong> · " + _s(role) +
+                    " · observed price/bar: " + _s(quote.get("close") if quote else None) +
+                    "<br>Data time: " + _time(quote.get("provider_time") if quote else None) +
+                    "<br>Market: " + _s(quote.get("market_session") if quote else None) +
+                    " · delay: " + _s(quote.get("delay_status") if quote else None) +
+                    " · freshness: " + _s(str(quote.get("freshness")).replace("_", " ").lower()
+                                          if quote and quote.get("freshness") else None) +
+                    "<br>Push: " + _s(subscription) +
+                    "<details><summary>Mapping and receipt details</summary><p>"
+                    "Market: " + _s(security["market_hint"]) +
+                    " · provider code: " + _s(provider_code) +
+                    " · mapping: " + _s(mapping_label) +
+                    " (" + _s(mapping_status) + ")" +
+                    "<br>Receipt/upper bound: " + _time(quote.get("received_at") if quote else None) +
+                    " · receipt precision: " + _s(quote.get("receipt_semantics") if quote else None) +
+                    "</p></details></li>"
+                )
+            if not security_parts:
+                security_parts.append("<li>News and earnings watch only; no verified quote security.</li>")
+            event_ids = entity_events.get(entity_id, set())
+            linked_news_ids = {news_id for event_id in event_ids
+                               for news_id in news_ids_by_event.get(event_id, set())}
+            linked_news = [news_by_id[news_id] for news_id in linked_news_ids if news_id in news_by_id]
+            if linked_news:
+                news_parts = []
+                for item in sorted(linked_news, key=lambda x: str(x.get("first_received_at") or ""),
+                                   reverse=True)[:2]:
+                    url = item.get("source_url")
+                    link = (f'<a href="{escape(url, quote=True)}" target="_blank" '
+                            'rel="noopener noreferrer">source</a>') if isinstance(url, str) and \
+                        url.startswith("https://") else "source URL unknown"
+                    news_parts.append(_s(item.get("title") or "source report") + " · " +
+                                      _s(item.get("verification_status") or "UNVERIFIED") + " · " + link)
+                news_text = "<br>".join(news_parts)
+            else:
+                news_text = "No explicitly linked source report in this local view; coverage unknown."
+            predictions = [row for row in snapshot.get("predictions", [])
+                           if isinstance(row, dict) and row.get("event_id") in event_ids and
+                           row.get("instrument_id") in verified_codes]
+            predictions.sort(key=lambda x: str(x.get("created_at") or ""), reverse=True)
+            latest_prediction = predictions[0] if predictions else None
+            latest_outcome = outcomes_by_prediction.get(latest_prediction.get("prediction_id")) \
+                if latest_prediction else None
+            decision_text = ("No pre-window decision linked to this entity in the local view." if
+                             latest_prediction is None else
+                             "Decision: " + _s(latest_prediction.get("direction")) +
+                             " · persisted: " + _time(latest_prediction.get("created_at")) +
+                             " · quality: " + _s(latest_prediction.get("data_quality_status")))
+            outcome_text = ("No mature result linked to this entity in the local view." if
+                            latest_outcome is None else
+                            "Outcome: " + _s(latest_outcome.get("status")) +
+                            " · actual return: " + _s(latest_outcome.get("actual_return")) +
+                            " · QQQ difference: " + _s(latest_outcome.get("qqq_return_difference")))
+            extras = ""
+            if entity["kind"] == "ETF":
+                index = watchlist["indices"][entity["reference_index_id"]]
+                extras = "<p>Reference index (separate entity): " + _s(index["name"]) + ". "
+                if entity_id == "ETF:TQQQ":
+                    extras += "Daily target: 3× index performance before fees; outcome labels use observed TQQQ prices. "
+                extras += "No dated official holdings weights are loaded.</p>"
+            elif entity_id == "COMPANY:SK_HYNIX":
+                extras = "<p>US ADR and Korean ordinary share candidates remain separate price series.</p>"
+            elif entity_id == "COMPANY:ALPHABET":
+                extras = "<p>GOOGL is the selected watch security. GOOG is a separate share class mapped to the same company.</p>"
+            elif entity_id in {"COMPANY:TESLA", "COMPANY:SPACEX"}:
+                extras = "<p>Tesla and SpaceX are separate issuers; a shared person does not merge financial events.</p>"
+            cards.append(
+                "<article class='watch-card' data-entity='" + escape(entity_id, quote=True) + "'>"
+                "<h3>" + _s(entity["name"]) + " <span class='badge'>" + _s(entity["kind"]) + "</span></h3>"
+                "<ul>" + "".join(security_parts) + "</ul>"
+                "<p>Related news / source level: " + news_text + "</p>"
+                "<p>" + decision_text + "</p><p>" + outcome_text + "</p>" + extras +
+                "</article>"
+            )
+        blocks.append("<section class='watch-group' data-group='" + escape(group, quote=True) +
+                      "'><h2>" + _s(group_names[group]) + "</h2><div class='watch-grid'>" +
+                      "".join(cards) + "</div></section>")
+    blocks.append(
+        "<section><h2>Analysis intake</h2><p>Earnings fields: revenue, net income, EPS, gross margin, "
+        "capital spending, cash flow, segments, next-quarter and full-year guidance. Actual, prior actual, "
+        "guidance and pre-release consensus require separate sourced fields; missing consensus stays unknown.</p>"
+        "<p>Storage topics: DRAM, NAND, HBM, enterprise SSD, price, capacity, inventory, orders and capital "
+        "spending. A product-specific price report is not an all-memory price change.</p>"
+        "<p>Macro topics: interest rates, CPI, employment, policy, energy and geopolitical conflict. "
+        "Transmission is conditional and company-specific.</p></section>"
+    )
+    return "".join(blocks)
+
+
+def render_dashboard(snapshot: dict[str, Any] | None = None,
+                     *, watchlist: dict[str, Any] | None = None,
+                     live_status: dict[str, Any] | None = None) -> str:
     """Render a standalone, escaped HTML page. ``snapshot=None`` is safe to publish."""
     d = snapshot or {}
     service = d.get("service") if isinstance(d.get("service"), dict) else {}
@@ -129,6 +310,7 @@ def render_dashboard(snapshot: dict[str, Any] | None = None) -> str:
     claims = _rows(d.get("source_claims"), (("claim_id", "Claim"), ("status", "Evidence status"),
                    ("source_locator", "Source locator")),
                    "No claim has been promoted from a source report.")
+    watchlist_html = _watchlist_section(d, watchlist, quote_rows, live_status) if watchlist is not None else ""
     css = """
     :root{color-scheme:light;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#192431;background:#f4f7fb}
     body{margin:0}header{background:#172b44;color:white;padding:1.1rem max(1rem,calc((100vw - 1180px)/2))}
@@ -140,6 +322,11 @@ def render_dashboard(snapshot: dict[str, Any] | None = None) -> str:
     th,td{text-align:left;border-bottom:1px solid #e1e7ef;padding:.45rem;vertical-align:top;overflow-wrap:anywhere}th{background:#edf3fa}
     .news-card{border:1px solid #e1e7ef;border-radius:8px;padding:.7rem;margin:.6rem 0;overflow-wrap:anywhere}.news-card h3{margin:.1rem 0;font-size:1rem}
     .news-card p{margin:.35rem 0}a{color:#154e91;overflow-wrap:anywhere}footer{color:#526174;padding:1rem;max-width:1180px;margin:auto}
+    .watch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:.7rem}
+    .watch-card{border:1px solid #d7e1eb;border-radius:9px;padding:.8rem;min-width:0;overflow-wrap:anywhere}
+    .watch-card h3{margin:.05rem 0 .5rem}.watch-card p{margin:.5rem 0}.watch-card ul{padding-left:1.15rem;margin:.4rem 0}
+    .watch-card li{margin:.4rem 0}.watch-card details{margin-top:.35rem}.watch-card summary{cursor:pointer;color:#154e91}
+    .watchlist-intro{border-left:5px solid #3b6796}
     @media(max-width:600px){header{padding:1rem}main{padding:.55rem}section{padding:.75rem}h1{font-size:1.32rem}table{font-size:.83rem}}
     """
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'>"
@@ -149,6 +336,7 @@ def render_dashboard(snapshot: dict[str, Any] | None = None) -> str:
             "<p>Local time display: Asia/Shanghai; raw provider timezone retained in private records.</p></header>"
             "<main><section class='status' aria-label='Collection status'><strong>" + service_info + "</strong>"
             "<p>Acquisition failure and incomplete pagination are coverage gaps, not evidence that no news occurred.</p></section>"
+            + watchlist_html +
             "<section><h2>Instruments</h2>" + instrument_table + "</section>"
             "<section><h2>Market observations</h2>" + quote_table + "</section>"
             "<section><h2>News and source relationships</h2><p class='note'>Source reports, verified claims and inference stay separate. Price movement does not corroborate a report.</p>"

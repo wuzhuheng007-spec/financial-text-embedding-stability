@@ -54,7 +54,9 @@ def propose_reviews(*, event_id: str, prediction_id: str | None,
     if provenance is ProvenanceStatus.CONFLICTING:
         categories.add("SOURCE_CONFLICT")
     if outcome is not None:
-        if outcome.status == "DATA_GAP" or outcome.status == "PRICE_BASIS_MISMATCH":
+        if outcome.status in {"DATA_GAP", "PRICE_BASIS_MISMATCH",
+                              "ACTION_ADJUSTMENT_PENDING", "ACTION_COVERAGE_PENDING",
+                              "FX_CONVERSION_PENDING", "UNSUPPORTED_MARKET_PROTOCOL"}:
             categories.add("DATA_GAP")
         elif outcome.status in {"PENDING", "CROSSES_CLOSE", "NO_REGULAR_WINDOW"}:
             categories.add("LABEL_PENDING")

@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0",
+  "status": "OFFICIAL_PROVIDER_BASICINFO_VERIFIED_CURRENT_ONLY",
+  "provider": "moomoo",
+  "native_tool": "quote_stock_basicinfo",
+  "execution_path": "existing scoped OAuth via native Codex CLI MCP; no new authorization in this run",
+  "started_at_utc": "2026-11-15T04:25:36.2973926Z",
+  "ended_at_utc": "2026-11-15T04:27:32.5394545Z",
+  "provider_business_calls": 2,
+  "provider_call_receipts": [
+    {
+      "requested_codes": [
+        "US.TQQQ",
+        "US.SOXX",
+        "US.AAPL",
+        "US.TSLA",
+        "US.SNDK",
+        "US.SPCX",
+        "US.SKHY",
+        "US.GOOG"
+      ],
+      "ret_code": 0,
+      "ret_msg": "success",
+      "returned_count": 8
+    },
+    {
+      "requested_codes": [
+        "KR.000660"
+      ],
+      "ret_code": 0,
+      "ret_msg": "success",
+      "returned_count": 1
+    }
+  ],
+  "raw_private_run_sha256": "91daa1e15df16dcbaa0579425b85e98a60e0f61d43d3c160179f985b8dbb7218",
+  "private_db_import": {
+    "verified_ids_added": 9,
+    "verified_ids": [
+      "KR.000660",
+      "US.AAPL",
+      "US.GOOG",
+      "US.SKHY",
+      "US.SNDK",
+      "US.SOXX",
+      "US.SPCX",
+      "US.TQQQ",
+      "US.TSLA"
+    ],
+    "imported_at_utc": "2026-11-15T04:30:05.027584Z",
+    "raw_evidence_preserved": true
+  },
+  "field_caveats": [
+    "The provider exchange field is a market code (US/KR), not a named trading venue.",
+    "The provider response does not expose quote currency or ISIN; issuer ISINs are separately attributed where available.",
+    "A provider stock_id exists but is an internal numeric ID, not a verified permanent cross-provider identifier.",
+    "Listing date zero is treated as unknown, not 1970-01-01.",
+    "Current basicinfo does not establish an as-of historical mapping or live quote entitlement.",
+    "The provider labels US.SKHY STOCK; the issuer identifies it specifically as an ADR. Its price series is separate from KR.000660.",
+    "US.GOOG provider listing date (2014-03-27 UTC day) conflicts with the issuer SEC filing Class C listing start (2014-04-03); historical start remains unresolved."
+  ],
+  "issuer_documents": [
+    {
+      "role": "TQQQ daily target and CUSIP",
+      "url": "https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq"
+    },
+    {
+      "role": "SOXX ETF, venue and CUSIP",
+      "url": "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf"
+    },
+    {
+      "role": "Sandisk issuer, Nasdaq symbol and trading start",
+      "url": "https://investor.sandisk.com/news-releases/news-release-details/sandisk-celebrates-nasdaq-listing-after-completing-separation"
+    },
+    {
+      "role": "SpaceX ticker, venue and start date",
+      "url": "https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Closing-of-Initial-Public-Offering-Including-Full-Exercise-of-Underwriters-Option-to-Purchase-Additional-Shares-2026-RgoR-Y1Vwh/default.aspx"
+    },
+    {
+      "role": "SpaceX Class A ISIN",
+      "url": "https://content.spacex.com/cms-assets/FINAL_Documents%20and%20Updates/SpaceX%20-%20EU%20Prospectus%20%28Approved%20by%20Bafin%29%20-%20June%205%2C%202026.pdf"
+    },
+    {
+      "role": "SK hynix ordinary and ADR identifiers and 1:10 ratio",
+      "url": "https://www.skhynix.com/ir/UI-FR-IR03/"
+    },
+    {
+      "role": "SK hynix US ADR trading start",
+      "url": "https://news.skhynix.com/en/skhynix-lists-adrs-on-nasdaq/"
+    },
+    {
+      "role": "Alphabet Class A/Class C issuer and symbols",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm"
+    }
+  ],
+  "rows": [
+    {
+      "requested_symbol": "TQQQ",
+      "provider_code": "US.TQQQ",
+      "provider_name": "ProShares UltraPro QQQ ETF",
+      "provider_market": "US",
+      "provider_stock_type": "ETF",
+      "provider_listing_date_utc_day": null,
+      "provider_listing_date_status": "UNKNOWN_ZERO_SENTINEL",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "ProShares UltraPro QQQ",
+        "security_form": "ETF with a 3x daily Nasdaq-100 objective",
+        "cusip": "74347X831",
+        "fund_inception_date_not_listing_date": "2010-02-09",
+        "issuer_url": "https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "SOXX",
+      "provider_code": "US.SOXX",
+      "provider_name": "iShares Semiconductor ETF",
+      "provider_market": "US",
+      "provider_stock_type": "ETF",
+      "provider_listing_date_utc_day": null,
+      "provider_listing_date_status": "UNKNOWN_ZERO_SENTINEL",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "iShares Semiconductor ETF",
+        "security_form": "ETF",
+        "trading_venue": "NASDAQ",
+        "cusip": "464287523",
+        "fund_inception_date_not_listing_date": "2001-07-10",
+        "issuer_url": "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "AAPL",
+      "provider_code": "US.AAPL",
+      "provider_name": "Apple",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": "1980-12-12",
+      "provider_listing_date_status": "PROVIDED",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": null,
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "TSLA",
+      "provider_code": "US.TSLA",
+      "provider_name": "Tesla",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": "2010-06-29",
+      "provider_listing_date_status": "PROVIDED",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": null,
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "SNDK",
+      "provider_code": "US.SNDK",
+      "provider_name": "SanDisk",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": null,
+      "provider_listing_date_status": "UNKNOWN_ZERO_SENTINEL",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "Sandisk Corporation",
+        "security_form": "common stock",
+        "trading_venue": "Nasdaq Stock Market",
+        "issuer_start_date": "2025-02-24",
+        "issuer_url": "https://investor.sandisk.com/news-releases/news-release-details/sandisk-celebrates-nasdaq-listing-after-completing-separation"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "SPCX",
+      "provider_code": "US.SPCX",
+      "provider_name": "SpaceX",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": "2026-06-12",
+      "provider_listing_date_status": "PROVIDED",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "Space Exploration Technologies Corp.",
+        "security_form": "Class A common stock",
+        "trading_venue": "Nasdaq Global Select Market and Nasdaq Texas",
+        "issuer_listing_date": "2026-06-12",
+        "isin": "US84615Q1031",
+        "issuer_url": "https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Closing-of-Initial-Public-Offering-Including-Full-Exercise-of-Underwriters-Option-to-Purchase-Additional-Shares-2026-RgoR-Y1Vwh/default.aspx",
+        "isin_url": "https://content.spacex.com/cms-assets/FINAL_Documents%20and%20Updates/SpaceX%20-%20EU%20Prospectus%20%28Approved%20by%20Bafin%29%20-%20June%205%2C%202026.pdf"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "SKHY",
+      "provider_code": "US.SKHY",
+      "provider_name": "SK hynix",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": "2026-07-10",
+      "provider_listing_date_status": "PROVIDED",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "SK hynix Inc.",
+        "security_form": "ADR (1 receipt represents 10 ordinary shares)",
+        "trading_venue": "Nasdaq Stock Market",
+        "issuer_start_date": "2026-07-10",
+        "isin": "US78392B2060",
+        "issuer_url": "https://www.skhynix.com/ir/UI-FR-IR03/",
+        "start_date_url": "https://news.skhynix.com/en/skhynix-lists-adrs-on-nasdaq/"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "GOOG",
+      "provider_code": "US.GOOG",
+      "provider_name": "Alphabet-C",
+      "provider_market": "US",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": "2014-03-27",
+      "provider_listing_date_status": "PROVIDED",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "Alphabet Inc.",
+        "security_form": "Class C capital stock",
+        "trading_venue": "Nasdaq Global Select Market",
+        "issuer_start_date": "2014-04-03",
+        "provider_issuer_start_date_discrepancy": "provider listing_date decodes to 2014-03-27 UTC; SEC filing says Class C listed since 2014-04-03; do not use provider date as historical eligibility start without reconciliation",
+        "issuer_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm",
+        "watchlist_role": "alias security; GOOGL remains primary monitored class for the same company"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    },
+    {
+      "requested_symbol": "000660",
+      "provider_code": "KR.000660",
+      "provider_name": "SK Hynix",
+      "provider_market": "KR",
+      "provider_stock_type": "STOCK",
+      "provider_listing_date_utc_day": null,
+      "provider_listing_date_status": "UNKNOWN_ZERO_SENTINEL",
+      "provider_internal_stock_id_present": true,
+      "provider_quote_currency": null,
+      "provider_isin": null,
+      "provider_state": "NORMAL",
+      "issuer_crosscheck": {
+        "entity": "SK hynix Inc.",
+        "security_form": "Korean ordinary common stock",
+        "trading_venue": "Korea Stock Exchange",
+        "issuer_listing_date": "1996-12-26",
+        "isin": "KR7000660001",
+        "issuer_url": "https://www.skhynix.com/ir/UI-FR-IR03/"
+      },
+      "identity_scope": "CURRENT_ONLY",
+      "live_quote_entitlement": "NOT_TESTED"
+    }
+  ]
+}

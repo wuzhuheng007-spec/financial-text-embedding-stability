@@ -1,0 +1,52 @@
+{
+  "schema": "market_observer_private_dashboard_browser_acceptance_v1",
+  "checked_at_utc": "2026-11-15T05:00:36.335111Z",
+  "input_html": "artifacts/market_observer_v1/dashboard_poststop_v4.html",
+  "input_html_sha256": "ba59386162a86380d421e5ec7c706fdb788b29c59670e3f1e58efe6b2db2e7e8",
+  "browser": "Google Chrome 157.0.8103.51 headless, CDP device metrics override",
+  "opened_actual_local_html": true,
+  "provider_business_calls": 0,
+  "external_resource_tags_in_html": 0,
+  "desktop": {
+    "viewport_css_px": [
+      1440,
+      900
+    ],
+    "document_scroll_width_css_px": 1425,
+    "whole_page_horizontal_overflow": false,
+    "status_stopped_visible": true,
+    "push_disconnected_visible": true
+  },
+  "mobile_390": {
+    "viewport_css_px": [
+      390,
+      844
+    ],
+    "document_scroll_width_css_px": 375,
+    "whole_page_horizontal_overflow": false,
+    "wide_table_has_internal_scroll_container": true,
+    "first_quote_card_and_expanded_details_visually_inspected": true
+  },
+  "timestamp_semantics": {
+    "quote_provider_data_time_visible": true,
+    "quote_receipt_upper_bound_visible_separately": true,
+    "two_times_distinct_and_receipt_later": true,
+    "receipt_precision_unknown_visible": true,
+    "exact_receive_timestamp_established": false
+  },
+  "market_and_delay": {
+    "current_quote_market_state_visible": "UNKNOWN",
+    "delay_state_visible": "UNKNOWN",
+    "last_provider_market_signal_visible": "US AFTER_HOURS_END (11)",
+    "signal_time_not_separately_recorded_caveat_visible": true,
+    "disconnected_receipt_is_historical_caveat_visible": true,
+    "current_market_closed_proven_by_page": false,
+    "no_false_realtime_claim": true,
+    "stopped_and_disconnected_status_visible": true
+  },
+  "private_screenshots_retained": 3,
+  "quote_values_in_receipt": false,
+  "screenshots_in_receipt": false,
+  "outcome": "PASS_LAYOUT_AND_HISTORICAL_MARKET_SIGNAL_CAVEAT",
+  "limitation": "Saved post-stop page shows a last provider after-hours-end signal whose own time was not recorded; it does not establish a current connected market-closed state or exact quote receipt time."
+}

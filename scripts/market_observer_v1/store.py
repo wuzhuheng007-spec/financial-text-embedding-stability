@@ -137,6 +137,26 @@ CREATE TABLE IF NOT EXISTS event_news (
  FOREIGN KEY(event_id) REFERENCES event_clusters(event_id),
  FOREIGN KEY(news_id) REFERENCES news_items(id)
 );
+CREATE TABLE IF NOT EXISTS event_entity_links (
+ event_id TEXT NOT NULL, entity_id TEXT NOT NULL, link_status TEXT NOT NULL,
+ evidence_hash TEXT NOT NULL, linked_at TEXT NOT NULL,
+ PRIMARY KEY(event_id,entity_id,link_status,evidence_hash),
+ FOREIGN KEY(event_id) REFERENCES event_clusters(event_id)
+);
+CREATE TABLE IF NOT EXISTS event_security_links (
+ event_id TEXT NOT NULL, entity_id TEXT NOT NULL, security_id TEXT NOT NULL,
+ link_status TEXT NOT NULL, evidence_hash TEXT NOT NULL, linked_at TEXT NOT NULL,
+ PRIMARY KEY(event_id,security_id,link_status,evidence_hash),
+ FOREIGN KEY(event_id) REFERENCES event_clusters(event_id)
+);
+CREATE TRIGGER IF NOT EXISTS event_entity_links_no_update BEFORE UPDATE ON event_entity_links
+BEGIN SELECT RAISE(ABORT,'event entity links are append-only'); END;
+CREATE TRIGGER IF NOT EXISTS event_entity_links_no_delete BEFORE DELETE ON event_entity_links
+BEGIN SELECT RAISE(ABORT,'event entity links are append-only'); END;
+CREATE TRIGGER IF NOT EXISTS event_security_links_no_update BEFORE UPDATE ON event_security_links
+BEGIN SELECT RAISE(ABORT,'event security links are append-only'); END;
+CREATE TRIGGER IF NOT EXISTS event_security_links_no_delete BEFORE DELETE ON event_security_links
+BEGIN SELECT RAISE(ABORT,'event security links are append-only'); END;
 CREATE TABLE IF NOT EXISTS source_claims (
  claim_id TEXT PRIMARY KEY, claim_group_id TEXT NOT NULL,
  origin_id TEXT, relation TEXT NOT NULL,
@@ -624,7 +644,9 @@ class Store:
                   "schema_version": SCHEMA_VERSION}
         require_utc(values["created_at"], "created_at")
         if values["status"] not in {"MATURED", "PENDING", "NO_REGULAR_WINDOW",
-                                    "CROSSES_CLOSE", "DATA_GAP", "PRICE_BASIS_MISMATCH"}:
+                                    "CROSSES_CLOSE", "DATA_GAP", "PRICE_BASIS_MISMATCH",
+                                    "ACTION_ADJUSTMENT_PENDING", "ACTION_COVERAGE_PENDING",
+                                    "FX_CONVERSION_PENDING", "UNSUPPORTED_MARKET_PROTOCOL"}:
             raise ValueError("outcome status is outside the frozen vocabulary")
         if values["status"] == "MATURED" and not values.get("input_manifest_json"):
             raise ValueError("mature outcome requires an auditable bar input manifest")
@@ -636,6 +658,49 @@ class Store:
             self.connection.execute(f"INSERT INTO outcomes ({','.join(fields)}) VALUES ({','.join('?' for _ in fields)})",
                                     tuple(values.get(field) for field in fields))
         return str(record["outcome_id"])
+
+    def link_event_watchlist_candidates(self, projection: dict[str, Any], *,
+                                        evidence_hash: str, linked_at: str | None = None) -> dict[str, int]:
+        """Attach one existing event to issuer and security candidates separately.
+
+        Alias matches never promote a source report to a verified claim. Repeated
+        aliases for one issuer produce one entity link; separate share classes or
+        market listings keep distinct security links and price series.
+        """
+        if projection.get("verification_status") != "CANDIDATE_ALIAS_MATCH_ONLY":
+            raise ValueError("watchlist link requires an unverified alias projection")
+        event_id = projection.get("event_id")
+        entities = projection.get("candidate_entity_ids")
+        security_map = projection.get("candidate_security_ids_by_entity")
+        if not isinstance(event_id, str) or not event_id or \
+                not isinstance(entities, list) or not isinstance(security_map, dict) or \
+                len(entities) != len(set(entities)) or set(entities) != set(security_map):
+            raise ValueError("event projection identity structure is invalid")
+        if not isinstance(evidence_hash, str) or len(evidence_hash) != 64 or \
+                any(char not in "0123456789abcdef" for char in evidence_hash.lower()):
+            raise ValueError("event link requires a SHA-256 evidence hash")
+        linked_at = linked_at or utc_now()
+        require_utc(linked_at, "linked_at")
+        if self.connection.execute("SELECT 1 FROM event_clusters WHERE event_id=?", (event_id,)).fetchone() is None:
+            raise ValueError("event link requires an existing event; do not duplicate the source event")
+        for entity_id in entities:
+            security_ids = security_map[entity_id]
+            if not isinstance(entity_id, str) or not entity_id or \
+                    not isinstance(security_ids, list) or len(security_ids) != len(set(security_ids)) or \
+                    any(not isinstance(security_id, str) or not security_id for security_id in security_ids):
+                raise ValueError("event security projection is invalid")
+        entity_added = security_added = 0
+        with self.connection:
+            for entity_id in entities:
+                entity_added += self.connection.execute("""INSERT OR IGNORE INTO event_entity_links
+                    (event_id,entity_id,link_status,evidence_hash,linked_at) VALUES(?,?,?,?,?)""",
+                    (event_id,entity_id,"CANDIDATE_ALIAS_MATCH_ONLY",evidence_hash,linked_at)).rowcount
+                for security_id in security_map[entity_id]:
+                    security_added += self.connection.execute("""INSERT OR IGNORE INTO event_security_links
+                        (event_id,entity_id,security_id,link_status,evidence_hash,linked_at) VALUES(?,?,?,?,?,?)""",
+                        (event_id,entity_id,security_id,"CANDIDATE_ALIAS_MATCH_ONLY",
+                         evidence_hash,linked_at)).rowcount
+        return {"entity_links_added": entity_added, "security_links_added": security_added}
 
     def insert_source_claim(self, record: dict[str, Any]) -> str:
         required = {"claim_id", "claim_group_id", "claim_text", "status", "relation", "evidence_hash"}
@@ -772,6 +837,12 @@ class Store:
             item["verification_status"] = "UNVERIFIED"
         claims = rows("""SELECT claim_id,status,source_url AS source_locator
             FROM source_claims ORDER BY received_at DESC LIMIT ?""")
+        entity_links = rows("""SELECT event_id,entity_id,link_status,evidence_hash,linked_at
+            FROM event_entity_links ORDER BY linked_at DESC LIMIT ?""")
+        security_links = rows("""SELECT event_id,entity_id,security_id,link_status,evidence_hash,linked_at
+            FROM event_security_links ORDER BY linked_at DESC LIMIT ?""")
+        event_news = rows("""SELECT event_id,news_id,linked_at
+            FROM event_news ORDER BY linked_at DESC LIMIT ?""")
         predictions = rows("""SELECT prediction_id,event_id,instrument_id,persisted_at AS created_at,
             direction,data_quality_status FROM predictions ORDER BY persisted_at DESC LIMIT ?""")
         outcomes = rows("""SELECT prediction_id,status,return_value AS actual_return,
@@ -784,6 +855,8 @@ class Store:
         gaps = rows("""SELECT source AS provider,reason,started_at,ended_at,
             NULL AS backfilled_at FROM collection_gaps ORDER BY gap_id DESC LIMIT ?""")
         return {"service": service, "instruments": instruments, "quotes": quotes,
-                "news": news, "source_claims": claims, "predictions": predictions,
+                "news": news, "source_claims": claims,
+                "event_entity_links": entity_links, "event_security_links": security_links,
+                "event_news_links": event_news, "predictions": predictions,
                 "outcomes": outcomes, "review_queue": review,
                 "collection_gaps": gaps, "generated_at_utc": utc_now()}

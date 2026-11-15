@@ -16,12 +16,16 @@ from typing import Iterator
 
 from .replay import replay_jin10
 from .moomoo_probe_import import import_private_projection
-from .service import load_config, private_output_path, run_service
+from .moomoo_webapi_oauth import LocalTokenStore, authorize_quote_read
+from .moomoo_quota_probe import probe_subscription_quota
+from .moomoo_ws import MoomooWebSocketPush, validate_live_config
+from .service import _view_context, load_config, private_output_path, run_service
 from .store import Store
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = REPO_ROOT / "configs" / "market_observer_v1.example.json"
+MOOMOO_TOKEN_FILE = REPO_ROOT / "artifacts" / "market_observer_live" / "moomoo_webapi_oauth.dpapi"
 
 
 @contextmanager
@@ -78,8 +82,18 @@ def _running(session: dict | None, heartbeat_seconds: float) -> bool:
 
 def cmd_status(config_path: Path) -> dict:
     config, db, dashboard, _ = _paths(config_path)
+    live = config.get("live_push") or {}
+    push_receipt = None
+    if live.get("status_path"):
+        path = private_output_path(live["status_path"], REPO_ROOT)
+        if path.is_file():
+            push_receipt = json.loads(path.read_text(encoding="utf-8"))
     with Store(db) as store:
         session = store.latest_session()
+        active = bool(_running(session, config["heartbeat_seconds"])
+                      and session and session["mode"] == "LIVE_PUSH"
+                      and session["status"].startswith("CONNECTED_")
+                      and push_receipt and push_receipt.get("connection_state", "").startswith("CONNECTED_"))
         gap_count = store.connection.execute("SELECT COUNT(*) FROM collection_gaps").fetchone()[0]
         quote_count = store.connection.execute("SELECT COUNT(*) FROM quotes_or_bars").fetchone()[0]
         probe_count = store.connection.execute("SELECT COUNT(*) FROM probe_observations").fetchone()[0]
@@ -89,7 +103,13 @@ def cmd_status(config_path: Path) -> dict:
                 "state": session["status"] if session else "NOT_STARTED",
                 "running_heartbeat_recent": _running(session, config["heartbeat_seconds"]),
                 "feed_mode": config["feed_mode"],
-                "live_push_adapter_installed": False,
+                "live_push_adapter_installed": True,
+                "webapi_oauth": LocalTokenStore(MOOMOO_TOKEN_FILE).status(),
+                "webapi_push": {"connection_state": (push_receipt or {}).get("connection_state", "NOT_TESTED"),
+                                "receipt_time_utc": (push_receipt or {}).get("observed_at_utc"),
+                                "active_subscriptions": (push_receipt or {}).get("enabled_subscriptions", []) if active else [],
+                                "last_acknowledged_subscriptions": (push_receipt or {}).get("accepted_subscriptions_this_session", []),
+                                "skipped_subscriptions": (push_receipt or {}).get("skipped_subscriptions", [])},
                 "quote_rows_local": quote_count, "quarantined_probe_snapshots_local": probe_count,
                 "official_instrument_resolutions_local": verified_count,
                 "news_versions_local": news_count,
@@ -100,7 +120,16 @@ def cmd_status(config_path: Path) -> dict:
 def cmd_start(config_path: Path) -> dict:
     config, db, _, lock = _paths(config_path)
     if config["feed_mode"] == "LIVE_PUSH":
-        raise RuntimeError("No verified moomoo live push adapter is installed; live start is gated")
+        validate_live_config(config.get("live_push", {}), repo_root=REPO_ROOT)
+        if LocalTokenStore(MOOMOO_TOKEN_FILE).status()["credential_state"] != "QUOTE_READ_AUTHORIZED":
+            raise RuntimeError("separate moomoo WebAPI quote:read browser authorization required")
+        with Store(db) as store:
+            missing = [code for code in {r["instrument_id"] for r in config["live_push"]["subscriptions"]}
+                       if not (row := store.connection.execute(
+                           "SELECT identity_status FROM instruments WHERE instrument_id=?", (code,)).fetchone())
+                       or row["identity_status"] != "VERIFIED"]
+            if missing:
+                raise RuntimeError("officially mapped instruments are not imported into the private observer database")
     launch_lock = lock.with_name("observer_launch.lock")
     with file_lock(launch_lock):
         try:
@@ -131,8 +160,9 @@ def cmd_start(config_path: Path) -> dict:
                 if row:
                     return {"session_id": session_id, "pid": child.pid,
                             "state": row["status"], "feed_mode": config["feed_mode"],
-                            "provider_connected": False, "provider_calls": 0,
-                            "note": "Service is running without an authorized live feed"}
+                            "provider_connected": row["status"].startswith("CONNECTED_"),
+                            "note": ("Provider connection must be checked with status" if config["feed_mode"] == "LIVE_PUSH"
+                                     else "Service is running without an authorized live feed")}
             time.sleep(0.1)
         raise RuntimeError("observer child did not establish a session within five seconds; inspect private service log")
 
@@ -163,7 +193,8 @@ def cmd_render(config_path: Path) -> dict:
     from .dashboard import render_dashboard
     with Store(db) as store:
         store.seed_candidate_instruments(config.get("observation_pool", []))
-        html = render_dashboard(store.dashboard_snapshot(include_private_text=True))
+        html = render_dashboard(store.dashboard_snapshot(include_private_text=True),
+                                **_view_context(config, REPO_ROOT))
     dashboard.write_text(html, encoding="utf-8")
     return {"dashboard_private_path": str(dashboard), "provider_calls": 0}
 
@@ -184,10 +215,21 @@ def main(argv: list[str] | None = None) -> int:
     probe = sub.add_parser("import-moomoo-probe")
     probe.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     probe.add_argument("--projection", type=Path, required=True)
+    sub.add_parser("moomoo-oauth-login", help="Open separate quote:read-only WebAPI consent in local browser")
+    sub.add_parser("moomoo-oauth-status", help="Show only non-secret local OAuth status")
+    sub.add_parser("moomoo-quota-probe", help="One read-only WebAPI subscription quota GET; no retry")
     args = parser.parse_args(argv)
     try:
         if args.command == "start":
             receipt = cmd_start(args.config)
+        elif args.command == "moomoo-oauth-login":
+            receipt = authorize_quote_read(LocalTokenStore(MOOMOO_TOKEN_FILE))
+        elif args.command == "moomoo-oauth-status":
+            receipt = LocalTokenStore(MOOMOO_TOKEN_FILE).status()
+        elif args.command == "moomoo-quota-probe":
+            receipt = probe_subscription_quota(
+                LocalTokenStore(MOOMOO_TOKEN_FILE),
+                REPO_ROOT / "artifacts/market_observer_live/quota_probe_20261115.json")
         elif args.command == "status":
             receipt = cmd_status(args.config)
         elif args.command == "stop":
@@ -210,8 +252,17 @@ def main(argv: list[str] | None = None) -> int:
         else:
             config, db, _, lock = _paths(args.config)
             with file_lock(lock):
+                source = None
+                if config["feed_mode"] == "LIVE_PUSH":
+                    live = config.get("live_push", {})
+                    validate_live_config(live, repo_root=REPO_ROOT)
+                    status_path = private_output_path(
+                        live.get("status_path", "artifacts/market_observer_live/push_status.json"), REPO_ROOT)
+                    source = MoomooWebSocketPush(
+                        live=live, token_store=LocalTokenStore(MOOMOO_TOKEN_FILE),
+                        status_path=status_path)
                 final_state = run_service(config=config, repo_root=REPO_ROOT,
-                                          session_id=args.session_id)
+                                          session_id=args.session_id, source=source)
             receipt = {"session_id": args.session_id, "state": final_state,
                        "provider_calls": 0}
         print(json.dumps(receipt, ensure_ascii=False, sort_keys=True))

@@ -1,0 +1,49 @@
+{
+  "schema": "market_observer_private_dashboard_browser_acceptance_v1",
+  "checked_at_utc": "2026-11-15T04:58:18.967327Z",
+  "input_html": "artifacts/market_observer_v1/dashboard_probe_v3.html",
+  "input_html_sha256": "3c02b5b40b9045ab3fc2036ea35953e47c9a940ac85f5a2b63b627c6b7b46420",
+  "browser": "Google Chrome 157.0.8103.51 headless, CDP device metrics override",
+  "opened_actual_local_html": true,
+  "provider_business_calls": 0,
+  "external_resource_tags_in_html": 0,
+  "desktop": {
+    "viewport_css_px": [
+      1440,
+      900
+    ],
+    "document_scroll_width_css_px": 1425,
+    "whole_page_horizontal_overflow": false,
+    "status_stopped_visible": true,
+    "push_disconnected_visible": true
+  },
+  "mobile_390": {
+    "viewport_css_px": [
+      390,
+      844
+    ],
+    "document_scroll_width_css_px": 375,
+    "whole_page_horizontal_overflow": false,
+    "wide_table_has_internal_scroll_container": true,
+    "first_quote_card_and_expanded_details_visually_inspected": true
+  },
+  "timestamp_semantics": {
+    "quote_provider_data_time_visible": true,
+    "quote_receipt_upper_bound_visible_separately": true,
+    "two_times_distinct_and_receipt_later": true,
+    "receipt_precision_unknown_visible": true,
+    "exact_receive_timestamp_established": false
+  },
+  "market_and_delay": {
+    "market_state_visible": "UNKNOWN",
+    "delay_state_visible": "UNKNOWN",
+    "market_closed_proven_by_page": false,
+    "no_false_realtime_claim": true,
+    "stopped_and_disconnected_status_visible": true
+  },
+  "private_screenshots_retained": 5,
+  "quote_values_in_receipt": false,
+  "screenshots_in_receipt": false,
+  "outcome": "PASS_LAYOUT_AND_STATUS_LABELS_WITH_MARKET_STATE_LIMITATION",
+  "limitation": "Saved post-stop page labels market and delay UNKNOWN; this visual check cannot certify a connected market-closed session or exact quote receipt time."
+}

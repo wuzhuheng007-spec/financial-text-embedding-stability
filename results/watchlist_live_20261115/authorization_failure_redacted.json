@@ -1,0 +1,50 @@
+{
+  "schema": "moomoo_webapi_oauth_bounded_attempt_receipt_v1",
+  "execution_date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "provider": "moomoo WebAPI OAuth 2.1 PKCE",
+  "requested_scope": "quote:read",
+  "callback_host": "127.0.0.1",
+  "prior_codex_mcp_token_reused": false,
+  "confirmed_local_callback_exchanges": 2,
+  "attempts": [
+    {
+      "sequence": 1,
+      "result": "USER_REPORTED_CONSENT_BUT_NO_LOCAL_CREDENTIAL_OR_PROCESS_AT_READBACK",
+      "token_scope_evidence": "UNAVAILABLE"
+    },
+    {
+      "sequence": 2,
+      "result": "CALLBACK_AND_TOKEN_EXCHANGE_COMPLETED; TOKEN_REJECTED_BY_EXACT_SCOPE_GATE",
+      "raw_scope": "NOT_RETAINED",
+      "token_saved": false
+    },
+    {
+      "sequence": 3,
+      "result": "CALLBACK_AND_TOKEN_EXCHANGE_COMPLETED; TOKEN_REJECTED_BY_NARROW_READ_ONLY_GATE",
+      "returned_scope_classes": [
+        "quote:read",
+        "quote:write",
+        "trade:read",
+        "accid:<redacted>"
+      ],
+      "token_saved": false
+    },
+    {
+      "sequence": 4,
+      "result": "CLIENT_REGISTRATION_ADVERTISED_BROADER_CAPABILITIES_DESPITE_SCOPE_REQUEST; NO_CONSENT_PAGE_OPENED",
+      "token_exchange": "NOT_RUN",
+      "token_saved": false
+    }
+  ],
+  "scope_policy": "ACCEPT_QUOTE_READ_AND_OPTIONAL_ACCOUNT_SELECTOR_ONLY; REJECT_QUOTE_WRITE_AND_ALL_TRADE_SCOPES",
+  "independent_credential_state": "NOT_INSTALLED",
+  "account_quota_probe": "NOT_RUN_NO_ACCEPTABLE_CREDENTIAL",
+  "websocket_auth": "NOT_RUN",
+  "websocket_subscription": "NOT_RUN",
+  "quote_push_messages": 0,
+  "quote_push_state": "NO_FEED",
+  "credential_or_account_identifier_in_receipt": false,
+  "official_guide": "https://open.moomoo.com/api/overview/getting-started",
+  "note": "The registration response lists available client scopes, not the actual user token grant. The observed token response exceeded the requested read-only scope; no cause for the extra grant is asserted."
+}
