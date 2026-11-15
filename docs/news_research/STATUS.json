@@ -674,6 +674,8 @@
     "incremental_comparison": "results/market_observer_official_repro_20261115/incremental_redacted.json",
     "incremental_validation": "results/market_observer_official_repro_20261115/incremental_validation_redacted.json",
     "site_progress": "results/market_observer_official_repro_20261115/site_progress_redacted.json",
+    "site_acceptance": "results/market_observer_official_repro_20261115/site_acceptance_redacted.json",
+    "sync_receipt": "results/market_observer_official_repro_20261115/sync_receipt_redacted.json",
     "reproduction_pipeline_runs": 1,
     "reproduction_logistic_fits": 12,
     "incremental_pipeline_runs": 1,
@@ -691,6 +693,9 @@
     "page_status": "EXISTING_PRIVATE_SITE_VERSION_2_DEPLOYED",
     "page_url": "https://quant-observer-research-nov15.soliddhole4.chatgpt.site",
     "page_source_commit": "e5f47b0bf90df8b7da1debc6364e61ac1a2056b4",
+    "page_desktop_browser_check": "PASS_1707x912",
+    "page_narrow_browser_check": "NOT_RUN",
+    "github_publication": "PUSHED_EXISTING_BRANCH_REMOTE_READBACK_CONFIRMED",
     "dot_connection": "NOT_CONNECTED",
     "formal_m5_financial_experiment": "NOT_RUN",
     "trading": "NOT_RUN"

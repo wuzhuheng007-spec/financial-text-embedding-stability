@@ -12,7 +12,7 @@
 | P3 增量 | 复现通过后，在原样本与 L2 格上拆成 B、B_count、B_text、B_both | 一次新流程、24 次逻辑回归拟合；四组、三个 L2、两只证券全部保存。[增量回执](../results/market_observer_official_repro_20261115/incremental_redacted.json) | 完成 |
 | P4 评价 | 同参数与各自选参结果分开，核对分类、配对日和概率 | 24/24 候选指标无拟合回放复核通过；私人逐日预测仅本机保存。[独立软件回放](../results/market_observer_official_repro_20261115/incremental_validation_redacted.json) | 开发评价完成 |
 | P5 下一步 | 只提出一次确定性修订，不再试当前验证集 | 建议下一版只修订**文本输入构建**，使用训练期资料冻结财务段落选择、数字保留和套话清理；此轮没有重训 | 建议已写，未运行新版 |
-| P6 同步 | 更新中英报告、进度 JSON、现有私有页面、GitHub、脱敏交接包 | [脱敏页面进度](../results/market_observer_official_repro_20261115/site_progress_redacted.json)及本报告已准备；远端发布与页面部署状态以最终同步回执为准 | 交付阶段 |
+| P6 同步 | 更新中英报告、进度 JSON、现有私有页面、GitHub、脱敏交接包 | [脱敏页面进度](../results/market_observer_official_repro_20261115/site_progress_redacted.json)已部署至[现有私有 Site](https://quant-observer-research-nov15.soliddhole4.chatgpt.site)版本 2；GitHub 主内容提交已推送并逐文件回读；交接 ZIP 本机制作。[页面验收](../results/market_observer_official_repro_20261115/site_acceptance_redacted.json)、[同步回执](../results/market_observer_official_repro_20261115/sync_receipt_redacted.json) | 完成；390px 视觉检查未运行 |
 
 ## ① 旧结果能否复现？
 
@@ -55,4 +55,4 @@ MU 验证期实际下跌 12 日、上涨 11 日，四组在 23 日全部预测�
 
 **只修订文本输入构建契约。** 用训练期原公告固定财务段落定位、数字词保留和 SEC 套话清理规则，先逐文档检查保留信息与来源哈希，再在新的未接触评价期间检验；价格特征、日期代理、共同样本与原 L2 格不要同时改。本轮截断和词表证据支持先做这项工程修订，但目前的验证集不能再用来挑选规则。真正的历史首次可见证据仍是日后形成独立事前研究结论的另一道门槛。
 
-本轮软件聚焦检查：P1 3/3、P3 4/4；P3 初次 1 项因手算 Brier 预期值错误失败，随后只修正测试期望值，保留[修正记录](../results/market_observer_official_repro_20261115/incremental_test_correction.json)。软件测试与 **2 次完整流程、36 次逻辑回归拟合**分别计数；P1 另有两次 TF-IDF 词表/IDF 拟合。无新增下载、实时订阅、大模型微调或交易。网页如经本轮部署，也只显示脱敏静态结果，不代表 dot 或云端实时源接入。
+本轮软件聚焦检查：P1 3/3、P3 4/4；P3 初次 1 项因手算 Brier 预期值错误失败，随后只修正测试期望值，保留[修正记录](../results/market_observer_official_repro_20261115/incremental_test_correction.json)。软件测试与 **2 次完整流程、36 次逻辑回归拟合**分别计数；P1 另有两次 TF-IDF 词表/IDF 拟合。无新增下载、实时订阅、大模型微调或交易。现有私有 Site 版本 2 已部署并在桌面浏览器检查历史栏，390px 窄屏视觉检查未运行。网页只显示脱敏静态结果，dot 与云端实时源仍未接入。

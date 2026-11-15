@@ -1,0 +1,27 @@
+{
+  "schema": "market_observer_official_repro_sync_receipt_v1",
+  "date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "github_repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "github_branch": "codex/sync-research-progress-20261113",
+  "base_commit": "c53c5faf3ebdaaa1d35237b38b47921fca86e482",
+  "main_content_commit": "86ce018b17b405420f016c9058ec7ca896720c96",
+  "main_content_remote_sha_readback": "86ce018b17b405420f016c9058ec7ca896720c96",
+  "main_content_blob_readback": {
+    "chinese_report": true,
+    "incremental_result": true,
+    "status_json": true
+  },
+  "site_url": "https://quant-observer-research-nov15.soliddhole4.chatgpt.site",
+  "site_version": 2,
+  "site_source_commit": "e5f47b0bf90df8b7da1debc6364e61ac1a2056b4",
+  "site_native_deployment": "succeeded",
+  "site_desktop_browser_opened": true,
+  "site_narrow_browser_check": "NOT_RUN",
+  "site_live_feed": false,
+  "dot_connected": false,
+  "raw_prices_or_bodies_uploaded": false,
+  "private_predictions_uploaded": false,
+  "credentials_uploaded": false,
+  "june_july_labels_read_or_scored_this_round": false
+}
