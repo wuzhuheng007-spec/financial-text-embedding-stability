@@ -1,0 +1,337 @@
+{
+  "schema": "market_observer_official_text_comparison_v1",
+  "role": "RETROSPECTIVE_SEC_DATE_PROXY_REUSED_VALIDATION_ONLY",
+  "strict_historical_availability": "UNPROVEN_UNCHANGED",
+  "source_scope": "SEC accession filings for NVDA and MU (8-K, 10-Q, 10-K), including earnings exhibits archived under the same accession",
+  "config_sha256": "11840cc43930cade51e10392d0dd05edcb4e5e251ecdd1e873d70492ab92b7ba",
+  "calendar_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+  "corpus_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "event_groups_considered": 33,
+  "event_groups_with_truncated_documents": 18,
+  "truncated_documents": 18,
+  "manifest_problems": [],
+  "symbols": {
+    "US.NVDA": {
+      "price_source_sha256": "661a264550d4d37013ea5dfc3c2cea1f108ed21b751b5cc76ce692855471a4bd",
+      "price_example_count_through_validation": 270,
+      "price_example_count_by_split": {
+        "train": 229,
+        "validation": 41
+      },
+      "qualified_train_n": 229,
+      "qualified_validation_n": 36,
+      "excluded_count": 5,
+      "excluded_by_reason": {
+        "EVENT_GROUP_CROSSES_TRAIN_VALIDATION": 5
+      },
+      "excluded_label_dates_by_reason": {
+        "train": {},
+        "validation": {
+          "EVENT_GROUP_CROSSES_TRAIN_VALIDATION": [
+            "2026-04-01",
+            "2026-04-02",
+            "2026-04-06",
+            "2026-04-07",
+            "2026-04-08"
+          ]
+        }
+      },
+      "qualified_with_announcement": 170,
+      "qualified_without_announcement_verified_sec": 95,
+      "qualified_rows_with_aggregate_truncation": 3,
+      "qualified_rows_sha256": "61a0c6375e031546d22518abd343526a22238686e644a9151ef0f68926d54f5a",
+      "excluded_rows_sha256": "1da983b3a58bc824ec8847c79ecb11ffa68b0896500f26734225fecec65ae7bc",
+      "comparison_status": "REAL_REUSED_VALIDATION_DEVELOPMENT",
+      "comparison": {
+        "status": "REAL_REUSED_VALIDATION_DEVELOPMENT",
+        "common_train_n": 229,
+        "common_validation_n": 36,
+        "train_class_distribution": {
+          "down": 111,
+          "up": 118
+        },
+        "validation_class_distribution": {
+          "down": 14,
+          "up": 22
+        },
+        "validation_with_announcement": 21,
+        "validation_without_announcement_verified_sec": 15,
+        "tfidf_vocabulary_size": 128,
+        "tfidf_vocabulary_sha256": "d2460625060e8d95c89538df0e01734ae34b14b85741c3b7e5ae25638e68a0ba",
+        "tfidf_idf_sha256": "9eb5429f7c1b4faaffeb20cfba5f1d866681a34a45428d130ae74b39ce7283d8",
+        "A": {
+          "train_majority_up": 1,
+          "validation": {
+            "n": 36,
+            "support_down": 14,
+            "support_up": 22,
+            "correct_down": 0,
+            "correct_up": 22,
+            "accuracy": 0.6111111111111112,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        },
+        "B": {
+          "selected_l2": 10.0,
+          "all_validation_candidates": {
+            "0.1": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 5,
+              "correct_up": 8,
+              "accuracy": 0.3611111111111111,
+              "balanced_accuracy": 0.36038961038961037,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "1.0": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 5,
+              "correct_up": 8,
+              "accuracy": 0.3611111111111111,
+              "balanced_accuracy": 0.36038961038961037,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "10.0": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 5,
+              "correct_up": 9,
+              "accuracy": 0.3888888888888889,
+              "balanced_accuracy": 0.38311688311688313,
+              "balanced_accuracy_status": "DEFINED"
+            }
+          },
+          "validation": {
+            "n": 36,
+            "support_down": 14,
+            "support_up": 22,
+            "correct_down": 5,
+            "correct_up": 9,
+            "accuracy": 0.3888888888888889,
+            "balanced_accuracy": 0.38311688311688313,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        },
+        "C": {
+          "selected_l2": 0.1,
+          "all_validation_candidates": {
+            "0.1": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 11,
+              "correct_up": 4,
+              "accuracy": 0.4166666666666667,
+              "balanced_accuracy": 0.48376623376623373,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "1.0": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 9,
+              "correct_up": 7,
+              "accuracy": 0.4444444444444444,
+              "balanced_accuracy": 0.48051948051948057,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "10.0": {
+              "n": 36,
+              "support_down": 14,
+              "support_up": 22,
+              "correct_down": 7,
+              "correct_up": 9,
+              "accuracy": 0.4444444444444444,
+              "balanced_accuracy": 0.4545454545454546,
+              "balanced_accuracy_status": "DEFINED"
+            }
+          },
+          "validation": {
+            "n": 36,
+            "support_down": 14,
+            "support_up": 22,
+            "correct_down": 11,
+            "correct_up": 4,
+            "accuracy": 0.4166666666666667,
+            "balanced_accuracy": 0.48376623376623373,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        }
+      },
+      "private_predictions_sha256": "f83a19a5166993359cbe91a4bec90e1018bd3e8f30f2c2847042cfacbfe5adac"
+    },
+    "US.MU": {
+      "price_source_sha256": "a6d6d2180c9122164308b22d71567ef4a0cf2267d6b7217b2850b22c99da6380",
+      "price_example_count_through_validation": 270,
+      "price_example_count_by_split": {
+        "train": 229,
+        "validation": 41
+      },
+      "qualified_train_n": 229,
+      "qualified_validation_n": 23,
+      "excluded_count": 18,
+      "excluded_by_reason": {
+        "EVENT_GROUP_CROSSES_TRAIN_VALIDATION": 18
+      },
+      "excluded_label_dates_by_reason": {
+        "train": {},
+        "validation": {
+          "EVENT_GROUP_CROSSES_TRAIN_VALIDATION": [
+            "2026-04-01",
+            "2026-04-02",
+            "2026-04-06",
+            "2026-04-07",
+            "2026-04-08",
+            "2026-04-09",
+            "2026-04-10",
+            "2026-04-13",
+            "2026-04-14",
+            "2026-04-15",
+            "2026-04-16",
+            "2026-04-17",
+            "2026-04-20",
+            "2026-04-21",
+            "2026-04-22",
+            "2026-04-23",
+            "2026-04-24",
+            "2026-04-27"
+          ]
+        }
+      },
+      "qualified_with_announcement": 173,
+      "qualified_without_announcement_verified_sec": 79,
+      "qualified_rows_with_aggregate_truncation": 0,
+      "qualified_rows_sha256": "b3aec68f4b09adf691d7287a309c6139b76b8693bba226533139872fc0cad059",
+      "excluded_rows_sha256": "5cc80f48e31c9abb535085786b0f1354091fc56d5c9c13fa255c3d1757e409f3",
+      "comparison_status": "REAL_REUSED_VALIDATION_DEVELOPMENT",
+      "comparison": {
+        "status": "REAL_REUSED_VALIDATION_DEVELOPMENT",
+        "common_train_n": 229,
+        "common_validation_n": 23,
+        "train_class_distribution": {
+          "down": 106,
+          "up": 123
+        },
+        "validation_class_distribution": {
+          "down": 12,
+          "up": 11
+        },
+        "validation_with_announcement": 5,
+        "validation_without_announcement_verified_sec": 18,
+        "tfidf_vocabulary_size": 128,
+        "tfidf_vocabulary_sha256": "4f9517e197740cb673d8e5b3cfd8ba87e6d578127ab8764d03724c213f7771e5",
+        "tfidf_idf_sha256": "a4fe96ecda0cf6b938016253bece973ca39fffc3cc0cefcc1a2b9199a59a6fcb",
+        "A": {
+          "train_majority_up": 1,
+          "validation": {
+            "n": 23,
+            "support_down": 12,
+            "support_up": 11,
+            "correct_down": 0,
+            "correct_up": 11,
+            "accuracy": 0.4782608695652174,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        },
+        "B": {
+          "selected_l2": 10.0,
+          "all_validation_candidates": {
+            "0.1": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "1.0": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "10.0": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            }
+          },
+          "validation": {
+            "n": 23,
+            "support_down": 12,
+            "support_up": 11,
+            "correct_down": 0,
+            "correct_up": 11,
+            "accuracy": 0.4782608695652174,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        },
+        "C": {
+          "selected_l2": 10.0,
+          "all_validation_candidates": {
+            "0.1": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "1.0": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            },
+            "10.0": {
+              "n": 23,
+              "support_down": 12,
+              "support_up": 11,
+              "correct_down": 0,
+              "correct_up": 11,
+              "accuracy": 0.4782608695652174,
+              "balanced_accuracy": 0.5,
+              "balanced_accuracy_status": "DEFINED"
+            }
+          },
+          "validation": {
+            "n": 23,
+            "support_down": 12,
+            "support_up": 11,
+            "correct_down": 0,
+            "correct_up": 11,
+            "accuracy": 0.4782608695652174,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          }
+        }
+      },
+      "private_predictions_sha256": "a338c15ac5418a9b5f12101b842f4fc855774fbf6693cae612b0fbdff116277c"
+    }
+  },
+  "test": "NO_JUNE_JULY_OHLCV_EXTRACTED_LABELED_FIT_OR_SCORED_CONTAMINATED"
+}

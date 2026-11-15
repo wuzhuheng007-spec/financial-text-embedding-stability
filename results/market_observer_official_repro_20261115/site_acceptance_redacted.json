@@ -1,0 +1,23 @@
+{
+  "schema": "market_observer_official_repro_site_acceptance_v1",
+  "checked_at_utc": "2026-11-15T07:15:20Z",
+  "site_url": "https://quant-observer-research-nov15.soliddhole4.chatgpt.site",
+  "existing_site_project_id": "appgprj_6af945da759c8191bc178314191016b7",
+  "version_number": 2,
+  "source_commit_sha": "e5f47b0bf90df8b7da1debc6364e61ac1a2056b4",
+  "native_deployment_status": "succeeded",
+  "access_mode": "custom_owner_only_unchanged",
+  "browser": "Microsoft Edge",
+  "desktop_viewport_pixels": [1707, 912],
+  "desktop_opened": true,
+  "history_tab_opened": true,
+  "rendered_reproduction_summary": true,
+  "rendered_nvda_mu_balanced_accuracy_and_brier": true,
+  "rendered_report_links": true,
+  "narrow_viewport_visual_check": "NOT_RUN",
+  "site_role": "STATIC_REDACTED_SNAPSHOT",
+  "dot_connected": false,
+  "cloud_live_feed_connected": false,
+  "browser_data_collection_calls": 0,
+  "evidence_note": "Native Sites version 2 and deployment were read back; the desktop history tab was opened in Edge and its rendered text and screenshot were inspected. No browser screenshot or raw source text was published."
+}

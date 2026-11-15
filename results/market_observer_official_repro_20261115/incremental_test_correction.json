@@ -1,0 +1,9 @@
+{
+  "schema": "incremental_test_correction_v1",
+  "initial_test_run": "1 failed, 3 passed",
+  "issue": "The manually specified expected Brier score in the synthetic test was 0.1825, but direct squared-error arithmetic gives 0.2325.",
+  "observed_brier": 0.23249999999999998,
+  "fix": "Corrected the synthetic test expectation to 0.2325; no model or result code changed because of this failure.",
+  "final_focused_test_run": "4 passed",
+  "final_log": "results/market_observer_official_repro_20261115/incremental_tests.txt"
+}

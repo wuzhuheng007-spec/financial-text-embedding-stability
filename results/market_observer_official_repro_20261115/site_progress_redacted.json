@@ -1,0 +1,86 @@
+{
+  "schema": "market_observer_official_repro_site_progress_v1",
+  "updated_at_asia_shanghai": "2026-11-15T15:09:07.687253+08:00",
+  "role": "STATIC_REDACTED_RETROSPECTIVE_DEVELOPMENT_SNAPSHOT",
+  "site_live_feed": false,
+  "dot_connected": false,
+  "strict_historical_availability": "UNPROVEN",
+  "sealed_june_july_labels": "NOT_READ_LABELED_OR_SCORED_THIS_ROUND",
+  "source_receipts": {
+    "old_config": "configs/market_observer_official_text_v1.json",
+    "new_plan": "configs/market_observer_official_repro_v1.json",
+    "reproduction": "results/market_observer_official_repro_20261115/gate_redacted.json",
+    "text_audit": "results/market_observer_official_repro_20261115/text_input_audit_redacted.json",
+    "incremental": "results/market_observer_official_repro_20261115/incremental_redacted.json",
+    "validation": "results/market_observer_official_repro_20261115/incremental_validation_redacted.json"
+  },
+  "reproduction": {
+    "status": "COMPARABLE_OUTPUTS_REPRODUCED",
+    "pipeline_runs": 1,
+    "estimator_fits": 12,
+    "summary": "旧 A/B/C 的可比输出逐字节复现；本轮一次复现流程做了 12 次逻辑回归拟合。",
+    "limitations": "旧运行未同时保存当时的代码哈希、逐行概率或特征矩阵，这些项目无法直接做旧新对照。"
+  },
+  "text_audit": {
+    "status": "INPUT_AUDITED_CODEX_REVIEW",
+    "event_groups": 33,
+    "documents": 42,
+    "clipped_documents": 18,
+    "summary": "33 个事件组、42 份参与文档中有 18 份截断。九份参与建模的财报附件都在 10,000 字符处截断，但检索到的营收、净利润和指引短语仍保留在输入中。",
+    "limitations": "词表前列含常用词和 SEC 套话；独立数值词不进入原 TF-IDF。短语可见不等于全部财务事实被正确表示。"
+  },
+  "incremental": {
+    "status": "REUSED_VALIDATION_DEVELOPMENT_ONLY",
+    "pipeline_runs": 1,
+    "estimator_fits": 24,
+    "symbols": [
+      {
+        "symbol": "NVDA",
+        "summary": "验证 36 日，含公告 21 日，涉及 4 个不同事件组。平衡准确率 B / B_count / B_text / B_both = 0.383 / 0.360 / 0.481 / 0.484；Brier = 0.269 / 0.274 / 0.302 / 0.331。 文本分支分类指标有变化，但概率误差更大。",
+        "validation_dates": 36,
+        "announcement_dates": 21,
+        "distinct_event_groups": 4,
+        "selected_balanced_accuracy": {
+          "B": 0.38311688311688313,
+          "B_count": 0.36038961038961037,
+          "B_text": 0.48051948051948057,
+          "B_both": 0.48376623376623373
+        },
+        "selected_brier": {
+          "B": 0.26920945308671695,
+          "B_count": 0.27422487215751434,
+          "B_text": 0.30174670878076254,
+          "B_both": 0.3307198349543693
+        }
+      },
+      {
+        "symbol": "MU",
+        "summary": "验证 23 日，含公告 5 日，涉及 1 个不同事件组。平衡准确率 B / B_count / B_text / B_both = 0.500 / 0.500 / 0.500 / 0.500；Brier = 0.283 / 0.298 / 0.322 / 0.323。 四组在验证期均只预测上涨，概率并不相同。",
+        "validation_dates": 23,
+        "announcement_dates": 5,
+        "distinct_event_groups": 1,
+        "selected_balanced_accuracy": {
+          "B": 0.5,
+          "B_count": 0.5,
+          "B_text": 0.5,
+          "B_both": 0.5
+        },
+        "selected_brier": {
+          "B": 0.28275921510331975,
+          "B_count": 0.29811900390303014,
+          "B_text": 0.3217340615669312,
+          "B_both": 0.3228746451031017
+        }
+      }
+    ],
+    "limitations": "相邻日期复用同一公告；验证集已重复使用。不同正则化参数下的选参差异不能单独归因于文本。"
+  },
+  "limitations": [
+    "严格历史首次可见时间未证明，公告日期只是回顾性代理。",
+    "六月至七月曾被先前探索接触，本轮未重新评分；没有独立测试结论。",
+    "模型词项系数在旧版与复现中均未保存；本文词表审计不等于预测权重审计。",
+    "本页面无云端实时采集或 dot 连接；正式 M5 与交易均未运行。"
+  ],
+  "report_zh_url": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/blob/codex/sync-research-progress-20261113/reports/2026-11-15_market_observer_official_repro_v1.zh.md",
+  "report_en_url": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/blob/codex/sync-research-progress-20261113/reports/2026-11-15_market_observer_official_repro_v1.en.md"
+}

@@ -1,0 +1,162 @@
+{
+  "aggregated_text_mismatches": 0,
+  "earnings_exhibits_inspected_fixed_date_order": 10,
+  "earnings_exhibits_participating_train_validation": 9,
+  "earnings_topic_lexical_status_counts": {
+    "capital_expenditures": {
+      "ORIGINAL_NOT_DISCLOSED_LEXICAL_CHECK": 5,
+      "OUTSIDE_TRAIN_VALIDATION_NOT_MODEL_INPUT": 1,
+      "RETAINED_LEXICAL_EVIDENCE": 4
+    },
+    "guidance": {
+      "OUTSIDE_TRAIN_VALIDATION_NOT_MODEL_INPUT": 1,
+      "RETAINED_LEXICAL_EVIDENCE": 9
+    },
+    "net_income": {
+      "OUTSIDE_TRAIN_VALIDATION_NOT_MODEL_INPUT": 1,
+      "RETAINED_LEXICAL_EVIDENCE": 9
+    },
+    "revenue": {
+      "OUTSIDE_TRAIN_VALIDATION_NOT_MODEL_INPUT": 1,
+      "RETAINED_LEXICAL_EVIDENCE": 9
+    }
+  },
+  "earnings_topic_model_row_retention": {
+    "capital_expenditures": {
+      "participating_exhibits_with_phrase_in_all_model_rows": 4,
+      "participating_exhibits_with_phrase_search_absence": 5
+    },
+    "guidance": {
+      "participating_exhibits_with_phrase_in_all_model_rows": 9,
+      "participating_exhibits_with_phrase_search_absence": 0
+    },
+    "net_income": {
+      "participating_exhibits_with_phrase_in_all_model_rows": 9,
+      "participating_exhibits_with_phrase_search_absence": 0
+    },
+    "revenue": {
+      "participating_exhibits_with_phrase_in_all_model_rows": 9,
+      "participating_exhibits_with_phrase_search_absence": 0
+    }
+  },
+  "input_versions": {
+    "config_sha256": "11840cc43930cade51e10392d0dd05edcb4e5e251ecdd1e873d70492ab92b7ba",
+    "corpus_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+    "model_code_sha256": "d8f2b97e0b66a7d91a6c8fb63b8f01da59972a1c3d8c5f588c0379339d8b9bfe",
+    "qualified_rows_match_current_reproduction_by_symbol": {
+      "US.MU": true,
+      "US.NVDA": true
+    },
+    "qualified_rows_sha256_by_symbol": {
+      "US.MU": "b3aec68f4b09adf691d7287a309c6139b76b8693bba226533139872fc0cad059",
+      "US.NVDA": "61a0c6375e031546d22518abd343526a22238686e644a9151ef0f68926d54f5a"
+    }
+  },
+  "participating_documents": 42,
+  "participating_documents_clipped": 18,
+  "participating_earnings_exhibits_clipped_at_document_budget": 9,
+  "participating_event_groups": 33,
+  "participating_event_groups_with_clipped_documents": 18,
+  "qualified_train_validation_rows": 517,
+  "review_limitations": [
+    "Keyword presence locates candidate financial passages; it does not establish that a precise numeric fact was disclosed or extracted correctly.",
+    "ORIGINAL_NOT_DISCLOSED_LEXICAL_CHECK means searched phrases were absent in saved raw visible HTML and extracted text; it is phrase-search absence, not definitive nondisclosure.",
+    "Train-only vocabulary/IDF was reconstructed from frozen qualified rows; no estimator was fitted in this audit.",
+    "A constant SEC coverage flag cannot explain within-sample label differences."
+  ],
+  "role": "CODEX_REVIEW_PLUS_MECHANICAL_RECONSTRUCTION",
+  "schema": "market_observer_official_text_input_audit_v1",
+  "scope": "frozen train and reused validation SEC accession event texts for NVDA and MU; June/July labels not read or scored",
+  "symbols": {
+    "US.MU": {
+      "all_rows": 252,
+      "all_rows_sharing_text_hash": 247,
+      "max_days_using_one_event_group": 20,
+      "splits": {
+        "train": {
+          "aggregate_clipped_rows": 0,
+          "coverage_flag_values": [
+            true
+          ],
+          "nonempty_text_zero_tfidf_vector_rows": 0,
+          "oov_token_occurrence_fraction": 0.40780329586428665,
+          "oov_token_occurrences": 146350,
+          "rows": 229,
+          "rows_sharing_aggregate_text_hash_with_another_day_same_symbol": 224,
+          "rows_with_event": 168,
+          "rows_without_event_verified_sec": 61,
+          "token_occurrences": 358874,
+          "unique_aggregate_text_hashes": 22,
+          "zero_tfidf_vector_rows": 61
+        },
+        "validation": {
+          "aggregate_clipped_rows": 0,
+          "coverage_flag_values": [
+            true
+          ],
+          "nonempty_text_zero_tfidf_vector_rows": 0,
+          "oov_token_occurrence_fraction": 0.2885032537960954,
+          "oov_token_occurrences": 665,
+          "rows": 23,
+          "rows_sharing_aggregate_text_hash_with_another_day_same_symbol": 23,
+          "rows_with_event": 5,
+          "rows_without_event_verified_sec": 18,
+          "token_occurrences": 2305,
+          "unique_aggregate_text_hashes": 2,
+          "zero_tfidf_vector_rows": 18
+        }
+      },
+      "unique_aggregate_text_hashes": 23,
+      "vocabulary_idf_hashes_match_prior_run": true,
+      "vocabulary_size": 128
+    },
+    "US.NVDA": {
+      "all_rows": 265,
+      "all_rows_sharing_text_hash": 264,
+      "max_days_using_one_event_group": 20,
+      "splits": {
+        "train": {
+          "aggregate_clipped_rows": 0,
+          "coverage_flag_values": [
+            true
+          ],
+          "nonempty_text_zero_tfidf_vector_rows": 0,
+          "oov_token_occurrence_fraction": 0.41440988970551673,
+          "oov_token_occurrences": 166674,
+          "rows": 229,
+          "rows_sharing_aggregate_text_hash_with_another_day_same_symbol": 229,
+          "rows_with_event": 149,
+          "rows_without_event_verified_sec": 80,
+          "token_occurrences": 402196,
+          "unique_aggregate_text_hashes": 12,
+          "zero_tfidf_vector_rows": 80
+        },
+        "validation": {
+          "aggregate_clipped_rows": 3,
+          "coverage_flag_values": [
+            true
+          ],
+          "nonempty_text_zero_tfidf_vector_rows": 0,
+          "oov_token_occurrence_fraction": 0.40842629092230703,
+          "oov_token_occurrences": 14609,
+          "rows": 36,
+          "rows_sharing_aggregate_text_hash_with_another_day_same_symbol": 35,
+          "rows_with_event": 21,
+          "rows_without_event_verified_sec": 15,
+          "token_occurrences": 35769,
+          "unique_aggregate_text_hashes": 5,
+          "zero_tfidf_vector_rows": 15
+        }
+      },
+      "unique_aggregate_text_hashes": 16,
+      "vocabulary_idf_hashes_match_prior_run": true,
+      "vocabulary_size": 128
+    }
+  },
+  "text_content_code_review": {
+    "classification_limit": "This is a CODEX_REVIEW of the frequency-ranked terms, not an independently validated measure of causal or predictive importance.",
+    "frequency_ranked_terms": "The top ranks in both 128-term vocabularies contain function words and SEC filing/format words; company names are also prominent. Examples include of, the, and, securities, exchange, act, nvidia and micron.",
+    "numeric_token_limit": "The frozen tokenizer requires an ASCII letter as the first character, so standalone financial number tokens such as 44.1 are not represented directly in TF-IDF.",
+    "selected_C_estimator_term_coefficients": "NOT_SAVED_IN_OLD_RUN_OR_REPRODUCTION; actual predictive text weights cannot be audited here without an additional fit."
+  }
+}

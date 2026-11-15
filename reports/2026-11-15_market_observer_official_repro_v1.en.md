@@ -1,0 +1,58 @@
+# Official announcement model reproduction and incremental split — 15 November 2026
+
+Executed **2026-11-15, Asia/Shanghai**. The existing collaboration branch started at `c53c5faf3ebdaaa1d35237b38b47921fca86e482`. This round reused saved prices and announcements, added no security or download, and neither read nor scored June–July 2026 labels. The prior outputs remain in the [earlier report](2026-11-15_market_observer_official_v1.en.md). The [frozen plan](../configs/market_observer_official_repro_v1.json), [original text contract](../configs/market_observer_official_text_v1.json), and [stage-by-stage ledger](../results/market_observer_official_repro_20261115/plan_execution.csv) bind this round to the prior t−2 price features, t−1 09:30 ET decision proxy, 20-session announcement lookback, common-sample exclusions and original L2 grid. There is no repository AGENTS.md; the user supplied its rules directly.
+
+## Plan versus execution
+
+| Stage | Plan | Actual and evidence | Status |
+| --- | --- | --- | --- |
+| P0 freeze | Check branch, contamination and inputs; freeze tolerances and split | Local and remote matched the named base. Absolute tolerances and the four model branches were frozen before fitting; unrelated files were preserved. [Plan](../configs/market_observer_official_repro_v1.json) | Complete |
+| P1 reproduce | Capture pre-run provenance; rerun old A/B/C once | One pipeline execution, 12 logistic fits and two training-only TF-IDF fits. All directly comparable old and new output bytes match. [Preflight](../results/market_observer_official_repro_20261115/preflight_redacted.json), [gate](../results/market_observer_official_repro_20261115/gate_redacted.json), [matrix check](../results/market_observer_official_repro_20261115/matrix_audit_redacted.json) | Comparable evidence passes; old gaps remain |
+| P2 inspect text | Reconstruct retained spans, earnings passages, vocabulary and repeated inputs | 33 event groups, 42 participating documents and 517 qualified train/validation rows were checked; 18 documents were clipped. [Text audit](../results/market_observer_official_repro_20261115/text_input_audit_redacted.json) | Complete; mechanical reconstruction plus CODEX_REVIEW |
+| P3 split | After the gate, fit B, B_count, B_text and B_both on the original grid | One incremental pipeline execution, 24 logistic fits; all four branches and three L2 values retained for both issuers. [Candidates](../results/market_observer_official_repro_20261115/incremental_redacted.json) | Complete |
+| P4 evaluate | Paired classifications, probabilities and event reuse | No-fit replay checked all 24 candidate metric rows. Private daily outcomes stay local. [Validation](../results/market_observer_official_repro_20261115/incremental_validation_redacted.json) | Development evaluation complete |
+| P5 choose next step | Propose one deterministic revision, without another validation search | Revise the **text input construction** contract using training-only financial sections, numeric tokens and boilerplate rules; no new model run | Proposal only |
+| P6 sync | Bilingual reports, progress JSON, existing Site, GitHub and redacted handoff | [Static progress file](../results/market_observer_official_repro_20261115/site_progress_redacted.json) prepared; remote publication and deployment are reported in the final synchronization receipt | Delivery stage |
+
+## 1. Reproduction
+
+**The directly comparable old A/B/C results reproduced.** Sample and exclusion dates and reasons, vocabulary and IDF hashes, selected L2, row classifications and all grid aggregates matched for NVDA and MU. The new and old redacted comparison receipts have identical SHA-256 bytes. The new run captured its current commit, executed code-file hashes, workspace-diff hash, primary configuration and input hashes, Python/NumPy versions and fixed seed before fitting; the IRLS fit is deterministic. The [gate](../results/market_observer_official_repro_20261115/gate_redacted.json) separates direct comparison from the [zero-fit reconstructed matrix audit](../results/market_observer_official_repro_20261115/matrix_audit_redacted.json).
+
+The old run did **not** contemporaneously save its execution-code hash, row probabilities or feature matrices. Those fields cannot be directly compared with a nonexistent old record. One auxiliary historical acquisition config was omitted from this round's pre-run inventory; a [post-run addendum](../results/market_observer_official_repro_20261115/provenance_addendum_redacted.json) labels its timing and checks it against the previous price receipt. No fit was repeated to fill this provenance gap.
+
+## 2. Actual text supplied to the model
+
+The [input audit](../results/market_observer_official_repro_20261115/text_input_audit_redacted.json) reconstructed all 517 qualified inputs: NVDA 229 train/36 validation and MU 229/23. The participating 33 SEC accession groups contained 33 main filings and nine earnings exhibits. A tenth MU earnings exhibit dated 2026-06-24 was inspected in fixed date order but did not enter train or validation. Eighteen participating documents were clipped, including every one of the nine participating exhibits at 10,000 cleaned characters. Exhibits precede the main filing within an accession; the original 20-session lookback and 60,000-character aggregate cap remained in force. Private records retain raw and retained lengths, clip positions, document type and ordering.
+
+Candidate revenue, net-income and guidance phrases were retained in every model input carrying each of the nine active earnings exhibits. Capital-expenditure phrases were retained for the four MU exhibits; the searched phrases were absent from the saved raw-visible and extracted text of five NVDA exhibits. This is a **lexical absence**, not an exhaustive finding that the original disclosure contained no CapEx information. Visible phrases also do not prove the model represented figures or accounting basis correctly. Each issuer's train-fitted vocabulary has 128 terms. High-frequency ranks contain common words, SEC boilerplate and company names; the frozen tokenizer omits standalone numeric tokens beginning with a digit. Neither old nor reproduced run saved the selected C estimator's term coefficients, so term frequency is not a coefficient audit.
+
+The complete-SEC-coverage flag is constant on all qualified rows and cannot explain within-sample differences. In validation, 15/36 NVDA and 18/23 MU rows have no announcement and thus a zero text vector; every nonempty text row has a nonzero vector. Across all qualified dates, NVDA and MU have only 16 and 23 distinct aggregate-text hashes respectively because the same event can be reused over the 20-session lookback. Zero announcements means none in the **verified limited SEC source**, not no market news.
+
+## 3. Count versus text
+
+All branches use the same label dates, six old t−2 price/volume features, logistic implementation and 0.5 threshold. B_count adds announcement count and the original coverage flag; B_text adds the original TF-IDF; B_both adds both. The vocabulary and IDF are fitted only on training rows and reused by both text branches. In the current IRLS, L2 is the **penalty coefficient**: 10 is stronger regularization than 1 or 0.1, not an inverse `C`. The table shows each branch's separately selected parameter on the repeatedly used validation split; [all fixed-L2 candidates](../results/market_observer_official_repro_20261115/incremental_redacted.json) are retained.
+
+| Issuer (train/validation) | Branch; selected L2 | Accuracy | Balanced accuracy | Brier ↓ | Predicted-up share |
+| --- | --- | ---: | ---: | ---: | ---: |
+| NVDA (229/36) | B; 10 | 0.389 | 0.383 | 0.269 | 0.500 |
+| NVDA | B_count; 10 | 0.361 | 0.360 | 0.274 | 0.472 |
+| NVDA | B_text; 1 | 0.444 | 0.481 | 0.302 | 0.333 |
+| NVDA | B_both; 0.1 | 0.417 | 0.484 | 0.331 | 0.194 |
+| MU (229/23) | B; 10 | 0.478 | 0.500 | 0.283 | 1.000 |
+| MU | B_count; 10 | 0.478 | 0.500 | 0.298 | 1.000 |
+| MU | B_text; 10 | 0.478 | 0.500 | 0.322 | 1.000 |
+| MU | B_both; 10 | 0.478 | 0.500 | 0.323 | 1.000 |
+
+For NVDA, selected **B_text versus B** paired 36 dates as 9 both correct, 15 both wrong, 7 text-only correct and 5 B-only correct. Selected **B_both versus B_count** gave 9, 17, 6 and 4 respectively. Threshold classification improves, while Brier worsens in both text comparisons. Count alone reduced NVDA accuracy and balanced accuracy and worsened Brier, so the old C change is not explained by a beneficial count increment. At equal L2, NVDA B_text improved classification at 0.1 and 1 but worsened it at 10; text worsened Brier at every original L2. Differences between separately selected parameters cannot be attributed solely to text.
+
+MU validation has 12 down and 11 up dates. All four branches predicted up on all 23 dates; probabilities nevertheless differed and Brier rose from B's 0.283 to 0.322/0.323 with text. NVDA's 21 announcement-present validation dates involve only **four** independent accession groups used across 40 event-group/dates. MU's five announcement-present dates all reuse **one** group. Adjacent dates and these two related equities are not independent experimental units. The [public receipt](../results/market_observer_official_repro_20261115/incremental_redacted.json) retains confusion and paired counts; daily predictions are private.
+
+## 4. Unresolved limits
+
+Old row probabilities, matrices and fit-time code hashes remain unavailable; current reconstruction only establishes reproducibility of **comparable** outputs. Selected C text coefficients were not saved. Standalone issuer IR archive completeness and true historical first availability of SEC body versions remain unresolved, so announcement dates are a retrospective proxy. Validation has repeatedly informed development and parameter choice; the June–July interval was exposed by earlier exploratory work and was not rescored here. There is no significance, stable-increment, profitability, causal, formal M5 admission or independent forecasting claim. Qwen candidate financial figures did not enter the verified-fact layer.
+
+## 5. One next revision
+
+Revise only the **text input construction** contract: determine financial-passage selection, numeric-token retention and SEC boilerplate filtering from training-period documents, freeze it, and verify retained evidence against source hashes. Hold prices, date proxy, common sample and L2 grid fixed. Then evaluate on a genuinely new untouched period rather than searching again on this reused validation split. Establishing true historical first visibility remains a separate prerequisite for a point-in-time forecasting claim.
+
+Focused software tests were P1 3/3 and P3 4/4; the first P3 test run had one incorrect hand-calculated Brier expectation, fixed in the test only and preserved in the [correction receipt](../results/market_observer_official_repro_20261115/incremental_test_correction.json). Count software checks separately from **two full pipeline executions and 36 logistic estimator fits**; P1 also fitted two training-only TF-IDF vocabularies. No new download, live subscription, LLM fine tuning or trade ran. Even if the existing Site is deployed this round, it displays only a redacted static snapshot, without dot or cloud live feeds.

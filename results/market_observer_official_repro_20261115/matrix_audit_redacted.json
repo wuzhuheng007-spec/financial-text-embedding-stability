@@ -1,0 +1,43 @@
+{
+  "new_estimator_fit_calls": 0,
+  "old_fit_time_matrix_comparison": "UNAVAILABLE_NOT_SAVED",
+  "old_fit_time_probability_comparison": "UNAVAILABLE_NOT_SAVED",
+  "run_id": "26108ffe-8c8d-49ab-8469-dfae528cf112",
+  "schema": "market_observer_official_repro_matrix_audit_v1",
+  "source": "old saved qualified rows; current actual fit-time matrix hashes",
+  "status": "PASS",
+  "symbols": {
+    "US.MU": {
+      "checks": {
+        "current_B_probability_threshold_matches_classes": true,
+        "current_C_probability_threshold_matches_classes": true,
+        "old_vs_new_rows_exact": true,
+        "old_vs_new_saved_classes_exact": true,
+        "reconstructed_idf_within_frozen_tolerance": true,
+        "reconstructed_old_B_train_matrix_matches_current_hash": true,
+        "reconstructed_old_B_validation_matrix_matches_current_hash": true,
+        "reconstructed_old_C_train_matrix_matches_current_hash": true,
+        "reconstructed_old_C_validation_matrix_matches_current_hash": true,
+        "reconstructed_old_text_matrix_matches_current_hash": true,
+        "reconstructed_vocabulary_order_exact": true
+      },
+      "validation_probability_count": 23
+    },
+    "US.NVDA": {
+      "checks": {
+        "current_B_probability_threshold_matches_classes": true,
+        "current_C_probability_threshold_matches_classes": true,
+        "old_vs_new_rows_exact": true,
+        "old_vs_new_saved_classes_exact": true,
+        "reconstructed_idf_within_frozen_tolerance": true,
+        "reconstructed_old_B_train_matrix_matches_current_hash": true,
+        "reconstructed_old_B_validation_matrix_matches_current_hash": true,
+        "reconstructed_old_C_train_matrix_matches_current_hash": true,
+        "reconstructed_old_C_validation_matrix_matches_current_hash": true,
+        "reconstructed_old_text_matrix_matches_current_hash": true,
+        "reconstructed_vocabulary_order_exact": true
+      },
+      "validation_probability_count": 36
+    }
+  }
+}

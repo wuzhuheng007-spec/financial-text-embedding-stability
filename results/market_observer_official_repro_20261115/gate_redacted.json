@@ -1,0 +1,49 @@
+{
+  "contaminated_test": "NOT_READ_LABELED_OR_SCORED",
+  "estimator_fit_calls": 12,
+  "first_mismatch": null,
+  "full_pipeline_executions": 1,
+  "gate_rule": "all directly comparable old outputs must match; old unrecorded fields remain unavailable",
+  "gate_status": "PASS",
+  "old_original_feature_matrices": "NOT_RECORDED_DIRECT_COMPARISON_UNAVAILABLE",
+  "old_original_fit_time_code_hash": "NOT_RECORDED",
+  "old_original_row_probabilities": "NOT_RECORDED_DIRECT_COMPARISON_UNAVAILABLE",
+  "run_id": "26108ffe-8c8d-49ab-8469-dfae528cf112",
+  "schema": "market_observer_official_repro_gate_v1",
+  "symbols": {
+    "US.MU": {
+      "checks": {
+        "all_grid_and_aggregate_metrics_within_tolerance": true,
+        "excluded_dates_reasons_exact": true,
+        "idf_hash_exact": true,
+        "price_and_text_rows_exact": true,
+        "reconstructed_old_idf_within_tolerance": true,
+        "reconstructed_old_text_matrix_within_tolerance": true,
+        "reconstructed_old_vocabulary_order_exact": true,
+        "sample_dates_exact": true,
+        "selected_l2_exact": true,
+        "validation_classes_exact": true,
+        "vocabulary_hash_exact": true
+      },
+      "qualified_train_n": 229,
+      "qualified_validation_n": 23
+    },
+    "US.NVDA": {
+      "checks": {
+        "all_grid_and_aggregate_metrics_within_tolerance": true,
+        "excluded_dates_reasons_exact": true,
+        "idf_hash_exact": true,
+        "price_and_text_rows_exact": true,
+        "reconstructed_old_idf_within_tolerance": true,
+        "reconstructed_old_text_matrix_within_tolerance": true,
+        "reconstructed_old_vocabulary_order_exact": true,
+        "sample_dates_exact": true,
+        "selected_l2_exact": true,
+        "validation_classes_exact": true,
+        "vocabulary_hash_exact": true
+      },
+      "qualified_train_n": 229,
+      "qualified_validation_n": 36
+    }
+  }
+}

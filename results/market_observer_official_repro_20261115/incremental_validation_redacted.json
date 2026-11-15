@@ -1,0 +1,24 @@
+{
+  "candidate_metric_rows_checked": 24,
+  "old_result_sha256": "2bcd1bd77a7910bfa30bb70503ac3ede2c19660559dd23145d5baa369a00fb5d",
+  "public_result_sha256": "34db5df273ad919c2aa289c420c2d55250e52c3fbaf86c8579b7e2d0097a8acf",
+  "schema": "market_observer_official_incremental_validation_v1",
+  "semantic_financial_validity": "NOT_ESTABLISHED_BY_THIS_SOFTWARE_REPLAY",
+  "status": "PASS",
+  "symbols": {
+    "US.MU": {
+      "candidate_metric_rows_checked": 12,
+      "old_B_and_C_consistent": true,
+      "paired_comparisons_checked": 3,
+      "validation_rows": 23,
+      "vocabulary_and_idf_consistent": true
+    },
+    "US.NVDA": {
+      "candidate_metric_rows_checked": 12,
+      "old_B_and_C_consistent": true,
+      "paired_comparisons_checked": 3,
+      "validation_rows": 36,
+      "vocabulary_and_idf_consistent": true
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "captured_at_utc": "2026-11-15T07:07:56.955040+00:00",
+  "eligible_sec_text_body_count_post_run": 42,
+  "eligible_sec_text_body_hashes_match_manifest_post_run": true,
+  "estimator_fit_calls_in_addendum": 0,
+  "omitted_auxiliary_input_at_preflight": {
+    "historical_price_request_config_sha256_now": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25",
+    "matches_prior_receipt": true,
+    "prior_historical_price_receipt_source_request_sha256": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25"
+  },
+  "other_repo_input_files_omitted": [],
+  "per_document_sec_text_at_preflight": "NOT_INDIVIDUALLY_HASHED_BEFORE_FIT",
+  "per_document_sec_text_runtime": "runner verified each eligible body SHA-256 against frozen corpus manifest before using its text",
+  "preflight_scope": "frozen model/reproduction configs, corpus manifest, calendar, old receipt, NVDA/MU price responses, executed code",
+  "run_id": "26108ffe-8c8d-49ab-8469-dfae528cf112",
+  "runtime_dependency_binary_and_timezone_db_hashes": "NOT_CAPTURED; versions/path recorded in preflight",
+  "schema": "market_observer_official_repro_provenance_addendum_v1",
+  "timing": "POST_RUN_READ_ONLY_AUDIT_NOT_PRE_FIT_HASH_CAPTURE"
+}
