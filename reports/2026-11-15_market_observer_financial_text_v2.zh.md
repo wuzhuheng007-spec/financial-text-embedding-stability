@@ -33,3 +33,5 @@
 这只是训练材料上的同一团队内容工程检查；旧验证结果曾影响设计，SEC 归档正文的历史首次可见时刻仍未独立证明。下一个**单一工程改动**应是更节省预算的适配器，把表头与财期引言连同数值放入模型输入，不反复复制长表头；仍须先用训练期材料审查。后续评价还需独立审阅真正未接触的新时期材料，冻结有时间依据的输入规则。已反复使用的四月至五月开发期以及早先暴露的六月至七月不能改称未接触测试集。正式 M5 准入、收益预测、交易和模型晋升均为 `NOT_RUN`。
 
 最终[聚焦软件日志](../results/market_observer_financial_text_v2_20261115/focused_tests_final.log)及[回执](../results/market_observer_financial_text_v2_20261115/focused_tests_receipt_redacted.json)记录 **33 项合成检查通过**；先前分批检查与之重叠，不能累加。另份[发布前回执](../results/market_observer_financial_text_v2_20261115/publication_consistency_redacted.json)检查暂存清单、文档链接、数字／状态一致性和常见凭据／私人路径形式。原件回读、浏览器验收与两次训练内容比较分别统计，本轮模型拟合仍为 **0 次**。
+
+[主内容提交](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/commit/8d8dc75d942222db76c10d75d080824467663696)已推送至既有协作分支，九份关键远端文件与本机字节回读一致；见[同步回执](../results/market_observer_financial_text_v2_20261115/sync_receipt_redacted.json)。另做本机脱敏交接文件夹和 ZIP，已通过 CRC 及 SHA-256 回读。本轮未合并默认分支，也未修改 Overleaf。

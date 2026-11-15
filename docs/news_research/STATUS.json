@@ -727,6 +727,10 @@
     "april_july_source_bodies_or_labels_reopened": false,
     "prior_validation_result_exposure": true,
     "page_status": "EXISTING_OWNER_ONLY_SITE_VERSION_3_DEPLOYED_LOCAL_DESKTOP_AND_390PX_CHECKED",
+    "github_main_content_commit": "8d8dc75d942222db76c10d75d080824467663696",
+    "github_remote_readback": "PASS_NINE_KEY_FILES_AT_MAIN_COMMIT",
+    "sync_receipt": "results/market_observer_financial_text_v2_20261115/sync_receipt_redacted.json",
+    "redacted_handoff_zip": "LOCAL_CRC_AND_SHA_READBACK_VERIFIED",
     "dot_connection": "NOT_CONNECTED",
     "live_quote_connection_changed": false,
     "formal_m5_financial_experiment": "NOT_RUN"

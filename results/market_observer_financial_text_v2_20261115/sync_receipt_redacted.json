@@ -1,0 +1,62 @@
+{
+  "schema": "financial_text_v2_sync_receipt_v1",
+  "checked_at_utc": "2026-11-15T11:19:42.765687+00:00",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "main_content_commit": "8d8dc75d942222db76c10d75d080824467663696",
+  "remote_branch_head_at_check": "8d8dc75d942222db76c10d75d080824467663696",
+  "remote_key_blob_readbacks": [
+    {
+      "path": "README.md",
+      "sha256": "0b7076f50819ef71acb2e2ed47188708248dcb290cea4271eb33002adcb36892",
+      "matches_local": true
+    },
+    {
+      "path": "docs/news_research/STATUS.json",
+      "sha256": "eb7bf62c96c5f8b5c0987a5c53b1307ec234863c74943f2a4eaa5c6b545329ea",
+      "matches_local": true
+    },
+    {
+      "path": "reports/2026-11-15_market_observer_financial_text_v2.en.md",
+      "sha256": "4102c6c0907ac3de7b532e37b76df3e0b362895de655c47b006e3a7c7770ec42",
+      "matches_local": true
+    },
+    {
+      "path": "reports/2026-11-15_market_observer_financial_text_v2.zh.md",
+      "sha256": "9c13fcb3888b5e95675505fb74a084719824ec9c57a58fd9160288657ce7626e",
+      "matches_local": true
+    },
+    {
+      "path": "results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json",
+      "sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+      "matches_local": true
+    },
+    {
+      "path": "results/market_observer_financial_text_v2_20261115/retention_redacted.json",
+      "sha256": "2cdb00d715447b1850b1db6473308376943e21d05a2abbb1e5bcc62211681e0f",
+      "matches_local": true
+    },
+    {
+      "path": "results/market_observer_financial_text_v21_20261115/retention_redacted.json",
+      "sha256": "ded21f38db2bd676115b2901fb80d1067f7afa6be9c682059eba9a6601d11ac9",
+      "matches_local": true
+    },
+    {
+      "path": "results/market_observer_financial_text_v2_20261115/plan_execution.csv",
+      "sha256": "27b1dcba55f4270190abf73d9c07b43389b01020b74cc57b9eedca69aea99f97",
+      "matches_local": true
+    },
+    {
+      "path": "scripts/market_observer_financial_text_v21/parser.py",
+      "sha256": "cd42de10a7f94061147bde91aea494969b13a9136df86a78e152300f920fcc24",
+      "matches_local": true
+    }
+  ],
+  "site_url": "https://quant-observer-research-nov15.soliddhole4.chatgpt.site/?tab=financial",
+  "site_version": 3,
+  "site_source_commit": "97311b47ee5a8de94679af6eb4611aabb48ef8ac",
+  "site_native_deployment": "succeeded",
+  "redacted_handoff_created": true,
+  "remote_readback_result": "PASS",
+  "main_branch_merged": false
+}
