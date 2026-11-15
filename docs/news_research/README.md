@@ -1,13 +1,13 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), scope update 1.11.
+Updated 2026-11-15 (Asia/Shanghai), source-bound intake 1.12.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
 
 - [财报扩展中文路线](earnings/roadmap.zh.md) · [English earnings extension](earnings/roadmap.en.md)
-- [下一轮任务 / Next task](earnings/01_CODEX_TASK.txt) · [审核边界 / Review](earnings/02_REVIEW.md)
-- 核心公司：NVIDIA、AMD、Intel、CoreWeave、Samsung Electronics、SK hynix。范围已明确，无需先填旧兴趣页。六家官方入口已打开，财报数值采集尚未运行。
-- Core scope is explicit; the old preference form is not a prerequisite. Official entry pages were opened, but numerical earnings collection is not yet executed.
+- [本轮英文报告 / English intake report](../../reports/2026-11-15_earnings_macro_intake.en.md) · [中文简报](../../reports/2026-11-15_earnings_macro_intake.zh.md) · [执行台账](../../results/news_earnings_macro_20261115/plan_execution.csv)
+- 核心公司：NVIDIA、AMD、Intel、CoreWeave、Samsung Electronics、SK hynix。已形成六张有来源财报开发卡、三张宏观卡和六条独立公司新闻；正式金融准入与收益实验仍为 `NOT_RUN`。旧兴趣页不是前置条件。
+- Six source-bound issuer development cards, three macro release cards and six separate issuer news inputs are available. This is descriptive intake, with no formal financial admission or market-return evaluation. The old preference form is not a prerequisite.
 
 以下为此前宏观候选阶段记录，保留其证据与状态；旧“先点选”的顺序由上述任务替代。The historical macro stage below is preserved; its preference-first sequencing is superseded.
 
@@ -93,4 +93,4 @@ Keep section numbers, research meaning and statuses aligned across languages. Up
 
 ## Next bounded task / 下一项有限任务
 
-执行[财报与宏观输入采集](earnings/01_CODEX_TASK.txt)，先交付六家公司真实财报卡及逐字段缺口，再补宏观指标和相关新闻。Follow the earnings task to deliver six issuer cards with field-level evidence/gaps, then macro releases and related news. Financial admission remains separate.
+下一步取得有日期依据的来源／公布前共识快照与历史公司—证券身份链，决定完整金融协议后，才可把开发卡升级为正式准入事件。Next, obtain point-in-time source and prerelease consensus evidence, establish dated issuer-to-security identity, and settle the full financial protocol before admitting events. A bounded company-event extraction quality study may use the cards as development input; it must preserve the earlier model-failure record.

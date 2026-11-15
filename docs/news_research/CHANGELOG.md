@@ -1,3 +1,11 @@
+# 2026-11-15 — Source-bound earnings and macro intake / 财报与宏观实采
+
+Completed six issuer development earnings cards, three official macro release cards and six separate issuer news inputs at a frozen Asia/Shanghai cutoff. The 72 required earnings checks contain 57 reported values, 3 formula-derived values and 12 explicit gaps; 41 local official source captures passed hash readback. Bounded same-basis growth was calculated for 32 of 36 comparisons with positive prior bases. Added a local three-area page and two conditional `AI_ANALYST_DRAFT` examples; browser visual QA is **NOT_RUN**. Consensus, independent first-availability proof, historical security admission and all financial/model experiments on this new stream remain absent or **NOT_RUN**. See the [English report](../../reports/2026-11-15_earnings_macro_intake.en.md), [中文简报](../../reports/2026-11-15_earnings_macro_intake.zh.md) and [execution ledger](../../results/news_earnings_macro_20261115/plan_execution.csv). The preceding scope-only entry below is retained as history.
+
+按冻结截止时点完成六家有来源财报开发卡、三张官方宏观卡及六条独立公司新闻。72 个必需财报字段中，57 个为原文报告值、3 个带公式派生、12 个明确缺失；41 份本机官方原件通过哈希回读。36 项同口径增长比较中 32 项满足正数前期基数并计算。新增三栏本机页面与两条条件式分析草稿；浏览器视觉验收 **NOT_RUN**。公布前合格共识、独立首次可见时间、历史证券准入及此新输入上的金融／模型实验仍缺失或 **NOT_RUN**。保留下面的旧“仅更新范围”记录作为历史。
+
+---
+
 # 2026-11-15 — Earnings and macro indicator extension / 财报与宏观指标扩展
 
 User specified six core issuers and revenue, earnings, guidance and capital spending. Added matched bilingual roadmaps, a field contract, official-entry registry and P0–P4 collection task. The preference form is no longer a prerequisite. Source entries were opened; no earnings values were ingested or financial/model experiments run in this update. Prior records remain unchanged.

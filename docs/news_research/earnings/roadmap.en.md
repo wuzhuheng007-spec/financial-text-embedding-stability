@@ -1,5 +1,5 @@
 # Major news, macro indicators and technology earnings
-Version 1.11; 2026-11-15, Asia/Shanghai. Scope follows the user's clarification. Collection and experiments below are planned, not completed results.
+Version 1.12; 2026-11-15, Asia/Shanghai. Scope follows the user's clarification. A [bounded, source-bound development intake](../../../reports/2026-11-15_earnings_macro_intake.en.md) now contains six issuer cards, three macro cards and six separate issuer news inputs. Broader coverage, model work and financial experiments below remain planned or `NOT_RUN`.
 
 ## 1. Three input streams
 News covers policy, geopolitics/energy, leverage/liquidity, technology regulation, material governance, financing/M&A, product security, supply-chain pricing and orders. Cluster by event and retain initial reports, updates, denials and corrections; syndication is not independent confirmation.
@@ -39,6 +39,6 @@ Show facts, new information relative to expectations, possible rate/demand/cost/
 A cloud CapEx increase could support supplier orders and pressure the buyer's near-term cash flow, conditional on investment mix, timing, funding and prior expectations. Memory price changes can affect producers and buyers differently depending on contracts, inventory and pass-through. Store narrative sentiment, fundamental impact and observed market response separately.
 
 ## 6. Next deliverables and research
-Follow 01_CODEX_TASK.txt: six real earnings cards and evidence-linked metric tables, then macro releases and related news. The old preference form is not a prerequisite. Deliver explicit gap cards when data are unavailable.
+The bounded P0–P4 intake in 01_CODEX_TASK.txt now has six source-bound earnings cards, evidence-linked metric tables, three macro cards and six separate news inputs. Next obtain point-in-time source/consensus evidence and dated issuer-security identity, then settle the full financial admission protocol. The old preference form is not a prerequisite; retain explicit gaps.
 Use official structured tables and deterministic calculations first; apply LLMs to management language and conditional channels later. Compare price/risk-only, numeric macro/earnings, added sentiment, and added transmission-graph features on identical time splits and events. Prioritize future volatility/covariance, then returns and costs. Development cards are not held-out tests; do not select research events by ex-post price moves.
 Retain representation/prompt stability and look-ahead questions. New-scope inference, human fact gold and financial experiments remain unrun. This document starts no background collection or trading.

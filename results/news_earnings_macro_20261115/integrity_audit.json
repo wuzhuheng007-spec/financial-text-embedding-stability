@@ -1,0 +1,19 @@
+{
+  "schema": "earnings_macro_real_readback_audit_v1",
+  "status": "PASS",
+  "as_of_utc": "2026-11-14T23:47:54.6036273Z",
+  "issuer_cards": 6,
+  "required_metric_checks": 72,
+  "reported_values": 57,
+  "derived_values": 3,
+  "explicit_missing": 12,
+  "verified_source_captures": 41,
+  "macro_cards": 3,
+  "selected_company_news": 6,
+  "growth_computed": 32,
+  "growth_not_computed": 4,
+  "model_calls": 0,
+  "market_observations": 0,
+  "financial_experiments": "NOT_RUN",
+  "limitation": "Checks source bytes, references, units/roles and product consistency; does not prove historical first availability or visual layout"
+}

@@ -1,0 +1,7 @@
+test_cutoff_source_hashes_and_no_unverified_surprises (test_earnings_macro_panel.MacroPanelReplayTests.test_cutoff_source_hashes_and_no_unverified_surprises) ... ok
+test_replayed_macro_claims_are_in_issuer_pages (test_earnings_macro_panel.MacroPanelReplayTests.test_replayed_macro_claims_are_in_issuer_pages) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.014s
+
+OK

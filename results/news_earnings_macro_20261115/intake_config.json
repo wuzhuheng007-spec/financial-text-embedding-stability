@@ -1,0 +1,20 @@
+{
+  "schema": "earnings_macro_intake_config_v1",
+  "date_local": "2026-11-15",
+  "timezone_local": "Asia/Shanghai",
+  "frozen_as_of_local": "2026-11-15T07:47:54.6036273+08:00",
+  "frozen_as_of_utc": "2026-11-14T23:47:54.6036273Z",
+  "input_commit": "338fcbe192b9056bf556d923b73218fcbcdadd2e",
+  "task_package_sha256": "0d1567f91c1c15fc72b77ae4f689e9b41dd4963848f8b60b991097e2069f170e",
+  "task_package_crc": "PASS",
+  "task_package_member_hashes": "SHA256.json 10/10 PASS",
+  "official_source_policy": "Public primary issuer, agency and regulator documents. Current captures are not necessarily release-time snapshots.",
+  "selection_policy": "For each of six named issuers, latest report publicly released by frozen cutoff. Macro: latest CPI, jobs and FOMC decision. Additional news selected by direct relation and source, never ex-post return.",
+  "core_issuers": ["NVIDIA", "AMD", "Intel", "CoreWeave", "Samsung Electronics", "SK hynix"],
+  "macro_development_quota": ["CPI", "NONFARM_PAYROLLS", "FOMC"],
+  "company_news_max": 6,
+  "old_preference_page_required": false,
+  "new_llm_calls_allowed": false,
+  "financial_labels_allowed": false,
+  "financial_protocol_status": "PROPOSED_NOT_ACCEPTED"
+}

@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.11",
+  "version": "1.12",
   "updated_date": "2026-11-15",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -37,8 +37,8 @@
       "existing_identity_source_blockers": "UNCHANGED"
     }
   },
-  "next_stage": "MACRO_NEWS_AND_SIX_ISSUER_EARNINGS_COLLECTION",
-  "next_stage_zh": "按已明确范围采集六家财报、宏观指标及相关新闻；旧兴趣点选不是前置阻塞",
+  "next_stage": "POINT_IN_TIME_SOURCE_CONSENSUS_IDENTITY_AND_PROTOCOL_DECISIONS",
+  "next_stage_zh": "补时点来源和公布前共识、历史公司证券身份及完整金融协议；开发卡尚未正式准入",
   "update_policy": "Read current remote branch on request; maintain both languages, this status and CHANGELOG together. No background automation.",
   "update_policy_zh": "按请求读取当前远端；中英路线、状态、修改记录一起维护；无后台自动化。",
   "planned_scope": [
@@ -310,7 +310,7 @@
   "earnings_scope_update": {
     "date": "2026-11-15",
     "user_scope": "ACCEPTED_BY_EXPLICIT_REQUEST",
-    "implementation": "PLANNED_NOT_RUN",
+    "implementation": "EXECUTED_IN_SOURCE_BOUND_FOLLOWUP",
     "core_issuers": [
       "NVIDIA",
       "AMD",
@@ -319,12 +319,42 @@
       "Samsung Electronics",
       "SK hynix"
     ],
-    "official_entry_review": "SIX_ENTRIES_OPENED_VALUES_NOT_AUDITED",
+    "official_entry_review": "SIX_REPORTS_SOURCE_BOUND_DEVELOPMENT_ONLY",
     "task": "docs/news_research/earnings/01_CODEX_TASK.txt",
     "roadmap_zh": "docs/news_research/earnings/roadmap.zh.md",
     "roadmap_en": "docs/news_research/earnings/roadmap.en.md",
     "new_model_inference": "NOT_RUN",
     "financial_experiments": "NOT_RUN",
     "old_preference_page_required": false
+  },
+  "earnings_macro_intake": {
+    "date": "2026-11-15",
+    "timezone": "Asia/Shanghai",
+    "frozen_as_of_utc": "2026-11-14T23:47:54.6036273Z",
+    "input_commit": "338fcbe192b9056bf556d923b73218fcbcdadd2e",
+    "report_en": "reports/2026-11-15_earnings_macro_intake.en.md",
+    "report_zh": "reports/2026-11-15_earnings_macro_intake.zh.md",
+    "plan_execution": "results/news_earnings_macro_20261115/plan_execution.csv",
+    "assembly_receipt": "results/news_earnings_macro_20261115/assembly_receipt.json",
+    "source_manifest": "results/news_earnings_macro_20261115/source_manifest.json",
+    "real_readback_audit": "results/news_earnings_macro_20261115/integrity_audit.json",
+    "company_cards": 6,
+    "required_metric_checks": 72,
+    "reported_values": 57,
+    "formula_derived_values": 3,
+    "explicit_missing_values": 12,
+    "verified_source_captures": 41,
+    "macro_cards": 3,
+    "selected_company_news": 6,
+    "growth_computed_from_matched_positive_bases": 32,
+    "growth_not_computed_nonpositive_base": 4,
+    "pre_release_consensus_values": 0,
+    "independently_verified_first_available_times": 0,
+    "historical_security_admission": false,
+    "new_project_model_calls": 0,
+    "market_observations": 0,
+    "financial_experiments": "NOT_RUN",
+    "dashboard_visual_browser_check": "NOT_RUN",
+    "research_protocol": "PROPOSED"
   }
 }

@@ -6,7 +6,7 @@ The [14 November progress report](reports/2026-11-14_daily_progress.md) ([中文
 
 ## News research roadmap / 新闻研究技术路线
 
-The [current news research entry / 新闻研究当前入口](docs/news_research/README.md) now prioritizes [macro/systemic event transmission to technology firms](docs/news_research/macro_tech/README.md). The [English](docs/news_research/macro_tech/candidates.en.md) and [中文](docs/news_research/macro_tech/candidates.zh.md) directories contain 12 source-backed development candidates across six categories, with 24 source-located fact statements. These are relevance-screening materials; human fact adjudication, historical security identity, model inference on this new scope and financial experiments have not run. The earlier company-news and embedding work remains documented as historical engineering and research preparation.
+The [current news research entry / 新闻研究当前入口](docs/news_research/README.md) prioritizes major news, macro releases, earnings and conditional transmission across six technology issuers. The [15 November source-bound intake report](reports/2026-11-15_earnings_macro_intake.en.md) ([中文简报](reports/2026-11-15_earnings_macro_intake.zh.md)) records six development earnings cards, three official macro cards and six separate issuer news inputs. Field-level gaps and source hashes are retained; historical security identity, qualified pre-release consensus, model inference on this new stream and financial experiments remain unresolved or `NOT_RUN`. The earlier [12 macro/technology candidates](docs/news_research/macro_tech/candidates.en.md) and prior company-news engineering stay documented separately.
 
 后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。本轮真实事件卡是开发候选，不改变既有 M5 准入或完整金融协议状态，也不启动自动采集。
 

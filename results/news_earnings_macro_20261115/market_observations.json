@@ -1,0 +1,7 @@
+{
+  "schema": "market_observations_v1",
+  "status": "NOT_RUN",
+  "as_of_utc": "2026-11-14T23:47:54.6036273Z",
+  "observations": [],
+  "reason": "No financial price protocol, historical identity chain or event labels approved"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "earnings_intake_products_v1",
+  "as_of_utc": "2026-11-14T23:47:54.6036273Z",
+  "input_commit": "338fcbe192b9056bf556d923b73218fcbcdadd2e",
+  "partial_sha256": {
+    "artifacts/earnings_20261115/partials/us_a/normalized/nvidia_2027q2.partial.json": "5338a6ce9e6ef70acf1743026c8e8208dcdd0e92dbb5b55992c1c0491076b0bf",
+    "artifacts/earnings_20261115/partials/us_a/normalized/amd_2026q3.partial.json": "401f26807346b53f4380ab1513e56c79ad6050079856dae3857a9915b48daeaf",
+    "artifacts/earnings_20261115/partials/us_b/intel.normalized.json": "a67a10c2d0813dd34a6298b6697ebe589a797145afd95d467e60bcb7c303c4cf",
+    "artifacts/earnings_20261115/partials/us_b/coreweave.normalized.json": "d02efe406927a4968df74cb77191e85219c1269831c7fc2262ba68ac50d07f24",
+    "artifacts/earnings_20261115/partials/korea/samsung_electronics_2026q3.partial.json": "1677473125c0c8765f3c9c1682636e30f8b1bec54fcb6741665a4310e50cf509",
+    "artifacts/earnings_20261115/partials/korea/sk_hynix_2026q3.partial.json": "7e56855ad4eaedc577406f5aa631c9447e28251c2f5bf88ab3536722d0109df9"
+  },
+  "issuers": 6,
+  "required_metric_checks": 72,
+  "required_metric_checks_per_issuer": 12,
+  "source_bound_core_values": 60,
+  "reported_core_values": 57,
+  "derived_core_values": 3,
+  "source_bound_core_values_by_issuer": {
+    "AMD": 12,
+    "COREWEAVE": 10,
+    "INTEL": 12,
+    "NVIDIA": 12,
+    "SAMSUNG_ELECTRONICS": 8,
+    "SK_HYNIX": 6
+  },
+  "missing_core_checks": 12,
+  "captured_source_documents": 35,
+  "source_entries": 35,
+  "consensus_values": 0,
+  "new_model_calls": 0,
+  "financial_labels": 0,
+  "financial_experiments": "NOT_RUN",
+  "selected_company_news": 6,
+  "scope": "SOURCE_BOUND_DEVELOPMENT_CARDS_NOT_ADMITTED_FINANCIAL_SAMPLE",
+  "outputs_sha256": {
+    "company_cards.json": "4cf24137bf6edbeccfe10278fd1aef26f0918ecc5db38dd8a0405ed3e56b1287",
+    "earnings_metrics.jsonl": "78c7e83b55e476a7d9bc885b3cf42bfbe07a8f7462ae3ed05a51428baeb32ba1",
+    "coverage.csv": "de1a0f63f9c23799d2845d11f95b3f2b97486667510d7cce56911db17b83d3d1",
+    "source_manifest.json": "e276b83750f2cd0bb2fb085f20735f486cfa91dc721eb1b21259ad8b248ad47b",
+    "news_events.json": "a8991ef56518485d800372fbbcccc87c71dbf802a0a9549ef996f966b85ed53a",
+    "market_observations.json": "276eb18bb9eaceeca187807aff09221abdf94cb3e1498c10c7f360dc36cbb50a"
+  }
+}

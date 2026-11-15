@@ -1,0 +1,34 @@
+{
+  "schema": "conditional_transmission_drafts_v1",
+  "as_of_utc": "2026-11-14T23:47:54.6036273Z",
+  "status": "AI_ANALYST_DRAFT_NO_PROJECT_MODEL_INFERENCE",
+  "scope": "Conditional research paths, not verified causal effects or return predictions",
+  "drafts": [
+    {
+      "id": "coreweave_capex_financing",
+      "title": "CoreWeave capital spending and financing channel",
+      "conditional_path": "CoreWeave's FY2026 capital-expenditure guidance and Q4 interest-expense guidance create a testable two-sided path. If infrastructure is delivered on the stated schedule, equipment and capacity suppliers with separately verified contracts could see orders; if funding costs or deployment timing worsen, CoreWeave's cash needs and margins could face pressure. The supplier links and technology-sector market effect have not been established in this intake.",
+      "source_urls": [
+        "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Third-Quarter-2026-Results/default.aspx",
+        "https://s205.q4cdn.com/133937190/files/content_files/CoreWeave-4Q-and-FY2026-Outlook-Presentation-_1_.pdf"
+      ],
+      "company_effect_status": "HYPOTHESIS",
+      "supplier_effect_status": "CONDITIONAL_NO_VERIFIED_COUNTERPARTY_EDGE",
+      "sector_effect_status": "NOT_EVALUATED",
+      "market_return_status": "NOT_RUN"
+    },
+    {
+      "id": "cpi_expectations_channel",
+      "title": "CPI, policy expectations and financing channel",
+      "conditional_path": "A future CPI release can be compared with a documented, timestamped pre-release consensus. If the result changes expected policy rates, financing costs and valuation assumptions could shift for capital-intensive technology firms. The October 2026 CPI card has an official actual and prior value but no qualified consensus, so no surprise, rate-expectation change, company effect or market reaction is asserted here.",
+      "source_urls": [
+        "https://www.bls.gov/news.release/archives/cpi_11102026.htm",
+        "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+      ],
+      "company_effect_status": "HYPOTHESIS",
+      "supplier_effect_status": "NOT_EVALUATED",
+      "sector_effect_status": "HYPOTHESIS",
+      "market_return_status": "NOT_RUN"
+    }
+  ]
+}
