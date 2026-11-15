@@ -1,0 +1,287 @@
+{
+  "schema": "shortfacts_v2_run_receipt_redacted_v1",
+  "time_zone": "Asia/Shanghai",
+  "generated_at_utc": "2026-11-15T03:22:52+00:00",
+  "development_only": true,
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "prompt_sha256": "a42af0c78d070e9350691921b6ec7217d326365ddc51de8d940b6112df37aa27",
+  "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+  "private_reference_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+  "runner_sha256": "ef7f83fa7d2405b92512388c789c4c6b57650dd0039d0632161e8731093b3b50",
+  "evaluator_sha256": "db6993527c03ed9c8b1dc94a24ad2c791c9465495d3811ba692ee1993c3de27b",
+  "run_config_sha256": "8e658270dc4d4dcf1f46573cb2312595fff7c9ed30634f0c61ea87685b0ef8db",
+  "run_summary_sha256": "083ca36fbb47c25216e72bd9acb85ddab760dccf8a565fbd67002ec5864f2c32",
+  "attempt_ledger_sha256": "eb5abad8527ad6b4eafe78abfd085c69255aadec4bbe725e97b2601684183262",
+  "generation": {
+    "batch_size": 1,
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "dtype": "float16",
+    "device": "cuda",
+    "attention_requested": "sdpa",
+    "max_input_tokens": 2048,
+    "max_new_tokens": 768,
+    "generation_timeout_seconds": 180,
+    "model_load_timeout_seconds": 240,
+    "retries": 0
+  },
+  "gpu_at_preflight": {
+    "cuda_device_name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "free_bytes": 11561598976,
+    "total_bytes": 12820480000
+  },
+  "planned_tasks": 6,
+  "attempted": 6,
+  "generation_started": 6,
+  "completed_responses": 6,
+  "run_status": "SIX_TASKS_PROCESSED",
+  "run_started_at_utc": "2026-11-15T03:14:48.335+00:00",
+  "run_finished_at_utc": "2026-11-15T03:18:42.458+00:00",
+  "tasks": [
+    {
+      "task_id": "A1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "42e1650e12c76c349083765fa5edbcd3dcde9d94b6001b2cb7bfdab6419ae22a",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 539,
+      "generated_tokens": 290,
+      "attempt_duration_seconds": 47.516,
+      "generation_seconds_synchronized": 27.875,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4955570176,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295227904,
+          "peak_allocated_bytes": 6387097088
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    },
+    {
+      "task_id": "A2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "a045b2fd802c6b54e0dab3128ad83cbc56c594179154856805cff2acc8bff71c",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 536,
+      "generated_tokens": 109,
+      "attempt_duration_seconds": 30.438,
+      "generation_seconds_synchronized": 10.438000000023749,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4968153088,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295226880,
+          "peak_allocated_bytes": 6386584576
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    },
+    {
+      "task_id": "B1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "4fae9a44447f0f31dc7b81a2ae92134e338a259bdd4ab394074bce27fa40c6c5",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 560,
+      "generated_tokens": 227,
+      "attempt_duration_seconds": 43.235,
+      "generation_seconds_synchronized": 22.28100000001723,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4957667328,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295227904,
+          "peak_allocated_bytes": 6393715200
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    },
+    {
+      "task_id": "B2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "7e6dfe108c664b4d280547c7aae942d3095bc3d8c29b29629433d0295dcb1ff4",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 574,
+      "generated_tokens": 201,
+      "attempt_duration_seconds": 39.219,
+      "generation_seconds_synchronized": 19.64100000000326,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4953473024,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295227904,
+          "peak_allocated_bytes": 6395382784
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    },
+    {
+      "task_id": "C1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "329ef02c096190ddbe0d9584155bfd12397d8c85cb0945128d85c6e6526e9b61",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 545,
+      "generated_tokens": 202,
+      "attempt_duration_seconds": 38.469,
+      "generation_seconds_synchronized": 18.07799999997951,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4957667328,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295227392,
+          "peak_allocated_bytes": 6388260864
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    },
+    {
+      "task_id": "C2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "raw_response_sha256": "cbeffa142125e2c0fc308f9301f118ede1df3e967e077fc2380a181eb28a72d7",
+      "worker_exit_code": 0,
+      "worker_exit_confirmed": true,
+      "gpu_process_absent_after_timeout": null,
+      "input_tokens": 575,
+      "generated_tokens": 172,
+      "attempt_duration_seconds": 35.188,
+      "generation_seconds_synchronized": 15.561999999976251,
+      "stop_reason": "EOS",
+      "gpu_memory": {
+        "before_load": {
+          "free_bytes": 11561598976,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 0,
+          "peak_allocated_bytes": 0
+        },
+        "after_load": {
+          "free_bytes": 5123342336,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6285648384,
+          "peak_allocated_bytes": 6285648384
+        },
+        "after_generation": {
+          "free_bytes": 4953473024,
+          "total_bytes": 12820480000,
+          "allocated_bytes": 6295227392,
+          "peak_allocated_bytes": 6395633664
+        }
+      },
+      "actual_dtype": "torch.float16",
+      "actual_device": "cuda:0",
+      "attention_requested": "sdpa",
+      "model_config_attention": "sdpa",
+      "actual_sdpa_kernel": "UNKNOWN"
+    }
+  ],
+  "raw_passages_responses_references_published": false,
+  "financial_evaluation": "NOT_RUN"
+}

@@ -1,0 +1,7 @@
+PASS docs_files=9 relative_links=331 stages=6
+PASS run/input/status/validation counts and strict-versus-fenced denominator checks
+PASS bilingual report bounds and reference correction disclosure
+Document checks only; no provider, model or financial experiment ran here.
+PASS docs=5 local_links=285 plan_stages=8
+PASS source/config/reference and old-versus-new denominator bindings
+Documentation check only; no model or financial task ran here.

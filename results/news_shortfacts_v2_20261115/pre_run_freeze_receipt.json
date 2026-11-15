@@ -1,0 +1,58 @@
+{
+  "schema": "shortfacts_v2_pre_run_freeze_receipt_v1",
+  "created_at_utc": "2026-11-15T03:14:42.132953+00:00",
+  "execution_timezone": "Asia/Shanghai",
+  "run_config_sha256": "8e658270dc4d4dcf1f46573cb2312595fff7c9ed30634f0c61ea87685b0ef8db",
+  "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "prompt_sha256": "a42af0c78d070e9350691921b6ec7217d326365ddc51de8d940b6112df37aa27",
+  "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+  "private_reference_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+  "evaluator_sha256": "db6993527c03ed9c8b1dc94a24ad2c791c9465495d3811ba692ee1993c3de27b",
+  "runner_sha256": "ef7f83fa7d2405b92512388c789c4c6b57650dd0039d0632161e8731093b3b50",
+  "model_repo_id": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+  "generation": {
+    "batch_size": 1,
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "dtype": "float16",
+    "device": "cuda",
+    "attention_requested": "sdpa",
+    "max_input_tokens": 2048,
+    "max_new_tokens": 768,
+    "generation_timeout_seconds": 180,
+    "model_load_timeout_seconds": 240,
+    "retries": 0
+  },
+  "planned_task_order": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "input_token_counts": [
+    539,
+    536,
+    560,
+    574,
+    545,
+    575
+  ],
+  "rendered_request_hashes": {
+    "A1": "2b6e95664201bd3de1a7dac68565cfe032acfaa269f669683d672c1e2cfe1384",
+    "A2": "a9e26f68a5f13ba2bd35936a623fbc0b94642d957dc68ab3205e7999e16dbb2e",
+    "B1": "c4a28898c55b42e1357a5f62a3b273be11b08f06f775b3cd1602c76baa5d5c63",
+    "B2": "8cd04b8d088af4b3df2b71a7d220a2c63c7b2feba8ac4a3eedf6098226cb9ec4",
+    "C1": "72c57901027ddfc02de25cc73fe0d91e94aefde46886725101c1441799778724",
+    "C2": "ae0e06b12c59830283a486fb899f7c5d279938307c82e84e77a8e6388f133e31"
+  },
+  "gpu_preflight_free_bytes": 11561598976,
+  "gpu_preflight_total_bytes": 12820480000,
+  "private_reference_not_in_model_requests": true,
+  "preflight_status": "PASS_NO_GENERATION",
+  "focused_tests": "16 test functions and 6 subtests passed"
+}

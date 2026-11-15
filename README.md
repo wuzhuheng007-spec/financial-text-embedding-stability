@@ -12,7 +12,9 @@ Three source-bound [technology event-impact development cards](reports/2026-11-1
 
 The subsequent [first bounded Qwen short-evidence run](reports/2026-11-15_news_shortfacts_qwen.en.md) ([中文报告](reports/2026-11-15_news_shortfacts_qwen.zh.md)) made six actual local generations on six frozen official passages. All six produced responses, but only one was strict raw JSON; five fenced responses were parsed as separate views. All six quoted spans matched the input mechanically, while Codex content review found field errors and eight omissions relative to a 14-fact pre-run development reference. The [redacted run receipt](results/news_shortfacts_20261115/run_receipt_redacted.json) and [validation summary](results/news_shortfacts_20261115/public_validation_summary_v2.json) keep format, source matching and content judgments separate. This is development evidence, not a general extraction or financial result.
 
-后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。六段短原文已完成首次真实 Qwen 开发运行；严格原始 JSON 和事实字段仍需改进。不改变既有 M5 准入或完整金融协议状态，也不启动自动采集。
+The [shortfacts v2 report](reports/2026-11-15_news_shortfacts_v2.en.md) ([中文报告](reports/2026-11-15_news_shortfacts_v2.zh.md)) records a corrected entity/metric contract, a new `CODEX_REFERENCE_DRAFT` restricted to the same six passages, retrospective scoring of the untouched v1 responses, and one bounded same-passage retest. The [plan–actual ledger](results/news_shortfacts_v2_20261115/plan_execution.csv), [contract receipt](results/news_shortfacts_v2_20261115/contract_receipt.json) and [new-run score](results/news_shortfacts_v2_20261115/new_run_summary_redacted.json) distinguish this combined engineering change from the original v1 score. All six new responses were strict raw JSON, but only one of 14 corrected-reference facts was fully correct. The six reused tasks remain development material; extraction generalization and financial validity are untested.
+
+后续从 `docs/news_research/README.md` 读取当前版本，再维护中英路线与状态。六段短原文已完成首次真实 Qwen 开发运行，并在 v2 中修正契约、重评旧输出及进行同材料有界复测；严格格式、事实字段与遗漏分别核对。既有 M5 准入和完整金融协议状态不变，也未启动自动采集。
 
 ## Current work
 

@@ -1,0 +1,2253 @@
+{
+  "schema": "shortfacts_v2_comparison_redacted_v1",
+  "time_zone": "Asia/Shanghai",
+  "generated_at_utc": "2026-11-15T03:22:52+00:00",
+  "development_material": "SAME_SIX_REUSED_PASSAGES_NOT_BLIND_TEST",
+  "evaluation_status": "CODEX_REFERENCE_DRAFT_AND_SAME_EXECUTOR_REVIEW",
+  "intervention": "COMBINED_SCHEMA_PROMPT_REFERENCE_REPAIR_NOT_SINGLE_PROMPT_CAUSAL_EFFECT",
+  "historical_v1_original_score": {
+    "label": "V1_ORIGINAL_PUBLISHED_SCORE_REFERENCE_V1",
+    "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+    "reference_sha256": "dfc9ed3c815f53d3b9de153200a2ded2995bb1bec60afe2c1e169ae07a2be2c2",
+    "counts": {
+      "planned_tasks": 6,
+      "attempted_tasks": 6,
+      "generation_started_tasks": 6,
+      "completed_response_tasks": 6,
+      "reference_facts": 14,
+      "strict_raw_json_valid_tasks": 1,
+      "fence_adapted_schema_valid_tasks": 5,
+      "schema_valid_after_optional_adapter_tasks": 6,
+      "model_facts": 6,
+      "quote_contiguous_facts": 6,
+      "semantic_supported_facts": 1,
+      "matched_reference_facts": 6,
+      "fully_correct_facts": 0,
+      "unmatched_reference_facts": 8,
+      "duplicate_output_facts": 0,
+      "unresolved_output_facts": null
+    },
+    "field_status_counts": {
+      "entity": {
+        "CORRECT": 2,
+        "WRONG": 3,
+        "UNRESOLVED": 1
+      },
+      "metric": {
+        "CORRECT": 1,
+        "WRONG": 5,
+        "UNRESOLVED": 0
+      },
+      "value_text": {
+        "CORRECT": 5,
+        "WRONG": 1,
+        "UNRESOLVED": 0
+      },
+      "unit_text": {
+        "CORRECT": 4,
+        "WRONG": 1,
+        "UNRESOLVED": 1
+      },
+      "period_text": {
+        "CORRECT": 3,
+        "WRONG": 3,
+        "UNRESOLVED": 0
+      },
+      "basis_text": {
+        "CORRECT": 3,
+        "WRONG": 1,
+        "UNRESOLVED": 2
+      }
+    },
+    "error_labels": {
+      "DUPLICATE": 0,
+      "FORMAT_ERROR": 5,
+      "MISSING_FACT": 8,
+      "QUOTE_MISMATCH": 0,
+      "UNSUPPORTED": 0,
+      "WRONG_BASIS": 1,
+      "WRONG_ENTITY": 3,
+      "WRONG_EVIDENCE_ID": 0,
+      "WRONG_METRIC": 5,
+      "WRONG_PERIOD": 3,
+      "WRONG_UNIT": 1,
+      "WRONG_VALUE": 1
+    },
+    "tasks": [
+      {
+        "task_id": "A1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 266,
+        "generated_tokens": 112,
+        "attempt_duration_seconds": 20.359,
+        "generation_seconds_synchronized": 7.547000000020489,
+        "gpu_memory": null
+      },
+      {
+        "task_id": "A2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 263,
+        "generated_tokens": 115,
+        "attempt_duration_seconds": 18.61,
+        "generation_seconds_synchronized": 6.172000000020489,
+        "gpu_memory": null
+      },
+      {
+        "task_id": "B1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 287,
+        "generated_tokens": 142,
+        "attempt_duration_seconds": 21.375,
+        "generation_seconds_synchronized": 9.125,
+        "gpu_memory": null
+      },
+      {
+        "task_id": "B2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 301,
+        "generated_tokens": 104,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": 5.6560000000172295,
+        "gpu_memory": null
+      },
+      {
+        "task_id": "C1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 272,
+        "generated_tokens": 121,
+        "attempt_duration_seconds": 18.625,
+        "generation_seconds_synchronized": 6.438000000023749,
+        "gpu_memory": null
+      },
+      {
+        "task_id": "C2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "quote_contiguous_facts": 1,
+        "reference_facts": null,
+        "matched_reference_facts": null,
+        "fully_correct_facts": null,
+        "omitted_reference_facts": null,
+        "duplicate_output_facts": null,
+        "unresolved_output_facts": null,
+        "field_status_counts": null,
+        "input_tokens": 302,
+        "generated_tokens": 105,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": 6.5,
+        "gpu_memory": null
+      }
+    ],
+    "provenance": {
+      "public_summary_sha256": "02d30ac15e3f308ffa9d01d74cbb0a387b80b6019507860d2a9537afc6a5fb03",
+      "public_run_receipt_sha256": "65e0dfc1979a1d706133f72aad0b41863950fa0e00bc9d69cee4ce14f9bca785"
+    },
+    "note": "Historical v1 score uses its original reference and contract. Per-task semantic counts were not published and remain null."
+  },
+  "old_responses_corrected_rule": {
+    "label": "V1_RESPONSES_RETROSPECTIVE_CORRECTED_V3",
+    "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+    "reference_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+    "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+    "counts": {
+      "planned_tasks": 6,
+      "attempted_tasks": 6,
+      "generation_started_tasks": 6,
+      "completed_response_tasks": 6,
+      "reference_facts": 14,
+      "strict_raw_json_valid_tasks": 1,
+      "fence_adapted_tasks": 5,
+      "strict_raw_schema_valid_tasks": 1,
+      "fence_adapted_schema_valid_tasks": 5,
+      "schema_valid_after_optional_adapter_tasks": 6,
+      "empty_fact_response_tasks": 0,
+      "model_facts": 6,
+      "valid_evidence_id_facts": 6,
+      "quote_contiguous_facts": 6,
+      "semantic_supported_facts": 1,
+      "semantic_partial_facts": 5,
+      "semantic_unsupported_facts": 0,
+      "semantic_unresolved_facts": 0,
+      "matched_reference_facts": 6,
+      "matched_with_field_error_facts": 6,
+      "fully_correct_facts": 0,
+      "unmatched_reference_facts": 8,
+      "unresolved_output_facts": 0,
+      "duplicate_output_facts": 0,
+      "unmatched_output_facts": 0
+    },
+    "field_status_counts": {
+      "entity": {
+        "CORRECT": 3,
+        "WRONG": 3,
+        "UNKNOWN": 0,
+        "denominator": 6
+      },
+      "metric": {
+        "CORRECT": 3,
+        "WRONG": 3,
+        "UNKNOWN": 0,
+        "denominator": 6
+      },
+      "value_text": {
+        "CORRECT": 5,
+        "WRONG": 1,
+        "UNKNOWN": 0,
+        "denominator": 6
+      },
+      "unit_text": {
+        "CORRECT": 4,
+        "WRONG": 2,
+        "UNKNOWN": 0,
+        "denominator": 6
+      },
+      "period_text": {
+        "CORRECT": 3,
+        "WRONG": 3,
+        "UNKNOWN": 0,
+        "denominator": 6
+      },
+      "basis_text": {
+        "CORRECT": 5,
+        "WRONG": 1,
+        "UNKNOWN": 0,
+        "denominator": 6
+      }
+    },
+    "error_labels": {
+      "MISSING_FACT": 8,
+      "FORMAT_ERROR": 5,
+      "WRONG_ENTITY": 3,
+      "WRONG_VALUE": 1,
+      "UNSUPPORTED": 0,
+      "WRONG_EVIDENCE_ID": 0,
+      "WRONG_PERIOD": 3,
+      "WRONG_BASIS": 1,
+      "WRONG_UNIT": 2,
+      "QUOTE_MISMATCH": 0,
+      "DUPLICATE": 0,
+      "WRONG_METRIC": 3
+    },
+    "tasks": [
+      {
+        "task_id": "A1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 1,
+          "PARTIAL": 0,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 266,
+        "generated_tokens": 112,
+        "attempt_duration_seconds": 20.359,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      {
+        "task_id": "A2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 1,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 263,
+        "generated_tokens": 115,
+        "attempt_duration_seconds": 18.61,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      {
+        "task_id": "B1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 287,
+        "generated_tokens": 142,
+        "attempt_duration_seconds": 21.375,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      {
+        "task_id": "B2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 301,
+        "generated_tokens": 104,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      {
+        "task_id": "C1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 272,
+        "generated_tokens": 121,
+        "attempt_duration_seconds": 18.625,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      {
+        "task_id": "C2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 302,
+        "generated_tokens": 105,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": null,
+        "stop_reason": "EOS",
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      }
+    ],
+    "provenance": {
+      "mechanical_validation_sha256": "ad2d90eca98f46e83c9ee7e9943fbc8ec54d3ef6f33ebb16eee6e9082ddf8d78",
+      "field_review_sha256": "11ef19e489d4c0ad56cf7abb1399ee4713557a03f58212a54bcb9c84cbb69f7a",
+      "error_summary_sha256": "4b17f21a9bebed75a557b89f50eadd52731e8684091db499a13542c75530498d",
+      "attempt_ledger_sha256": "766aa8cde8acd07e69cb05482062e3b05611329ba9b1bb59b1eb70749de6587b",
+      "review_decisions_sha256": "3ad6f9a287ad0ef86dc53b1956b51d77c1cf5e361b0139972c329e33d7cca5d9"
+    }
+  },
+  "new_responses_corrected_rule": {
+    "label": "V2_RESPONSES_CORRECTED_V3",
+    "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+    "reference_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+    "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+    "counts": {
+      "planned_tasks": 6,
+      "attempted_tasks": 6,
+      "generation_started_tasks": 6,
+      "completed_response_tasks": 6,
+      "reference_facts": 14,
+      "strict_raw_json_valid_tasks": 6,
+      "fence_adapted_tasks": 0,
+      "strict_raw_schema_valid_tasks": 6,
+      "fence_adapted_schema_valid_tasks": 0,
+      "schema_valid_after_optional_adapter_tasks": 6,
+      "empty_fact_response_tasks": 0,
+      "model_facts": 12,
+      "valid_evidence_id_facts": 12,
+      "quote_contiguous_facts": 12,
+      "semantic_supported_facts": 1,
+      "semantic_partial_facts": 11,
+      "semantic_unsupported_facts": 0,
+      "semantic_unresolved_facts": 0,
+      "matched_reference_facts": 12,
+      "matched_with_field_error_facts": 11,
+      "fully_correct_facts": 1,
+      "unmatched_reference_facts": 2,
+      "unresolved_output_facts": 0,
+      "duplicate_output_facts": 0,
+      "unmatched_output_facts": 0
+    },
+    "field_status_counts": {
+      "entity": {
+        "CORRECT": 10,
+        "WRONG": 2,
+        "UNKNOWN": 0,
+        "denominator": 12
+      },
+      "metric": {
+        "CORRECT": 2,
+        "WRONG": 10,
+        "UNKNOWN": 0,
+        "denominator": 12
+      },
+      "value_text": {
+        "CORRECT": 10,
+        "WRONG": 2,
+        "UNKNOWN": 0,
+        "denominator": 12
+      },
+      "unit_text": {
+        "CORRECT": 7,
+        "WRONG": 5,
+        "UNKNOWN": 0,
+        "denominator": 12
+      },
+      "period_text": {
+        "CORRECT": 6,
+        "WRONG": 6,
+        "UNKNOWN": 0,
+        "denominator": 12
+      },
+      "basis_text": {
+        "CORRECT": 12,
+        "WRONG": 0,
+        "UNKNOWN": 0,
+        "denominator": 12
+      }
+    },
+    "error_labels": {
+      "DUPLICATE": 0,
+      "WRONG_EVIDENCE_ID": 0,
+      "WRONG_ENTITY": 2,
+      "FORMAT_ERROR": 0,
+      "MISSING_FACT": 2,
+      "WRONG_METRIC": 10,
+      "WRONG_PERIOD": 6,
+      "UNSUPPORTED": 0,
+      "WRONG_BASIS": 0,
+      "WRONG_VALUE": 2,
+      "QUOTE_MISMATCH": 2,
+      "WRONG_UNIT": 5
+    },
+    "tasks": [
+      {
+        "task_id": "A1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 3,
+        "valid_evidence_id_facts": 3,
+        "quote_contiguous_facts": 3,
+        "semantic_support_counts": {
+          "SUPPORTED": 1,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 3,
+        "fully_correct_facts": 1,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 539,
+        "generated_tokens": 290,
+        "attempt_duration_seconds": 47.516,
+        "generation_seconds_synchronized": 27.875,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4955570176,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6387097088
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      },
+      {
+        "task_id": "A2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 1,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 536,
+        "generated_tokens": 109,
+        "attempt_duration_seconds": 30.438,
+        "generation_seconds_synchronized": 10.438000000023749,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4968153088,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295226880,
+            "peak_allocated_bytes": 6386584576
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      },
+      {
+        "task_id": "B1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 560,
+        "generated_tokens": 227,
+        "attempt_duration_seconds": 43.235,
+        "generation_seconds_synchronized": 22.28100000001723,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4957667328,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6393715200
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      },
+      {
+        "task_id": "B2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 574,
+        "generated_tokens": 201,
+        "attempt_duration_seconds": 39.219,
+        "generation_seconds_synchronized": 19.64100000000326,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4953473024,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6395382784
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      },
+      {
+        "task_id": "C1",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 545,
+        "generated_tokens": 202,
+        "attempt_duration_seconds": 38.469,
+        "generation_seconds_synchronized": 18.07799999997951,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4957667328,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227392,
+            "peak_allocated_bytes": 6388260864
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      },
+      {
+        "task_id": "C2",
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 575,
+        "generated_tokens": 172,
+        "attempt_duration_seconds": 35.188,
+        "generation_seconds_synchronized": 15.561999999976251,
+        "stop_reason": "EOS",
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4953473024,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227392,
+            "peak_allocated_bytes": 6395633664
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    ],
+    "provenance": {
+      "mechanical_validation_sha256": "ad07c2aa8e0e8216b95e26125e7a6966cc87241a2f45b2fcdde54b9f8c6a4c93",
+      "field_review_sha256": "f4f1eca3e2ec3e241fa0f9620363d2ade72d60a09d8b3a7805b859335ff922ce",
+      "error_summary_sha256": "574bba2db8a6a7d264f5689807a523baebedb7f66fe168b31884fc0abe662177",
+      "attempt_ledger_sha256": "eb5abad8527ad6b4eafe78abfd085c69255aadec4bbe725e97b2601684183262",
+      "review_decisions_sha256": "54742eb769b475df5111a7fb1bbf91ac467304a3222b6a9e053cee63b711117b"
+    }
+  },
+  "same_rule_per_task": [
+    {
+      "task_id": "A1",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 1,
+          "PARTIAL": 0,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 266,
+        "generated_tokens": 112,
+        "attempt_duration_seconds": 20.359,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 3,
+        "valid_evidence_id_facts": 3,
+        "quote_contiguous_facts": 3,
+        "semantic_support_counts": {
+          "SUPPORTED": 1,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 3,
+        "fully_correct_facts": 1,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 3,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 539,
+        "generated_tokens": 290,
+        "attempt_duration_seconds": 47.516,
+        "generation_seconds_synchronized": 27.875,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4955570176,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6387097088
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    },
+    {
+      "task_id": "A2",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 1,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 263,
+        "generated_tokens": 115,
+        "attempt_duration_seconds": 18.61,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 1,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 536,
+        "generated_tokens": 109,
+        "attempt_duration_seconds": 30.438,
+        "generation_seconds_synchronized": 10.438000000023749,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4968153088,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295226880,
+            "peak_allocated_bytes": 6386584576
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    },
+    {
+      "task_id": "B1",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 287,
+        "generated_tokens": 142,
+        "attempt_duration_seconds": 21.375,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 560,
+        "generated_tokens": 227,
+        "attempt_duration_seconds": 43.235,
+        "generation_seconds_synchronized": 22.28100000001723,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4957667328,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6393715200
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    },
+    {
+      "task_id": "B2",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 301,
+        "generated_tokens": 104,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 574,
+        "generated_tokens": 201,
+        "attempt_duration_seconds": 39.219,
+        "generation_seconds_synchronized": 19.64100000000326,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4953473024,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227904,
+            "peak_allocated_bytes": 6395382784
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    },
+    {
+      "task_id": "C1",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 272,
+        "generated_tokens": 121,
+        "attempt_duration_seconds": 18.625,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 2,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 0,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 545,
+        "generated_tokens": 202,
+        "attempt_duration_seconds": 38.469,
+        "generation_seconds_synchronized": 18.07799999997951,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4957667328,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227392,
+            "peak_allocated_bytes": 6388260864
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    },
+    {
+      "task_id": "C2",
+      "old_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": false,
+        "fence_adapted_schema_valid": true,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 1,
+        "valid_evidence_id_facts": 1,
+        "quote_contiguous_facts": 1,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 1,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 1,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 2,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 0,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 1,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 302,
+        "generated_tokens": 105,
+        "attempt_duration_seconds": 18.859,
+        "generation_seconds_synchronized": null,
+        "gpu_memory": null,
+        "actual_dtype": null,
+        "actual_device": null,
+        "attention_requested": null,
+        "model_config_attention": null,
+        "actual_sdpa_kernel": null
+      },
+      "new_response_corrected_rule": {
+        "attempt_status": "RESPONSE_COMPLETED",
+        "generation_started": true,
+        "response_completed": true,
+        "strict_raw_json_valid": true,
+        "fence_adapted_schema_valid": false,
+        "schema_valid_after_adapter": true,
+        "schema_valid_model_facts": 2,
+        "valid_evidence_id_facts": 2,
+        "quote_contiguous_facts": 2,
+        "semantic_support_counts": {
+          "SUPPORTED": 0,
+          "PARTIAL": 2,
+          "UNSUPPORTED": 0,
+          "UNRESOLVED": 0
+        },
+        "reference_facts": 3,
+        "matched_reference_facts": 2,
+        "fully_correct_facts": 0,
+        "omitted_reference_facts": 1,
+        "duplicate_output_facts": 0,
+        "unresolved_output_facts": 0,
+        "field_status_counts": {
+          "entity": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "metric": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "value_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          },
+          "unit_text": {
+            "CORRECT": 0,
+            "WRONG": 2,
+            "UNKNOWN": 0
+          },
+          "period_text": {
+            "CORRECT": 1,
+            "WRONG": 1,
+            "UNKNOWN": 0
+          },
+          "basis_text": {
+            "CORRECT": 2,
+            "WRONG": 0,
+            "UNKNOWN": 0
+          }
+        },
+        "input_tokens": 575,
+        "generated_tokens": 172,
+        "attempt_duration_seconds": 35.188,
+        "generation_seconds_synchronized": 15.561999999976251,
+        "gpu_memory": {
+          "before_load": {
+            "free_bytes": 11561598976,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 0,
+            "peak_allocated_bytes": 0
+          },
+          "after_load": {
+            "free_bytes": 5123342336,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6285648384,
+            "peak_allocated_bytes": 6285648384
+          },
+          "after_generation": {
+            "free_bytes": 4953473024,
+            "total_bytes": 12820480000,
+            "allocated_bytes": 6295227392,
+            "peak_allocated_bytes": 6395633664
+          }
+        },
+        "actual_dtype": "torch.float16",
+        "actual_device": "cuda:0",
+        "attention_requested": "sdpa",
+        "model_config_attention": "sdpa",
+        "actual_sdpa_kernel": "UNKNOWN"
+      }
+    }
+  ],
+  "new_minus_old_same_rule_counts": {
+    "strict_raw_json_valid_tasks": 5,
+    "fence_adapted_schema_valid_tasks": -5,
+    "schema_valid_after_optional_adapter_tasks": 0,
+    "model_facts": 6,
+    "fully_correct_facts": 1,
+    "unmatched_reference_facts": -6,
+    "duplicate_output_facts": 0,
+    "unresolved_output_facts": 0
+  },
+  "financial_evaluation": "NOT_RUN"
+}

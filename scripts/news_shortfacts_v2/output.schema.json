@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Short official evidence to fact objects, development v2",
+  "description": "A bounded structural contract. Source support and semantic field correctness are assessed separately.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["facts"],
+  "properties": {
+    "facts": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity", "metric", "value_text", "unit_text", "period_text", "basis_text", "evidence_id", "quote"],
+        "properties": {
+          "entity": {"type": ["string", "null"], "minLength": 1, "description": "Explicitly named measured company, organization, or index; null if absent."},
+          "metric": {"type": "string", "minLength": 1, "description": "Numerical measure, including actual or outlook state where applicable."},
+          "value_text": {"type": "string", "minLength": 1, "description": "Complete original numerical expression."},
+          "unit_text": {"type": ["string", "null"], "minLength": 1},
+          "period_text": {"type": ["string", "null"], "minLength": 1},
+          "basis_text": {"type": ["string", "null"], "minLength": 1, "description": "Accounting, adjustment, or seasonal basis only."},
+          "evidence_id": {"type": "string", "minLength": 1},
+          "quote": {"type": "string", "minLength": 1, "description": "Contiguous, unchanged span of the input passage."}
+        }
+      }
+    }
+  }
+}

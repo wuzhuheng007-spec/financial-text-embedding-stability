@@ -1,0 +1,41 @@
+{
+  "schema": "shortfacts_v2_contract_receipt_v1",
+  "status": "FROZEN_PRE_V2_MODEL_RUN; POST_V1_OUTPUT_REFERENCE_REVISION_NOT_HUMAN_GOLD",
+  "frozen_at_utc": "2026-11-15T03:11:23+00:00",
+  "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "prompt_sha256": "a42af0c78d070e9350691921b6ec7217d326365ddc51de8d940b6112df37aa27",
+  "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+  "reference_v1_sha256": "dfc9ed3c815f53d3b9de153200a2ded2995bb1bec60afe2c1e169ae07a2be2c2",
+  "reference_v2_sha256": "9460fe041432073d389fe73b36d09ccb401dc76d9acaf831ce28d8d7748854f5",
+  "reference_v3_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+  "target_count_by_task": {
+    "A1": 3,
+    "A2": 1,
+    "B1": 2,
+    "B2": 3,
+    "C1": 2,
+    "C2": 3
+  },
+  "total_targets": 14,
+  "target_overflow_tasks": [],
+  "selection_rule": "Distinct directly stated value or guidance range per metric/period, including explicit same-value repetition for distinct periods; ranges and tolerances stay together; if more than three targets, select first three in passage order.",
+  "corrections": [
+    {
+      "issue": "Source publisher was scored as the measured subject in C1",
+      "resolution": "Use the index explicitly named in the same frozen passage as entity; metric is monthly percent change."
+    },
+    {
+      "issue": "C2 was marked entity-null although the passage names the measured index",
+      "resolution": "Use the explicitly named index as entity; no outside agency name is supplied."
+    },
+    {
+      "issue": "V1 required entity even when no measured subject is identifiable",
+      "resolution": "V2 schema permits null; unknown fields require null rather than a guess."
+    },
+    {
+      "issue": "V1 reference used guidance state as accounting basis",
+      "resolution": "Preserve v2 correction: current/prior guidance belongs in metric, while basis is null absent accounting or adjustment evidence."
+    }
+  ],
+  "evaluation_boundary": "Retrospective old-output scoring and new-output scoring must both use v3, and all v1 results stay unchanged. This is a joint schema/prompt/reference engineering revision, not a causal prompt-only effect."
+}

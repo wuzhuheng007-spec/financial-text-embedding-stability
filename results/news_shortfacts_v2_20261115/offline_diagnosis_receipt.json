@@ -1,0 +1,22 @@
+{
+  "schema": "shortfacts_v2_offline_diagnosis_redacted_v1",
+  "status": "OLD_RESPONSES_REREAD_UNDER_CORRECTED_TASK_DEFINITION_NOT_FORMAL_SCORE",
+  "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "reference_v3_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+  "private_field_error_table_sha256": "7d03c67cfee51df566e45cdbb8b54aa68e6e02b5542b4ef9f3c336cec0f0fd4b",
+  "old_response_tasks_reviewed": 6,
+  "field_rows_reviewed": 48,
+  "predeclared_target_omission_rows": 8,
+  "design_issue_counts": {
+    "REFERENCE_ERROR": 4,
+    "INPUT_CONTEXT_GAP": 1,
+    "SCHEMA_TASK_CONFLICT": 1,
+    "UNRESOLVED": 1
+  },
+  "boundaries": [
+    "The original v1 score is unchanged.",
+    "The private table contains raw model values and remains local.",
+    "A later evaluator independently produces retrospective and new-run scores using the same corrected reference.",
+    "No model call or financial experiment was performed for this contract audit."
+  ]
+}

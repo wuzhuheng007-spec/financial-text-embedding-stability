@@ -1,0 +1,149 @@
+{
+  "schema": "shortfacts_public_validation_summary_v2",
+  "manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "reference_sha256": "25850d2e3ea203de68d8009509a8a7047b09be9031190fd7337c13d9504235b2",
+  "schema_sha256": "69e0a79828a7c997ee807e72ad0b2464fc4220b01e40b2641110b30c748ce2b5",
+  "attempt_ledger_sha256": "eb5abad8527ad6b4eafe78abfd085c69255aadec4bbe725e97b2601684183262",
+  "counts": {
+    "planned_tasks": 6,
+    "attempted_tasks": 6,
+    "generation_started_tasks": 6,
+    "completed_response_tasks": 6,
+    "strict_raw_json_valid_tasks": 6,
+    "fence_adapted_tasks": 0,
+    "json_valid_after_optional_adapter_tasks": 6,
+    "strict_raw_schema_valid_tasks": 6,
+    "fence_adapted_schema_valid_tasks": 0,
+    "schema_valid_after_optional_adapter_tasks": 6,
+    "empty_fact_response_tasks": 0,
+    "model_facts": 12,
+    "valid_evidence_id_facts": 12,
+    "quote_contiguous_facts": 12,
+    "semantic_supported_facts": 1,
+    "semantic_partial_facts": 11,
+    "semantic_unsupported_facts": 0,
+    "semantic_unresolved_facts": 0,
+    "reviewed_facts": 12,
+    "reference_facts": 14,
+    "matched_reference_facts": 12,
+    "matched_with_field_error_facts": 11,
+    "fully_correct_facts": 1,
+    "unmatched_reference_facts": 2,
+    "unresolved_output_facts": 0,
+    "duplicate_output_facts": 0,
+    "unmatched_output_facts": 0
+  },
+  "fields": {
+    "entity": {
+      "WRONG": 2,
+      "UNKNOWN": 0,
+      "CORRECT": 10,
+      "denominator": 12
+    },
+    "metric": {
+      "WRONG": 10,
+      "UNKNOWN": 0,
+      "CORRECT": 2,
+      "denominator": 12
+    },
+    "value_text": {
+      "WRONG": 2,
+      "UNKNOWN": 0,
+      "CORRECT": 10,
+      "denominator": 12
+    },
+    "unit_text": {
+      "WRONG": 5,
+      "UNKNOWN": 0,
+      "CORRECT": 7,
+      "denominator": 12
+    },
+    "period_text": {
+      "WRONG": 6,
+      "UNKNOWN": 0,
+      "CORRECT": 6,
+      "denominator": 12
+    },
+    "basis_text": {
+      "WRONG": 0,
+      "UNKNOWN": 0,
+      "CORRECT": 12,
+      "denominator": 12
+    }
+  },
+  "error_labels": {
+    "DUPLICATE": 0,
+    "WRONG_EVIDENCE_ID": 0,
+    "WRONG_ENTITY": 2,
+    "FORMAT_ERROR": 0,
+    "MISSING_FACT": 2,
+    "WRONG_METRIC": 10,
+    "WRONG_PERIOD": 6,
+    "UNSUPPORTED": 0,
+    "WRONG_BASIS": 0,
+    "WRONG_VALUE": 2,
+    "QUOTE_MISMATCH": 2,
+    "WRONG_UNIT": 5
+  },
+  "complete_correct_recall": {
+    "numerator": 1,
+    "denominator": 14
+  },
+  "tasks": [
+    {
+      "task_id": "A1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 3
+    },
+    {
+      "task_id": "A2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 1
+    },
+    {
+      "task_id": "B1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 2
+    },
+    {
+      "task_id": "B2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 2
+    },
+    {
+      "task_id": "C1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 2
+    },
+    {
+      "task_id": "C2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "parse_kind": "RAW_JSON",
+      "schema_valid": true,
+      "model_fact_count": 2
+    }
+  ],
+  "interpretation": "Six reused development passages; same-executor reference and review are not independent human gold. Strict raw JSON and fence-adapted usability differ."
+}

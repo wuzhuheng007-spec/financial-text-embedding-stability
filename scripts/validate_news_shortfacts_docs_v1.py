@@ -44,7 +44,10 @@ def main() -> None:
     correction = json.loads((RESULTS / "reference_correction_redacted.json").read_text(encoding="utf-8"))
     stage = status["shortfacts_qwen_development"]
     counts = validation["counts"]
-    assert status["version"] == "1.16"
+    # This validates the frozen v1 result even when the shared news status
+    # advances to a later stage; it is not a status-version pin.
+    major, minor = (int(part) for part in status["version"].split(".", 1))
+    assert (major, minor) >= (1, 16)
     assert manifest["task_count"] == len(manifest["tasks"]) == 6
     assert run["input_manifest_sha256"] == manifest["private_input_manifest_sha256"]
     assert run["model_revision"] == status["shortfacts_qwen_development"]["model_revision"]

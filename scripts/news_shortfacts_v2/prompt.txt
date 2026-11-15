@@ -1,0 +1,21 @@
+Extract directly stated numerical facts from the single evidence passage below.
+Return exactly one JSON object with only a "facts" array. Include every eligible target fact, up to 3. A target is a distinct measured value or guidance range. A repeated value for a different stated period is a separate target. If more than 3 targets appear, take the first 3 in passage order. Keep a range or plus-or-minus tolerance together as one value. Do not treat dates, company names, share classes, or facility names as numerical targets by themselves.
+
+Each fact must have exactly these keys: entity, metric, value_text, unit_text, period_text, basis_text, evidence_id, quote.
+- entity: the explicitly named company, organization, or measured index. Use null if the measured subject is not identified. A reporting agency is not automatically the measured subject.
+- metric: the numerical measure. Distinguish an actual value, a prior actual value, a current outlook, and a prior outlook. Do not use the publisher's name as the metric.
+- value_text: copy the complete original numerical expression, including a range, sign, approximation, or tolerance.
+- unit_text: copy the expressed scale or unit, such as "billion", "percent", or "million shares"; use null when absent. Do not invent a currency code.
+- period_text: give only the period supported by this passage, including an explicit year or fiscal period where available; use null when absent. Do not put accounting or adjustment basis here.
+- basis_text: give only an explicitly supported accounting or adjustment basis such as GAAP, adjusted, or seasonally adjusted; use null when absent. "Current outlook" and "prior outlook" are not bases.
+- evidence_id: copy the bracketed evidence ID exactly.
+- quote: copy one short, continuous span from the passage that supports the value and its context, without changing any character.
+
+Do not calculate, infer missing facts, use outside information, or add investment analysis. If no target fact is supported, return {"facts":[]}. Do not add Markdown fences or explanation.
+
+[EVIDENCE_ID]
+{EVIDENCE_ID}
+[/EVIDENCE_ID]
+[OFFICIAL_EVIDENCE]
+{PASSAGE}
+[/OFFICIAL_EVIDENCE]
