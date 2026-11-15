@@ -1,0 +1,32 @@
+[
+  {
+    "edge_id": "CPI_E01",
+    "event_id": "CPI_2026_10",
+    "from": "OCTOBER_2026_US_CPI_RELEASE",
+    "to": "US_POLICY_RATE_EXPECTATIONS",
+    "channel": "inflation_information_interpretation",
+    "direction": "MIXED",
+    "horizon": "hours_to_months",
+    "support_fact_ids": ["CPI_F01", "CPI_F02", "CPI_F04", "CPI_F05"],
+    "support_role": "Facts establish reported CPI levels and prior official comparison; they do not establish the expectation response.",
+    "assumptions": "Investors interpret the headline decrease relative to their prior information as policy-relevant; their actual prior expectations are unavailable.",
+    "falsifiers": "Dated policy-rate expectations do not move in the posited direction or move mainly on concurrent information.",
+    "watch": "Time-stamped Treasury yields, policy-rate futures and policy communication.",
+    "status": "AI_ANALYST_DRAFT"
+  },
+  {
+    "edge_id": "CPI_E02",
+    "event_id": "CPI_2026_10",
+    "from": "US_POLICY_RATE_EXPECTATIONS",
+    "to": "US_TECH_SECTOR_AGGREGATE_VALUATION",
+    "channel": "discount_rate_scenario",
+    "direction": "UNKNOWN",
+    "horizon": "days_to_quarters",
+    "support_fact_ids": ["CPI_F01", "CPI_F04"],
+    "support_role": "CPI facts provide event context only; no source directly verifies a technology-sector valuation effect.",
+    "assumptions": "A material rate-expectation change passes through to valuation and is not dominated by earnings or risk-premium news.",
+    "falsifiers": "Sector prices or discount-rate inputs do not align after controlling for contemporaneous announcements.",
+    "watch": "Dated Treasury yields, sector returns and concurrent issuer disclosures.",
+    "status": "AI_ANALYST_DRAFT"
+  }
+]

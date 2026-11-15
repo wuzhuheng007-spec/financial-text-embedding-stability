@@ -1,0 +1,44 @@
+[
+  {
+    "edge_id": "A_E01",
+    "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+    "from": "NVIDIA Q2 Data Center revenue disclosure",
+    "to": "NVIDIA subsequent Data Center revenue",
+    "channel": "Demand converted to deliveries, conditional on supply and pricing",
+    "direction": "POSITIVE",
+    "horizon": "FY2027-Q3 and later",
+    "support_fact_ids": ["A09", "A10"],
+    "assumptions": ["Demand persists", "Capacity and supply permit delivery", "Pricing and mix remain supportive"],
+    "falsifiers": ["Orders or shipments weaken", "Supply constraints prevent delivery", "Pricing or mix deteriorates"],
+    "watch": ["Data Center revenue", "Q3 actual revenue and margin"],
+    "status": "AI_ANALYST_DRAFT"
+  },
+  {
+    "edge_id": "A_E02",
+    "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+    "from": "NVIDIA cash purchases of property, equipment and intangible assets",
+    "to": "NVIDIA issuer-defined non-GAAP free cash flow",
+    "channel": "Company's stated FCF calculation subtracts cash purchases and related principal payments from GAAP operating cash flow",
+    "direction": "NEGATIVE",
+    "horizon": "Same reported quarter, accounting identity only",
+    "support_fact_ids": ["A06", "A07", "A08", "A16", "A18"],
+    "assumptions": ["Use the issuer's stated non-GAAP definition"],
+    "falsifiers": ["Issuer changes its FCF definition"],
+    "watch": ["OCF", "Cash purchases", "Principal payments", "Definition changes"],
+    "status": "SOURCE_SUPPORTED"
+  },
+  {
+    "edge_id": "A_E03",
+    "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+    "from": "China Data Center compute market-access conditions",
+    "to": "NVIDIA Q3 realized Data Center revenue",
+    "channel": "Potential change to a management outlook assumption, not an observed sale",
+    "direction": "UNKNOWN",
+    "horizon": "FY2027-Q3",
+    "support_fact_ids": ["A17"],
+    "assumptions": ["Market access or business conditions change after the release"],
+    "falsifiers": ["No relevant change occurs", "Any change does not alter shipments or revenue"],
+    "watch": ["Official regulatory notices", "Issuer regional revenue commentary"],
+    "status": "AI_ANALYST_DRAFT"
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "schema": "event_impact_codex_self_review_v1",
+  "reviewed_at_utc": "2026-11-15T02:13:34Z",
+  "reviewer_status": "CODEX_SELF_REVIEW_NOT_INDEPENDENT_HUMAN_VALIDATION",
+  "frozen_draft_receipt": "results/news_event_impact_20261115/draft_freeze_receipt.json",
+  "review_scope": "Three development cards, 44 fact rows, 9 transmission edges, calculation specs and rendered page. Review does not establish causal or predictive validity.",
+  "findings": [
+    {
+      "finding_id": "R1",
+      "original_expression": "CoreWeave edges used origin/destination keys and omitted event_id.",
+      "issue": "Cross-card edge contract could not check event identity and would reject the frozen draft.",
+      "correction": "Mapped origin/destination to from/to and added the frozen CoreWeave event_id on each of four edges; no substantive causal claim changed.",
+      "evidence": ["artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/b_coreweave/edges.json", "results/news_event_impact_20261115/b_coreweave/edges.json", "scripts/build_event_impact_dashboard_v1.py"]
+    },
+    {
+      "finding_id": "R2",
+      "original_expression": "NVIDIA manifest analysis_created_at_utc was 2026-11-15T02:03:24Z.",
+      "issue": "The English companion card records completion at 2026-11-15T02:04:20Z; the manifest time was too early for the bilingual pair.",
+      "correction": "Set the selection manifest's displayed analysis creation to 02:04:20Z while retaining the earlier Chinese-card timestamp in that card.",
+      "evidence": ["artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/selection_manifest.json", "results/news_event_impact_20261115/a_nvidia/card.en.json", "results/news_event_impact_20261115/selection_manifest.json"]
+    },
+    {
+      "finding_id": "R3",
+      "original_expression": "Initial impact page displayed unit codes such as USD million_cash_outflow_magnitude and a raw CPI embargo precision code.",
+      "issue": "Main-card numbers and time basis were difficult to read and could blur scheduled/official time with independently observed first publication.",
+      "correction": "Added human-readable highlighted units and event-specific time-basis notes; retained exact raw units and precision in the fact tables/manifest.",
+      "evidence": ["artifacts/event_impact_20261115/dashboard_private_review.html", "results/news_event_impact_20261115/selection_manifest.json", "scripts/build_event_impact_dashboard_v1.py"]
+    },
+    {
+      "finding_id": "R4",
+      "original_expression": "Initial page tagged CPI_F08/CPI_F09 null year-on-year values as SOURCE_FACT.",
+      "issue": "A known source omission was visually labelled as a measured fact even though the values were unknown.",
+      "correction": "Status-based display now labels these rows SOURCE_MISSING and prints unknown, never zero.",
+      "evidence": ["results/news_event_impact_20261115/c_cpi/facts.json", "scripts/build_event_impact_dashboard_v1.py", "results/news_event_impact_20261115/dashboard_public_v2.html"]
+    },
+    {
+      "finding_id": "R5",
+      "original_expression": "The initial page banner stated no price evaluation but did not separately show news tone, fundamental interpretation and actual price-response states on each card.",
+      "issue": "A reader could conflate a conditional fundamental path with measured sentiment or a market outcome.",
+      "correction": "Added an explicit three-layer status line to every final card: news tone NOT_SCORED, fundamental impact AI_ANALYST_DRAFT, actual price response NOT_RUN.",
+      "evidence": ["artifacts/event_impact_20261115/dashboard_private_review.html", "scripts/build_event_impact_dashboard_v1.py", "results/news_event_impact_20261115/dashboard_public_v3.html", "results/news_event_impact_20261115/visual_acceptance_release.json"]
+    }
+  ],
+  "counterevidence_checklist": [
+    {"check": "Unsupported numbers or specific company relationships", "status": "PASS_WITH_BOUNDED_GAPS", "finding": "Six saved official files replayed by SHA and short excerpts; specific unnamed vendors/customers remain at industry level. Financing terms and market consensus remain UNKNOWN.", "evidence": "results/news_event_impact_20261115/static_source_validation_v2.json"},
+    {"check": "Later information treated as known at event time", "status": "PASS_WITH_TIME_LIMITATION", "finding": "CoreWeave's later 10-Q was excluded. Same-day presentation ordering and independent first visibility remain unknown; all cards distinguish event date, retrieval and draft creation.", "evidence": "results/news_event_impact_20261115/selection_manifest.json"},
+    {"check": "Growth confused with market surprise", "status": "PASS", "finding": "NVIDIA prior issuer outlook, CoreWeave restated prior outlook and CPI prior official reading are not labelled market consensus; qualified prerelease consensus is UNKNOWN.", "evidence": "results/news_event_impact_20261115/calculations_final.json"},
+    {"check": "Potential impact stated as certain", "status": "PASS", "finding": "Economic transmission edges retain assumptions, falsifiers and watch variables; only issuer-stated or mechanical edges use SOURCE_SUPPORTED.", "evidence": "results/news_event_impact_20261115/transmission_edges.json"},
+    {"check": "Quarter/cumulative, currency, GAAP or adjustment basis mixed", "status": "PASS_WITH_DISCLOSED_LIMITS", "finding": "NVIDIA GAAP actual, issuer non-GAAP FCF and guidance are distinct; CoreWeave company-defined CapEx, cash purchases and finance-lease inclusion are distinct; CPI SA monthly and NSA annual gaps are distinct.", "evidence": "results/news_event_impact_20261115/a_nvidia/facts.json;results/news_event_impact_20261115/b_coreweave/facts.json;results/news_event_impact_20261115/c_cpi/facts.json"},
+    {"check": "Unexplained directions across horizons", "status": "PASS", "finding": "Same-quarter cash-flow accounting, future revenue scenarios, and mixed macro-rate scenarios identify different channels and horizons; no return outcome is claimed.", "evidence": "results/news_event_impact_20261115/transmission_edges.json"}
+  ],
+  "remaining_limits": ["No independent human gold or causal identification", "No dated prerelease consensus", "No qualified issuer-security admission or return labels", "Current captures are not independently witnessed release-time snapshots"]
+}

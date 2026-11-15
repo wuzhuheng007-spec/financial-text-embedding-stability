@@ -1,0 +1,44 @@
+{
+  "schema": "event_impact_analysis_card_v1",
+  "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+  "title": "NVIDIA FY2027 second-quarter results and third-quarter outlook",
+  "analysis_role": "AI_ANALYST_DRAFT",
+  "display_notice": "Development analysis draft, not a prediction result; local Qwen was not used.",
+  "event_published_at": "2026-08-26",
+  "event_publication_precision": "DATE_ONLY",
+  "first_available_at": null,
+  "material_retrieved_at_utc": "2026-11-14T23:49:21.523425+00:00",
+  "analysis_created_at_utc": "2026-11-15T02:04:20Z",
+  "happened": "The issuer reported FY2027 Q2 GAAP revenue of USD 96,221 million, net income of USD 59,688 million and gross margin of 75.0%. It also gave a Q3 management revenue outlook centered on USD 108.0 billion, plus or minus 2%.",
+  "new_info": "The earlier FY2027 Q1 release gave management Q2 revenue outlook centered on USD 91.0 billion, plus or minus 2%; the current release supplies the actual. Any comparable gap must be calculated in code after unit conversion. This is not a market-consensus surprise.",
+  "affected": [
+    "NVIDIA itself: reported revenue, margin, cash flow and subsequent management outlook.",
+    "AI infrastructure buyers as an industry: possible demand and purchasing-cost channels only; no specific counterparty relationship is verified here."
+  ],
+  "pathways": [
+    "If reported Data Center demand turns into subsequent deliveries, future NVIDIA revenue may benefit, conditional on supply, pricing and product mix.",
+    "Cash capital purchases reduce issuer-defined free cash flow mechanically, but the reported measure also subtracts related principal payments; the cash purchase line is not total investment or new finance-lease assets.",
+    "The Q3 outlook assumes no China Data Center compute revenue. A change in market access could alter realization, but the saved material does not establish direction or size."
+  ],
+  "conditions": [
+    "Orders convert to delivered products while prices, supply and mix support the outlook.",
+    "Later cash-flow and cash-purchase disclosures remain comparable in basis."
+  ],
+  "counterforces": [
+    "Supply limits, weaker pricing or gross margin could offset revenue growth in profit and cash generation.",
+    "Regulation, regional sales limits, investment spending or principal payments could change cash conversion."
+  ],
+  "watch": [
+    "Next-quarter actual revenue against management's USD 108.0 billion plus-or-minus-2% range, and GAAP gross margin.",
+    "Data Center revenue, operating cash flow, cash purchases of property/equipment/intangibles and related principal payments.",
+    "Later issuer disclosures about China Data Center compute assumptions and relevant regulation."
+  ],
+  "unknowns": [
+    "No dated pre-release market consensus is available, so a market-expectations surprise is unknown.",
+    "Independent first-public availability, qualified historical security identity and event price reaction are absent.",
+    "No specific customer/supplier transmission link or comparable Q3 capex guide is established for this card."
+  ],
+  "key_fact_ids": ["A01", "A03", "A04", "A07", "A09", "A10", "A11", "A14", "A16", "A17", "A18"],
+  "market_price_reaction_status": "NOT_RUN",
+  "market_consensus_status": "UNKNOWN"
+}

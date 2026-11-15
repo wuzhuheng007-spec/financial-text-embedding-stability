@@ -1,0 +1,236 @@
+{
+  "schema": "event_impact_transmission_edges_v1",
+  "edges": [
+    {
+      "edge_id": "A_E01",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "from": "NVIDIA Q2 Data Center revenue disclosure",
+      "to": "NVIDIA subsequent Data Center revenue",
+      "channel": "Demand converted to deliveries, conditional on supply and pricing",
+      "direction": "POSITIVE",
+      "horizon": "FY2027-Q3 and later",
+      "support_fact_ids": [
+        "A09",
+        "A10"
+      ],
+      "assumptions": [
+        "Demand persists",
+        "Capacity and supply permit delivery",
+        "Pricing and mix remain supportive"
+      ],
+      "falsifiers": [
+        "Orders or shipments weaken",
+        "Supply constraints prevent delivery",
+        "Pricing or mix deteriorates"
+      ],
+      "watch": [
+        "Data Center revenue",
+        "Q3 actual revenue and margin"
+      ],
+      "status": "AI_ANALYST_DRAFT",
+      "case": "a_nvidia"
+    },
+    {
+      "edge_id": "A_E02",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "from": "NVIDIA cash purchases of property, equipment and intangible assets",
+      "to": "NVIDIA issuer-defined non-GAAP free cash flow",
+      "channel": "Company's stated FCF calculation subtracts cash purchases and related principal payments from GAAP operating cash flow",
+      "direction": "NEGATIVE",
+      "horizon": "Same reported quarter, accounting identity only",
+      "support_fact_ids": [
+        "A06",
+        "A07",
+        "A08",
+        "A16",
+        "A18"
+      ],
+      "assumptions": [
+        "Use the issuer's stated non-GAAP definition"
+      ],
+      "falsifiers": [
+        "Issuer changes its FCF definition"
+      ],
+      "watch": [
+        "OCF",
+        "Cash purchases",
+        "Principal payments",
+        "Definition changes"
+      ],
+      "status": "SOURCE_SUPPORTED",
+      "case": "a_nvidia"
+    },
+    {
+      "edge_id": "A_E03",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "from": "China Data Center compute market-access conditions",
+      "to": "NVIDIA Q3 realized Data Center revenue",
+      "channel": "Potential change to a management outlook assumption, not an observed sale",
+      "direction": "UNKNOWN",
+      "horizon": "FY2027-Q3",
+      "support_fact_ids": [
+        "A17"
+      ],
+      "assumptions": [
+        "Market access or business conditions change after the release"
+      ],
+      "falsifiers": [
+        "No relevant change occurs",
+        "Any change does not alter shipments or revenue"
+      ],
+      "watch": [
+        "Official regulatory notices",
+        "Issuer regional revenue commentary"
+      ],
+      "status": "AI_ANALYST_DRAFT",
+      "case": "a_nvidia"
+    },
+    {
+      "edge_id": "B_E1",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "from": "CoreWeave FY2026 CapEx outlook",
+      "to": "Earlier expected infrastructure delivery",
+      "channel": "Issuer explanation of revised spending pace",
+      "direction": "UNKNOWN",
+      "horizon": "FY2026",
+      "support_fact_ids": [
+        "B04",
+        "B05",
+        "B17"
+      ],
+      "assumptions": [],
+      "falsifiers": [
+        "Issuer revises deployment timing"
+      ],
+      "watch": [
+        "Actual delivery dates and capacity"
+      ],
+      "status": "SOURCE_SUPPORTED",
+      "case": "b_coreweave"
+    },
+    {
+      "edge_id": "B_E2",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "from": "CoreWeave planned infrastructure deployment",
+      "to": "CoreWeave cash and financing needs",
+      "channel": "Deployment spending precedes potential utilization and revenue",
+      "direction": "MIXED",
+      "horizon": "2026-Q4_to_2027",
+      "support_fact_ids": [
+        "B08",
+        "B11",
+        "B13",
+        "B14"
+      ],
+      "assumptions": [
+        "Planned infrastructure is purchased and becomes operational",
+        "Financing and customer prepayments arrive on needed timing"
+      ],
+      "falsifiers": [
+        "Deployment slips or demand weakens",
+        "Financing cost rises or capacity remains underused"
+      ],
+      "watch": [
+        "Cash PP&E purchases",
+        "Interest expense",
+        "Operational capacity"
+      ],
+      "status": "AI_ANALYST_DRAFT",
+      "case": "b_coreweave"
+    },
+    {
+      "edge_id": "B_E3",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "from": "CoreWeave planned infrastructure deployment",
+      "to": "Equipment and data-center construction suppliers (industry level)",
+      "channel": "Potential procurement orders",
+      "direction": "UNKNOWN",
+      "horizon": "2026_to_2027",
+      "support_fact_ids": [
+        "B08",
+        "B17"
+      ],
+      "assumptions": [
+        "External vendors receive incremental orders under enforceable terms"
+      ],
+      "falsifiers": [
+        "Existing inventory or internal sourcing absorbs spending",
+        "Vendor margin or payment terms offset volume"
+      ],
+      "watch": [
+        "Disclosed vendor contracts and shipment evidence"
+      ],
+      "status": "AI_ANALYST_DRAFT",
+      "case": "b_coreweave"
+    },
+    {
+      "edge_id": "B_E4",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "from": "CoreWeave financing transactions",
+      "to": "CoreWeave liquidity and financing burden",
+      "channel": "Principal access versus interest and potential dilution",
+      "direction": "MIXED",
+      "horizon": "2026_Q4_and_later",
+      "support_fact_ids": [
+        "B13",
+        "B14",
+        "B15",
+        "B16"
+      ],
+      "assumptions": [
+        "Facilities fund planned deployments",
+        "Terms permit expected draws"
+      ],
+      "falsifiers": [
+        "Higher effective funding cost",
+        "Restricted draw availability or dilution dominates"
+      ],
+      "watch": [
+        "Coupon/yield/spread and maturity disclosures",
+        "Actual Q4 interest expense"
+      ],
+      "status": "AI_ANALYST_DRAFT",
+      "case": "b_coreweave"
+    },
+    {
+      "edge_id": "CPI_E01",
+      "event_id": "CPI_2026_10",
+      "from": "OCTOBER_2026_US_CPI_RELEASE",
+      "to": "US_POLICY_RATE_EXPECTATIONS",
+      "channel": "inflation_information_interpretation",
+      "direction": "MIXED",
+      "horizon": "hours_to_months",
+      "support_fact_ids": [
+        "CPI_F01",
+        "CPI_F02",
+        "CPI_F04",
+        "CPI_F05"
+      ],
+      "support_role": "Facts establish reported CPI levels and prior official comparison; they do not establish the expectation response.",
+      "assumptions": "Investors interpret the headline decrease relative to their prior information as policy-relevant; their actual prior expectations are unavailable.",
+      "falsifiers": "Dated policy-rate expectations do not move in the posited direction or move mainly on concurrent information.",
+      "watch": "Time-stamped Treasury yields, policy-rate futures and policy communication.",
+      "status": "AI_ANALYST_DRAFT",
+      "case": "c_cpi"
+    },
+    {
+      "edge_id": "CPI_E02",
+      "event_id": "CPI_2026_10",
+      "from": "US_POLICY_RATE_EXPECTATIONS",
+      "to": "US_TECH_SECTOR_AGGREGATE_VALUATION",
+      "channel": "discount_rate_scenario",
+      "direction": "UNKNOWN",
+      "horizon": "days_to_quarters",
+      "support_fact_ids": [
+        "CPI_F01",
+        "CPI_F04"
+      ],
+      "support_role": "CPI facts provide event context only; no source directly verifies a technology-sector valuation effect.",
+      "assumptions": "A material rate-expectation change passes through to valuation and is not dominated by earnings or risk-premium news.",
+      "falsifiers": "Sector prices or discount-rate inputs do not align after controlling for contemporaneous announcements.",
+      "watch": "Dated Treasury yields, sector returns and concurrent issuer disclosures.",
+      "status": "AI_ANALYST_DRAFT",
+      "case": "c_cpi"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "event_impact_analysis_card_v1",
+  "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+  "analysis_role": "AI_ANALYST_DRAFT",
+  "event_published_at": "2026-11-10",
+  "event_publication_precision": "DATE_ONLY_VISIBLE_HEADER",
+  "material_retrieved_at_max": "2026-11-14T23:59:08.443901+00:00",
+  "analysis_created_at_utc": "2026-11-15T02:02:40.214258+00:00",
+  "analysis_cutoff_utc": "2026-11-15T02:01:48Z",
+  "first_available_at": null,
+  "prerelease_consensus_status": "UNKNOWN_NOT_FOUND",
+  "market_reaction_status": "NOT_RUN",
+  "forecast_status": "NOT_RUN",
+  "key_fact_ids": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B11",
+    "B13",
+    "B14",
+    "B15",
+    "B16",
+    "B17"
+  ],
+  "title": "CoreWeave: FY2026 CapEx outlook and financing context",
+  "happened": "CoreWeave’s 10 November Q3 materials set company-defined FY2026 capital expenditures at USD 37–39 billion. Q3 company-defined CapEx was USD 14.511 billion, while cash-flow purchases of PP&E and capitalized internal-use software were USD 9.441 billion; the measures have different bases. The issuer also listed financing transaction amounts.",
+  "new_info": "The current release restates the prior FY2026 CapEx range as USD 35–39 billion, implying a higher lower bound. The original prior outlook is not independently saved here, so this is a qualified issuer-restated comparison. With no dated pre-release consensus, an earnings surprise is UNKNOWN.",
+  "affected": [
+    "CoreWeave itself: delivery pace, funding need and interest burden remain to be observed.",
+    "Equipment and data-center construction suppliers at an industry level: orders are possible, but specific vendor benefit is unverified.",
+    "AI cloud customers: potential capacity benefit depends on timely deployment and usable service."
+  ],
+  "pathways": [
+    "Planned spending and earlier deployment may create capacity sooner; Q3 cash purchases cannot be subtracted from company-defined CapEx to infer lease assets.",
+    "Notes and a loan facility may expand funding access while adding interest or dilution exposure; coupon, yield, spread and all-in cost are not established."
+  ],
+  "conditions": [
+    "Infrastructure is delivered and utilized on schedule.",
+    "Funding can be drawn when needed and expected cash flow or prepayments arrive.",
+    "Equipment supply and power constraints do not materially delay deployment."
+  ],
+  "counterforces": [
+    "Earlier spending may pressure cash before revenue is recognized.",
+    "Financing terms or interest burden may be more costly than the benefit, and convertible notes may dilute owners.",
+    "Demand or delivery could fall short of management expectations."
+  ],
+  "watch": [
+    "Future separately reported company-defined CapEx and cash PP&E purchases.",
+    "Instrument-level coupon, yield, spread, draw and maturity terms.",
+    "Delivered capacity, customer prepayments and actual interest expense."
+  ],
+  "unknowns": [
+    "Independent first availability and a qualified pre-release consensus.",
+    "The original prior CapEx outlook document.",
+    "Coupon, yield, spread and all-in cost for each debt transaction.",
+    "Separately quantified finance-lease asset additions, specific vendor benefit and price reaction."
+  ],
+  "time_note": "This analysis was written after the materials were retrieved; it is not a prediction made on 10 November. The same-day presentation has date-only publication timing, so ordering within that day is unproven."
+}

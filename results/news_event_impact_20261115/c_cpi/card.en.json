@@ -1,0 +1,42 @@
+{
+  "schema": "event_impact_card_v1",
+  "event_id": "CPI_2026_10",
+  "title": "October 2026 U.S. CPI: headline monthly rate eases; core holds",
+  "analysis_role": "AI_ANALYST_DRAFT",
+  "event_time": "2026-11-10 08:30 ET (official BLS embargo clock, not independently observed first availability)",
+  "material_retrieved_at_utc": "2026-11-14T23:49:19.354248Z",
+  "analysis_created_at_utc": "2026-11-15T02:02:44Z",
+  "analysis_cutoff_at_utc": "2026-11-15T02:02:44Z",
+  "not_historical_prediction": true,
+  "happened": "BLS reported October 2026 headline CPI-U up 0.4% month over month, seasonally adjusted, and core CPI up 0.3%. The release did not publish the comparable headline or core year-over-year rates.",
+  "new_info": "Across the two BLS archive pages as currently saved, the headline seasonally adjusted monthly rate moved from 0.6% in September to 0.4% in October; core remained 0.3%. These are not independent release-time webpage snapshots or an unobserved pre-release market consensus.",
+  "affected": [
+    "U.S. technology sector as an aggregate scenario for rate-expectation sensitivity; this release does not establish any named technology firm's same-day price reaction or business exposure.",
+    "Broad equities and interest-rate-sensitive assets, conditionally on prior expectations and simultaneous information."
+  ],
+  "pathways": [
+    "If investors interpret the lower headline monthly rate as less inflation pressure, expected rates could change and alter discount rates for technology-sector valuations. The unchanged core rate makes the interpretation non-directional."
+  ],
+  "conditions": [
+    "The print would need to be new information relative to what investors already expected; no qualified dated consensus snapshot is available here.",
+    "Time-stamped rate and sector observations would be needed to separate this scenario from concurrent news."
+  ],
+  "counterforces": [
+    "Core monthly CPI stayed at 0.3%, and comparable October headline/core year-over-year rates are absent; the headline monthly change alone cannot fix policy or equity direction.",
+    "Later data, policy communication and risk appetite can offset or reverse the discount-rate channel."
+  ],
+  "watch": [
+    "Subsequent BLS revisions and the next headline and core monthly rates.",
+    "Precisely timed Treasury-yield, policy-expectation and technology-sector observations, separated from other announcements."
+  ],
+  "unknowns": [
+    "Pre-release market consensus and timestamp: UNKNOWN; no surprise calculation.",
+    "Independent first availability, original release-time webpage versions, revisions to unrounded September figures, and October headline/core annual rates: unknown or not published.",
+    "Observed market reaction and causal impact from this release: NOT_RUN."
+  ],
+  "key_fact_ids": ["CPI_F01", "CPI_F02", "CPI_F04", "CPI_F05", "CPI_F08", "CPI_F09"],
+  "source_fact_label": "Source fact",
+  "assumption_label": "Analysis assumption",
+  "pending_label": "To verify",
+  "footer": "Development analysis draft, not a prediction result; no local model or financial evaluation ran."
+}

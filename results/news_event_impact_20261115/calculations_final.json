@@ -1,0 +1,146 @@
+{
+  "schema": "event_impact_calculations_v1",
+  "calculations": [
+    {
+      "calculation_id": "A_D01",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "percent_change",
+      "formula": "(A01 - A02) / abs(A02) * 100",
+      "input_fact_ids": [
+        "A01",
+        "A02"
+      ],
+      "value": 17.89622,
+      "unit": "percent",
+      "comparability_note": "Consecutive issuer GAAP consolidated quarterly revenue, same USD millions basis.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "A_D02",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "range_lower",
+      "formula": "A10 * (1 - A11 / 100)",
+      "input_fact_ids": [
+        "A10",
+        "A11"
+      ],
+      "value": 105.84,
+      "unit": "USD billions",
+      "comparability_note": "Issuer Q3 management revenue outlook center and plus-or-minus percentage; not a market forecast.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "A_D03",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "range_upper",
+      "formula": "A10 * (1 + A11 / 100)",
+      "input_fact_ids": [
+        "A10",
+        "A11"
+      ],
+      "value": 110.16,
+      "unit": "USD billions",
+      "comparability_note": "Issuer Q3 management revenue outlook center and plus-or-minus percentage; not a market forecast.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "A_D04",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "delta_scaled_left",
+      "formula": "A01 / 1000 - A14",
+      "input_fact_ids": [
+        "A01",
+        "A14"
+      ],
+      "value": 5.221,
+      "unit": "USD billions",
+      "comparability_note": "Q2 actual GAAP revenue converted from USD millions minus prior issuer Q2 guidance center; not a consensus surprise.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "A_D05",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "range_upper",
+      "formula": "A14 * (1 + A15 / 100)",
+      "input_fact_ids": [
+        "A14",
+        "A15"
+      ],
+      "value": 92.82,
+      "unit": "USD billions",
+      "comparability_note": "Earlier issuer Q2 revenue guidance upper bound, not a market-consensus estimate.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "A_D06",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "operation": "subtract_three",
+      "formula": "A06 - A07 - A18",
+      "input_fact_ids": [
+        "A06",
+        "A07",
+        "A18"
+      ],
+      "value": 21341,
+      "unit": "USD millions",
+      "comparability_note": "Issuer-defined non-GAAP FCF reconciliation: GAAP operating cash flow less cash purchases and related principal payments.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "B_CALC01",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "operation": "delta",
+      "formula": "B09 - B10",
+      "input_fact_ids": [
+        "B09",
+        "B10"
+      ],
+      "value": 14511,
+      "unit": "USD million",
+      "comparability_note": "Issuer presentation company-defined CapEx reconciliation; this is not cash CapEx or finance-lease additions alone.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "B_CALC02",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "operation": "delta",
+      "formula": "B04 - B06",
+      "input_fact_ids": [
+        "B04",
+        "B06"
+      ],
+      "value": 2,
+      "unit": "USD billion",
+      "comparability_note": "Change in FY2026 CapEx guidance low end, using prior range restated in current issuer release; original prior guidance not independently replayed.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "CPI_D01",
+      "event_id": "CPI_2026_10",
+      "operation": "delta",
+      "formula": "CPI_F01 - CPI_F02",
+      "input_fact_ids": [
+        "CPI_F01",
+        "CPI_F02"
+      ],
+      "value": -0.2,
+      "unit": "percentage points",
+      "comparability_note": "October versus originally reported September seasonally adjusted headline monthly rates; not market surprise.",
+      "status": "DERIVED_BY_CODE"
+    },
+    {
+      "calculation_id": "CPI_D02",
+      "event_id": "CPI_2026_10",
+      "operation": "delta",
+      "formula": "CPI_F04 - CPI_F05",
+      "input_fact_ids": [
+        "CPI_F04",
+        "CPI_F05"
+      ],
+      "value": 0.0,
+      "unit": "percentage points",
+      "comparability_note": "October versus originally reported September seasonally adjusted core monthly rates; not market surprise.",
+      "status": "DERIVED_BY_CODE"
+    }
+  ]
+}

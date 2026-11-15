@@ -1,0 +1,105 @@
+[
+  {
+    "edge_id": "B_E1",
+    "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+    "from": "CoreWeave FY2026 CapEx outlook",
+    "to": "Earlier expected infrastructure delivery",
+    "channel": "Issuer explanation of revised spending pace",
+    "direction": "UNKNOWN",
+    "horizon": "FY2026",
+    "support_fact_ids": [
+      "B04",
+      "B05",
+      "B17"
+    ],
+    "assumptions": [],
+    "falsifiers": [
+      "Issuer revises deployment timing"
+    ],
+    "watch": [
+      "Actual delivery dates and capacity"
+    ],
+    "status": "SOURCE_SUPPORTED"
+  },
+  {
+    "edge_id": "B_E2",
+    "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+    "from": "CoreWeave planned infrastructure deployment",
+    "to": "CoreWeave cash and financing needs",
+    "channel": "Deployment spending precedes potential utilization and revenue",
+    "direction": "MIXED",
+    "horizon": "2026-Q4_to_2027",
+    "support_fact_ids": [
+      "B08",
+      "B11",
+      "B13",
+      "B14"
+    ],
+    "assumptions": [
+      "Planned infrastructure is purchased and becomes operational",
+      "Financing and customer prepayments arrive on needed timing"
+    ],
+    "falsifiers": [
+      "Deployment slips or demand weakens",
+      "Financing cost rises or capacity remains underused"
+    ],
+    "watch": [
+      "Cash PP&E purchases",
+      "Interest expense",
+      "Operational capacity"
+    ],
+    "status": "AI_ANALYST_DRAFT"
+  },
+  {
+    "edge_id": "B_E3",
+    "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+    "from": "CoreWeave planned infrastructure deployment",
+    "to": "Equipment and data-center construction suppliers (industry level)",
+    "channel": "Potential procurement orders",
+    "direction": "UNKNOWN",
+    "horizon": "2026_to_2027",
+    "support_fact_ids": [
+      "B08",
+      "B17"
+    ],
+    "assumptions": [
+      "External vendors receive incremental orders under enforceable terms"
+    ],
+    "falsifiers": [
+      "Existing inventory or internal sourcing absorbs spending",
+      "Vendor margin or payment terms offset volume"
+    ],
+    "watch": [
+      "Disclosed vendor contracts and shipment evidence"
+    ],
+    "status": "AI_ANALYST_DRAFT"
+  },
+  {
+    "edge_id": "B_E4",
+    "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+    "from": "CoreWeave financing transactions",
+    "to": "CoreWeave liquidity and financing burden",
+    "channel": "Principal access versus interest and potential dilution",
+    "direction": "MIXED",
+    "horizon": "2026_Q4_and_later",
+    "support_fact_ids": [
+      "B13",
+      "B14",
+      "B15",
+      "B16"
+    ],
+    "assumptions": [
+      "Facilities fund planned deployments",
+      "Terms permit expected draws"
+    ],
+    "falsifiers": [
+      "Higher effective funding cost",
+      "Restricted draw availability or dilution dominates"
+    ],
+    "watch": [
+      "Coupon/yield/spread and maturity disclosures",
+      "Actual Q4 interest expense"
+    ],
+    "status": "AI_ANALYST_DRAFT"
+  }
+]

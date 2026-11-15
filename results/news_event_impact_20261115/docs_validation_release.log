@@ -1,0 +1,4 @@
+PASS docs_files=7 relative_links=243 stages=9
+PASS case/source/fact/calculation/edge counts match receipts and STATUS
+PASS bilingual reports preserve draft and NOT_RUN labels
+Document checks only; no provider, model or financial experiment ran.

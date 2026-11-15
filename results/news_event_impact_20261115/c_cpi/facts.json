@@ -1,0 +1,83 @@
+{
+  "schema": "event_impact_facts_v1",
+  "event_id": "CPI_2026_10",
+  "event_type": "US_CPI_RELEASE",
+  "development_use_only": true,
+  "event_time": "2026-11-10 08:30 ET",
+  "event_time_status": "OFFICIAL_EMBARGO_LIFT_CLOCK_NOT_INDEPENDENT_FIRST_PUBLICATION",
+  "first_available_at": null,
+  "primary_source_retrieved_at_utc": "2026-11-14T23:49:19.354248Z",
+  "prior_source_retrieved_at_utc": "2026-11-14T23:50:03.447685Z",
+  "analysis_created_at_utc": "2026-11-15T02:02:44Z",
+  "analysis_cutoff_at_utc": "2026-11-15T02:02:44Z",
+  "source_version": "captured_2026-11-15_CST; BLS archived October and September releases",
+  "public_page_identity_checked": "2026-11-15; official BLS archive URLs opened and release headers and cited passages compared",
+  "facts": [
+    {
+      "fact_id": "CPI_F01", "description_zh": "2026年10月整体CPI-U经季调环比上升0.4%。", "description_en": "Headline CPI-U rose 0.4% month over month, seasonally adjusted, in October 2026.",
+      "raw_value": 0.4, "unit": "percent_month_over_month", "period": "2026-10", "accounting_basis": "CPI_U_ALL_ITEMS_SEASONALLY_ADJUSTED",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "Opening paragraph; Table A, All items, Oct. 2026 SA monthly column", "short_quote": "0.4 percent", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F02", "description_zh": "已保存的2026年9月BLS存档发布稿写明整体CPI-U经季调环比上升0.6%；不是发布当时的独立网页快照。", "description_en": "The saved BLS September archive release reports 0.6% seasonally adjusted headline CPI-U month over month; it is not an independently captured release-time webpage snapshot.",
+      "raw_value": 0.6, "unit": "percent_month_over_month", "period": "2026-09", "accounting_basis": "CPI_U_ALL_ITEMS_SEASONALLY_ADJUSTED_SEPTEMBER_ARCHIVE_CURRENT_CAPTURE",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202609.html", "source_sha256": "b9f981390c08f4a530d839495fce582124015b979bac0398bfcc35ffde0544e4",
+      "locator": "Opening paragraph; Table A, All items, Sep. 2026 SA monthly column", "short_quote": "0.6 percent", "source_published_at": "2026-10-14 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F03", "description_zh": "10月发布稿在对比句中仍将9月整体CPI-U经季调环比写为0.6%；这只核对了公布的四舍五入值。", "description_en": "The October release repeats September headline CPI-U SA monthly growth as 0.6%; this checks only the published rounded figure.",
+      "raw_value": 0.6, "unit": "percent_month_over_month", "period": "2026-09", "accounting_basis": "CPI_U_ALL_ITEMS_SEASONALLY_ADJUSTED_REPEATED_IN_OCTOBER_RELEASE",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "Opening paragraph, after rising in September; Table A, All items, Sep. 2026 SA monthly column", "short_quote": "0.6 percent in September", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F04", "description_zh": "2026年10月剔除食品与能源的核心CPI经季调环比上升0.3%。", "description_en": "Core CPI, all items less food and energy, rose 0.3% month over month, seasonally adjusted, in October 2026.",
+      "raw_value": 0.3, "unit": "percent_month_over_month", "period": "2026-10", "accounting_basis": "CPI_U_LESS_FOOD_ENERGY_SEASONALLY_ADJUSTED",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "Opening core paragraph; Table A, All items less food and energy, Oct. 2026 SA monthly column", "short_quote": "rose 0.3 percent", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F05", "description_zh": "已保存的2026年9月BLS存档发布稿写明核心CPI经季调环比为0.3%；不是发布当时的独立网页快照。", "description_en": "The saved BLS September archive release reports 0.3% core CPI month over month, seasonally adjusted; it is not an independently captured release-time webpage snapshot.",
+      "raw_value": 0.3, "unit": "percent_month_over_month", "period": "2026-09", "accounting_basis": "CPI_U_LESS_FOOD_ENERGY_SEASONALLY_ADJUSTED_SEPTEMBER_ARCHIVE_CURRENT_CAPTURE",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202609.html", "source_sha256": "b9f981390c08f4a530d839495fce582124015b979bac0398bfcc35ffde0544e4",
+      "locator": "Opening core paragraph; Table A, All items less food and energy, Sep. 2026 SA monthly column", "short_quote": "rose 0.3 percent", "source_published_at": "2026-10-14 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F06", "description_zh": "10月发布稿仍将9月核心CPI经季调环比写为0.3%；底层未四舍五入数值是否修订未核实。", "description_en": "The October release repeats September core CPI SA monthly growth as 0.3%; unrounded revision status was not assessed.",
+      "raw_value": 0.3, "unit": "percent_month_over_month", "period": "2026-09", "accounting_basis": "CPI_U_LESS_FOOD_ENERGY_SEASONALLY_ADJUSTED_REPEATED_IN_OCTOBER_RELEASE",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "Opening core paragraph, as it did in September; Table A core row Sep. 2026 SA monthly column", "short_quote": "as it did in September", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F07", "description_zh": "2026年10月整体CPI-U未经季调环比上升0.2%，与经季调的0.4%分开记录。", "description_en": "Headline CPI-U rose 0.2% month over month before seasonal adjustment in October 2026, separately from the 0.4% SA figure.",
+      "raw_value": 0.2, "unit": "percent_month_over_month", "period": "2026-10", "accounting_basis": "CPI_U_ALL_ITEMS_NOT_SEASONALLY_ADJUSTED",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "Not seasonally adjusted CPI measures paragraph; Table 1, All items, Sep.-Oct. 2026 unadjusted percent change", "short_quote": "0.2 percent", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "CPI_F08", "description_zh": "2026年10月整体CPI-U同比（未经季调）未公布；缺少2025年10月对应指数。", "description_en": "October 2026 headline CPI-U year-over-year (not seasonally adjusted) was not published because the October 2025 comparison index was unavailable.",
+      "raw_value": null, "unit": "percent_year_over_year", "period": "2026-10", "accounting_basis": "CPI_U_ALL_ITEMS_NOT_SEASONALLY_ADJUSTED",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "October 2026 12-Month Percent Changes box; Table A, All items, unadjusted 12-month column (dash)", "short_quote": "12-Month Percent Changes", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "NOT_DISCLOSED"
+    },
+    {
+      "fact_id": "CPI_F09", "description_zh": "2026年10月核心CPI同比（未经季调）未公布；核心项目在Table A同比栏为空缺。", "description_en": "October 2026 core CPI year-over-year (not seasonally adjusted) was not published; Table A has a dash for this item.",
+      "raw_value": null, "unit": "percent_year_over_year", "period": "2026-10", "accounting_basis": "CPI_U_LESS_FOOD_ENERGY_NOT_SEASONALLY_ADJUSTED",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "source_path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "source_sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320",
+      "locator": "October 2026 12-Month Percent Changes box; Table A, All items less food and energy, unadjusted 12-month column (dash)", "short_quote": "All items less food and energy", "source_published_at": "2026-11-10 08:30 ET (official embargo clock)", "publication_precision": "OFFICIAL_EMBARGO_MINUTE_FIRST_AVAILABLE_UNKNOWN", "evidence_status": "NOT_DISCLOSED"
+    }
+  ],
+  "proposed_calculations": [
+    {"calculation_id": "CPI_D01", "formula": "CPI_F01 - CPI_F02", "input_fact_ids": ["CPI_F01", "CPI_F02"], "output_unit": "percentage_point", "purpose": "October vs saved September archived-release headline SA monthly rate; calculate in code only; not first-published snapshot proof"},
+    {"calculation_id": "CPI_D02", "formula": "CPI_F04 - CPI_F05", "input_fact_ids": ["CPI_F04", "CPI_F05"], "output_unit": "percentage_point", "purpose": "October vs saved September archived-release core SA monthly rate; calculate in code only; not first-published snapshot proof"}
+  ],
+  "gaps": [
+    {"gap_id": "CPI_G01", "status": "NOT_FOUND", "description": "No dated pre-release market consensus snapshot; surprise relative to expectations is UNKNOWN."},
+    {"gap_id": "CPI_G02", "status": "NOT_FOUND", "description": "No independent first-publicly-available timestamp beyond the official embargo clock."},
+    {"gap_id": "CPI_G03", "status": "NOT_FOUND", "description": "Unrounded revision status for September seasonal-adjusted series not independently assessed; only rounded released values were compared."},
+    {"gap_id": "CPI_G04", "status": "NOT_DISCLOSED", "description": "Headline and core October 2026 12-month rates absent because October 2025 index data were unavailable."},
+    {"gap_id": "CPI_G05", "status": "NOT_RUN", "description": "No dated yield, equity reaction or company exposure study for this event."},
+    {"gap_id": "CPI_G06", "status": "NOT_FOUND", "description": "Saved BLS archive pages were captured in November, not at original release; first-published webpage bytes are not established."}
+  ]
+}

@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), Jin10 desktop and saved-page acceptance 1.14.
+Updated 2026-11-15 (Asia/Shanghai), event-impact development cards 1.15.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [Three event-impact development cards / 三张事件影响分析样板](../../reports/2026-11-15_event_impact_cards.en.md) · [中文报告](../../reports/2026-11-15_event_impact_cards.zh.md) · [selection manifest / 选择清单](../../results/news_event_impact_20261115/selection_manifest.json) · [plan–actual / 计划—实际](../../results/news_event_impact_20261115/plan_execution.csv) · [public page / 公开页面](../../results/news_event_impact_20261115/dashboard_public_v3.html). Saved official NVIDIA, CoreWeave and BLS materials support three conditional `AI_ANALYST_DRAFT` cards. Their facts, hypotheses, unknowns and timing are separate; the saved-data private page passed desktop and 390px visual checks. These are analysis templates **awaiting evaluation**, with no new model call, financial label or backtest. 三张有来源的开发卡已制作并完成本机页面验收，内容质量和金融有效性均未验证。
 
 - [Jin10 desktop acceptance English report](../../reports/2026-11-15_jin10_desktop_acceptance.en.md) · [中文报告](../../reports/2026-11-15_jin10_desktop_acceptance.zh.md) · [本轮计划—实际](../../results/news_jin10_desktop_20261115/plan_execution.csv) · [原生桌面调用回执](../../results/news_jin10_desktop_20261115/native_calendar_receipt.json) · [脱敏视觉回执](../../results/news_jin10_desktop_20261115/visual_acceptance_redacted.json). The current desktop session loaded Jin10 and made one native calendar call; a saved private page was opened at desktop and 390px width, with no provider download for page QA. 桌面工具与本机页面验收完成；旧新进程探测和本轮桌面调用分别记录。
 - [Jin10 MCP bounded-intake English report](../../reports/2026-11-15_jin10_mcp_intake.en.md) · [中文进度](../../reports/2026-11-15_jin10_mcp_intake.zh.md) · [逐项计划—实际](../../results/news_jin10_20261115/plan_execution.csv) · [source-rights boundary / 来源权限](jin10/source_rights.md)

@@ -1,0 +1,61 @@
+{
+  "schema": "event_impact_draft_freeze_v1",
+  "frozen_at_utc": "2026-11-15T02:05:09Z",
+  "analysis_author": "Codex AI_ANALYST_DRAFT",
+  "files_copied": 13,
+  "files": [
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/a_nvidia/card.en.json",
+      "sha256": "8543624aa7eb9d2b6b213d8eed5c3f24f87ddaeac3f3fb6b2b9794f4edea73b4"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/a_nvidia/card.zh.json",
+      "sha256": "25ab3de845c3fa039791bdd6dc9db7ba5d060cd7ee0abe777960dd3199d723bc"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/a_nvidia/edges.json",
+      "sha256": "5e8b81127b6d7be7997c2de0e6b53a504de488785c92fad02eb2bd1ca8e1f581"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/a_nvidia/facts.json",
+      "sha256": "437484df53d04db615209fa51b9b45720ae990d5468da1eb4de2b8fe671a6397"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/b_coreweave/card.en.json",
+      "sha256": "f310e06b7554f4b342af3ad6a1027388c5dbafad18cd59ff08126fa5614f787f"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/b_coreweave/card.zh.json",
+      "sha256": "1b5f8744d2405cb8d6e069f4e4259d4ce4f7389800121ee3e6614c1d9f74bdd8"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/b_coreweave/edges.json",
+      "sha256": "1cf4436bce192102a24fd75a6969ccbe39100498e08a73cc34bec7f4ebaeeead"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/b_coreweave/facts.json",
+      "sha256": "a498f6528cc64469467ef2e939295af3a9a2d3df6fc2433e480ce16c32f99f35"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/c_cpi/card.en.json",
+      "sha256": "9214d4bbc8237250ffc58286d3ff18c5b85d282276bdfb181e95b9f07dd3a79b"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/c_cpi/card.zh.json",
+      "sha256": "cadfc9582ad04a7633f8a4292cdc3bc102311443cc788f473045d5fde23bae1c"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/c_cpi/edges.json",
+      "sha256": "b55b963a27a646225aa3579799de7d483d49aec34162d1a0160c37edca2979cd"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/c_cpi/facts.json",
+      "sha256": "8b1dfb268537602e1966bd71d723c10699be369ed3534b80339ae4f1ba34c154"
+    },
+    {
+      "path": "artifacts/event_impact_20261115/draft_freeze_20261115T020509Z/selection_manifest.json",
+      "sha256": "2acb4c62ce696ff13ca8e8b36af399e086d75ef6f6d9cdb4ffc1e4bf79c925f7"
+    }
+  ],
+  "self_review_starts_after_freeze": true
+}

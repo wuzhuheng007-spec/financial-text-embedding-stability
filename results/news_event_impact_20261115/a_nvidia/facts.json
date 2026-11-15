@@ -1,0 +1,157 @@
+{
+  "schema": "event_impact_facts_v1",
+  "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+  "selection_reason": "Latest saved NVIDIA earnings release; the later saved Q3 item is only an earnings-call schedule.",
+  "event_published_at": "2026-08-26",
+  "publication_precision": "DATE_ONLY",
+  "first_available_at": null,
+  "material_retrieval_times_utc": {
+    "nv_q2_release": "2026-11-14T23:49:21.523425+00:00",
+    "nv_q1_release": "2026-11-14T23:50:54.429048+00:00"
+  },
+  "analysis_created_at_utc": "2026-11-15T02:04:20Z",
+  "development_only": true,
+  "source_snapshot_note": "Saved current captures are not release-time snapshots; prior Q1 release is used only for an issuer-outlook comparison, never market consensus.",
+  "facts": [
+    {
+      "fact_id": "A01", "description_zh": "FY2027 第二季度 GAAP 合并营收。", "description_en": "FY2027 Q2 GAAP consolidated revenue.",
+      "raw_value": 96221, "unit": "USD millions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_REPORTED",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "GAAP Q2 Fiscal 2027 Summary, Revenue row, Q2 FY27 column", "short_quote": "96,221", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A02", "description_zh": "前一季度 FY2027 第一季度 GAAP 合并营收，供同口径顺序比较。", "description_en": "Prior FY2027 Q1 GAAP consolidated revenue for a like-basis sequential comparison.",
+      "raw_value": 81615, "unit": "USD millions", "period": "FY2027-Q1 (ended 2026-04-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_REPORTED",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q1_fy27.html", "source_sha256": "fe204552ae31aed0ce2a33420f63d2512939bf98fbbc463d74de00c2650922ff",
+      "locator": "GAAP Q1 Fiscal 2027 Summary, Revenue row, Q1 FY27 column", "short_quote": "81,615", "source_published_at": "2026-05-20", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A03", "description_zh": "FY2027 第二季度 GAAP 合并净利润。", "description_en": "FY2027 Q2 GAAP consolidated net income.",
+      "raw_value": 59688, "unit": "USD millions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_REPORTED",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "GAAP Q2 Fiscal 2027 Summary, Net income row, Q2 FY27 column", "short_quote": "59,688", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A04", "description_zh": "FY2027 第二季度 GAAP 毛利率。", "description_en": "FY2027 Q2 GAAP gross margin.",
+      "raw_value": 75.0, "unit": "percent", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_REPORTED",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "GAAP Q2 Fiscal 2027 Summary, Gross margin row", "short_quote": "75.0%", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A05", "description_zh": "FY2027 第二季度 GAAP 合并营业利润。", "description_en": "FY2027 Q2 GAAP consolidated operating income.",
+      "raw_value": 63734, "unit": "USD millions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_REPORTED",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "GAAP Q2 Fiscal 2027 Summary, Operating income row", "short_quote": "63,734", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A06", "description_zh": "FY2027 第二季度 GAAP 经营活动现金流入净额；现金流表有单季列。", "description_en": "FY2027 Q2 GAAP net cash from operations, from the quarterly cash-flow column.",
+      "raw_value": 24077, "unit": "USD millions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_CASH_FLOW",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Condensed Consolidated Statements of Cash Flows, Net cash provided by operating activities, three-month column", "short_quote": "24,077", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A07", "description_zh": "FY2027 第二季度购买不动产、设备和无形资产的现金支出；不等同融资租赁新增资产。", "description_en": "FY2027 Q2 cash purchases of property, equipment and intangibles; distinct from finance-lease asset additions.",
+      "raw_value": 2677, "unit": "USD millions cash outflow magnitude", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "US_GAAP_CONSOLIDATED_QUARTER_CASH_INVESTING",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Condensed Consolidated Statements of Cash Flows, Purchases related to property and equipment and intangible assets, three-month column; statement displays (2,677)", "short_quote": "2,677", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A08", "description_zh": "公司报告的 FY2027 第二季度非 GAAP 自由现金流；不是简单将 A06 减 A07。", "description_en": "Company-reported FY2027 Q2 non-GAAP free cash flow; not simply A06 minus A07.",
+      "raw_value": 21341, "unit": "USD millions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "COMPANY_DEFINED_NON_GAAP_FREE_CASH_FLOW_QUARTER",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Reconciliation of GAAP to Non-GAAP Financial Measures, Free cash flow row, three-month column", "short_quote": "21,341", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A09", "description_zh": "公司披露 FY2027 第二季度数据中心营收约 890 亿美元；此处为分部披露，不可与 GAAP 合并营收重复相加。", "description_en": "Issuer-reported FY2027 Q2 Data Center revenue of approximately USD 89.0 billion; a component, not additive to consolidated revenue.",
+      "raw_value": 89.0, "unit": "USD billions", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "ISSUER_SEGMENT_REVENUE_QUARTER_APPROXIMATE",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Release headline/deck and opening paragraph, Data Center revenue", "short_quote": "89.0 billion", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A10", "description_zh": "FY2027 第三季度管理层营收指引中心值。", "description_en": "FY2027 Q3 management revenue outlook center.",
+      "raw_value": 108.0, "unit": "USD billions", "period": "FY2027-Q3 target", "accounting_basis": "ISSUER_MANAGEMENT_OUTLOOK_GAAP_AND_NON_GAAP",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Outlook section, third-quarter revenue bullet", "short_quote": "108.0 billion", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A11", "description_zh": "FY2027 第三季度营收指引相对中心值的容差。", "description_en": "FY2027 Q3 revenue-outlook tolerance around the center.",
+      "raw_value": 2, "unit": "percent of center, plus or minus", "period": "FY2027-Q3 target", "accounting_basis": "ISSUER_MANAGEMENT_OUTLOOK_GAAP_AND_NON_GAAP",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Outlook section, third-quarter revenue bullet", "short_quote": "minus 2%", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A12", "description_zh": "FY2027 第三季度管理层 GAAP 与非 GAAP 毛利率指引中心值。", "description_en": "FY2027 Q3 management GAAP and non-GAAP gross-margin outlook center.",
+      "raw_value": 74.0, "unit": "percent", "period": "FY2027-Q3 target", "accounting_basis": "ISSUER_MANAGEMENT_OUTLOOK_GAAP_AND_NON_GAAP",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Outlook section, third-quarter gross-margin bullet", "short_quote": "74.0%", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A13", "description_zh": "FY2027 第三季度毛利率指引的容差。", "description_en": "FY2027 Q3 gross-margin outlook tolerance.",
+      "raw_value": 50, "unit": "basis points, plus or minus", "period": "FY2027-Q3 target", "accounting_basis": "ISSUER_MANAGEMENT_OUTLOOK_GAAP_AND_NON_GAAP",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Outlook section, third-quarter gross-margin bullet", "short_quote": "50 basis points", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A14", "description_zh": "此前 FY2027 第一季度公告对第二季度营收的管理层指引中心值；不是市场共识。", "description_en": "Prior FY2027 Q1 release's management outlook center for Q2 revenue; not a market consensus.",
+      "raw_value": 91.0, "unit": "USD billions", "period": "FY2027-Q2 target", "accounting_basis": "PRIOR_ISSUER_MANAGEMENT_OUTLOOK",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q1_fy27.html", "source_sha256": "fe204552ae31aed0ce2a33420f63d2512939bf98fbbc463d74de00c2650922ff",
+      "locator": "Q1 FY2027 release, Outlook section, Q2 revenue bullet", "short_quote": "91.0 billion", "source_published_at": "2026-05-20", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A15", "description_zh": "此前第二季度营收管理层指引的容差。", "description_en": "Prior management revenue-outlook tolerance for FY2027 Q2.",
+      "raw_value": 2, "unit": "percent of center, plus or minus", "period": "FY2027-Q2 target", "accounting_basis": "PRIOR_ISSUER_MANAGEMENT_OUTLOOK",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q1_fy27.html", "source_sha256": "fe204552ae31aed0ce2a33420f63d2512939bf98fbbc463d74de00c2650922ff",
+      "locator": "Q1 FY2027 release, Outlook section, Q2 revenue bullet", "short_quote": "minus 2%", "source_published_at": "2026-05-20", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A16", "description_zh": "公司将非 GAAP 自由现金流定义为 GAAP 经营现金流减现金购买不动产、设备和无形资产及相关本金支付。", "description_en": "Company defines non-GAAP free cash flow as GAAP operating cash flow less cash purchases of property, equipment and intangibles and related principal payments.",
+      "raw_value": null, "unit": null, "period": "Company measure definition in Q2 FY2027 release", "accounting_basis": "ISSUER_NON_GAAP_MEASURE_DEFINITION",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Non-GAAP reconciliation explanatory paragraph, Free cash flow definition", "short_quote": "principal payments", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A17", "description_zh": "公司在第三季度展望中未假设来自中国的数据中心计算收入；这是展望假设，不是未来实际收入。", "description_en": "Q3 outlook assumes no Data Center compute revenue from China; an outlook assumption, not a realized result.",
+      "raw_value": null, "unit": null, "period": "FY2027-Q3 target", "accounting_basis": "ISSUER_MANAGEMENT_OUTLOOK_ASSUMPTION",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Outlook section, sentence following Q3 revenue guidance", "short_quote": "not assuming any", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    },
+    {
+      "fact_id": "A18", "description_zh": "公司自由现金流调节表列出的 FY2027 第二季度不动产、设备和无形资产相关本金支付。", "description_en": "FY2027 Q2 principal payments on property, equipment and intangibles in the issuer's FCF reconciliation.",
+      "raw_value": 59, "unit": "USD millions cash outflow magnitude", "period": "FY2027-Q2 (2026-04-27 to 2026-07-26)", "accounting_basis": "ISSUER_NON_GAAP_FCF_RECONCILIATION_QUARTER",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027",
+      "source_path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "source_sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7",
+      "locator": "Reconciliation of GAAP to Non-GAAP Financial Measures, Principal payments on property and equipment and intangible assets, three-month column; displays (59)", "short_quote": "59", "source_published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "evidence_status": "SOURCE_SUPPORTED"
+    }
+  ],
+  "proposed_derived_formulas_not_yet_calculated": [
+    {"derived_id": "A_D01", "formula": "(A01 - A02) / A02 * 100", "input_fact_ids": ["A01", "A02"], "unit": "percent sequential revenue change"},
+    {"derived_id": "A_D02", "formula": "A10 * (1 - A11 / 100)", "input_fact_ids": ["A10", "A11"], "unit": "USD billions, Q3 guidance lower bound"},
+    {"derived_id": "A_D03", "formula": "A10 * (1 + A11 / 100)", "input_fact_ids": ["A10", "A11"], "unit": "USD billions, Q3 guidance upper bound"},
+    {"derived_id": "A_D04", "formula": "A01 / 1000 - A14", "input_fact_ids": ["A01", "A14"], "unit": "USD billions, actual minus prior issuer-outlook center; not market surprise"},
+    {"derived_id": "A_D05", "formula": "A14 * (1 + A15 / 100)", "input_fact_ids": ["A14", "A15"], "unit": "USD billions, prior Q2 issuer-outlook upper bound"},
+    {"derived_id": "A_D06", "formula": "A06 - A07 - A18", "input_fact_ids": ["A06", "A07", "A18"], "unit": "USD millions, FCF reconciliation check against reported A08"}
+  ],
+  "gaps": [
+    {"field": "pre_release_market_consensus", "status": "NOT_FOUND", "note": "No dated pre-release provider snapshot in saved material; no surprise claim."},
+    {"field": "independent_first_public_time", "status": "NOT_FOUND", "note": "Official page shows date only; current capture is not a release-time snapshot."},
+    {"field": "company_specific_customer_or_supplier_relationship_for_transmission", "status": "NOT_FOUND", "note": "No specific counterparty relation is established for this card; industry-level paths only."},
+    {"field": "Q3_capital_expenditure_guidance", "status": "NOT_FOUND", "note": "The captured release does not supply a comparable numeric Q3 capex guide."}
+  ]
+}

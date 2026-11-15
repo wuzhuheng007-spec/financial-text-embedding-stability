@@ -1,0 +1,65 @@
+{
+  "schema": "news_event_impact_selection_v1",
+  "timezone": "Asia/Shanghai",
+  "baseline_source_index": "results/news_earnings_macro_20261115/source_manifest.json",
+  "analysis_cutoff_at_utc": "2026-11-15T02:04:29Z",
+  "selection_rule": "Specified A/B/C order; choose saved official source with strongest relevant evidence, without consulting subsequent share returns.",
+  "new_sources_acquired_this_round": false,
+  "formal_research_sample": false,
+  "events": [
+    {
+      "case": "a_nvidia",
+      "event_id": "NVDA_FY2027_Q2_RELEASE_20260826",
+      "selection_reason": "Latest already-saved published NVIDIA earnings release in the source index; Q1 release is used only for prior issuer-guidance comparison. No price-based selection.",
+      "replacement_reason": null,
+      "published_at": "2026-08-26",
+      "publication_precision": "ISSUER_RELEASE_DATE_ONLY_FIRST_AVAILABLE_UNKNOWN",
+      "event_time_note_zh": "官方公告日期；独立首见时刻未知",
+      "retrieved_at_utc": "2026-11-14T23:49:21.523425Z",
+      "analysis_created_at_utc": "2026-11-15T02:04:20Z",
+      "analysis_cutoff_at_utc": "2026-11-15T02:04:29Z",
+      "highlight_fact_ids": ["A01", "A03", "A04", "A07", "A10", "A14"],
+      "development_use": "DESCRIPTIVE_AI_ANALYST_DRAFT_NOT_HISTORICAL_PREDICTION",
+      "source_files": [
+        {"source_id": "nv_q2_release", "role": "PRIMARY_EVENT_RELEASE", "path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q2_fy27.html", "sha256": "eae957e936386cfef7ed1bdfcae29ac0fcfb1e9789c20603b5e38571ee30e9c7", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027", "published_at": "2026-08-26", "publication_precision": "DATE_ONLY", "retrieved_at_utc": "2026-11-14T23:49:21.523425Z", "material_version": "saved_official_capture_2026-11-15_CST"},
+        {"source_id": "nv_q1_release", "role": "PRIOR_ISSUER_GUIDANCE_COMPARISON", "path": "artifacts/earnings_20261115/sources/us_a/nvidia_newsroom_q1_fy27.html", "sha256": "fe204552ae31aed0ce2a33420f63d2512939bf98fbbc463d74de00c2650922ff", "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027", "published_at": "2026-05-20", "publication_precision": "DATE_ONLY", "retrieved_at_utc": "2026-11-14T23:50:54.429048Z", "material_version": "saved_official_capture_2026-11-15_CST"}
+      ]
+    },
+    {
+      "case": "b_coreweave",
+      "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK",
+      "selection_reason": "Saved same-day issuer release and presentation directly support the FY2026 CapEx guidance change and separate company-defined spending from cash purchases. This is a different issuer and event from A; the later 10-Q is excluded from event-time facts.",
+      "replacement_reason": null,
+      "published_at": "2026-11-10",
+      "publication_precision": "VISIBLE_ISSUER_DATE_ONLY;_JSONLD_MINUTE_NOT_INDEPENDENT_FIRST_AVAILABILITY",
+      "event_time_note_zh": "官方页面日期；页面元数据分钟不代表独立首见",
+      "retrieved_at_utc": "2026-11-14T23:59:08.443901Z",
+      "analysis_created_at_utc": "2026-11-15T02:02:40.214258Z",
+      "analysis_cutoff_at_utc": "2026-11-15T02:04:29Z",
+      "highlight_fact_ids": ["B04", "B05", "B08", "B11", "B13", "B14"],
+      "development_use": "DESCRIPTIVE_AI_ANALYST_DRAFT_NOT_HISTORICAL_PREDICTION",
+      "source_files": [
+        {"source_id": "core_q3_release", "role": "PRIMARY_EVENT_RELEASE", "path": "artifacts/earnings_20261115/sources/us_b/coreweave_q3_2026_release.html", "sha256": "3663562671666f1ddf035c852e7e37363370befede6455d2ed5fc5f0f15d84f4", "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Third-Quarter-2026-Results/default.aspx", "published_at": "2026-11-10", "publication_precision": "DATE_ONLY_VISIBLE_HEADER", "retrieved_at_utc": "2026-11-14T23:59:08.443901Z", "material_version": "saved_official_capture_2026-11-15_CST"},
+        {"source_id": "core_q3_presentation", "role": "SAME_DAY_COMPANY_CAPEX_DEFINITION", "path": "artifacts/earnings_20261115/sources/us_b/coreweave_q3_2026_presentation.pdf", "sha256": "a452b469c6b892bd7b3173309abad21b96e57a59f736b5415d1e8cea5d86b012", "url": "https://s205.q4cdn.com/133937190/files/content_files/CoreWeave-3Q26-Earnings-Presentation-Final.pdf", "published_at": "2026-11-10", "publication_precision": "DATE_ONLY_MANIFEST", "retrieved_at_utc": "2026-11-14T23:49:40.753108Z", "material_version": "saved_official_capture_2026-11-15_CST"}
+      ]
+    },
+    {
+      "case": "c_cpi",
+      "event_id": "CPI_2026_10",
+      "selection_reason": "Latest already-saved US CPI official archive release; saved September archive is used solely for originally reported prior-month comparison. No subsequent price-based selection.",
+      "replacement_reason": null,
+      "published_at": "2026-11-10 08:30 ET",
+      "publication_precision": "OFFICIAL_EMBARGO_CLOCK_MINUTE_NOT_INDEPENDENT_FIRST_AVAILABLE",
+      "event_time_note_zh": "BLS 官方禁发解除时刻；独立首见时刻未知",
+      "retrieved_at_utc": "2026-11-14T23:49:19.354248Z",
+      "analysis_created_at_utc": "2026-11-15T02:02:44Z",
+      "analysis_cutoff_at_utc": "2026-11-15T02:04:29Z",
+      "highlight_fact_ids": ["CPI_F01", "CPI_F04", "CPI_F07", "CPI_F08", "CPI_F09"],
+      "development_use": "DESCRIPTIVE_AI_ANALYST_DRAFT_NOT_HISTORICAL_PREDICTION",
+      "source_files": [
+        {"source_id": "cpi_202610", "role": "PRIMARY_OFFICIAL_RELEASE", "path": "artifacts/earnings_20261115/sources/macro/cpi_202610.html", "sha256": "ee0bffd2cfb13f9faf79b5b23e5b74d87d67f61888dfd34346f81dee9182a320", "url": "https://www.bls.gov/news.release/archives/cpi_11102026.htm", "published_at": "2026-11-10 08:30 ET", "publication_precision": "OFFICIAL_EMBARGO_CLOCK_MINUTE", "retrieved_at_utc": "2026-11-14T23:49:19.354248Z", "material_version": "saved_official_archive_capture_2026-11-15_CST"},
+        {"source_id": "cpi_202609", "role": "PRIOR_ORIGINAL_RELEASE_COMPARISON", "path": "artifacts/earnings_20261115/sources/macro/cpi_202609.html", "sha256": "b9f981390c08f4a530d839495fce582124015b979bac0398bfcc35ffde0544e4", "url": "https://www.bls.gov/news.release/archives/cpi_10142026.htm", "published_at": "2026-10-14 08:30 ET", "publication_precision": "OFFICIAL_EMBARGO_CLOCK_MINUTE", "retrieved_at_utc": "2026-11-14T23:50:03.447685Z", "material_version": "saved_official_archive_capture_2026-11-15_CST"}
+      ]
+    }
+  ]
+}

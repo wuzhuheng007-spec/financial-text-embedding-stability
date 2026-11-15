@@ -1,0 +1,16 @@
+{
+  "schema": "event_impact_calculation_specs_v1",
+  "policy": "Only named arithmetic operations on cited numeric fact IDs; never infer market surprise without a dated prerelease consensus.",
+  "calculations": [
+    {"calculation_id": "A_D01", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "percent_change", "input_fact_ids": ["A01", "A02"], "unit": "percent", "comparability_note": "Consecutive issuer GAAP consolidated quarterly revenue, same USD millions basis."},
+    {"calculation_id": "A_D02", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "range_lower", "input_fact_ids": ["A10", "A11"], "unit": "USD billions", "comparability_note": "Issuer Q3 management revenue outlook center and plus-or-minus percentage; not a market forecast."},
+    {"calculation_id": "A_D03", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "range_upper", "input_fact_ids": ["A10", "A11"], "unit": "USD billions", "comparability_note": "Issuer Q3 management revenue outlook center and plus-or-minus percentage; not a market forecast."},
+    {"calculation_id": "A_D04", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "delta_scaled_left", "input_fact_ids": ["A01", "A14"], "left_scale_divisor": 1000, "unit": "USD billions", "comparability_note": "Q2 actual GAAP revenue converted from USD millions minus prior issuer Q2 guidance center; not a consensus surprise."},
+    {"calculation_id": "A_D05", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "range_upper", "input_fact_ids": ["A14", "A15"], "unit": "USD billions", "comparability_note": "Earlier issuer Q2 revenue guidance upper bound, not a market-consensus estimate."},
+    {"calculation_id": "A_D06", "event_id": "NVDA_FY2027_Q2_RELEASE_20260826", "operation": "subtract_three", "input_fact_ids": ["A06", "A07", "A18"], "expected_reported_fact_id": "A08", "unit": "USD millions", "comparability_note": "Issuer-defined non-GAAP FCF reconciliation: GAAP operating cash flow less cash purchases and related principal payments."},
+    {"calculation_id": "B_CALC01", "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK", "operation": "delta", "input_fact_ids": ["B09", "B10"], "expected_reported_fact_id": "B08", "unit": "USD million", "comparability_note": "Issuer presentation company-defined CapEx reconciliation; this is not cash CapEx or finance-lease additions alone."},
+    {"calculation_id": "B_CALC02", "event_id": "COREWEAVE_2026_11_10_CAPEX_OUTLOOK", "operation": "delta", "input_fact_ids": ["B04", "B06"], "unit": "USD billion", "comparability_note": "Change in FY2026 CapEx guidance low end, using prior range restated in current issuer release; original prior guidance not independently replayed."},
+    {"calculation_id": "CPI_D01", "event_id": "CPI_2026_10", "operation": "delta", "input_fact_ids": ["CPI_F01", "CPI_F02"], "unit": "percentage points", "comparability_note": "October versus originally reported September seasonally adjusted headline monthly rates; not market surprise."},
+    {"calculation_id": "CPI_D02", "event_id": "CPI_2026_10", "operation": "delta", "input_fact_ids": ["CPI_F04", "CPI_F05"], "unit": "percentage points", "comparability_note": "October versus originally reported September seasonally adjusted core monthly rates; not market surprise."}
+  ]
+}
