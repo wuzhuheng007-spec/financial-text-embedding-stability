@@ -1,0 +1,23 @@
+{
+  "schema": "market_observer_lifecycle_receipt_v1",
+  "execution_date": "2026-11-15",
+  "execution_timezone": "Asia/Shanghai",
+  "runtime_config": "configs/market_observer_v1.example.json",
+  "runtime_config_sha256": "2974b344a87c650a4ceab5b1462254e152bf9683fab9dd40af585500eb5ca157",
+  "session_id": "99b89e2a-f7b5-4231-963d-2509381acb3c",
+  "feed_mode": "NO_FEED",
+  "started_at_utc": "2026-11-15T03:59:26.020Z",
+  "ended_at_utc": "2026-11-15T03:59:36.088Z",
+  "final_state": "STOPPED_BY_USER",
+  "start_command_succeeded": true,
+  "status_during_run_showed_fresh_heartbeat": true,
+  "stop_confirmed": true,
+  "provider_connected": false,
+  "provider_calls": 0,
+  "quote_rows_collected": 0,
+  "candidate_instrument_strings": 12,
+  "candidate_identity_status": "PENDING_OFFICIAL_LOOKUP",
+  "live_15_minute_acceptance": "NOT_RUN",
+  "private_dashboard_path": "artifacts/market_observer_v1/dashboard_latest.html",
+  "interpretation": "Windows process start/status/stop and local SQLite/dashboard operation passed; no authorized live push source was attached and no market stream was tested."
+}

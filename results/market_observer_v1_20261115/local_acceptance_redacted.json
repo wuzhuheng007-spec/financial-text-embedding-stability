@@ -1,0 +1,50 @@
+{
+  "schema": "market_observer_local_acceptance_v1",
+  "execution_date": "2026-11-15",
+  "execution_timezone": "Asia/Shanghai",
+  "configuration": "configs/market_observer_v1.example.json",
+  "configuration_sha256": "2974b344a87c650a4ceab5b1462254e152bf9683fab9dd40af585500eb5ca157",
+  "provider_probe": {
+    "moomoo_security_info_calls": 1,
+    "moomoo_security_info_rows": 12,
+    "moomoo_quote_calls": 1,
+    "moomoo_quote_rows": 1,
+    "moomoo_quote_data_time_utc": "2026-11-13T21:00:00Z",
+    "moomoo_raw_jsonl_sha256": "0675dab3eb8b7615636d41ed7277b3044ffaa31edf77c576604a695bb0978c64",
+    "receipt": "results/market_observer_v1_20261115/moomoo_connection_receipt.json"
+  },
+  "private_storage": {
+    "verified_moomoo_identity_links": 12,
+    "candidate_rows_preserved": 12,
+    "quarantined_historical_quote_probes": 1,
+    "eligible_quote_or_minute_bar_rows": 0,
+    "saved_jin10_news_versions_replayed_offline": 40,
+    "local_partial_coverage_gap_rows": 2,
+    "real_predictions": 0,
+    "real_outcomes": 0,
+    "moomoo_import_receipt": "results/market_observer_v1_20261115/moomoo_post_probe_import_redacted.json",
+    "jin10_replay_receipt": "results/market_observer_v1_20261115/jin10_offline_replay_redacted.json"
+  },
+  "service": {
+    "mode": "NO_FEED",
+    "provider_calls_in_service": 0,
+    "last_state": "STOPPED_BY_USER",
+    "process_still_running": false,
+    "live_15_minute_acceptance": "NOT_RUN",
+    "receipt": "results/market_observer_v1_20261115/service_lifecycle_redacted.json"
+  },
+  "visual": {
+    "viewports_css_pixels": ["1440x900", "390x844"],
+    "full_page_horizontal_overflow": false,
+    "external_source_links_http_tested": false,
+    "receipt": "results/market_observer_v1_20261115/visual_acceptance_redacted.json"
+  },
+  "software": {
+    "combined_synthetic_tests_passed": 37,
+    "log": "results/market_observer_v1_20261115/focused_tests.log",
+    "independent_market_experiment_count": 0
+  },
+  "new_model_calls": 0,
+  "trade_or_account_calls": 0,
+  "formal_financial_experiment": "NOT_RUN"
+}

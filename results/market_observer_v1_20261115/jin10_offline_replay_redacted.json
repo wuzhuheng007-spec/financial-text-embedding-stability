@@ -1,0 +1,22 @@
+{
+  "schema": "market_observer_offline_replay_receipt_v1",
+  "execution_date": "2026-11-15",
+  "execution_timezone": "Asia/Shanghai",
+  "mode": "OFFLINE_REPLAY",
+  "source_database_private_path": "artifacts/jin10_20261115/jin10_v2.sqlite",
+  "source_database_sha256": "48f5d82804243c9a07a60ddbd1c3256984daa3d631d61e1e0267417f4e2c9b25",
+  "runtime_config": "configs/market_observer_v1.example.json",
+  "runtime_config_sha256": "2974b344a87c650a4ceab5b1462254e152bf9683fab9dd40af585500eb5ca157",
+  "source_flash_versions_read": 40,
+  "news_versions_inserted_first_pass": 40,
+  "news_versions_inserted_repeat_pass": 0,
+  "local_news_versions_after_repeat": 40,
+  "local_unique_source_fetch_rows_after_repeat": 40,
+  "source_stream_coverage": "CAPTURED_PARTIAL",
+  "source_coverage_gap_preserved": true,
+  "local_coverage_gap_rows": 2,
+  "early_duplicate_gap_audit_note_id": 1,
+  "raw_provider_text_in_receipt": false,
+  "provider_calls": 0,
+  "interpretation": "Saved private Jin10 flash versions were imported for local display; this is neither new acquisition nor proof of full source coverage. Earlier duplicate partial-coverage gap rows remain in the private audit ledger."
+}

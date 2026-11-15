@@ -1,0 +1,130 @@
+{
+  "schema": "moomoo_mcp_capability_matrix_v1",
+  "recorded_at_utc": "2026-11-15T04:05:07.064288Z",
+  "status_vocabulary": [
+    "SUPPORTED",
+    "NOT_EXPOSED",
+    "NOT_AUTHORIZED",
+    "NOT_TESTED"
+  ],
+  "scope_requested": [
+    "quote:read"
+  ],
+  "scope_granted": "NOT_INDEPENDENTLY_VISIBLE",
+  "official_mcp_tools_page": "https://open.moomoo.com/mcp-docs/available-tools",
+  "official_mcp_tools_page_list_rendered": "Loading…",
+  "actual_tools_list": "NOT_RUN",
+  "capabilities": [
+    {
+      "capability": "instrument_lookup",
+      "mcp_status": "SUPPORTED",
+      "exposed_tools": [
+        "quote_stock_basicinfo"
+      ],
+      "actual_business_call_status": "SUCCESS_TWELVE_CANDIDATES",
+      "reason": "One authenticated basicinfo batch returned 12 exact US codes"
+    },
+    {
+      "capability": "single_stock_quote",
+      "mcp_status": "SUPPORTED",
+      "exposed_tools": [
+        "quote_stock_quote"
+      ],
+      "actual_business_call_status": "SUCCESS_ONE_VERIFIED_SYMBOL",
+      "reason": "One authenticated quote_stock_quote call returned one row for a basicinfo-verified code; delay entitlement unresolved"
+    },
+    {
+      "capability": "market_snapshot",
+      "mcp_status": "SUPPORTED",
+      "reason": "quote_market_snapshot exposed in fresh CLI registry but not invoked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_market_snapshot"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "historical_candles",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_history_kline",
+        "quote_cur_kline"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "trading_calendar",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_trading_days"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "market_state",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_market_state"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "news_search",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "news_search"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "news_body",
+      "mcp_status": "NOT_EXPOSED",
+      "reason": "No separate tool with this capability was observed among 104 fresh CLI bindings",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "economic_calendar",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_economic_calendar_hot",
+        "quote_economic_calendar_search"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "earnings",
+      "mcp_status": "SUPPORTED",
+      "reason": "Exposed in fresh Codex CLI registry; business invocation separately tracked",
+      "separate_openapi_documentation": null,
+      "exposed_tools": [
+        "quote_financials_statements",
+        "quote_financials_earnings_price_history",
+        "quote_financials_earnings_price_move"
+      ],
+      "actual_business_call_status": "NOT_TESTED"
+    },
+    {
+      "capability": "continuous_quote_push",
+      "mcp_status": "NOT_EXPOSED",
+      "reason": "No separate tool with this capability was observed among 104 fresh CLI bindings",
+      "separate_openapi_documentation": "https://open.moomoo.com/api/quote/push/auth",
+      "exposed_tools": [],
+      "actual_business_call_status": "NOT_TESTED"
+    }
+  ],
+  "note": "MCP capability status cannot be inferred from separate OpenAPI documentation or the moomoo app UI",
+  "actual_registry": "FRESH_CODEX_CLI_104_TOOLS_AGENT_REPORTED",
+  "raw_tools_list_rpc": "UNAVAILABLE"
+}

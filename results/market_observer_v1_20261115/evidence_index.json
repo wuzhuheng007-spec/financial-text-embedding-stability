@@ -1,0 +1,46 @@
+{
+  "schema": "market_observer_evidence_index_v1",
+  "execution_date": "2026-11-15",
+  "timezone": "Asia/Shanghai",
+  "branch_baseline": "90e293e44ab5e796ea1cdc18c20150ac19e6015d",
+  "run_config": {
+    "path": "configs/market_observer_v1.example.json",
+    "sha256": "2974b344a87c650a4ceab5b1462254e152bf9683fab9dd40af585500eb5ca157",
+    "mode": "NO_FEED"
+  },
+  "number_bindings": [
+    {
+      "numbers": "2 moomoo business calls; 12 security-information rows; 1 quote row; 104 CLI-visible bindings",
+      "result": "results/market_observer_v1_20261115/moomoo_connection_receipt.json",
+      "input_version": "private raw moomoo CLI JSONL sha256 0675dab3eb8b7615636d41ed7277b3044ffaa31edf77c576604a695bb0978c64",
+      "limitation": "104 bindings are a CLI registry observation; raw initialize/tools-list RPC receipts unavailable"
+    },
+    {
+      "numbers": "12 preserved ticker candidates; 12 official identity links; 1 quarantined quote probe; 0 eligible bars",
+      "result": "results/market_observer_v1_20261115/moomoo_post_probe_import_redacted.json",
+      "input_version": "private projection sha256 f93f56c34fa589b3767e870b0678f3d9f22db234974ee20729cd3870dc297642"
+    },
+    {
+      "numbers": "40 saved Jin10 news versions; 2 local partial-coverage gaps; 0 new provider calls",
+      "result": "results/market_observer_v1_20261115/jin10_offline_replay_redacted.json",
+      "input_version": "private saved Jin10 SQLite sha256 48f5d82804243c9a07a60ddbd1c3256984daa3d631d61e1e0267417f4e2c9b25"
+    },
+    {
+      "numbers": "NO_FEED start/heartbeat/stop; 0 provider calls and 0 live bars",
+      "result": "results/market_observer_v1_20261115/service_lifecycle_redacted.json",
+      "input_version": "run_config.sha256"
+    },
+    {
+      "numbers": "37 combined software checks passed",
+      "result": "results/market_observer_v1_20261115/focused_tests.log",
+      "input_version": "committed code and tests in this branch",
+      "limitation": "synthetic and replay software checks, not independent financial experiments"
+    },
+    {
+      "numbers": "1440x900 and 390x844 CSS viewports; 12 instrument rows; 25 rendered news cards; 25 source anchors; no page overflow",
+      "result": "results/market_observer_v1_20261115/visual_acceptance_redacted.json",
+      "input_version": "private saved-data dashboard generated from the same SQLite and code; screenshots remain local",
+      "limitation": "external source-link HTTP reachability and live freshness not checked"
+    }
+  ]
+}

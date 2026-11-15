@@ -1,0 +1,28 @@
+{
+  "schema": "moomoo_source_rights_receipt_v1",
+  "recorded_at_utc": "2026-11-15T03:52:53.6593375Z",
+  "official_documents": [
+    "https://open.moomoo.com/mcp-docs/quick-start",
+    "https://open.moomoo.com/mcp-docs/authentication",
+    "https://open.moomoo.com/mcp-docs/available-tools",
+    "https://open.moomoo.com/api/overview/api-authority",
+    "https://open.moomoo.com/api/quote/push/auth",
+    "https://open.moomoo.com/api/quote/push/subscribe",
+    "https://open.moomoo.com/api/quote/quotas/subscription"
+  ],
+  "verified_from_documents": [
+    "MCP endpoint uses OAuth 2.1",
+    "quote:read scope covers market data",
+    "WebSocket quote push is a separate OpenAPI surface",
+    "WebAPI market entitlements and subscription quotas are account-specific",
+    "App quote access does not establish API quote permission"
+  ],
+  "not_verified": [
+    "User account market-data entitlements",
+    "User account subscription quota",
+    "License to retain or redistribute raw quote data",
+    "MCP news tools in actual tools/list",
+    "WebSocket token availability to standalone service"
+  ],
+  "continuous_collection_authorized": false
+}

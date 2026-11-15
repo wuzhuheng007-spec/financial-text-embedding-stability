@@ -1,0 +1,63 @@
+{
+  "schema": "moomoo_connection_receipt_v2",
+  "recorded_at_utc": "2026-11-15T04:05:07.064288Z",
+  "endpoint": "https://mcp.moomoo.com/mcp",
+  "transport": "streamable_http",
+  "codex_mcp_config": "PRESENT",
+  "oauth_login": "SUCCESS",
+  "oauth_requested_scope": [
+    "quote:read"
+  ],
+  "oauth_granted_scope": "NOT_INDEPENDENTLY_VISIBLE",
+  "current_desktop_tools_loaded": false,
+  "fresh_cli_registry_tools_reported": 104,
+  "fresh_cli_registry_basis": "CLI agent read exposed tool metadata; raw initialize and tools/list RPC receipts unavailable",
+  "mcp_initialize_raw_receipt": "UNAVAILABLE",
+  "mcp_tools_list_raw_receipt": "UNAVAILABLE",
+  "basicinfo": {
+    "tool": "mcp__moomoo__quote_stock_basicinfo",
+    "arguments": {
+      "code_list": [
+        "US.NVDA",
+        "US.AMD",
+        "US.INTC",
+        "US.CRWV",
+        "US.MU",
+        "US.AVGO",
+        "US.MSFT",
+        "US.AMZN",
+        "US.GOOGL",
+        "US.META",
+        "US.QQQ",
+        "US.SPY"
+      ]
+    },
+    "business_ret_code": 0,
+    "returned_rows": 12,
+    "exact_code_exchange_verified": 12
+  },
+  "quote": {
+    "tool": "mcp__moomoo__quote_stock_quote",
+    "arguments": {
+      "code_list": [
+        "US.NVDA"
+      ]
+    },
+    "business_ret_code": 0,
+    "returned_rows": 1,
+    "provider_data_time_raw_ms": 1794603600000,
+    "provider_data_time_utc": "2026-11-13T21:00:00Z",
+    "provider_data_date": "2026-11-13",
+    "market": "US_FROM_BASICINFO",
+    "quote_row_separate_market_field": false,
+    "delay_status": "UNKNOWN_NO_EXPLICIT_FIELD",
+    "market_session": "UNKNOWN_NO_MARKET_STATE_CALL"
+  },
+  "overall_cli_session_started_at_utc": "2026-11-15T04:01:40.0944455Z",
+  "overall_cli_session_ended_at_utc": "2026-11-15T04:03:16.1973197Z",
+  "per_call_client_timestamps": "UNAVAILABLE_IN_RAW_JSONL",
+  "business_calls_total": 2,
+  "no_account_position_order_trade_calls": true,
+  "private_raw_jsonl_sha256": "0675dab3eb8b7615636d41ed7277b3044ffaa31edf77c576604a695bb0978c64",
+  "raw_quote_published": false
+}

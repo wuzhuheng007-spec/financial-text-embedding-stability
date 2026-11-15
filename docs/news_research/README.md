@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), shortfacts v2 contract and bounded retest 1.17.
+Updated 2026-11-15 (Asia/Shanghai), read-only market observer v1 1.18.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [Read-only market observer v1 / 只读市场观察](market_observer/README.md) · [English report](../../reports/2026-11-15_market_observer_v1.en.md) · [中文报告](../../reports/2026-11-15_market_observer_v1.zh.md) · [plan–actual](../../results/market_observer_v1_20261115/plan_execution.csv). Scoped moomoo MCP discovery and a bounded quote check are distinct from the private `NO_FEED` service and offline replay of previously saved Jin10 news. The local page was opened at desktop and 390px widths. Standalone quote push, account quota, real pre-window decisions and outcomes are not verified. 已实现本机只读存储、页面和评价契约；持续行情与真实评价仍待实际权限及数据验收。
 
 - [Shortfacts v2 bilingual report / v2 中英报告](../../reports/2026-11-15_news_shortfacts_v2.en.md) · [中文](../../reports/2026-11-15_news_shortfacts_v2.zh.md) · [plan–actual / 计划—实际](../../results/news_shortfacts_v2_20261115/plan_execution.csv) · [contract receipt / 契约回执](../../results/news_shortfacts_v2_20261115/contract_receipt.json) · [retrospective v1 score / 旧输出修正规则重评](../../results/news_shortfacts_v2_20261115/retrospective_summary_redacted.json) · [new-run score / 新运行评分](../../results/news_shortfacts_v2_20261115/new_run_summary_redacted.json). The v2 contract permits an unknown entity, treats the measured index rather than the publisher as CPI subject, and keeps guidance state out of accounting basis. The unchanged six passages received six new one-call responses with the same pinned model and budget: strict raw JSON was 6/6; only 1/14 corrected-reference facts was fully correct. Original v1 scoring remains historical, while both retrospective and new-run scores use the corrected `CODEX_REFERENCE_DRAFT`, not human gold. v2 同时修改契约和提示词，是工程组合修正；不据此主张一般抽取能力或金融有效性。
 

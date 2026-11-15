@@ -1,0 +1,38 @@
+{
+  "schema": "market_observer_visual_acceptance_v1",
+  "checked_at_utc": "2026-11-15T04:09:14Z",
+  "timezone_display": "Asia/Shanghai",
+  "source": "existing private Jin10 SQLite replay and imported bounded moomoo probe; zero provider calls for page QA",
+  "engine": "Chrome headless DevTools Protocol; Edge desktop also opened interactively",
+  "private_screenshots_uploaded": false,
+  "viewports": [
+    {
+      "css_width": 1440,
+      "css_height": 900,
+      "document_scroll_width": 1425,
+      "instrument_rows": 12,
+      "verified_instrument_rows": 12,
+      "quarantined_probe_rows": 1,
+      "eligible_minute_bars": 0,
+      "news_cards_visible_in_dom": 25,
+      "source_links_rendered": 25,
+      "page_horizontal_overflow": false
+    },
+    {
+      "css_width": 390,
+      "css_height": 844,
+      "document_scroll_width": 390,
+      "instrument_rows": 12,
+      "verified_instrument_rows": 12,
+      "quarantined_probe_rows": 1,
+      "eligible_minute_bars": 0,
+      "news_cards_visible_in_dom": 25,
+      "source_links_rendered": 25,
+      "page_horizontal_overflow": false,
+      "instrument_table_inner_horizontal_scroll": true
+    }
+  ],
+  "checked": "collection status, verified instrument links, quarantined quote receipt bound/unknown delay, saved news source cards, time/zone labels, mobile layout",
+  "not_verified": "external source-link HTTP reachability, account quote delay entitlement or live quote freshness",
+  "result": "PASS_SAVED_DATA_DISPLAY_ONLY"
+}

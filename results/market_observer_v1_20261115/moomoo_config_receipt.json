@@ -1,0 +1,24 @@
+{
+  "schema": "moomoo_config_receipt_v1",
+  "recorded_at_utc": "2026-11-15T04:05:07.064288Z",
+  "codex_cli_version": "0.147.0",
+  "config_method": "codex mcp add moomoo --url https://mcp.moomoo.com/mcp",
+  "config_backed_up_to_private_local_only": true,
+  "backup_hash_match": true,
+  "existing_jin10_preserved": true,
+  "moomoo_configured": true,
+  "endpoint": "https://mcp.moomoo.com/mcp",
+  "current_desktop_tools_loaded": false,
+  "add_command_auto_oauth_requested_broad_scopes": true,
+  "add_command_auto_oauth_interrupted_before_consent": true,
+  "explicit_login_requested_scopes": [
+    "quote:read"
+  ],
+  "granted_scopes": "NOT_INDEPENDENTLY_VISIBLE",
+  "auth_status": "OAUTH_LOGIN_SUCCEEDED",
+  "credential_exported": false,
+  "requested_scopes": [
+    "quote:read"
+  ],
+  "fresh_cli_tools_loaded": true
+}
