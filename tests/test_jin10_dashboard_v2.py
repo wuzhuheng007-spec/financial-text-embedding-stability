@@ -7,6 +7,9 @@ def test_template_marks_private_feed_omitted_and_guidance_inference():
     html = render_v2()
     assert "PUBLIC_TEMPLATE_PRIVATE_FEED_OMITTED" in html
     assert "INFERRED_FROM_OFFICIAL_FISCAL_CALENDAR_NOT_GUIDANCE_RELEASE" in html
+    assert "first available: unknown (NOT_INDEPENDENTLY_OBSERVED)" in html
+    assert "Target-date derivation / 财期推断依据" in html
+    assert "intc-20251227.htm" in html
     assert "2026-11-14T23:47:54.6036273Z" in html
     assert "No related flash candidates" in html
     assert "financial evaluation NOT_RUN" in html

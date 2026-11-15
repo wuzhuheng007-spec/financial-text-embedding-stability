@@ -1,0 +1,18 @@
+{
+  "schema": "jin10_desktop_native_calendar_receipt_v1",
+  "timezone": "Asia/Shanghai",
+  "tool_loaded_in_current_desktop_session": true,
+  "native_tool_name": "mcp__jin10__list_calendar",
+  "arguments": {},
+  "started_at_utc": "2026-11-15T01:33:26Z",
+  "finished_at_utc": "2026-11-15T01:33:27Z",
+  "started_at_asia_shanghai": "2026-11-15T09:33:26+08:00",
+  "tool_error": false,
+  "business_status": 200,
+  "returned_row_count": 213,
+  "payload_top_level_fields": ["data", "message", "status"],
+  "retry_count": 0,
+  "other_business_calls_this_round": 0,
+  "row_content_saved_or_published": false,
+  "interpretation": "One native desktop MCP call for the current natural week. This does not establish historical coverage, stable availability, or a prerelease consensus snapshot."
+}

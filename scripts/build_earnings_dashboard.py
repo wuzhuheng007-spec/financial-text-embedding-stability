@@ -69,6 +69,23 @@ def guidance_period(item: dict) -> str:
     return f"{start} to {end}" if start and end else "target dates unknown"
 
 
+def guidance_period_basis(item: dict) -> str:
+    status = item.get("target_period_date_status") or "unreviewed"
+    basis = item.get("target_period_date_basis")
+    if not isinstance(basis, dict) or not basis.get("not_official_exact_target_dates"):
+        return f'period basis: {h(status)}'
+    sources = basis.get("input_sources") or []
+    source_links = " · ".join(
+        f'{link(source["url"], f"official basis {index}")} ({h(source.get("locator") or "locator unknown")})'
+        for index, source in enumerate(sources, 1) if isinstance(source, dict) and source.get("url")
+    )
+    return (f'<span class="flag">Target dates inferred from official fiscal calendar; '
+            f'not issuer-stated exact dates ({h(status)}).</span>'
+            f'<details><summary>Target-date derivation / 财期推断依据</summary>'
+            f'<p>{h(basis.get("formula") or "formula unavailable")}</p>'
+            f'<p>{source_links or "Source links unavailable"}</p></details>')
+
+
 def gap_text(item: object) -> str:
     if isinstance(item, str):
         return item
@@ -93,10 +110,11 @@ def company_panel(card: dict, growth: dict[str, dict]) -> str:
         f'<li><strong>{h(item.get("metric"))}</strong> · {h(guidance_period(item))} · '
         f'{h(guidance_value(item))} · {h(item.get("basis"))} · '
         f'{link(item["source_url"], "source")} · '
-        f'period basis: {h(item.get("target_period_date_status") or "unreviewed")} · '
+        f'{guidance_period_basis(item)} · '
         f'published: {h(item.get("published_at") or "unknown")} '
         f'({h(item.get("timestamp_precision") or "unknown precision")}) · '
-        f'first observed: {h(item.get("first_available_status") or "unknown")}</li>'
+        f'first available: {h(item.get("first_available_at") or "unknown")} '
+        f'({h(item.get("first_available_status") or "status unknown")})</li>'
         for item in guidance)
     if not guidance_html:
         guidance_html = '<li class="missing">No source-bound numeric guidance in this card.</li>'
@@ -169,13 +187,13 @@ def render(cards: dict, macro: dict, news: dict, growth_rows: list[dict], drafts
 :root{{--ink:#192941;--muted:#52647a;--line:#d6dfe8;--bg:#f5f8fb;--card:#fff;--accent:#145b88}}
 *{{box-sizing:border-box}}body{{margin:0;font:15px/1.45 system-ui,sans-serif;color:var(--ink);background:var(--bg)}}
 header{{padding:20px 26px;background:#142d4a;color:white}}header h1{{margin:0 0 6px;font-size:25px}}header p{{margin:0;color:#d8e7f5}}
-nav{{display:flex;gap:15px;padding:12px 26px;background:#e7eef6;position:sticky;top:0;z-index:2}}nav a{{color:var(--accent);font-weight:700}}
+nav{{display:flex;flex-wrap:wrap;gap:15px;padding:12px 26px;background:#e7eef6;position:sticky;top:0;z-index:2}}nav a{{color:var(--accent);font-weight:700}}
 main{{padding:18px;display:grid;grid-template-columns:minmax(420px,2.1fr) minmax(320px,1fr) minmax(320px,1fr);gap:16px;align-items:start}}
 section{{min-width:0}}h2{{font-size:19px;margin:0 0 12px}}.card{{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:15px;margin-bottom:14px;box-shadow:0 2px 8px #17314c0a}}
-.card h3{{margin:0 0 7px;font-size:17px}}.card p{{margin:7px 0}}.muted{{color:var(--muted);font-size:13px}}.flag{{background:#fff6dc;padding:8px;border-radius:5px}}
+.card h3{{margin:0 0 7px;font-size:17px}}.card p{{margin:7px 0}}.card{{overflow-wrap:anywhere}}.muted{{color:var(--muted);font-size:13px}}.flag{{background:#fff6dc;padding:8px;border-radius:5px}}
 .missing{{color:#874927}}.table-wrap{{overflow:auto}}table{{border-collapse:collapse;width:100%;font-size:12px}}th,td{{text-align:left;border-bottom:1px solid var(--line);padding:7px;vertical-align:top}}td details{{min-width:120px}}
 details{{margin:8px 0}}summary{{cursor:pointer;color:var(--accent);font-weight:600}}code{{overflow-wrap:anywhere}}a{{color:var(--accent)}}
-footer{{padding:20px;color:var(--muted)}}@media(max-width:1100px){{main{{grid-template-columns:1fr}}nav{{position:static}}}}
+footer{{padding:20px;color:var(--muted)}}@media(max-width:1100px){{main{{grid-template-columns:1fr}}nav{{position:static}}}}@media(max-width:600px){{header{{padding:16px}}main{{padding:10px}}.card{{padding:12px}}nav{{gap:8px;padding:10px}}.table-wrap table{{min-width:600px}}.table-wrap :is(th,td):nth-child(2),.table-wrap :is(th,td):nth-child(3),.table-wrap :is(th,td):nth-child(4){{white-space:nowrap}}}}
 </style></head><body><header><h1>Technology earnings, macro & major news</h1>
 <p>Source-bound development intake · frozen cutoff {h(cards["as_of_utc"])} · preliminary/descriptive · financial evaluation NOT_RUN</p></header>
 <nav><a href="#earnings">Company earnings / 财报</a><a href="#macro">Macro calendar / 宏观</a><a href="#news">Major events / 新闻</a></nav>

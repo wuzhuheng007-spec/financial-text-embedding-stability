@@ -117,7 +117,7 @@ def render_v2(feed: dict | None = None) -> str:
                   f'in this display window</h2><p class="flag">Keyword candidates only; not verified company events.</p>{flash_html}'
                   f'<h2>Jin10 calendar source reports · {len(calendar)}</h2>{calendar_html}')
     page = page.replace('</section></main>', supplement + '</section></main>', 1)
-    page = page.replace('</style>', '.collector{margin:14px 18px;padding:12px 16px;border:1px solid #b9d0e1;background:#eaf3fa;border-radius:8px}.collector p{margin:5px 0}</style>', 1)
+    page = page.replace('</style>', '.collector{margin:14px 18px;padding:12px 16px;border:1px solid #b9d0e1;background:#eaf3fa;border-radius:8px;overflow-wrap:anywhere}.collector p{margin:5px 0}</style>', 1)
     page = page.replace('Technology earnings + macro development panel', 'Technology earnings + macro + Jin10 local panel', 1)
     return page
 

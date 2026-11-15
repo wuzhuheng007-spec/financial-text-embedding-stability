@@ -16,7 +16,10 @@ from scripts.jin10_mcp.export import export_display
 
 ROOT = Path(__file__).resolve().parents[1]
 PRIVATE_ROOT = ROOT / "artifacts"
-PUBLIC_ROOT = ROOT / "results/news_jin10_20261115"
+PUBLIC_ROOTS = (
+    ROOT / "results/news_jin10_20261115",
+    ROOT / "results/news_jin10_desktop_20261115",
+)
 
 
 def sha256(path: Path) -> str:
@@ -36,7 +39,9 @@ def main() -> None:
     public_html, public_receipt = args.public_html.resolve(), args.public_receipt.resolve()
     if not all(path.is_relative_to(PRIVATE_ROOT) for path in (db, captures, private_html)):
         raise ValueError("Provider data paths must remain ignored private artifacts")
-    if not all(path.is_relative_to(PUBLIC_ROOT) for path in (public_html, public_receipt)):
+    if not any(all(path.is_relative_to(public_root)
+                   for path in (public_html, public_receipt))
+               for public_root in PUBLIC_ROOTS):
         raise ValueError("Public artifacts must remain in Jin10 results")
     if public_receipt.exists():
         raise FileExistsError(public_receipt)

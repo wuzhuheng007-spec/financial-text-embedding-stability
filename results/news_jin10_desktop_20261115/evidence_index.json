@@ -1,0 +1,35 @@
+{
+  "schema": "jin10_desktop_acceptance_evidence_index_v1",
+  "timezone": "Asia/Shanghai",
+  "branch_baseline_sha": "9b017f4e0a53adf95c9b262b50b01d06ba5f3458",
+  "input_versions": [
+    {"path": "artifacts/jin10_20261115/jin10_v2.sqlite", "sha256": "48f5d82804243c9a07a60ddbd1c3256984daa3d631d61e1e0267417f4e2c9b25", "sharing": "LOCAL_ONLY"},
+    {"path": "artifacts/jin10_20261115/probe_second/flash_captures.json", "sha256": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d", "sharing": "LOCAL_ONLY"},
+    {"path": "results/news_jin10_20261115/guidance_v2/guidance_cards_v2.json", "sha256": "cda88a9aa1e8be0f278e70377d6dbc311cc357cc1689a7fb76afd238c84ed351", "sharing": "REPO"},
+    {"path": "results/news_earnings_macro_20261115/company_cards.json", "sha256": "4cf24137bf6edbeccfe10278fd1aef26f0918ecc5db38dd8a0405ed3e56b1287", "sharing": "REPO"}
+  ],
+  "run_configuration": {
+    "native_calendar_arguments": {},
+    "native_calendar_calls": 1,
+    "native_calendar_retries": 0,
+    "dashboard_export_limit": 50,
+    "visual_viewports": ["1440x900", "390x844"],
+    "visual_browser": "Chrome/157.0.8103.51",
+    "visual_server_bind": "127.0.0.1"
+  },
+  "outputs": [
+    {"path": "results/news_jin10_desktop_20261115/native_calendar_receipt.json", "purpose": "native desktop MCP call"},
+    {"path": "results/news_jin10_desktop_20261115/dashboard_template_final.html", "sha256": "de943e43914d65589c7f16aa8ebae1a287a40b597914eabad1db68b2f77ab619", "sharing": "REPO_PUBLIC_TEMPLATE_NO_PROVIDER_BODY"},
+    {"path": "artifacts/jin10_20261115/dashboard_v2_visual_final.html", "sha256": "4e125bc15741bbc238f01e5c4874b55aced59eee63562baf5ca44370d9b4bcfd", "sharing": "LOCAL_ONLY"},
+    {"path": "results/news_jin10_desktop_20261115/dashboard_static_validation_final.json", "purpose": "source-bound static display and leak checks"},
+    {"path": "results/news_jin10_desktop_20261115/visual_acceptance_redacted.json", "purpose": "sanitized browser QA"},
+    {"path": "results/news_jin10_desktop_20261115/focused_tests_release.log", "purpose": "focused software verification"}
+  ],
+  "boundaries": {
+    "native_calendar_return_is_newly_stored_rows": false,
+    "jin10_rows_publicly_published": false,
+    "formal_financial_admission": false,
+    "new_model_inference": "NOT_RUN",
+    "financial_experiment": "NOT_RUN"
+  }
+}

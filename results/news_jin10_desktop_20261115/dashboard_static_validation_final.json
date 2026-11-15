@@ -1,0 +1,14 @@
+{
+  "schema": "jin10_dashboard_static_validation_v1",
+  "public_template_sha256": "de943e43914d65589c7f16aa8ebae1a287a40b597914eabad1db68b2f77ab619",
+  "private_local_html_sha256": "4e125bc15741bbc238f01e5c4874b55aced59eee63562baf5ca44370d9b4bcfd",
+  "private_flash_capture_sha256": "a6bd5a1b140c4536aacfd556ed3dd56afb75c1d2f00b787dc0ebdb97360ef22d",
+  "flash_rows_in_display_export": 40,
+  "related_flash_keyword_candidates_shown": 12,
+  "calendar_rows_in_display_export": 50,
+  "provider_flash_bodies_checked_for_public_leak": 40,
+  "provider_flash_body_leaks_into_public_template": 0,
+  "private_html_published": false,
+  "browser_visual_acceptance": "NOT_RUN",
+  "static_checks": "PASS"
+}

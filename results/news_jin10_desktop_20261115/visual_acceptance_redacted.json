@@ -1,0 +1,40 @@
+{
+  "schema": "jin10_desktop_visual_acceptance_redacted_v1",
+  "timezone": "Asia/Shanghai",
+  "checked_at_utc": "2026-11-15T01:38:55.036Z",
+  "browser": "Chrome/157.0.8103.51 headless via DevTools Protocol",
+  "local_server_bind": "127.0.0.1",
+  "private_html_sha256": "4e125bc15741bbc238f01e5c4874b55aced59eee63562baf5ca44370d9b4bcfd",
+  "private_browser_receipt_sha256": "b3120c589b7c2ac202075c987b80ca39f2a4ed5f11d1a29a277b4f1c2bd86bd4",
+  "private_browser_receipt_location": "artifacts/jin10_20261115/visual_acceptance/visual_final/browser_check.json",
+  "private_screenshots_published": false,
+  "provider_requests_made_during_visual_check": 0,
+  "viewports": [
+    {"width": 1440, "height": 900, "global_horizontal_overflow": false},
+    {"width": 390, "height": 844, "global_horizontal_overflow": false,
+     "internally_scrollable_tables": 9, "tables_checked": 9,
+     "numeric_cells_kept_on_one_line": true}
+  ],
+  "display_checked": {
+    "earnings_issuer_cards": 6,
+    "macro_release_cards": 3,
+    "guidance_published_at_separate_from_first_available_at": true,
+    "guidance_first_available_unknown_displayed": true,
+    "intel_inferred_target_dates_and_basis_displayed": true,
+    "intel_derivation_source_links": 2,
+    "jin10_related_flash_keyword_candidates": 12,
+    "captured_flash_rows_in_display_export": 40,
+    "jin10_calendar_rows_displayed": 50,
+    "scheduled_time_marked_theoretical": true,
+    "null_consensus_not_rendered_as_zero": true,
+    "current_consensus_not_marked_prerelease_snapshot": true,
+    "collection_gap_status_displayed": true,
+    "old_official_card_cutoff_distinguished": true,
+    "external_https_links_with_noopener": 150,
+    "fragment_navigation_links": 3,
+    "unsafe_links_found": 0
+  },
+  "visual_acceptance": "PASS_WITH_COSMETIC_LIMITATION",
+  "limitation": "Desktop macro table field names are tightly wrapped; source values remain visible. External link targets were inspected in the rendered DOM, not opened one by one.",
+  "interpretation": "Rendered display acceptance only; no new news download, source fact verification, historical admission, model inference, or financial evaluation."
+}
