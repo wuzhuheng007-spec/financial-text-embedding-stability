@@ -1,0 +1,68 @@
+{
+  "asof_market_date": "2025-04-01",
+  "private_evidence_pointer": "artifacts/market_observer_historical_20261115 (ignored by Git)",
+  "request_completed_utc": "2026-11-15T05:53:04.175850+00:00",
+  "request_count": 3,
+  "results": [
+    {
+      "delisted_flags": [
+        false
+      ],
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.TQQQ"
+      ],
+      "item_count": 1,
+      "response_sha256": "3603fb497da21bdf1368f450865bbdef4e42e9617edc9ba008523e1d21beebd2",
+      "ret_code": 0,
+      "src_codes": [
+        "TQQQ"
+      ],
+      "symbol": "US.TQQQ"
+    },
+    {
+      "delisted_flags": [
+        false
+      ],
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.NVDA"
+      ],
+      "item_count": 1,
+      "response_sha256": "4ab5f0099d5cffe88a0bc615764fa250effcf2fa1394ca9eea3c26aa4c57d85d",
+      "ret_code": 0,
+      "src_codes": [
+        "NVDA"
+      ],
+      "symbol": "US.NVDA"
+    },
+    {
+      "delisted_flags": [
+        false
+      ],
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.MU"
+      ],
+      "item_count": 1,
+      "response_sha256": "8047e53b6f962b1cc79c363324c2f2076d88fc35ca68eab79a48ee8e389094dd",
+      "ret_code": 0,
+      "src_codes": [
+        "MU"
+      ],
+      "symbol": "US.MU"
+    }
+  ],
+  "schema": "market_observer_historical_identity_redacted_v1",
+  "scope_limit": "One as-of date only; does not prove all historical dates or full corporate-action continuity.",
+  "source_docs": "https://open.moomoo.com/api/quote/basic-data/quote-historical-info"
+}

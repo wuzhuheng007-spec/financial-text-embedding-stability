@@ -1,0 +1,78 @@
+{
+  "schema": "dot_historical_research_progress_v1",
+  "date_asia_shanghai": "2026-11-15",
+  "mode": "STATIC_REDACTED_HANDOFF_NOT_CONNECTED",
+  "historical_window": [
+    "2025-04-01",
+    "2026-07-31"
+  ],
+  "latest_realtime_quote": null,
+  "historical_price_coverage": {
+    "pilot_adjusted_and_unadjusted": [
+      "TQQQ",
+      "NVDA",
+      "MU"
+    ],
+    "expanded_unadjusted": [
+      "QQQ",
+      "SOXX",
+      "SPY"
+    ],
+    "bars_per_security": 335,
+    "missing_official_trading_dates": 0,
+    "remaining_account_quota": null
+  },
+  "historical_news_coverage": {
+    "jin10_in_window_search_candidates": 7,
+    "sec_filing_metadata_candidates": 41,
+    "official_macro_clocks_aligned": 2,
+    "strict_first_availability_eligible": 0,
+    "missing_news_is_zero": false,
+    "full_window_completeness": "UNKNOWN"
+  },
+  "experiment": {
+    "A_train_majority": "RUN_RETROSPECTIVE",
+    "B_price_volume": "RUN_RETROSPECTIVE",
+    "C_price_volume_plus_news": "NOT_RUN",
+    "formal_m5": "NOT_RUN",
+    "independent_test": false,
+    "validation_by_security": [
+      {
+        "security": "TQQQ",
+        "n": 41,
+        "A_accuracy": 0.7073170731707317,
+        "A_balanced_accuracy": 0.5,
+        "B_accuracy": 0.6341463414634146,
+        "B_balanced_accuracy": 0.4482758620689655
+      },
+      {
+        "security": "NVDA",
+        "n": 41,
+        "A_accuracy": 0.6097560975609756,
+        "A_balanced_accuracy": 0.5,
+        "B_accuracy": 0.3902439024390244,
+        "B_balanced_accuracy": 0.37625
+      },
+      {
+        "security": "MU",
+        "n": 41,
+        "A_accuracy": 0.5609756097560976,
+        "A_balanced_accuracy": 0.5,
+        "B_accuracy": 0.5365853658536586,
+        "B_balanced_accuracy": 0.4782608695652174
+      }
+    ]
+  },
+  "report_links": [
+    "reports/2026-11-15_market_observer_historical_v1.en.md",
+    "reports/2026-11-15_market_observer_historical_v1.zh.md",
+    "results/market_observer_historical_20261115/plan_execution.csv"
+  ],
+  "input_receipt_sha256": {
+    "price_probe_redacted.json": "629c7d88dcc24b3c5ab87a0e7159b751c4cf1fa2b3e8d3a2ebeda5cb0b455d7f",
+    "etf_expansion_redacted.json": "2befb48f489d1b3209219c26ee9ab9e3559265c006073cfadd636d7521b70ae4",
+    "news_official_redacted.json": "6b564c96e239c5190f478773b738a1d148b9d4de44d3f09098e5c49b929e08c2",
+    "event_alignment_redacted.json": "474a98abf8f9829a7ad2fab1fbab52992785e45033c2ba59eff863bd2a608bb5",
+    "price_direction_v3_redacted.json": "a189dd062b321a42702f291ce283590bb28daf02aa271a1b2b563cbad5a73dd0"
+  }
+}

@@ -1,0 +1,390 @@
+{
+  "schema": "market_observer_historical_price_baseline_v1",
+  "status": "REAL_PRICE_BASELINE_RETROSPECTIVE_DEVELOPMENT",
+  "source_request_sha256": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25",
+  "baseline_config_sha256": "b9997c3664409bb9ed2229f3dc11bdc1d6682f9ae4c3ea71fb4eb9a19216ef51",
+  "config": {
+    "schema": "market_observer_historical_price_baseline_v1",
+    "source_config_sha256": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25",
+    "symbols": [
+      "US.TQQQ",
+      "US.NVDA",
+      "US.MU"
+    ],
+    "window": [
+      "2025-04-01",
+      "2026-07-31"
+    ],
+    "source_basis": "moomoo autype=1 forward-adjusted daily close; price return, not total return",
+    "feature_names": [
+      "return_1d",
+      "return_5d",
+      "return_20d",
+      "volatility_20d"
+    ],
+    "feature_cutoff": "after feature-day close; 16:00 America/New_York is a retrospective proxy, not a captured availability timestamp",
+    "label": "next observed trading-day close-to-close log return, basis points",
+    "split_by_label_date": {
+      "train_end": "2025-12-31",
+      "validation_end": "2026-03-31",
+      "test_end": "2026-07-31"
+    },
+    "model": {
+      "type": "per-symbol ridge regression",
+      "alpha": 1.0,
+      "intercept_penalized": false,
+      "standardization": "train only",
+      "hyperparameter_selection": "none"
+    },
+    "comparators": [
+      "zero_return",
+      "lag1_momentum"
+    ],
+    "event_feature": "7-calendar-day available event count, only with complete reviewed manifest"
+  },
+  "symbols": {
+    "US.TQQQ": {
+      "source": {
+        "symbol": "US.TQQQ",
+        "source_file": "US_TQQQ_page1.raw.json",
+        "source_sha256": "95bc357fa85450ba62c9ea12b4cd044144768b468b9e2c4a038addc528dc3470",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true,
+        "missing_vs_three_symbol_union": 0
+      },
+      "example_count": 314,
+      "splits": {
+        "train": {
+          "n": 169,
+          "label_first": "2025-05-01",
+          "label_last": "2025-12-31",
+          "metrics": {
+            "ridge": {
+              "n": 169,
+              "mae_bps": 205.8858348223274,
+              "rmse_bps": 282.4286440536338,
+              "direction_n": 169,
+              "direction_hits": 104,
+              "direction_hit_rate": 0.6153846153846154
+            },
+            "zero_return": {
+              "n": 169,
+              "mae_bps": 214.5431618054885,
+              "rmse_bps": 288.516830316663,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 169,
+              "mae_bps": 314.84375976909183,
+              "rmse_bps": 420.8375526032318,
+              "direction_n": 169,
+              "direction_hits": 86,
+              "direction_hit_rate": 0.5088757396449705
+            }
+          }
+        },
+        "validation": {
+          "n": 61,
+          "label_first": "2026-01-02",
+          "label_last": "2026-03-31",
+          "metrics": {
+            "ridge": {
+              "n": 61,
+              "mae_bps": 282.5415578579865,
+              "rmse_bps": 354.92478530209394,
+              "direction_n": 61,
+              "direction_hits": 30,
+              "direction_hit_rate": 0.4918032786885246
+            },
+            "zero_return": {
+              "n": 61,
+              "mae_bps": 276.32579899124494,
+              "rmse_bps": 344.6726901561599,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 61,
+              "mae_bps": 400.9297690625665,
+              "rmse_bps": 488.91718042586234,
+              "direction_n": 61,
+              "direction_hits": 26,
+              "direction_hit_rate": 0.4262295081967213
+            }
+          }
+        },
+        "test": {
+          "n": 84,
+          "label_first": "2026-04-01",
+          "label_last": "2026-07-31",
+          "metrics": {
+            "ridge": {
+              "n": 84,
+              "mae_bps": 351.78237789260464,
+              "rmse_bps": 447.36014087174,
+              "direction_n": 84,
+              "direction_hits": 47,
+              "direction_hit_rate": 0.5595238095238095
+            },
+            "zero_return": {
+              "n": 84,
+              "mae_bps": 347.9287316766432,
+              "rmse_bps": 443.7859487596479,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 84,
+              "mae_bps": 512.7418840045201,
+              "rmse_bps": 641.1518879621368,
+              "direction_n": 84,
+              "direction_hits": 48,
+              "direction_hit_rate": 0.5714285714285714
+            }
+          }
+        }
+      },
+      "event_comparison": {
+        "status": "NOT_RUN",
+        "reason": "no reviewed complete point-in-time event manifest"
+      },
+      "private_predictions_sha256": "3095a431a0b333b335254f9c36b645fd540ddb3559a2da71b3648674947132b5"
+    },
+    "US.NVDA": {
+      "source": {
+        "symbol": "US.NVDA",
+        "source_file": "US_NVDA_page1.raw.json",
+        "source_sha256": "661a264550d4d37013ea5dfc3c2cea1f108ed21b751b5cc76ce692855471a4bd",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true,
+        "missing_vs_three_symbol_union": 0
+      },
+      "example_count": 314,
+      "splits": {
+        "train": {
+          "n": 169,
+          "label_first": "2025-05-01",
+          "label_last": "2025-12-31",
+          "metrics": {
+            "ridge": {
+              "n": 169,
+              "mae_bps": 159.14410069454638,
+              "rmse_bps": 203.65408351888556,
+              "direction_n": 169,
+              "direction_hits": 92,
+              "direction_hit_rate": 0.5443786982248521
+            },
+            "zero_return": {
+              "n": 169,
+              "mae_bps": 161.75248285005966,
+              "rmse_bps": 207.33236001472426,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 169,
+              "mae_bps": 236.415107615319,
+              "rmse_bps": 297.1728232109302,
+              "direction_n": 169,
+              "direction_hits": 75,
+              "direction_hit_rate": 0.4437869822485207
+            }
+          }
+        },
+        "validation": {
+          "n": 61,
+          "label_first": "2026-01-02",
+          "label_last": "2026-03-31",
+          "metrics": {
+            "ridge": {
+              "n": 61,
+              "mae_bps": 179.5739365694179,
+              "rmse_bps": 235.14400582432455,
+              "direction_n": 61,
+              "direction_hits": 30,
+              "direction_hit_rate": 0.4918032786885246
+            },
+            "zero_return": {
+              "n": 61,
+              "mae_bps": 177.98483772265982,
+              "rmse_bps": 231.1291157530606,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 61,
+              "mae_bps": 237.7977357742689,
+              "rmse_bps": 316.6457789689832,
+              "direction_n": 61,
+              "direction_hits": 28,
+              "direction_hit_rate": 0.45901639344262296
+            }
+          }
+        },
+        "test": {
+          "n": 84,
+          "label_first": "2026-04-01",
+          "label_last": "2026-07-31",
+          "metrics": {
+            "ridge": {
+              "n": 84,
+              "mae_bps": 200.01140985348601,
+              "rmse_bps": 249.87667490376782,
+              "direction_n": 84,
+              "direction_hits": 46,
+              "direction_hit_rate": 0.5476190476190477
+            },
+            "zero_return": {
+              "n": 84,
+              "mae_bps": 197.77511921253162,
+              "rmse_bps": 248.63254600720157,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 84,
+              "mae_bps": 288.5954595549386,
+              "rmse_bps": 365.5030599339558,
+              "direction_n": 84,
+              "direction_hits": 46,
+              "direction_hit_rate": 0.5476190476190477
+            }
+          }
+        }
+      },
+      "event_comparison": {
+        "status": "NOT_RUN",
+        "reason": "no reviewed complete point-in-time event manifest"
+      },
+      "private_predictions_sha256": "cfdea6af4cfa70b1de550d91906bd9702d9eb1174249312077a18808ee5a654d"
+    },
+    "US.MU": {
+      "source": {
+        "symbol": "US.MU",
+        "source_file": "US_MU_page1.raw.json",
+        "source_sha256": "a6d6d2180c9122164308b22d71567ef4a0cf2267d6b7217b2850b22c99da6380",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true,
+        "missing_vs_three_symbol_union": 0
+      },
+      "example_count": 314,
+      "splits": {
+        "train": {
+          "n": 169,
+          "label_first": "2025-05-01",
+          "label_last": "2025-12-31",
+          "metrics": {
+            "ridge": {
+              "n": 169,
+              "mae_bps": 251.40996415769644,
+              "rmse_bps": 325.0533285281216,
+              "direction_n": 169,
+              "direction_hits": 102,
+              "direction_hit_rate": 0.6035502958579881
+            },
+            "zero_return": {
+              "n": 169,
+              "mae_bps": 259.27759160360756,
+              "rmse_bps": 335.37768758709217,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 169,
+              "mae_bps": 348.2321215469557,
+              "rmse_bps": 456.0084004566652,
+              "direction_n": 169,
+              "direction_hits": 92,
+              "direction_hit_rate": 0.5443786982248521
+            }
+          }
+        },
+        "validation": {
+          "n": 61,
+          "label_first": "2026-01-02",
+          "label_last": "2026-03-31",
+          "metrics": {
+            "ridge": {
+              "n": 61,
+              "mae_bps": 383.697784563559,
+              "rmse_bps": 468.7772673748047,
+              "direction_n": 61,
+              "direction_hits": 32,
+              "direction_hit_rate": 0.5245901639344263
+            },
+            "zero_return": {
+              "n": 61,
+              "mae_bps": 368.2362648430815,
+              "rmse_bps": 461.12229812959254,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 61,
+              "mae_bps": 551.4675142200526,
+              "rmse_bps": 675.7021356513085,
+              "direction_n": 61,
+              "direction_hits": 28,
+              "direction_hit_rate": 0.45901639344262296
+            }
+          }
+        },
+        "test": {
+          "n": 84,
+          "label_first": "2026-04-01",
+          "label_last": "2026-07-31",
+          "metrics": {
+            "ridge": {
+              "n": 84,
+              "mae_bps": 524.7900614301844,
+              "rmse_bps": 664.4889063161156,
+              "direction_n": 84,
+              "direction_hits": 45,
+              "direction_hit_rate": 0.5357142857142857
+            },
+            "zero_return": {
+              "n": 84,
+              "mae_bps": 514.3038228115545,
+              "rmse_bps": 662.8561997904153,
+              "direction_n": 0,
+              "direction_hits": 0,
+              "direction_hit_rate": null
+            },
+            "lag1_momentum": {
+              "n": 84,
+              "mae_bps": 757.8519243093182,
+              "rmse_bps": 956.3979059734257,
+              "direction_n": 84,
+              "direction_hits": 33,
+              "direction_hit_rate": 0.39285714285714285
+            }
+          }
+        }
+      },
+      "event_comparison": {
+        "status": "NOT_RUN",
+        "reason": "no reviewed complete point-in-time event manifest"
+      },
+      "private_predictions_sha256": "728fda468b78773c7b28102491cf9f385864317536ee103b946f957fcf33eaf9"
+    }
+  },
+  "time_alignment": "feature closes through t; label next observed trading day t+1; split by label date",
+  "price_basis_limit": "post-hoc forward-adjusted daily close, not point-in-time total-return series",
+  "news_incremental_status": "NOT_RUN_NO_QUALIFIED_EVENT_COVERAGE",
+  "formal_financial_validation": "NOT_RUN"
+}

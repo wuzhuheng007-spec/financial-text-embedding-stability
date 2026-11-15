@@ -1,0 +1,48 @@
+{
+  "schema": "market_observer_historical_direction_baseline_v3",
+  "source_request_sha256": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25",
+  "symbols": [
+    "US.TQQQ",
+    "US.NVDA",
+    "US.MU"
+  ],
+  "target_window": [
+    "2025-04-01",
+    "2026-07-31"
+  ],
+  "source_adjustment": "autype=1 forward-adjusted; retrospective provider series",
+  "target": "label-session open-to-close UP if close>open, otherwise DOWN including exact ties",
+  "features": [
+    "price_return_1d",
+    "price_return_5d",
+    "price_return_20d",
+    "price_volatility_20d",
+    "volume_log_change_1d",
+    "volume_log_change_5d"
+  ],
+  "feature_rule": "for label t use only adjusted daily close and volume through trading session t-2; t-1 is excluded",
+  "lookback_sessions": 20,
+  "split_by_label_date": {
+    "train_end": "2026-03-31",
+    "validation_end": "2026-05-31",
+    "test_end": "2026-07-31"
+  },
+  "A": "per-symbol train-majority class; tie chooses DOWN",
+  "B": {
+    "model": "per-symbol L2 logistic IRLS",
+    "grid": [
+      0.1,
+      1.0,
+      10.0
+    ],
+    "train_standardization": true,
+    "selection_metric": "validation balanced accuracy",
+    "tie_break": "strongest regularization",
+    "threshold": 0.5,
+    "test_tuning": false
+  },
+  "C": "NOT_RUN without complete historically available news coverage",
+  "retrospective_limit": "provider daily bar has market date but no verified historical feature-availability timestamp",
+  "test_independence": "CONTAMINATED_BY_PRIOR_EXPLORATORY_JUNE_JULY_LABEL_REVIEW_AND_V2_GRID_TEST_FEATURE_EVALUATION",
+  "supersedes": "market_observer_historical_direction_baseline_v2; old outputs retained"
+}

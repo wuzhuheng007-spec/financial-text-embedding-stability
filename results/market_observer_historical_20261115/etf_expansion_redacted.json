@@ -1,0 +1,122 @@
+{
+  "action_limit": "Raw autype=0 close returns are not action-safe until dated splits/distributions are applied or excluded.",
+  "calendar_raw_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+  "date_range": [
+    "2025-04-01",
+    "2026-07-31"
+  ],
+  "historical_identity_calls": 3,
+  "history_calls": 3,
+  "identity": [
+    {
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.QQQ"
+      ],
+      "item_count": 1,
+      "response_sha256": "1dd249d86d48382e4223e6d6ebe3b666882aa236905527689e77527c57bf1f1d",
+      "ret_code": 0,
+      "src_codes": [
+        "QQQ"
+      ],
+      "symbol": "US.QQQ"
+    },
+    {
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.SOXX"
+      ],
+      "item_count": 1,
+      "response_sha256": "77fee82e10133d24899035e2012d2a079e9d42d5fef2138d45b814a442c17e0f",
+      "ret_code": 0,
+      "src_codes": [
+        "SOXX"
+      ],
+      "symbol": "US.SOXX"
+    },
+    {
+      "exchange_codes": [
+        "US"
+      ],
+      "http_status": 200,
+      "item_codes": [
+        "US.SPY"
+      ],
+      "item_count": 1,
+      "response_sha256": "3477b3e4046f3fc4ce453ecf71c41ddd2abb7667150853c8ad2700fee4d917ee",
+      "ret_code": 0,
+      "src_codes": [
+        "SPY"
+      ],
+      "symbol": "US.SPY"
+    }
+  ],
+  "identity_asof_market_date": "2025-04-01",
+  "normalized_private_csv_sha256": "c730e55596d0596a3bb6c670d28e9e83b6a9191dac3203121a146978615f4fcf",
+  "normalized_private_rows": 1005,
+  "parameters": {
+    "autype": 0,
+    "extended_time": 0,
+    "ktype": 2,
+    "num": 370,
+    "retries": 0
+  },
+  "private_evidence_pointer": "artifacts/market_observer_historical_20261115 (ignored by Git)",
+  "provenance_limit": "Historical lookup only checked start date. Bar time_key is local midnight, not first-available time.",
+  "reason": "Bounded core-pool expansion after three pilot series; account quota remains UNKNOWN.",
+  "rights": "Raw quote data retained only locally; no redistribution assumption.",
+  "schema": "market_observer_etf_expansion_redacted_v1",
+  "series": [
+    {
+      "adjustment": 0,
+      "duplicate_date_count": 0,
+      "extra_date_count": 0,
+      "first_date": "2025-04-01",
+      "last_date": "2026-07-31",
+      "missing_official_trading_date_count": 0,
+      "response_order": "ASCENDING",
+      "row_count": 335,
+      "source_raw_sha256": "d9f8ed97fe99297b2c627c05df5e098b3449a275b2460329ec7bb1500c233a8f",
+      "structural_error_count": 0,
+      "symbol": "US.QQQ"
+    },
+    {
+      "adjustment": 0,
+      "duplicate_date_count": 0,
+      "extra_date_count": 0,
+      "first_date": "2025-04-01",
+      "last_date": "2026-07-31",
+      "missing_official_trading_date_count": 0,
+      "response_order": "ASCENDING",
+      "row_count": 335,
+      "source_raw_sha256": "49a7b1fc820d2f8fbab845b11809fb6ec5a3aea132b40c88fa804fd2c79d94e0",
+      "structural_error_count": 0,
+      "symbol": "US.SOXX"
+    },
+    {
+      "adjustment": 0,
+      "duplicate_date_count": 0,
+      "extra_date_count": 0,
+      "first_date": "2025-04-01",
+      "last_date": "2026-07-31",
+      "missing_official_trading_date_count": 0,
+      "response_order": "ASCENDING",
+      "row_count": 335,
+      "source_raw_sha256": "2d681b776fea0e96b08589cb3d2b178754d7e4a1d7eca7189c91de189aeb4194",
+      "structural_error_count": 0,
+      "symbol": "US.SPY"
+    }
+  ],
+  "source": "moomoo WebAPI",
+  "source_docs": [
+    "https://open.moomoo.com/api/quote/basic-data/history-kline",
+    "https://open.moomoo.com/api/quote/basic-data/quote-historical-info",
+    "https://open.moomoo.com/api/quote/basic-data/trading-days"
+  ]
+}

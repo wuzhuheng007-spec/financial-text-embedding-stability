@@ -1,0 +1,138 @@
+{
+  "adjustment_caveat": "Forward-adjusted series are retrospective; do not use absolute adjusted prices as historically available input. Unadjusted TQQQ 2025-11-20 transition has a 2:1 split.",
+  "business_calls": 8,
+  "calendar": {
+    "day_count": 335,
+    "first_day": "2025-04-01",
+    "http_status": 200,
+    "last_day": "2026-07-31",
+    "raw_response_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+    "ret_code": 0
+  },
+  "daily_parameters": {
+    "autype_variants": [
+      1,
+      0
+    ],
+    "extended_time": 0,
+    "ktype": 2,
+    "num": 370,
+    "retries": 0
+  },
+  "download_status": "ACTUAL_PRIVATE_API_RESPONSES_SAVED",
+  "normalized_private_csv_sha256": "9c9d3186dce4ff7b209db1061f152bce5870582e812edaae8349006111a9381f",
+  "normalized_private_rows": 2010,
+  "private_evidence_pointer": "artifacts/market_observer_historical_20261115 (ignored by Git)",
+  "quota": {
+    "error_code": "invalid_parameter",
+    "http_status": 200,
+    "note": "Documented quota path was interpreted as symbol; no account quota confirmed.",
+    "remaining": null,
+    "ret_code": -3
+  },
+  "request_time_utc_range": [
+    "2026-11-15T05:49:21.424333Z",
+    "2026-11-15T05:50:53.684229+00:00"
+  ],
+  "requested_market_date_range": [
+    "2025-04-01",
+    "2026-07-31"
+  ],
+  "requested_symbols": [
+    "US.TQQQ",
+    "US.NVDA",
+    "US.MU"
+  ],
+  "research_status": "SOURCE_COVERAGE_VERIFIED; MODEL_RESULT_NOT_IN_THIS_RECEIPT",
+  "rights": "Private research copies only; redistribution of raw prices not established.",
+  "schema": "market_observer_historical_price_probe_redacted_v1",
+  "series": [
+    {
+      "adjustment": 1,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "95bc357fa85450ba62c9ea12b4cd044144768b468b9e2c4a038addc528dc3470",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.TQQQ"
+    },
+    {
+      "adjustment": 1,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "661a264550d4d37013ea5dfc3c2cea1f108ed21b751b5cc76ce692855471a4bd",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.NVDA"
+    },
+    {
+      "adjustment": 1,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "a6d6d2180c9122164308b22d71567ef4a0cf2267d6b7217b2850b22c99da6380",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.MU"
+    },
+    {
+      "adjustment": 0,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "c6ec74f984c4431fc476b5011d9006197f6793678c13a96f13f4e626c3071e96",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.TQQQ"
+    },
+    {
+      "adjustment": 0,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "703cac8fceaaa0731bbea5bf01b9c4efbb61bce035a54b04597cdee79addf8b3",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.NVDA"
+    },
+    {
+      "adjustment": 0,
+      "bar_count": 335,
+      "duplicate_market_dates": 0,
+      "extra_dates": 0,
+      "first_market_date": "2025-04-01",
+      "last_market_date": "2026-07-31",
+      "missing_official_trading_dates": 0,
+      "raw_response_sha256": "9634b743313f04635ae617dda923cd7aad21adb538fc743fc57ccd296ecadfb0",
+      "response_order": "ASCENDING",
+      "structural_error_count": 0,
+      "symbol": "US.MU"
+    }
+  ],
+  "source": "moomoo WebAPI, historical K-line and US trading days",
+  "source_docs": [
+    "https://open.moomoo.com/api/quote/basic-data/history-kline",
+    "https://open.moomoo.com/api/quote/basic-data/trading-days",
+    "https://open.moomoo.com/api/overview/api-authority",
+    "https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5"
+  ],
+  "split_evidence_url": "https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5",
+  "time_field_caveat": "time_key is US local midnight of bar date, not close or first-available time; live raw time_zone -4/-5 appears in hours although documentation says minutes."
+}

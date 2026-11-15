@@ -1,0 +1,444 @@
+{
+  "schema": "market_observer_historical_direction_baseline_v2",
+  "status": "REAL_RETROSPECTIVE_PRICE_VOLUME_DEVELOPMENT",
+  "config": {
+    "schema": "market_observer_historical_direction_baseline_v2",
+    "source_request_sha256": "db9035096d824ade949f23f1eda0bb28b455b2a3ff8b524687bacc55e41ccc25",
+    "symbols": [
+      "US.TQQQ",
+      "US.NVDA",
+      "US.MU"
+    ],
+    "target_window": [
+      "2025-04-01",
+      "2026-07-31"
+    ],
+    "source_adjustment": "autype=1 forward-adjusted; retrospective provider series",
+    "target": "label-session open-to-close UP if close>open, otherwise DOWN including exact ties",
+    "features": [
+      "price_return_1d",
+      "price_return_5d",
+      "price_return_20d",
+      "price_volatility_20d",
+      "volume_log_change_1d",
+      "volume_log_change_5d"
+    ],
+    "feature_rule": "for label t use only adjusted daily close and volume through trading session t-2; t-1 is excluded",
+    "lookback_sessions": 20,
+    "split_by_label_date": {
+      "train_end": "2026-03-31",
+      "validation_end": "2026-05-31",
+      "test_end": "2026-07-31"
+    },
+    "A": "per-symbol train-majority class; tie chooses DOWN",
+    "B": {
+      "model": "per-symbol L2 logistic IRLS",
+      "grid": [
+        0.1,
+        1.0,
+        10.0
+      ],
+      "train_standardization": true,
+      "selection_metric": "validation balanced accuracy",
+      "tie_break": "strongest regularization",
+      "threshold": 0.5,
+      "test_tuning": false
+    },
+    "C": "NOT_RUN without complete historically available news coverage",
+    "retrospective_limit": "provider daily bar has market date but no verified historical feature-availability timestamp",
+    "test_independence": "CONTAMINATED_BY_PRIOR_EXPLORATORY_JUNE_JULY_LABEL_REVIEW"
+  },
+  "config_sha256": "cc65babad6bdad9b0a093fa43127eca32f7f52350d0f5a5950c76d1bd5aaf85a",
+  "symbols": {
+    "US.TQQQ": {
+      "source": {
+        "symbol": "US.TQQQ",
+        "source_file": "US_TQQQ_page1.raw.json",
+        "source_sha256": "95bc357fa85450ba62c9ea12b4cd044144768b468b9e2c4a038addc528dc3470",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true
+      },
+      "examples": 313,
+      "train_majority_up": 1,
+      "selected_l2": 10.0,
+      "validation_grid": {
+        "0.1": {
+          "n": 41,
+          "support_down": 12,
+          "support_up": 29,
+          "correct_down": 0,
+          "correct_up": 21,
+          "accuracy": 0.5121951219512195,
+          "balanced_accuracy": 0.3620689655172414,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "1.0": {
+          "n": 41,
+          "support_down": 12,
+          "support_up": 29,
+          "correct_down": 0,
+          "correct_up": 21,
+          "accuracy": 0.5121951219512195,
+          "balanced_accuracy": 0.3620689655172414,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "10.0": {
+          "n": 41,
+          "support_down": 12,
+          "support_up": 29,
+          "correct_down": 0,
+          "correct_up": 26,
+          "accuracy": 0.6341463414634146,
+          "balanced_accuracy": 0.4482758620689655,
+          "balanced_accuracy_status": "DEFINED"
+        }
+      },
+      "splits": {
+        "train": {
+          "n": 229,
+          "label_first": "2025-05-02",
+          "label_last": "2026-03-31",
+          "A_train_majority": {
+            "n": 229,
+            "support_down": 106,
+            "support_up": 123,
+            "correct_down": 0,
+            "correct_up": 123,
+            "accuracy": 0.537117903930131,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 229,
+            "support_down": 106,
+            "support_up": 123,
+            "correct_down": 35,
+            "correct_up": 92,
+            "accuracy": 0.5545851528384279,
+            "balanced_accuracy": 0.5390780794600398,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        },
+        "validation": {
+          "n": 41,
+          "label_first": "2026-04-01",
+          "label_last": "2026-05-29",
+          "A_train_majority": {
+            "n": 41,
+            "support_down": 12,
+            "support_up": 29,
+            "correct_down": 0,
+            "correct_up": 29,
+            "accuracy": 0.7073170731707317,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 41,
+            "support_down": 12,
+            "support_up": 29,
+            "correct_down": 0,
+            "correct_up": 26,
+            "accuracy": 0.6341463414634146,
+            "balanced_accuracy": 0.4482758620689655,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        },
+        "test": {
+          "n": 43,
+          "label_first": "2026-06-01",
+          "label_last": "2026-07-31",
+          "A_train_majority": {
+            "n": 43,
+            "support_down": 26,
+            "support_up": 17,
+            "correct_down": 0,
+            "correct_up": 17,
+            "accuracy": 0.3953488372093023,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 43,
+            "support_down": 26,
+            "support_up": 17,
+            "correct_down": 1,
+            "correct_up": 16,
+            "accuracy": 0.3953488372093023,
+            "balanced_accuracy": 0.48981900452488686,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        }
+      },
+      "private_predictions_sha256": "a37de6687f477c0b6341706ac070a7e673d2158188dd244357f63f2d0314eca3"
+    },
+    "US.NVDA": {
+      "source": {
+        "symbol": "US.NVDA",
+        "source_file": "US_NVDA_page1.raw.json",
+        "source_sha256": "661a264550d4d37013ea5dfc3c2cea1f108ed21b751b5cc76ce692855471a4bd",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true
+      },
+      "examples": 313,
+      "train_majority_up": 1,
+      "selected_l2": 10.0,
+      "validation_grid": {
+        "0.1": {
+          "n": 41,
+          "support_down": 16,
+          "support_up": 25,
+          "correct_down": 5,
+          "correct_up": 9,
+          "accuracy": 0.34146341463414637,
+          "balanced_accuracy": 0.33625,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "1.0": {
+          "n": 41,
+          "support_down": 16,
+          "support_up": 25,
+          "correct_down": 5,
+          "correct_up": 9,
+          "accuracy": 0.34146341463414637,
+          "balanced_accuracy": 0.33625,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "10.0": {
+          "n": 41,
+          "support_down": 16,
+          "support_up": 25,
+          "correct_down": 5,
+          "correct_up": 11,
+          "accuracy": 0.3902439024390244,
+          "balanced_accuracy": 0.37625,
+          "balanced_accuracy_status": "DEFINED"
+        }
+      },
+      "splits": {
+        "train": {
+          "n": 229,
+          "label_first": "2025-05-02",
+          "label_last": "2026-03-31",
+          "A_train_majority": {
+            "n": 229,
+            "support_down": 111,
+            "support_up": 118,
+            "correct_down": 0,
+            "correct_up": 118,
+            "accuracy": 0.5152838427947598,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 229,
+            "support_down": 111,
+            "support_up": 118,
+            "correct_down": 50,
+            "correct_up": 85,
+            "accuracy": 0.5895196506550219,
+            "balanced_accuracy": 0.5853947167506489,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        },
+        "validation": {
+          "n": 41,
+          "label_first": "2026-04-01",
+          "label_last": "2026-05-29",
+          "A_train_majority": {
+            "n": 41,
+            "support_down": 16,
+            "support_up": 25,
+            "correct_down": 0,
+            "correct_up": 25,
+            "accuracy": 0.6097560975609756,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 41,
+            "support_down": 16,
+            "support_up": 25,
+            "correct_down": 5,
+            "correct_up": 11,
+            "accuracy": 0.3902439024390244,
+            "balanced_accuracy": 0.37625,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        },
+        "test": {
+          "n": 43,
+          "label_first": "2026-06-01",
+          "label_last": "2026-07-31",
+          "A_train_majority": {
+            "n": 43,
+            "support_down": 23,
+            "support_up": 20,
+            "correct_down": 0,
+            "correct_up": 20,
+            "accuracy": 0.46511627906976744,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 43,
+            "support_down": 23,
+            "support_up": 20,
+            "correct_down": 7,
+            "correct_up": 17,
+            "accuracy": 0.5581395348837209,
+            "balanced_accuracy": 0.5771739130434783,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        }
+      },
+      "private_predictions_sha256": "b2fef286c28fdd56d8ecd6e1810ce82ede194eb2f61db705686f284c7c4d1189"
+    },
+    "US.MU": {
+      "source": {
+        "symbol": "US.MU",
+        "source_file": "US_MU_page1.raw.json",
+        "source_sha256": "a6d6d2180c9122164308b22d71567ef4a0cf2267d6b7217b2850b22c99da6380",
+        "bar_count": 335,
+        "first_date": "2025-04-01",
+        "last_date": "2026-07-31",
+        "pagination_complete": true
+      },
+      "examples": 313,
+      "train_majority_up": 1,
+      "selected_l2": 10.0,
+      "validation_grid": {
+        "0.1": {
+          "n": 41,
+          "support_down": 18,
+          "support_up": 23,
+          "correct_down": 0,
+          "correct_up": 22,
+          "accuracy": 0.5365853658536586,
+          "balanced_accuracy": 0.4782608695652174,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "1.0": {
+          "n": 41,
+          "support_down": 18,
+          "support_up": 23,
+          "correct_down": 0,
+          "correct_up": 22,
+          "accuracy": 0.5365853658536586,
+          "balanced_accuracy": 0.4782608695652174,
+          "balanced_accuracy_status": "DEFINED"
+        },
+        "10.0": {
+          "n": 41,
+          "support_down": 18,
+          "support_up": 23,
+          "correct_down": 0,
+          "correct_up": 22,
+          "accuracy": 0.5365853658536586,
+          "balanced_accuracy": 0.4782608695652174,
+          "balanced_accuracy_status": "DEFINED"
+        }
+      },
+      "splits": {
+        "train": {
+          "n": 229,
+          "label_first": "2025-05-02",
+          "label_last": "2026-03-31",
+          "A_train_majority": {
+            "n": 229,
+            "support_down": 106,
+            "support_up": 123,
+            "correct_down": 0,
+            "correct_up": 123,
+            "accuracy": 0.537117903930131,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 229,
+            "support_down": 106,
+            "support_up": 123,
+            "correct_down": 26,
+            "correct_up": 99,
+            "accuracy": 0.5458515283842795,
+            "balanced_accuracy": 0.5250805338242062,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 1
+        },
+        "validation": {
+          "n": 41,
+          "label_first": "2026-04-01",
+          "label_last": "2026-05-29",
+          "A_train_majority": {
+            "n": 41,
+            "support_down": 18,
+            "support_up": 23,
+            "correct_down": 0,
+            "correct_up": 23,
+            "accuracy": 0.5609756097560976,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 41,
+            "support_down": 18,
+            "support_up": 23,
+            "correct_down": 0,
+            "correct_up": 22,
+            "accuracy": 0.5365853658536586,
+            "balanced_accuracy": 0.4782608695652174,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        },
+        "test": {
+          "n": 43,
+          "label_first": "2026-06-01",
+          "label_last": "2026-07-31",
+          "A_train_majority": {
+            "n": 43,
+            "support_down": 23,
+            "support_up": 20,
+            "correct_down": 0,
+            "correct_up": 20,
+            "accuracy": 0.46511627906976744,
+            "balanced_accuracy": 0.5,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "B_price_volume": {
+            "n": 43,
+            "support_down": 23,
+            "support_up": 20,
+            "correct_down": 0,
+            "correct_up": 19,
+            "accuracy": 0.4418604651162791,
+            "balanced_accuracy": 0.475,
+            "balanced_accuracy_status": "DEFINED"
+          },
+          "intraday_zero_count": 0
+        }
+      },
+      "private_predictions_sha256": "6194311f7152250f2ab3430e26f7dbfd66a2721d40f1f34ebe5371c32e14ae7c"
+    }
+  },
+  "C_news_incremental": "NOT_RUN_NO_QUALIFIED_COMPLETE_POINT_IN_TIME_NEWS",
+  "test_independence": "CONTAMINATED_BY_PRIOR_EXPLORATORY_JUNE_JULY_LABEL_REVIEW",
+  "financial_validity": "NOT_ESTABLISHED",
+  "limitations": [
+    "Daily bars were retrieved after the historical window; original as-known-at-time availability is unverified.",
+    "Forward-adjustment and action inventory are not fully independently reconciled; within-bar sign is scale-invariant.",
+    "The test interval had been inspected in a prior exploratory baseline, so this is not an untouched test.",
+    "Three correlated pilot securities do not establish general predictive performance."
+  ]
+}

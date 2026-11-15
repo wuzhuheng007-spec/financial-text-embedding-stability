@@ -1,0 +1,107 @@
+{
+  "api_documentation_note": "US stock-splits endpoint is documented HK-only; rehab endpoint returned US action records, including TQQQ ETF despite documentation saying ETFs are generally empty.",
+  "business_calls": 6,
+  "coverage_limit": "Retrospective provider responses; publication/first-availability times of each factor not proven. No absence inference on a failed call.",
+  "official_split_evidence": {
+    "effective_date": "2025-11-20",
+    "ratio": "2:1",
+    "source_url": "https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5",
+    "symbol": "US.TQQQ"
+  },
+  "private_evidence_pointer": "artifacts/market_observer_historical_20261115 (ignored by Git)",
+  "results": [
+    {
+      "all_response_event_count": 32,
+      "data_array_field": "rehabs",
+      "endpoint_kind": "rehab",
+      "http_status": 200,
+      "response_sha256": "1dce23a6e304740c9c32a11d3b2fb4459341ef4a0a024137fabd85a1233d394d",
+      "ret_code": 0,
+      "symbol": "US.TQQQ",
+      "target_window_event_count": 6,
+      "target_window_type_counts": {
+        "DIVIDEND": 5,
+        "SPLIT": 1
+      },
+      "undated_response_event_count": 0
+    },
+    {
+      "all_response_event_count": 24,
+      "data_array_field": "dividend_list",
+      "endpoint_kind": "dividends",
+      "http_status": 200,
+      "response_sha256": "7ba64df73f6fe06ae19df42e5e3674d166d35c34fc45104826975fb4f871eed9",
+      "ret_code": 0,
+      "symbol": "US.TQQQ",
+      "target_window_event_count": 5,
+      "target_window_type_counts": null,
+      "undated_response_event_count": 0
+    },
+    {
+      "all_response_event_count": 62,
+      "data_array_field": "rehabs",
+      "endpoint_kind": "rehab",
+      "http_status": 200,
+      "response_sha256": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c",
+      "ret_code": 0,
+      "symbol": "US.NVDA",
+      "target_window_event_count": 5,
+      "target_window_type_counts": {
+        "DIVIDEND": 5
+      },
+      "undated_response_event_count": 0
+    },
+    {
+      "all_response_event_count": 56,
+      "data_array_field": "dividend_list",
+      "endpoint_kind": "dividends",
+      "http_status": 200,
+      "response_sha256": "d99dc6301c31510dd816a551a9bd3b396b9082960070c4a396e853115ac79670",
+      "ret_code": 0,
+      "symbol": "US.NVDA",
+      "target_window_event_count": 5,
+      "target_window_type_counts": null,
+      "undated_response_event_count": 0
+    },
+    {
+      "all_response_event_count": 22,
+      "data_array_field": "rehabs",
+      "endpoint_kind": "rehab",
+      "http_status": 200,
+      "response_sha256": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a",
+      "ret_code": 0,
+      "symbol": "US.MU",
+      "target_window_event_count": 5,
+      "target_window_type_counts": {
+        "DIVIDEND": 5
+      },
+      "undated_response_event_count": 0
+    },
+    {
+      "all_response_event_count": 21,
+      "data_array_field": "dividend_list",
+      "endpoint_kind": "dividends",
+      "http_status": 200,
+      "response_sha256": "f25bf865a0b051d0071a436e86981aaf2cb174dc7d8c0ea17ede10725a8eee74",
+      "ret_code": 0,
+      "symbol": "US.MU",
+      "target_window_event_count": 5,
+      "target_window_type_counts": null,
+      "undated_response_event_count": 0
+    }
+  ],
+  "retries": 0,
+  "rights": "No raw market data, event amounts or licensed response bodies in this file.",
+  "schema": "market_observer_corporate_actions_redacted_v1",
+  "source": "moomoo WebAPI",
+  "source_docs": [
+    "https://open.moomoo.com/api/quote/basic-data/rehab",
+    "https://open.moomoo.com/api/quote/corporate-actions/dividends",
+    "https://open.moomoo.com/api/quote/corporate-actions/splits",
+    "https://www.moomoo.com/terms"
+  ],
+  "window": [
+    "2025-04-01",
+    "2026-07-31"
+  ]
+}

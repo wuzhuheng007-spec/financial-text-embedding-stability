@@ -1,0 +1,94 @@
+{
+  "schema": "historical_news_official_probe_redacted_v1",
+  "executed_at_utc": "2026-11-15T05:58:18.289128+00:00",
+  "target_window": [
+    "2025-04-01",
+    "2026-07-31"
+  ],
+  "scope": "bounded source access probes and candidate metadata, not exhaustive corpus coverage or a training sample",
+  "jin10": {
+    "source": "https://mcp.jin10.com/app/doc.html",
+    "handshake": "SUCCESS_PROTOCOL_2025-11-25",
+    "business_calls": 6,
+    "article_detail_calls": 1,
+    "search_news_TQQQ_first_page": 0,
+    "search_news_NVDA_first_page": 10,
+    "search_news_NVDA_in_window": 0,
+    "search_news_MU_first_page": 10,
+    "search_news_MU_in_window": 7,
+    "search_news_MU_has_more": true,
+    "search_flash_TQQQ": 0,
+    "search_flash_NVDA": 150,
+    "search_flash_MU": 150,
+    "flash_search_limit_reached_for_NVDA_MU": true,
+    "article_detail_status": "HTTP_200_BUSINESS_200; body field exists, original publisher and first-visible time unverified",
+    "news_metadata_private_sha256": "f698dc2c84991df57d2a5af6cde123d679a63fe7f747378fa81c70a60ee75129",
+    "limitation": "keyword and cursor only; no actual date filter in tool schema; first pages and search cap do not establish full target coverage"
+  },
+  "moomoo_news": {
+    "official_changelog": "https://open.moomoo.com/changelog",
+    "rest_endpoint": "GET /api/v1.0/news/search",
+    "actual_call_count": 1,
+    "http_status": 200,
+    "ret_code": 0,
+    "returned_first_page": 10,
+    "in_target_window": 0,
+    "field_names": [
+      "abstract",
+      "content",
+      "cover_image",
+      "files",
+      "news_id",
+      "news_type",
+      "publish_time",
+      "source",
+      "source_id",
+      "source_url",
+      "title",
+      "url"
+    ],
+    "raw_response_sha256": "7a5672b75b14ece6a62a1b746c3b5894f6a9ee1d80d22a6f79476d3c14b9789a",
+    "metadata_private_sha256": "dbe93722a502e47d7a5c62d659215d903adfae154693539a390450d515657f0c",
+    "news_api_docs_status": "removed from public reference on 2026-10-26; date and pagination parameters unverified",
+    "native_mcp_call_status": "NOT_RUN; fresh CLI blocked by model_not_found before MCP"
+  },
+  "sec_official": {
+    "api_documentation": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "sec_faq_time": "https://www.sec.gov/about/webmaster-frequently-asked-questions",
+    "submissions_http_200_requests": 4,
+    "NVDA_8K_10Q_10K_metadata_rows_in_window": 20,
+    "MU_8K_10Q_10K_metadata_rows_in_window": 19,
+    "TQQQ_checked_multiseries_fund_report_rows": 2,
+    "TQQQ_trust_wide_rows_not_attributed_to_fund": 1465,
+    "filings_metadata_v2_private_sha256": "5fab93e02bfabfb0de32ac68efa9fe7038047662c11b75a66e40761e6960e475",
+    "selected_original_body_http_200_count": 3,
+    "selected_original_body_private_metadata_sha256": "f638e20c0093cdb4c7581e29fa3797dcfeff5697458396806c6e0960fe33dd1e",
+    "TQQQ_split_issuer_source": "https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5",
+    "first_public_visibility": "UNKNOWN; SEC says no first-available timestamp"
+  },
+  "official_macro": {
+    "fixed_examples": [
+      {
+        "source": "BEA",
+        "release_date": "2025-04-30",
+        "local_http_status": 200,
+        "original_sha256": "54397de50a185ebd23a0693c2eefbaeadfa8a0097aab853cf77c8e7ebbb51531"
+      },
+      {
+        "source": "FED",
+        "release_date": "2025-05-07",
+        "local_http_status": 200,
+        "original_sha256": "36b1afe8ab8fa5625970c3b086fc32708a0c4f32ca7b60d8eac1cf21964158f1"
+      },
+      {
+        "source": "BLS",
+        "release_date": "2025-07-15",
+        "local_http_status": 403,
+        "original_sha256": null
+      }
+    ],
+    "metadata_private_sha256": "c74a2329d32532464ff99a01f14229774c3decda9379b82819118181c4707f4a",
+    "limitation": "three fixed examples only; BLS local retrieval HTTP 403, source page checked via web but no local body hash; release/embargo time is not first visible time"
+  },
+  "publication_boundary": "Raw licensed Jin10 and moomoo article responses, private source files and credentials stay in ignored local artifacts; public receipt has metadata and aggregates only."
+}

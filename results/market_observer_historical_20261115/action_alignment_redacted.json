@@ -1,0 +1,44 @@
+{
+  "private_audit_sha256": "1102d9316358ce03f8a93249f031c5c3639edcd7dca892126cbe5d752e28ae4b",
+  "schema": "market_observer_action_alignment_redacted_v1",
+  "scope": "Date-set and adjustment-transition checks only; not a total-return or first-availability validation.",
+  "symbols": [
+    {
+      "adjusted_raw_ratio_change_count_gt_1bp": 6,
+      "dividend_date_sets_equal": true,
+      "dividends_endpoint_count": 5,
+      "dividends_sha256": "7ba64df73f6fe06ae19df42e5e3674d166d35c34fc45104826975fb4f871eed9",
+      "ratio_change_without_rehab_event_count": 0,
+      "rehab_dividend_count": 5,
+      "rehab_sha256": "1dce23a6e304740c9c32a11d3b2fb4459341ef4a0a024137fabd85a1233d394d",
+      "split_record_count": 1,
+      "symbol": "US.TQQQ"
+    },
+    {
+      "adjusted_raw_ratio_change_count_gt_1bp": 1,
+      "dividend_date_sets_equal": true,
+      "dividends_endpoint_count": 5,
+      "dividends_sha256": "d99dc6301c31510dd816a551a9bd3b396b9082960070c4a396e853115ac79670",
+      "ratio_change_without_rehab_event_count": 0,
+      "rehab_dividend_count": 5,
+      "rehab_sha256": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c",
+      "split_record_count": 0,
+      "symbol": "US.NVDA"
+    },
+    {
+      "adjusted_raw_ratio_change_count_gt_1bp": 5,
+      "dividend_date_sets_equal": true,
+      "dividends_endpoint_count": 5,
+      "dividends_sha256": "f25bf865a0b051d0071a436e86981aaf2cb174dc7d8c0ea17ede10725a8eee74",
+      "ratio_change_without_rehab_event_count": 0,
+      "rehab_dividend_count": 5,
+      "rehab_sha256": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a",
+      "split_record_count": 0,
+      "symbol": "US.MU"
+    }
+  ],
+  "target_window": [
+    "2025-04-01",
+    "2026-07-31"
+  ]
+}

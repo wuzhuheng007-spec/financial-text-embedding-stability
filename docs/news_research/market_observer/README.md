@@ -1,5 +1,7 @@
 # Read-only market observer v1 / 只读市场观察 v1
 
+The newer [historical development report](../../../reports/2026-11-15_market_observer_historical_v1.en.md) ([中文报告](../../../reports/2026-11-15_market_observer_historical_v1.zh.md)) is a separate 2025-04 to 2026-07 retrieval and retrospective A/B price-direction exercise. It does not import historical bars or news into the live SQLite observer, and it does not establish point-in-time news access or an independent test. See its [plan–actual ledger](../../../results/market_observer_historical_20261115/plan_execution.csv).
+
 Executed 2026-11-15, Asia/Shanghai. This is an engineering observer with a private SQLite ledger and a local HTML page. It does not place orders or access holdings, balances or order history. The historical M5 research protocol and financial experiment status are separate.
 
 ## Latest watchlist v2 update

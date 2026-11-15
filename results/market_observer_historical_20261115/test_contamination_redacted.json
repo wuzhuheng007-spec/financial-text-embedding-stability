@@ -1,0 +1,33 @@
+{
+  "schema": "market_observer_historical_test_contamination_v1",
+  "date_asia_shanghai": "2026-11-15",
+  "frozen_requested_window": ["2025-04-01", "2026-07-31"],
+  "frozen_requested_split_by_label_date": {
+    "train": ["2025-04-01", "2026-03-31"],
+    "validation": ["2026-04-01", "2026-05-31"],
+    "test": ["2026-06-01", "2026-07-31"]
+  },
+  "prior_exposure": [
+    {
+      "kind": "SAME_TURN_SUPERSEDED_EXPLORATORY_PRICE_RUN",
+      "evidence_path": "results/market_observer_historical_20261115/price_baseline_redacted.json",
+      "evidence_sha256": "f263976ebf1a33eabf852c345c1bef4dc4ac04afe1489af2a93a5732c5ba9bb7",
+      "impact": "June-July 2026 labels and metrics were inspected before the requested direction protocol was frozen. Any later June-July result is not an untouched independent test. The earlier run had a different close-to-close regression target and split."
+    },
+    {
+      "kind": "SAME_TURN_SUPERSEDED_V2_GRID_READ_TEST_FEATURES",
+      "evidence_path": "results/market_observer_historical_20261115/price_direction_v2_redacted.json",
+      "evidence_sha256": "4d2870256a681d6b8922c62d88b12a4155916ef0a96cc658d24b2720dc7a1bae",
+      "impact": "The first direction implementation generated test predictions for every validation-grid candidate before selecting the model. It did not use test labels for selection, but violated the requested test-once procedure. V2 is preserved as superseded; V3 fixes the code and re-runs, and the interval remains contaminated."
+    },
+    {
+      "kind": "PRIOR_PROJECT_DEVELOPMENT_MATERIAL_OUTSIDE_CURRENT_WINDOW",
+      "evidence_path": "results/news_event_impact_20261115/selection_manifest.json",
+      "evidence_sha256": "43849a671045515deed415317a461f18365abc522aa650c3b7b990127e28fa26",
+      "impact": "Prior NVIDIA August 2026 and CoreWeave/CPI November 2026 development cards exist locally. They are excluded from this run's retrieval, feature input and model context. The same prior manifest also contains a May 2026 NVIDIA comparison release, but it is not supplied to the historical model."
+    }
+  ],
+  "independent_test_claim_allowed": false,
+  "price_direction_run_role": "RETROSPECTIVE_DEVELOPMENT_WITH_CONTAMINATED_TEST_INTERVAL",
+  "news_incremental_run_role": "NOT_RUN_UNQUALIFIED_HISTORICAL_NEWS"
+}

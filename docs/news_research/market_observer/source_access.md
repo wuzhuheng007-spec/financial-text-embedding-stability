@@ -1,5 +1,11 @@
 # Market-observer source and permission register
 
+## Bounded historical development intake (2026-11-15, Asia/Shanghai)
+
+The [historical intake report](../../../reports/2026-11-15_market_observer_historical_v1.en.md) and [redacted price receipt](../../../results/market_observer_historical_20261115/price_probe_redacted.json) record actual read-only [moomoo history-K-line](https://open.moomoo.com/api/quote/basic-data/history-kline), calendar, identity and action responses for 2025-04-01 through 2026-07-31. Six US securities were checked, with adjusted and unadjusted variants only for the three pilots. The documented [history-quota route](https://open.moomoo.com/api/quote/quotas/history-kline) returned `-3` after being parsed as a symbol; account capacity remains unknown. Source `time_key` mapped to local midnight, and the observed `time_zone` unit differed from the documentation, so the market-date field determines daily alignment. [ProShares](https://www.proshares.com/press-releases/proshares-announces-etf-share-splits5) separately confirms TQQQ's 2025-11-20 2:1 split. [Moomoo terms](https://www.moomoo.com/terms) restrict market-data redistribution; raw responses remain private.
+
+The [news/source receipt](../../../results/market_observer_historical_20261115/news_official_redacted.json) distinguishes a partial Jin10 keyword page, a moomoo news-search page with only post-window dates, SEC filing metadata, three selected issuer originals, two accessible macro originals and one BLS HTTP 403. The [SEC public submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) and [SEC FAQ](https://www.sec.gov/about/webmaster-frequently-asked-questions) do not turn current retrieval into historical first availability. News rights, full-period coverage, original-publisher identity and point-in-time eligibility remain unresolved. No raw licensed articles or account material are published.
+
 Checked 2026-11-15, Asia/Shanghai. This register separates public documentation from capabilities actually observed in this account. A successful MCP configuration is not a quote entitlement, a push subscription, or permission to republish data.
 
 | Official source | Documented fact | Account-specific or project gap |

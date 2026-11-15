@@ -1,0 +1,26 @@
+{
+  "schema": "historical_event_alignment_summary_v1",
+  "run_at_utc": "2026-11-15T06:00:04.910274Z",
+  "alignment_code_sha256": "b98d209e9cb1e6419be06a28478122f1fe297aebb315fab59a13b22e4af994c7",
+  "runner_code_sha256": "c1dbacc9ab2bf892e93ae82b0e6ede25af30120795816ad3ea63661d17e7f13e",
+  "events_input_sha256": "015e52791fd18532b9990f97b002c31beb39e79aed6bc53c8194d4c5ef1be6da",
+  "prices_input_sha256": "9c9d3186dce4ff7b209db1061f152bce5870582e812edaae8349006111a9381f",
+  "private_alignment_sha256": "d5855223e0081ec3ff5a434f2ce12033e14c2ac39ff4b22c5885a0ebac5e136a",
+  "trading_dates": 335,
+  "input_events": 50,
+  "status_counts": {
+    "PUBLICATION_PROXY_ONLY": 50
+  },
+  "source_type_counts": {
+    "JIN10_SEARCH_CANDIDATE": 7,
+    "OFFICIAL_MACRO_RELEASE_CLOCK": 2,
+    "SEC_FILING_METADATA": 41
+  },
+  "strict_pit_eligible": 0,
+  "rule": "first US trading date strictly after the source publication or official release-not-before calendar date; 18:00 America/New_York decision proxy",
+  "limitations": [
+    "historical retrieval is not historical first availability",
+    "publication alignment is not a qualified point-in-time news feature",
+    "incomplete keyword-search coverage is not zero news"
+  ]
+}

@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), watchlist v2 / status 1.20.
+Updated 2026-11-15 (Asia/Shanghai), historical observer development / status 1.21.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [Historical market observer English report](../../reports/2026-11-15_market_observer_historical_v1.en.md) · [中文报告](../../reports/2026-11-15_market_observer_historical_v1.zh.md) · [计划—实际](../../results/market_observer_historical_20261115/plan_execution.csv) · [price A/B result](../../results/market_observer_historical_20261115/price_direction_v3_redacted.json) · [news/source receipt](../../results/market_observer_historical_20261115/news_official_redacted.json). Real historical daily bars were retrieved for TQQQ, NVDA, MU and three additional ETFs. A retrospective price-and-volume direction baseline ran on three pilots; its June–July interval is contaminated by prior exploration. The news-augmented model is `NOT_RUN` because full historical coverage and first availability are unverified. Historical prices/news and live observer state are separate. 真实历史行情及首轮价格基线已完成；不代表独立预测验证、新闻增量有效、正式 M5 或交易成功。
 
 - [Watchlist v2 and bounded quote-push English report](../../reports/2026-11-15_market_observer_watchlist_live.en.md) · [中文报告](../../reports/2026-11-15_market_observer_watchlist_live.zh.md) · [逐项计划—实际](../../results/watchlist_live_20261115/plan_execution.csv) · [证券映射回执](../../results/watchlist_live_20261115/security_mapping_redacted.json) · [有界连接回执](../../results/watchlist_live_20261115/live_probe_redacted.json). The pool has 20 display entities and 19 requested US securities. Nine new current security codes were checked; SpaceX `SPCX` and SK hynix ADR `SKHY` have separate issuer crosschecks. An earlier broad WebAPI grant was rejected; a later `quote:read` grant enabled two acknowledged one-key TQQQ subscriptions during a closed US market. One old-timestamp quote was stored, the quota request returned HTTP 404, and zero subscriptions remain active. The saved-data page was checked at desktop and 390px; market-open freshness, ongoing collection and financial results are unverified. 休市单标的有界连接已通过，长期采集和正式金融评价未运行。
 
