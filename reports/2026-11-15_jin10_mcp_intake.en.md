@@ -26,7 +26,7 @@ The [structural profile](../results/news_jin10_20261115/probe_profile_run2.json)
 
 The already captured pages were then imported **offline** into an ignored local SQLite database. The [readback audit](../results/news_jin10_20261115/store_validation_v2.json) found three preserved raw responses, **253 logical items and 253 initial versions/fetches**, with 40 flash keys based on inspected URLs and 213 calendar fallback combination keys flagged for possible collisions. Every item locator and all three raw-response hashes were read back. Flash status remains `CAPTURED_PARTIAL` with a replay checkpoint; calendar status is complete only for the requested response range. This import made **zero additional provider requests**. The database and source text stay private; the aggregate count is not a formal research sample.
 
-Next, perform browser visual acceptance when a permitted local surface is available, without another provider call. Publish only reviewed non-content receipts. Confirm the applicable account quota and storage/display terms before setting any recurring frequency. For research admission, obtain dated issuer-to-security mappings, qualified pre-release consensus snapshots, independent first-availability evidence and the full calendar/price/exit/common-sample decisions. Formal labels, new model inference, fitting, prediction, returns and backtesting remain **NOT_RUN**.
+Next, perform browser visual acceptance when a permitted local surface is available, without another provider call. Confirm the applicable account quota and storage/display terms before setting any recurring frequency. For research admission, obtain dated issuer-to-security mappings, qualified pre-release consensus snapshots, independent first-availability evidence and the full calendar/price/exit/common-sample decisions. Formal labels, new model inference, fitting, prediction, returns and backtesting remain **NOT_RUN**.
 
 | Stage | Planned | Actual at this report | Status |
 | --- | --- | --- | --- |
@@ -34,6 +34,6 @@ Next, perform browser visual acceptance when a permitted local surface is availa
 | Live connection | Negotiate protocol and run bounded flash/calendar probe | One initial parser failure retained; corrected 20 + 213 + 20 returned-row probe succeeded | Complete for bounded probe; flash coverage partial |
 | Local data and page | Build resumable store and new display version | Three captured pages imported privately; public/private page static checks passed; browser visual unrun | Complete for static engineering; visual pending |
 | Guidance timing | Repair first-observed and target-period claims | Separate v2 and source replay completed | Complete |
-| Publication | Selectively push safe files and verify remote | Pending final audit | Not run |
+| Publication | Selectively push safe files and verify remote | [Reviewed code, template, receipts and bilingual reports](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/commit/1f7df31a0f81005006848f0ca44d4be5fe834183) pushed to the existing branch; remote branch SHA and three key blobs read back | Complete |
 
 This is a development report. Licensed provider text, raw API responses, the Token and the private SQLite database are excluded from GitHub. No Slack message or Overleaf change was made.

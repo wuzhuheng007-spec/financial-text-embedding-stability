@@ -76,6 +76,8 @@
     "sqlite_software_status": "BOUND_TO_REAL_SHAPE_OFFLINE_PROBE_IMPORT_READBACK_PASS",
     "dashboard_v2_status": "PUBLIC_TEMPLATE_AND_PRIVATE_LOCAL_PAGE_STATIC_PASS_VISUAL_NOT_RUN",
     "scheduled_collection": "NOT_STARTED_QUOTA_UNCONFIRMED",
+    "publication_status": "PUSHED_EXISTING_BRANCH_REMOTE_READBACK_CONFIRMED",
+    "initial_publication_commit": "1f7df31a0f81005006848f0ca44d4be5fe834183",
     "new_model_or_financial_run": "NOT_RUN"
   },
   "next_stage": "POINT_IN_TIME_SOURCE_CONSENSUS_IDENTITY_AND_PROTOCOL_DECISIONS",
