@@ -1,5 +1,7 @@
 # Quant Portal: personal test first
 
+The latest [personal acceptance report](../../reports/2026-11-16_quant_portal_personal_acceptance.en.md) ([中文报告](../../reports/2026-11-16_quant_portal_personal_acceptance.zh.md), [P0–P6 ledger](../../results/quant_portal_personal_acceptance_20261116/plan_execution.csv)) covers an existing owner account, isolated real-Edge flows, desktop/390px visual checks, two historical guidance cards, a booted backup copy and final-code local restart. Use the [one-page Chinese owner guide](personal_user_guide.zh.md) for everyday start, login, watchlist, guidance, backup, password reset and stop. The owner has not yet been observed using the final page in this turn.
+
 The current deliverable is a **loopback-only personal test** in [apps/quant_portal](../../apps/quant_portal). It provides a private account, editable watchlist, personal settings and source-linked historical NVDA/MU SEC fact summaries. Prices and Jin10/moomoo news are **not connected** in this app. No fabricated quote, prediction or market result is shown. The original private research Site and research scripts remain separate.
 
 Read in this order:

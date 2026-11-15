@@ -1,3 +1,7 @@
+# 2026-11-16 — Personal portal acceptance and historical guidance / 个人版验收与历史指引
+
+The [English](../../reports/2026-11-16_quant_portal_personal_acceptance.en.md) and [Chinese](../../reports/2026-11-16_quant_portal_personal_acceptance.zh.md) reports and [P0–P6 ledger](../../results/quant_portal_personal_acceptance_20261116/plan_execution.csv) record a preserved owner account, isolated real-Edge flow and 390px checks, two source-checked historical revenue guidance cards, one actual free-cash-flow card, an authenticated boot of the prechange backup and final-code local restart. Software, browser and visual checks overlap in scope and do not establish predictive validity. Owner use of the final page was not observed; Docker/cloud, feeds and formal M5 remain unrun.
+
 # 2026-11-16 — Personal Quant Portal test / 本机个人测试版
 
 The [English](../../reports/2026-11-16_quant_portal_personal.en.md) and [Chinese](../../reports/2026-11-16_quant_portal_personal.zh.md) reports and [P0–P7 ledger](../../results/quant_portal_20261116/plan_execution.csv) record a separate local invitation app, source-bound historical SEC fact summaries, user-owned watchlists, deny-by-default provider display, security tests and native backup/restore. Browser desktop/390px acceptance was interrupted; containers, Alibaba Cloud, load and provider display authorization remain pending. The financial-text 20,000-character input gap and formal research status are unchanged.

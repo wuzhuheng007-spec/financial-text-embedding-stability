@@ -1,0 +1,141 @@
+{
+  "schema": "quant_portal_visual_acceptance_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "browser": "Microsoft Edge (Chromium) via Playwright 1.56.0",
+  "target": "isolated local application and SQLite DB, loopback 8766",
+  "owner_actual_use": "NOT_TESTED_BY_OWNER",
+  "screenshot_storage": "LOCAL_ONLY_PRIVATE_SCREENSHOTS",
+  "code_sha256": {
+    "core/views.py": "1cc1ed44e8cdefa892ac35b77215cb89365ddd2782779c68a0c33eb298d1c1ee",
+    "core/models.py": "e91b12a6fc374b6cc30617048ee97b9af3d6eac735ec2be16785ca7cc47128a8",
+    "core/management/commands/bootstrap_personal.py": "a6c951538a13a65f9768ba5fc202b859ea05cbcefc324f2644c60b4f5ab0e2ee",
+    "core/migrations/0005_publicfactcard_guidance_fields.py": "378bf407cc8f8833ea0590c917839b1793643b8debc504208947dbe6e3269a57",
+    "templates/core/dashboard.html": "5327b534987f1a6be6fa879a4ed64c4f125d0086b591c56a02d3acdbdf99fc35",
+    "templates/core/_fact_card.html": "814eb62def1378483d3b907a63f5436dcda069768784e3cb4559ba86e2e60675",
+    "static/core/portal.css": "8a8d751b176856a9b46866506b27ac29cc52ac2593f00ac9b802735815b39ee8"
+  },
+  "pinned_input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "screenshots_reviewed_privately": [
+    "01_register_desktop.png",
+    "02_dashboard_desktop.png",
+    "04_settings_desktop.png",
+    "09_login_narrow.png",
+    "10_register_narrow.png",
+    "11_guidance_narrow.png",
+    "12_dashboard_final_narrow.png",
+    "13_empty_watchlist_narrow.png",
+    "05_duplicate_message_desktop.png",
+    "06_reused_invite_narrow.png",
+    "14_empty_fact_cards_narrow.png",
+    "15_synthetic_negative_card_narrow.png"
+  ],
+  "checks": {
+    "register_desktop_opened": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "login_desktop_opened": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "dashboard_desktop_opened": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "actual_guidance_separate": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "training_period_label": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "guidance_period_metric_range_unit_basis_review": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "guidance_derived_formula_labeled": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "percent_and_currency_readable": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "no_fake_quote_and_explicit_no_feed": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "all_source_links_well_formed": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "source_link_external_navigation": {
+      "status": "PASS",
+      "detail": "Popup reached the pinned SEC URL."
+    },
+    "settings_desktop_opened": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "register_390_opened_no_overflow": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "login_390_opened_no_overflow": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "settings_390_opened_no_overflow": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "dashboard_390_opened_no_overflow": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "long_security_name_wraps": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "logout_button_not_wrapped_390": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "empty_watchlist_390": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "guidance_source_link_external_navigation": {
+      "status": "PASS",
+      "detail": "One bounded real Edge click on a guidance anchor opened the exact pinned SEC URL. An earlier actual-card popup blank-URL symptom is kept separately as NOT_VERIFIED."
+    },
+    "no_earnings_empty_state_390": {
+      "status": "PASS",
+      "detail": "Real Edge 390px visit to a separate copied test DB with source fact rows removed; source test DB and owner DB unchanged."
+    },
+    "negative_value_layout_390_synthetic": {
+      "status": "PASS_SYNTHETIC_ONLY",
+      "detail": "A visibly labeled DEMO fixture with -12.5% in the separate copied test DB rendered without page overflow. No selected official card has a negative value; no real issuer fact is inferred."
+    },
+    "duplicate_and_consumed_invite_error_readability": {
+      "status": "PASS",
+      "detail": "Private desktop/narrow screenshots show duplicate watchlist and rejected consumed-invite errors; text is English within the mixed-language test UI."
+    }
+  },
+  "pass_count": 22,
+  "fail_count": 0,
+  "negative_source_value": "NO_NEGATIVE_VALUE_IN_SELECTED_OFFICIAL_CARDS; visual-only synthetic DEMO fixture checked in separate copied DB",
+  "no_earnings_empty_state": "PASS_REAL_EDGE_390PX_SEPARATE_COPIED_DB",
+  "source_link_limitation": "An initial standalone Edge probe saw a blank actual-card popup URL. The completed visual run then opened the pinned actual SEC URL, and one bounded guidance-link follow-up opened its pinned SEC URL. All 14 href/target/rel attributes were checked; the other 12 destinations were not individually opened.",
+  "visual_review": "CODEX_REVIEW; screenshots inspected by the same execution team, not independent human acceptance",
+  "synthetic_only_count": 1,
+  "not_verified_count": 0,
+  "isolated_test_processes_stopped": [
+    8766,
+    8767
+  ],
+  "counting_note": "Browser flow and visual checks overlap; their pass counts are not additive independent tests. Django software cases are reported separately.",
+  "receipt_updated_utc": "2026-11-15T21:34:28.819453+00:00"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "quant_portal_personal_acceptance_corrections_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "corrections": [
+    {
+      "area": "fact_import_transaction",
+      "initial_observation": "The first 20-case software run preceded a check of late import failures.",
+      "correction": "Wrap the selected fact import in one database transaction and add late provenance-conflict and source-manifest-mismatch rollback tests.",
+      "final_evidence": "final_software_check_receipt.json",
+      "counting_rule": "The final 22 cases include the earlier checks; 20 and 22 are not additive."
+    },
+    {
+      "area": "browser_harness",
+      "initial_observation": "Partial automation attempts used an ambiguous settings selector, omitted a CSRF field in a request client, and submitted an invalid cross-user form.",
+      "correction": "Use the selected form and a valid second browser context with CSRF; retain partial attempts outside the completed browser count.",
+      "final_evidence": "browser_acceptance_redacted.json"
+    },
+    {
+      "area": "narrow_layout",
+      "initial_observation": "The logout action wrapped at 390px.",
+      "correction": "Keep the action text on one line and recheck the real Edge layout.",
+      "final_evidence": "visual_acceptance_redacted.json"
+    },
+    {
+      "area": "state_comparison",
+      "initial_observation": "An initial diagnostic compared JSON arrays with SQLite tuples and gave a false mismatch.",
+      "correction": "Compare corresponding fields and normalized tuple values before declaring owner rows preserved.",
+      "final_evidence": "ops_live_update_initial_redacted.json"
+    }
+  ],
+  "scope_note": "These are same-team engineering corrections; no independent research validation or model evaluation occurred."
+}

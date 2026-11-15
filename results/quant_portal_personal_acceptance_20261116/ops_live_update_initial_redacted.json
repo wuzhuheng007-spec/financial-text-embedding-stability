@@ -1,0 +1,43 @@
+{
+  "schema": "quant_portal_live_update_initial_v1",
+  "recorded_at_utc": "2026-11-15T21:27:34.518053+00:00",
+  "recorded_at_shanghai": "2026-11-16T05:27:34.566154+08:00",
+  "prechange_backup": "apps/quant_portal/backups/personal-20261115T212010Z.sqlite3",
+  "prechange_backup_retained": true,
+  "tracked_old_service_stopped": true,
+  "migration": "core.0005_publicfactcard_guidance_fields APPLIED",
+  "bootstrap_new_eligible_facts": 3,
+  "bootstrap_blank_only_metadata_backfills": 11,
+  "tracked_new_service": {
+    "state": "RUNNING",
+    "port": 8765,
+    "bind": "127.0.0.1",
+    "server_pid": 268404,
+    "ready_http": 200,
+    "css_http": 200
+  },
+  "preservation_check": {
+    "owner_account_count_before_after": [
+      1,
+      1
+    ],
+    "watchlist_count_before_after": [
+      6,
+      6
+    ],
+    "preferences_count_before_after": [
+      1,
+      1
+    ],
+    "legacy_fact_count_preserved": 11,
+    "new_fact_count": 3,
+    "new_guidance_count": 2,
+    "total_fact_count": 14,
+    "legacy_rows_fieldwise_equal": true,
+    "account_watchlist_preferences_digest_equal": true,
+    "database_integrity": "ok"
+  },
+  "self_correction": "First legacy-row equality check compared JSON lists to SQLite tuples and incorrectly returned false for all 11 rows; a field-by-field diagnostic found no changed fields, and normalized tuple comparison passed. No database correction was required.",
+  "status": "LIVE_DATA_CHECK_PASS_IMPORTER_AUDIT_FIX_PENDING",
+  "private_credentials_or_rows_included": false
+}

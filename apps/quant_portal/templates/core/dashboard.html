@@ -79,27 +79,23 @@
 </div>
 
 <section class="card facts-section" aria-labelledby="facts-title">
-  <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史财期 · 非最新财报</span></div>
+  <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史训练期材料 · 非最新财报</span></div>
   {% if personal_mode %}<p class="muted">本机个人开发视图。以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
   {% if fact_cards %}
+    <h3 class="fact-group-title">历史实际业绩与现金流</h3>
+    {% if actual_fact_cards %}
     <div class="fact-grid">
-      {% for card in fact_cards %}
-      <article class="fact-card">
-        <div class="fact-head"><h3>{{ card.issuer }}</h3><span class="status-pill neutral">{% if card.evidence_state == 'CODEX_REVIEW_DEVELOPMENT' %}Codex 开发核对{% else %}{{ card.evidence_state|default:'状态未知' }}{% endif %}</span></div>
-        <p class="fact-period">财期：{{ card.fiscal_period|default:'未知' }}</p>
-        <dl class="fact-detail">
-          <div><dt>指标</dt><dd>{{ card.metric|default:'未知' }}</dd></div>
-          <div><dt>原文数值</dt><dd>{% if card.value_text %}{{ card.value_text }}{% else %}未知{% endif %}</dd></div>
-          {% if card.unit_text %}<div><dt>单位字段</dt><dd>{{ card.unit_text }}</dd></div>{% endif %}
-          <div><dt>币种字段</dt><dd>{{ card.currency|default:'UNKNOWN' }}</dd></div>
-          <div><dt>会计/调整口径</dt><dd>{{ card.basis_text|default:'UNKNOWN' }}</dd></div>
-          <div><dt>来源日期</dt><dd>{% if card.source_date %}<time datetime="{{ card.source_date|date:'Y-m-d' }}">{{ card.source_date|date:'Y-m-d' }}</time>{% else %}未知{% endif %}{% if card.source_time_precision == 'DATE_ONLY' %}（仅日期）{% endif %}</dd></div>
-          <div><dt>发布时间</dt><dd>{% if card.as_of %}<time datetime="{{ card.as_of|date:'c' }}">{{ card.as_of|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</dd></div>
-        </dl>
-        {% if card.source_url %}<a href="{{ card.source_url }}" target="_blank" rel="noopener noreferrer" class="source-link">查看原始来源 ↗</a>{% else %}<span class="muted">来源链接待核实</span>{% endif %}
-      </article>
-      {% endfor %}
+      {% for card in actual_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}
     </div>
+    {% else %}<div class="empty-state"><strong>尚无已核对数据</strong><p>没有符合当前来源及展示条件的实际业绩记录。</p></div>{% endif %}
+    {% if missing_free_cash_flow %}<p class="muted fact-coverage-note">自由现金流：{% for issuer in missing_free_cash_flow %}{{ issuer }}{% if not forloop.last %}、{% endif %}{% endfor %}尚无已核对数据；不能据此推断原公司未披露。</p>{% endif %}
+    <h3 class="fact-group-title">历史公告中的未来指引</h3>
+    {% if guidance_fact_cards %}
+    <p class="muted">范围上下界由公司披露的中心值与容差计算，不是公司直接公布的上下界；本页未生成中点。</p>
+    <div class="fact-grid">
+      {% for card in guidance_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}
+    </div>
+    {% else %}<div class="empty-state"><strong>尚无已核对指引数据</strong><p>未找到符合当前来源及展示条件的历史指引记录。</p></div>{% endif %}
   {% else %}
     <div class="empty-state"><strong>暂无可公开展示的事实卡</strong><p>研究线的私人原件、事实草稿和授权资料不会自动转入多人页面。</p></div>
   {% endif %}

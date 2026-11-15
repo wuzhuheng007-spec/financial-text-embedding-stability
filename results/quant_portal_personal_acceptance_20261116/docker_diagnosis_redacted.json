@@ -1,0 +1,31 @@
+{
+  "schema": "quant_portal_docker_readonly_diagnosis_v1",
+  "checked_at_utc": "2026-11-15T21:22:58.027615+00:00",
+  "checked_at_shanghai": "2026-11-16T05:22:58.075131+08:00",
+  "read_only": true,
+  "docker_cli_version": "29.6.2",
+  "active_context": "desktop-linux",
+  "linux_engine_probe": "docker version/info did not return a server response within bounded observation and were canceled",
+  "wsl_status": "WSL2 unable to run; output points to https://aka.ms/enablevirtualization",
+  "processor_flags": {
+    "VMMonitorModeExtensions": true,
+    "VirtualizationFirmwareEnabled": true,
+    "SecondLevelAddressTranslationExtensions": true
+  },
+  "windows_optional_feature_query": "UNKNOWN_REQUIRES_ELEVATION",
+  "container_build": "NOT_RUN",
+  "postgres_migration": "NOT_RUN",
+  "container_health": "NOT_RUN",
+  "next_user_step": "In elevated PowerShell inspect VirtualMachinePlatform and WSL optional-feature state, follow Microsoft WSL troubleshooting, reboot only when the user schedules it, then confirm Docker Desktop Linux engine with docker info. No feature was changed in this turn.",
+  "primary_docs": [
+    "https://learn.microsoft.com/en-us/windows/wsl/troubleshooting",
+    "https://learn.microsoft.com/en-us/windows/wsl/install-manual",
+    "https://docs.docker.com/desktop/setup/install/windows-install/"
+  ],
+  "bounded_daemon_probe": {
+    "command": "docker info --format {{.ServerVersion}}",
+    "timeout_seconds": 5,
+    "result": "TIMEOUT",
+    "elapsed_seconds_approx": 5.03
+  }
+}

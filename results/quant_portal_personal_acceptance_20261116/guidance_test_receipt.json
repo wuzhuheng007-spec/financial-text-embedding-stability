@@ -1,0 +1,44 @@
+{
+  "schema": "quant_portal_guidance_test_receipt_v1",
+  "run_at_utc": "2026-11-15T21:26:17.269351+00:00",
+  "base_git_head": "571eba43df0f8df6c3627a0d04c3fec148832975",
+  "configuration": {
+    "DEBUG": "1",
+    "DJANGO_TESTING": "1",
+    "PERSONAL_MODE": "1",
+    "database": "isolated Django test database",
+    "secret": "synthetic in process only; value omitted"
+  },
+  "source_input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "code_sha256": {
+    "apps/quant_portal/core/models.py": "e91b12a6fc374b6cc30617048ee97b9af3d6eac735ec2be16785ca7cc47128a8",
+    "apps/quant_portal/core/migrations/0005_publicfactcard_guidance_fields.py": "378bf407cc8f8833ea0590c917839b1793643b8debc504208947dbe6e3269a57",
+    "apps/quant_portal/core/management/commands/bootstrap_personal.py": "ce591238473b4012002cf031aa1a440d316c69dfc21c61e12b17389fffd678ac",
+    "apps/quant_portal/core/views.py": "c0810061e583d248f7e2faf4ea0027e1b95c2eb2610e1438946c0ae68f2fc583",
+    "apps/quant_portal/core/tests.py": "8ca177d2bf05ee1b32c5eff216a39e8f2470beca8366cec8c9023ccdbdf30e0d",
+    "apps/quant_portal/templates/core/dashboard.html": "5327b534987f1a6be6fa879a4ed64c4f125d0086b591c56a02d3acdbdf99fc35",
+    "apps/quant_portal/templates/core/_fact_card.html": "814eb62def1378483d3b907a63f5436dcda069768784e3cb4559ba86e2e60675",
+    "apps/quant_portal/static/core/portal.css": "8666b2f14b87ad2941ed279680abf7a94346b42c0cae5a939d6cc21389e2496d"
+  },
+  "checks": [
+    {
+      "file": "results/quant_portal_personal_acceptance_20261116/guidance_tests.log",
+      "exit_code": 0,
+      "sha256": "c41591b560da63e3a1d95470a69a59c21fdfd02f3ec4484e734f5532735bee3c"
+    },
+    {
+      "file": "results/quant_portal_personal_acceptance_20261116/guidance_migrations_check.log",
+      "exit_code": 0,
+      "sha256": "93e6e2d5be3c054add80c0f19101608803f7ca8a7df1fa41f76bbb9a1f570f4a"
+    },
+    {
+      "file": "results/quant_portal_personal_acceptance_20261116/guidance_django_check.log",
+      "exit_code": 0,
+      "sha256": "f87ceb15410bde28ff826ce26228e0576558258fa64d145847921a593a61ee63"
+    }
+  ],
+  "distinct_test_cases": 20,
+  "prior_suite_cases": 17,
+  "new_focused_cases": 3,
+  "configuration_replay_note": "The focused 2-case run and this 20-case full run overlap; do not add them."
+}

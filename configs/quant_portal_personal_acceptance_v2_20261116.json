@@ -1,0 +1,37 @@
+{
+  "schema": "quant_portal_personal_acceptance_v2_plan",
+  "run_date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "571eba43df0f8df6c3627a0d04c3fec148832975",
+  "branch": "codex/sync-research-progress-20261113",
+  "scope": "personal_local_end_to_end_and_historical_guidance_display",
+  "research_data_policy": {
+    "existing_redacted_fact_input": "results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json",
+    "input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+    "eligible_review_state": "CODEX_REVIEW_SOURCE_SUPPORTED",
+    "historical_training_window": ["2025-04-01", "2026-03-31"],
+    "new_downloads": 0,
+    "new_model_fits": 0,
+    "provider_feed_calls": 0
+  },
+  "browser_acceptance": {
+    "isolated_loopback_port": 8766,
+    "test_data_private": true,
+    "owner_invite_must_not_be_consumed": true,
+    "session_count": 2,
+    "viewport_widths_px": [1440, 390],
+    "checks": ["invite_register", "login", "logout", "relogin", "watchlist_add_remove_duplicate", "timezone_persistence", "invite_reuse_rejected", "protected_page_redirect", "cross_user_isolation", "historical_guidance_view", "empty_states", "no_horizontal_page_overflow"],
+    "human_owner_use_separate_from_automated_test": true
+  },
+  "database_safety": {
+    "backup_before_change": true,
+    "isolated_migration_and_bootstrap_before_live": true,
+    "live_account_watchlist_settings_preserved": true,
+    "restore_probed_without_replacing_live_db": true
+  },
+  "docker_gate": "read_only_diagnosis_then_isolated_container_test_only_if_engine_available",
+  "cloud_deployment": "NOT_RUN",
+  "market_news_connection": "OUT_OF_SCOPE",
+  "financial_text_20000_character_gap": "UNRESOLVED",
+  "formal_m5_financial_experiment": "NOT_RUN"
+}

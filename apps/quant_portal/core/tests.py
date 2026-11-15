@@ -1,4 +1,6 @@
-"""Synthetic security checks. These tests do not use provider or research data."""
+"""Isolated software checks; the guidance integration case uses a pinned redacted source summary."""
+import copy
+import json
 from datetime import timedelta
 from io import StringIO
 from pathlib import Path
@@ -10,11 +12,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
 from .models import Invitation, PublicFactCard, PublicMarketSnapshot, UserPreferences, WatchlistItem, WorkerHeartbeat
+from .management.commands.bootstrap_personal import Command as BootstrapCommand, checked_guidance_range, EXPECTED_FACTS_SHA256
 
 
 PASSWORD = "GraniteRiver!23Complex"
@@ -178,6 +182,7 @@ class PublicCacheTests(TestCase):
             currency="USD", basis_text="GAAP",
             source_class=PublicFactCard.SourceClass.OFFICIAL,
             visibility_scope="LOCAL_ONLY", evidence_state="CODEX_REVIEW_DEVELOPMENT",
+            source_review_status="CODEX_REVIEW_SOURCE_SUPPORTED",
         )
         with override_settings(PERSONAL_MODE=False):
             self.assertEqual(len(self.client.get(reverse("dashboard")).context["fact_cards"]), 0)
@@ -186,6 +191,18 @@ class PublicCacheTests(TestCase):
             self.assertEqual(len(response.context["fact_cards"]), 1)
             self.assertContains(response, "GAAP")
             self.assertContains(response, "USD")
+
+    @override_settings(PERSONAL_MODE=True)
+    def test_ambiguous_local_official_card_remains_hidden(self):
+        PublicFactCard.objects.create(
+            issuer="Synthetic", fiscal_period="Demo period", metric="Demo metric", value_text="N/A",
+            source_url="https://example.org/source", source_date=timezone.now().date(),
+            source_class=PublicFactCard.SourceClass.OFFICIAL, visibility_scope="LOCAL_ONLY",
+            evidence_state="CODEX_REVIEW_DEVELOPMENT", source_review_status="CODEX_REVIEW_AMBIGUOUS",
+        )
+        response = self.client.get(reverse("dashboard"))
+        self.assertEqual(len(response.context["fact_cards"]), 0)
+        self.assertNotContains(response, "Demo metric")
 
     def test_approved_official_card_is_visible(self):
         PublicFactCard.objects.create(
@@ -196,6 +213,99 @@ class PublicCacheTests(TestCase):
             visibility_scope="SHARED_APPROVED",
         )
         self.assertEqual(len(self.client.get(reverse("dashboard")).context["fact_cards"]), 1)
+
+
+class HistoricalGuidanceImportTests(TestCase):
+    """The pinned, redacted SEC development summary is an integration fixture, not gold."""
+
+    @staticmethod
+    def source_path():
+        return Path(__file__).resolve().parents[3] / "results" / "market_observer_financial_text_v2_20261115" / "fact_cards_v4_redacted.json"
+
+    @override_settings(PERSONAL_MODE=True, DEBUG=True)
+    def test_pinned_guidance_and_cash_flow_import_once_and_render_separately(self):
+        from hashlib import sha256
+
+        source_path = self.source_path()
+        self.assertEqual(sha256(source_path.read_bytes()).hexdigest(), EXPECTED_FACTS_SHA256)
+        with TemporaryDirectory() as private_root, override_settings(BASE_DIR=Path(private_root)):
+            for _ in range(2):
+                call_command("bootstrap_personal", facts_path=str(source_path), stdout=StringIO())
+        self.assertEqual(PublicFactCard.objects.count(), 14)
+        self.assertEqual(PublicFactCard.objects.filter(fact_kind="GUIDANCE").count(), 2)
+        self.assertEqual(PublicFactCard.objects.filter(fact_topic="free_cash_flow").count(), 1)
+        self.assertEqual(
+            set(PublicFactCard.objects.filter(fact_kind="GUIDANCE").values_list("candidate_id", flat=True)),
+            {"581e043fc41120b9a092", "8a350fb1e88c5c68f218"},
+        )
+        nvda = PublicFactCard.objects.get(candidate_id="581e043fc41120b9a092")
+        self.assertEqual((nvda.fiscal_period, nvda.range_lower_text, nvda.range_upper_text),
+                         ("Q1 FY27", "$76.44 billion", "$79.56 billion"))
+        self.assertEqual(nvda.range_status, "DERIVED_FROM_SOURCE_RANGE")
+        self.assertEqual(nvda.source_manifest_sha256,
+                         json.loads(source_path.read_text(encoding="utf-8"))["source_manifest_sha256"])
+        mu = PublicFactCard.objects.get(candidate_id="8a350fb1e88c5c68f218")
+        self.assertEqual((mu.fiscal_period, mu.basis_text, mu.range_lower_text, mu.range_upper_text),
+                         ("FQ3-26", "GAAP", "$32.75 billion", "$34.25 billion"))
+        fcf = PublicFactCard.objects.get(candidate_id="54e6616f0199ce82f196")
+        self.assertEqual((fcf.fact_kind, fcf.fiscal_period, fcf.basis_text),
+                         ("ACTUAL", "FQ2-26", "UNKNOWN"))
+        self.assertIn("Adjusted", fcf.basis_note)
+        self.assertEqual(fcf.source_review_status, "CODEX_REVIEW_SOURCE_SUPPORTED")
+        user = get_user_model().objects.create_user(username="qa@example.org", password=PASSWORD)
+        self.client.force_login(user)
+        response = self.client.get(reverse("dashboard"))
+        self.assertEqual(len(response.context["actual_fact_cards"]), 12)
+        self.assertEqual(len(response.context["guidance_fact_cards"]), 2)
+        self.assertEqual(response.context["missing_free_cash_flow"], ["NVIDIA"])
+        self.assertContains(response, "历史训练期材料")
+        self.assertContains(response, "计算下界")
+        self.assertContains(response, "Codex 来源回读支持")
+        self.assertContains(response, "NVIDIA尚无已核对数据")
+
+    def test_ambiguous_guidance_and_cash_flow_excluded_and_bad_range_rejected(self):
+        doc = json.loads(self.source_path().read_text(encoding="utf-8"))
+        latest = {c["symbol"]: c for c in doc["cards"] if c["filing_date"] in ("2026-02-25", "2026-03-18")}
+        nvda_guidance = next(f for f in latest["NVDA"]["reviewed_facts"] if f["topic"] == "guidance")
+        bad_range = copy.deepcopy(nvda_guidance)
+        bad_range["range"]["lower_text"] = "$0 billion"
+        with self.assertRaises(CommandError):
+            checked_guidance_range(bad_range)
+        nvda_guidance["status"] = "CODEX_REVIEW_AMBIGUOUS"
+        mu_fcf = next(f for f in latest["MU"]["reviewed_facts"] if f["topic"] == "free_cash_flow")
+        mu_fcf["status"] = "CODEX_REVIEW_AMBIGUOUS"
+        selected_ids = {fact["candidate_id"] for _, fact, _ in BootstrapCommand()._selected_facts(doc)}
+        self.assertNotIn(nvda_guidance["candidate_id"], selected_ids)
+        self.assertNotIn(mu_fcf["candidate_id"], selected_ids)
+
+    @override_settings(PERSONAL_MODE=True, DEBUG=True)
+    def test_late_provenance_conflict_rolls_back_entire_import(self):
+        source_path = self.source_path()
+        doc = json.loads(source_path.read_text(encoding="utf-8"))
+        mu = next(c for c in doc["cards"] if c["symbol"] == "MU" and c["filing_date"] == "2026-03-18")
+        guidance = next(f for f in mu["reviewed_facts"] if f["topic"] == "guidance")
+        PublicFactCard.objects.create(
+            candidate_id=guidance["candidate_id"], issuer="Conflict", fiscal_period="FQ3-26",
+            metric="Revenue", value_text=guidance["value_text"], source_url=guidance["source_url"],
+            source_sha256="0" * 64,
+        )
+        with TemporaryDirectory() as private_root, override_settings(BASE_DIR=Path(private_root)):
+            with self.assertRaises(CommandError):
+                call_command("bootstrap_personal", facts_path=str(source_path), stdout=StringIO())
+        self.assertEqual(PublicFactCard.objects.count(), 1)
+        self.assertEqual(PublicFactCard.objects.get().issuer, "Conflict")
+
+    @override_settings(PERSONAL_MODE=True, DEBUG=True)
+    def test_existing_candidate_rejects_input_manifest_mismatch(self):
+        source_path = self.source_path()
+        with TemporaryDirectory() as private_root, override_settings(BASE_DIR=Path(private_root)):
+            call_command("bootstrap_personal", facts_path=str(source_path), stdout=StringIO())
+            first = PublicFactCard.objects.order_by("id").first()
+            PublicFactCard.objects.filter(pk=first.pk).update(source_manifest_sha256="0" * 64)
+            with self.assertRaises(CommandError):
+                call_command("bootstrap_personal", facts_path=str(source_path), stdout=StringIO())
+        self.assertEqual(PublicFactCard.objects.count(), 14)
+        self.assertEqual(PublicFactCard.objects.get(pk=first.pk).source_manifest_sha256, "0" * 64)
 
 
 class OperationsTests(TestCase):

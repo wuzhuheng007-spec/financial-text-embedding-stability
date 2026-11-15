@@ -108,9 +108,27 @@ def dashboard(request):
         visibility_scope="SHARED_APPROVED",
         source_class__in=(PublicFactCard.SourceClass.OFFICIAL, PublicFactCard.SourceClass.DEMO),
     ) & ~Q(rights_basis="")
-    personal_cards = Q(visibility_scope="LOCAL_ONLY", source_class=PublicFactCard.SourceClass.OFFICIAL)
+    personal_cards = Q(
+        visibility_scope="LOCAL_ONLY",
+        source_class=PublicFactCard.SourceClass.OFFICIAL,
+        evidence_state="CODEX_REVIEW_DEVELOPMENT",
+        source_review_status="CODEX_REVIEW_SOURCE_SUPPORTED",
+    )
     card_filter = shared_cards | personal_cards if settings.PERSONAL_MODE else shared_cards
-    cards = PublicFactCard.objects.filter(card_filter).order_by("-source_date", "issuer", "metric")[:30]
+    eligible_cards = PublicFactCard.objects.filter(card_filter)
+    cards = list(eligible_cards.order_by("-source_date", "issuer", "metric")[:30])
+    actual_cards = [card for card in cards if card.fact_kind == PublicFactCard.FactKind.ACTUAL]
+    guidance_cards = [card for card in cards if card.fact_kind == PublicFactCard.FactKind.GUIDANCE]
+    missing_free_cash_flow = []
+    if settings.PERSONAL_MODE:
+        for issuer in ("NVIDIA", "Micron Technology"):
+            if not eligible_cards.filter(
+                issuer=issuer,
+                fact_kind=PublicFactCard.FactKind.ACTUAL,
+                fact_topic="free_cash_flow",
+                source_review_status="CODEX_REVIEW_SOURCE_SUPPORTED",
+            ).exists():
+                missing_free_cash_flow.append(issuer)
     states = {name: {"state": "NOT_CONNECTED", "last_success_at": None} for name in ("moomoo", "jin10")}
     for row in ProviderState.objects.filter(provider__in=states):
         states[row.provider] = {"state": row.state, "last_success_at": row.last_success_at}
@@ -119,6 +137,9 @@ def dashboard(request):
         "watch_rows": [{"item": item, "snapshot": snapshots.get(item.symbol)} for item in watchlist],
         "snapshots": snapshots,
         "fact_cards": cards,
+        "actual_fact_cards": actual_cards,
+        "guidance_fact_cards": guidance_cards,
+        "missing_free_cash_flow": missing_free_cash_flow,
         "provider_states": states,
         "watchlist_form": WatchlistItemForm(),
         "display_timezone": request.display_timezone,

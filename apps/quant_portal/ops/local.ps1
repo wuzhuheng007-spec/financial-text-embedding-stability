@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory=$true, Position=0)]
-    [ValidateSet('start','status','stop','admin','reissue')]
+    [ValidateSet('start','status','stop','admin','reissue','reset-password')]
     [string]$Action,
     [string]$PythonExe = '',
     [int]$Port = 8765
@@ -124,6 +124,12 @@ if ($Action -eq 'reissue') {
     $NewInvite = Join-Path $StateDir ("personal_invite_" + (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ') + '.txt')
     Push-Location $PortalRoot
     try { & $ResolvedPython manage.py create_invite owner@local.invalid --output $NewInvite; exit $LASTEXITCODE }
+    finally { Pop-Location }
+}
+
+if ($Action -eq 'reset-password') {
+    Push-Location $PortalRoot
+    try { & $ResolvedPython manage.py changepassword owner@local.invalid; exit $LASTEXITCODE }
     finally { Pop-Location }
 }
 

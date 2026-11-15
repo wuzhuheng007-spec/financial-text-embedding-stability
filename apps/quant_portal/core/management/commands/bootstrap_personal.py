@@ -1,7 +1,9 @@
 """One-person local bootstrap with source-bound historical summaries."""
 import hashlib
 import json
+import re
 from datetime import date, timedelta
+from decimal import Decimal
 from pathlib import Path
 
 from django.conf import settings
@@ -15,8 +17,44 @@ from core.models import Invitation, PublicFactCard
 
 
 EXPECTED_FACTS_SHA256 = "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4"
-FACT_TOPICS = ("revenue", "net_income", "eps", "gross_margin", "capital_expenditures", "operating_cash_flow")
+FACT_TOPICS = (
+    "revenue", "net_income", "eps", "gross_margin", "capital_expenditures",
+    "operating_cash_flow", "free_cash_flow", "guidance",
+)
 ISSUER_NAMES = {"NVDA": "NVIDIA", "MU": "Micron Technology"}
+
+
+def checked_guidance_range(fact):
+    """Accept only the source-bound percentage or dollar tolerance in the pinned summary."""
+    amount = fact["value_text"]
+    percent_match = re.fullmatch(r"\$(\d+(?:\.\d+)?) billion, plus or minus (\d+(?:\.\d+)?)%", amount)
+    absolute_match = re.fullmatch(r"\$(\d+(?:\.\d+)?) billion ± \$(\d+(?:\.\d+)?) million", amount)
+    if percent_match:
+        center, pct = (Decimal(v) for v in percent_match.groups())
+        delta = center * pct / Decimal(100)
+        derivation = "central_billion * (1 +/- percentage/100)"
+    elif absolute_match:
+        center, delta_million = (Decimal(v) for v in absolute_match.groups())
+        delta = delta_million / Decimal(1000)
+        derivation = "central_billion +/- delta_million/1000"
+    else:
+        raise CommandError("Guidance range expression is outside the frozen supported formats")
+    source_range = fact.get("range") or {}
+    lower_text = source_range.get("lower_text", "")
+    upper_text = source_range.get("upper_text", "")
+    lower_match = re.fullmatch(r"\$(\d+(?:\.\d+)?) billion", lower_text)
+    upper_match = re.fullmatch(r"\$(\d+(?:\.\d+)?) billion", upper_text)
+    if (
+        source_range.get("status") != "DERIVED_FROM_SOURCE_RANGE"
+        or source_range.get("input_candidate_id") != fact["candidate_id"]
+        or source_range.get("input_value_text") != amount
+        or source_range.get("derivation") != derivation
+        or not lower_match or not upper_match
+        or Decimal(lower_match.group(1)) != center - delta
+        or Decimal(upper_match.group(1)) != center + delta
+    ):
+        raise CommandError("Guidance bounds do not reproduce from the source expression")
+    return source_range
 
 
 class Command(BaseCommand):
@@ -49,42 +87,67 @@ class Command(BaseCommand):
                 facts = self._selected_facts(json.loads(source_bytes.decode("utf-8")))
         imported = 0
         backfilled = 0
-        for card, fact, manifest_sha in facts:
-            defaults = {
-                "issuer": ISSUER_NAMES[card["symbol"]],
-                "fiscal_period": fact["period_text"],
-                "metric": fact["metric"],
-                "value_text": fact["value_text"],
-                "unit_text": fact.get("unit_text") or "",
-                "currency": fact.get("currency") or "",
-                "basis_text": fact.get("basis") or "",
-                "source_url": fact["source_url"],
-                "as_of": None,
-                "source_date": date.fromisoformat(card["filing_date"]),
-                "source_time_precision": "DATE_ONLY",
-                "source_event_id": card["event_id"],
-                "source_sha256": fact["source_document_sha256"],
-                "source_manifest_sha256": manifest_sha,
-                "evidence_locator": fact["evidence_locator"],
-                "evidence_state": "CODEX_REVIEW_DEVELOPMENT",
-                "source_class": PublicFactCard.SourceClass.OFFICIAL,
-                "visibility_scope": "LOCAL_ONLY",
-                "display_approved": False,
-                "rights_basis": "",
-            }
-            row, created = PublicFactCard.objects.get_or_create(candidate_id=fact["candidate_id"], defaults=defaults)
-            imported += int(created)
-            if not created:
-                if row.source_sha256 != defaults["source_sha256"] or row.source_url != defaults["source_url"]:
-                    raise CommandError("Existing candidate provenance differs; no automatic overwrite")
-                changed = []
-                for field in ("currency", "basis_text"):
-                    if not getattr(row, field) and defaults[field]:
-                        setattr(row, field, defaults[field])
-                        changed.append(field)
-                if changed:
-                    row.save(update_fields=changed)
-                    backfilled += 1
+        with transaction.atomic():
+            for card, fact, manifest_sha in facts:
+                source_range = checked_guidance_range(fact) if fact["topic"] == "guidance" else {}
+                defaults = {
+                    "issuer": ISSUER_NAMES[card["symbol"]],
+                    "fiscal_period": fact["period_text"],
+                    "fact_kind": (PublicFactCard.FactKind.GUIDANCE if fact["topic"] == "guidance"
+                                  else PublicFactCard.FactKind.ACTUAL),
+                    "fact_topic": fact["topic"],
+                    "metric": fact["metric"],
+                    "value_text": fact["value_text"],
+                    "range_lower_text": source_range.get("lower_text", ""),
+                    "range_upper_text": source_range.get("upper_text", ""),
+                    "range_derivation": source_range.get("derivation", ""),
+                    "range_status": source_range.get("status", ""),
+                    "unit_text": fact.get("unit_text") or "",
+                    "currency": fact.get("currency") or "",
+                    "basis_text": fact.get("basis") or "",
+                    "basis_note": fact.get("basis_note") or "",
+                    "source_url": fact["source_url"],
+                    "as_of": None,
+                    "source_date": date.fromisoformat(card["filing_date"]),
+                    "source_time_precision": "DATE_ONLY",
+                    "source_event_id": card["event_id"],
+                    "source_sha256": fact["source_document_sha256"],
+                    "source_manifest_sha256": manifest_sha,
+                    "evidence_locator": fact["evidence_locator"],
+                    "evidence_state": "CODEX_REVIEW_DEVELOPMENT",
+                    "source_review_status": fact["status"],
+                    "source_class": PublicFactCard.SourceClass.OFFICIAL,
+                    "visibility_scope": "LOCAL_ONLY",
+                    "display_approved": False,
+                    "rights_basis": "",
+                }
+                row, created = PublicFactCard.objects.get_or_create(candidate_id=fact["candidate_id"], defaults=defaults)
+                imported += int(created)
+                if not created:
+                    if (row.source_sha256 != defaults["source_sha256"]
+                            or row.source_manifest_sha256 != defaults["source_manifest_sha256"]
+                            or row.source_url != defaults["source_url"]):
+                        raise CommandError("Existing candidate provenance differs; no automatic overwrite")
+                    for field in (
+                        "issuer", "fiscal_period", "fact_kind", "metric", "value_text", "unit_text",
+                        "source_date", "source_time_precision", "source_event_id", "evidence_locator",
+                        "evidence_state", "source_class", "visibility_scope", "display_approved",
+                    ):
+                        if getattr(row, field) != defaults[field]:
+                            raise CommandError(f"Existing candidate {field} differs; no automatic overwrite")
+                    changed = []
+                    for field in (
+                        "currency", "basis_text", "basis_note", "fact_topic", "source_review_status",
+                        "range_lower_text", "range_upper_text", "range_derivation", "range_status",
+                    ):
+                        if getattr(row, field) and getattr(row, field) != defaults[field]:
+                            raise CommandError(f"Existing candidate {field} differs; no automatic overwrite")
+                        if not getattr(row, field) and defaults[field]:
+                            setattr(row, field, defaults[field])
+                            changed.append(field)
+                    if changed:
+                        row.save(update_fields=changed)
+                        backfilled += 1
         if not get_user_model().objects.filter(username=owner_email).exists() and not invite_path.exists():
             with transaction.atomic():
                 _, code = Invitation.issue(owner_email, timezone.now() + timedelta(days=30))
@@ -121,5 +184,12 @@ class Command(BaseCommand):
                         not fact.get("source_url", "").startswith("https://www.sec.gov/Archives/") or
                         not fact.get("candidate_id") or not fact.get("evidence_locator")):
                     raise CommandError("Selected fact lacks matching SEC provenance")
+                if fact["topic"] == "guidance":
+                    if (fact.get("category") != "GUIDANCE" or not fact.get("period_text")
+                            or not fact.get("metric_normalized", "").endswith("_guidance")):
+                        raise CommandError("Selected guidance lacks a supported category, metric or period")
+                    checked_guidance_range(fact)
+                if fact["topic"] == "free_cash_flow" and fact.get("category") != "CASH_FLOW":
+                    raise CommandError("Selected free cash flow lacks the supported actual category")
                 selected.append((card, fact, document["source_manifest_sha256"]))
         return selected

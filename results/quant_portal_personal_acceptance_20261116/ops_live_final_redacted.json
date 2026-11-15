@@ -1,0 +1,50 @@
+{
+  "schema": "quant_portal_live_final_ops_v1",
+  "recorded_at_utc": "2026-11-15T21:31:37.320370+00:00",
+  "recorded_at_shanghai": "2026-11-16T05:31:37.371768+08:00",
+  "prechange_backup_private_repo_relative": "apps/quant_portal/backups/personal-20261115T212010Z.sqlite3",
+  "prechange_backup_retained": true,
+  "tracked_service_stop_start": "PASS",
+  "final_service": {
+    "state": "RUNNING",
+    "bind": "127.0.0.1",
+    "port": 8765,
+    "pid": 241312,
+    "started_utc": "2026-11-15T21:30:47.2744900Z",
+    "ready_http": 200,
+    "css_http": 200
+  },
+  "new_process_started_after_key_file_modifications": true,
+  "key_code_sha256": {
+    "core/management/commands/bootstrap_personal.py": "a6c951538a13a65f9768ba5fc202b859ea05cbcefc324f2644c60b4f5ab0e2ee",
+    "core/views.py": "1cc1ed44e8cdefa892ac35b77215cb89365ddd2782779c68a0c33eb298d1c1ee",
+    "static/core/portal.css": "8a8d751b176856a9b46866506b27ac29cc52ac2593f00ac9b802735815b39ee8",
+    "templates/core/dashboard.html": "5327b534987f1a6be6fa879a4ed64c4f125d0086b591c56a02d3acdbdf99fc35"
+  },
+  "prechange_counts": {
+    "accounts": 1,
+    "watchlist": 6,
+    "preferences": 1,
+    "facts": 11
+  },
+  "final_counts": {
+    "accounts": 1,
+    "watchlist": 6,
+    "preferences": 1,
+    "facts": 14
+  },
+  "guidance_count": 2,
+  "actual_fact_count": 12,
+  "migration_0005_applied": true,
+  "database_integrity": "ok",
+  "owner_account_watchlist_preferences_unchanged": true,
+  "all_11_legacy_fact_rows_unchanged": true,
+  "new_eligible_fact_rows": 3,
+  "final_restart_bootstrap_imported_new_rows": 0,
+  "final_restart_bootstrap_backfills": 0,
+  "duplicate_start_refused": true,
+  "duplicate_start_exit_code": 1,
+  "pid_unchanged_after_duplicate_start": true,
+  "live_password_or_invite_value_recorded": false,
+  "limitations": "HTTP readiness and process time/order do not replace authenticated visual acceptance; separate browser receipt covers the isolated test."
+}

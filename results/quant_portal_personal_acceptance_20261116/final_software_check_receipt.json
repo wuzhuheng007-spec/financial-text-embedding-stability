@@ -1,0 +1,44 @@
+{
+  "schema": "quant_portal_personal_final_software_check_v1",
+  "run_at_utc": "2026-11-15T21:31:07.372174+00:00",
+  "timezone_for_reports": "Asia/Shanghai",
+  "base_git_head": "571eba43df0f8df6c3627a0d04c3fec148832975",
+  "configuration": {
+    "DEBUG": "1",
+    "DJANGO_TESTING": "1",
+    "PERSONAL_MODE": "1",
+    "PUBLIC_MARKET_DATA_ENABLED": "0",
+    "database": "isolated Django test database",
+    "test_secret": "synthetic value omitted"
+  },
+  "pinned_input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "code_sha256": {
+    "apps/quant_portal/core/models.py": "e91b12a6fc374b6cc30617048ee97b9af3d6eac735ec2be16785ca7cc47128a8",
+    "apps/quant_portal/core/migrations/0005_publicfactcard_guidance_fields.py": "378bf407cc8f8833ea0590c917839b1793643b8debc504208947dbe6e3269a57",
+    "apps/quant_portal/core/management/commands/bootstrap_personal.py": "a6c951538a13a65f9768ba5fc202b859ea05cbcefc324f2644c60b4f5ab0e2ee",
+    "apps/quant_portal/core/views.py": "1cc1ed44e8cdefa892ac35b77215cb89365ddd2782779c68a0c33eb298d1c1ee",
+    "apps/quant_portal/core/tests.py": "f9e4c2142187a255164a44416db4d45ffa5a6e0b465f36b1397cd42dafb26803",
+    "apps/quant_portal/templates/core/dashboard.html": "5327b534987f1a6be6fa879a4ed64c4f125d0086b591c56a02d3acdbdf99fc35",
+    "apps/quant_portal/templates/core/_fact_card.html": "814eb62def1378483d3b907a63f5436dcda069768784e3cb4559ba86e2e60675",
+    "apps/quant_portal/static/core/portal.css": "8a8d751b176856a9b46866506b27ac29cc52ac2593f00ac9b802735815b39ee8"
+  },
+  "checks": {
+    "final_django_tests_v2.log": {
+      "sha256": "2cc9d760a05bcc583615e759b7508389aa7f7de67b07301ee46f7d054f4fe207",
+      "exit_code": 0
+    },
+    "final_migration_check.log": {
+      "sha256": "93e6e2d5be3c054add80c0f19101608803f7ca8a7df1fa41f76bbb9a1f570f4a",
+      "exit_code": 0
+    },
+    "final_system_check.log": {
+      "sha256": "f87ceb15410bde28ff826ce26228e0576558258fa64d145847921a593a61ee63",
+      "exit_code": 0
+    }
+  },
+  "distinct_test_cases": 22,
+  "prior_20_case_run": "PRE_IMPORTER_AUDIT_FIX_OVERLAPS_NOT_ADDITIVE",
+  "final_22_case_first_run": "POST_IMPORTER_FIX_PRE_CSS_OVERLAPS_NOT_ADDITIVE",
+  "browser_cases": "SEPARATE_REAL_EDGE_FLOW_NOT_ADDITIVE_TO_SOFTWARE_CASES",
+  "result": "PASS"
+}

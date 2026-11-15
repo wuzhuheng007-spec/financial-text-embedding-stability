@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-16 (Asia/Shanghai), personal local portal test and preserved research line / status 1.25.
+Updated 2026-11-16 (Asia/Shanghai), personal portal end-to-end follow-up and preserved research line / status 1.26.
 
 The [personal Quant Portal test](../quant_portal/README.md) has local first registration, an editable watchlist and historical SEC-derived development fact summaries. The [English](../../reports/2026-11-16_quant_portal_personal.en.md) and [Chinese](../../reports/2026-11-16_quant_portal_personal.zh.md) reports and [P0–P7 ledger](../../results/quant_portal_20261116/plan_execution.csv) separate locally verified software from interrupted browser visual QA and unrun cloud/load work. Moomoo/Jin10 public output, live data, new financial fitting and formal M5 remain off. The existing private research Site is unchanged.
+
+The [follow-up personal acceptance](../../reports/2026-11-16_quant_portal_personal_acceptance.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_acceptance.zh.md), [plan–actual](../../results/quant_portal_personal_acceptance_20261116/plan_execution.csv)) completes an isolated real-Edge account/watchlist test, desktop/390px visual check, historical guidance display, live owner-data preservation and a booted backup copy. The existing owner account was retained; owner use of the final page was not observed. There is still no market/news feed, cloud deployment or research-model validation. [中文个人使用说明](../quant_portal/personal_user_guide.zh.md).
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
 

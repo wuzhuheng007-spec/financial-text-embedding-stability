@@ -1,0 +1,24 @@
+<article class="fact-card">
+  <div class="fact-head">
+    <h3>{{ card.issuer }}</h3>
+    <span class="status-pill neutral">{% if card.fact_kind == 'GUIDANCE' %}未来指引{% else %}实际业绩{% endif %}</span>
+  </div>
+  <p class="fact-period">{% if card.fact_kind == 'GUIDANCE' %}适用财期{% else %}历史财期{% endif %}：{{ card.fiscal_period|default:'未知' }}</p>
+  <dl class="fact-detail">
+    <div><dt>指标</dt><dd>{{ card.metric|default:'未知' }}</dd></div>
+    <div><dt>公司原文数值</dt><dd>{% if card.value_text %}{{ card.value_text }}{% else %}未知{% endif %}</dd></div>
+    {% if card.fact_kind == 'GUIDANCE' and card.range_status == 'DERIVED_FROM_SOURCE_RANGE' %}
+    <div><dt>计算下界</dt><dd>{{ card.range_lower_text }}（派生）</dd></div>
+    <div><dt>计算上界</dt><dd>{{ card.range_upper_text }}（派生）</dd></div>
+    <div><dt>计算方式</dt><dd>{{ card.range_derivation_display }}</dd></div>
+    {% endif %}
+    <div><dt>单位字段</dt><dd>{{ card.unit_text|default:'UNKNOWN' }}</dd></div>
+    <div><dt>币种字段</dt><dd>{{ card.currency|default:'UNKNOWN' }}</dd></div>
+    <div><dt>会计/调整口径</dt><dd>{{ card.basis_text|default:'UNKNOWN' }}{% if card.basis_note %}<span class="fact-note">{{ card.basis_note }}</span>{% endif %}</dd></div>
+    <div><dt>来源核对</dt><dd>{% if card.source_review_status == 'CODEX_REVIEW_SOURCE_SUPPORTED' %}Codex 来源回读支持；待独立核验{% else %}{{ card.source_review_status|default:'未知' }}{% endif %}</dd></div>
+    <div><dt>来源日期</dt><dd>{% if card.source_date %}<time datetime="{{ card.source_date|date:'Y-m-d' }}">{{ card.source_date|date:'Y-m-d' }}</time>{% else %}未知{% endif %}{% if card.source_time_precision == 'DATE_ONLY' %}（仅日期）{% endif %}</dd></div>
+    <div><dt>发布时间</dt><dd>{% if card.as_of %}<time datetime="{{ card.as_of|date:'c' }}">{{ card.as_of|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</dd></div>
+  </dl>
+  {% if card.source_url %}<a href="{{ card.source_url }}" target="_blank" rel="noopener noreferrer" class="source-link">查看原始来源 ↗</a>{% else %}<span class="muted">来源链接待核实</span>{% endif %}
+  {% if card.evidence_locator %}<details class="fact-evidence"><summary>证据定位与状态</summary><p>定位：{{ card.evidence_locator }}</p><p>展示状态：{{ card.evidence_state|default:'未知' }}</p></details>{% endif %}
+</article>

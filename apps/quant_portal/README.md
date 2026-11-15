@@ -2,6 +2,8 @@
 
 Independent invitation-only application. The personal test runs on this computer at `127.0.0.1:8765`; it uses an ignored SQLite database and never queries moomoo, Jin10 or a model when a page is refreshed. Cached historical fact cards are labeled as development material. A price feed is absent until separately authorized and implemented.
 
+For owner operation, see the [one-page Chinese personal guide](../../docs/quant_portal/personal_user_guide.zh.md). `owner@local.invalid` is a local account identifier; no email password recovery is provided. The optional `ops/reset_personal_password.ps1` command invokes Django's interactive password prompt without a password argument or ordinary-log value.
+
 ## Start, inspect and stop the personal test
 
 From the repository root in PowerShell:

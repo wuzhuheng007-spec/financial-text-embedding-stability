@@ -1,0 +1,40 @@
+{
+  "schema": "quant_portal_restore_boot_redacted_v1",
+  "checked_at_utc": "2026-11-15T21:28:32.325589+00:00",
+  "checked_at_shanghai": "2026-11-16T05:28:32.356329+08:00",
+  "backup_private_repo_relative_path": "apps/quant_portal/backups/personal-20261115T212010Z.sqlite3",
+  "backup_sha256": "6d958909d4b344a361d9107c1179f8710c6af26eb7d47c4845e5fd4132494db6",
+  "backup_integrity": "ok",
+  "pre_restore_counts": {
+    "accounts": 1,
+    "watchlist": 6,
+    "preferences": 1,
+    "fact_cards": 11
+  },
+  "live_database_modified": false,
+  "result": "PASS",
+  "scratch_migration": "PASS",
+  "scratch_bootstrap": "PASS",
+  "isolated_bind": "127.0.0.1",
+  "isolated_port": 62875,
+  "ready_http": 200,
+  "login_http": 200,
+  "css_http": 200,
+  "scratch_integrity": "ok",
+  "scratch_table_count": 19,
+  "post_restore_counts": {
+    "accounts": 1,
+    "watchlist": 6,
+    "preferences": 1,
+    "fact_cards": 14
+  },
+  "account_watchlist_preferences_facts_preserved": true,
+  "legacy_fact_card_count_preserved": 11,
+  "new_eligible_fact_card_count": 3,
+  "guidance_card_count": 2,
+  "scratch_only_test_account_created": true,
+  "authenticated_dashboard_http": 200,
+  "guidance_bounds_rendered": true,
+  "migration_0005_applied": true,
+  "isolated_process_stopped": true
+}

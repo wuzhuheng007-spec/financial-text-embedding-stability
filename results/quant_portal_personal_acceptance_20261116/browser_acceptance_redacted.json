@@ -1,0 +1,120 @@
+{
+  "schema": "quant_portal_personal_browser_acceptance_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "browser": "Microsoft Edge (Chromium) via Playwright 1.56.0",
+  "test_target": "isolated copy and SQLite DB, loopback port 8766",
+  "personal_owner_account_touched": false,
+  "test_accounts_created": 2,
+  "screenshots_private": "LOCAL_ONLY_PRIVATE_SCREENSHOTS",
+  "code_sha256": {
+    "core/views.py": "1cc1ed44e8cdefa892ac35b77215cb89365ddd2782779c68a0c33eb298d1c1ee",
+    "core/models.py": "e91b12a6fc374b6cc30617048ee97b9af3d6eac735ec2be16785ca7cc47128a8",
+    "core/management/commands/bootstrap_personal.py": "a6c951538a13a65f9768ba5fc202b859ea05cbcefc324f2644c60b4f5ab0e2ee",
+    "core/migrations/0005_publicfactcard_guidance_fields.py": "378bf407cc8f8833ea0590c917839b1793643b8debc504208947dbe6e3269a57",
+    "templates/core/dashboard.html": "5327b534987f1a6be6fa879a4ed64c4f125d0086b591c56a02d3acdbdf99fc35",
+    "templates/core/_fact_card.html": "814eb62def1378483d3b907a63f5436dcda069768784e3cb4559ba86e2e60675",
+    "static/core/portal.css": "8a8d751b176856a9b46866506b27ac29cc52ac2593f00ac9b802735815b39ee8"
+  },
+  "pinned_input_sha256": "2024676c3ae30a602ed6b75155a736b74ac3dc05121d502668bf7f0efc1f4ee4",
+  "cases": {
+    "register_page_real_edge": {
+      "status": "PASS",
+      "note": ""
+    },
+    "invited_registration": {
+      "status": "PASS",
+      "note": ""
+    },
+    "protected_page_after_logout": {
+      "status": "PASS",
+      "note": ""
+    },
+    "relogin": {
+      "status": "PASS",
+      "note": ""
+    },
+    "timezone_saved_after_refresh": {
+      "status": "PASS",
+      "note": ""
+    },
+    "watchlist_add": {
+      "status": "PASS",
+      "note": ""
+    },
+    "watchlist_add_route": {
+      "status": "PASS",
+      "note": ""
+    },
+    "duplicate_symbol_message": {
+      "status": "PASS",
+      "note": ""
+    },
+    "watchlist_remove": {
+      "status": "PASS",
+      "note": ""
+    },
+    "watchlist_persist_after_refresh": {
+      "status": "PASS",
+      "note": ""
+    },
+    "cross_user_watchlist_read_isolation_user2": {
+      "status": "PASS",
+      "note": ""
+    },
+    "second_user_independent_settings": {
+      "status": "PASS",
+      "note": ""
+    },
+    "cross_user_timezone_read_isolation_user1": {
+      "status": "PASS",
+      "note": ""
+    },
+    "cross_user_watchlist_read_isolation_user1": {
+      "status": "PASS",
+      "note": ""
+    },
+    "cross_user_watchlist_write_denied": {
+      "status": "PASS",
+      "note": ""
+    },
+    "other_user_item_preserved": {
+      "status": "PASS",
+      "note": ""
+    },
+    "consumed_invite_registration_rejected": {
+      "status": "PASS",
+      "note": ""
+    },
+    "register_390_no_overflow": {
+      "status": "PASS",
+      "note": ""
+    },
+    "dashboard_390_no_overflow": {
+      "status": "PASS",
+      "note": ""
+    },
+    "settings_390_no_overflow": {
+      "status": "PASS",
+      "note": ""
+    },
+    "login_390_no_overflow": {
+      "status": "PASS",
+      "note": ""
+    },
+    "invite_consumed_state": {
+      "status": "PASS",
+      "note": ""
+    }
+  },
+  "pass_count": 22,
+  "fail_count": 0,
+  "credentials_in_receipt": false,
+  "harness_correction": "Partial attempts exposed three harness errors: an ambiguous settings submit selector, a request-client CSRF omission, and an HTML required field preventing the adapted cross-user probe form from submitting. The final probe uses the second user's browser session, CSRF input, and a valid form field. Partial runs are retained privately and are not counted as completed browser passes.",
+  "isolated_test_processes_stopped": [
+    8766,
+    8767
+  ],
+  "counting_note": "Browser flow and visual checks overlap; their pass counts are not additive independent tests. Django software cases are reported separately.",
+  "receipt_updated_utc": "2026-11-15T21:34:28.805648+00:00"
+}

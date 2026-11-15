@@ -1,0 +1,35 @@
+{
+  "schema": "quant_portal_prechange_backup_redacted_v1",
+  "recorded_at_utc": "2026-11-15T21:22:45.293384+00:00",
+  "recorded_at_shanghai": "2026-11-16T05:22:45.343164+08:00",
+  "code_head_before_change": "571eba43df0f8df6c3627a0d04c3fec148832975",
+  "service": {
+    "state": "RUNNING",
+    "port": 8765,
+    "bind": "127.0.0.1",
+    "verified_manage_path": true,
+    "ready_http": 200,
+    "css_http": 200
+  },
+  "backup": {
+    "private_repo_relative_path": "apps/quant_portal/backups/personal-20261115T212010Z.sqlite3",
+    "sha256": "6d958909d4b344a361d9107c1179f8710c6af26eb7d47c4845e5fd4132494db6",
+    "bytes": 225280,
+    "integrity_check": "ok",
+    "table_count": 19,
+    "private_receipt_retained_locally": true
+  },
+  "preserved_user_state_at_backup": {
+    "owner_account_identifier_exists": true,
+    "account_count": 1,
+    "watchlist_count": 6,
+    "preferences_count": 1,
+    "historical_fact_card_count": 11
+  },
+  "excludes": [
+    "database content",
+    "invitation value",
+    "password",
+    "account identifiers beyond fixed local placeholder"
+  ]
+}

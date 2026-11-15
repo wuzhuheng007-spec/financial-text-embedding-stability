@@ -81,6 +81,10 @@ class UserPreferences(models.Model):
 
 class PublicFactCard(models.Model):
     """Only an explicit rights-reviewed row can appear in shared pages."""
+    class FactKind(models.TextChoices):
+        ACTUAL = "ACTUAL", "Historical reported result"
+        GUIDANCE = "GUIDANCE", "Future guidance at historical release"
+
     class SourceClass(models.TextChoices):
         UNKNOWN = "UNKNOWN", "Unreviewed source"
         OFFICIAL = "OFFICIAL_PUBLIC", "Reviewed official public source"
@@ -89,11 +93,18 @@ class PublicFactCard(models.Model):
 
     issuer = models.CharField(max_length=120)
     fiscal_period = models.CharField(max_length=120)
+    fact_kind = models.CharField(max_length=12, choices=FactKind.choices, default=FactKind.ACTUAL)
+    fact_topic = models.CharField(max_length=40, blank=True)
     metric = models.CharField(max_length=120)
     value_text = models.CharField(max_length=120)
+    range_lower_text = models.CharField(max_length=120, blank=True)
+    range_upper_text = models.CharField(max_length=120, blank=True)
+    range_derivation = models.CharField(max_length=120, blank=True)
+    range_status = models.CharField(max_length=40, blank=True)
     unit_text = models.CharField(max_length=60, blank=True)
     currency = models.CharField(max_length=20, blank=True)
     basis_text = models.CharField(max_length=60, blank=True)
+    basis_note = models.CharField(max_length=250, blank=True)
     source_url = models.URLField()
     as_of = models.DateTimeField(null=True, blank=True)
     source_date = models.DateField(null=True, blank=True)
@@ -104,6 +115,7 @@ class PublicFactCard(models.Model):
     source_manifest_sha256 = models.CharField(max_length=64, blank=True)
     evidence_locator = models.TextField(blank=True)
     evidence_state = models.CharField(max_length=32, default="SOURCE_REVIEW_PENDING")
+    source_review_status = models.CharField(max_length=40, blank=True)
     source_class = models.CharField(max_length=20, choices=SourceClass.choices, default=SourceClass.UNKNOWN)
     visibility_scope = models.CharField(max_length=20, default="LOCAL_ONLY")
     rights_basis = models.CharField(max_length=250, blank=True)
@@ -117,6 +129,14 @@ class PublicFactCard(models.Model):
                 name="unique_nonempty_fact_candidate",
             )
         ]
+
+    @property
+    def range_derivation_display(self):
+        labels = {
+            "central_billion * (1 +/- percentage/100)": "原文中心值 × (1 ± 原文百分比 / 100)",
+            "central_billion +/- delta_million/1000": "原文中心值 ± 原文百万美元容差 / 1000",
+        }
+        return labels.get(self.range_derivation, self.range_derivation)
 
     def clean(self):
         if self.display_approved and not self.rights_basis.strip():
