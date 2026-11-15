@@ -1,5 +1,5 @@
 # 重大新闻、宏观指标与科技公司财报
-版本 1.15；2026-11-15，Asia/Shanghai。范围已按用户要求更新。[有界来源实采](../../../reports/2026-11-15_earnings_macro_intake.zh.md)已形成六张公司财报开发卡、三张宏观卡和六条独立公司新闻。随后基于已保存的 NVIDIA、CoreWeave 和 BLS CPI 官方材料制作三张[事件影响分析样板](../../../reports/2026-11-15_event_impact_cards.zh.md)，把来源事实与条件式分析推断分开，内容质量仍待评价。下列更大范围采集、新模型与金融实验仍属计划或 `NOT_RUN`。
+版本 1.16；2026-11-15，Asia/Shanghai。范围已按用户要求更新。[有界来源实采](../../../reports/2026-11-15_earnings_macro_intake.zh.md)已形成六张公司财报开发卡、三张宏观卡和六条独立公司新闻。随后基于已保存的 NVIDIA、CoreWeave 和 BLS CPI 官方材料制作三张[事件影响分析样板](../../../reports/2026-11-15_event_impact_cards.zh.md)，把来源事实与条件式分析推断分开，内容质量仍待评价。[首次本机 Qwen 短证据运行](../../../reports/2026-11-15_news_shortfacts_qwen.zh.md)完成六次开发生成，但发现原始格式和事实字段问题。下列更大范围采集和金融实验仍属计划或 `NOT_RUN`。
 
 本轮另建[指引时间 v2](../../../results/news_jin10_20261115/guidance_v2/README.md)：19 条指引与原 72 项核心指标分开统计。Intel 的三条 `first_available_at` 在缺少独立首见证据时置空；其 Q4 日期标为财年规则推断。三星和海力士各两条仅补官方页面的日期精度。金十 MCP 配置、采集器和本机展示作为[独立开发阶段](../jin10/source_rights.md)推进；[有界真实回执](../../../results/news_jin10_20261115/probe_redacted_run2.json)证明新进程可调用快讯及日历，快讯分页未完。接口配额、留存及进一步覆盖仍未确认，不改变冻结财报卡或正式金融准入状态。
 

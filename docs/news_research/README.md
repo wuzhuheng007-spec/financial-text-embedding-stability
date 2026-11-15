@@ -1,8 +1,10 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-15 (Asia/Shanghai), event-impact development cards 1.15.
+Updated 2026-11-15 (Asia/Shanghai), first bounded Qwen short-evidence run 1.16.
 
 **Current priority / 当前优先：重大新闻 + 宏观指标 + 科技公司财报及传导。**
+
+- [First real short-evidence Qwen run / 首次真实短证据 Qwen 试验](../../reports/2026-11-15_news_shortfacts_qwen.en.md) · [中文报告](../../reports/2026-11-15_news_shortfacts_qwen.zh.md) · [plan–actual / 计划—实际](../../results/news_shortfacts_20261115/plan_execution.csv) · [redacted run receipt / 脱敏运行回执](../../results/news_shortfacts_20261115/run_receipt_redacted.json) · [separate validation gates / 分层验证](../../results/news_shortfacts_20261115/public_validation_summary_v2.json). Six frozen short passages produced six real local responses. Strict raw JSON passed for one; five fenced responses were saved and parsed only as separate views. Six quotes matched mechanically, while content review found field errors and omissions. The next single extraction priority is strict raw JSON formatting. 六项开发调用已完成，但不能写成抽取质量或金融有效性通过。
 
 - [Three event-impact development cards / 三张事件影响分析样板](../../reports/2026-11-15_event_impact_cards.en.md) · [中文报告](../../reports/2026-11-15_event_impact_cards.zh.md) · [selection manifest / 选择清单](../../results/news_event_impact_20261115/selection_manifest.json) · [plan–actual / 计划—实际](../../results/news_event_impact_20261115/plan_execution.csv) · [public page / 公开页面](../../results/news_event_impact_20261115/dashboard_public_v3.html). Saved official NVIDIA, CoreWeave and BLS materials support three conditional `AI_ANALYST_DRAFT` cards. Their facts, hypotheses, unknowns and timing are separate; the saved-data private page passed desktop and 390px visual checks. These are analysis templates **awaiting evaluation**, with no new model call, financial label or backtest. 三张有来源的开发卡已制作并完成本机页面验收，内容质量和金融有效性均未验证。
 

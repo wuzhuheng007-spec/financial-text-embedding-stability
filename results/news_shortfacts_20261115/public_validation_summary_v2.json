@@ -1,0 +1,158 @@
+{
+  "schema": "shortfacts_public_validation_summary_v1",
+  "manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "reference_sha256": "dfc9ed3c815f53d3b9de153200a2ded2995bb1bec60afe2c1e169ae07a2be2c2",
+  "attempt_ledger_sha256": "766aa8cde8acd07e69cb05482062e3b05611329ba9b1bb59b1eb70749de6587b",
+  "counts": {
+    "planned_tasks": 6,
+    "attempted_tasks": 6,
+    "generation_started_tasks": 6,
+    "completed_response_tasks": 6,
+    "strict_json_valid_tasks": 1,
+    "schema_valid_tasks": 6,
+    "strict_schema_valid_tasks": 1,
+    "fenced_view_json_valid_tasks": 5,
+    "fenced_view_schema_valid_tasks": 5,
+    "facts_from_fenced_views": 5,
+    "model_facts_in_schema_valid_responses": 6,
+    "quote_present_facts": 6,
+    "valid_evidence_id_facts": 6,
+    "tasks_with_all_quotes_and_evidence_ids": 6,
+    "quote_applicable_tasks": 6,
+    "semantic_reviewed_facts": 6,
+    "semantic_supported_facts": 1,
+    "all_fields_correct_facts": 0,
+    "reference_facts": 14,
+    "reference_facts_matched_after_review": 6,
+    "strict_json_failed_completed_tasks": 5,
+    "schema_failed_strict_tasks": 0,
+    "quote_missing_facts": 0,
+    "invalid_evidence_id_facts": 0,
+    "value_text_absent_from_passage_facts": 0
+  },
+  "attempt_status_counts": {
+    "RESPONSE_COMPLETED": 6
+  },
+  "field_status_counts_codex_review": {
+    "entity": {
+      "CORRECT": 2,
+      "WRONG": 3,
+      "UNRESOLVED": 1
+    },
+    "metric": {
+      "CORRECT": 1,
+      "WRONG": 5,
+      "UNRESOLVED": 0
+    },
+    "value_text": {
+      "CORRECT": 5,
+      "WRONG": 1,
+      "UNRESOLVED": 0
+    },
+    "unit_text": {
+      "CORRECT": 4,
+      "WRONG": 1,
+      "UNRESOLVED": 1
+    },
+    "period_text": {
+      "CORRECT": 3,
+      "WRONG": 3,
+      "UNRESOLVED": 0
+    },
+    "basis_text": {
+      "CORRECT": 3,
+      "WRONG": 1,
+      "UNRESOLVED": 2
+    }
+  },
+  "field_status_denominator_per_field": 6,
+  "error_labels": {
+    "DUPLICATE": 0,
+    "FORMAT_ERROR": 5,
+    "MISSING_FACT": 8,
+    "QUOTE_MISMATCH": 0,
+    "UNSUPPORTED": 0,
+    "WRONG_BASIS": 1,
+    "WRONG_ENTITY": 3,
+    "WRONG_EVIDENCE_ID": 0,
+    "WRONG_METRIC": 5,
+    "WRONG_PERIOD": 3,
+    "WRONG_UNIT": 1,
+    "WRONG_VALUE": 1
+  },
+  "tasks": [
+    {
+      "task_id": "A1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": false,
+      "fenced_json_view_valid": true,
+      "json_view_kind": "fenced_json",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    },
+    {
+      "task_id": "A2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": false,
+      "fenced_json_view_valid": true,
+      "json_view_kind": "fenced_json",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    },
+    {
+      "task_id": "B1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": false,
+      "fenced_json_view_valid": true,
+      "json_view_kind": "fenced_json",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    },
+    {
+      "task_id": "B2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": false,
+      "fenced_json_view_valid": true,
+      "json_view_kind": "fenced_json",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    },
+    {
+      "task_id": "C1",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": true,
+      "fenced_json_view_valid": false,
+      "json_view_kind": "strict_raw",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    },
+    {
+      "task_id": "C2",
+      "attempt_status": "RESPONSE_COMPLETED",
+      "generation_started": true,
+      "response_completed": true,
+      "strict_raw_json_valid": false,
+      "fenced_json_view_valid": true,
+      "json_view_kind": "fenced_json",
+      "schema_valid": true,
+      "model_fact_count": 1,
+      "quote_present_count": 1
+    }
+  ],
+  "interpretation": "Six development tasks are a call budget, not an accuracy sample or independent gold; lexical quote presence and semantic support are distinct."
+}

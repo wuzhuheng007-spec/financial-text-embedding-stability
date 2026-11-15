@@ -1,0 +1,84 @@
+{
+  "schema": "news_shortfacts_run_config_v1",
+  "created_at_utc": "2026-11-15T02:45:54.607+00:00",
+  "development_only": true,
+  "planned_tasks": 6,
+  "input_manifest_sha256": "956ada9ecca3899600206d25f69d2108d125e4cadd09b5bc4866991eb266f7dc",
+  "prompt_sha256": "d415c041150287d67bdb4af82d78b12f149ade404901b03e0b396014f493d7fc",
+  "schema_sha256": "00388c36bc9adcf9f35cdc6c98b5d51839bc916c4a132c8a540440f11d7aa456",
+  "runner_sha256": "6a119535db9ad4f0c8e6f53049e7dedf155f0046854e074b885b00c49deb88d3",
+  "generation": {
+    "batch_size": 1,
+    "do_sample": false,
+    "num_beams": 1,
+    "seed": 1729,
+    "dtype": "float16",
+    "device": "cuda",
+    "attention_requested": "sdpa",
+    "max_input_tokens": 2048,
+    "max_new_tokens": 768,
+    "generation_timeout_seconds": 180,
+    "model_load_timeout_seconds": 240,
+    "retries": 0
+  },
+  "constraint_decoder": "NONE_NORMAL_GENERATION",
+  "historical_prediction_or_financial_evaluation": "NOT_RUN",
+  "model": {
+    "repo_id": "Qwen/Qwen2.5-3B-Instruct",
+    "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+    "config_sha256": "eed00b17e22553979d090fa492e587e92885e328914c8e0b0b78f0a0d3576b3b",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "generation_config_sha256": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9"
+  },
+  "dependencies": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.6.2"
+  },
+  "tasks": [
+    {
+      "task_id": "A1",
+      "evidence_id": "EV-A1",
+      "text_sha256": "4c4ac8ba16d49fdce0014986fde14f61c796ec79440e25042056c84bd42f7470",
+      "prompt_tokens": 266,
+      "rendered_prompt_sha256": "1864f02b0772a08da38b16064c4b4c278edac02b5872f0c952a813f233e89ccd"
+    },
+    {
+      "task_id": "A2",
+      "evidence_id": "EV-A2",
+      "text_sha256": "bbfa4a17ced83b7f9488ecd87db19ef9c19decc1b457a6113ca8a1988d5a034e",
+      "prompt_tokens": 263,
+      "rendered_prompt_sha256": "ab9afb873406eee229450997027b4c558a2b09334f76b2a740fdebb296dfff8a"
+    },
+    {
+      "task_id": "B1",
+      "evidence_id": "EV-B1",
+      "text_sha256": "465459599dfb1899f87034f26cb76a3acdb7097a7b90033990c053197cd74c21",
+      "prompt_tokens": 287,
+      "rendered_prompt_sha256": "077a70365f957aff153a05d2fd459204e2defd45463183d8787be384474b1d31"
+    },
+    {
+      "task_id": "B2",
+      "evidence_id": "EV-B2",
+      "text_sha256": "c5869cb0f9f2b307a104047b532b4d8315c044a4570220743bddbf79b0797024",
+      "prompt_tokens": 301,
+      "rendered_prompt_sha256": "c95f184f3599ccc2bc4a160565be2912d8b68fb39a5b555f917b7d676bc8123a"
+    },
+    {
+      "task_id": "C1",
+      "evidence_id": "EV-C1",
+      "text_sha256": "a0509d37dbd7c7049432463e69dd098520587051d96c30f2c533b65ffc7ac815",
+      "prompt_tokens": 272,
+      "rendered_prompt_sha256": "d9e28a3f793281e3ca16b910e4ed21678908fcbb4866272f8585623f8333d356"
+    },
+    {
+      "task_id": "C2",
+      "evidence_id": "EV-C2",
+      "text_sha256": "9230d230a7b35d0052f46ee29ebc21aec565c5ccb5a258cc7e3c838086fd7d2d",
+      "prompt_tokens": 302,
+      "rendered_prompt_sha256": "d8a22557d3ba95560b7393c9ce2b6b5a28ea411a16bfbe7855a534dce3c6bb8e"
+    }
+  ]
+}

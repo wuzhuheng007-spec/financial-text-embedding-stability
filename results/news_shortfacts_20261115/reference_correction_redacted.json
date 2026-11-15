@@ -1,0 +1,34 @@
+{
+  "schema": "shortfacts_reference_correction_redacted_v1",
+  "reference_v1_sha256": "dfc9ed3c815f53d3b9de153200a2ded2995bb1bec60afe2c1e169ae07a2be2c2",
+  "reference_v2_sha256": "9460fe041432073d389fe73b36d09ccb401dc76d9acaf831ce28d8d7748854f5",
+  "primary_run_reference": "v1 FROZEN BEFORE INFERENCE",
+  "v2_use": "POST_RUN_TRANSPARENT_CORRECTION_ONLY_NOT_USED_TO_IMPROVE_PRIMARY_SCORE",
+  "changes": [
+    {
+      "task_id": "A2",
+      "reference_field": "basis_text",
+      "issue": "Guidance state is not an accounting/adjustment/seasonal basis",
+      "v2_change": "null"
+    },
+    {
+      "task_id": "B1",
+      "reference_field": "basis_text",
+      "affected_reference_facts": 2,
+      "issue": "Current/prior guidance is not an accounting/adjustment/seasonal basis",
+      "v2_change": "null"
+    },
+    {
+      "task_id": "C2",
+      "reference_field": "entity",
+      "affected_reference_facts": 3,
+      "issue": "Institutional entity omitted from frozen input passage",
+      "v2_change": "null; task design gap for future input revision"
+    }
+  ],
+  "reference_facts_affected": 6,
+  "primary_model_field_checks_marked_unresolved_due_design": 3,
+  "model_outputs_or_input_changed": false,
+  "implication": "Do not count A2/B1 null basis or C2 entity as model errors against unsupported v1 fields. The corrected reference is retained only for transparent future sensitivity; original run and primary comparison remain frozen.",
+  "evaluation_status": "CODEX_REFERENCE_DRAFT_NOT_INDEPENDENT_HUMAN_GOLD"
+}

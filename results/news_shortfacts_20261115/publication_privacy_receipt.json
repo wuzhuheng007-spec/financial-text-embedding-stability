@@ -1,0 +1,11 @@
+{
+  "schema": "shortfacts_staged_privacy_receipt_v1",
+  "staged_files_scanned": 29,
+  "private_passages_compared": 6,
+  "raw_responses_compared": 6,
+  "private_or_weight_paths_staged": 0,
+  "credential_pattern_hits": 0,
+  "full_passage_matches": 0,
+  "full_raw_response_matches": 0,
+  "result": "PASS"
+}

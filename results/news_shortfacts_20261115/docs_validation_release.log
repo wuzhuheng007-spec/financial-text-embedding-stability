@@ -1,0 +1,10 @@
+COMMAND python scripts/validate_news_shortfacts_docs_v1.py
+PASS docs_files=9 relative_links=312 stages=6
+PASS run/input/status/validation counts and strict-versus-fenced denominator checks
+PASS bilingual report bounds and reference correction disclosure
+Document checks only; no provider, model or financial experiment ran here.
+COMMAND python scripts/validate_event_impact_docs_v1.py
+PASS docs_files=7 relative_links=260 stages=9
+PASS case/source/fact/calculation/edge counts match receipts and STATUS
+PASS bilingual reports preserve draft and NOT_RUN labels
+Document checks only; no provider, model or financial experiment ran.

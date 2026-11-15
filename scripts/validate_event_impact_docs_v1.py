@@ -41,7 +41,7 @@ def main() -> None:
     receipt = json.loads((RESULTS / "static_source_validation_release.json").read_text(encoding="utf-8"))
     visual = json.loads((RESULTS / "visual_acceptance_release.json").read_text(encoding="utf-8"))
     findings = json.loads((RESULTS / "review_findings.json").read_text(encoding="utf-8"))
-    assert status["version"] == "1.15"
+    assert tuple(map(int, status["version"].split("."))) >= (1, 15)
     impact = status["event_impact_development"]
     assert impact["status"] == "ANALYSIS_TEMPLATES_MADE_PENDING_CONTENT_EVALUATION"
     assert [event["case"] for event in selection["events"]] == ["a_nvidia", "b_coreweave", "c_cpi"]

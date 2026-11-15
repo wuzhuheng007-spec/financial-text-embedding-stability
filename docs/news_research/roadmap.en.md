@@ -1,6 +1,6 @@
 # Current roadmap update (2026-11-15)
 
-The user has clarified a macro/systemic-event focus for broad-market and technology transmission. Read the [current roadmap](macro_tech/roadmap.en.md) and [next task](macro_tech/01_CODEX_TASK.txt). The prior roadmap below is retained as history; the old ten-article corpus and LMFE issue are no longer the primary task.
+The current scope combines major news, macro indicators, technology earnings and conditional transmission. Read the [earnings and macro extension](earnings/roadmap.en.md) and the [first real Qwen short-evidence run](../../reports/2026-11-15_news_shortfacts_qwen.en.md). The macro/systemic [candidate roadmap](macro_tech/roadmap.en.md) remains a separate development record. The prior roadmap below is retained as history; the old ten-article corpus and LMFE issue are no longer the primary task.
 
 ---
 

@@ -1,6 +1,6 @@
 # 当前路线入口更新（2026-11-15）
 
-用户已明确转向宏观与系统性事件对大盘、科技行业和公司的传导。请优先读取[新路线](macro_tech/roadmap.zh.md)及[下一轮任务](macro_tech/01_CODEX_TASK.txt)。下方保留旧路线作历史资料；旧十篇和LMFE问题不再是当前主线。
+当前范围包含重大新闻、宏观指标、科技公司财报及条件式传导。请先读[财报与宏观扩展路线](earnings/roadmap.zh.md)和[首次真实 Qwen 短证据运行](../../reports/2026-11-15_news_shortfacts_qwen.zh.md)。宏观／系统性[候选路线](macro_tech/roadmap.zh.md)仍单独保留为开发记录。下方旧路线为历史资料；旧十篇和 LMFE 问题不再是当前主线。
 
 ---
 

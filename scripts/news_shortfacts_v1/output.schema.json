@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Short official evidence to fact objects, development v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["facts"],
+  "properties": {
+    "facts": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity", "metric", "value_text", "unit_text", "period_text", "basis_text", "evidence_id", "quote"],
+        "properties": {
+          "entity": {"type": "string", "minLength": 1},
+          "metric": {"type": "string", "minLength": 1},
+          "value_text": {"type": "string", "minLength": 1},
+          "unit_text": {"type": ["string", "null"]},
+          "period_text": {"type": ["string", "null"]},
+          "basis_text": {"type": ["string", "null"]},
+          "evidence_id": {"type": "string", "minLength": 1},
+          "quote": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+You extract only directly stated numerical facts from one official evidence passage.
+Return exactly one JSON object with one key, "facts", whose value is an array of at most 3 objects. Each object must have exactly these keys: entity, metric, value_text, unit_text, period_text, basis_text, evidence_id, quote.
+Use the original wording for value_text, including range, sign, and approximation. Use null for an unknown unit, period, or accounting/adjustment basis. Quote a short contiguous span copied exactly from the evidence. Set evidence_id to the bracketed ID below. Do not calculate, infer a missing value, add investment analysis, or use any outside information. If no numerical fact is directly supported, return {"facts":[]}.
+
+[EVIDENCE_ID]
+{EVIDENCE_ID}
+[/EVIDENCE_ID]
+[OFFICIAL_EVIDENCE]
+{PASSAGE}
+[/OFFICIAL_EVIDENCE]
