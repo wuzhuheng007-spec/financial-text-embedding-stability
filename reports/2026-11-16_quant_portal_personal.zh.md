@@ -21,3 +21,7 @@ PostgreSQL、独立后台进程、迁移、Compose、Caddy HTTPS 与锁定依赖
 ## 研究线与下一步
 
 本轮模型拟合、四月至七月标签读取、交易与正式 M5 评估均为 **0/NOT_RUN**。既有**每事件 20,000 字符模型输入的证据遗漏**仍未解决，见[前一轮报告](2026-11-15_market_observer_financial_text_v2.zh.md)。现在最直接的一步是你用本机私人一次性码完成注册，在桌面与 390px 页面做一次真实使用检查。将来多人或云端运行还需容器环境、压测和回滚演练、代码归属/许可证核对，以及供应商对受邀用户展示的明确授权。
+
+## 同步与交接
+
+应用、配置、必要测试和脱敏结果已选择性推送到既有协作分支；[应用提交 `9daf28a`](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/commit/9daf28afda35d58c4c93760f1c86003cbe319cf3)的远端 SHA 及五个关键文件 blob 已回读一致。未合并默认分支。本机另建 `quant/local_only/handoffs/quant_portal_personal_20261116/` 文件夹和脱敏 ZIP，供转发给 GPT；私人邀请码、数据库、凭据和受限正文未打包。

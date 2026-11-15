@@ -21,3 +21,7 @@ Compose, PostgreSQL, independent worker, migrations, Caddy HTTPS and version-pin
 ## Research line and next step
 
 No model fit, April–July label read, trade or formal M5 financial evaluation was performed. The prior **20,000-character model-input evidence gap** remains unresolved; see the [earlier financial-text report](2026-11-15_market_observer_financial_text_v2.en.md). The next immediate step is for the owner to register locally with the private one-time code and check the page on desktop and 390px. Later multiuser/cloud work requires a capable container host, completed load and rollback drills, contributor/license review, and written rights for any provider content shown to invited users.
+
+## Sync and handoff
+
+The application, configuration, necessary tests and redacted results were selectively pushed to the existing collaboration branch. The remote SHA and five key blobs of [application commit `9daf28a`](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/commit/9daf28afda35d58c4c93760f1c86003cbe319cf3) were read back and matched. The default branch was not merged. A local `quant/local_only/handoffs/quant_portal_personal_20261116/` folder and redacted ZIP were prepared for sharing with GPT; the private invitation, database, credentials and restricted text are excluded.
