@@ -1,0 +1,18 @@
+{
+  "schema": "financial_text_v23_focused_software_tests_redacted_v1",
+  "run_at_utc": "2026-11-15T23:09:48Z",
+  "command": "python -m unittest tests.test_market_observer_financial_text_v23_adversarial tests.test_market_observer_financial_text_v23_footnote tests.test_market_observer_financial_text_v23_evaluate -q",
+  "exit_code": 0,
+  "observed_console_summary": "Ran 41 tests in 0.092s; OK",
+  "current_distinct_test_methods": 41,
+  "pre_full_build_gate_test_methods": 39,
+  "post_build_evaluator_correction_added_methods": 2,
+  "overlap_note": "The earlier 39 methods and later 12-case evaluator replay overlap. They are not 51 independent checks or empirical samples.",
+  "test_file_sha256": {
+    "tests/test_market_observer_financial_text_v23_adversarial.py": "de978352a1cf81e9d9ecf73aa34d3297e388991537092f2ae338647597823fef",
+    "tests/test_market_observer_financial_text_v23_footnote.py": "6afa97f7ad67756fd1779028090bfefb08405fe1199f332da73bcc87933a6e8d",
+    "tests/test_market_observer_financial_text_v23_evaluate.py": "b4f292e40d284811c66eca4067a941155008ccaadc67a7c348fa45c3ca94ed79"
+  },
+  "corrected_evaluator_sha256": "c9bd58eb92b1f8394e84cdf4006e2e75c1c6fd14fe698be385ac062e87c0665c",
+  "limitation": "Synthetic software checks do not establish financial source semantics; six real-source witnesses failed separate same-team review."
+}

@@ -1,0 +1,197 @@
+{
+  "aggregate": {
+    "affected_source_documents": 3,
+    "column_header_links_total": 12,
+    "numeric_data_cell_column_header_links": 12,
+    "source_tables_with_true_header_parsed_as_numeric": 3,
+    "source_tables_with_true_header_recognized_as_header": 0,
+    "witness_count": 6,
+    "witnesses_with_wrong_section_billions_unit_context": 6
+  },
+  "conclusion": "All six reviewed mechanically coherent witnesses contain false column-header binding; the unit scope is also inconsistent. They must remain candidate/unresolved and must not be promoted to confirmed complete financial facts.",
+  "created_at_utc": "2026-11-15T23:09:02.463210+00:00",
+  "failure_path": [
+    {
+      "observation": "The actual period and unit header occupies zero-based row 2 with quarter-labeled column spans and a table-level millions declaration.",
+      "stage": "SOURCE_GRID"
+    },
+    {
+      "observation": "The header phrase about earnings per share matches a tracked topic, and quarter labels match numeric detection; data_row becomes true before header cues are considered.",
+      "stage": "ROW_CLASSIFICATION"
+    },
+    {
+      "observation": "Later operating rows lack tracked topics, while currency symbols in value cells trigger UNITS_RE; those data rows become TABLE_HEADER fragments.",
+      "stage": "SECONDARY_ROW_CLASSIFICATION"
+    },
+    {
+      "observation": "Later net-income and diluted-EPS anchors receive same-column currency amount cells from the operating rows as COLUMN_HEADER. The original period/unit header is absent; UNIT includes a section paragraph using billions even though the table states millions.",
+      "stage": "RELATION_PROPAGATION"
+    },
+    {
+      "observation": "DOM and span consistency pass because every wrong target is a real source cell and model-visible context; structural reachability is not financial-semantic correctness.",
+      "stage": "MECHANICAL_GATE"
+    }
+  ],
+  "input_sha256": {
+    "frozen_build_redacted": "9e4d3b3949c0b1b840535090b809e253804ed4ab14d16852a163e8f88a7c7f4e",
+    "frozen_parser_code": "bd16bfeb8f062d20aada9fb7878271f26afd527e7e5850180db19077c7c889e7",
+    "private_witness_review": "7acba844ae3c45b7b0d94ac17f61d83a6e5932afadf757cec9ea880b143716b3",
+    "saved_event_inputs_jsonl": "24585be45b6c69b0da7b96f43d555dcdeff6ad5536f2f1b2940146a54c3a7407",
+    "saved_parsed_jsonl": "cadb0f14274566f3e51c88cd7b4e29ca08f8f775543e1bcd724df429cb76bb1f"
+  },
+  "limits": [
+    "This is same-team post-run source review, not independent human certification.",
+    "The receipt describes six selected witnesses, not all 71 candidates or all source documents.",
+    "No frozen parser, adapter, evaluator, model, source data or full-run output was modified."
+  ],
+  "next_rule_candidate_not_run": "Version a separate correction that prioritizes structural period/unit headers before topic-based data detection, and never promotes data rows to headers solely because numeric amount cells contain currency symbols. Re-run synthetic negatives and chronological training regression after a new freeze; preserve frozen_r2 unchanged.",
+  "review_scope": "READ_ONLY_SIX_MECHANICALLY_COHERENT_SOURCE_SUPPORTED_NVDA_WITNESSES",
+  "row_level_diagnostics": [
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 7,
+      "announcement_date": "2025-08-27",
+      "candidate_id": "f79e4b7c4715ec23411b",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    },
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 8,
+      "announcement_date": "2025-08-27",
+      "candidate_id": "6a48e2338a9372200fbb",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    },
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 7,
+      "announcement_date": "2025-11-19",
+      "candidate_id": "1827eda33ec8ea6aeb20",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    },
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 8,
+      "announcement_date": "2025-11-19",
+      "candidate_id": "d1f5ed277755ee54c672",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    },
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 7,
+      "announcement_date": "2026-02-25",
+      "candidate_id": "53cce663bc2e10b244b3",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    },
+    {
+      "anchor_column_span_zero_based": [
+        3,
+        6
+      ],
+      "anchor_row_index_zero_based": 8,
+      "announcement_date": "2026-02-25",
+      "candidate_id": "e2bc167a8db6d185683f",
+      "column_header_target_count": 2,
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "later_data_rows_parsed_header_fragment_count": 16,
+      "numeric_amounts_misclassified_as_column_headers": 2,
+      "source_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "true_header_row_parsed_header_fragment_count": 0,
+      "true_header_row_parsed_numeric_cell_count": 3,
+      "true_period_unit_header_row_index_zero_based": 2,
+      "unit_relation_contains_section_billions_paragraph": true
+    }
+  ],
+  "run_id": "frozen_r2",
+  "safe_example": {
+    "anchor": "Net income numeric cell at zero-based row 7, columns 3–5",
+    "expected_scope": "Quarter/units header at zero-based row 2",
+    "observed_wrong_scope": "Currency amount cells at zero-based rows 5 and 6 were serialized as COLUMN_HEADER; raw amounts and private row text omitted.",
+    "official_source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+    "source_date": "2025-08-27"
+  },
+  "schema": "financial_text_v23_postrun_false_header_diagnosis_redacted_v1",
+  "source_documents": [
+    {
+      "announcement_date": "2025-08-27",
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "later_data_row_header_fragments": 16,
+      "official_source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+      "raw_html_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "true_header_row_parsed_header_fragments": 0,
+      "true_header_row_parsed_numeric_cells": 3
+    },
+    {
+      "announcement_date": "2025-11-19",
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "later_data_row_header_fragments": 16,
+      "official_source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm",
+      "raw_html_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "true_header_row_parsed_header_fragments": 0,
+      "true_header_row_parsed_numeric_cells": 3
+    },
+    {
+      "announcement_date": "2026-02-25",
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "later_data_row_header_fragments": 16,
+      "official_source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm",
+      "raw_html_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "true_header_row_parsed_header_fragments": 0,
+      "true_header_row_parsed_numeric_cells": 3
+    }
+  ]
+}

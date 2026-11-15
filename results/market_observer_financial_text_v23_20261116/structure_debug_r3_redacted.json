@@ -1,0 +1,73 @@
+{
+  "code_config_test_sha256": {
+    "configs/market_observer_financial_text_v23_20261116.json": "7d57e7f75df99edc4608d6d83298603cb29d7ce6ba06b63636288e03b2b63577",
+    "scripts/market_observer_financial_text_v23/adapter.py": "92478d3bb64f3abf13a54fa4fb96a4e28113c8f4a47c1da585bcc407e1b50c20",
+    "scripts/market_observer_financial_text_v23/build.py": "d0b020293696a35cebd6c339f24a9697481a9b4df0b3c982108d2568f7b9ac56",
+    "scripts/market_observer_financial_text_v23/structure.py": "bd16bfeb8f062d20aada9fb7878271f26afd527e7e5850180db19077c7c889e7",
+    "tests/test_market_observer_financial_text_v23_adversarial.py": "de978352a1cf81e9d9ecf73aa34d3297e388991537092f2ae338647597823fef",
+    "tests/test_market_observer_financial_text_v23_footnote.py": "6afa97f7ad67756fd1779028090bfefb08405fe1199f332da73bcc87933a6e8d"
+  },
+  "created_at_utc": "2026-11-15T23:02:02.336454+00:00",
+  "documents": [
+    {
+      "actual_model_text_characters": 14611,
+      "announcement_date": "2025-05-28",
+      "candidate_groups": 152,
+      "document_id": "sec:0001045810:0001045810-25-000115:EARNINGS_EXHIBIT:75ed627af1c9",
+      "omission_reasons": {
+        "NOT_TOPIC_NUMERIC": 4,
+        "RELATION_CONFLICT": 96,
+        "RELATION_UNRESOLVED": 40
+      },
+      "paragraph_anchors": 63,
+      "parsed_fragments": 400,
+      "parsed_numeric_cells": 152,
+      "raw_html_sha256": "bd42e9a2896a1cb923bad9d11e9de38cc104169b762e34bdade7f28bee46b6e6",
+      "selected_groups": 12,
+      "selected_model_text_sha256": "49e7ec11bf142fd34ff7dbbf0c882879d0e68638e3df8c5902213e53cad1a47a",
+      "source_dom_checks": 552,
+      "symbol": "NVDA"
+    },
+    {
+      "actual_model_text_characters": 12818,
+      "announcement_date": "2025-06-25",
+      "candidate_groups": 130,
+      "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "omission_reasons": {
+        "NOT_TOPIC_NUMERIC": 1,
+        "RELATION_CONFLICT": 55,
+        "RELATION_UNRESOLVED": 58
+      },
+      "paragraph_anchors": 28,
+      "parsed_fragments": 236,
+      "parsed_numeric_cells": 130,
+      "raw_html_sha256": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909",
+      "selected_groups": 16,
+      "selected_model_text_sha256": "7c8b46a70f211bcdf83a9fe2c7724f767e2f79c473d9d3b58d0af95c82d3894f",
+      "source_dom_checks": 366,
+      "symbol": "MU"
+    }
+  ],
+  "limits": [
+    "Only the two earliest saved training exhibits were parsed in this debug step; no full corpus build.",
+    "Source DOM and synthetic checks establish engineering consistency, not independently verified financial semantics.",
+    "No April-July body or label read; no download, model fitting, inference or financial evaluation."
+  ],
+  "pre_freeze_correction": {
+    "first_new_test_run": "Failed 1 of 25 because Revenue (1) was misclassified as a numeric value; implementation corrected and expanded before this receipt.",
+    "latest_combined_test_run": "29 of 29 PASS",
+    "previous_r2_receipt_sha256": "4666a2d19cfbdea17b93e029395354d88c9c298d18c522ea40b0b26c147eab73",
+    "repair": "Treat plausible trailing unlinked marker as FOOTNOTE UNKNOWN; keep standalone parenthetical negative as amount and arithmetic asterisk as prose.",
+    "trigger": "Unlinked plain or attached trailing note markers, including Revenue (1), GAAP(1), and 42.0(1), could previously be treated NOT_APPLICABLE; a row-label marker could be misclassified as a numeric measurement."
+  },
+  "schema": "financial_text_v23_chronological_debug_redacted_v3",
+  "scope": "EARLIEST_SAVED_TRAINING_EARNINGS_EXHIBIT_PER_SYMBOL_ONLY",
+  "selection_rule": "chronological earliest ISSUER_EARNINGS saved exhibit for each fixed NVDA/MU symbol; no outcome selection",
+  "synthetic_tests": {
+    "adversarial_cases": 23,
+    "initial_adversarial_7_of_11_failures_superseded_not_additive": true,
+    "latest_combined_distinct_cases": 29,
+    "new_unlinked_marker_cases": 6,
+    "status": "PASS"
+  }
+}

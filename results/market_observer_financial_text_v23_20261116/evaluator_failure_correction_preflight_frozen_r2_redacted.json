@@ -1,0 +1,37 @@
+{
+  "baseline_build_run_id": "frozen_r2",
+  "created_at_utc": "2026-11-15T23:05:16.526257+00:00",
+  "evaluation_inputs_sha256": {
+    "corrected_evaluator_code": "c9bd58eb92b1f8394e84cdf4006e2e75c1c6fd14fe698be385ac062e87c0665c",
+    "corrected_focused_tests": "b4f292e40d284811c66eca4067a941155008ccaadc67a7c348fa45c3ca94ed79",
+    "frozen_candidates": "4b349b448ac7238d7182e49ec4a3d3906ed10eddad8f49b9a1df12cd277c6f5f",
+    "frozen_config": "87f7060d1eb6b53af53fd325948bb1118ff4aa8a57ca27d88eabb61fe12e039b",
+    "frozen_source_review": "523fd9e58256fdf179d55e11faa2d4b0ae8193cc873585d7b7263c8bbd1f92b9",
+    "frozen_v21_retention": "dcbd2581f78c8f1a5278912092ad7c380cb4ef1ed8946b0e83f3a15553537494",
+    "frozen_v22_retention": "73681ef1bd0098f1f6c8c326eb7a6d17ba848e0dd681a3ef7648ae3e85238ff7",
+    "saved_model_inputs": "24585be45b6c69b0da7b96f43d555dcdeff6ad5536f2f1b2940146a54c3a7407",
+    "saved_parsed_documents": "cadb0f14274566f3e51c88cd7b4e29ca08f8f775543e1bcd724df429cb76bb1f"
+  },
+  "evaluation_run_id": "frozen_r2_evalfix1",
+  "failure": {
+    "error_message": "parsed and serialized documents differ",
+    "error_type": "StructureContractError",
+    "evaluation_outputs_written": false,
+    "root_cause": "Eight matched primary filings were parsed but intentionally had no selected model-visible numeric evidence. The evaluator incorrectly required every parsed document to appear among model-visible spans.",
+    "stage": "EVALUATOR_PRE_OUTPUT_CONTRACT_CHECK"
+  },
+  "focused_tests": {
+    "added_cases": [
+      "parsed primary with no visible spans maps to event",
+      "unmatched parsed event remains rejected"
+    ],
+    "failed": 0,
+    "passed": 12
+  },
+  "frozen_original_evaluator_sha256": "beb0922fe6616eab7ff998f726ebd31467cd69f0904d262995b537f0b074d23f",
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "narrow_fix": "Map every parsed document to its event_group_id, enforce exact parsed-versus-serialized event group set, and allow a document to have zero selected spans. No score thresholds, source review, parser output or serialized input changed.",
+  "pre_score_status": "FROZEN_FOR_ONE_EVALUATION_ON_SAVED_OUTPUTS",
+  "schema": "financial_text_v23_evaluator_failure_correction_preflight_redacted_v1"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "financial_text_v23_aborted_pre_result_run_v1",
+  "run_id": "frozen_r1",
+  "recorded_at_utc": "2026-11-15T22:58:55Z",
+  "preflight": "results/market_observer_financial_text_v23_20261116/preflight_frozen_r1_redacted.json",
+  "config_copy": "results/market_observer_financial_text_v23_20261116/config_frozen_r1_aborted_redacted.json",
+  "actual": "Full builder process was started and then terminated before any parsed-document, event-input, or build-summary output was written; process exit code 1.",
+  "reason": "A self-audit identified unlinked plain footnote markers that the parser could incorrectly treat as not applicable. Conservative handling must be implemented and frozen before the one complete corpus build.",
+  "missing_outputs_checked": [
+    "artifacts/market_observer_financial_text_v23_20261116/parsed_frozen_r1.private.jsonl",
+    "artifacts/market_observer_financial_text_v23_20261116/event_inputs_frozen_r1.private.jsonl",
+    "results/market_observer_financial_text_v23_20261116/build_frozen_r1_redacted.json"
+  ],
+  "result_scored": false,
+  "full_corpus_build_completed": false,
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "next_step": "Version the footnote correction, recheck the two chronological debug sources, freeze a new run ID, and execute one complete corpus build."
+}

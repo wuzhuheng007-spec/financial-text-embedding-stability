@@ -1,0 +1,61 @@
+{
+  "schema": "market_observer_financial_text_v23_plan_v1",
+  "drafted_at_utc": "2026-11-15T22:44:40Z",
+  "frozen_at_utc": "2026-11-15T23:02:09Z",
+  "supersedes_aborted_pre_result_run": "frozen_r1",
+  "execution_timezone": "Asia/Shanghai",
+  "branch": "codex/sync-research-progress-20261113",
+  "baseline_commit": "77d86b300f92ed32df1149175e4c791568cf9dc6",
+  "role": "TRAINING_CONTENT_ENGINEERING_AFFECTED_BY_PRIOR_VALIDATION_EXPOSURE",
+  "source": {
+    "saved_manifest": "artifacts/market_observer_official_20261115/corpus_manifest.json",
+    "symbols": ["NVDA", "MU"],
+    "announcement_date_start": "2025-04-01",
+    "announcement_date_end": "2026-03-31",
+    "source_kind_exhibit": "ISSUER_EARNINGS",
+    "source_kind_matched_filing": "SEC_FILINGS",
+    "expected_events": 8,
+    "expected_earnings_exhibits": 8,
+    "expected_matched_primary_filings": 8,
+    "debug_selection": "Earliest saved earnings exhibit for each symbol by announcement date, then accession-matched primary filing if needed; no post-outcome selection",
+    "new_downloads": 0,
+    "forbidden_reads": ["2026-04-01 through 2026-07-31 source bodies or labels", "private market/account data", "new models"]
+  },
+  "parser": {
+    "version": "v2.3",
+    "table_grid": "Preserve nested-table boundaries and expand rowspans/colspans into a coordinate grid without treating duplicated span cells as independent source cells",
+    "numeric_cell_locator": ["document_id", "table_id", "subtable_id", "row", "column", "raw_dom_path"],
+    "header_binding": "Bind row-title and precise numeric-column title; repeated headers may open a new subtable; never use same amount somewhere in row as exact-column proof",
+    "scope_binding": "Period, unit and accounting basis apply only within explicit structural or chapter scope; new explicit declaration closes the prior scope; conflicting scope remains unresolved",
+    "period_roles": ["actual_current", "actual_year_ago", "actual_previous_quarter", "future_guidance", "unknown"],
+    "footnote_binding": "Use explicit HTML links/markers and table-region scope; repeated numeric markers across tables alone cannot establish a link",
+    "relation_evidence": ["source_dom", "table_or_section_scope", "rule_id", "conflict_state"],
+    "no_hardcoded_source_identity_or_amount": true,
+    "unresolved_is_not_confirmed": true
+  },
+  "adapter": {
+    "max_characters_per_event": 20000,
+    "character_count": "Python len() of final serialized Unicode model-visible input including all IDs, references, labels and newlines",
+    "context_sharing": "Serialize each needed public context once per event and reference it with a stable ID; reference target must be in the visible input",
+    "group_completeness": "Only a numeric cell with exact row and column relation plus all necessary reachable context is selectable; otherwise omit whole group and record reason",
+    "selection": "First eligible complete group per fixed financial topic, then remaining complete groups by exhibit precedence, document and source-coordinate stable order",
+    "topic_order": ["revenue", "net_income", "earnings_per_share", "gross_margin", "next_quarter_or_full_year_guidance", "capital_expenditures", "operating_cash_flow", "free_cash_flow", "important_segment_revenue"],
+    "separate_omission_reasons": ["PARSER_FAILURE", "RELATION_UNRESOLVED", "WHOLE_GROUP_OVER_BUDGET", "SERIALIZATION_LOSS"],
+    "production_forbidden_inputs": ["fact_candidates", "fact_review", "retention_scores", "return_labels", "validation_results", "test_results"],
+    "model_fit_calls": 0,
+    "model_inference_calls": 0
+  },
+  "evaluation": {
+    "definition_version": "v23_structure_audit_v1",
+    "reference": "Frozen 71-candidate same-team review with 60 SOURCE_SUPPORTED and 11 AMBIGUOUS; source judgment immutable",
+    "legacy_fragment_metric": "Use unchanged old/v2.1/v2.2 fragment-retention definition for comparable counts",
+    "new_structure_metric": "Separately assess fragment presence, model-visible reference reachability, exact numeric-cell-to-field relation and CODEX_REVIEW source semantic support",
+    "legacy_structure_status": "UNEVALUABLE if an old output lacks structural lineage; never mark an absent schema as a structural error",
+    "known_fields_vs_all_fields": "Keep known-field completeness separate from full completeness where source accounting basis is unknown",
+    "regression_policy": "Report every old-complete/new-incomplete item, wrong binding and unresolved relation without post-score retuning",
+    "report_denominators": ["71_all_candidates", "60_same_team_source_supported", "11_source_ambiguous", "field_slots", "events", "documents"],
+    "one_full_build_after_freeze": true,
+    "no_model_or_financial_score": true
+  },
+  "disclosure": "Rules are developed on saved training material after prior validation exposure. The two earliest exhibits are structural debugging cases, not an independent test. The remaining training files are regression checks."
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "financial_text_v23_evaluator_contract_review_redacted_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "role": "PRE_FULL_BUILD_DEFINITION_AUDIT",
+  "baseline_commit": "77d86b300f92ed32df1149175e4c791568cf9dc6",
+  "frozen_review_denominators": {
+    "all_candidates": 71,
+    "same_team_source_supported": 60,
+    "source_ambiguous": 11,
+    "source_supported_primary_basis_unknown": 20,
+    "source_supported_comparison_applicable": 32,
+    "comparison_applicable_basis_unknown": 0
+  },
+  "v22_shared_context_audit": {
+    "model_visible_shared_references_allowed": true,
+    "evidence": "v2.2 validate_event verifies source spans and same-document visible context IDs; binding_for_review joins the selected numeric anchor with only its referenced visible contexts",
+    "score_change_warranted": false,
+    "reason": "No demonstrated old definition defect changes the frozen 34/18/8 fragment counts; v2.2 did not establish exact numeric-cell/column relations, which requires a new metric"
+  },
+  "v23_definition": {
+    "version": "v23_structure_audit_v1",
+    "layers": [
+      "reviewed source fragment visible in actual serialized text",
+      "numeric-anchor reference resolves to visible same-document context",
+      "exact numeric cell and row/column/scope relationship is mechanically coherent",
+      "separate same-team CODEX_REVIEW source semantic decision"
+    ],
+    "old_v21_v22_structure": "STRUCTURE_UNEVALUABLE_NO_CELL_RELATION_SCHEMA",
+    "known_fields_unknown_basis": "mechanical known-field status reported separately from full accounting-basis completeness",
+    "paragraph_div_locator": "paragraph anchor or explicit PARAGRAPH_NO_GRID_UNEVALUABLE, never inferred table column",
+    "duplicate_numeric_value_in_review_row": "AMBIGUOUS_CELL_MATCH",
+    "all_mechanical_complete_table_rows": "private cell-and-relation witnesses; CODEX_REVIEW pending until separate source readback"
+  },
+  "evaluator_code_sha256": "beb0922fe6616eab7ff998f726ebd31467cd69f0904d262995b537f0b074d23f",
+  "focused_test_code_sha256": "4ed7588578e1e5705b10a480fa766924f68d35402106b7cfa5befadc111c8fd1",
+  "synthetic_test_result": "10_PASS_DISTINCT_FOCUSED_CASES",
+  "full_real_build_or_comparison_at_receipt_time": "NOT_RUN",
+  "model_fit_calls": 0,
+  "model_inference_calls": 0
+}

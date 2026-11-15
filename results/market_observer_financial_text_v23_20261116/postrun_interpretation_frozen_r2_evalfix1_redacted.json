@@ -1,0 +1,44 @@
+{
+  "all_source_supported_group_not_in_input": {
+    "caution": "Do not equate reviewed candidates with the much larger count of all parsed evidence groups omitted by the adapter.",
+    "missing_group_candidates": 42,
+    "omission_causes": {
+      "RELATION_CONFLICT": 16,
+      "RELATION_UNRESOLVED": 26
+    },
+    "reviewed_candidate_denominator": 60
+  },
+  "created_at_utc": "2026-11-15T23:08:47.034803+00:00",
+  "evaluation_redacted_sha256": "b823dbff24925eb08a8e20218e80cbe079c60554780855c72834698115a3cc1a",
+  "legacy_fragment_metric_interpretation": "The frozen v2.1 contiguous-fragment metric assigns 0/71 COMPLETE to v2.3 split ID-based serialization. This is not evidence that every numeric cell is absent. Six reviewed exact source cells were selected, but their period/unit/basis relationships failed source-semantic review; other candidates are omitted or lack a unique cell locator. No post-result retuning was performed.",
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "old_complete_regressions": {
+    "causes": {
+      "AMBIGUOUS_EXACT_CELL_LOCATOR": 8,
+      "OMITTED_RELATION_CONFLICT": 2,
+      "OMITTED_RELATION_UNRESOLVED": 18,
+      "SELECTED_CELL_BUT_SPLIT_FRAGMENT_METRIC_AND_SEMANTIC_RELATION_FAILURE": 6
+    },
+    "denominator": 34
+  },
+  "private_review_sha256": "abd03cde032b41f9c8593b9aa752ce1a934db95a1a7c763d3642ca38946617d4",
+  "review_findings": {
+    "comparison_relation_unresolved": 6,
+    "exact_numeric_cells_and_row_metrics_correct": 6,
+    "source_GAAP_basis_header_absent_from_model_input": 6,
+    "source_period_column_header_absent_from_model_input": 6,
+    "unit_declaration_not_correctly_bound": 6,
+    "wrong_column_header_to_prior_data_cells": 6
+  },
+  "review_type": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT",
+  "reviewed_witnesses": 6,
+  "run_id": "frozen_r2_evalfix1",
+  "schema": "financial_text_v23_codex_semantic_review_redacted_v1",
+  "source_semantically_complete": 0,
+  "source_urls": [
+    "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+    "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm",
+    "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm"
+  ]
+}

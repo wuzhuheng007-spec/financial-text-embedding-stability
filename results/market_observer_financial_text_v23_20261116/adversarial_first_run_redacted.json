@@ -1,0 +1,58 @@
+{
+  "schema": "financial_text_v23_adversarial_first_run_v1",
+  "role": "PRE_FREEZE_SYNTHETIC_COUNTEREXAMPLE_CHECK",
+  "source": "Observed unittest console output, transcribed immediately after the run; no separate initial log or code snapshot was saved",
+  "test_module": "tests.test_market_observer_financial_text_v23_adversarial",
+  "cases": 11,
+  "passed": 7,
+  "failed": 4,
+  "failures": [
+    {
+      "test": "test_current_actual_and_future_guidance_columns_have_distinct_roles",
+      "observed": "Both numeric columns were HISTORICAL_ACTUAL",
+      "risk": "Future guidance and realized result can be conflated"
+    },
+    {
+      "test": "test_new_chapter_intro_replaces_prior_period_and_unit",
+      "observed": "New chapter period was found, but external USD billions unit was absent from the second group's unit references",
+      "risk": "A complete source declaration can be lost across the paragraph-to-table boundary"
+    },
+    {
+      "test": "test_rowspan_label_applies_to_both_value_rows",
+      "observed": "No group was created for the second row's 41.0 value",
+      "risk": "A row title spanning multiple rows may not reach later numeric cells"
+    },
+    {
+      "test": "test_unit_outside_table_is_scoped_into_numeric_group",
+      "observed": "Unit relation was UNKNOWN despite an explicit pre-table USD millions declaration",
+      "risk": "A source-visible external unit can be dropped"
+    }
+  ],
+  "passing_boundary_cases": [
+    "same amount in distinct columns has distinct period relations",
+    "multi-level colspan period header binds to matching year column",
+    "GAAP and non-GAAP columns remain distinct",
+    "conflicting row and column basis abstains",
+    "repeated header resets scope",
+    "nested table parsed separately",
+    "duplicate footnote target ID does not choose the first match"
+  ],
+  "later_pre_freeze_probe": {
+    "test": "test_table_caption_unit_and_period_are_in_the_table_scope",
+    "status": "FAILED_BEFORE_RULE_FREEZE",
+    "observed": "Explicit table caption with period and USD millions was absent from the cell's period and unit relations",
+    "separate_log_file": false
+  },
+  "adapter_validator_probe": {
+    "role": "PRE_FREEZE_SYNTHETIC_TAMPER_CHECK",
+    "cases": 5,
+    "passed": 3,
+    "failed": 2,
+    "failures": [
+      "build.validate_event accepted an anchor line with a replaced, nonexistent model-visible context ID after its text hash was recomputed",
+      "build.validate_event accepted a group_inventory sidecar amended to cite a context belonging to another source document"
+    ],
+    "note": "Both were found before code freeze or any full real-source run; raw traceback paths were not saved or published"
+  },
+  "note": "Failures were found before rule freeze and any full saved-training build. Later synthetic runs overlap these 11 cases and must not be added as independent tests."
+}
