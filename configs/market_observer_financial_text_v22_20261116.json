@@ -1,0 +1,51 @@
+{
+  "schema": "market_observer_financial_text_v22_plan_v1",
+  "frozen_at_utc": "2026-11-15T22:16:37Z",
+  "execution_timezone": "Asia/Shanghai",
+  "branch": "codex/sync-research-progress-20261113",
+  "baseline_commit": "cb5ced8d206daba1eb99c018151f1cbbd7ba8e27",
+  "role": "TRAINING_CONTENT_ENGINEERING_AFFECTED_BY_PRIOR_VALIDATION_EXPOSURE",
+  "source": {
+    "saved_v21_blocks": "artifacts/market_observer_financial_text_v21_20261115/blocks.private.jsonl",
+    "saved_v21_events": "artifacts/market_observer_financial_text_v21_20261115/event_inputs.private.jsonl",
+    "saved_manifest": "artifacts/market_observer_official_20261115/corpus_manifest.json",
+    "symbols": ["NVDA", "MU"],
+    "announcement_date_start": "2025-04-01",
+    "announcement_date_end": "2026-03-31",
+    "expected_events": 8,
+    "expected_earnings_exhibits": 8,
+    "expected_matched_primary_filings": 8,
+    "new_downloads": 0,
+    "forbidden_reads": ["2026-04-01 through 2026-07-31 source bodies or labels", "new models", "private market or account data"]
+  },
+  "input_adapter": {
+    "version": "v2.2",
+    "max_characters_per_event": 20000,
+    "character_count": "Python len() of final Unicode selected_text, including all source labels, context IDs, references and newline separators",
+    "candidate_group_source": "Only topic-bearing numeric non-boilerplate source table rows or paragraphs in the saved v2.1 training block store",
+    "topic_order": ["revenue", "net_income", "earnings_per_share", "gross_margin", "next_quarter_or_full_year_guidance", "capital_expenditures", "operating_cash_flow", "free_cash_flow", "important_segment_revenue"],
+    "context_rule": "Bind source-visible period, unit, basis, table header and footnote in the same document and same table or bounded section; never infer a nearest heading across section/table boundaries",
+    "paragraph_rule": "Use a numeric topic-bearing paragraph with its own explicit period/unit or a source-visible same-section heading/paragraph that supplies them",
+    "footnote_rule": "All referenced footnotes must be resolvable to source-visible context in the same document; otherwise omit the group",
+    "selection": "First eligible complete group for each fixed topic, then remaining complete groups by earnings-exhibit precedence, document, sequence and stable ID",
+    "context_sharing": "Serialize each common source context once per event with a stable ID, then reference it from selected group lines; referenced text must be visible in selected_text",
+    "complete_group": "Include the entire numeric source row or paragraph plus all required visible context and link labels, or omit it as a whole",
+    "model_visible_spans": "Each selected source fragment has validated start/end offsets into actual selected_text, source document ID, source block ID and role",
+    "omit_reasons": ["MISSING_REQUIRED_CONTEXT", "CONTEXT_UNRESOLVED", "MISSING_PROVENANCE", "WHOLE_GROUP_OVER_BUDGET", "STRUCTURAL_BOILERPLATE", "NOT_TOPIC_NUMERIC"],
+    "production_forbidden_inputs": ["candidate_fact_ids", "fact_candidates", "fact_review", "retention_scores", "earnings_labels", "validation_results", "test_results"],
+    "model_fit_calls": 0,
+    "model_inference_calls": 0
+  },
+  "comparison": {
+    "run_limit": "One fixed-budget training-material comparison after preflight and synthetic tests",
+    "versions": ["old", "v2.1_selected", "v2.2_selected"],
+    "same_reference": "Frozen 71-candidate v4 same-team review with 60 SOURCE_SUPPORTED and 11 AMBIGUOUS, unchanged from v2/v2.1",
+    "same_evaluator": "Shared source-fragment and field-presence functions from v2.1 retention evaluator applied to actual serialized model-visible text per source document",
+    "strict_complete": "Metric, literal value, period, unit, necessary basis, source-bound comparison context and required footnote evidence all present; ambiguous source status remains separate",
+    "report_denominators": ["71_all_candidates", "60_source_supported", "field_slots", "documents"],
+    "old_complete_v22_lost": "Report every regression separately",
+    "source_support_is_separate_from_input_retention": true,
+    "no_model_or_financial_score": true
+  },
+  "disclosure": "Rule design follows prior exposure to April-May development results. This is training-material engineering, not independent extraction or predictive validation."
+}

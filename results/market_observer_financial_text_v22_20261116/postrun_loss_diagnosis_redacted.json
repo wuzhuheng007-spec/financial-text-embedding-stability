@@ -1,0 +1,163 @@
+{
+  "candidate_anchor_state": {
+    "MATCHED_VALUE_BLOCK_NOT_AN_ANCHOR": 4,
+    "OMITTED_VALUE_ANCHOR": 40,
+    "SELECTED_VALUE_ANCHOR": 27
+  },
+  "created_at_utc": "2026-11-15T22:27:42.773956+00:00",
+  "denominators": {
+    "all_candidates": 71,
+    "source_ambiguous": 11,
+    "source_supported": 60,
+    "strict_fragment_complete": 8
+  },
+  "group_inventory": {
+    "omission_reasons": {
+      "CONTEXT_UNRESOLVED": 122,
+      "MISSING_REQUIRED_CONTEXT": 109
+    },
+    "omitted": 231,
+    "selected": 147
+  },
+  "input_sha256": {
+    "artifacts/market_observer_financial_text_v21_20261115/blocks.private.jsonl": "37f7088f21a68cf6d922218822427a0910945b0d0223880d70712fb4ec8142b5",
+    "artifacts/market_observer_financial_text_v22_20261116/event_inputs.private.jsonl": "1ef4781d6a8f5c5fcee0b4f49e321feae801be04854b3b8f37c9e42ef7da823e",
+    "artifacts/market_observer_financial_text_v22_20261116/retention_comparison.private.json": "73681ef1bd0098f1f6c8c326eb7a6d17ba848e0dd681a3ef7648ae3e85238ff7",
+    "artifacts/market_observer_financial_text_v2_20261115/fact_cards/fact_candidates_v2.private.json": "4b349b448ac7238d7182e49ec4a3d3906ed10eddad8f49b9a1df12cd277c6f5f",
+    "artifacts/market_observer_financial_text_v2_20261115/fact_cards/fact_review_v4.private.json": "523fd9e58256fdf179d55e11faa2d4b0ae8193cc873585d7b7263c8bbd1f92b9",
+    "scripts/market_observer_financial_text_v22/diagnose_postrun.py": "688c296bae6bd6f03fe9f0bd9444d60425cd20ab110ef5e50babd1ff672f3970"
+  },
+  "limitations": [
+    "DOM/text matching maps saved reviewed evidence to saved v2.1 source blocks; text-only or multiple matches remain ambiguous.",
+    "An anchor group may correspond to a source row but not to the exact reviewed metric or value column; this is mechanical diagnosis, not fact confirmation.",
+    "A period fragment visible elsewhere in one document is not proof of binding to a numeric row.",
+    "Source review status remains frozen; no model fit, inference or return evaluation was run."
+  ],
+  "omitted_anchor_reason_by_topic": {
+    "capital_expenditures": {
+      "CONTEXT_UNRESOLVED": 4
+    },
+    "eps": {
+      "CONTEXT_UNRESOLVED": 8
+    },
+    "free_cash_flow": {
+      "CONTEXT_UNRESOLVED": 6,
+      "MISSING_REQUIRED_CONTEXT": 2
+    },
+    "gross_margin": {
+      "CONTEXT_UNRESOLVED": 4
+    },
+    "guidance": {},
+    "net_income": {
+      "CONTEXT_UNRESOLVED": 8
+    },
+    "operating_cash_flow": {
+      "MISSING_REQUIRED_CONTEXT": 4
+    },
+    "revenue": {
+      "CONTEXT_UNRESOLVED": 4
+    },
+    "segment_revenue": {}
+  },
+  "period_relation": {
+    "BOUND_IN_SELECTED_VALUE_GROUP": 4,
+    "PARSER_BLOCK_PRESENT_NOT_MODEL_VISIBLE": 31,
+    "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP": 36
+  },
+  "role": "POSTRUN_READ_ONLY_NO_COMPARISON_RERUN",
+  "schema": "financial_text_v22_postrun_loss_diagnosis_redacted_v1",
+  "source_supported_anchor_state": {
+    "OMITTED_VALUE_ANCHOR": 36,
+    "SELECTED_VALUE_ANCHOR": 24
+  },
+  "strict_fragment_complete_binding_audit": [
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-05-28",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "revenue"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-05-28",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "gross_margin"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-08-27",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "revenue"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-08-27",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "gross_margin"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-11-19",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "revenue"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2025-11-19",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "gross_margin"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2026-02-25",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "revenue"
+    },
+    {
+      "anchor_state": "SELECTED_VALUE_ANCHOR",
+      "best_group_missing_fields": [
+        "period"
+      ],
+      "binding": "NO_SINGLE_BOUND_GROUP",
+      "filing_date": "2026-02-25",
+      "period_relation": "VISIBLE_ELSEWHERE_NOT_BOUND_TO_VALUE_GROUP",
+      "symbol": "NVDA",
+      "topic": "gross_margin"
+    }
+  ]
+}

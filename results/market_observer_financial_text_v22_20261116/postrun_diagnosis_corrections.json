@@ -1,0 +1,27 @@
+{
+  "schema": "financial_text_v22_postrun_diagnosis_corrections_v1",
+  "scope": "Diagnostic script only; frozen adapter, build and retention comparison were not rerun or modified",
+  "initial_errors": [
+    {
+      "phase": "first syntax check",
+      "error_type": "SyntaxError",
+      "observed_message": "closing parenthesis ')' does not match opening parenthesis '[' in doc_visible comprehension",
+      "correction": "Closed the selected_text slice before the generator expression",
+      "separate_log_file": false
+    },
+    {
+      "phase": "first diagnostic execution after syntax correction",
+      "error_type": "ValueError",
+      "observed_message": "Input differs from frozen comparison: artifacts/market_observer_financial_text_v21_20261115/blocks.private.jsonl",
+      "root_cause": "Frozen comparison receipt used Windows backslash keys; diagnostic initially looked up only forward-slash keys",
+      "correction": "Accept either native Windows or forward-slash relative key, then require the same SHA-256 value",
+      "separate_log_file": false
+    }
+  ],
+  "error_evidence_note": "Errors were observed in interactive command output; no standalone raw logs were saved. The messages above are short redacted transcriptions, not reconstructed log files.",
+  "final_result": "PASS_POSTRUN_READ_ONLY_DIAGNOSTIC",
+  "final_code_sha256": "688c296bae6bd6f03fe9f0bd9444d60425cd20ab110ef5e50babd1ff672f3970",
+  "private_result_sha256": "8952e72d60855fef104e3ccd40139eec9daf2e4f3226f71b6294e7943eae2b2a",
+  "redacted_result_sha256": "90f272e7aa7ff83d225e3864cf7b2826490005093be34a1a41b70f5319515ebf",
+  "redacted_result_privacy_check": "No raw_text, selected_text, evidence quote, candidate/block/group/DOM identifiers, absolute user path, credential pattern or U+FFFD"
+}

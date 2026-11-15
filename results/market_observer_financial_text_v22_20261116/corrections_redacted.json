@@ -1,0 +1,35 @@
+{
+  "schema": "financial_text_v22_execution_corrections_v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "rule_change_boundary": "All adapter rule changes preceded the first real training-material build and retention comparison; no rule was changed after seeing a retention score.",
+  "sequence": [
+    {
+      "stage": "PRE_REAL_RUN_SYNTHETIC",
+      "observation": "A fiscal-year-only preamble was mistaken for a numeric fact, so the following table lost its period context.",
+      "correction": "Require a measurement token after removing explicit period/date tokens for both paragraph and table-row candidate detection.",
+      "failure_log": "results/market_observer_financial_text_v22_20261116/synthetic_tests.log",
+      "failure_log_sha256": "2de3f81981065baaac7830279e348e5c849927104cd4304e2f506c5dbf89bab5",
+      "failure_state": "20_CASES_ONE_FAILURE_OVERLAPS_LATER_SUITES"
+    },
+    {
+      "stage": "AFTER_FIRST_PREFLIGHT_BEFORE_REAL_RUN",
+      "observation": "The source parser can inherit a topic hint from a heading that is absent from the serialized model text.",
+      "correction": "Require topic evidence in the source anchor or bound model-visible context; retain the first successful preflight as a superseded code snapshot.",
+      "preflight_r1_sha256": "163720c35708f3cdef75a119f84c8a6cfddb124e554e45a9f6de52f8c967a1dc",
+      "preflight_r2_sha256": "9a006825f03bb7aae6f3a7279996cbe31f175747e3a07f8f838599780447aeb9",
+      "synthetic_r2_result": "22_CASES_PASS_OVERLAPS_FINAL_SUITE"
+    },
+    {
+      "stage": "FIRST_COMPARISON_ATTEMPT_AFTER_ONE_REAL_BUILD",
+      "observation": "The evaluator requested announcement_date from the v2.2 event object although source blocks already carry the checked event date.",
+      "correction": "Derive and consistency-check each event date from the frozen v2.1 source-block metadata. The first attempt wrote no comparison output and did not alter the adapter or model input.",
+      "private_failure_log_sha256": "1a983d5816c40666d4ebae3354c17b3a9a38ff189ebb20e2203600e40f2a682d",
+      "preflight_r3_sha256": "0d2fed544dd1ca8e9d83912ba55bbeabd3e37266923edce3e7fc4b9a89bb0d1a",
+      "final_synthetic_log_sha256": "15b19427fc6a26594409166ac1c8027035cc49a9b500e8dacc8e37e21919434a",
+      "final_synthetic_result": "23_CASES_PASS",
+      "comparison_r2_state": "COMPLETE_ONE_OUTPUT_VERSION"
+    }
+  ],
+  "counting_rule": "Synthetic suites are overlapping revisions; final distinct case count is 23. One build completed, the first comparison failed before outputs, and the corrected comparison completed once."
+}

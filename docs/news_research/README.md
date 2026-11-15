@@ -1,6 +1,8 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-16 (Asia/Shanghai), personal portal end-to-end follow-up and preserved research line / status 1.26.
+Updated 2026-11-16 (Asia/Shanghai), financial evidence input v2.2 negative content check and preserved personal portal / status 1.27.
+
+The [financial evidence input v2.2 English](../../reports/2026-11-16_market_observer_financial_text_v22.en.md) and [Chinese](../../reports/2026-11-16_market_observer_financial_text_v22.zh.md) reports ([P0–P7 ledger](../../results/market_observer_financial_text_v22_20261116/plan_execution.csv), [retention receipt](../../results/market_observer_financial_text_v22_20261116/retention_redacted.json)) document a **negative fixed-budget training-content result**: strict visible completeness fell from 34 old and 18 v2.1 to eight v2.2 among the same 71 candidates; none of the 60 source-supported candidates has all required evidence bound in one v2.2 group. The separate 11 ambiguous candidates remain unconfirmed. No model fit, inference, data download or April–July body/label read occurred; v2.2 was not promoted and the personal app and page were unchanged. 中文报告逐项解释上下文绑定缺口；这是训练材料工程检查，不是金融预测结果。
 
 The [personal Quant Portal test](../quant_portal/README.md) has local first registration, an editable watchlist and historical SEC-derived development fact summaries. The [English](../../reports/2026-11-16_quant_portal_personal.en.md) and [Chinese](../../reports/2026-11-16_quant_portal_personal.zh.md) reports and [P0–P7 ledger](../../results/quant_portal_20261116/plan_execution.csv) separate locally verified software from interrupted browser visual QA and unrun cloud/load work. Moomoo/Jin10 public output, live data, new financial fitting and formal M5 remain off. The existing private research Site is unchanged.
 
