@@ -1,0 +1,15 @@
+{
+  "schema": "market_observer_watchlist_sync_verification_v1",
+  "verified_at_utc": "2026-11-15T05:03:57Z",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "delivery_commit": "2323af3813f0a778c0611c5506d7b6b55ed24d4f",
+  "remote_branch_sha_at_verification": "2323af3813f0a778c0611c5506d7b6b55ed24d4f",
+  "key_blob_readback": {
+    "reports/2026-11-15_market_observer_watchlist_live.zh.md": "6c71925408904c9ed5e6d9840485fa9d36d93d9d",
+    "results/watchlist_live_20261115/live_probe_redacted.json": "8203a9b5f367fd5d1625236d4ce1479bb99a4268",
+    "scripts/market_observer_v1/moomoo_ws.py": "735377e8f9f8b3a12753e0cbba3eefd5d36dceb6"
+  },
+  "local_blob_hashes_equal_fetched_remote_blobs": true,
+  "private_data_included": false
+}
