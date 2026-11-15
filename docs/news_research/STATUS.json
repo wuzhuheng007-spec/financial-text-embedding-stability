@@ -845,8 +845,8 @@
     "page_updated": false,
     "container_acceptance": "NOT_RUN",
     "cloud_deployed": false,
-    "github_sync": "PENDING",
-    "redacted_handoff_zip": "PENDING",
+    "github_sync": "PUSHED_REMOTE_SHA_AND_KEY_BLOBS_READ_BACK_CONFIRMED",
+    "redacted_handoff_zip": "LOCAL_REDACTED_CRC_AND_CONTENT_READBACK_PASS",
     "formal_m5_financial_experiment": "NOT_RUN"
   }
 }

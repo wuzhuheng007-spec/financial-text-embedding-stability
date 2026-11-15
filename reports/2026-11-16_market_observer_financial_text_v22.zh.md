@@ -30,7 +30,7 @@ v2.2 将编号的公共上下文及候选证据组序列化进模型实际可见
 | P4 | 用同一清单比较旧版、v2.1、v2.2 | 首次比较尝试因事件日期字段缺失，在输出前失败；从冻结来源块取日期并核一致性后，完成一次比较。[结果](../results/market_observer_financial_text_v22_20261116/retention_redacted.json)为 34 / 18 / 8。 | 负面结果已完成；v2.2 不晋升。 |
 | P5 | 合成边界与真实来源定位核对 | [最终日志](../results/market_observer_financial_text_v22_20261116/synthetic_tests_final_r3.log)有 **23 项合成检查通过**；此前 20、22 项是重叠修订版，不累加。真实构建和 DOM 检查单列。 | 范围内完成；不证明来源事实正确。 |
 | P6 | 保持个人服务；单列容器阻塞 | [页面进度](../results/market_observer_financial_text_v22_20261116/site_progress_redacted.json)显示个人应用与页面均未修改；[部署阻塞说明](../docs/quant_portal/deployment_blocker_v22_20261116.zh.md)复用先前 Docker/WSL 诊断。 | 个人版不变；容器和云端 `NOT_RUN`。 |
-| P7 | 中英报告、状态、选择性 Git 同步及脱敏交接 | 文档已准备；[计划—实际台账](../results/market_observer_financial_text_v22_20261116/plan_execution.csv)为机器回执。撰写时 Git 推送、远端回读及 ZIP 核验仍为 **PENDING**。 | 核实完成前不写同步成功。 |
+| P7 | 中英报告、状态、选择性 Git 同步及脱敏交接 | 文档与[计划—实际台账](../results/market_observer_financial_text_v22_20261116/plan_execution.csv)已更新；既有协作分支完成选择性推送，远端 SHA 和关键文件逐项回读匹配；脱敏交接 ZIP 通过 CRC、逐文件内容和中文编码回读。 | 已完成同步核验；原件和私人数据未发布。 |
 
 ## 限制和下一步
 
