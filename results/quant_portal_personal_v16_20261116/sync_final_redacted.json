@@ -1,0 +1,23 @@
+{
+  "schema": "quant_personal_v16_final_sync_redacted_v1",
+  "verified_at_utc": "2026-11-16T08:25:33Z",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "latest_content_commit": "82b0ffa5d8d793a52c56875e8530cd3dffd2b025",
+  "remote_branch_matched_content_commit_at_check": true,
+  "remote_blob_readback": {
+    "analysis_display_gate": true,
+    "portal_template": true,
+    "portal_translation_catalog": true,
+    "chinese_report": true,
+    "browser_acceptance_receipt": true,
+    "research_status": true
+  },
+  "latest_delta_files_reviewed": 22,
+  "credential_pattern_hits_in_selected_files": 0,
+  "private_absolute_path_hits_in_selected_files": 0,
+  "restricted_binary_extensions_in_selected_files": 0,
+  "unrelated_untracked_files_preserved": true,
+  "default_branch_merged": false,
+  "note": "The prior sync receipt is retained as an earlier checkpoint; this receipt records the later content-hold and visual-recheck push. The receipt itself is committed separately after the content commit."
+}
