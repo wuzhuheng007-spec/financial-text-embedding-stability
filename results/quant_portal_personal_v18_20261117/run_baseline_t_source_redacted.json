@@ -1,0 +1,285 @@
+{
+  "attempts": [
+    {
+      "elapsed_seconds": 119.96899999998277,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 400,
+        "input_tokens": 475,
+        "peak_cuda_bytes": 6360123392,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "040b0e0230b6e555720fc486aaedfc134487997bb321d593655cee04dc7f7c04",
+      "stage": "T_SOURCE",
+      "task_id": "V18-01"
+    },
+    {
+      "elapsed_seconds": 63.45299999997951,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 174,
+        "input_tokens": 269,
+        "peak_cuda_bytes": 6333082624,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "36a3efd09266de8de5b47be5497eaf400731b8c9cbdfb35371c0589613f03533",
+      "stage": "T_SOURCE",
+      "task_id": "V18-02"
+    },
+    {
+      "elapsed_seconds": 33.98399999999674,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 55,
+        "input_tokens": 156,
+        "peak_cuda_bytes": 6317023744,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "0576031a9f82341a858f8327060207ce9c82879bfa1c07e0a62e43f5a0441196",
+      "stage": "T_SOURCE",
+      "task_id": "V18-03"
+    },
+    {
+      "elapsed_seconds": 58.59400000004098,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 159,
+        "input_tokens": 259,
+        "peak_cuda_bytes": 6332601344,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "c9c97c4531530232a881a0183cc98339c9d7f7920d2f28ee7433a92069c26613",
+      "stage": "T_SOURCE",
+      "task_id": "V18-04"
+    },
+    {
+      "elapsed_seconds": 113.65599999995902,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 390,
+        "input_tokens": 474,
+        "peak_cuda_bytes": 6359979008,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "9425d8fca210b63cd1cff9c7f3189468039824e16a79e31f772236bca2b6de4d",
+      "stage": "T_SOURCE",
+      "task_id": "V18-05"
+    },
+    {
+      "elapsed_seconds": 65.81300000002375,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 191,
+        "input_tokens": 280,
+        "peak_cuda_bytes": 6333612544,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "fff576479c785329848a5209b89be67aa9ab681aab2ec2f02970b854413615e8",
+      "stage": "T_SOURCE",
+      "task_id": "V18-06"
+    },
+    {
+      "elapsed_seconds": 89.57799999997951,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 290,
+        "input_tokens": 366,
+        "peak_cuda_bytes": 6344518656,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "26188d1c2ce5f9853550389cf2b785ee969d560e173620eb56344414722e5e55",
+      "stage": "T_SOURCE",
+      "task_id": "V18-07"
+    },
+    {
+      "elapsed_seconds": 95.5,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 314,
+        "input_tokens": 403,
+        "peak_cuda_bytes": 6351234560,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "6baeae82698539d7423f9a056fc1ecd7e9dbdb3902c888caedc9b06c0effbb9e",
+      "stage": "T_SOURCE",
+      "task_id": "V18-08"
+    },
+    {
+      "elapsed_seconds": 73.01500000001397,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 222,
+        "input_tokens": 289,
+        "peak_cuda_bytes": 6334320640,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "a4aeecafd54f407cf5755af9df439f888f3bfe81f6ad5b3eb7b8d9a205ddc1ed",
+      "stage": "T_SOURCE",
+      "task_id": "V18-09"
+    },
+    {
+      "elapsed_seconds": 77.95299999997951,
+      "error": null,
+      "mechanical_errors": [
+        "NUMBER_SEQUENCE_CHANGED"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 242,
+        "input_tokens": 346,
+        "peak_cuda_bytes": 6341121536,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "705d9b8146dcdc3df31aabae2014c7ef4f831fc40581b6120d6ef10a7205a465",
+      "stage": "T_SOURCE",
+      "task_id": "V18-10"
+    }
+  ],
+  "counts": {
+    "abstained": 0,
+    "adapted_json": 0,
+    "attempted": 10,
+    "failures": [
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-01"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-02"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-04"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-05"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-06"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-07"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-08"
+      },
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-09"
+      },
+      {
+        "error": [
+          "NUMBER_SEQUENCE_CHANGED"
+        ],
+        "task_id": "V18-10"
+      }
+    ],
+    "mechanical_valid": 1,
+    "planned": 10,
+    "raw_json": 8,
+    "response_saved": 10
+  },
+  "kind": "baseline",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_v18_flat_1",
+  "run_at_utc": "2026-11-16T18:35:49.264335Z",
+  "schema": "personal_news_v18_bounded_redacted_1",
+  "stage": "T_SOURCE"
+}

@@ -1,0 +1,28 @@
+{
+  "dependency_versions": {
+    "accelerate": null,
+    "bitsandbytes": null,
+    "huggingface-hub": "1.27.0",
+    "torch": null,
+    "transformers": null
+  },
+  "frozen_at_utc": "2026-11-16T18:15:45.190249Z",
+  "git_head": "01b35d43dfde60d35f08f2e4ec65e605539312f2",
+  "hashes": {
+    "artifacts\\quant_personal_v18_20261117\\selection_private.json": "994ada94c497b0cf82aa56b2bbc8626499b3058c5b7e0197700089fa74271008",
+    "configs\\quant_portal_personal_v18_20261117.json": "ef9fb4c4202c92bfaade525af549a812880d05998a3f82a69b6d2833626411ce",
+    "scripts\\quant_personal_feed\\analysis_contract_v18.py": "c261e7267c833fcdf33ec62bc771c25eea9cc81a5af1d81e194f2538c1ab5a22",
+    "scripts\\quant_personal_feed\\analysis_v18_freeze.py": "657e15c27472cc74372208af84650ff6e96db58b3f282aa23a1ffacd97e58bbf",
+    "scripts\\quant_personal_feed\\analysis_v18_run.py": "c47feb4413964a0098cb16254aeb191ae638bb7b1b26b690d74305ec3b17643e",
+    "scripts\\quant_personal_feed\\event_rules.py": "34f9c4d75540035b33be5cbf9f3b0e3f2b276080a9354aef3cbb8bd668f3b81b",
+    "scripts\\quant_personal_feed\\generate_v18.py": "80a702c03d4ff13467c470b4a8056ed07482ef844330e2c54daa312e93f5b78e"
+  },
+  "prompt_version": "personal_news_v18_flat_1",
+  "schema_version": "personal_news_v18_schema_1",
+  "seed": 1729,
+  "task_counts": {
+    "A": 16,
+    "T_SOURCE": 10
+  },
+  "worktree_status_sha256": "d6208b58d1c1aedc0f7f69dea622f993b19cc91f7face3c51cc53c1f592265a4"
+}

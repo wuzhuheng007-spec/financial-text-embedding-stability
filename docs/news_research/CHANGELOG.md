@@ -1,3 +1,9 @@
+# 2026-11-17 — Personal Demo v1.8 bounded translation and event extraction
+
+On ten reused development bulletins, pinned Qwen2.5-3B made ten independent original-text translation and sixteen flat event extraction calls. Zero raw translations passed same-team semantic review; one separately corrected machine translation is visible in the owner cache. Zero full extraction contracts passed and no qualified prospective tone signal was released. The single fixed 7B candidate was not run because its four-shard download remained incomplete. Owner Chinese/English targeted desktop inspection found and repaired a generic UI translation prefix on a source-script proper name and restored the news reading anchor; 390px was not available. Old continuous interpretation stays paused, provider collection continues, and v2.5 financial input remains `REJECTED_CANDIDATE`. [English report](../../reports/2026-11-17_quant_portal_personal_v18.en.md) / [中文](../../reports/2026-11-17_quant_portal_personal_v18.zh.md), [plan–actual](../../results/quant_portal_personal_v18_20261117/plan_execution.csv).
+
+---
+
 # 2026-11-17 — Staged personal news v1.7 and news factor v1 inventory
 
 Signed-in owner follow-up: Chinese/English desktop and 390px views were actually inspected. A mixed bulletin had displayed a full-report screening phrase as if it supported the reviewed first subevent; the page now shows a scope caveat when that phrase is absent from the selected segment. A 6.2-second cache refresh preserved reading position. Visual acceptance is recorded separately from source-semantic review: no new B interpretation passed and no translation ran. [Browser receipt](../../results/quant_portal_personal_v17_20261117/browser_visual_redacted.json).

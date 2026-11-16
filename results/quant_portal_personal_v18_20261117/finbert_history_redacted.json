@@ -1,0 +1,50 @@
+{
+  "baseline_2022": {
+    "revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+    "files": {
+      "config.json": {
+        "blob_id": "e3d6323dc93e170f3eef66cebb32dbaf4589aee0",
+        "lfs_sha256": null
+      },
+      "pytorch_model.bin": {
+        "blob_id": "c0104036bc2c3730025744ec953879eca6557f38",
+        "lfs_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3"
+      },
+      "tokenizer_config.json": {
+        "blob_id": "cd79adc84d3c96daa03456853766c63141aef734",
+        "lfs_sha256": null
+      },
+      "vocab.txt": {
+        "blob_id": "fb140275c155a9c7c5a3b3e0e77a9e839594a938",
+        "lfs_sha256": null
+      }
+    }
+  },
+  "current_2026": {
+    "revision": "0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031",
+    "files": {
+      "config.json": {
+        "blob_id": "e3d6323dc93e170f3eef66cebb32dbaf4589aee0",
+        "lfs_sha256": null
+      },
+      "model.safetensors": {
+        "blob_id": "17ee6110e826d0024768ae6555077bb1396b7e4a",
+        "lfs_sha256": "e5897858ff819aad7629b96ce521ae5477952d03634ef5dd30ed2d76357a9f00"
+      },
+      "pytorch_model.bin": {
+        "blob_id": "c0104036bc2c3730025744ec953879eca6557f38",
+        "lfs_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3"
+      },
+      "tokenizer_config.json": {
+        "blob_id": "cd79adc84d3c96daa03456853766c63141aef734",
+        "lfs_sha256": null
+      },
+      "vocab.txt": {
+        "blob_id": "fb140275c155a9c7c5a3b3e0e77a9e839594a938",
+        "lfs_sha256": null
+      }
+    }
+  },
+  "interpretation": "The older PyTorch weight LFS SHA-256, config blob, tokenizer config blob and vocab blob are identical across these revisions. A new safetensors file appeared in 2026; tensor equivalence to the PyTorch file was not tested. Repository/card update alone does not prove future-data training contamination.",
+  "checked_at_utc": "2026-11-16T18:31:49.366098+00:00"
+}

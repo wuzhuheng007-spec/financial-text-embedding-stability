@@ -1,0 +1,19 @@
+{
+  "attempts": [],
+  "counts": {
+    "abstained": 0,
+    "adapted_json": 0,
+    "attempted": 0,
+    "failures": [],
+    "mechanical_valid": 0,
+    "planned": 0,
+    "raw_json": 0,
+    "response_saved": 0
+  },
+  "kind": "baseline",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_v18_flat_1",
+  "run_at_utc": "2026-11-16T20:58:43.381976Z",
+  "schema": "personal_news_v18_bounded_redacted_1",
+  "stage": "B"
+}

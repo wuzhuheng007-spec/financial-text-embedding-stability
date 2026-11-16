@@ -33,6 +33,9 @@
   let eventControlSignature = '';
   const sessionChoice = new Map();
   const language = document.documentElement.dataset.language || 'zh';
+  const readingStateKey = 'quant.personal.news.reader.v18';
+  let readingRestored = false;
+  let lastNewsReading = null;
   const topBox = document.getElementById('personal-top10');
   const sentimentBox = document.getElementById('personal-sentiment');
   let topSignature = '';
@@ -333,7 +336,7 @@
         node('span','analysis-status',`${bilingual(['供应商报道／待核实','Supplier report / unverified'])} · ${row.claim_stage || 'GENERAL'} · ${bilingual(['分析','Analysis'])}: ${bilingual(analysisStates[row.analysis_status]||analysisStates.NOT_QUEUED)} · ${bilingual(['新闻语气','News tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)} · ${bilingual(['规则排序','Rule order'])} ${row.rank?.score ?? ''}`));
       button.onclick=()=>{
         window.quantOpenPanel?.('news');
-        postLocal(root.dataset.analysisPriorityUrl,{item_key:row.item_key}).catch(()=>{});
+        // Reading a news item never enqueues the paused v16 interpretation worker.
         filter='all'; document.querySelector('[data-news-filter="all"]')?.click();
         renderNews(true);
         document.querySelector(`[data-item-key="${row.item_key}"]`)?.scrollIntoView({behavior:'smooth',block:'center'});
@@ -377,6 +380,14 @@
       FINANCE_CREDIT:['关注正式融资条款、到期安排或并购公告。','Check formal financing terms, maturities or merger filings.']};
     const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
     wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
+    if (item.v18_event_features?.length) {
+      wrap.append(node('p','analysis-status',bilingual(['事件与语气字段 · 同团队开发审阅；报道未独立核实',
+        'Event and tone fields · same-team development review; report not independently verified'])));
+      item.v18_event_features.forEach(row => wrap.append(node('p','analysis-fact',
+        `${row.event_id} · ${row.entity_id} · ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)} · `+
+        `${bilingual(['不确定性','Uncertainty'])}: ${row.uncertainty || 'UNKNOWN'} · `+
+        `${bilingual(['前瞻可用时刻','Prospective availability'])}: ${stamp(row.signal_available_at_utc)}`)));
+    }
     if (item.staged_relevance_scope === 'FULL_REPORT_ONLY')
       wrap.append(node('p','muted',bilingual(['筛选词仅来自整篇快讯，未绑定当前子事件；此子事件的相关性待核对。','The screening phrase comes from the full bulletin, not this subevent; this subevent\'s relevance needs review.'])));
     else
@@ -415,7 +426,7 @@
     const a=item.analysis;
     if (!a || !['COMPLETE','DRAFT'].includes(status)) {
       wrap.append(node('p','muted',`${bilingual(['规则提示 · 后续观察','Rule note · What to watch'])}: ${bilingual(sourceHint)}`));
-      if (status==='FALLBACK') {
+      if (status==='FALLBACK' && current?.v18_mode!=='BOUNDED_DEVELOPMENT_OLD_AUTO_QUEUE_PAUSED') {
         const retry=node('button','button button-outline',bilingual(['受控重试分析','Retry analysis once']));
         retry.type='button';
         retry.addEventListener('click',async()=>{
@@ -462,16 +473,18 @@
   function newsArticle(item) {
     const article = node('article', 'news-item');
     article.dataset.itemKey=item.item_key;
-    article.addEventListener('click',() => {
-      if (item.analysis_status==='PENDING' || item.analysis_status==='NOT_QUEUED')
-        postLocal(root.dataset.analysisPriorityUrl,{item_key:item.item_key}).catch(()=>{});
-    },{once:true});
+    // The old v16 automatic interpretation queue remains paused in v1.8.
     const published = item.published_at_utc ? stamp(item.published_at_utc) :
       (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
     article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
     const modelTitle=item.analysis?.[`headline_${language}`];
     const sourceTitle=item.display_title || item.title || '原文未提供标题';
-    article.append(node('h3', null, modelTitle || (language==='en' ? `Translation pending — ${sourceTitle}` : sourceTitle)));
+    const reviewedTranslation=['MACHINE_TRANSLATION_CODEX_REVIEWED','MACHINE_TRANSLATION_CODEX_CORRECTED'].includes(item.source_translation_status) ? item.source_translation_en : null;
+    const translationTitle=reviewedTranslation?.split(/[.!?。！？\n]/,1)[0]?.trim();
+    const headline=node('h3', null, language==='en' && translationTitle ? translationTitle :
+      modelTitle || (language==='en' ? `Translation pending — ${sourceTitle}` : sourceTitle));
+    if (language==='en' && reviewedTranslation) headline.setAttribute('translate','no');
+    article.append(headline);
     if (item.display_title_kind === 'SOURCE_FIRST_SENTENCE') article.append(node('p','news-meta',bilingual(['原文首句摘录标题','Title excerpted from the original first sentence'])));
     if (item.display_title_kind === 'SOURCE_EXCERPT_INCOMPLETE') article.append(node('p','news-meta',bilingual(['原文开头摘录，句子不完整','Opening excerpt; sentence incomplete'])));
     const body = item.content || '';
@@ -480,6 +493,20 @@
     original.append(node('summary',null,bilingual(['展开原文','Expand original report'])));
     original.append(node('p','news-body',body));
     article.append(original);
+    if (reviewedTranslation) {
+      const translated=node(language==='en' ? 'div' : 'details','news-translation');
+      if (language==='en') translated.setAttribute('translate','no');
+      if (language==='zh') translated.append(node('summary',null,'查看英文机器翻译'));
+      translated.append(node('p','news-meta',item.source_translation_status==='MACHINE_TRANSLATION_CODEX_CORRECTED' ?
+        bilingual(['原文机译经同团队校订；供应商报道未独立核实',
+          'Machine translation of original, corrected in same-team review; supplier report unverified']) :
+        bilingual(['原文机器翻译 · 同团队开发审阅；供应商报道未独立核实',
+          'Machine translation of original · same-team development review; supplier report unverified'])));
+      translated.append(node('p','news-body',reviewedTranslation));
+      article.append(translated);
+    } else if (language==='en') {
+      article.append(node('p','muted','Original English translation pending; the source text remains available above.'));
+    }
     article.append(analysisCard(item));
     if (filter === 'focus') {
       const labels=item.event_labels || {};
@@ -502,7 +529,7 @@
   function renderNews(force=false) {
     const rows = filteredNews();
     const signature = `${filter}|${companyFilter.value}|${categoryFilter.value}|${timeFilter.value}|` +
-      rows.map(x => `${x.item_key}:${x.version}:${x.focus_eligible}:${x.rule_priority}:${x.analysis_status}:${x.analysis_completed_at}`).join('|');
+      rows.map(x => `${x.item_key}:${x.version}:${x.focus_eligible}:${x.rule_priority}:${x.analysis_status}:${x.analysis_completed_at}:${x.source_translation_status}:${x.v18_event_features?.length||0}`).join('|');
     if (!force && signature === newsSignature) return;
     const readingOlder = newsSignature && newsBox.getBoundingClientRect().top < -20;
     if (!force && readingOlder) {
@@ -517,7 +544,7 @@
       newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无已缓存快讯；请查看上方连接状态。' : '当前缓存和筛选条件中没有匹配快讯；可切换“全部快讯”或调整关注范围。'));
       return;
     }
-    if (filter !== 'focus') { newsBox.replaceChildren(...rows.map(newsArticle)); return; }
+    if (filter !== 'focus') { newsBox.replaceChildren(...rows.map(newsArticle)); restoreReading(); return; }
     const groups=new Map();
     rows.forEach(item => {
       const key=item.event_labels?.event_group_id || item.item_key;
@@ -535,7 +562,40 @@
       }
     });
     newsBox.replaceChildren(...entries);
+    restoreReading();
   }
+  function captureReading() {
+    const bounds=newsBox.getBoundingClientRect();
+    if (bounds.top > window.innerHeight * 0.75 || bounds.bottom < window.innerHeight * 0.2) return;
+    const visible=[...newsBox.querySelectorAll('article.news-item')].find(el => el.getBoundingClientRect().bottom > 80);
+    if (!visible) return;
+    const openOriginal=[...newsBox.querySelectorAll('article.news-item')].filter(el=>el.querySelector('details.news-original')?.open).map(el=>el.dataset.itemKey);
+    lastNewsReading={scrollY:window.scrollY,anchor:visible.dataset.itemKey,openOriginal};
+  }
+  function saveReading() {
+    captureReading();
+    const position=lastNewsReading || {scrollY:window.scrollY,anchor:null,openOriginal:[]};
+    try { sessionStorage.setItem(readingStateKey,JSON.stringify({filter,company:companyFilter.value,
+      category:categoryFilter.value,time:timeFilter.value,...position})); } catch (_) { /* storage optional */ }
+  }
+  function restoreReading() {
+    if (readingRestored) return;
+    let state;
+    try { state=JSON.parse(sessionStorage.getItem(readingStateKey)||'null'); } catch (_) { state=null; }
+    if (!state) { readingRestored=true; return; }
+    for (const key of state.openOriginal||[]) {
+      const article=[...newsBox.querySelectorAll('article.news-item')].find(el=>el.dataset.itemKey===key);
+      const detail=article?.querySelector('details.news-original'); if (detail) detail.open=true;
+    }
+    const anchor=[...newsBox.querySelectorAll('article.news-item')].find(el=>el.dataset.itemKey===state.anchor);
+    if (anchor) anchor.scrollIntoView({block:'start'});
+    else if (Number.isFinite(state.scrollY)) window.scrollTo(0,state.scrollY);
+    readingRestored=true;
+    try { sessionStorage.removeItem(readingStateKey); } catch (_) { /* storage optional */ }
+  }
+  document.querySelector('.language-switch')?.addEventListener('submit',saveReading);
+  window.addEventListener('scroll',captureReading,{passive:true});
+  newsBox.addEventListener('click',()=>requestAnimationFrame(captureReading));
   async function poll() {
     if (inFlight) return;
     inFlight = true;
@@ -543,7 +603,18 @@
       const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
-      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls(); renderTop10(); renderSentiment(); renderNews();
+      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls();
+      if (!readingRestored) {
+        try {
+          const state=JSON.parse(sessionStorage.getItem(readingStateKey)||'null');
+          if (state) {
+            filter=['all','interest','focus'].includes(state.filter) ? state.filter : 'all';
+            companyFilter.value=state.company||''; categoryFilter.value=state.category||''; timeFilter.value=state.time||'';
+            document.querySelectorAll('[data-news-filter]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.newsFilter===filter));b.classList.toggle('button-primary',b.dataset.newsFilter===filter);});
+          }
+        } catch (_) { /* storage optional */ }
+      }
+      renderTop10(); renderSentiment(); renderNews();
     } catch (_) {
       for (const name of ['moomoo', 'jin10']) {
         const pill = document.getElementById(`${name}-state`);

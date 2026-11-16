@@ -1,0 +1,34 @@
+{
+  "schema": "personal_news_v18_targeted_browser_receipt_1",
+  "checked_at_utc": "2026-11-16T21:14:23Z",
+  "url": "http://127.0.0.1:8765/",
+  "signed_in_owner_session": true,
+  "browser": "ChatGPT in-app browser",
+  "desktop_viewport_css_pixels": 947,
+  "chinese_view": {
+    "reviewed_corrected_translation_cards": 1,
+    "original_report_expandable": true,
+    "translation_label_explicitly_corrected": true,
+    "full_page_horizontal_overflow": false
+  },
+  "english_view": {
+    "reviewed_corrected_translation_cards": 1,
+    "source_script_proper_name_preserved": true,
+    "generic_ui_translator_false_pending_prefix_removed": true,
+    "other_unreviewed_items_show_translation_pending_and_source_fallback": true,
+    "full_page_horizontal_overflow": false
+  },
+  "language_switch": {
+    "original_news_anchor_restored_after_async_cache_poll": true,
+    "checked_on_one_reviewed_item": true,
+    "provider_or_model_request_effect": "CODE_PATH_ONLY_NO_RUNTIME_REQUEST_COUNTER_CAUSAL_TEST"
+  },
+  "other_requested_card_types": {
+    "older_attribution_partial_card": "VISIBLE_V17_NOT_V18_FULL_CONTRACT",
+    "older_mixed_bulletin_scope_caveat": "VISIBLE_V17_NOT_V18_FULL_CONTRACT",
+    "untranslated_fallback": "VISIBLE"
+  },
+  "narrow_390px": "NOT_RUN_VIEWPORT_CAPABILITY_UNAVAILABLE",
+  "screenshots": "PRIVATE_IN_TOOL_ONLY_NOT_PUBLISHED",
+  "content_limit": "ONE_CORRECTED_MACHINE_TRANSLATION_DISPLAYED_ZERO_RAW_MODEL_TRANSLATIONS_ACCEPTED"
+}

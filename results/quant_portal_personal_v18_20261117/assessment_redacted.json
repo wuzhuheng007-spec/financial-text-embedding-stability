@@ -1,0 +1,308 @@
+{
+  "schema": "personal_news_v18_assessment_redacted_1",
+  "generated_at_utc": "2026-11-16T21:12:01.960929Z",
+  "selection": {
+    "news": 10,
+    "additional_after_v17": 2,
+    "missing_fixed_categories": [
+      "MIXED_EVENT",
+      "ATTRIBUTION_OR_DENIAL"
+    ],
+    "ready_event_tasks": 16,
+    "omitted_sub_events_by_fixed_budget": 24,
+    "independent_test": false
+  },
+  "baseline": {
+    "T_SOURCE": {
+      "counts": {
+        "abstained": 0,
+        "adapted_json": 0,
+        "attempted": 10,
+        "failures": [
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-01"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-02"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-04"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-05"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-06"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-07"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-08"
+          },
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-09"
+          },
+          {
+            "error": [
+              "NUMBER_SEQUENCE_CHANGED"
+            ],
+            "task_id": "V18-10"
+          }
+        ],
+        "mechanical_valid": 1,
+        "planned": 10,
+        "raw_json": 8,
+        "response_saved": 10
+      },
+      "error_types": {
+        "PARSE_JSONDecodeError": 2
+      },
+      "mechanical_error_labels": {
+        "NUMBER_SEQUENCE_CHANGED": 7
+      },
+      "review_decisions": {
+        "ACCEPT_CORRECTED": 1,
+        "REJECT": 9
+      },
+      "raw_model_semantic_accepts": 0,
+      "separately_corrected_views": 1,
+      "peak_cuda_bytes_max": 6360123392,
+      "generated_tokens_total": 2437,
+      "elapsed_seconds_total": 791.515
+    },
+    "A": {
+      "counts": {
+        "abstained": 0,
+        "adapted_json": 0,
+        "attempted": 16,
+        "failures": [
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-01-E01"
+          },
+          {
+            "error": [
+              "CLAIM_ENUM",
+              "TONE_MISSING_EVIDENCE_ID",
+              "UNCERTAINTY_MISSING_EVIDENCE_ID",
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-01-E02"
+          },
+          {
+            "error": [
+              "CLAIM_ENUM",
+              "TONE_MISSING_EVIDENCE_ID",
+              "UNCERTAINTY_MISSING_EVIDENCE_ID",
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-01-E03"
+          },
+          {
+            "error": [
+              "UNCERTAINTY_MISSING_EVIDENCE_ID",
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE"
+            ],
+            "task_id": "V18-02-E01"
+          },
+          {
+            "error": [
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-03-E01"
+          },
+          {
+            "error": [
+              "SCHEMA_KEYS"
+            ],
+            "task_id": "V18-04-E01"
+          },
+          {
+            "error": "LOAD_TIMEOUT_TERMINATED",
+            "task_id": "V18-05-E01"
+          },
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-05-E02"
+          },
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-05-E03"
+          },
+          {
+            "error": [
+              "CLAIM_ENUM",
+              "TONE_BAD_EVIDENCE_ID",
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE"
+            ],
+            "task_id": "V18-06-E01"
+          },
+          {
+            "error": [
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-07-E01"
+          },
+          {
+            "error": [
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-08-E01"
+          },
+          {
+            "error": [
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-08-E02"
+          },
+          {
+            "error": "PARSE_JSONDecodeError",
+            "task_id": "V18-08-E03"
+          },
+          {
+            "error": [
+              "UNCERTAINTY_MISSING_EVIDENCE_ID",
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE",
+              "ENTITY_NOT_CANDIDATE",
+              "DUPLICATE_ROLE"
+            ],
+            "task_id": "V18-09-E01"
+          },
+          {
+            "error": [
+              "ENTITY_NOT_CANDIDATE",
+              "ENTITY_NOT_CANDIDATE"
+            ],
+            "task_id": "V18-10-E01"
+          }
+        ],
+        "mechanical_valid": 0,
+        "planned": 16,
+        "raw_json": 11,
+        "response_saved": 15
+      },
+      "error_types": {
+        "LOAD_TIMEOUT_TERMINATED": 1,
+        "PARSE_JSONDecodeError": 4
+      },
+      "mechanical_error_labels": {
+        "CLAIM_ENUM": 3,
+        "DUPLICATE_ROLE": 11,
+        "ENTITY_NOT_CANDIDATE": 24,
+        "SCHEMA_KEYS": 1,
+        "TONE_BAD_EVIDENCE_ID": 1,
+        "TONE_MISSING_EVIDENCE_ID": 2,
+        "UNCERTAINTY_MISSING_EVIDENCE_ID": 4
+      },
+      "review_decisions": {
+        "REJECT": 16
+      },
+      "raw_model_semantic_accepts": 0,
+      "separately_corrected_views": 0,
+      "peak_cuda_bytes_max": 6445543424,
+      "generated_tokens_total": 2880,
+      "elapsed_seconds_total": 8044.502
+    },
+    "B": {
+      "counts": {
+        "abstained": 0,
+        "adapted_json": 0,
+        "attempted": 0,
+        "failures": [],
+        "mechanical_valid": 0,
+        "planned": 0,
+        "raw_json": 0,
+        "response_saved": 0
+      },
+      "error_types": {},
+      "mechanical_error_labels": {},
+      "review_decisions": {},
+      "raw_model_semantic_accepts": 0,
+      "separately_corrected_views": 0,
+      "peak_cuda_bytes_max": null,
+      "generated_tokens_total": 0,
+      "elapsed_seconds_total": 0
+    }
+  },
+  "candidate": {
+    "checked_at_utc": "2026-11-16T20:56:17.818900+00:00",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "license": "Apache-2.0",
+    "source": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/tree/a09a35458c702b33eeacc393d103063234e8bc28",
+    "completed_weight_shards": {
+      "model-00001-of-00004.safetensors": 3945441440,
+      "model-00002-of-00004.safetensors": 3864726352
+    },
+    "missing_weight_shards": [
+      "model-00003-of-00004.safetensors",
+      "model-00004-of-00004.safetensors"
+    ],
+    "incomplete_chunks": [
+      {
+        "suffix": "1a72d403cdf0",
+        "bytes": 83886080
+      },
+      {
+        "suffix": "8efdec4c1bc1",
+        "bytes": 901775360
+      }
+    ],
+    "download_attempts": 3,
+    "first_attempt_error": "HTTPSConnectionPool Read timed out; bounded resume after process stop",
+    "status": "INCOMPLETE_DOWNLOAD_MODEL_LOAD_NOT_RUN_GENERATION_CALLS_ZERO",
+    "note": "No private news was sent to a remote inference service."
+  },
+  "private_owner_cache_aggregate": {
+    "reviewed_translation_rows": 1,
+    "candidate_only_tone_rows": 16,
+    "qualified_prospective_tone_rows": 0,
+    "availability_before_completion_errors": 0
+  },
+  "interpretation_auto_queue": "PAUSED_NO_V18_B_CALLS",
+  "financial_return_or_ic": "NOT_RUN",
+  "source_verification": "SUPPLIER_REPORT_ONLY_NOT_INDEPENDENTLY_VERIFIED"
+}

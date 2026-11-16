@@ -1,0 +1,29 @@
+{
+  "checked_at_utc": "2026-11-16T20:56:17.818900+00:00",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "license": "Apache-2.0",
+  "source": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/tree/a09a35458c702b33eeacc393d103063234e8bc28",
+  "completed_weight_shards": {
+    "model-00001-of-00004.safetensors": 3945441440,
+    "model-00002-of-00004.safetensors": 3864726352
+  },
+  "missing_weight_shards": [
+    "model-00003-of-00004.safetensors",
+    "model-00004-of-00004.safetensors"
+  ],
+  "incomplete_chunks": [
+    {
+      "suffix": "1a72d403cdf0",
+      "bytes": 83886080
+    },
+    {
+      "suffix": "8efdec4c1bc1",
+      "bytes": 901775360
+    }
+  ],
+  "download_attempts": 3,
+  "first_attempt_error": "HTTPSConnectionPool Read timed out; bounded resume after process stop",
+  "status": "INCOMPLETE_DOWNLOAD_MODEL_LOAD_NOT_RUN_GENERATION_CALLS_ZERO",
+  "note": "No private news was sent to a remote inference service."
+}

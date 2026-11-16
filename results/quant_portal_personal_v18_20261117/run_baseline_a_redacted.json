@@ -1,0 +1,511 @@
+{
+  "attempts": [
+    {
+      "elapsed_seconds": 54.38999999995576,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 144,
+        "input_tokens": 394,
+        "peak_cuda_bytes": 6350555136,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "1650299b6be3100f2e6436443aabecc7fd3f8b4b3a5ac37b5b86e32150c1ecb0",
+      "stage": "A",
+      "task_id": "V18-01-E01"
+    },
+    {
+      "elapsed_seconds": 55.95300000003772,
+      "error": null,
+      "mechanical_errors": [
+        "CLAIM_ENUM",
+        "TONE_MISSING_EVIDENCE_ID",
+        "UNCERTAINTY_MISSING_EVIDENCE_ID",
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 146,
+        "input_tokens": 404,
+        "peak_cuda_bytes": 6351309312,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "d847bc1af0190f2802ac63489c52e7b530e5793d0ffcf7590a884e18d2f6c53b",
+      "stage": "A",
+      "task_id": "V18-01-E02"
+    },
+    {
+      "elapsed_seconds": 55.39100000000326,
+      "error": null,
+      "mechanical_errors": [
+        "CLAIM_ENUM",
+        "TONE_MISSING_EVIDENCE_ID",
+        "UNCERTAINTY_MISSING_EVIDENCE_ID",
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 146,
+        "input_tokens": 390,
+        "peak_cuda_bytes": 6349132800,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "5f427b960b40ef882fe28dc49e784295662f729457552d3a3590bebc1bb5200e",
+      "stage": "A",
+      "task_id": "V18-01-E03"
+    },
+    {
+      "elapsed_seconds": 73.21899999998277,
+      "error": null,
+      "mechanical_errors": [
+        "UNCERTAINTY_MISSING_EVIDENCE_ID",
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 221,
+        "input_tokens": 616,
+        "peak_cuda_bytes": 6384366592,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "832a755f03f9824c12da390a7c36891d7bb9bd062e8f93efb1ad74d40a5235db",
+      "stage": "A",
+      "task_id": "V18-02-E01"
+    },
+    {
+      "elapsed_seconds": 63.5,
+      "error": null,
+      "mechanical_errors": [
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 178,
+        "input_tokens": 406,
+        "peak_cuda_bytes": 6351458816,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "4f3326da2c286ab5bb6c2db01518cba322cd5242675f6502b2a90e893d716ae9",
+      "stage": "A",
+      "task_id": "V18-03-E01"
+    },
+    {
+      "elapsed_seconds": 6205.3129999999655,
+      "error": null,
+      "mechanical_errors": [
+        "SCHEMA_KEYS"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 150,
+        "input_tokens": 565,
+        "peak_cuda_bytes": 6374812160,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "d57b2ceeeed57ec405ea61cd0dc6094addca34b0016a3c2a86a52889102e02a5",
+      "stage": "A",
+      "task_id": "V18-04-E01"
+    },
+    {
+      "elapsed_seconds": 1247.5779999999795,
+      "error": "LOAD_TIMEOUT_TERMINATED",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": null,
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": null,
+      "stage": "A",
+      "task_id": "V18-05-E01"
+    },
+    {
+      "elapsed_seconds": 31.360000000044238,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 151,
+        "input_tokens": 383,
+        "peak_cuda_bytes": 6346109440,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "e2ac48ecb75f2b5d9b093a43fe0ee5f0f6b27882863331fe98b1d4b6fa123549",
+      "stage": "A",
+      "task_id": "V18-05-E02"
+    },
+    {
+      "elapsed_seconds": 25.95400000002701,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 145,
+        "input_tokens": 392,
+        "peak_cuda_bytes": 6350404096,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "b7359db3075593e0c4cb010e68956fbdad89a19130be30eb1217455df88c0cac",
+      "stage": "A",
+      "task_id": "V18-05-E03"
+    },
+    {
+      "elapsed_seconds": 33.0,
+      "error": null,
+      "mechanical_errors": [
+        "CLAIM_ENUM",
+        "TONE_BAD_EVIDENCE_ID",
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 304,
+        "input_tokens": 659,
+        "peak_cuda_bytes": 6394097152,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "24f6461e3206cc2cc83b665661074fddaa4a80309ebee573726b2cdd53cfaa2a",
+      "stage": "A",
+      "task_id": "V18-06-E01"
+    },
+    {
+      "elapsed_seconds": 32.14100000000326,
+      "error": null,
+      "mechanical_errors": [
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 198,
+        "input_tokens": 841,
+        "peak_cuda_bytes": 6445543424,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "0469875e3f1b3b8831d101822ec1d4696251b4bf58acc6de4f67b58ef2be8b60",
+      "stage": "A",
+      "task_id": "V18-07-E01"
+    },
+    {
+      "elapsed_seconds": 31.01600000000326,
+      "error": null,
+      "mechanical_errors": [
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 184,
+        "input_tokens": 416,
+        "peak_cuda_bytes": 6351747072,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "673122e934cd24a4a8e0835765308b60cfdad6404feef5d369a682d20991cb80",
+      "stage": "A",
+      "task_id": "V18-08-E01"
+    },
+    {
+      "elapsed_seconds": 34.46799999999348,
+      "error": null,
+      "mechanical_errors": [
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 233,
+        "input_tokens": 428,
+        "peak_cuda_bytes": 6354159104,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "c41d9a3637b1c2c86934561c0061457490568bf81823a6932c1041f202672d50",
+      "stage": "A",
+      "task_id": "V18-08-E02"
+    },
+    {
+      "elapsed_seconds": 27.90600000001723,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 144,
+        "input_tokens": 424,
+        "peak_cuda_bytes": 6353815040,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": null,
+      "raw_sha256": "d99595fa8fa1346f6f89972e19d64d336a9c963ac77b9e5eb11e3c24fee8b5f7",
+      "stage": "A",
+      "task_id": "V18-08-E03"
+    },
+    {
+      "elapsed_seconds": 40.59399999998277,
+      "error": null,
+      "mechanical_errors": [
+        "UNCERTAINTY_MISSING_EVIDENCE_ID",
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE",
+        "ENTITY_NOT_CANDIDATE",
+        "DUPLICATE_ROLE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 329,
+        "input_tokens": 700,
+        "peak_cuda_bytes": 6402411008,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "2e0765093773941fffd41649e7ca7ce8437968670ffb564b1ae5286b9837b3d1",
+      "stage": "A",
+      "task_id": "V18-09-E01"
+    },
+    {
+      "elapsed_seconds": 32.71900000004098,
+      "error": null,
+      "mechanical_errors": [
+        "ENTITY_NOT_CANDIDATE",
+        "ENTITY_NOT_CANDIDATE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 207,
+        "input_tokens": 725,
+        "peak_cuda_bytes": 6408670720,
+        "quantization": "none",
+        "stop_reason": "EOS_TOKEN"
+      },
+      "model_kind": "baseline",
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "b66f8bc9d38053d0fe1585ff5c08e6bfcb2cb4baaa1b10cc3560a112060ac370",
+      "stage": "A",
+      "task_id": "V18-10-E01"
+    }
+  ],
+  "counts": {
+    "abstained": 0,
+    "adapted_json": 0,
+    "attempted": 16,
+    "failures": [
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-01-E01"
+      },
+      {
+        "error": [
+          "CLAIM_ENUM",
+          "TONE_MISSING_EVIDENCE_ID",
+          "UNCERTAINTY_MISSING_EVIDENCE_ID",
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-01-E02"
+      },
+      {
+        "error": [
+          "CLAIM_ENUM",
+          "TONE_MISSING_EVIDENCE_ID",
+          "UNCERTAINTY_MISSING_EVIDENCE_ID",
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-01-E03"
+      },
+      {
+        "error": [
+          "UNCERTAINTY_MISSING_EVIDENCE_ID",
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE"
+        ],
+        "task_id": "V18-02-E01"
+      },
+      {
+        "error": [
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-03-E01"
+      },
+      {
+        "error": [
+          "SCHEMA_KEYS"
+        ],
+        "task_id": "V18-04-E01"
+      },
+      {
+        "error": "LOAD_TIMEOUT_TERMINATED",
+        "task_id": "V18-05-E01"
+      },
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-05-E02"
+      },
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-05-E03"
+      },
+      {
+        "error": [
+          "CLAIM_ENUM",
+          "TONE_BAD_EVIDENCE_ID",
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE"
+        ],
+        "task_id": "V18-06-E01"
+      },
+      {
+        "error": [
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-07-E01"
+      },
+      {
+        "error": [
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-08-E01"
+      },
+      {
+        "error": [
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-08-E02"
+      },
+      {
+        "error": "PARSE_JSONDecodeError",
+        "task_id": "V18-08-E03"
+      },
+      {
+        "error": [
+          "UNCERTAINTY_MISSING_EVIDENCE_ID",
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE",
+          "ENTITY_NOT_CANDIDATE",
+          "DUPLICATE_ROLE"
+        ],
+        "task_id": "V18-09-E01"
+      },
+      {
+        "error": [
+          "ENTITY_NOT_CANDIDATE",
+          "ENTITY_NOT_CANDIDATE"
+        ],
+        "task_id": "V18-10-E01"
+      }
+    ],
+    "mechanical_valid": 0,
+    "planned": 16,
+    "raw_json": 11,
+    "response_saved": 15
+  },
+  "kind": "baseline",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_v18_flat_1",
+  "run_at_utc": "2026-11-16T20:54:16.240054Z",
+  "schema": "personal_news_v18_bounded_redacted_1",
+  "stage": "A"
+}
