@@ -1,0 +1,19 @@
+{
+  "schema": "financial_text_v25_git_sync_initial_v1",
+  "branch": "codex/sync-research-progress-20261113",
+  "baseline_commit": "75133b055f4238eff5af3a4ed16115c8b717a01a",
+  "research_commit": "2f40ac3afda1dfa7f02093bd3603945b6393255d",
+  "remote_branch_sha_after_push": "2f40ac3afda1dfa7f02093bd3603945b6393255d",
+  "remote_readback_method": "GitHub connector fetch_file at research commit; compared returned Git blob SHA with local commit tree",
+  "remote_blob_matches": {
+    "scripts/market_observer_financial_text_v25/adapter.py": "4c8350c87504084a4f25cc6b9fd398c4415d5506",
+    "scripts/market_observer_financial_text_v25/evaluate.py": "0b85118074d2b161a68676cb3807d7580e818751",
+    "configs/market_observer_financial_text_v25_20261116.json": "86a64309252b1c8d4ad6d50b585dfbdaaed849d1",
+    "results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json": "2097bb1b9bf34003cf65258c46f3f25ddb8604da",
+    "reports/2026-11-16_market_observer_financial_text_v25.zh.md": "dcb0cf21634fcec4095febc3e7b9080505e1536c"
+  },
+  "remote_blob_readback_pass": true,
+  "default_branch_merged": false,
+  "private_source_uploaded": false,
+  "final_metadata_commit": "PENDING_SEPARATE_COMMIT"
+}

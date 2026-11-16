@@ -1009,8 +1009,8 @@
     "april_july_source_bodies_or_labels_read": false,
     "prior_validation_result_exposure": true,
     "personal_app_modified": false,
-    "github_sync": "PENDING",
-    "redacted_handoff_zip": "PENDING",
+    "github_sync": "RESEARCH_COMMIT_PUSHED_REMOTE_SHA_AND_FIVE_BLOBS_VERIFIED_FINAL_METADATA_FOLLOWS",
+    "redacted_handoff_zip": "LOCAL_MEMBER_SHA_CRC_UTF8_BOM_VERIFIED",
     "formal_m5_financial_experiment": "NOT_RUN"
   }
 }
