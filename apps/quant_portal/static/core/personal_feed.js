@@ -377,7 +377,10 @@
       FINANCE_CREDIT:['关注正式融资条款、到期安排或并购公告。','Check formal financing terms, maturities or merger filings.']};
     const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
     wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
-    wrap.append(node('p','muted',`${bilingual(['关联依据','Relevance evidence'])}: ${item.screening_v15?.evidence_phrase || item.focus_reason || bilingual(['规则未能定位短语','No rule phrase located'])}`));
+    if (item.staged_relevance_scope === 'FULL_REPORT_ONLY')
+      wrap.append(node('p','muted',bilingual(['筛选词仅来自整篇快讯，未绑定当前子事件；此子事件的相关性待核对。','The screening phrase comes from the full bulletin, not this subevent; this subevent\'s relevance needs review.'])));
+    else
+      wrap.append(node('p','muted',`${bilingual(['关联依据','Relevance evidence'])}: ${item.screening_v15?.evidence_phrase || item.focus_reason || bilingual(['规则未能定位短语','No rule phrase located'])}`));
     if (item.staged_task_id) {
       if (item.staged_source_candidate_count > 1)
         wrap.append(node('p','muted',bilingual(['这是一条多事件快讯；本次只审阅第一个可分段事件，其余事件尚未分析。','This bulletin contains multiple numbered items. Only the first was reviewed in this batch.'])));

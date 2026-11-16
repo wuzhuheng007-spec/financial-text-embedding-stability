@@ -32,6 +32,12 @@ def overlay(data: dict, *, private_dir: Path) -> dict:
         item["staged_task_id"] = task["task_id"]
         item["staged_source_candidate_count"] = task["candidate_count"]
         item["staged_selected_candidate_index"] = task["selected_candidate_index"]
+        if task["candidate_count"] > 1:
+            phrase = (item.get("screening_v15") or {}).get("evidence_phrase")
+            item["staged_relevance_scope"] = (
+                "SELECTED_SEGMENT" if isinstance(phrase, str) and phrase.casefold() in task["source_text"].casefold()
+                else "FULL_REPORT_ONLY"
+            )
         item["staged_extraction_status"] = a.get("decision", "NOT_REVIEWED")
         item["staged_extraction"] = []
         a_path = private_dir / "attempts" / f"{task['task_id']}_A.json"

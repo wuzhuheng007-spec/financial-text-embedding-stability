@@ -1,0 +1,82 @@
+{
+  "schema": "personal_v17_signed_in_visual_redacted_v1",
+  "observed_at_utc": "2026-11-16T17:14:17.496672Z",
+  "observed_at_asia_shanghai": "2026-11-17T01:14:17.496672+08:00",
+  "page": "http://127.0.0.1:8765/",
+  "session": "existing_owner_login_reused_no_password_handled",
+  "viewports": [
+    {
+      "css_width": 1440,
+      "css_height": 900,
+      "document_scroll_width": 1425,
+      "document_client_width": 1425,
+      "language": "zh_and_en",
+      "visual_check": "OBSERVED"
+    },
+    {
+      "css_width": 390,
+      "css_height": 844,
+      "document_scroll_width": 375,
+      "document_client_width": 375,
+      "language": "zh_and_en",
+      "visual_check": "OBSERVED"
+    }
+  ],
+  "cases": [
+    {
+      "type": "previous_same_team_reviewed_source_card",
+      "observed": "source_quote_and_labeled_inference_visible",
+      "nature": "OLDER_ACCEPTED_CARD_NOT_NEW_V17_SUCCESS"
+    },
+    {
+      "type": "allegation",
+      "observed": "source_excerpt_partial_attribution_and_rule_note_visible",
+      "nature": "FULL_V17_CONTRACT_REJECTED"
+    },
+    {
+      "type": "multi_event",
+      "observed": "first_subevent_only_notice_and_full_bulletin_screening_scope_caveat_visible",
+      "nature": "OTHER_SUBEVENTS_UNREVIEWED"
+    },
+    {
+      "type": "missing_translation",
+      "observed": "translation_pending_label_and_original_language_content_visible",
+      "nature": "NEW_TRANSLATION_NOT_RUN"
+    }
+  ],
+  "no_blank_large_analysis_card_for_checked_cases": true,
+  "auto_refresh_reading_position": {
+    "wait_seconds": 6.2,
+    "mobile_before_y": 23372.267578125,
+    "mobile_after_y": 23372.267578125,
+    "result": "UNCHANGED_ON_ONE_CACHE_REFRESH"
+  },
+  "language_switch_scroll": "FULL_PAGE_NAVIGATION_RETURNS_TO_TOP_LIMITATION",
+  "provider_model_calls_from_browser": {
+    "direct_call_path": "LOCAL_OWNER_CACHE_ONLY_IN_REVIEWED_FRONTEND_CODE",
+    "independent_upstream_request_count": "NOT_INSTRUMENTED"
+  },
+  "mixed_subevent_relevance_fix": {
+    "condition": "FULL_BULLETIN_SCREENING_PHRASE_NOT_IN_SELECTED_SEGMENT",
+    "result": "SHOW_SCOPE_CAVEAT_INSTEAD_OF_ASSIGNING_PHRASE_TO_SUBEVENT",
+    "real_owner_page_rechecked": true
+  },
+  "software_checks_this_followup": {
+    "overlay_unittest_pass": 2,
+    "javascript_syntax": "PASS",
+    "django_system_check": "PASS_WITH_LOCAL_CHECK_ENV",
+    "initial_django_check": "FAILED_CONFIGURATION_SECRET_KEY_ABSENT_IN_UNCONFIGURED_SHELL_THEN_RERUN_PASSED"
+  },
+  "code_sha256": {
+    "scripts/quant_personal_feed/view_v17.py": "03061215e8b3364449e5b93a6c6832cc07e440f7051b31ead6eccaba92b74e3a",
+    "apps/quant_portal/static/core/personal_feed.js": "5554da496b91b55d43f64c9e3cff9fc235fcd0701566892b1b7fbaf1f17afae8",
+    "apps/quant_portal/templates/core/dashboard.html": "14965c7db0678817764878a742e6101c2c90fcab96694fa99752d328868cbf4f",
+    "scripts/quant_personal_feed/test_view_v17.py": "54ebddcbc7cac6c64a0c21c2f4505a9fbc7001fee9f15166fd5048a4a2b4b100"
+  },
+  "limitations": [
+    "NEW_V17_B_INTERPRETATIONS_SOURCE_ACCEPTED_0_OF_4",
+    "NEW_V17_TRANSLATIONS_RUN_0",
+    "MIXED_BULLETIN_REMAINING_SUBEVENTS_UNREVIEWED",
+    "LONG_RUN_COLLECTION_RELIABILITY_NOT_ESTABLISHED"
+  ]
+}

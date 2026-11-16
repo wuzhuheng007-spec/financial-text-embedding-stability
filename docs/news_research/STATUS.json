@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.39",
+  "version": "1.40",
   "updated_date": "2026-11-17",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -20,7 +20,8 @@
     "B_source_semantic_accept": 0,
     "T_calls": 0,
     "new_AI_interpretation_released": 0,
-    "signed_in_current_build_visual_acceptance": "PENDING_OWNER_LOGIN",
+    "signed_in_current_build_visual_acceptance": "OWNER_ZH_EN_DESKTOP_390PX_OBSERVED_WITH_CONTENT_LIMITATIONS",
+    "signed_in_browser_receipt": "results/quant_portal_personal_v17_20261117/browser_visual_redacted.json",
     "github_sync": "PUSHED_EXISTING_BRANCH_REMOTE_SHA_AND_FOUR_KEY_FILES_READ_BACK",
     "provider_collection": "SHORT_RUN_RESTORED_AFTER_SQLITE_LOCK_REPAIR_LONG_RUN_UNVERIFIED"
   },

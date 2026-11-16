@@ -47,6 +47,26 @@ class StagedOverlayTests(unittest.TestCase):
             self.assertEqual(actual["news"][1]["analysis_status"], "CODEX_REVIEWED")
             self.assertEqual(actual["top10"][0]["analysis_status"], "STAGED_PARTIAL")
 
+    def test_multievent_screening_phrase_is_not_assigned_to_other_subevent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "attempts").mkdir()
+            task = {"task_id": "T1", "item_key": "key", "news_version": 1,
+                    "source_hash": "news-hash", "source_text_hash": "text-hash",
+                    "source_text": "1. Revenue increased.",
+                    "candidate_count": 2, "selected_candidate_index": 1}
+            (root / "selection_private.json").write_text(json.dumps({"tasks": [task]}), encoding="utf-8")
+            (root / "semantic_review_private.json").write_text(json.dumps({
+                "T1": {"A": {"decision": "REJECT", "source_text_hash": "text-hash",
+                             "raw_sha256": "raw-a", "accepted_field_paths": []}}
+            }), encoding="utf-8")
+            (root / "attempts/T1_A.json").write_text(json.dumps({"raw_sha256": "raw-a", "parsed": {}}), encoding="utf-8")
+            data = {"news": [{"item_key": "key", "version": 1, "content_sha256": "news-hash",
+                              "screening_v15": {"evidence_phrase": "oil price"}}], "top10": []}
+            actual = overlay(data, private_dir=root)
+            self.assertEqual(actual["news"][0]["staged_relevance_scope"], "FULL_REPORT_ONLY")
+            self.assertEqual(actual["news"][0]["screening_v15"]["evidence_phrase"], "oil price")
+
 
 if __name__ == "__main__":
     unittest.main()
