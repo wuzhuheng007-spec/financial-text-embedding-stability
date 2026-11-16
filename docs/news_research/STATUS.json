@@ -954,8 +954,9 @@
     "april_july_source_bodies_or_labels_read": false,
     "prior_validation_result_exposure": true,
     "personal_app_modified": false,
-    "github_sync": "PENDING_REMOTE_VERIFICATION",
-    "redacted_handoff_zip": "PENDING_VERIFICATION",
+    "github_sync": "INITIAL_RESEARCH_COMMIT_PUSHED_REMOTE_SHA_AND_KEY_BLOBS_READ_BACK",
+    "redacted_handoff_zip": "INITIAL_GIT_SNAPSHOT_LOCAL_CRC_AND_MEMBER_BYTES_PASS",
+    "sync_receipt": "results/market_observer_financial_text_v24_20261116/git_handoff_sync_redacted.json",
     "formal_m5_financial_experiment": "NOT_RUN"
   }
 }

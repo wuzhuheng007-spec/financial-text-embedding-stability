@@ -20,4 +20,4 @@ The [development ledger](../results/market_observer_financial_text_v24_20261116/
 
 This same-team regression on known training material does not establish general extraction accuracy or production fact admission. Micron's unknown currency and footnote relationships remain candidates. No other tables, full model-visible inputs or financial outcomes were assessed, and the personal portal was not changed. A separately frozen broader training-material check should precede any decision to build full inputs. Formal M5 financial work remains `NOT_RUN`.
 
-**Synchronization status at report draft:** Git push, remote readback and redacted ZIP remain to be verified in a later receipt.
+**Synchronization:** Research commit `4f0b49f` was pushed; remote SHA and five key-file blobs matched. The 39-file redacted handoff from that snapshot passed CRC and member-byte readback. The [sync receipt](../results/market_observer_financial_text_v24_20261116/git_handoff_sync_redacted.json) records these checks. This paragraph and the completed ledger are a later metadata change; the final branch SHA is checked separately after its push.

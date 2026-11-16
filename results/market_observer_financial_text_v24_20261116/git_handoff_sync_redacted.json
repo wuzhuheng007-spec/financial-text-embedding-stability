@@ -1,0 +1,32 @@
+{
+  "schema": "financial_text_v24_git_handoff_sync_redacted_v1",
+  "recorded_at_utc": "2026-11-16T00:18:21Z",
+  "recorded_at_asia_shanghai": "2026-11-16T08:18:21+08:00",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "initial_research_commit": "4f0b49ff11701cf1317341c5a36e158c74825456",
+  "initial_research_commit_remote_sha_match": true,
+  "remote_readback_method": "git fetch from origin followed by FETCH_HEAD SHA and key-file blob comparison",
+  "remote_key_blob_matches": {
+    "scripts/market_observer_financial_text_v24/semantic.py": true,
+    "scripts/market_observer_financial_text_v24/evaluate.py": true,
+    "results/market_observer_financial_text_v24_20261116/evaluation_frozen_v1_redacted.json": true,
+    "reports/2026-11-16_market_observer_financial_text_v24.zh.md": true,
+    "docs/news_research/STATUS.json": true
+  },
+  "reviewed_staged_changed_files": 31,
+  "out_of_scope_files_staged": 0,
+  "first_handoff_snapshot": {
+    "folder_name": "quant_financial_table_v24_20261116_4f0b49f",
+    "zip_name": "quant_financial_table_v24_20261116_4f0b49f.zip",
+    "snapshot_commit": "4f0b49ff11701cf1317341c5a36e158c74825456",
+    "reviewed_members": 39,
+    "zip_sha256": "551372cacaf69446a703ca71e8da22fa03d954af34c7d592ce96f736b4fc4a43",
+    "zip_crc": "PASS",
+    "member_byte_readback": "PASS",
+    "private_source_or_account_data_included": false
+  },
+  "finalization_note": "This receipt records the first pushed research snapshot and first verified handoff. A later metadata-only commit may carry this receipt without changing the frozen parser or regression. Final branch SHA is checked separately after that push.",
+  "default_branch_merged": false,
+  "model_or_financial_run_added_by_sync": false
+}
