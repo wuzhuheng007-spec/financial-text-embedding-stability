@@ -1,0 +1,24 @@
+{
+  "schema": "personal_feed_v12_p0_redacted",
+  "frozen_at_utc": "2026-11-16T02:25:20.682365Z",
+  "baseline_commit": "af94a26ff1f184606f4f8990f34c1113e706d5be",
+  "backup_integrity": {
+    "portal": "ok",
+    "feeds": "ok"
+  },
+  "counts": {
+    "quotes": 3139,
+    "news_items": 128,
+    "news_versions": 128,
+    "desired_subscriptions": 6,
+    "enabled_news_interests": 3,
+    "auth_users": 1,
+    "watchlist": 6,
+    "settings": 1,
+    "fact_cards": 14
+  },
+  "selection_rule": "current latest version of each news item, received_at DESC then version row id DESC, first 30",
+  "sample_count": 30,
+  "private_sample_sha256": "1e88b8a34ee11e0c1c808bcbf41ccd13f90b420c5a114d15aa3fe4a0ffbd6994",
+  "private_originals_published": false
+}

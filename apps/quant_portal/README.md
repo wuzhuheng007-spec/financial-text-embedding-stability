@@ -1,5 +1,7 @@
 # Quant Portal v1
 
+Personal Demo v1.2 adds **重点事件** to the existing Jin10 news section. It uses explainable company/ETF and event-category phrases, with owner-editable interests, company/category/time filters, and conservative suspected-related-report expansion. The browser continues to read only the local owner cache every five seconds; this does not change Jin10 collection cadence or moomoo subscriptions. Rule ordering does not indicate market impact. See the [v1.2 report](../../reports/2026-11-16_quant_portal_personal_events_v12.en.md) and [plan–actual ledger](../../results/quant_portal_personal_feed_v12_20261116/plan_execution.csv).
+
 Independent invitation-only application. The personal test runs on this computer at `127.0.0.1:8765`; it uses ignored SQLite databases and never queries moomoo, Jin10 or a model when a page is refreshed. Cached historical fact cards are labeled as development material. A separate local worker now receives six read-only moomoo quote streams and polls one latest Jin10 flash page every 60 seconds; the page reads only the private cache every five seconds. Public market display remains disabled.
 
 For owner operation, see the [one-page Chinese personal guide](../../docs/quant_portal/personal_user_guide.zh.md). `owner@local.invalid` is a local account identifier; no email password recovery is provided. The optional `ops/reset_personal_password.ps1` command invokes Django's interactive password prompt without a password argument or ordinary-log value.
@@ -22,7 +24,7 @@ The personal feed worker has its own start, status and stop commands. `start_per
 
 Personal feed v1.1 separates watchlist membership from quote subscription. The owner can subscribe or stop an already verified code on the dashboard; at the six-key local budget, the owner explicitly chooses which current subscription to replace. The background worker applies the change and the page waits for its acknowledgement. SNDK, SK hynix and SpaceX are separate news interests; a news interest does not create a price series. The dashboard keeps the last cached quote visible with its source time during market closure or a feed interruption. It polls only the local cache every five seconds. [v1.1 report](../../reports/2026-11-16_quant_portal_personal_feed_v11.en.md) and [plan–actual](../../results/quant_portal_personal_feed_v11_20261116/plan_execution.csv).
 
-To record a manual market-open check during a real US regular session, run `python -m scripts.quant_personal_feed.open_market_acceptance --config configs/quant_portal_personal_feeds_v11_20261116.json --seconds 120`. Its private receipt is written under the ignored app `var/` directory. The command observes cached source-time progression and does not change subscriptions.
+To record a manual market-open check during a real US regular session, run `python -m scripts.quant_personal_feed.open_market_acceptance --config configs/quant_portal_personal_feeds_v11_20261116.json --seconds 300`. It samples the private cache every five seconds (maximum 900 seconds) without changing subscriptions or calling providers. Its private receipt is written under the ignored app `var/` directory. A weekend or closed-market check is a precheck only.
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 start

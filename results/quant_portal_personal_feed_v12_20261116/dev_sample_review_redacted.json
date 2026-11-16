@@ -1,0 +1,36 @@
+{
+  "schema": "personal_event_dev_review_redacted_v12",
+  "review_kind": "CODEX_REVIEW_DEVELOPMENT_NOT_GENERAL_ACCURACY",
+  "private_manifest_sha256": "1e88b8a34ee11e0c1c808bcbf41ccd13f90b420c5a114d15aa3fe4a0ffbd6994",
+  "rules": "technology_event_rules_v1_2_20261116",
+  "sampled_items": 30,
+  "selection": "latest version per item, received_at DESC then row id DESC; frozen before rule edits",
+  "nonempty_title_count": 0,
+  "source_url_count": 30,
+  "phrase_presence_failures": 0,
+  "entity_counts": {
+    "NVDA": 1
+  },
+  "category_counts": {
+    "OTHER": 24,
+    "GEO_ENERGY": 1,
+    "MACRO_RATES": 3,
+    "EARNINGS_GUIDANCE": 1,
+    "CHIPS_MEMORY": 2,
+    "GOVERNANCE": 1
+  },
+  "categories_not_seen": [
+    "AI_CAPEX",
+    "POLICY",
+    "FINANCE_CREDIT"
+  ],
+  "suspected_related_groups": 1,
+  "related_group_items": 2,
+  "same_team_content_review_notes": [
+    "One company-governance report also mentions a forthcoming earnings date; the earnings label is contextual, not a confirmed earnings event.",
+    "One statement about future employment and income conditions was not caught by the narrow employment phrases.",
+    "The semiconductor category can include sector-price flashes; it does not establish a supply or product-price event.",
+    "The source corpus is supplier reporting; original-source factual verification was not performed."
+  ],
+  "classification_accuracy": "NOT_ESTIMATED"
+}

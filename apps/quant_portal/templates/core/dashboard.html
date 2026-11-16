@@ -79,10 +79,15 @@
 </div>
 
 {% if personal_feed_enabled %}
-<section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}">
+<section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}">
   <div class="section-head"><div><p class="eyebrow">JIN10 PRIVATE FLASH</p><h2 id="news-title">金十快讯</h2></div><span class="small-tag">金十报道／待交叉核实</span></div>
-  <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button button-primary" type="button" data-news-filter="all" aria-pressed="true">全部快讯</button><button class="button" type="button" data-news-filter="interest" aria-pressed="false">我的关注</button></div>
+  <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button button-primary" type="button" data-news-filter="all" aria-pressed="true">全部快讯</button><button class="button" type="button" data-news-filter="interest" aria-pressed="false">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
   <div class="news-interests" id="news-interest-controls" aria-label="独立新闻关注"></div>
+  <div id="event-filter-panel" class="event-filter-panel" hidden>
+    <p class="muted">按原文短语规则筛选和排序；时间筛选优先用带时区的来源发布时间，缺失时用本机收到时间。不代表新闻核实、价格预测或市场影响。</p>
+    <div class="event-filter-row"><label>公司或 ETF <select id="event-company-filter" aria-label="筛选公司或ETF"><option value="">全部</option></select></label><label>类别 <select id="event-category-filter" aria-label="筛选事件类别"><option value="">全部</option></select></label><label>时间范围 <select id="event-time-filter" aria-label="筛选时间范围"><option value="all">全部缓存</option><option value="24h">最近24小时</option><option value="7d">最近7天</option></select></label></div>
+    <details class="event-preset"><summary>编辑科技股关注预设</summary><p class="muted">当前默认沿用自选股、独立新闻关注和宏观主题。点击预设只修改表单，保存后才生效。</p><div id="event-preference-controls"></div><div class="event-preset-actions"><button class="button button-outline" type="button" id="event-apply-preset">填入科技股预设</button><button class="button button-primary" type="button" id="event-save-prefs">保存关注范围</button><span id="event-prefs-status" role="status"></span></div></details>
+  </div>
   <button class="button button-outline new-news-banner" type="button" id="new-news-banner" hidden></button>
   <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">正在读取个人新闻缓存…</div></div>
 </section>

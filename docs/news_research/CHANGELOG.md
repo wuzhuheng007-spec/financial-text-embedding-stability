@@ -1,3 +1,9 @@
+# 2026-11-16 — Personal Demo v1.2 event view
+
+Added owner-only explainable multi-label event classification, a priority tab with company/category/time filters and editable technology interests, conservative suspected-related-report expansion, and a five-second local-cache market observation script. The private 30-item development check and isolated Edge 1440/390px browser acceptance are recorded in the [English report](../../reports/2026-11-16_quant_portal_personal_events_v12.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_events_v12.zh.md), and [P0–P6 ledger](../../results/quant_portal_personal_feed_v12_20261116/plan_execution.csv). A weekend precheck did not complete regular-session acceptance. Financial input v2.5 remains `REJECTED_CANDIDATE`; no model, prediction, trading or public deployment ran.
+
+---
+
 # 2026-11-16 — Personal feed v1.1
 
 Kept the loopback moomoo and Jin10 connections while adding source-time-aware quote deduplication, separate push/insert/heartbeat counters, bounded Jin10 attempt and handshake accounting, owner-only six-key quote selection, and separate news interests. The dashboard now preserves the reading position when new flashes arrive and labels closed or old quotes with their source time. The prior duplicate cache remains untouched. The [report](../../reports/2026-11-16_quant_portal_personal_feed_v11.en.md) and [plan–actual ledger](../../results/quant_portal_personal_feed_v11_20261116/plan_execution.csv) keep software, source, browser and market-open checks separate. Financial input v2.5 stays `REJECTED_CANDIDATE`.

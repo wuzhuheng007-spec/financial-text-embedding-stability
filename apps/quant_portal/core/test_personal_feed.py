@@ -2,6 +2,7 @@
 import tempfile
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
@@ -67,6 +68,46 @@ class PersonalFeedViewTests(TestCase):
                                   {"symbol":"TQQQ","action":"unsubscribe"}).status_code,404)
                 self.assertEqual(self.client.post(reverse("personal_news_interest"),
                                   {"interest_key":"SPACEX","enabled":"1"}).status_code,404)
+                self.assertEqual(self.client.post(reverse("personal_event_preferences"),
+                                  {"entity":"NVDA"}).status_code,404)
+
+    def test_owner_can_edit_event_preset_without_changing_existing_interest(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/"sidecar.sqlite3"
+            with override_settings(PERSONAL_MODE=True,PERSONAL_FEED_DB_PATH=path):
+                owner=get_user_model().objects.create_user("owner@local.invalid",password="test-password-long")
+                store=PersonalFeedStore(path,owner.pk)
+                for key in ("SNDK","SKHYNIX","SPACEX"):
+                    store.set_news_interest(key,True)
+                store.close()
+                self.client.force_login(owner)
+                reply=self.client.post(reverse("personal_event_preferences"),
+                                       {"entity":["NVDA","SPACEX"],"category":["EARNINGS_GUIDANCE"]})
+                self.assertEqual(reply.status_code,200)
+                data=self.client.get(reverse("personal_feed_json")).json()
+                self.assertTrue(data["event_preferences_effective"]["explicit"])
+                self.assertEqual(data["event_preferences_effective"]["entities"],["NVDA","SPACEX"])
+                self.assertEqual(len(data["news_interests"]),3)
+                self.assertEqual(self.client.post(reverse("personal_event_preferences"),
+                                     {"entity":"INVALID"}).status_code,400)
+
+    def test_news_rule_failure_does_not_hide_quote_cache(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/"sidecar.sqlite3"
+            with override_settings(PERSONAL_MODE=True,PERSONAL_FEED_DB_PATH=path):
+                owner=get_user_model().objects.create_user("owner@local.invalid",password="test-password-long")
+                store=PersonalFeedStore(path,owner.pk)
+                store.put_quote(owner.pk,{"instrument_id":"US.TQQQ",
+                    "provider_time":"2026-11-13T22:00:00Z","received_at":"2026-11-16T01:00:00Z",
+                    "payload":{"price":10}},symbol="TQQQ",display_name="Synthetic",market_state="US_11",limit=5)
+                store.put_news(owner.pk,{"id":"synthetic","content":"Synthetic news"},
+                               received_at="2026-11-16T01:00:00Z",max_items=5,max_versions=2)
+                store.close()
+                self.client.force_login(owner)
+                with patch("scripts.quant_personal_feed.event_rules.classify",side_effect=ValueError("synthetic")):
+                    data=self.client.get(reverse("personal_feed_json")).json()
+                self.assertEqual(data["quotes"][0]["symbol"],"TQQQ")
+                self.assertEqual(data["news"][0]["event_rule_error"],"ValueError")
 
     def test_owner_news_interest_is_separate_from_quote_selection(self):
         with tempfile.TemporaryDirectory() as folder:

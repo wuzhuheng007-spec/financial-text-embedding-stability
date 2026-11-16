@@ -1,0 +1,17 @@
+{
+  "schema": "quant_portal_personal_events_v12_test_summary",
+  "date_asia_shanghai": "2026-11-16",
+  "python_rule_cache_command": "python -m unittest tests.test_quant_personal_feed tests.test_quant_personal_events_v12 -q",
+  "python_rule_cache_methods_passed": 14,
+  "django_owner_route_methods_passed": 8,
+  "django_database": "ISOLATED_TEST_DATABASE",
+  "additional_checks": [
+    "Python compile of changed modules",
+    "node --check of personal_feed.js",
+    "git diff --check",
+    "JSON parse of status and configuration"
+  ],
+  "browser_receipt": "browser_visual_isolated_redacted.json",
+  "real_news_review_receipt": "dev_sample_review_redacted.json",
+  "note": "Software checks, same-team content review, and browser checks have separate denominators; these are not event classification accuracy or financial performance."
+}

@@ -1,0 +1,37 @@
+{
+  "checked_at_utc": "2026-11-16T02:45:25.460909+00:00",
+  "target": "ISOLATED_TEST_DB_127.0.0.1_8767_SAME_CODE",
+  "live_owner_browser": "TAB_OBSERVED_ONLY_INTERACTION_ISOLATED",
+  "desktop": {
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "focusCards": 8,
+    "quoteCards": 6,
+    "eventTab": true,
+    "sourceLinks": 5
+  },
+  "mobile_390": {
+    "viewport": 390,
+    "scrollWidth": 390,
+    "focusCards": 9,
+    "quoteCards": 6,
+    "eventTab": true,
+    "sourceLinks": 5
+  },
+  "default_focus_count": 5,
+  "company_filter_count": 0,
+  "empty_state_seen": true,
+  "default_selected": 10,
+  "choice_count": 27,
+  "preset_selected": 20,
+  "saved_preferences_explicit": true,
+  "existing_news_interest_count": 3,
+  "related_groups_visible": 1,
+  "related_group_expanded": true,
+  "supplier_html_not_executed": true,
+  "new_message_banner_seen": true,
+  "reading_scroll_held": true,
+  "new_message_banner_cleared": true,
+  "browser_page_errors": [],
+  "nonlocal_request_count": 0
+}

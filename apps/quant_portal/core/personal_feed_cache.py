@@ -10,33 +10,6 @@ from django.conf import settings
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ALIASES = {
-    "NVDA": (r"\bNVDA\b", r"\bNVIDIA\b", "英伟达"),
-    "MU": (r"\bMU\b", r"\bMicron\b", "美光"),
-    "SNDK": (r"\bSNDK\b", r"\bSanDisk\b", r"\bSandisk\b", "闪迪"),
-    "SKHYNIX": (r"\bSK[ -]?hynix\b", "SK海力士", "SK 海力士", "海力士"),
-    "SPACEX": (r"\bSpaceX\b", "太空探索技术公司"),
-    "AMD": (r"\bAMD\b", "超威"),
-    "INTC": (r"\bINTC\b", r"\bIntel\b", "英特尔"),
-    "MSFT": (r"\bMSFT\b", r"\bMicrosoft\b", "微软"),
-    "AAPL": (r"\bAAPL\b", r"\bApple\b", "苹果公司"),
-    "AMZN": (r"\bAMZN\b", r"\bAmazon\b", "亚马逊"),
-    "GOOGL": (r"\bGOOGL?\b", r"\bAlphabet\b", "谷歌"),
-    "META": (r"\bMETA\b", "脸书"),
-    "TSLA": (r"\bTSLA\b", r"\bTesla\b", "特斯拉"),
-    "SOXX": (r"\bSOXX\b", "半导体"),
-    "TQQQ": (r"\bTQQQ\b", "纳斯达克100"),
-}
-MACRO = re.compile(r"\bCPI\b|\bPCE\b|\bFOMC\b|美联储|非农|利率决议|通胀|就业数据|货币政策", re.I)
-
-
-def is_interest(text: str, symbols: set[str]) -> bool:
-    if MACRO.search(text):
-        return True
-    return any(re.search(pattern, text, re.I) for symbol in symbols
-               for pattern in ALIASES.get(symbol, (rf"\b{re.escape(symbol)}\b",)))
-
-
 def _parse_utc(value: str | None):
     if not value:
         return None
@@ -58,6 +31,9 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         sys.path.insert(0, str(REPO_ROOT))
     from scripts.quant_personal_feed.store import read_personal_cache
     from scripts.quant_personal_feed.collector import verified_current_symbols, ROOT
+    from scripts.quant_personal_feed.event_rules import (
+        ENTITY_RULES, CATEGORY_RULES, RULE_VERSION, TECH_PRESET_ENTITIES,
+        TECH_PRESET_CATEGORIES, category_choices, classify, entity_choices, focus)
     data = read_personal_cache(Path(settings.PERSONAL_FEED_DB_PATH),user.pk,news_limit=500)
     try:
         import json
@@ -68,8 +44,19 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         data["verified_symbols"] = {}
         data["subscription_budget"] = 6
         data["mapping_error"] = "VERIFIED_MAPPING_UNAVAILABLE"
-    interests = {row["interest_key"] for row in data.get("news_interests", []) if row["enabled"]}
-    interests.update(watch_symbols)
+    existing_interests = {row["interest_key"] for row in data.get("news_interests", []) if row["enabled"]}
+    default_entities = {key for key in existing_interests | watch_symbols if key in ENTITY_RULES}
+    # This reproduces the former macro-interest behavior without selecting all
+    # technology companies or all event categories on the owner's behalf.
+    default_categories = {"MACRO_RATES"}
+    saved = data.get("event_preferences")
+    entities = set(saved["entities"]) & set(ENTITY_RULES) if saved else default_entities
+    categories = set(saved["categories"]) & set(CATEGORY_RULES) if saved else default_categories
+    data["event_preferences_effective"] = {"entities": sorted(entities),
+        "categories": sorted(categories), "explicit": bool(saved)}
+    data["event_choices"] = {"entities": entity_choices(), "categories": category_choices(),
+        "tech_preset": {"entities": TECH_PRESET_ENTITIES, "categories": TECH_PRESET_CATEGORIES}}
+    data["event_rule_version"] = RULE_VERSION
     now = datetime.now(timezone.utc)
     for state in data["states"]:
         heartbeat = _parse_utc(state.get("heartbeat_at"))
@@ -79,7 +66,17 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         else:
             state["heartbeat_stale"] = False
     for item in data["news"]:
-        item["interest"] = is_interest((item.get("title") or "") + " " +
-                                       (item.get("content") or ""),interests)
+        try:
+            labels = classify(item)
+            item["event_labels"] = labels
+            item.update(focus(item, labels, entities, categories))
+            item["interest"] = bool({e["id"] for e in labels["entities"]} & (existing_interests | watch_symbols)
+                                    or {c["id"] for c in labels["categories"]} & default_categories)
+        except (ValueError, TypeError, KeyError, re.error) as exc:
+            # A bad news record must not take down the independent quote cards.
+            item["event_labels"] = {"entities":[],"categories":[{"id":"OTHER","label":"其他","phrase":None}],
+                                    "rule_version":RULE_VERSION,"event_group_id":item.get("item_key")}
+            item.update({"interest":False,"focus_eligible":False,"focus_reason":None,
+                         "rule_priority":0,"event_rule_error":type(exc).__name__})
         item["source_status"] = "金十快讯／原始发布者未知／待交叉核实"
     return data

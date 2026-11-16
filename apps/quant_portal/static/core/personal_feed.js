@@ -8,6 +8,12 @@
   const newsBox = document.getElementById('personal-news');
   const newsBanner = document.getElementById('new-news-banner');
   const interestBox = document.getElementById('news-interest-controls');
+  const eventPanel = document.getElementById('event-filter-panel');
+  const companyFilter = document.getElementById('event-company-filter');
+  const categoryFilter = document.getElementById('event-category-filter');
+  const timeFilter = document.getElementById('event-time-filter');
+  const preferenceBox = document.getElementById('event-preference-controls');
+  const preferenceStatus = document.getElementById('event-prefs-status');
   const priority = ['TQQQ', 'QQQ', 'SOXX', 'SPY', 'NVDA', 'MU'];
   const stateLabels = {
     CONNECTING: '连接中', CONNECTED: '已连接', CONNECTED_DELAY_UNKNOWN: '已连接 · 延迟未知',
@@ -24,6 +30,7 @@
   let interestSignature = '';
   let newsSignature = '';
   let renderedNews = [];
+  let eventControlSignature = '';
 
   function csrfToken() {
     return document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
@@ -176,10 +183,78 @@
       interestBox.append(button);
     });
   }
-  function filteredNews() { return (current?.news || []).filter(x => filter === 'all' || x.interest); }
+  function renderEventControls() {
+    const choices = current?.event_choices;
+    if (!choices) return;
+    const signature = JSON.stringify([choices,current?.event_preferences_effective]);
+    if (signature === eventControlSignature) return;
+    eventControlSignature = signature;
+    const oldCompany = companyFilter.value, oldCategory = categoryFilter.value;
+    companyFilter.replaceChildren(node('option',null,'全部'));
+    companyFilter.firstChild.value='';
+    choices.entities.forEach(x => { const option=node('option',null,x.label); option.value=x.id; companyFilter.append(option); });
+    categoryFilter.replaceChildren(node('option',null,'全部'));
+    categoryFilter.firstChild.value='';
+    choices.categories.forEach(x => { const option=node('option',null,x.label); option.value=x.id; categoryFilter.append(option); });
+    companyFilter.value=oldCompany; categoryFilter.value=oldCategory;
+    preferenceBox.replaceChildren();
+    const effective=current.event_preferences_effective || {entities:[],categories:[]};
+    for (const [heading,key,rows] of [['关注公司和 ETF','entity',choices.entities],['关注类别','category',choices.categories]]) {
+      const section=node('div','event-preference-section'); section.append(node('h4',null,heading));
+      const selected=new Set(effective[key === 'entity' ? 'entities' : 'categories']);
+      rows.forEach(row => {
+        const label=node('label','event-check'); const input=node('input');
+        input.type='checkbox'; input.name=key; input.value=row.id; input.checked=selected.has(row.id);
+        label.append(input,node('span',null,row.label)); section.append(label);
+      });
+      preferenceBox.append(section);
+    }
+  }
+  function filteredNews() {
+    let rows=(current?.news || []).filter(x => filter === 'all' || (filter === 'interest' ? x.interest : x.focus_eligible));
+    if (filter !== 'focus') return rows;
+    if (companyFilter.value) rows=rows.filter(x => x.event_labels?.entities.some(e => e.id === companyFilter.value));
+    if (categoryFilter.value) rows=rows.filter(x => x.event_labels?.categories.some(c => c.id === categoryFilter.value));
+    if (timeFilter.value !== 'all') {
+      const hours=timeFilter.value === '24h' ? 24 : 168;
+      rows=rows.filter(x => {
+        const published=Date.parse(x.published_at_utc || x.received_at || '');
+        return Number.isFinite(published) && Date.now()-published <= hours*3600*1000;
+      });
+    }
+    return [...rows].sort((a,b) => (b.rule_priority || 0)-(a.rule_priority || 0) ||
+      (Date.parse(b.published_at_utc || b.received_at || '') || 0)-(Date.parse(a.published_at_utc || a.received_at || '') || 0));
+  }
+  function newsArticle(item) {
+    const article = node('article', 'news-item');
+    const published = item.published_at_utc ? stamp(item.published_at_utc) :
+      (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
+    article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
+    if (item.title) article.append(node('h3', null, item.title));
+    const body = item.content || '';
+    article.append(node('p', 'news-body', body.length > 900 ? `${body.slice(0, 900)}…（页面预览）` : body));
+    if (filter === 'focus') {
+      const labels=item.event_labels || {};
+      article.append(node('p','event-labels',`相关对象：${(labels.entities || []).map(x => x.label).join('、') || '未明确'} · 类别：${(labels.categories || []).map(x => x.label).join('、') || '其他'} · ${item.rule_priority_label || '规则排序'}`));
+      article.append(node('p','event-reason',`关注原因：${item.focus_reason || '无'} · 匹配短语：${[...(labels.entities || []),...(labels.categories || [])].map(x => x.phrase).filter(Boolean).join('、') || '无'} · 规则 ${labels.rule_version || '未知'}`));
+      if (labels.claim_stage && labels.claim_stage !== 'GENERAL') article.append(node('p','news-meta',`报道类型线索：${labels.claim_stage}；仅为文字规则，未核实事实`));
+    }
+    if (item.source_url) {
+      try {
+        const url = new URL(item.source_url);
+        if (url.protocol === 'https:') {
+          const link = node('a', 'source-link', '查看来源页面');
+          link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+          article.append(link);
+        }
+      } catch (_) { /* Invalid source links are not rendered. */ }
+    } else article.append(node('p','news-meta','原文入口未提供'));
+    return article;
+  }
   function renderNews(force=false) {
     const rows = filteredNews();
-    const signature = rows.map(x => `${x.item_key}:${x.version}`).join('|');
+    const signature = `${filter}|${companyFilter.value}|${categoryFilter.value}|${timeFilter.value}|` +
+      rows.map(x => `${x.item_key}:${x.version}:${x.focus_eligible}:${x.rule_priority}`).join('|');
     if (!force && signature === newsSignature) return;
     const readingOlder = newsSignature && newsBox.getBoundingClientRect().top < -20;
     if (!force && readingOlder) {
@@ -191,29 +266,27 @@
     }
     newsSignature=signature; renderedNews=rows; newsBanner.hidden=true;
     if (!rows.length) {
-      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无已缓存快讯；请查看上方连接状态。' : '当前缓存中没有匹配关注规则的快讯；可切换“全部快讯”。'));
+      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无已缓存快讯；请查看上方连接状态。' : '当前缓存和筛选条件中没有匹配快讯；可切换“全部快讯”或调整关注范围。'));
       return;
     }
-    newsBox.replaceChildren(...rows.map(item => {
-      const article = node('article', 'news-item');
-      const published = item.published_at_utc ? stamp(item.published_at_utc) :
-        (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
-      article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
-      if (item.title) article.append(node('h3', null, item.title));
-      const body = item.content || '';
-      article.append(node('p', 'news-body', body.length > 900 ? `${body.slice(0, 900)}…（页面预览）` : body));
-      if (item.source_url) {
-        try {
-          const url = new URL(item.source_url);
-          if (url.protocol === 'https:') {
-            const link = node('a', 'source-link', '查看来源页面');
-            link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
-            article.append(link);
-          }
-        } catch (_) { /* Invalid source links are not rendered. */ }
-      } else article.append(node('p','news-meta','原文入口未提供'));
-      return article;
-    }));
+    if (filter !== 'focus') { newsBox.replaceChildren(...rows.map(newsArticle)); return; }
+    const groups=new Map();
+    rows.forEach(item => {
+      const key=item.event_labels?.event_group_id || item.item_key;
+      if (!groups.has(key)) groups.set(key,[]);
+      groups.get(key).push(item);
+    });
+    const entries=[];
+    groups.forEach(group => {
+      entries.push(newsArticle(group[0]));
+      if (group.length > 1) {
+        const details=node('details','related-reports');
+        details.append(node('summary',null,`疑似相关报道 ${group.length-1} 条（非独立确认）`));
+        group.slice(1).forEach(item => details.append(newsArticle(item)));
+        entries.push(details);
+      }
+    });
+    newsBox.replaceChildren(...entries);
   }
   async function poll() {
     if (inFlight) return;
@@ -222,7 +295,7 @@
       const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
-      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderNews();
+      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls(); renderNews();
     } catch (_) {
       for (const name of ['moomoo', 'jin10']) {
         const pill = document.getElementById(`${name}-state`);
@@ -233,6 +306,7 @@
   }
   document.querySelectorAll('[data-news-filter]').forEach(button => button.addEventListener('click', () => {
     filter = button.dataset.newsFilter;
+    eventPanel.hidden=filter !== 'focus';
     document.querySelectorAll('[data-news-filter]').forEach(b => {
       const selected = b === button;
       b.setAttribute('aria-pressed', String(selected));
@@ -240,6 +314,24 @@
     });
     renderNews(true);
   }));
+  for (const select of [companyFilter,categoryFilter,timeFilter]) select.addEventListener('change',() => renderNews(true));
+  document.getElementById('event-apply-preset').addEventListener('click',() => {
+    const preset=current?.event_choices?.tech_preset;
+    if (!preset) return;
+    for (const input of preferenceBox.querySelectorAll('input[type="checkbox"]'))
+      input.checked=(input.name === 'entity' ? preset.entities : preset.categories).includes(input.value);
+    preferenceStatus.textContent='已填入预设，尚未保存';
+  });
+  document.getElementById('event-save-prefs').addEventListener('click',async () => {
+    const data=new URLSearchParams();
+    for (const input of preferenceBox.querySelectorAll('input[type="checkbox"]:checked')) data.append(input.name,input.value);
+    try {
+      const response=await fetch(root.dataset.eventPreferencesUrl,{method:'POST',credentials:'same-origin',
+        headers:{'X-CSRFToken':csrfToken(),'Content-Type':'application/x-www-form-urlencoded'},body:data,cache:'no-store'});
+      if (!response.ok) throw new Error(`LOCAL_HTTP_${response.status}`);
+      preferenceStatus.textContent='已保存'; eventControlSignature=''; newsSignature=''; await poll(); renderNews(true);
+    } catch (error) { preferenceStatus.textContent=`保存失败：${error.message}`; }
+  });
   newsBanner.addEventListener('click',() => { renderNews(true); newsBox.scrollIntoView({behavior:'smooth',block:'start'}); });
   poll();
   window.setInterval(poll, 5000);

@@ -232,6 +232,34 @@ def personal_news_interest(request):
 
 @login_required
 @require_POST
+def personal_event_preferences(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal feed unavailable")
+    entities = request.POST.getlist("entity")
+    categories = request.POST.getlist("category")
+    if len(entities) > 30 or len(categories) > 20:
+        return JsonResponse({"result": "INVALID_PREFERENCES"}, status=400)
+    import sys
+    from pathlib import Path
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_personal_feed.store import PersonalFeedStore
+    try:
+        store = PersonalFeedStore(Path(settings.PERSONAL_FEED_DB_PATH),request.user.pk)
+        try:
+            store.set_event_preferences(entities,categories)
+        finally:
+            store.close()
+    except ValueError:
+        return JsonResponse({"result": "INVALID_PREFERENCES"}, status=400)
+    response = JsonResponse({"result": "UPDATED"})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+@require_POST
 def watchlist_add(request):
     form = WatchlistItemForm(request.POST)
     if form.is_valid():

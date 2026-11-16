@@ -1,0 +1,65 @@
+{
+  "schema": "quant_portal_personal_events_v12_runtime_redacted",
+  "captured_at_utc": "2026-11-16T02:41:09.661632+00:00",
+  "captured_at_asia_shanghai": "2026-11-16T10:41:09.661632+08:00",
+  "portal_url": "http://127.0.0.1:8765/",
+  "portal_process_status": "RUNNING_AT_CAPTURE_CHECK",
+  "feed_process_status": "RUNNING_AT_CAPTURE_CHECK",
+  "owner_counts": {
+    "auth_user": 1,
+    "core_watchlistitem": 6,
+    "core_userpreferences": 1,
+    "core_publicfactcard": 14
+  },
+  "quote_symbols": [
+    "MU",
+    "NVDA",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "TQQQ"
+  ],
+  "desired_subscription_count": 6,
+  "news_cache_items": 138,
+  "states": {
+    "jin10": {
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-16T02:41:04.886485Z",
+      "last_success_at": "2026-11-16T02:40:54.865253Z",
+      "last_push_at": null,
+      "last_source_at": "2026-11-16T02:26:11Z",
+      "worker_alive": 1,
+      "coverage_gap": null
+    },
+    "moomoo": {
+      "state": "CONNECTED_MARKET_CLOSED",
+      "heartbeat_at": "2026-11-16T02:41:08.408094Z",
+      "last_success_at": "2026-11-16T02:41:06.390510Z",
+      "last_push_at": "2026-11-16T02:41:06.389505Z",
+      "last_source_at": "2026-11-13T22:00:00.063000Z",
+      "worker_alive": 1,
+      "coverage_gap": null
+    }
+  },
+  "market_observation": {
+    "private_receipt_sha256": "7f095d26a43adec4b0ce6e36f83af437e9310ead55184e4e63d59a1b8d316107",
+    "sample_count": 7,
+    "phases": [
+      "CLOSED"
+    ],
+    "phase_basis": [
+      "US_EASTERN_WEEKEND_CLOCK_NOT_PROVIDER_PUSH"
+    ],
+    "regular_market_acceptance": "NOT_RUN_NO_REGULAR_SESSION",
+    "symbols_observed": 6,
+    "source_time_advance_total": 0,
+    "duplicate_packet_delta": 54,
+    "disconnect_interval_count": 0
+  },
+  "model_calls": 0,
+  "financial_predictions": 0,
+  "trade_calls": 0,
+  "private_quote_values_included": false,
+  "news_body_included": false,
+  "credentials_included": false
+}

@@ -1,6 +1,8 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-16 (Asia/Shanghai), loopback personal moomoo/Jin10 feeds, financial input v2.5 paused as `REJECTED_CANDIDATE` / status 1.31.
+Updated 2026-11-16 (Asia/Shanghai), personal event view v1.2 on loopback moomoo/Jin10 feeds; financial input v2.5 paused as `REJECTED_CANDIDATE` / status 1.33.
+
+The [personal event view v1.2](../../reports/2026-11-16_quant_portal_personal_events_v12.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_events_v12.zh.md), [plan–actual](../../results/quant_portal_personal_feed_v12_20261116/plan_execution.csv)) adds owner-only phrase-based multi-label classification, priority filters, an editable technology preset and conservative suspected-report grouping. Thirty frozen private flashes received a same-team development review; redacted counts do not establish general classification accuracy or news truth. An isolated Edge desktop/390px interaction check passed. A weekend cache precheck did not qualify as market-open acceptance. Existing collection cadence and six subscriptions remain unchanged; v2.5 is still rejected and no model or trading ran.
 
 The [personal feed v1.1 follow-up](../../reports/2026-11-16_quant_portal_personal_feed_v11.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_feed_v11.zh.md), [plan–actual](../../results/quant_portal_personal_feed_v11_20261116/plan_execution.csv)) preserves the two private data chains and adds quote deduplication diagnostics, source-time-aware latest-quote selection, explicit six-key subscription controls, separate SNDK/SK hynix/SpaceX news interests, and a reading-position notice. Isolated Edge desktop/390px QA passed without horizontal overflow; it is distinct from unobserved owner-browser use and market-open updating. Financial input v2.5 remains rejected; no model or trading run occurred.
 

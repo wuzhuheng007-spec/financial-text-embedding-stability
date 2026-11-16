@@ -92,6 +92,9 @@ class PersonalFeedStore:
           CREATE TABLE IF NOT EXISTS news_interest (
             interest_key TEXT PRIMARY KEY, owner_id INTEGER NOT NULL,
             enabled INTEGER NOT NULL, updated_at TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS event_preferences (
+            owner_id INTEGER PRIMARY KEY, entities_json TEXT NOT NULL,
+            categories_json TEXT NOT NULL, updated_at TEXT NOT NULL);
         """)
         row = self.db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
         if row is None:
@@ -240,6 +243,18 @@ class PersonalFeedStore:
           DO UPDATE SET enabled=excluded.enabled,updated_at=excluded.updated_at""",
           (key,self.owner_id,int(enabled),utc_now()))
 
+    def set_event_preferences(self, entities: list[str], categories: list[str]) -> None:
+        from .event_rules import ENTITY_RULES, CATEGORY_RULES
+        if len(entities) != len(set(entities)) or len(categories) != len(set(categories)):
+            raise ValueError("Duplicate event preference")
+        if not set(entities) <= set(ENTITY_RULES) or not set(categories) <= set(CATEGORY_RULES):
+            raise ValueError("Unknown event preference")
+        self.db.execute("""INSERT INTO event_preferences(owner_id,entities_json,categories_json,updated_at)
+          VALUES(?,?,?,?) ON CONFLICT(owner_id) DO UPDATE SET
+          entities_json=excluded.entities_json,categories_json=excluded.categories_json,
+          updated_at=excluded.updated_at""",
+          (self.owner_id,json.dumps(entities),json.dumps(categories),utc_now()))
+
     def symbol_state(self, owner_id: int, symbol: str, state: str, reason: str | None = None) -> None:
         if owner_id != self.owner_id:
             raise ValueError("Owner ID mismatch")
@@ -350,6 +365,8 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
                                (owner_id,)).fetchall() if "quote_selection" in tables else []
         interests = db.execute("SELECT interest_key,enabled FROM news_interest WHERE owner_id=? ORDER BY interest_key",
                                (owner_id,)).fetchall() if "news_interest" in tables else []
+        event_prefs = db.execute("SELECT entities_json,categories_json,updated_at FROM event_preferences WHERE owner_id=?",
+                                 (owner_id,)).fetchone() if "event_preferences" in tables else None
         news_total = db.execute("SELECT COUNT(*) FROM news_items WHERE owner_id=?",(owner_id,)).fetchone()[0]
         return {"quotes": [dict(row) for row in quotes],
                 "news": [dict(row) for row in news],
@@ -357,4 +374,8 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
                 "states": [dict(row) for row in states],
                 "symbols": [dict(row) for row in symbols],
                 "selection": [dict(row) for row in selection],
-                "news_interests": [dict(row) for row in interests], "cache_state": "READY"}
+                "news_interests": [dict(row) for row in interests],
+                "event_preferences": {"entities":json.loads(event_prefs["entities_json"]),
+                                      "categories":json.loads(event_prefs["categories_json"]),
+                                      "updated_at":event_prefs["updated_at"],"explicit":True} if event_prefs else None,
+                "cache_state": "READY"}

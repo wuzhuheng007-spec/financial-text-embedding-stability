@@ -1,0 +1,27 @@
+{
+  "schema": "quant_portal_personal_events_v12",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "af94a26ff1f184606f4f8990f34c1113e706d5be",
+  "rule_version": "technology_event_rules_v1_2_20261116",
+  "source_scope": "EXISTING_OWNER_BOUND_PRIVATE_NEWS_CACHE_AND_FUTURE_SAME_FEED_ITEMS",
+  "development_sample": {
+    "selection": "latest version of each item; received_at DESC, row id DESC; first 30 before rule edits",
+    "private_manifest_sha256": "1e88b8a34ee11e0c1c808bcbf41ccd13f90b420c5a114d15aa3fe4a0ffbd6994"
+  },
+  "additional_jin10_requests_per_minute": 0,
+  "additional_moomoo_subscriptions": 0,
+  "event_order": ["direct_current_interest", "category_priority", "published_at_desc", "received_at_desc"],
+  "date_filter_basis": "source_published_utc_when_available_else_received_utc_with_label",
+  "grouping": "same_normalized_headline_same_explicit_period_same_claim_stage_same_published_day_else_exact_full_text_only",
+  "market_observation": {
+    "cache_sample_interval_seconds": 5,
+    "default_duration_seconds": 300,
+    "maximum_duration_seconds": 900,
+    "source_time_comparison": "timezone_aware_datetime",
+    "market_state_dictionary": "https://open.moomoo.com/api/quote/naming-dictionary",
+    "no_supplier_calls": true
+  },
+  "model_calls": 0,
+  "trade_calls": 0,
+  "public_deployment": false
+}
