@@ -17,6 +17,7 @@
   "initial_development_failures_preserved": [
     "First synthetic cache test exposed an unclosed read-only SQLite connection; fixed with contextlib.closing and reran.",
     "First local portal readback helper lacked Django test-only settings and middleware timezone; corrected before accepted readback.",
-    "Closed-market quote cache showed repeated packets with unchanged price and source timestamp. Dedup key was narrowed to displayed price plus the existing source-timestamp uniqueness key; old private rows retained."
+    "Closed-market quote cache showed repeated packets with unchanged price and source timestamp. Dedup key was narrowed to displayed price plus the existing source-timestamp uniqueness key; old private rows retained.",
+    "Redacted receipt initially showed zero moomoo HTTP requests, which could be misread as zero push activity. The receipt now marks WebSocket request counting as not instrumented and keeps actual Jin10 MCP HTTP counts separate."
   ]
 }

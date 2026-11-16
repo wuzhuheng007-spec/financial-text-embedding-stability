@@ -1,7 +1,7 @@
 {
   "schema": "quant_portal_personal_feeds_redacted_receipt_v1",
-  "observed_at_utc": "2026-11-16T01:22:19.222990Z",
-  "observed_at_asia_shanghai": "2026-11-16T09:22:19.222990+08:00",
+  "observed_at_utc": "2026-11-16T01:24:38.480793Z",
+  "observed_at_asia_shanghai": "2026-11-16T09:24:38.480793+08:00",
   "config_sha256": "5ced25655f111f5d31b65beb4ad94f8715352a9e331e21e3426033a1e2e0cff9",
   "loopback_only": true,
   "personal_mode": true,
@@ -17,24 +17,23 @@
     {
       "provider": "jin10",
       "state": "CONNECTED",
-      "heartbeat_at": "2026-11-16T01:22:17.682643Z",
-      "last_success_at": "2026-11-16T01:22:02.646766Z",
-      "last_received_at": "2026-11-16T01:22:02.627619Z",
-      "last_source_at": "2026-11-16T01:10:14Z",
+      "heartbeat_at": "2026-11-16T01:24:37.886730Z",
+      "last_success_at": "2026-11-16T01:24:02.827742Z",
+      "last_received_at": "2026-11-16T01:24:02.813086Z",
+      "last_source_at": "2026-11-16T01:13:06Z",
       "last_error_class": null,
-      "requests_total": 30,
-      "business_calls_today": 18
+      "mcp_http_requests_total_since_cache_creation": 32,
+      "business_calls_today_utc": 20
     },
     {
       "provider": "moomoo",
       "state": "CONNECTED_MARKET_CLOSED",
-      "heartbeat_at": "2026-11-16T01:22:19.013502Z",
-      "last_success_at": "2026-11-16T01:22:19.013502Z",
-      "last_received_at": "2026-11-16T01:22:19.013502Z",
-      "last_source_at": "2026-11-13T22:00:00.041000Z",
+      "heartbeat_at": "2026-11-16T01:24:38.217760Z",
+      "last_success_at": "2026-11-16T01:24:38.217760Z",
+      "last_received_at": "2026-11-16T01:24:38.217760Z",
+      "last_source_at": "2026-11-13T22:00:00.048000Z",
       "last_error_class": null,
-      "requests_total": 0,
-      "business_calls_today": 0
+      "request_count_status": "NOT_INSTRUMENTED_WEBSOCKET_PUSH"
     }
   ],
   "quote_symbols": [
@@ -125,12 +124,12 @@
       "reason": null
     }
   ],
-  "jin10_news_items": 35,
-  "jin10_news_versions": 35,
+  "jin10_news_items": 38,
+  "jin10_news_versions": 38,
   "jin10_key_kinds": [
     {
       "source_key_kind": "SOURCE_URL_CANDIDATE",
-      "items": 35
+      "items": 38
     }
   ],
   "owner_data_preservation": {

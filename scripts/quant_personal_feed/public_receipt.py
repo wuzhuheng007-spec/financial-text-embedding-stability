@@ -49,10 +49,18 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
     if cache_path.is_file():
         with closing(sqlite3.connect(cache_path)) as db:
             db.row_factory = sqlite3.Row
-            result["providers"] = [{key: row[key] for key in (
-                "provider", "state", "heartbeat_at", "last_success_at", "last_received_at",
-                "last_source_at", "last_error_class", "requests_total", "business_calls_today")}
-                for row in db.execute("SELECT * FROM provider_state ORDER BY provider")]
+            providers = []
+            for row in db.execute("SELECT * FROM provider_state ORDER BY provider"):
+                item = {key: row[key] for key in (
+                    "provider", "state", "heartbeat_at", "last_success_at",
+                    "last_received_at", "last_source_at", "last_error_class")}
+                if row["provider"] == "jin10":
+                    item["mcp_http_requests_total_since_cache_creation"] = row["requests_total"]
+                    item["business_calls_today_utc"] = row["business_calls_today"]
+                else:
+                    item["request_count_status"] = "NOT_INSTRUMENTED_WEBSOCKET_PUSH"
+                providers.append(item)
+            result["providers"] = providers
             result["quote_symbols"] = [dict(row) for row in db.execute("""
                 SELECT symbol, MIN(provider_time) AS earliest_source_time,
                   MAX(provider_time) AS latest_source_time,
