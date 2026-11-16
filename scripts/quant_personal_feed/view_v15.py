@@ -21,6 +21,7 @@ def _time(value):
 
 def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
     jobs={}
+    approved={}
     if analysis_db.is_file():
         with sqlite3.connect(analysis_db.resolve().as_uri()+'?mode=ro',uri=True) as db:
             db.row_factory=sqlite3.Row
@@ -30,6 +31,18 @@ def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
             jobs={(r['item_key'],r['version']):dict(r) for r in db.execute(f'''SELECT j.item_key,j.version,
               status,result_json,validation_json,model_revision,prompt_version,completed_at,
               input_sha256,error_class,{review_column} FROM analysis_jobs j {review_join} WHERE j.owner_id=?''',(owner_id,))}
+    approved_db=analysis_db.parent/'personal_analysis_v15d_approved.sqlite3'
+    if approved_db.is_file():
+        try:
+            with sqlite3.connect(approved_db.resolve().as_uri()+'?mode=ro',uri=True) as db:
+                db.row_factory=sqlite3.Row
+                approved={(r['item_key'],r['version']):dict(r) for r in db.execute('''SELECT
+                  item_key,version,content_sha256,display_json,model_revision,prompt_version,
+                  reviewed_at_utc FROM reviewed_cards WHERE owner_id=? AND review_decision='ACCEPT'
+                  AND prompt_version='personal_tech_news_analysis_v15d_1' ''',(owner_id,))}
+        except sqlite3.DatabaseError:
+            # A failed analysis cache must not take down market/news display.
+            approved={}
     included=[]
     for item in data.get('news',[]):
         label=item.get('screening')
@@ -57,6 +70,22 @@ def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
         item['analysis_error_class']=job['error_class'] if job else None
         item['analysis']=json.loads(job['result_json']) if job and job['result_json'] and review_decision=='ACCEPT' else None
         item['analysis_validation']=json.loads(job['validation_json']) if job and job['validation_json'] else None
+        new_card=approved.get((item['item_key'],item['version']))
+        if new_card and new_card['content_sha256']==item.get('content_sha256') and new_card['display_json']:
+            try:
+                display=json.loads(new_card['display_json'])
+            except json.JSONDecodeError:
+                display=None
+            if isinstance(display,dict):
+                item['analysis_status']='COMPLETE'
+                item['analysis_review_decision']='ACCEPT'
+                item['analysis_model_revision']=new_card['model_revision']
+                item['analysis_prompt_version']=new_card['prompt_version']
+                item['analysis_completed_at']=new_card['reviewed_at_utc']
+                item['analysis_error_class']=None
+                item['analysis']=display
+                item['analysis_validation']={'valid':True,'semantic_status':'CODEX_REVIEW_ACCEPTED',
+                                             'supplier_claim_verified':False}
         item['product_rank']=rank_reason(decision,published_at_utc=item.get('published_at_utc'),
             received_at=item['received_at'],source_url=item.get('source_url'),version=item['version'],
             weights=config['top_weights'])

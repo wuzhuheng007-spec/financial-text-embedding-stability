@@ -1,0 +1,1 @@
+{"decisions":{"ACCEPT":2,"REJECT":9,"UNRESOLVED":0},"private_review_sha256":"f7d1eef8b0ad6877ce955b24b81a1e9ffb4b16cdbc366fc41dad38c965ca6bad","review_version":"CODEX_REVIEW_V15D_1","reviewed":11,"schema":"v15d_semantic_review_redacted","scope":"CODEX_REVIEW_SAME_TEAM_DEVELOPMENT_NOT_INDEPENDENT_GOLD","supplier_claims_independently_verified":false}

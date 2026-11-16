@@ -1,0 +1,18 @@
+{
+  "accepted": 0,
+  "mechanically_complete_reviewed": 4,
+  "planned_items": 20,
+  "private_review_sha256": "4491d77ea44706aa36eba6cb62859c204649397dc7e1aaef8605a864ba56818a",
+  "reason_codes": {
+    "WRONG_ENTITY_TRANSLATION_AND_MISSING_REFERENT_CONTEXT": 1,
+    "WRONG_ENTITY_TRANSLATION_AND_UNSUPPORTED_POLICY_INFERENCE": 1,
+    "WRONG_ENTITY_TRANSLATION_AND_UNSUPPORTED_YEN_CHANNEL": 1
+  },
+  "rejected": 4,
+  "reviewed_at_utc": "2026-11-16T06:12:01.259582+00:00",
+  "schema": "v15c_semantic_review_redacted",
+  "scope": "CODEX_REVIEW_SAME_TEAM_DEVELOPMENT_NOT_INDEPENDENT_GOLD",
+  "source_news_claims_independently_verified": false,
+  "stop_reason": "SYSTEMATIC_ENGLISH_PERSON_NAME_DRIFT_ON_FOUR_MECHANICAL_COMPLETES",
+  "stopped_after_item": 8
+}

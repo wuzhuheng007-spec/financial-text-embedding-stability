@@ -1,3 +1,9 @@
+# 2026-11-16 — Personal Demo v1.5d evidence and bilingual retry
+
+Replaced model-written citations with source span IDs and tested an explicit-speaker name lock on the same 20 development messages. Intermediate v1.5c stopped after eight completed item results: four mechanical passes, zero content accepts. Version v1.5d attempted all 20, saved 30 generations and 11 mechanical completions; same-team source review accepted two and rejected nine. Only the two accepted cards were imported to a separate owner-only, source-hash-bound private cache. Jin10 claims remain unverified; moomoo English news is a source candidate, not a connected personal feed. [English report](../../reports/2026-11-16_quant_portal_personal_v15d.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_v15d.zh.md), [plan–actual](../../results/quant_portal_personal_v15d_20261116/plan_execution.csv). Financial input v2.5 remains `REJECTED_CANDIDATE`; no model fit, return evaluation or trade occurred.
+
+---
+
 # 2026-11-16 — Personal Demo v1.3 quote sessions
 
 Added separate premarket, regular, after-hours and overnight owner-cache rows for the existing six symbols. QUOTE push child timestamps are used when present; a bounded one-batch-per-minute read-only REST snapshot supplements the base quote. Missing child times, currency, delay and official overnight trading day stay unknown. The 519 newly cached rows with a wrongly derived New York calendar trade date were corrected after an integrity-checked private backup. [English report](../../reports/2026-11-16_quant_portal_personal_sessions_v13.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_sessions_v13.zh.md), [P0–P6 ledger](../../results/quant_portal_personal_sessions_v13_20261116/plan_execution.csv). Financial input v2.5 remains `REJECTED_CANDIDATE`; no model or trading ran.

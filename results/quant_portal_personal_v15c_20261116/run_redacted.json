@@ -1,0 +1,42 @@
+{
+  "attempt_error_class": {
+    "CONTRACT_INVALID": 10,
+    "NONE": 4
+  },
+  "attempted_items": 8,
+  "audited_at_utc": "2026-11-16T06:11:16.378347Z",
+  "code_hashes_at_audit": {
+    "scripts/quant_personal_feed/analysis_contract_v15c.py": "9ca1d0fd34224ba76eea8259993b36818b8f81aa0ccc4d9d6300e1858f014652",
+    "scripts/quant_personal_feed/generate_v15b.py": "cb9ac7f6c3203a6fa3a123934936d6cd783620b917a48ba0ea00a51b68aeef0d",
+    "scripts/quant_personal_feed/generate_v15c.py": "53dbfd7985a2a417270f0d432baa2c81f01fd7f5582fa3d4b6edd0f0e6824393",
+    "scripts/quant_personal_feed/preflight_v15c.py": "9145bb715e25a3db99a5fcf204a9c70301c98da407ec8507991202cb853c4e72",
+    "scripts/quant_personal_feed/run_v15c_batch.py": "9f3c4850e7b69bacd3dd7c5253df083507b4371c6fad631dd4e13543ae35e73f"
+  },
+  "config_sha256": "2b00e7a0e74ebd19792dad6959d15b3c4e63b1c298b259b4941f052df17db27c",
+  "generation_attempts": 14,
+  "generation_attempts_definition": "14 recorded completed attempt rows; unfinished item 9 request is excluded",
+  "item_09_request_prepared_without_response": true,
+  "item_status": {
+    "FAILED": 4,
+    "MECHANICAL_COMPLETE": 4
+  },
+  "model_call_for_item_09_confirmed": false,
+  "planned_items": 20,
+  "private_manifest_sha256": "ac5c4f55db0bf9ece59bef92de1ac2609da2cea7ab97159b2b43ddde40a3af8b",
+  "schema": "v15c_evidence_id_retry_redacted",
+  "scope": "REPEATED_DEVELOPMENT_NEWS_NOT_INDEPENDENT_TEST",
+  "semantic_accepted": 0,
+  "semantic_review_status": "CODEX_REVIEW_FOUR_MECHANICAL_COMPLETES_REJECTED",
+  "stop_reason": "SYSTEMATIC_ENGLISH_PERSON_NAME_DRIFT_ON_FOUR_MECHANICAL_COMPLETES",
+  "stopped_early": true,
+  "validation_error_fields": {
+    "BILINGUAL_headline_en": 1,
+    "BILINGUAL_headline_zh": 1,
+    "EVIDENCE_IDS_SHAPE": 2,
+    "IMPACTS_ARRAY": 1,
+    "IMPACT_ENUM_0": 4,
+    "IMPACT_ENUM_1": 1,
+    "SCHEMA_KEYS": 1,
+    "TONE_ENUM": 5
+  }
+}
