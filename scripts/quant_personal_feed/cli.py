@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import signal
+import sqlite3
 import threading
 import time
 from pathlib import Path
@@ -13,6 +14,20 @@ from pathlib import Path
 from .collector import ROOT, owner_id, run_jin10, run_moomoo, under_root
 from .session_poll import run_moomoo_snapshot
 from .store import PersonalFeedStore, read_personal_cache, utc_now
+
+
+def recover_snapshot_sqlite(config: dict, owner: int, stop: threading.Event) -> None:
+    """Restart only a transient local-cache SQLite failure, with a fixed ceiling."""
+    for failure in range(3):
+        if stop.is_set():
+            return
+        try:
+            run_moomoo_snapshot(config, owner, stop)
+            return
+        except sqlite3.OperationalError:
+            if failure == 2:
+                raise
+            stop.wait(2 ** (failure + 1))
 
 
 def load_config(path: Path) -> dict:
@@ -99,7 +114,7 @@ def run(config_path: Path) -> None:
     try:
         if config["moomoo"]["enabled"]:
             launch("moomoo",run_moomoo)
-            launch("moomoo_snapshot",run_moomoo_snapshot)
+            launch("moomoo_snapshot",recover_snapshot_sqlite)
         if config["jin10"]["enabled"]:
             launch("jin10",run_jin10)
         while not stop.is_set():

@@ -32,10 +32,14 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
     from scripts.quant_personal_feed.store import read_personal_cache
     from scripts.quant_personal_feed.collector import verified_current_symbols, ROOT
     from scripts.quant_personal_feed.view_v15 import enrich
+    from scripts.quant_personal_feed.view_v16 import overlay
+    from scripts.quant_personal_feed.news_display_v16 import source_title
     from scripts.quant_personal_feed.event_rules import (
         ENTITY_RULES, CATEGORY_RULES, RULE_VERSION, TECH_PRESET_ENTITIES,
         TECH_PRESET_CATEGORIES, category_choices, classify, entity_choices, focus)
     data = read_personal_cache(Path(settings.PERSONAL_FEED_DB_PATH),user.pk,news_limit=200,included_only=True)
+    from scripts.quant_personal_feed.security_profiles_v16 import read_profiles
+    data["security_profiles"] = read_profiles()
     try:
         import json
         config = json.loads((ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json").read_text(encoding="utf-8"))
@@ -67,6 +71,7 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         else:
             state["heartbeat_stale"] = False
     for item in data["news"]:
+        item["display_title"], item["display_title_kind"] = source_title(item.get("title"), item.get("content"))
         try:
             labels = classify(item)
             item["event_labels"] = labels
@@ -79,12 +84,18 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
                                     "rule_version":RULE_VERSION,"event_group_id":item.get("item_key")}
             item.update({"interest":False,"focus_eligible":False,"focus_reason":None,
                          "rule_priority":0,"event_rule_error":type(exc).__name__})
-        item["source_status"] = "金十快讯／原始发布者未知／待交叉核实"
+        item["supplier_name"] = "金十"
+        item["source_status"] = "金十报道／待交叉核实"
     try:
         import json
         v15=json.loads((ROOT / "configs/quant_portal_personal_v15_20261116.json").read_text(encoding="utf-8"))
         data=enrich(data,owner_id=user.pk,
             analysis_db=ROOT / "apps/quant_portal/var/personal_analysis_v15b.sqlite3",config=v15)
+        v16=json.loads((ROOT / "configs/quant_portal_personal_v16_20261116.json").read_text(encoding="utf-8"))
+        data=overlay(data,owner_id=user.pk,
+            analysis_db=ROOT / "apps/quant_portal/var/personal_analysis_v16.sqlite3",
+            config={**v16,"sentiment_windows_hours":v15["sentiment_windows_hours"],
+                    "sentiment_min_events":v15["sentiment_min_events"]})
     except (OSError, ValueError, KeyError):
         # A broken analysis view must not interrupt independent prices or news.
         data["analysis_worker_state"]="VIEW_UNAVAILABLE"

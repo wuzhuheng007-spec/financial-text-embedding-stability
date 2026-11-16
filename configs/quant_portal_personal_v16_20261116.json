@@ -1,0 +1,18 @@
+{
+  "schema": "quant_portal_personal_v16",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_conditional_v16_4",
+  "schema_version": "personal_news_conditional_schema_v16_2",
+  "poll_seconds": 20,
+  "queue_limit": 30,
+  "max_attempts_per_version": 3,
+  "automatic_attempts_per_run": 2,
+  "model_load_timeout_seconds": 240,
+  "generation_timeout_seconds": 180,
+  "max_source_characters": 1200,
+  "max_input_tokens": 2048,
+  "max_new_tokens": 384,
+  "seed": 1729,
+  "top_weights": {"direct_subject": 45, "industry": 24, "macro": 28,
+    "material_category": 18, "source_url": 4, "correction": 8, "denial": 5}
+}

@@ -1,0 +1,52 @@
+{
+  "at_asia_shanghai": "2026-11-16T15:04:57.686885+08:00",
+  "at_utc": "2026-11-16T07:04:57.686885+00:00",
+  "databases": [
+    {
+      "bytes": 229376,
+      "counts": {
+        "auth_user": 1,
+        "core_publicfactcard": 14,
+        "core_userpreferences": 1,
+        "core_watchlistitem": 6
+      },
+      "database": "portal",
+      "quick_check": "ok",
+      "sha256": "265d5ac2897b87b9a0174e676d7f973525c45c85a1e18152247a1ee8ffb9ac65",
+      "status": "BACKED_UP"
+    },
+    {
+      "bytes": 36524032,
+      "counts": {
+        "news_items": 253,
+        "quotes": 3139,
+        "session_quotes": 25926
+      },
+      "database": "feed",
+      "quick_check": "ok",
+      "sha256": "5035bfa87cb85458ecf89c24933aeba0d473d1414a47a80249ebf089d3757146",
+      "status": "BACKED_UP"
+    },
+    {
+      "bytes": 258048,
+      "counts": {
+        "analysis_jobs": 42
+      },
+      "database": "analysis_v15b",
+      "quick_check": "ok",
+      "sha256": "e0da5606eb15cb24e2bb508fc89e062022c5b80cd87b40a3281df3754e798d54",
+      "status": "BACKED_UP"
+    },
+    {
+      "bytes": 20480,
+      "counts": {
+        "reviewed_cards": 11
+      },
+      "database": "approved_v15d",
+      "quick_check": "ok",
+      "sha256": "976d9c5a71e15456625efc0d8f8f476549e95576f0a4a72d5a3c8d33dd241868",
+      "status": "BACKED_UP"
+    }
+  ],
+  "schema": "quant_personal_v16_baseline_redacted_v1"
+}

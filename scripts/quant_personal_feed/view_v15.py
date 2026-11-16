@@ -96,7 +96,8 @@ def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
         group=item['screening_v15'].get('event_group_id') or item['item_key']
         by_group.setdefault(group,item)
     data['top10']=[{'item_key':x['item_key'],'version':x['version'],'event_group_id':group,
-                    'title':x.get('title') or (x.get('content') or '')[:90],
+                    'title':x.get('display_title') or x.get('title') or '原文未提供标题',
+                    'title_kind':x.get('display_title_kind'),
                     'headline_zh':x['analysis'].get('headline_zh') if x['analysis'] else None,
                     'headline_en':x['analysis'].get('headline_en') if x['analysis'] else None,
                     'published_at_utc':x.get('published_at_utc'),'received_at':x['received_at'],

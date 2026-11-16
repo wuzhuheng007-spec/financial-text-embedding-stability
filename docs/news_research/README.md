@@ -1,6 +1,8 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-16 (Asia/Shanghai), personal bilingual technology-event workbench v1.5d on loopback moomoo/Jin10 feeds; financial input v2.5 paused as `REJECTED_CANDIDATE` / status 1.37.
+Updated 2026-11-16 (Asia/Shanghai), personal bilingual technology-event workbench v1.6 on loopback moomoo/Jin10 feeds; financial input v2.5 remains `REJECTED_CANDIDATE`.
+
+The [v1.6 English report](../../reports/2026-11-16_quant_portal_personal_v16.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_v16.zh.md), [plan–actual](../../results/quant_portal_personal_v16_20261116/plan_execution.csv)) records six matching source-time quote selections, verified security names/types, labeled Jin10 excerpt titles and a versioned continuous local-analysis worker. Supplier currency and official overnight trade-date evidence remain absent; the current model retry still falls back to source/rule content. Desktop and 390px were viewed on the v16.3 layout; the final v16.4 visual repeat stopped during concurrent user activity. This is a personal interface repair, not a financial model result.
 
 The [v1.5d English report](../../reports/2026-11-16_quant_portal_personal_v15d.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_v15d.zh.md), [plan–actual](../../results/quant_portal_personal_v15d_20261116/plan_execution.csv)) records an evidence-ID and explicit-speaker-lock retry on the same 20 development messages: 30 real generations, 11 mechanical completions, two same-team source-compatible cards and nine review rejections. The two accepted cards appear only in the owner cache for matching source versions. Supplier claims are unverified, most bilingual outputs remain rejected or pending, moomoo English news is not connected to this personal cache, and current desktop/390px visual acceptance is `NOT_RUN`.
 

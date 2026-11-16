@@ -1,0 +1,20 @@
+{
+  "schema": "quant_personal_v16_browser_acceptance_redacted_v1",
+  "url": "http://127.0.0.1:8765/",
+  "browser": "Microsoft Edge, existing owner session",
+  "observed_build": "v16.3 layout and cache display before the final v16.4 prompt and headline-overlay restart",
+  "actual_checks": {
+    "desktop_chinese": "VISUALLY_OBSERVED",
+    "desktop_english": "VISUALLY_OBSERVED",
+    "390px_chinese": "VISUALLY_OBSERVED",
+    "390px_english": "VISUALLY_OBSERVED",
+    "quote_watchlist_card_source_time": "OBSERVED_MATCHING; independent cache audit repeated for final code",
+    "headline_excerpt_and_source": "OBSERVED",
+    "analysis_fallback_readable": "OBSERVED",
+    "whole_page_horizontal_overflow": "NOT_OBSERVED_IN_CHECKED_VIEWS",
+    "missing_english_supplier_translation": "VISIBLE_AS_TRANSLATION_PENDING_WITH_ORIGINAL"
+  },
+  "final_v16_4_visual_recheck": "INTERRUPTED_BY_CONCURRENT_USER_INPUT_IN_EDGE_WINDOW; final page HTTP and CSS 200 plus code checks are separate from visual acceptance",
+  "private_screenshots_uploaded": false,
+  "limitation": "Browser observation is an interface check, not source verification or model content acceptance."
+}

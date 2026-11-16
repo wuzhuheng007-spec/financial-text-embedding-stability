@@ -531,7 +531,7 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40,
           q.currency,q.provider_time,q.received_at,q.market_state,q.delay_status
           FROM (SELECT symbol FROM quotes WHERE owner_id=? GROUP BY symbol) symbols
           JOIN quotes q ON q.id=(SELECT q2.id FROM quotes q2 WHERE q2.owner_id=?
-            AND q2.symbol=symbols.symbol ORDER BY q2.provider_time DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
+            AND q2.symbol=symbols.symbol ORDER BY julianday(q2.provider_time) DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
           ORDER BY q.symbol""", (owner_id,owner_id)).fetchall()
         tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         include_join = "JOIN news_screening s ON s.content_sha256=v.content_sha256 AND s.status='INCLUDE'" if included_only and "news_screening" in tables else ""
@@ -566,14 +566,22 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40,
           FROM (SELECT symbol,session FROM session_quotes WHERE owner_id=? GROUP BY symbol,session) keys
           JOIN session_quotes q ON q.id=(SELECT q2.id FROM session_quotes q2
             WHERE q2.owner_id=? AND q2.symbol=keys.symbol AND q2.session=keys.session
-            ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
+            ORDER BY (q2.source_at IS NOT NULL) DESC,julianday(q2.source_at) DESC,
               q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
           ORDER BY q.symbol,q.session""", (owner_id,owner_id)).fetchall() if "session_quotes" in tables else []
         session_capabilities = db.execute("""SELECT symbol,session,state,checked_at,source_channel
           FROM session_capabilities WHERE owner_id=? ORDER BY symbol,session""",
           (owner_id,)).fetchall() if "session_capabilities" in tables else []
-        return {"quotes": [dict(row) for row in quotes],
-                "session_quotes": [dict(row) for row in session_quotes],
+        from .quote_select_v16 import choose_latest
+        legacy_quotes = [dict(row) for row in quotes]
+        all_sessions = [dict(row) for row in session_quotes]
+        by_legacy = {row["symbol"]: row for row in legacy_quotes}
+        all_symbols = set(by_legacy) | {row["symbol"] for row in all_sessions}
+        latest_quotes = {symbol: choose_latest(symbol, all_sessions, by_legacy.get(symbol))
+                         for symbol in sorted(all_symbols)}
+        return {"quotes": legacy_quotes,
+                "latest_quotes": latest_quotes,
+                "session_quotes": all_sessions,
                 "session_capabilities": [dict(row) for row in session_capabilities],
                 "news": [dict(row) | {"screening": screening.get(row["content_sha256"])} for row in news],
                 "news_total": news_total,

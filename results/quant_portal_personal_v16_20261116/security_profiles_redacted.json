@@ -1,0 +1,40 @@
+{
+  "schema": "security_profiles_v16_receipt",
+  "endpoint": "https://webapi.moomoo.com/api/v1.0/quote/stock-basicinfo",
+  "received_at_utc": "2026-11-16T07:07:41.471566Z",
+  "response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1",
+  "requested_symbols": 6,
+  "returned_symbols": 6,
+  "fields_present": {
+    "TQQQ": [
+      "name",
+      "stock_type",
+      "exchange"
+    ],
+    "QQQ": [
+      "name",
+      "stock_type",
+      "exchange"
+    ],
+    "SOXX": [
+      "name",
+      "stock_type",
+      "exchange"
+    ],
+    "SPY": [
+      "name",
+      "stock_type",
+      "exchange"
+    ],
+    "NVDA": [
+      "name",
+      "stock_type",
+      "exchange"
+    ],
+    "MU": [
+      "name",
+      "stock_type",
+      "exchange"
+    ]
+  }
+}

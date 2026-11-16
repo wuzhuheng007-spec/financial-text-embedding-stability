@@ -209,7 +209,9 @@
     const missingRaw = visible.filter(point => !point.raw_evidence_present).length;
     const newest = Math.max(...(data.coverage || []).map(row => Date.parse(row.last_source_at || '')).filter(Number.isFinite), 0);
     const stale = newest && Date.now()-newest > 10*60*1000;
+    const latest = data.latest_quote;
     summary.textContent = `${data.symbol} · ${data.session === 'ALL' ? '全部时段' : labels[data.session]}` +
+      (latest ? ` · 最新缓存报价 ${latest.price_text} ${latest.currency || '（供应商未标注币种）'} · ${labels[latest.session] || '时段未核实'} · 来源 ${fmt(latest.source_at)}` : ' · 暂无带来源时间的报价') +
       ` · 窗口 ${fmt(data.window_start_utc)} 至 ${fmt(data.window_end_utc)}` +
       ` · ${metrics.returned_points || 0}/${metrics.valid_unique_points || 0} 个报价点` +
       (metrics.sampled ? '（按原始时间顺序抽样展示）' : '') +
@@ -238,7 +240,7 @@
         if (newest > Date.parse(fixedEnd || '')) latestButton.textContent = '有新报价 · 回到最新';
         return; // Keep the user's zoom, selected point and news reading unchanged.
       }
-      const nextSignature = JSON.stringify([next.points,next.news]);
+      const nextSignature = JSON.stringify([next.points,next.news,next.latest_quote]);
       data = next;
       if (nextSignature !== signature) { signature = nextSignature; render(); }
     } catch (error) {

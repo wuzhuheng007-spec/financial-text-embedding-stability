@@ -100,8 +100,12 @@ class PersonalFeedViewTests(TestCase):
                 store.put_quote(owner.pk,{"instrument_id":"US.TQQQ",
                     "provider_time":"2026-11-13T22:00:00Z","received_at":"2026-11-16T01:00:00Z",
                     "payload":{"price":10}},symbol="TQQQ",display_name="Synthetic",market_state="US_11",limit=5)
-                store.put_news(owner.pk,{"id":"synthetic","content":"Synthetic news"},
-                               received_at="2026-11-16T01:00:00Z",max_items=5,max_versions=2)
+                news={"id":"synthetic","content":"NVIDIA announces earnings."}
+                received="2026-11-16T01:00:00Z"
+                store.put_news(owner.pk,news,received_at=received,max_items=5,max_versions=2)
+                from scripts.quant_personal_feed.relevance_v15 import screen
+                store.record_news_screening(owner.pk,news,screen(news).as_dict(),received_at=received,
+                                            insertion_result="NEW")
                 store.close()
                 self.client.force_login(owner)
                 with patch("scripts.quant_personal_feed.event_rules.classify",side_effect=ValueError("synthetic")):

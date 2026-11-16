@@ -1,0 +1,20 @@
+{
+  "schema": "quant_personal_v16_analysis_review_redacted_v1",
+  "scope": "owner-only saved Jin10 reports; local pinned Qwen; same-team development review",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "frozen_prior_results": "v15b and v15d results retained; v16.1 through v16.4 jobs and raw responses are versioned in the ignored private database",
+  "v16_2_reviewed_mechanical_drafts": 7,
+  "v16_2_review_rejected_or_unsuitable": 4,
+  "v16_2_rejection_reasons": {
+    "generic_or_no_specific_channel": 2,
+    "unsupported_market_cause_speculation": 1,
+    "synthetic_prompt_example_copied_into_news_analysis": 1
+  },
+  "v16_2_remaining_limited_conditional_drafts": 3,
+  "remaining_drafts_are_independently_verified": false,
+  "v16_3_bounded_old_failure_trial": "FALLBACK; invalid literal evidence ID and JSON errors retained",
+  "v16_4_bounded_old_failure_trial": "FALLBACK; missing counterpoint and JSON errors retained",
+  "v16_4_live_worker": "RUNNING; latest counts and actual prompt version in runtime_redacted.json",
+  "display_policy": "Only current-contract mechanically accepted fields are shown as unreviewed AI drafts. Rejected older output is never relabeled. When unavailable, the owner sees a source excerpt, relevance evidence and labeled rule watch item.",
+  "claim_limit": "Mechanical validation does not establish source truth or semantic correctness. No model training, financial prediction or trade ran."
+}

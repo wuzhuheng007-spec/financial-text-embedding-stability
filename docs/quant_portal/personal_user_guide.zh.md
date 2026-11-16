@@ -1,5 +1,19 @@
 # Quant Portal 个人测试版使用说明
 
+## v1.6 当前状态
+
+登录[本机页面](http://127.0.0.1:8765/)后，自选和行情卡共用最新**报价来源时间**的价格。证券名称及股票／ETF 类型已回填；供应商未提供币种、官方夜盘交易日或延迟字段时，页面会说明证据缺口。夜盘报价时段与常规市场状态分开显示，点“数据详情”可查看原始状态和本机接收时间。新闻没有供应商标题时，会用原文首句作“摘录”标题；来源仍是金十报道，尚待交叉核实。分析失败时仍可读来源摘录、相关性依据和标明为“规则提示”的后续观察事项。英文新闻翻译尚未完成的部分显示“待翻译”和原文。
+
+门户、采集和分析分别查看／停止；在仓库根目录运行：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/local.ps1 status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 status
+```
+
+对应脚本的参数改为 `stop` 或 `start` 即可分别停止或启动。分析后台版本会在状态区显示；工作中的单次生成会在上限内结束，停止可能需要等当前生成退出。个人数据及模型原始响应只在本机私人目录中。
+
 本版只在这台电脑的 `127.0.0.1:8765` 运行。自选股是待核实的证券代码；财报卡是有来源定位的**历史训练期材料**，不是最新行情或投资建议。页面现在读取单独后台进程保存的私人 moomoo 行情和金十快讯；其他账户不能读取这些私人缓存。
 
 ## v1.5 双语科技事件工作台

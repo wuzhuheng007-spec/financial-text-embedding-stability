@@ -41,6 +41,7 @@ class WatchlistItemForm(forms.ModelForm):
     class Meta:
         model = WatchlistItem
         fields = ("symbol", "display_name", "asset_type")
+        labels = {"symbol": "证券代码", "display_name": "自定义名称（可选）", "asset_type": "资产类型"}
 
     def clean_symbol(self):
         return self.cleaned_data["symbol"].strip().upper()

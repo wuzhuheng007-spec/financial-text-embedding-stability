@@ -1,0 +1,10 @@
+{
+  "schema": "quant_personal_v16_cross_version_repair_v1",
+  "at_utc": "2026-11-16T07:34:38.302056+00:00",
+  "backup_quick_check": "ok",
+  "backup_sha256": "37f37bac2c1ff289d00b90ae6cf63b2318b0309dd1ebfda604908c6a9c7a82b3",
+  "corrected_status_rows": 1,
+  "prior_status": "RUNNING",
+  "restored_status": "DRAFT",
+  "reason": "v16_2 trial briefly updated one v16_1 row using an unscoped identity; result and checks were intact"
+}

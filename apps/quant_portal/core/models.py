@@ -9,7 +9,7 @@ from django.db import models
 from django.utils import timezone
 
 
-symbol_validator = RegexValidator(r"^[A-Z0-9.]{1,16}$", "Use an uppercase ticker candidate (max 16 characters).")
+symbol_validator = RegexValidator(r"^[A-Z0-9.]{1,16}$", "请输入不超过 16 位的大写证券代码。")
 
 
 class Invitation(models.Model):
@@ -49,9 +49,9 @@ class LoginThrottle(models.Model):
 
 class WatchlistItem(models.Model):
     class AssetType(models.TextChoices):
-        UNKNOWN = "UNKNOWN", "Unverified security candidate"
-        EQUITY = "EQUITY", "Equity candidate"
-        ETF = "ETF", "ETF candidate"
+        UNKNOWN = "UNKNOWN", "证券类型待核实"
+        EQUITY = "EQUITY", "股票"
+        ETF = "ETF", "ETF"
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watchlist_items")
     symbol = models.CharField(max_length=16, validators=[symbol_validator])

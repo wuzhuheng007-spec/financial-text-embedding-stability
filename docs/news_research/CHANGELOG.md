@@ -1,3 +1,9 @@
+# 2026-11-16 — Personal Demo v1.6 source-time quote and analysis repair
+
+The loopback owner page now uses one latest-source-time quote selector, official name/type profile evidence, distinct session and regular-market states, Jin10 excerpt headlines, and a versioned continuous local-Qwen worker. A real v16.2 source review rejected four of seven mechanically accepted drafts; v16.4 bounded retry still fell back. The page uses labeled source/rule content where model prose fails. A snapshot SQLite failure was recovered by a bounded restart; long-term stability and final-build visual recheck remain open. [English report](../../reports/2026-11-16_quant_portal_personal_v16.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_v16.zh.md), [plan–actual](../../results/quant_portal_personal_v16_20261116/plan_execution.csv). Financial input v2.5 remains `REJECTED_CANDIDATE`.
+
+---
+
 # 2026-11-16 — Personal Demo v1.5d evidence and bilingual retry
 
 Replaced model-written citations with source span IDs and tested an explicit-speaker name lock on the same 20 development messages. Intermediate v1.5c stopped after eight completed item results: four mechanical passes, zero content accepts. Version v1.5d attempted all 20, saved 30 generations and 11 mechanical completions; same-team source review accepted two and rejected nine. Only the two accepted cards were imported to a separate owner-only, source-hash-bound private cache. Jin10 claims remain unverified; moomoo English news is a source candidate, not a connected personal feed. [English report](../../reports/2026-11-16_quant_portal_personal_v15d.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_v15d.zh.md), [plan–actual](../../results/quant_portal_personal_v15d_20261116/plan_execution.csv). Financial input v2.5 remains `REJECTED_CANDIDATE`; no model fit, return evaluation or trade occurred.

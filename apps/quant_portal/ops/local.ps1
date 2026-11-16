@@ -50,7 +50,9 @@ function Get-TrackedProcess {
     $State = Get-Content -LiteralPath $PidPath -Raw | ConvertFrom-Json
     $Listener = Get-PortalListener ([int]$State.port)
     if ($null -eq $Listener) { return $null }
-    if ($Listener.pid -ne [int]$State.server_pid -or $Listener.started_utc -ne [string]$State.server_started_utc) { return $null }
+    # ConvertFrom-Json parses ISO timestamps as DateTime; casting back to a
+    # string loses subsecond precision in some PowerShell locales.
+    if ($Listener.pid -ne [int]$State.server_pid -or $Listener.started_utc -ne ([datetime]$State.server_started_utc).ToUniversalTime().ToString('o')) { return $null }
     if ($Listener.command_line -notlike "*$ManagePath*runserver*127.0.0.1:$($State.port)*") { return $null }
     return $State
 }
@@ -58,7 +60,7 @@ function Get-TrackedProcess {
 function Stop-TrackedTree($State) {
     $Launcher = Get-Process -Id ([int]$State.launcher_pid) -ErrorAction SilentlyContinue
     $UseLauncher = $false
-    if ($null -ne $Launcher -and $Launcher.StartTime.ToUniversalTime().ToString('o') -eq [string]$State.launcher_started_utc) {
+    if ($null -ne $Launcher -and $Launcher.StartTime.ToUniversalTime().ToString('o') -eq ([datetime]$State.launcher_started_utc).ToUniversalTime().ToString('o')) {
         $LauncherCim = Get-CimInstance Win32_Process -Filter "ProcessId = $($State.launcher_pid)" -ErrorAction SilentlyContinue
         $UseLauncher = $null -ne $LauncherCim -and $LauncherCim.CommandLine -like "*$ManagePath*runserver*127.0.0.1:$($State.port)*"
     }

@@ -227,6 +227,8 @@ def read_timeline(path: Path, owner_id: int, *, symbol: str, session: str = "ALL
             response["cache_state"] = "OWNER_MISMATCH"
             return response
         response["cache_state"] = "READY"
+        from .quote_select_v16 import read_latest
+        response["latest_quote"] = read_latest(db, owner_id, symbol)
         response["coverage"] = [dict(row) for row in db.execute("""
           SELECT q.session,COUNT(*) AS saved_rows,
             SUM(q.source_at IS NOT NULL) AS source_time_known_rows,

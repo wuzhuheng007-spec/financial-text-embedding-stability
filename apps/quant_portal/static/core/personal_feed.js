@@ -40,6 +40,8 @@
     COMPLETE:['完成','Complete'],INSUFFICIENT_EVIDENCE:['证据不足','Insufficient evidence'],
     FAILED:['失败','Failed'],REVIEW_PENDING:['模型已生成，待内容核对','Generated; content review pending'],
     REVIEW_REJECTED:['内容核对未通过','Content review rejected'],
+    DRAFT:['AI 草稿 · 自动检查通过','AI draft · automated checks passed'],
+    FALLBACK:['来源与规则提示可用','Source and rule notes available'],
     SUPERSEDED:['已被更正版本替代','Superseded']};
   const toneLabels = {POSITIVE:['正面','Positive'],NEGATIVE:['负面','Negative'],NEUTRAL:['中性','Neutral'],
     MIXED:['混合','Mixed'],UNKNOWN:['未知','Unknown']};
@@ -76,15 +78,19 @@
   function stateOf(name) {
     return current?.states?.find(x => x.provider === name) || null;
   }
+  function latestCacheTime(field) {
+    const values = Object.values(current?.latest_quotes || {}).map(quote => quote?.[field])
+      .filter(value => value && Number.isFinite(Date.parse(value)));
+    return values.length ? values.reduce((best, value) => Date.parse(value) > Date.parse(best) ? value : best) : null;
+  }
   function quoteLabel(quote, provider, selected=true) {
     if (!quote) return '暂无报价';
     if (!selected) return '未订阅 · 保留历史缓存';
-    const sourceAt = Date.parse(quote.provider_time);
+    const sourceAt = Date.parse(quote.source_at);
     const stale = Number.isFinite(sourceAt) && Date.now() - sourceAt > 10 * 60 * 1000;
     if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return '采集已断开 · 保留最后报价';
-    if (provider?.state === 'CONNECTED_MARKET_CLOSED' || quote.market_state === 'US_6') return '连接活跃 · 休市报价未变化（非实时成交）';
-    if (quote.market_state === 'US_11') return '盘后已结束 · 夜盘状态未核实';
-    if (stale) return '连接状态见上方 · 报价来源时间较旧';
+    if (stale) return '报价来源时间较旧';
+    if (provider?.state === 'CONNECTED_MARKET_CLOSED') return '连接活跃 · 当前常规市场休市';
     return '最新缓存报价 · 实时性未核实';
   }
   function renderStates() {
@@ -97,17 +103,17 @@
       pill.textContent = stateLabels[state?.state] || state?.state || '尚未启动';
       const worker = state?.worker_alive === 0 ? '采集线程已退出' : state?.worker_alive === 1 ? '采集线程运行中' : '线程状态未知';
       times.textContent = name === 'moomoo' ?
-        `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最近新增报价（v1.1）：${stamp(state?.last_quote_saved_at)} · 最新报价来源时间：${stamp(state?.last_source_at)} · 重复包（v1.1）：${state?.duplicate_quote_packets ?? '未知'}` +
+        `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最新缓存报价收到时间：${stamp(latestCacheTime('received_at'))} · 最新分时段报价来源时间：${stamp(latestCacheTime('source_at'))} · 重复包（v1.1 计数）：${state?.duplicate_quote_packets ?? '未知'}` +
         ` · 分时段定时快照：${stateLabels[snapshot?.state] || snapshot?.state || '未启动'} · 最近成功：${stamp(snapshot?.last_success_at)}` +
         `${state?.last_error_class ? ' · 原因：' + state.last_error_class : ''}` :
         `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近业务成功：${stamp(state?.last_success_at)} · 今日尝试（旧阶段仅下界）：${state?.business_attempts_today ?? '未知'} · v1.1业务成功：${state?.business_success_total ?? '未知'} · v1.1失败：${state?.business_failure_total ?? '未知'}${state?.coverage_gap ? ' · 可能有新闻缺口' : ''}${state?.last_error_class ? ' · 原因：' + state.last_error_class : ''}`;
     }
   }
-  function quoteElement(symbol, quote, symbolState, provider, snapshotProvider, selected, sessionRows, capabilityRows) {
+  function quoteElement(symbol, quote, latest, profile, symbolState, provider, snapshotProvider, selected, sessionRows, capabilityRows) {
     const article = node('article', 'snapshot-item');
     const head = node('div');
     head.append(node('strong', null, symbol));
-    head.append(node('p', 'muted', quote?.display_name && quote.display_name !== symbol ? quote.display_name : '已核对证券代码'));
+    head.append(node('p', 'muted', profile?.name || quote?.display_name || '名称待核实'));
     const selectedSession = sessionChoice.get(symbol) || 'AUTO';
     const picker = node('select', 'session-picker');
     picker.setAttribute('aria-label', `${symbol} 报价时段`);
@@ -128,35 +134,31 @@
     });
     const bySession = new Map(sessionRows.map(x => [x.session,x]));
     const byCapability = new Map(capabilityRows.map(x => [x.session,x]));
-    const sourceRank = {REGULAR:4,OVERNIGHT:3,AFTERHOURS:2,PREMARKET:1};
-    const sourced = sessionRows.filter(x => x.source_at && Number.isFinite(Date.parse(x.source_at)))
-      .sort((a,b) => Date.parse(b.source_at)-Date.parse(a.source_at) ||
-        (sourceRank[b.session] || 0)-(sourceRank[a.session] || 0));
-    const shown = selectedSession === 'AUTO' ? sourced[0] || null : bySession.get(selectedSession) || null;
+    const shown = selectedSession === 'AUTO' ? latest || null : bySession.get(selectedSession) || null;
     const capability = selectedSession === 'AUTO' ? null : byCapability.get(selectedSession);
     const value = node('div', 'snapshot-value');
-    value.append(node('strong', null, shown?.price_text ?? (selectedSession === 'AUTO' ? quote?.price_text : null) ?? '暂无报价'));
-    value.append(node('span', null, shown?.currency || quote?.currency || '币种待核实'));
+    value.append(node('strong', null, shown?.price_text ?? '暂无报价'));
+    value.append(node('span', null, shown?.currency || profile?.currency || '供应商未标注币种'));
     const meta = node('div', 'snapshot-meta');
+    let details = null;
     const reason = symbolState?.reason ? ` · ${symbolState.reason}` : '';
     if (shown) {
       const timeText = shown.source_at ? stamp(shown.source_at) : '未知（供应商子报价无独立时间）';
       const dateHint = shown.parent_date_hint && !shown.trade_date ?
         `\n父报价日期线索：${shown.parent_date_hint}（非本时段成交日期）` : '';
-      const closed = provider?.state === 'CONNECTED_MARKET_CLOSED' ? ' · 当前市场休市，非实时成交' : '';
+      const closed = provider?.state === 'CONNECTED_MARKET_CLOSED' ? ' · 常规市场休市' : '';
       const activeFeed = shown.source_channel === 'REST_STOCK_QUOTE' ? snapshotProvider : provider;
       const feedState = stateLabels[activeFeed?.state] || activeFeed?.state || '未知';
-      const marketCode = quote?.market_state === 'US_11' ? 'US_11（盘后结束；夜盘另行判断）' :
-        quote?.market_state || '未知';
-      meta.textContent = `${sessionLabels[shown.session]}报价 · ${shown.source_channel === 'REST_STOCK_QUOTE' ? '定时快照' : '原有推送'}${closed}${reason}` +
-        `\n来源时间：${timeText}\n本机获取：${stamp(shown.received_at)}\n交易日：${shown.trade_date || '未知'}` +
-        `${dateHint}\n采集：${feedState} · 市场状态：${marketCode}` +
-        `\n延迟：${shown.delay_status || 'UNKNOWN'} · 币种：${shown.currency || '未知'}` +
-        `\n价格字段：${shown.provider_field_path} · 时间字段：${shown.source_time_field_path || '未知'}`;
-      if (!shown.source_at) meta.textContent += '\n时间证据不足：不能判定此报价仍属当前时段或实时更新';
-    } else if (selectedSession === 'AUTO' && quote) {
-      meta.textContent = `${quoteLabel(quote, provider, selected)} · 原有未分时段缓存${reason}` +
-        `\n来源时间：${stamp(quote.provider_time)}\n本机收到：${stamp(quote.received_at)}\n时段：未核实 · 延迟：${quote.delay_status || '未知'}`;
+      const marketCode = quote?.market_state || '供应商未提供';
+      const dateText = shown.trade_date ? `${shown.trade_date}（供应商日期与来源时间的纽约日期一致；非独立交易日确认）` : '供应商未提供可确认的交易日';
+      const delayText = shown.delay_status && shown.delay_status !== 'UNKNOWN' ? shown.delay_status : '供应商未标注延迟';
+      const channelLabel = shown.source_channel === 'REST_STOCK_QUOTE' ? '定时快照' : shown.source_channel === 'WS_QUOTE' ? '推送缓存' : '历史缓存';
+      meta.textContent = `${sessionLabels[shown.session] || '时段未核实'}报价 · ${channelLabel}${closed}${reason}` +
+        `\n来源时间：${timeText} · ${quoteLabel(shown, activeFeed, selected)}`;
+      details=node('details','quote-details');
+      details.append(node('summary',null,'数据详情'));
+      details.append(node('p',null,`本机获取：${stamp(shown.received_at)}\n交易日：${dateText}${dateHint}\n采集：${feedState} · 常规市场状态：${marketCode}\n延迟：${delayText}\n币种依据：${shown.currency ? '供应商报价字段' : profile?.currency ? '证券资料字段' : '供应商未提供'}\n价格字段：${shown.provider_field_path || '未记录'} · 时间字段：${shown.source_time_field_path || '未记录'}`));
+      if (!shown.source_at) meta.textContent += '\n来源时间缺失：不能判断报价新鲜度';
     } else {
       meta.textContent = `该时段暂无可用报价${reason}\n接入状态：${capability?.state || '尚未核实'}` +
         `\n最近检查：${stamp(capability?.checked_at)}；空字段不等于无权限或休市`;
@@ -166,14 +168,17 @@
       meta.textContent += `\n常规报价参考：${regular.price_text} · 来源 ${stamp(regular.source_at)}（独立保留）`;
     }
     article.append(head, value, meta);
+    if (details) article.append(details);
     return article;
   }
   function renderQuotes() {
-    const signature = JSON.stringify([current?.quotes,current?.session_quotes,current?.session_capabilities,
+    const signature = JSON.stringify([current?.quotes,current?.latest_quotes,current?.security_profiles,current?.session_quotes,current?.session_capabilities,
       current?.symbols,current?.selection,stateOf('moomoo')?.state,[...sessionChoice]]);
     if (signature === quoteSignature) return;
     quoteSignature = signature;
     const bySymbol = new Map((current?.quotes || []).map(x => [x.symbol, x]));
+    const latest = current?.latest_quotes || {};
+    const profiles = current?.security_profiles || {};
     const sessions = current?.session_quotes || [];
     const capabilities = current?.session_capabilities || [];
     const states = new Map((current?.symbols || []).map(x => [x.symbol, x]));
@@ -181,13 +186,13 @@
     const moomoo = stateOf('moomoo');
     const snapshot = stateOf('moomoo_snapshot');
     const all = [...new Set([...priority, ...(current?.selection || []).filter(x => x.desired).map(x => x.symbol), ...bySymbol.keys()])];
-    quoteBox.replaceChildren(...all.map(symbol => quoteElement(symbol, bySymbol.get(symbol), states.get(symbol), moomoo, snapshot,
+    quoteBox.replaceChildren(...all.map(symbol => quoteElement(symbol, bySymbol.get(symbol), latest[symbol], profiles[symbol], states.get(symbol), moomoo, snapshot,
       selected.has(symbol), sessions.filter(x => x.symbol === symbol),capabilities.filter(x => x.symbol === symbol))));
     document.querySelectorAll('[data-watch-symbol]').forEach(el => {
       const symbol = el.dataset.watchSymbol;
-      const quote = bySymbol.get(symbol);
+      const quote = latest[symbol];
       const reason = states.get(symbol)?.reason;
-      el.textContent = quote ? `${quote.price_text} ${quote.currency || '(币种未知)'} · ${quoteLabel(quote, moomoo, selected.has(symbol))} · 来源 ${stamp(quote.provider_time)} · 本机收到 ${stamp(quote.received_at)}` :
+      el.textContent = quote ? `${quote.price_text} ${quote.currency || profiles[symbol]?.currency || '（供应商未标注币种）'} · ${sessionLabels[quote.session] || '时段未核实'} · ${quoteLabel(quote, quote.source_channel === 'REST_STOCK_QUOTE' ? snapshot : moomoo, selected.has(symbol))} · 来源 ${stamp(quote.source_at)}` :
         `暂无个人报价${reason ? ' · ' + reason : ' · 未订阅或尚未收到推送'}`;
     });
   }
@@ -350,7 +355,7 @@
     });
     sentimentBox.replaceChildren(grid);
     const worker=document.getElementById('analysis-worker-state');
-    if (worker) worker.textContent=`${bilingual(['分析后台','Analysis worker'])}: ${current?.analysis_worker_state||'NOT_STARTED'} · ${bilingual(['队列','Queue'])}: ${current?.analysis_queue_count ?? 0}`;
+    if (worker) worker.textContent=`${bilingual(['分析后台','Analysis worker'])}: ${current?.analysis_worker_state||'NOT_STARTED'} · ${bilingual(['契约','Contract'])}: ${current?.analysis_contract_version||'未运行'} · ${bilingual(['队列','Queue'])}: ${current?.analysis_queue_count ?? 0}`;
     const counts=document.getElementById('news-screening-counts');
     const m=current?.news_screening_metrics||{};
     const legacy=current?.news_screening_counts||{};
@@ -359,14 +364,52 @@
   function analysisCard(item) {
     const wrap=node('div','analysis-card');
     const status=item.analysis_status||'NOT_QUEUED';
-    wrap.append(node('p','analysis-status',`${bilingual(['模型分析','Model analysis'])}: ${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)}`));
+    wrap.append(node('p','analysis-status',`${bilingual(['新闻解读','News interpretation'])}: ${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)}`));
+    const categories=(item.event_labels?.categories || []).filter(x=>x.id!=='OTHER');
+    const category=categories[0]?.id;
+    const watchHints={
+      EARNINGS_GUIDANCE:['关注公司随后披露的业绩或指引原件。','Check the company’s subsequent earnings or guidance filing.'],
+      AI_CAPEX:['关注正式资本支出计划、订单和项目进度。','Check formal capital spending plans, orders and project updates.'],
+      CHIPS_MEMORY:['关注分产品供需、价格和库存公告。','Check product-specific supply, prices and inventory disclosures.'],
+      MACRO_RATES:['关注发布机构的正式数据和政策声明。','Check the issuing agency’s official data and policy statement.'],
+      FINANCE_CREDIT:['关注正式融资条款、到期安排或并购公告。','Check formal financing terms, maturities or merger filings.']};
+    const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
+    wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
+    wrap.append(node('p','muted',`${bilingual(['关联依据','Relevance evidence'])}: ${item.screening_v15?.evidence_phrase || item.focus_reason || bilingual(['规则未能定位短语','No rule phrase located'])}`));
     const a=item.analysis;
-    if (!a || status!=='COMPLETE') {
-      if (status==='FAILED' || status==='REVIEW_REJECTED') wrap.append(node('p','muted',bilingual(['分析暂不可用；原始报道仍可查看。','Analysis unavailable; original report remains available.'])));
+    if (!a || !['COMPLETE','DRAFT'].includes(status)) {
+      wrap.append(node('p','muted',`${bilingual(['规则提示 · 后续观察','Rule note · What to watch'])}: ${bilingual(sourceHint)}`));
+      if (status==='FALLBACK') {
+        const retry=node('button','button button-outline',bilingual(['受控重试分析','Retry analysis once']));
+        retry.type='button';
+        retry.addEventListener('click',async()=>{
+          try { const result=await postLocal(root.dataset.analysisPriorityUrl,{item_key:item.item_key,action:'retry'});
+            retry.textContent=result.result==='RETRY_QUEUED' ? bilingual(['已排队','Queued']) :
+              result.result==='ATTEMPT_LIMIT_REACHED' ? bilingual(['本版尝试次数已满','Version attempt limit reached']) : result.result;
+          } catch (_) { retry.textContent=bilingual(['重试暂不可用','Retry unavailable']); }
+        });
+        wrap.append(retry);
+      }
+      return wrap;
+    }
+    if (status==='DRAFT') {
+      wrap.append(node('p','analysis-status',bilingual(['AI分析草稿 · 自动检查通过 · 未经人工核验','AI draft · automated checks passed · not human verified'])));
+      for (const evidence of a.evidence || []) {
+        const line=node('p','analysis-fact');
+        line.append(node('span',null,`${bilingual(['原文证据','Original evidence'])} ${evidence.id}: `));
+        const original=node('span',null,evidence.quote); original.dataset.sourceOriginal='1';
+        line.append(original); wrap.append(line);
+      }
+      const analysis=a[`analysis_${language}`];
+      if (analysis) wrap.append(node('p',null,`${bilingual(['条件式解读','Conditional interpretation'])}: ${analysis}`));
+      else wrap.append(node('p','muted',bilingual(['该语言解读待完成；可查看原文。','Interpretation in this language pending; see the source.'])));
+      wrap.append(node('p','muted',`${bilingual(['后续观察','What to watch'])}: ${a[`watch_${language}`] || bilingual(sourceHint)}`));
       return wrap;
     }
     const value=(stem)=>a[`${stem}_${language}`] || (language==='en' ? `Translation pending — ${a[`${stem}_zh`]||''}` : '证据不足');
-    wrap.append(node('p','analysis-status',bilingual(['机器生成翻译与分析 · 新闻仍待核实','Machine-generated translation and analysis · report unverified'])),
+    wrap.append(node('p','analysis-status',item.analysis_display_kind === 'CODEX_REVIEWED' ?
+      bilingual(['同团队核对通过 · 新闻主张仍待来源核实','Same-team review accepted · supplier claim remains unverified']) :
+      bilingual(['机器生成翻译与分析 · 新闻仍待核实','Machine-generated translation and analysis · report unverified'])),
       node('h4',null,value('headline')),
       node('p',null,`${bilingual(['报道事实','Reported claim'])}: ${value('reported')}`));
     if (a.quote) {
@@ -391,7 +434,10 @@
       (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
     article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
     const modelTitle=item.analysis?.[`headline_${language}`];
-    if (item.title || modelTitle) article.append(node('h3', null, modelTitle || (language==='en' ? `Translation pending — ${item.title || ''}` : item.title)));
+    const sourceTitle=item.display_title || item.title || '原文未提供标题';
+    article.append(node('h3', null, modelTitle || (language==='en' ? `Translation pending — ${sourceTitle}` : sourceTitle)));
+    if (item.display_title_kind === 'SOURCE_FIRST_SENTENCE') article.append(node('p','news-meta',bilingual(['原文首句摘录标题','Title excerpted from the original first sentence'])));
+    if (item.display_title_kind === 'SOURCE_EXCERPT_INCOMPLETE') article.append(node('p','news-meta',bilingual(['原文开头摘录，句子不完整','Opening excerpt; sentence incomplete'])));
     const body = item.content || '';
     const original=node('details','news-original');
     original.dataset.sourceOriginal='1';

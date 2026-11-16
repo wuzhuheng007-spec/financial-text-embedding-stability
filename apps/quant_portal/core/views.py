@@ -173,13 +173,41 @@ def personal_analysis_priority(request):
     key=request.POST.get("item_key", "")
     if not re.fullmatch(r"[0-9a-f]{64}", key):
         return JsonResponse({"result":"INVALID_ITEM"},status=400)
-    path=REPO_ROOT / "apps/quant_portal/var/personal_analysis_v15b.sqlite3"
+    path=REPO_ROOT / "apps/quant_portal/var/personal_analysis_v16.sqlite3"
     if not path.is_file():
         return JsonResponse({"result":"ANALYSIS_UNAVAILABLE"},status=503)
+    action=request.POST.get("action", "prioritize")
+    if action not in {"prioritize", "retry"}:
+        return JsonResponse({"result":"INVALID_ACTION"},status=400)
+    from scripts.quant_personal_feed.analysis_v16 import cfg
+    contract=cfg()
+    identity=(contract["model_revision"],contract["prompt_version"],contract["schema_version"])
     with sqlite3.connect(path,timeout=5) as db:
-        result=db.execute("""UPDATE analysis_jobs SET priority=MAX(priority,5000)
-          WHERE owner_id=? AND item_key=? AND status='PENDING'""",(request.user.pk,key))
-    response=JsonResponse({"result":"PRIORITIZED" if result.rowcount else "NO_PENDING_JOB"})
+        if action == "retry":
+            row=db.execute("""SELECT version,status FROM analysis_jobs WHERE owner_id=? AND item_key=?
+              AND model_revision=? AND prompt_version=? AND schema_version=?
+              ORDER BY version DESC LIMIT 1""",
+              (request.user.pk,key,*identity)).fetchone()
+            if row is None or row[1] != "FALLBACK":
+                result_code="NO_RETRYABLE_JOB"
+            else:
+                used=db.execute("""SELECT COUNT(*) FROM analysis_attempts WHERE owner_id=?
+                  AND item_key=? AND version=? AND prompt_version=?""",
+                  (request.user.pk,key,row[0],contract["prompt_version"])).fetchone()[0]
+                if used >= 3:
+                    result_code="ATTEMPT_LIMIT_REACHED"
+                else:
+                    db.execute("""UPDATE analysis_jobs SET status='PENDING',priority=MAX(priority,5000),
+                      error_class=NULL WHERE owner_id=? AND item_key=? AND version=?
+                      AND model_revision=? AND prompt_version=? AND schema_version=?""",
+                      (request.user.pk,key,row[0],*identity))
+                    result_code="RETRY_QUEUED"
+        else:
+            result=db.execute("""UPDATE analysis_jobs SET priority=MAX(priority,5000)
+              WHERE owner_id=? AND item_key=? AND model_revision=? AND prompt_version=?
+              AND schema_version=? AND status='PENDING'""",(request.user.pk,key,*identity))
+            result_code="PRIORITIZED" if result.rowcount else "NO_PENDING_JOB"
+    response=JsonResponse({"result":result_code})
     response["Cache-Control"]="private, no-store"
     return response
 

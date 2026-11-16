@@ -1,0 +1,168 @@
+{
+  "schema": "quant_portal_personal_v16_runtime_redacted_v1",
+  "observed_at_utc": "2026-11-16T07:57:44.828498Z",
+  "observed_at_asia_shanghai": "2026-11-16T15:57:44.828498+08:00",
+  "code_and_config_sha256": {
+    "scripts/quant_personal_feed/analysis_contract_v16.py": "7c4a8d612e6335bbc2ef4845d91e6f12a0629375a199e61c662a342783a4f126",
+    "scripts/quant_personal_feed/analysis_v16.py": "f87c8f7ffbf14f3882047d4bfb0f79d694fb599b1ae1388142fa67b020f8ad17",
+    "scripts/quant_personal_feed/view_v16.py": "e4a3932a35afce27378e1a78d28ea62978ec74f48c0cff595d53ca63b115a38d",
+    "scripts/quant_personal_feed/quote_select_v16.py": "6b93140794ea1ed8bf114168302176ab7ff6c31fb204d9f04e84e1dff121514f",
+    "scripts/quant_personal_feed/store.py": "0de8c3aabb8e1505ac8f14f22618d683657f00eeaf7289a9d3c66d4abb28e049",
+    "scripts/quant_personal_feed/timeline.py": "f6b74d4aa7617009fa7959b17aaeb4f7f596c24344c9c324adf0fb8e3a702037",
+    "apps/quant_portal/core/personal_feed_cache.py": "aa564a30510e6fb2ce7676ad70dfe7ce0fc523ceee2ce32e9e5fcdf12a768836",
+    "apps/quant_portal/static/core/personal_feed.js": "ca67ed4ba1eb9fb58ff80ee468070117c1470c9ba520a31fd11d3581fa6b835c",
+    "apps/quant_portal/static/core/personal_timeline.js": "610b80385ae5969245aacb65a77846bc97d471fb37c7e81514ad23451af8b65a",
+    "configs/quant_portal_personal_v16_20261116.json": "b88ac13abc3b6cec6e13edef924b094968dd9ae0ca787c6a694884603706a3b7"
+  },
+  "account_preservation": {
+    "owner_accounts": 1,
+    "watchlist_rows": 6,
+    "settings_rows": 1,
+    "historical_fact_cards": 14
+  },
+  "security_profiles": {
+    "TQQQ": {
+      "name_present": true,
+      "type": "ETF",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    },
+    "QQQ": {
+      "name_present": true,
+      "type": "ETF",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    },
+    "SOXX": {
+      "name_present": true,
+      "type": "ETF",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    },
+    "SPY": {
+      "name_present": true,
+      "type": "ETF",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    },
+    "NVDA": {
+      "name_present": true,
+      "type": "STOCK",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    },
+    "MU": {
+      "name_present": true,
+      "type": "STOCK",
+      "currency_present": false,
+      "source_response_sha256": "46f6755280154d18565240c31fd015e4b4744c9002c243223b05926a4cd63dd1"
+    }
+  },
+  "quote_selection": {
+    "checked_symbols": 6,
+    "all_cache_selection_equal": true,
+    "per_symbol_equal": {
+      "TQQQ": true,
+      "QQQ": true,
+      "SOXX": true,
+      "SPY": true,
+      "NVDA": true,
+      "MU": true
+    },
+    "source_time_present": {
+      "TQQQ": true,
+      "QQQ": true,
+      "SOXX": true,
+      "SPY": true,
+      "NVDA": true,
+      "MU": true
+    }
+  },
+  "feed": {
+    "news_items": 258,
+    "session_quote_rows": 30409,
+    "news_title_kinds_in_page_window": {
+      "SOURCE_FIRST_SENTENCE": 45,
+      "SOURCE_EXCERPT_INCOMPLETE": 1,
+      "SUPPLIER_TITLE": 1
+    },
+    "provider_states": [
+      {
+        "provider": "jin10",
+        "state": "CONNECTED",
+        "heartbeat_at": "2026-11-16T07:57:43.326982Z",
+        "last_success_at": "2026-11-16T07:57:02.698967Z"
+      },
+      {
+        "provider": "moomoo",
+        "state": "CONNECTED_DELAY_UNKNOWN",
+        "heartbeat_at": "2026-11-16T07:57:44.333285Z",
+        "last_success_at": "2026-11-16T07:57:44.333285Z"
+      },
+      {
+        "provider": "moomoo_snapshot",
+        "state": "CONNECTED",
+        "heartbeat_at": "2026-11-16T07:56:56.748980Z",
+        "last_success_at": "2026-11-16T07:56:56.748980Z"
+      }
+    ],
+    "included_news_in_page_window": 47
+  },
+  "analysis": {
+    "worker": {
+      "pid": 269616,
+      "heartbeat_at": "2026-11-16T07:57:32.540155Z",
+      "state": "RUNNING",
+      "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "prompt_version": "personal_news_conditional_v16_4",
+      "schema_version": "personal_news_conditional_schema_v16_2",
+      "last_error_class": null
+    },
+    "jobs_by_contract": {
+      "personal_news_conditional_v16_1": {
+        "DRAFT": 27,
+        "PENDING": 20
+      },
+      "personal_news_conditional_v16_2": {
+        "DRAFT": 7,
+        "FALLBACK": 5,
+        "PENDING": 29
+      },
+      "personal_news_conditional_v16_3": {
+        "FALLBACK": 5,
+        "PENDING": 29
+      },
+      "personal_news_conditional_v16_4": {
+        "FALLBACK": 6,
+        "PENDING": 29,
+        "RUNNING": 1
+      }
+    },
+    "attempts_by_contract": {
+      "personal_news_conditional_v16_1": {
+        "MECHANICAL_PASS": 27,
+        "EVIDENCE_ID_INVALID": 1
+      },
+      "personal_news_conditional_v16_2": {
+        "MECHANICAL_PASS": 7,
+        "EVIDENCE_ID_INVALID": 3,
+        "NO_DISPLAYABLE_LANGUAGE": 9
+      },
+      "personal_news_conditional_v16_3": {
+        "EVIDENCE_ID_INVALID": 9,
+        "PARSE_JSONDecodeError": 1
+      },
+      "personal_news_conditional_v16_4": {
+        "NO_DISPLAYABLE_LANGUAGE": 6,
+        "PARSE_JSONDecodeError": 6
+      }
+    },
+    "current_prompt_version": "personal_news_conditional_v16_4",
+    "mechanical_pass_is_not_source_review": true
+  },
+  "limitations": [
+    "No independent source verification of supplier news",
+    "No inference from missing currency or delay fields",
+    "No financial prediction or trading"
+  ]
+}
