@@ -21,6 +21,7 @@
     "T_calls": 0,
     "new_AI_interpretation_released": 0,
     "signed_in_current_build_visual_acceptance": "PENDING_OWNER_LOGIN",
+    "github_sync": "PUSHED_EXISTING_BRANCH_REMOTE_SHA_AND_FOUR_KEY_FILES_READ_BACK",
     "provider_collection": "SHORT_RUN_RESTORED_AFTER_SQLITE_LOCK_REPAIR_LONG_RUN_UNVERIFIED"
   },
   "news_sentiment_factor_v1": {
@@ -39,6 +40,7 @@
     "June_July_test_exposure": "PREVIOUSLY_VIEWED",
     "A_B_C_D_fit_calls": 0,
     "IC": "NOT_RUN",
+    "github_sync": "PUSHED_EXISTING_BRANCH_REMOTE_SHA_AND_FOUR_KEY_FILES_READ_BACK",
     "return_prediction": "NOT_RUN"
   },
   "read_order": [
