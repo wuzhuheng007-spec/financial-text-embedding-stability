@@ -70,6 +70,9 @@ class WatchlistItem(models.Model):
 
 
 class UserPreferences(models.Model):
+    class DisplayLanguage(models.TextChoices):
+        ZH = "zh", "中文"
+        EN = "en", "English"
     class DisplayTimezone(models.TextChoices):
         SHANGHAI = "Asia/Shanghai", "Asia/Shanghai"
         NEW_YORK = "America/New_York", "America/New_York"
@@ -77,6 +80,7 @@ class UserPreferences(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="preferences")
     display_timezone = models.CharField(max_length=32, choices=DisplayTimezone.choices, default=DisplayTimezone.SHANGHAI)
+    display_language = models.CharField(max_length=2, choices=DisplayLanguage.choices, default=DisplayLanguage.ZH)
 
 
 class PublicFactCard(models.Model):

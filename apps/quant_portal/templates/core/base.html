@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="zh-CN">
+<html lang="{% if request.display_language == 'en' %}en{% else %}zh-CN{% endif %}" data-language="{{ request.display_language|default:'zh' }}" data-user-id="{{ user.pk|default:'0' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +27,7 @@
           <p class="topbar-title">本机个人测试版 · 显示时区 {{ display_timezone|default:'Asia/Shanghai' }}</p>
         </div>
         <div class="account-actions">
+          {% if user.is_authenticated %}<form method="post" action="{% url 'change_language' %}" class="language-switch">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language == 'zh' %}aria-current="true"{% endif %}>中文</button><span aria-hidden="true">/</span><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>{% endif %}
           {% if user.is_authenticated %}
           <span class="account-name">{{ user.get_username }}</span>
           <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-button" type="submit">退出</button></form>
@@ -42,5 +43,7 @@
       <footer class="footer">开发测试页面。财报事实为历史材料；无行情时明确显示未接入。预测和交易功能未启用。</footer>
     </div>
   </div>
+  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}"></script>
+  <script defer charset="utf-8" src="{% static 'core/workspace_v15.js' %}"></script>
 </body>
 </html>

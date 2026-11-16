@@ -112,6 +112,22 @@ class PersonalFeedStore:
             content_sha256 TEXT NOT NULL, raw_item_json TEXT NOT NULL,
             UNIQUE(item_key,content_sha256));
           CREATE INDEX IF NOT EXISTS news_latest ON news_versions(owner_id,received_at DESC,id DESC);
+          CREATE TABLE IF NOT EXISTS news_screening (
+            content_sha256 TEXT PRIMARY KEY, owner_id INTEGER NOT NULL,
+            status TEXT NOT NULL, scope TEXT NOT NULL, reason_key TEXT NOT NULL,
+            evidence_phrase TEXT, evidence_location TEXT, rule_version TEXT NOT NULL,
+            first_received_at TEXT NOT NULL, last_received_at TEXT NOT NULL,
+            legacy INTEGER NOT NULL DEFAULT 0, seen_count INTEGER NOT NULL DEFAULT 0);
+          CREATE INDEX IF NOT EXISTS news_screening_owner_status ON news_screening(owner_id,status);
+          CREATE TABLE IF NOT EXISTS news_screening_pending (
+            content_sha256 TEXT PRIMARY KEY, owner_id INTEGER NOT NULL,
+            title TEXT, content TEXT NOT NULL, source_url TEXT, published_at_utc TEXT,
+            received_at TEXT NOT NULL, expires_at TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS news_screening_metrics (
+            owner_id INTEGER PRIMARY KEY, raw_received_rows INTEGER NOT NULL DEFAULT 0,
+            relevant_new_versions INTEGER NOT NULL DEFAULT 0,
+            pending_rows INTEGER NOT NULL DEFAULT 0, excluded_rows INTEGER NOT NULL DEFAULT 0,
+            last_received_at TEXT);
           CREATE TABLE IF NOT EXISTS quote_selection (
             symbol TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, desired INTEGER NOT NULL,
             position INTEGER NOT NULL, updated_at TEXT NOT NULL);
@@ -451,8 +467,57 @@ class PersonalFeedStore:
         self.db.execute("DELETE FROM news_versions WHERE item_key NOT IN (SELECT item_key FROM news_items)")
         return "NEW" if version == 1 else "REVISION"
 
+    def record_news_screening(self, owner_id: int, item: dict, decision: dict, *,
+                              received_at: str, legacy: bool = False,
+                              insertion_result: str | None = None,
+                              pending_limit: int = 50, pending_hours: int = 24) -> None:
+        """Keep only a hash/reason for excluded items; bound uncertain text locally."""
+        if owner_id != self.owner_id or decision.get("status") not in {"INCLUDE", "PENDING_REVIEW", "EXCLUDE"}:
+            raise ValueError("Invalid owner or screening decision")
+        title, content = str(item.get("title") or ""), str(item.get("content") or "")
+        content_hash = hashlib.sha256((title + "\n" + content).encode("utf-8")).hexdigest()
+        self.db.execute("""INSERT INTO news_screening
+          (content_sha256,owner_id,status,scope,reason_key,evidence_phrase,evidence_location,
+           rule_version,first_received_at,last_received_at,legacy,seen_count)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(content_sha256) DO UPDATE SET
+          status=excluded.status,scope=excluded.scope,reason_key=excluded.reason_key,
+          evidence_phrase=excluded.evidence_phrase,evidence_location=excluded.evidence_location,
+          rule_version=excluded.rule_version,last_received_at=excluded.last_received_at,
+          seen_count=news_screening.seen_count+excluded.seen_count""",
+          (content_hash,owner_id,decision["status"],decision["scope"],decision["reason_key"],
+           decision.get("evidence_phrase"),decision.get("evidence_location"),decision["rule_version"],
+           received_at,received_at,int(legacy),0 if legacy else 1))
+        if not legacy:
+            self.db.execute("""INSERT INTO news_screening_metrics
+              (owner_id,raw_received_rows,relevant_new_versions,pending_rows,excluded_rows,last_received_at)
+              VALUES(?,?,?,?,?,?) ON CONFLICT(owner_id) DO UPDATE SET
+              raw_received_rows=raw_received_rows+excluded.raw_received_rows,
+              relevant_new_versions=relevant_new_versions+excluded.relevant_new_versions,
+              pending_rows=pending_rows+excluded.pending_rows,
+              excluded_rows=excluded_rows+excluded.excluded_rows,
+              last_received_at=excluded.last_received_at""",
+              (owner_id,1,int(insertion_result in {"NEW", "REVISION"}),
+               int(decision["status"] == "PENDING_REVIEW"),int(decision["status"] == "EXCLUDE"),received_at))
+        if decision["status"] == "PENDING_REVIEW" and not legacy:
+            if not 1 <= pending_limit <= 200 or not 1 <= pending_hours <= 168:
+                raise ValueError("Invalid pending screening retention")
+            expiry = (datetime.now(timezone.utc)+timedelta(hours=pending_hours)).isoformat().replace("+00:00","Z")
+            self.db.execute("""INSERT INTO news_screening_pending
+              (content_sha256,owner_id,title,content,source_url,published_at_utc,received_at,expires_at)
+              VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(content_sha256) DO UPDATE SET
+              received_at=excluded.received_at,expires_at=excluded.expires_at""",
+              (content_hash,owner_id,title,content,safe_source_url(item.get("url")),
+               published_utc(item.get("time")),received_at,expiry))
+            self.db.execute("DELETE FROM news_screening_pending WHERE owner_id=? AND expires_at<?",
+                            (owner_id,utc_now()))
+            self.db.execute("""DELETE FROM news_screening_pending WHERE content_sha256 IN
+              (SELECT content_sha256 FROM news_screening_pending WHERE owner_id=?
+               ORDER BY received_at DESC,content_sha256 DESC LIMIT -1 OFFSET ?)""",
+              (owner_id,pending_limit))
 
-def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> dict:
+
+def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40,
+                        included_only: bool = False) -> dict:
     """Return owner-only values to an already authenticated loopback view."""
     if not path.is_file():
         return {"quotes": [], "news": [], "news_total": 0, "states": [], "symbols": [], "cache_state": "NOT_STARTED"}
@@ -463,19 +528,30 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
         if binding is None or binding["owner_id"] != owner_id:
             return {"quotes": [], "news": [], "news_total": 0, "states": [], "symbols": [], "cache_state": "OWNER_MISMATCH"}
         quotes = db.execute("""SELECT q.symbol,q.provider_code,q.display_name,q.price_text,
-          q.currency,q.provider_time,q.received_at,q.market_state,q.delay_status FROM quotes q
-          WHERE q.owner_id=? AND q.id=(SELECT q2.id FROM quotes q2 WHERE q2.owner_id=q.owner_id
-            AND q2.symbol=q.symbol ORDER BY q2.provider_time DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
-          ORDER BY q.symbol""", (owner_id,)).fetchall()
-        news = db.execute("""SELECT v.provider_id,v.title,v.content,v.source_url,
+          q.currency,q.provider_time,q.received_at,q.market_state,q.delay_status
+          FROM (SELECT symbol FROM quotes WHERE owner_id=? GROUP BY symbol) symbols
+          JOIN quotes q ON q.id=(SELECT q2.id FROM quotes q2 WHERE q2.owner_id=?
+            AND q2.symbol=symbols.symbol ORDER BY q2.provider_time DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
+          ORDER BY q.symbol""", (owner_id,owner_id)).fetchall()
+        tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        include_join = "JOIN news_screening s ON s.content_sha256=v.content_sha256 AND s.status='INCLUDE'" if included_only and "news_screening" in tables else ""
+        news = db.execute(f"""SELECT v.provider_id,v.title,v.content,v.source_url,
           v.published_raw,v.published_at_utc,v.received_at,v.version,
-          i.source_key_kind,i.item_key FROM news_versions v JOIN news_items i ON i.item_key=v.item_key
+          v.content_sha256,i.source_key_kind,i.item_key FROM news_versions v JOIN news_items i ON i.item_key=v.item_key
+          {include_join}
           WHERE v.owner_id=? AND v.version=i.latest_version
           ORDER BY v.received_at DESC,v.id DESC LIMIT ?""", (owner_id,news_limit)).fetchall()
         states = db.execute("SELECT * FROM provider_state ORDER BY provider").fetchall()
         symbols = db.execute("SELECT symbol,state,reason,updated_at FROM symbol_state WHERE owner_id=?",
                              (owner_id,)).fetchall()
-        tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        screening = {row["content_sha256"]: dict(row) for row in db.execute(
+            "SELECT * FROM news_screening WHERE owner_id=?", (owner_id,)).fetchall()
+            } if "news_screening" in tables else {}
+        screening_metrics = dict(db.execute(
+            "SELECT * FROM news_screening_metrics WHERE owner_id=?", (owner_id,)).fetchone() or {}) if "news_screening_metrics" in tables else {}
+        decision_counts = {row["status"]: row["n"] for row in db.execute(
+            "SELECT status,COUNT(*) AS n FROM news_screening WHERE owner_id=? GROUP BY status",
+            (owner_id,)).fetchall()} if "news_screening" in tables else {}
         selection = db.execute("SELECT symbol,desired,updated_at FROM quote_selection WHERE owner_id=? ORDER BY position,symbol",
                                (owner_id,)).fetchall() if "quote_selection" in tables else []
         interests = db.execute("SELECT interest_key,enabled FROM news_interest WHERE owner_id=? ORDER BY interest_key",
@@ -486,20 +562,23 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
         session_quotes = db.execute("""SELECT q.symbol,q.provider_code,q.session,q.price_text,q.currency,
           q.source_at,q.received_at,q.provider_field_path,q.source_time_field_path,
           q.trade_date,q.date_basis,
-          q.parent_date_hint,q.parent_source_at_hint,q.delay_status,q.source_channel FROM session_quotes q
-          WHERE q.owner_id=? AND q.id=(SELECT q2.id FROM session_quotes q2
-            WHERE q2.owner_id=q.owner_id AND q2.symbol=q.symbol AND q2.session=q.session
+          q.parent_date_hint,q.parent_source_at_hint,q.delay_status,q.source_channel
+          FROM (SELECT symbol,session FROM session_quotes WHERE owner_id=? GROUP BY symbol,session) keys
+          JOIN session_quotes q ON q.id=(SELECT q2.id FROM session_quotes q2
+            WHERE q2.owner_id=? AND q2.symbol=keys.symbol AND q2.session=keys.session
             ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
               q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
-          ORDER BY q.symbol,q.session""", (owner_id,)).fetchall() if "session_quotes" in tables else []
+          ORDER BY q.symbol,q.session""", (owner_id,owner_id)).fetchall() if "session_quotes" in tables else []
         session_capabilities = db.execute("""SELECT symbol,session,state,checked_at,source_channel
           FROM session_capabilities WHERE owner_id=? ORDER BY symbol,session""",
           (owner_id,)).fetchall() if "session_capabilities" in tables else []
         return {"quotes": [dict(row) for row in quotes],
                 "session_quotes": [dict(row) for row in session_quotes],
                 "session_capabilities": [dict(row) for row in session_capabilities],
-                "news": [dict(row) for row in news],
+                "news": [dict(row) | {"screening": screening.get(row["content_sha256"])} for row in news],
                 "news_total": news_total,
+                "news_screening_counts": decision_counts,
+                "news_screening_metrics": screening_metrics,
                 "states": [dict(row) for row in states],
                 "symbols": [dict(row) for row in symbols],
                 "selection": [dict(row) for row in selection],

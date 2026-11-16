@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sqlite3
 import threading
 import time
@@ -250,6 +251,10 @@ def _retry_after_seconds(value: str | None, minimum: float) -> float:
 
 def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
     store = PersonalFeedStore(under_root(config["cache_db"]), user_id)
+    from .relevance_v15 import RULE_VERSION as SCREEN_RULE_VERSION, screen
+    v15_config = json.loads((ROOT / "configs/quant_portal_personal_v15_20261116.json").read_text(encoding="utf-8"))
+    if v15_config["relevance_rule_version"] != SCREEN_RULE_VERSION:
+        raise ValueError("Personal news screening rule version mismatch")
     session = None
     failures = 0
     interval = config["jin10"]["poll_interval_seconds"]
@@ -293,9 +298,21 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                 store.provider_metric("jin10",last_page_fingerprints=json.dumps(keys))
                 for item in items:
                     if isinstance(item,dict) and (item.get("content") or item.get("title")):
-                        store.put_news(user_id,item,received_at=received,
-                            max_items=config["retention"]["news_items"],
-                            max_versions=config["retention"]["news_versions_per_item"])
+                        try:
+                            decision = screen(item).as_dict()
+                        except (ValueError, TypeError, KeyError, re.error):
+                            decision = {"status": "PENDING_REVIEW", "scope": "NONE",
+                                        "reason_key": "screening_error", "evidence_phrase": None,
+                                        "evidence_location": None, "rule_version": SCREEN_RULE_VERSION}
+                        insertion = None
+                        if decision["status"] == "INCLUDE":
+                            insertion = store.put_news(user_id,item,received_at=received,
+                                max_items=config["retention"]["news_items"],
+                                max_versions=config["retention"]["news_versions_per_item"])
+                        store.record_news_screening(user_id,item,decision,received_at=received,
+                            insertion_result=insertion,
+                            pending_limit=v15_config["pending_review_limit"],
+                            pending_hours=v15_config["pending_review_hours"])
                 source_times = [stamp for item in items if isinstance(item,dict)
                                 if (stamp := published_utc(item.get("time")))]
                 store.state("jin10","CONNECTED",success=True,received_at=received,

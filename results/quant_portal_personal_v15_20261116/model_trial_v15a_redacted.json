@@ -1,0 +1,16 @@
+{
+  "schema": "personal_demo_v15a_negative_trial_redacted",
+  "created_at_utc": "2026-11-16T05:05:55.590859+00:00",
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "job_status": {
+    "FAILED": 3,
+    "PENDING": 17
+  },
+  "attempt_error_class": {
+    "CONTRACT_INVALID": 5,
+    "PARSE_ValueError": 1
+  },
+  "raw_responses_public": false,
+  "note": "Stopped after three contract-invalid development items; negative results preserved privately; remaining jobs not run under v15a."
+}

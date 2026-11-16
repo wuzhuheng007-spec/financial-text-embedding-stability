@@ -8,4 +8,8 @@ if ($LASTEXITCODE -ne 0 -or -not ($PortalState -match '^RUNNING ')) {
     Write-Output $PortalState
 }
 & (Join-Path $PSScriptRoot 'feed_personal.ps1') start
-exit $LASTEXITCODE
+$FeedResult=$LASTEXITCODE
+& (Join-Path $PSScriptRoot 'analysis_personal.ps1') start
+$AnalysisResult=$LASTEXITCODE
+if ($FeedResult -ne 0) { exit $FeedResult }
+exit $AnalysisResult

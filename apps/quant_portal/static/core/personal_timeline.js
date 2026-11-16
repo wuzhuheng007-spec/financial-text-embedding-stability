@@ -250,6 +250,7 @@
     refresh();
   }
   document.addEventListener('personal-chart-open', event => {
+    window.quantOpenPanel?.('chart');
     const symbol = event.detail?.symbol;
     if (!symbols.includes(symbol)) return;
     symbolBox.value = symbol;

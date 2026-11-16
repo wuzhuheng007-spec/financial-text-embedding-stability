@@ -1,0 +1,51 @@
+{
+  "schema": "personal_demo_v15b_frozen_batch_redacted",
+  "created_at_utc": "2026-11-16T05:12:34.048725+00:00",
+  "frozen_batch_sha256": "3d09601e9aa687a0c9d0bc10633f63c17da6172edc86f6284dec1c536bffe972",
+  "input_snapshot_sha256": "b7ff484d039bc551c1be6ac1ba652c60c64c5467bac6a4e3b872b832226ce49f",
+  "config_sha256": "39fcaa83d0c2053e1344bb312355ee07bfbb6dc454b7ff8e08988b54110a88e4",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "model_config_sha256": "eed00b17e22553979d090fa492e587e92885e328914c8e0b0b78f0a0d3576b3b",
+  "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+  "worker_source_sha256_at_audit": "e8cdb9dcc39422706e0d1b6af9bd4036d9fa31b8c243c56627933a4749130e30",
+  "contract_source_sha256_at_audit": "1fc78ba666c4f819e34fa7f87f7a6f58f17cfd057d4fcaa686ec6ea71e229393",
+  "generator_source_sha256_at_audit": "6de45edefe55a3897e17dd5aea94acb9415b1b5506aa65f03e12966fab014609",
+  "runtime_source_hash_at_launch": "NOT_SEPARATELY_CAPTURED",
+  "planned_items": 20,
+  "job_status": {
+    "COMPLETE": 8,
+    "FAILED": 12
+  },
+  "generation_attempts": 35,
+  "items_with_repair": 15,
+  "attempt_error_class": {
+    "CONTRACT_INVALID": 26,
+    "NONE": 8,
+    "PARSE_JSONDecodeError": 1
+  },
+  "parse_mode": {
+    "NO_PARSE": 1,
+    "RAW_JSON": 34
+  },
+  "validation_errors": {
+    "BILINGUAL_analysis_en": 2,
+    "BILINGUAL_analysis_zh": 2,
+    "BILINGUAL_headline_en": 2,
+    "BILINGUAL_headline_zh": 2,
+    "BILINGUAL_reported_en": 2,
+    "BILINGUAL_reported_zh": 2,
+    "IMPACTS_ARRAY": 2,
+    "IMPACT_ENUM_0": 12,
+    "IMPACT_ENUM_1": 7,
+    "NUMERIC_TOKEN_NOT_IN_INPUT": 1,
+    "QUOTE_NOT_CONTIGUOUS": 20,
+    "SCHEMA_KEYS": 2,
+    "TONE_ENUM": 2
+  },
+  "content_review_decisions": {
+    "REJECT": 8
+  },
+  "first_attempt_at_utc": "2026-11-16T04:47:04.865483Z",
+  "last_attempt_at_utc": "2026-11-16T05:11:32.652772Z",
+  "scope": "REPEATED_DEVELOPMENT_NEWS_ONLY_NO_INDEPENDENT_ACCURACY_CLAIM"
+}

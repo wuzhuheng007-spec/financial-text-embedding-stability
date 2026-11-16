@@ -1,0 +1,217 @@
+/* One UI translation catalog shared by static DOM and live local-cache text. */
+(() => {
+  const language=document.documentElement.dataset.language||'zh';
+  const catalog={
+    '市场观察':'Market overview','个人设置':'Personal settings','退出':'Sign out','登录':'Sign in',
+    '跳转到主要内容':'Skip to main content','只读研究 · 无交易执行':'Read-only research · No trading',
+    '数据与模型权限单独核验':'Data and model rights reviewed separately',
+    '科技股观察台':'Technology stock observatory','本机个人使用 · 无交易':'Local personal use · No trading',
+    '管理自己的关注范围，查看本机个人缓存和历史财报事实。':'Manage your watchlist, local cache and historical earnings facts.',
+    '本机个人只读数据':'Local personal read-only data','数据来源状态':'Source status',
+    '页面每 5 秒读取一次本机缓存；后台采集按独立预算运行。报价时间与收到时间分别显示，金十快讯仍待交叉核实。':'The page reads local cache every five seconds. Background collection has separate limits. Quote and receipt times are separate; Jin10 reports await corroboration.',
+    'moomoo 行情':'moomoo quotes','金十新闻':'Jin10 news','可选扩展':'Optional extension',
+    '未配置':'Not configured','dot 未配置；本机采集与 dot 无关。':'dot is not configured; local collection runs independently.',
+    '连接诊断':'Connection diagnostics','科技股重点Top 10 / Top 10 Tech Market Events':'Top 10 Tech Market Events',
+    '规则排序；供应商报道待核实，不代表市场预测。':'Rule-based ordering; supplier reports remain unverified. This is not a market forecast.',
+    '自选股与订阅管理':'Watchlist and subscriptions','行情摘要':'Quote summary',
+    '已采集报价曲线':'Collected quote chart','完整新闻流':'Full news feed',
+    '新闻情绪观察':'News tone observation','高级设置':'Advanced settings',
+    '历史财报事实卡':'Historical earnings fact cards','按证券查看':'View by symbol',
+    '时区与语言设置':'Timezone and language settings','分析服务状态待读取':'Checking analysis worker status',
+    '我的自选股':'My watchlist','仅当前账户':'Current account only','加入自选':'Add to watchlist',
+    '还没有自选股':'No watchlist items yet','从上方添加关注对象。添加证券不会自动启动行情采集。':'Add an item above. Adding a symbol does not start quote collection.',
+    '行情快照':'Quote snapshots','缓存只读':'Read-only cache','正在读取个人行情缓存…':'Loading personal quote cache…',
+    '正在读取个人新闻缓存…':'Loading personal news cache…','正在读取':'Loading',
+    '全部快讯':'All reports','我的关注':'My interests','重点事件':'Focus events',
+    '金十快讯':'Jin10 flashes','金十报道／待交叉核实':'Jin10 report / not corroborated',
+    '独立新闻关注':'Independent news interests','公司或 ETF':'Company or ETF','类别':'Category',
+    '时间范围':'Time range','全部':'All','全部缓存':'All cached','最近24小时':'Last 24 hours',
+    '最近7天':'Last 7 days','编辑科技股关注预设':'Edit technology interests',
+    '填入科技股预设':'Fill technology preset','保存关注范围':'Save interests',
+    '已采集报价曲线':'Collected quote chart','证券':'Symbol','时段':'Session','范围':'Range',
+    '全部时段':'All sessions','盘前':'Pre-market','常规':'Regular','盘后':'After-hours','夜盘':'Overnight',
+    '最近30分钟':'Last 30 minutes','最近2小时':'Last 2 hours','最近24小时':'Last 24 hours',
+    '放大':'Zoom in','缩小':'Zoom out','回到最新':'Back to latest',
+    '相关新闻时间轴':'Related news timeline','来源时间':'Source time','收到时间':'Receipt time',
+    '财报事实卡':'Earnings fact cards','历史实际业绩与现金流':'Historical results and cash flow',
+    '历史公告中的未来指引':'Guidance in historical releases','尚无已核对数据':'No reviewed data yet',
+    '尚无已核对指引数据':'No reviewed guidance yet','个人设置':'Personal settings',
+    '这些设置只影响当前账户。':'These settings affect this account only.',
+    '本机个人测试':'Local personal test','保存设置':'Save settings',
+    '来源发布时间':'Supplier publication time','本机收到':'Received locally',
+    '查看来源页面':'Open source page','原文入口未提供':'Original source link unavailable',
+    '相关对象':'Related entities','关注原因':'Relevance reason','匹配短语':'Matched phrase',
+    '规则排序':'Rule-based order','尚未启动':'Not started','未知':'Unknown','其他':'Other',
+    '待分析':'Pending analysis','分析中':'Analyzing','完成':'Complete','证据不足':'Insufficient evidence',
+    '失败':'Failed','分析暂不可用':'Analysis unavailable','待翻译':'Translation pending',
+    '原文':'Original report','机器翻译':'Machine translation','模型推断':'Model inference',
+    '报道事实':'Reported claim','待核实':'Unverified','情绪':'Tone','影响':'Impact',
+    '成立条件':'Conditions','反向因素':'Counterpoints','后续观察':'What to watch',
+    '尚不知道':'Unknowns','正面':'Positive','负面':'Negative','中性':'Neutral',
+    '混合':'Mixed','样本不足':'Insufficient sample','未分析':'Not analyzed',
+    '直接相关':'Directly related','产业链':'Industry chain','相关宏观':'Relevant macro',
+    '未连接':'Not connected','连接中':'Connecting','已连接':'Connected','断开':'Disconnected',
+    '休市':'Market closed','数据陈旧':'Stale data','认证失效':'Authentication expired',
+    '限流':'Rate limited','正在读取个人缓存；暂无报价时会显示原因。':'Reading private cache; unavailable quotes will show a reason.',
+    '历史训练期材料 · 非最新财报':'Historical training-period material · not latest earnings',
+    '开发测试页面。财报事实为历史材料；无行情时明确显示未接入。预测和交易功能未启用。':'Development page. Earnings facts are historical; missing quotes are shown as unavailable. Prediction and trading are disabled.',
+    '最近成功接收：':'Last successful receipt: ','心跳：':'Heartbeat: ','最近推送：':'Last push: ',
+    '最近新增报价（v1.1）：':'Last newly stored quote (v1.1): ',
+    '最新报价来源时间：':'Latest quote source time: ','重复包（v1.1）：':'Duplicate packets (v1.1): ',
+    '分时段定时快照：':'Session snapshots: ','最近成功：':'Last success: ',
+    '今日尝试（旧阶段仅下界）：':'Today attempts (old stage lower bound only): ',
+    '业务成功：':'Business successes: ','可能有新闻缺口':'Possible news coverage gap',
+    '业务失败：':'Business failures: ','采集线程已退出':'Collector thread stopped',
+    '采集线程运行中':'Collector thread running','线程状态未知':'Thread status unknown',
+    '报价时段':'Quote session','最近有来源时间':'Latest with source time',
+    '暂无报价':'No quote','币种待核实':'Currency unverified','币种未知':'Currency unknown',
+    '未知（供应商子报价无独立时间）':'Unknown (supplier child quote lacks separate time)',
+    '定时快照':'Timed snapshot','原有推送':'Existing push',
+    '原有未分时段缓存':'Legacy unsplit cache','来源时间：':'Source time: ',
+    '本机获取：':'Local receipt: ','本机收到：':'Local receipt: ',
+    '交易日：':'Trade date: ','父报价日期线索：':'Parent quote date hint: ',
+    '非本时段成交日期':'Not this session trade date',
+    '当前市场休市，非实时成交':'Market closed; no live trade implied',
+    '盘后结束；夜盘另行判断':'After-hours ended; overnight assessed separately',
+    '采集：':'Collection: ','市场状态：':'Market state: ',
+    '延迟：':'Delay: ','币种：':'Currency: ','价格字段：':'Price field: ',
+    '时间字段：':'Time field: ','时间证据不足：不能判定此报价仍属当前时段或实时更新':'Insufficient time evidence to call this quote current or real-time',
+    '常规报价参考：':'Regular-session reference quote: ',
+    '该时段暂无可用报价':'No available quote for this session',
+    '接入状态：':'Access state: ','最近检查：':'Last checked: ',
+    '空字段不等于无权限或休市':'An empty field alone does not establish no entitlement or market closure',
+    '已加入自选 · 已验证代码 · 未订阅':'Watchlisted · verified code · not subscribed',
+    '已加入自选 · 暂无已核实可用代码':'Watchlisted · no verified usable code',
+    '已订阅 · 已验证代码':'Subscribed · verified code',
+    '等待订阅确认 · 已验证代码':'Waiting for subscription confirmation · verified code',
+    '等待停止订阅确认':'Waiting for unsubscribe confirmation',
+    '供应商拒绝 · ':'Supplier rejected · ','本机六键预算已满':'Local six-key budget reached',
+    '订阅行情':'Subscribe to quotes','停止订阅':'Stop subscription',
+    '请选择要替换的证券':'Select a symbol to replace',
+    '暂无个人报价':'No personal quote','未订阅或尚未收到推送':'Unsubscribed or no push yet',
+    '未订阅 · 保留历史缓存':'Unsubscribed · historical cache retained',
+    '采集已断开 · 保留最后报价':'Collector disconnected · last quote retained',
+    '连接活跃 · 休市报价未变化（非实时成交）':'Connection active · market closed; quote unchanged (not a live trade)',
+    '盘后已结束 · 夜盘状态未核实':'After-hours ended · overnight status unverified',
+    '连接状态见上方 · 报价来源时间较旧':'See connection state above · quote source time is old',
+    '最新缓存报价 · 实时性未核实':'Latest cached quote · real-time status unverified',
+    '查看曲线':'View chart','关注公司和 ETF':'Followed companies and ETFs',
+    '关注类别':'Followed categories','已填入预设，尚未保存':'Preset filled; not saved',
+    '已保存':'Saved','保存失败：':'Save failed: ',
+    '相关对象：':'Related entities: ','类别：':'Category: ',
+    '关注原因：':'Relevance reason: ','匹配短语：':'Matched phrase: ',
+    '报道类型线索：':'Report stage clue: ','仅为文字规则，未核实事实':'Text rule only; facts unverified',
+    '疑似相关报道':'Possibly related reports','非独立确认':'Not independent corroboration',
+    '暂无已缓存快讯；请查看上方连接状态。':'No cached reports; see connection state above.',
+    '当前缓存和筛选条件中没有匹配快讯；可切换“全部快讯”或调整关注范围。':'No reports match this filter; switch to All reports or adjust interests.',
+    '有':'There are','条新消息 · 点击回到最新':'new reports · click to return to latest',
+    '快讯已更新 · 点击回到最新':'Reports updated · click to return to latest',
+    '排名已更新 · 点击查看':'Ranking updated · click to view',
+    '当前没有符合科技股及相关宏观范围的已缓存事件。':'No cached events meet the technology and macro scope.',
+    '新收到':'New received','相关入库':'Relevant stored','待筛':'Pending review',
+    '排除':'Excluded','旧库已标记':'Legacy labeled',
+    '去重事件':'Deduplicated events','暂无已完成分析':'No completed analyses',
+    '实际行情变化：未作可比观察':'Observed market movement: not assessed on a comparable basis',
+    '机器生成翻译与分析 · 新闻仍待核实':'Machine-generated translation and analysis · report unverified',
+    '模型分析':'Model analysis','条件性影响':'Conditional impact','引文':'Quote',
+    '展开原文':'Expand original report','报道事实':'Reported claim',
+    '行情观察：未与该新闻建立可比因果关系':'Market observation: no comparable causal attribution established',
+    '当前范围内无按现有规则关联的已缓存快讯':'No cached reports linked by current rules in this range',
+    '新闻发布时间格式无法定位':'News publication time cannot be positioned',
+    '该报道没有可核实的带时区发布时间':'The report lacks a verifiable timezone-aware publication time',
+    '因此未放到图上':'Therefore not placed on the chart',
+    '该时间附近无已采集报价覆盖':'No collected quote coverage near this time',
+    '附近有已采集报价':'Collected quotes are available nearby',
+    '仅表示时间接近':'Shows time proximity only',
+    '本机首次收到：':'First local receipt: ','发布/时间待核实':'Publication time unverified',
+    '待核实 · 发布时间：':'Unverified · publication time: ',
+    '待核实 · 来源发布时间 ':'Unverified · source publication time ',
+    '原文入口未提供':'Original source link unavailable',
+    '更正或更新版本':'Correction or revised version',
+    '未提供标题的快讯':'Report without a separate title',
+    '最近有来源时间':'Latest with source time',
+    '缓存总覆盖：':'Total cache coverage: ',
+    '当前缩放：':'Current zoom: ',
+    '时段之间和超过3分钟的观测间隔不连线':'Line breaks between sessions and observation gaps over three minutes',
+    '曲线不完整':'Incomplete curve',
+    '早期原始响应已按旧策略清理':'Older original responses were pruned by the former policy',
+    '这不代表外部没有新闻':'This does not mean no other news exists',
+    '该时段与范围内没有带来源时间的已采集报价':'No collected quotes with source time in this session and range',
+    '暂无记录':'No records','本机曲线缓存暂不可用：':'Local chart cache unavailable: ',
+    '报价':'Quote','推送':'Push','渠道':'Channel','来源':'Source',
+    '本机收到':'Received locally','来源发布时间':'Source publication time',
+    '最后一次图表保留':'Last chart retained','有新报价 · 回到最新':'New quote available · back to latest',
+    '价格不变不能据此判断没有新报价':'An unchanged price alone does not prove no new quote',
+    '间隔不自动代表供应商故障':'A gap alone does not establish a supplier failure',
+    '扫描达到上限':'Scan limit reached','按原始时间顺序抽样展示':'Sampled for display in original time order',
+    '个报价点':'quote points','个显示点的旧原始响应已清理':'old originals for displayed points were pruned',
+    '窗口':'window','至':'to','条有时间记录':'time-stamped records',
+    '条（非独立确认）':'reports (not independent corroboration)',
+    'moomoo / 金十':'moomoo / Jin10','读取中':'Loading','移除':'Remove',
+    '暂无获准展示的行情':'No approved quotes available',
+    '行情供应商状态见上方。本站不会生成模拟价格，也不会在刷新时直接向供应商请求。':'See the supplier status above. This page does not generate simulated prices or request supplier data on refresh.',
+    '本机个人缓存 · 非逐笔成交或完整K线':'Private local cache · not trades or complete minute bars',
+    '全部已采集（最多7天）':'All collected (up to seven days)',
+    '点击上方行情卡查看曲线。':'Select a quote card above to see its chart.',
+    '点选报价点查看价格、时段和来源时间。':'Select a quote point for its price, session and source time.',
+    '曲线在时段切换或观测间隔处断开':'The line breaks at session changes and observation gaps',
+    '标记使用金十提供的新闻发布时间；本机首次收到时间另列。关联来自文字规则，报道仍待交叉核实；并不说明新闻造成价格变化。':'Markers use Jin10 publication time; local first receipt is shown separately. Links come from text rules and reports await corroboration. Time proximity does not establish price causation.',
+    '选择证券后显示相关报道。':'Select a symbol to view related reports.',
+    '筛选计数正在读取；旧新闻只隐藏，不删除。':'Loading screening counts; older reports are hidden, not deleted.',
+    '按原文短语规则筛选和排序；时间筛选优先用带时区的来源发布时间，缺失时用本机收到时间。不代表新闻核实、价格预测或市场影响。':'Filters and ranking use source phrase rules. Time filters prefer timezone-aware publication time and otherwise use local receipt time. This does not verify facts or forecast prices.',
+    '当前默认沿用自选股、独立新闻关注和宏观主题。点击预设只修改表单，保存后才生效。':'Current defaults use the watchlist, separate news interests and macro topics. Applying the preset edits the form; save it to take effect.',
+    '仅描述已缓存、已去重的供应商事件；与实际行情变化分列，不作因果判断。':'Describes only cached, deduplicated supplier reports. Observed market movement is separate; no causal claim.',
+    '本机个人开发视图。以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。':'Local development view. The historical fact summaries were checked against official materials by Codex and still need independent review. They are neither current earnings nor permission for public redistribution.',
+    '仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。':'Only fact summaries reviewed for display rights are shown to invited users. Candidate model outputs are not imported automatically.',
+    '没有符合当前来源及展示条件的实际业绩记录。':'No historical results meet the current source and display requirements.',
+    '范围上下界由公司披露的中心值与容差计算，不是公司直接公布的上下界；本页未生成中点。':'Range bounds are calculated from a company-disclosed central value and tolerance; the bounds were not stated directly, and no midpoint is generated here.',
+    '未找到符合当前来源及展示条件的历史指引记录。':'No historical guidance meets the current source and display requirements.',
+    '暂无可公开展示的事实卡':'No fact cards cleared for public display',
+    '研究线的私人原件、事实草稿和授权资料不会自动转入多人页面。':'Private originals, draft facts and licensed materials from research do not enter the multiuser page automatically.',
+    '指标':'Metric','公司原文数值':'Company wording','计算下界':'Calculated lower bound',
+    '计算上界':'Calculated upper bound','计算方式':'Calculation','单位字段':'Unit field',
+    '币种字段':'Currency field','会计/调整口径':'Accounting / adjusted basis',
+    '来源核对':'Source review','来源日期':'Source date','查看原始来源 ↗':'View original source ↗',
+    '来源链接待核实':'Source link unverified','证据定位与状态':'Evidence location and status'
+  };
+  function t(key) { return language==='en' ? (catalog[key]||null) : key; }
+  window.quantI18n={language,t,catalog};
+  if (language!=='en') return;
+  const seen=new WeakMap();
+  function translateNode(node) {
+    if (node.parentElement?.closest('[data-source-original],.news-original,[translate="no"]')) return;
+    const raw=node.nodeValue;
+    if (!raw || !/[\u3400-\u9fff]/.test(raw) || raw.startsWith('Translation pending — ')) return;
+    if (seen.get(node)===raw) return;
+    const trim=raw.trim();
+    let english=catalog[trim];
+    if (!english) {
+      english=raw;
+      for (const [zh,en] of Object.entries(catalog).sort((a,b)=>b[0].length-a[0].length))
+        english=english.replaceAll(zh,en);
+      if (/[\u3400-\u9fff]/.test(english)) english=`Translation pending — ${raw}`;
+      else { seen.set(node,english); node.nodeValue=english; return; }
+    }
+    const next=raw.replace(trim,english);
+    seen.set(node,next); node.nodeValue=next;
+  }
+  function scan(root) {
+    if (root.nodeType===Node.TEXT_NODE) { translateNode(root); return; }
+    if (root.nodeType!==Node.ELEMENT_NODE || root.closest('[data-source-original],.news-original,[translate="no"]')) return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let n; while ((n=walker.nextNode())) translateNode(n);
+    root.querySelectorAll('[aria-label],[title],[placeholder]').forEach(el => {
+      for (const attr of ['aria-label','title','placeholder']) {
+        const value=el.getAttribute(attr);
+        if (value && catalog[value]) el.setAttribute(attr,catalog[value]);
+      }
+    });
+  }
+  scan(document.body);
+  new MutationObserver(mutations => {
+    for (const m of mutations) {
+      if (m.type==='characterData') translateNode(m.target);
+      else m.addedNodes.forEach(scan);
+    }
+  }).observe(document.body,{subtree:true,childList:true,characterData:true});
+})();

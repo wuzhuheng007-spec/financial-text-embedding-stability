@@ -9,10 +9,12 @@ urlpatterns = [
     path("personal-feed/quote-selection/", views.personal_quote_selection, name="personal_quote_selection"),
     path("personal-feed/news-interest/", views.personal_news_interest, name="personal_news_interest"),
     path("personal-feed/event-preferences/", views.personal_event_preferences, name="personal_event_preferences"),
+    path("personal-feed/analysis-priority/", views.personal_analysis_priority, name="personal_analysis_priority"),
     path("accounts/login/", views.PortalLoginView.as_view(), name="login"),
     path("accounts/logout/", views.PortalLogoutView.as_view(), name="logout"),
     path("accounts/register/", views.invite_register, name="invite_register"),
     path("watchlist/add/", views.watchlist_add, name="watchlist_add"),
     path("watchlist/<int:pk>/remove/", views.watchlist_remove, name="watchlist_remove"),
     path("settings/", views.user_settings, name="user_settings"),
+    path("language/", views.change_language, name="change_language"),
 ]

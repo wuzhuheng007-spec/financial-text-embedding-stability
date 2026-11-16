@@ -1,0 +1,25 @@
+{
+  "schema": "personal_demo_v15_freeze_receipt",
+  "frozen_at_utc": "2026-11-16T04:31:29.479528Z",
+  "portal_snapshot_sha256": "b22346084e55b637f5fbb38e655e60e9229fc80f6f306c22b0fbfbc01e083cf4",
+  "feed_snapshot_sha256": "b7ff484d039bc551c1be6ac1ba652c60c64c5467bac6a4e3b872b832226ce49f",
+  "private_manifest_sha256": "bcb93265e5edf832dec40968e5d578cd16470e29e9c04aae5e2564fa1d467b27",
+  "feed_config_sha256": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7",
+  "freeze_code_sha256": "cedf8a4666f8a777997f3e4b9165f6bc57b201cf4d8917d3eccd5db2453919bc",
+  "old_classifier_sha256": "34f9c4d75540035b33be5cbf9f3b0e3f2b276080a9354aef3cbb8bd668f3b81b",
+  "portal_counts": {
+    "auth_user": 1,
+    "core_watchlistitem": 6,
+    "core_userpreferences": 1,
+    "core_publicfactcard": 14
+  },
+  "cached_news_total": 238,
+  "latest_news_scanned": 238,
+  "related_frozen": 20,
+  "unrelated_counterexamples_frozen": 5,
+  "private_files_not_for_publication": [
+    "portal_before_v15.sqlite3",
+    "feed_before_v15.sqlite3",
+    "sample_manifest_private.json"
+  ]
+}

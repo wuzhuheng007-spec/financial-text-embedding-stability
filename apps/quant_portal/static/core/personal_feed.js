@@ -32,6 +32,18 @@
   let renderedNews = [];
   let eventControlSignature = '';
   const sessionChoice = new Map();
+  const language = document.documentElement.dataset.language || 'zh';
+  const topBox = document.getElementById('personal-top10');
+  const sentimentBox = document.getElementById('personal-sentiment');
+  let topSignature = '';
+  const analysisStates = {NOT_QUEUED:['待分析','Pending'],PENDING:['待分析','Pending'],RUNNING:['分析中','Analyzing'],
+    COMPLETE:['完成','Complete'],INSUFFICIENT_EVIDENCE:['证据不足','Insufficient evidence'],
+    FAILED:['失败','Failed'],REVIEW_PENDING:['模型已生成，待内容核对','Generated; content review pending'],
+    REVIEW_REJECTED:['内容核对未通过','Content review rejected'],
+    SUPERSEDED:['已被更正版本替代','Superseded']};
+  const toneLabels = {POSITIVE:['正面','Positive'],NEGATIVE:['负面','Negative'],NEUTRAL:['中性','Neutral'],
+    MIXED:['混合','Mixed'],UNKNOWN:['未知','Unknown']};
+  const bilingual=(pair) => language === 'en' ? pair[1] : pair[0];
   const sessionLabels = {PREMARKET:'盘前', REGULAR:'常规', AFTERHOURS:'盘后', OVERNIGHT:'夜盘'};
 
   function csrfToken() {
@@ -287,14 +299,106 @@
     return [...rows].sort((a,b) => (b.rule_priority || 0)-(a.rule_priority || 0) ||
       (Date.parse(b.published_at_utc || b.received_at || '') || 0)-(Date.parse(a.published_at_utc || a.received_at || '') || 0));
   }
+  function renderTop10() {
+    if (!topBox) return;
+    const rows=current?.top10 || [];
+    document.getElementById('top10-count').textContent=String(rows.length);
+    document.getElementById('news-count').textContent=String(current?.news?.length || 0);
+    const signature=JSON.stringify(rows.map(x=>[x.item_key,x.version,x.rank?.score,x.analysis_status,x.headline_en]));
+    if (signature===topSignature) return;
+    if (topSignature && topBox.getBoundingClientRect().top < -30) {
+      let notice=document.getElementById('top10-update');
+      if (!notice) { notice=node('button','button button-outline','排名已更新 · 点击查看'); notice.id='top10-update';
+        notice.type='button'; topBox.before(notice); }
+      notice.hidden=false;
+      notice.onclick=()=>{notice.hidden=true;topSignature='';renderTop10();topBox.scrollIntoView({block:'start'});};
+      return;
+    }
+    topSignature=signature;
+    if (!rows.length) { topBox.replaceChildren(node('div','empty-state','当前没有符合科技股及相关宏观范围的已缓存事件。')); return; }
+    topBox.replaceChildren(...rows.map((row,index)=>{
+      const button=node('button','top10-row'); button.type='button';
+      const title=language==='en' ? (row.headline_en || `Translation pending — ${row.title}`) : (row.headline_zh || row.title);
+      const why=row.scope==='DIRECT_SUBJECT' ? bilingual(['直接涉及关注对象','Directly concerns a followed entity']) :
+        row.scope==='INDUSTRY' ? bilingual(['涉及科技产业链','Technology industry chain']) : bilingual(['相关宏观事件','Relevant macro event']);
+      button.append(node('span','top10-rank',`#${index+1} · ${title}`),
+        node('span','news-meta',`${why} · ${row.evidence_phrase || bilingual(['匹配依据未知','Match unknown'])} · ${stamp(row.published_at_utc || row.received_at)}`),
+        node('span','analysis-status',`${bilingual(['供应商报道／待核实','Supplier report / unverified'])} · ${row.claim_stage || 'GENERAL'} · ${bilingual(['分析','Analysis'])}: ${bilingual(analysisStates[row.analysis_status]||analysisStates.NOT_QUEUED)} · ${bilingual(['新闻语气','News tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)} · ${bilingual(['规则排序','Rule order'])} ${row.rank?.score ?? ''}`));
+      button.onclick=()=>{
+        window.quantOpenPanel?.('news');
+        postLocal(root.dataset.analysisPriorityUrl,{item_key:row.item_key}).catch(()=>{});
+        filter='all'; document.querySelector('[data-news-filter="all"]')?.click();
+        renderNews(true);
+        document.querySelector(`[data-item-key="${row.item_key}"]`)?.scrollIntoView({behavior:'smooth',block:'center'});
+      };
+      return button;
+    }));
+  }
+  function renderSentiment() {
+    if (!sentimentBox) return;
+    const rows=current?.sentiment_observation || [];
+    document.getElementById('sentiment-count').textContent=rows.length ? `${rows[0].event_count} ${bilingual(['事件','events'])}` : bilingual(['待分析','Pending']);
+    const grid=node('div','sentiment-grid');
+    rows.forEach(row=>{
+      const cell=node('div','sentiment-cell');
+      cell.append(node('strong',null,`${row.hours}h · ${row.event_count} ${bilingual(['去重事件','deduplicated events'])}`),
+        node('p','muted',`${bilingual(['未分析','Not analyzed'])}: ${row.unanalysed_count}`));
+      if (row.insufficient) cell.append(node('p','muted',bilingual(['样本不足','Insufficient sample'])));
+      else cell.append(node('p',null,Object.entries(row.news_tone_counts||{}).map(([tone,count])=>`${bilingual(toneLabels[tone]||toneLabels.UNKNOWN)} ${count}`).join(' · ') || bilingual(['暂无已完成分析','No completed analyses'])))
+      cell.append(node('p','muted',bilingual(['实际行情变化：未作可比观察','Observed market movement: not assessed on a comparable basis'])));
+      grid.append(cell);
+    });
+    sentimentBox.replaceChildren(grid);
+    const worker=document.getElementById('analysis-worker-state');
+    if (worker) worker.textContent=`${bilingual(['分析后台','Analysis worker'])}: ${current?.analysis_worker_state||'NOT_STARTED'} · ${bilingual(['队列','Queue'])}: ${current?.analysis_queue_count ?? 0}`;
+    const counts=document.getElementById('news-screening-counts');
+    const m=current?.news_screening_metrics||{};
+    const legacy=current?.news_screening_counts||{};
+    if (counts) counts.textContent=`${bilingual(['新收到','New received'])}: ${m.raw_received_rows ?? 0} · ${bilingual(['相关入库','Relevant stored'])}: ${m.relevant_new_versions ?? 0} · ${bilingual(['待筛','Pending review'])}: ${m.pending_rows ?? 0} · ${bilingual(['排除','Excluded'])}: ${m.excluded_rows ?? 0} · ${bilingual(['旧库已标记','Legacy labeled'])}: ${(legacy.INCLUDE||0)+(legacy.PENDING_REVIEW||0)+(legacy.EXCLUDE||0)}`;
+  }
+  function analysisCard(item) {
+    const wrap=node('div','analysis-card');
+    const status=item.analysis_status||'NOT_QUEUED';
+    wrap.append(node('p','analysis-status',`${bilingual(['模型分析','Model analysis'])}: ${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)}`));
+    const a=item.analysis;
+    if (!a || status!=='COMPLETE') {
+      if (status==='FAILED' || status==='REVIEW_REJECTED') wrap.append(node('p','muted',bilingual(['分析暂不可用；原始报道仍可查看。','Analysis unavailable; original report remains available.'])));
+      return wrap;
+    }
+    const value=(stem)=>a[`${stem}_${language}`] || (language==='en' ? `Translation pending — ${a[`${stem}_zh`]||''}` : '证据不足');
+    wrap.append(node('p','analysis-status',bilingual(['机器生成翻译与分析 · 新闻仍待核实','Machine-generated translation and analysis · report unverified'])),
+      node('h4',null,value('headline')),
+      node('p',null,`${bilingual(['报道事实','Reported claim'])}: ${value('reported')}`));
+    if (a.quote) {
+      const quote=node('p','analysis-fact');
+      quote.append(node('span',null,`${bilingual(['引文','Quote'])}: `));
+      const originalQuote=node('span',null,a.quote); originalQuote.dataset.sourceOriginal='1';
+      quote.append(originalQuote); wrap.append(quote);
+    }
+    wrap.append(node('p',null,`${bilingual(['模型推断','Model inference'])}: ${value('analysis')}`));
+    for (const target of a.impacts||[]) wrap.append(node('p',null,`${bilingual(['条件性影响','Conditional impact'])} · ${target.name} · ${bilingual(toneLabels[target.direction]||toneLabels.UNKNOWN)}: ${target[`why_${language}`] || `Translation pending — ${target.why_zh}`}`));
+    wrap.append(node('p','muted',bilingual(['行情观察：未与该新闻建立可比因果关系','Market observation: no comparable causal attribution established'])));
+    return wrap;
+  }
   function newsArticle(item) {
     const article = node('article', 'news-item');
+    article.dataset.itemKey=item.item_key;
+    article.addEventListener('click',() => {
+      if (item.analysis_status==='PENDING' || item.analysis_status==='NOT_QUEUED')
+        postLocal(root.dataset.analysisPriorityUrl,{item_key:item.item_key}).catch(()=>{});
+    },{once:true});
     const published = item.published_at_utc ? stamp(item.published_at_utc) :
       (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
     article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
-    if (item.title) article.append(node('h3', null, item.title));
+    const modelTitle=item.analysis?.[`headline_${language}`];
+    if (item.title || modelTitle) article.append(node('h3', null, modelTitle || (language==='en' ? `Translation pending — ${item.title || ''}` : item.title)));
     const body = item.content || '';
-    article.append(node('p', 'news-body', body.length > 900 ? `${body.slice(0, 900)}…（页面预览）` : body));
+    const original=node('details','news-original');
+    original.dataset.sourceOriginal='1';
+    original.append(node('summary',null,bilingual(['展开原文','Expand original report'])));
+    original.append(node('p','news-body',body));
+    article.append(original);
+    article.append(analysisCard(item));
     if (filter === 'focus') {
       const labels=item.event_labels || {};
       article.append(node('p','event-labels',`相关对象：${(labels.entities || []).map(x => x.label).join('、') || '未明确'} · 类别：${(labels.categories || []).map(x => x.label).join('、') || '其他'} · ${item.rule_priority_label || '规则排序'}`));
@@ -316,7 +420,7 @@
   function renderNews(force=false) {
     const rows = filteredNews();
     const signature = `${filter}|${companyFilter.value}|${categoryFilter.value}|${timeFilter.value}|` +
-      rows.map(x => `${x.item_key}:${x.version}:${x.focus_eligible}:${x.rule_priority}`).join('|');
+      rows.map(x => `${x.item_key}:${x.version}:${x.focus_eligible}:${x.rule_priority}:${x.analysis_status}:${x.analysis_completed_at}`).join('|');
     if (!force && signature === newsSignature) return;
     const readingOlder = newsSignature && newsBox.getBoundingClientRect().top < -20;
     if (!force && readingOlder) {
@@ -357,7 +461,7 @@
       const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
-      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls(); renderNews();
+      renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls(); renderTop10(); renderSentiment(); renderNews();
     } catch (_) {
       for (const name of ['moomoo', 'jin10']) {
         const pill = document.getElementById(`${name}-state`);

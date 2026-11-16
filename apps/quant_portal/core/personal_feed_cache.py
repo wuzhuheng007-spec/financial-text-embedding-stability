@@ -31,10 +31,11 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         sys.path.insert(0, str(REPO_ROOT))
     from scripts.quant_personal_feed.store import read_personal_cache
     from scripts.quant_personal_feed.collector import verified_current_symbols, ROOT
+    from scripts.quant_personal_feed.view_v15 import enrich
     from scripts.quant_personal_feed.event_rules import (
         ENTITY_RULES, CATEGORY_RULES, RULE_VERSION, TECH_PRESET_ENTITIES,
         TECH_PRESET_CATEGORIES, category_choices, classify, entity_choices, focus)
-    data = read_personal_cache(Path(settings.PERSONAL_FEED_DB_PATH),user.pk,news_limit=500)
+    data = read_personal_cache(Path(settings.PERSONAL_FEED_DB_PATH),user.pk,news_limit=200,included_only=True)
     try:
         import json
         config = json.loads((ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json").read_text(encoding="utf-8"))
@@ -79,4 +80,14 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
             item.update({"interest":False,"focus_eligible":False,"focus_reason":None,
                          "rule_priority":0,"event_rule_error":type(exc).__name__})
         item["source_status"] = "金十快讯／原始发布者未知／待交叉核实"
+    try:
+        import json
+        v15=json.loads((ROOT / "configs/quant_portal_personal_v15_20261116.json").read_text(encoding="utf-8"))
+        data=enrich(data,owner_id=user.pk,
+            analysis_db=ROOT / "apps/quant_portal/var/personal_analysis_v15b.sqlite3",config=v15)
+    except (OSError, ValueError, KeyError):
+        # A broken analysis view must not interrupt independent prices or news.
+        data["analysis_worker_state"]="VIEW_UNAVAILABLE"
+        data["top10"]=[]
+        data["sentiment_observation"]=[]
     return data

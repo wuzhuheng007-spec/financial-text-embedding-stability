@@ -2,6 +2,20 @@
 
 本版只在这台电脑的 `127.0.0.1:8765` 运行。自选股是待核实的证券代码；财报卡是有来源定位的**历史训练期材料**，不是最新行情或投资建议。页面现在读取单独后台进程保存的私人 moomoo 行情和金十快讯；其他账户不能读取这些私人缓存。
 
+## v1.5 双语科技事件工作台
+
+登录后，点页面右上角 **中文 / English** 切换语言；选择保存在本机账户偏好中。首页默认展开“行情摘要”和“科技股重点Top 10”；点击榜单项目会展开对应新闻。完整新闻流、图表、自选与订阅、新闻情绪、历史财报及连接诊断都可各自展开，展开状态按账户在当前浏览器记住。查看新闻时点“展开原文”可读完整供应商报道；已经完成且通过同团队内容核对的模型输出另列中英摘要与条件式分析。没有核对通过的模型响应会显示待核对、核对未通过或失败，不会作为完成分析展示。未翻译的原文明确标为“待翻译”。
+
+“科技股重点Top 10”最多显示十个当前缓存中的去重候选事件。它按规则排序，不是全网热度或涨跌预测。新闻情绪观察只统计当前私人缓存的去重事件，并将新闻语气、可能影响及实际行情分开。旧库无关新闻被隐藏而未删除；新返回的无关正文不会写入主新闻库。页面自动更新只读本机缓存，不会因切换语言、折叠区块或刷新而调用供应商或模型。
+
+可单独查询或停止分析后台：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 stop
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 start
+```
+
 ## 启动与登录
 
 在项目根目录打开 PowerShell，运行：

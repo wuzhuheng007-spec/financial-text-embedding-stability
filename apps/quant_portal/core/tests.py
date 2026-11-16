@@ -107,6 +107,22 @@ class IsolationTests(TestCase):
         for url in (reverse("dashboard"), reverse("user_settings")):
             self.assertEqual(self.client.get(url).status_code, 302)
 
+    def test_language_switch_persists_only_for_current_user(self):
+        self.client.force_login(self.a)
+        response=self.client.post(reverse("change_language"),{"language":"en","next":"/"})
+        self.assertEqual(response.status_code,302)
+        self.assertEqual(UserPreferences.objects.get(user=self.a).display_language,"en")
+        self.assertContains(self.client.get(reverse("dashboard")), 'data-language="en"')
+        self.assertFalse(UserPreferences.objects.filter(user=self.b).exists())
+        self.assertEqual(self.client.post(reverse("change_language"),{"language":"fr"}).status_code,400)
+
+    @override_settings(PERSONAL_MODE=True, PERSONAL_FEED_OWNER_USERNAME="a@example.org")
+    def test_other_account_cannot_read_news_or_prioritize_analysis(self):
+        self.client.force_login(self.b)
+        self.assertEqual(self.client.get(reverse("personal_feed_json")).status_code,404)
+        self.assertEqual(self.client.post(reverse("personal_analysis_priority"),
+                           {"item_key":"a"*64}).status_code,404)
+
 
 class SessionAndLimitTests(TestCase):
     def setUp(self):

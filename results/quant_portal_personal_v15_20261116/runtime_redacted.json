@@ -1,0 +1,63 @@
+{
+  "schema": "personal_demo_v15_runtime_redacted",
+  "observed_at_utc": "2026-11-16T05:19:02.288114+00:00",
+  "portal_ready_http": 200,
+  "portal_i18n_js_http": 200,
+  "portal_workspace_js_http": 200,
+  "quote_symbols": [
+    "MU",
+    "NVDA",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "TQQQ"
+  ],
+  "quote_count": 6,
+  "included_news_in_current_read": 32,
+  "top10_positions": 10,
+  "analysis_display_status": {
+    "NOT_QUEUED": 1,
+    "REVIEW_PENDING": 1,
+    "FAILED": 16,
+    "REVIEW_REJECTED": 8,
+    "PENDING": 5,
+    "RUNNING": 1
+  },
+  "accepted_model_cards_visible": 0,
+  "analysis_worker_state": "RUNNING",
+  "analysis_queue_count": 5,
+  "source_states": {
+    "jin10": {
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-16T05:18:57.899552Z",
+      "last_success_at": "2026-11-16T05:18:52.895206Z",
+      "last_push_at": null
+    },
+    "moomoo": {
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "heartbeat_at": "2026-11-16T05:19:01.316627Z",
+      "last_success_at": "2026-11-16T05:19:01.316627Z",
+      "last_push_at": "2026-11-16T05:19:01.256233Z"
+    },
+    "moomoo_snapshot": {
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-16T05:18:42.008119Z",
+      "last_success_at": "2026-11-16T05:18:42.008119Z",
+      "last_push_at": null
+    }
+  },
+  "new_intake_screening_metrics": {
+    "raw_received_rows": 760,
+    "relevant_new_versions": 2,
+    "pending_rows": 144,
+    "excluded_rows": 510,
+    "last_received_at": "2026-11-16T05:18:52.824345Z"
+  },
+  "legacy_label_counts": {
+    "EXCLUDE": 188,
+    "INCLUDE": 32,
+    "PENDING_REVIEW": 44
+  },
+  "supplier_claims_verified": "NO",
+  "visual_acceptance": "NOT_RUN_URL_CONFIDENCE_TOOL_STOP"
+}

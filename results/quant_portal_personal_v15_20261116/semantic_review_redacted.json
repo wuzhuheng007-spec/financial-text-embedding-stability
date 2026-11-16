@@ -1,0 +1,18 @@
+{
+  "schema": "personal_demo_v15b_content_review_redacted",
+  "created_at_utc": "2026-11-16T05:12:28.116372+00:00",
+  "review_version": "CODEX_REVIEW_V15B_1",
+  "private_review_sha256": "c0d2b4a34754fdbfc8bd2abdd2a61a4cee36924df2ff5f301c917f6a500ab57c",
+  "mechanically_complete_reviewed": 8,
+  "accepted": 0,
+  "rejected": 8,
+  "unresolved": 0,
+  "reason_codes": {
+    "MIXED_ERRORS": 3,
+    "WRONG_TRANSLATION": 5
+  },
+  "exact_quote_present_in_reviewed": 7,
+  "content_scope": "CODEX_REVIEW_SAME_TEAM_DEVELOPMENT_NOT_INDEPENDENT_GOLD",
+  "primary_news_claims_independently_verified": false,
+  "reviewed_private_responses_published": false
+}

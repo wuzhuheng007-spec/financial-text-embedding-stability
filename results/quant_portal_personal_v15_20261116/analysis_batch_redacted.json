@@ -1,0 +1,15 @@
+{
+  "schema": "personal_demo_v15_analysis_batch_redacted",
+  "rule_version": "tech_macro_relevance_v15_1",
+  "selected": 20,
+  "scanned_until_selection": 129,
+  "distinct_event_groups": 20,
+  "scope_counts": {
+    "MACRO": 13,
+    "INDUSTRY": 4,
+    "DIRECT_SUBJECT": 3
+  },
+  "private_manifest_sha256": "3d09601e9aa687a0c9d0bc10633f63c17da6172edc86f6284dec1c536bffe972",
+  "private_input_snapshot_sha256": "b7ff484d039bc551c1be6ac1ba652c60c64c5467bac6a4e3b872b832226ce49f",
+  "selection": "newest received then item_key; INCLUDE and first distinct event_group_id; stop at 20"
+}

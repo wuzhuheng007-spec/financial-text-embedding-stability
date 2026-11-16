@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import EmailAuthenticationForm, InviteRegistrationForm, UserPreferencesForm, WatchlistItemForm
 from .models import Invitation, ProviderState, PublicFactCard, PublicMarketSnapshot, UserPreferences, WatchlistItem
@@ -158,6 +159,28 @@ def personal_feed_json(request):
     data = for_owner(request.user, symbols)
     response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
     response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+@require_POST
+def personal_analysis_priority(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal analysis unavailable")
+    import re
+    import sqlite3
+    from .personal_feed_cache import REPO_ROOT
+    key=request.POST.get("item_key", "")
+    if not re.fullmatch(r"[0-9a-f]{64}", key):
+        return JsonResponse({"result":"INVALID_ITEM"},status=400)
+    path=REPO_ROOT / "apps/quant_portal/var/personal_analysis_v15b.sqlite3"
+    if not path.is_file():
+        return JsonResponse({"result":"ANALYSIS_UNAVAILABLE"},status=503)
+    with sqlite3.connect(path,timeout=5) as db:
+        result=db.execute("""UPDATE analysis_jobs SET priority=MAX(priority,5000)
+          WHERE owner_id=? AND item_key=? AND status='PENDING'""",(request.user.pk,key))
+    response=JsonResponse({"result":"PRIORITIZED" if result.rowcount else "NO_PENDING_JOB"})
+    response["Cache-Control"]="private, no-store"
     return response
 
 
@@ -328,3 +351,18 @@ def user_settings(request):
         messages.success(request, "Settings saved.")
         return redirect("user_settings")
     return render(request, "core/settings.html", {"form": form})
+
+
+@login_required
+@require_POST
+def change_language(request):
+    language=request.POST.get("language")
+    if language not in {"zh", "en"}:
+        return JsonResponse({"result": "INVALID_LANGUAGE"}, status=400)
+    prefs,_=UserPreferences.objects.get_or_create(user=request.user)
+    prefs.display_language=language
+    prefs.save(update_fields=["display_language"])
+    target=request.POST.get("next") or "/"
+    if not url_has_allowed_host_and_scheme(target,allowed_hosts={request.get_host()},require_https=False):
+        target="/"
+    return redirect(target)

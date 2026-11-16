@@ -19,6 +19,7 @@
   </div>
 </section>
 
+<details class="workspace-panel" id="panel-diagnostics" data-panel="diagnostics"><summary>连接诊断 <span class="panel-count">moomoo / 金十</span></summary>
 <div class="status-grid" aria-label="数据来源状态">
   <section class="status-card card">
     <div class="card-top"><h2>moomoo 行情</h2><span class="status-pill warning" id="moomoo-state">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div>
@@ -30,8 +31,12 @@
   </section>
   <section class="status-card card"><div class="card-top"><h2>可选扩展</h2><span class="status-pill neutral">未配置</span></div><p class="muted">dot 未配置；本机采集与 dot 无关。</p></section>
 </div>
+</details>
+
+{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-top10" data-panel="top10" open><summary>科技股重点Top 10 / Top 10 Tech Market Events <span class="panel-count" id="top10-count">读取中</span></summary><p class="muted">规则排序；供应商报道待核实，不代表市场预测。</p><div id="personal-top10" class="top10-list" aria-live="polite"></div></details>{% endif %}
 
 <div class="main-grid">
+  <details class="workspace-panel" id="panel-watchlist" data-panel="watchlist"><summary>自选股与订阅管理 <span class="panel-count">{{ watch_rows|length }}</span></summary>
   <section class="card" aria-labelledby="watchlist-title">
     <div class="section-head"><div><p class="eyebrow">YOUR WATCHLIST</p><h2 id="watchlist-title">我的自选股</h2></div><span class="small-tag">仅当前账户</span></div>
     <form method="post" action="{% url 'watchlist_add' %}" class="watch-form">
@@ -58,7 +63,9 @@
       <div class="empty-state"><strong>还没有自选股</strong><p>从上方添加关注对象。添加证券不会自动启动行情采集。</p></div>
     {% endif %}
   </section>
+  </details>
 
+  <details class="workspace-panel" id="panel-quotes" data-panel="quotes" open><summary>行情摘要 <span class="panel-count" id="quote-count">{{ watch_rows|length }}</span></summary>
   <section class="card" aria-labelledby="snapshot-title">
     <div class="section-head"><div><p class="eyebrow">{% if personal_feed_enabled %}PRIVATE CACHE{% else %}APPROVED CACHE{% endif %}</p><h2 id="snapshot-title">行情快照</h2></div><span class="small-tag">缓存只读</span></div>
     {% if personal_feed_enabled %}<div id="personal-quotes" class="snapshot-list" aria-live="polite"><div class="empty-state">正在读取个人行情缓存…</div></div>
@@ -76,10 +83,12 @@
       <div class="empty-state"><strong>暂无获准展示的行情</strong><p>行情供应商状态见上方。本站不会生成模拟价格，也不会在刷新时直接向供应商请求。</p></div>
     {% endif %}
   </section>
+  </details>
 </div>
 
 {% if personal_feed_enabled %}
-<section class="card timeline-section" id="personal-timeline" data-timeline-url="{% url 'personal_timeline_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="timeline-title" hidden>
+<details class="workspace-panel" id="panel-chart" data-panel="chart"><summary>已采集报价曲线 <span class="panel-count">按证券查看</span></summary>
+<section class="card timeline-section" id="personal-timeline" data-timeline-url="{% url 'personal_timeline_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="timeline-title">
   <div class="section-head"><div><p class="eyebrow">SAVED QUOTE TIMELINE</p><h2 id="timeline-title">已采集报价曲线</h2></div><span class="small-tag">本机个人缓存 · 非逐笔成交或完整K线</span></div>
   <div class="timeline-controls">
     <label>证券 <select id="timeline-symbol" aria-label="图表证券"></select></label>
@@ -98,8 +107,11 @@
   <p class="muted">标记使用金十提供的新闻发布时间；本机首次收到时间另列。关联来自文字规则，报道仍待交叉核实；并不说明新闻造成价格变化。</p>
   <div id="timeline-news" class="timeline-news"><div class="empty-state">选择证券后显示相关报道。</div></div>
 </section>
-<section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}">
+</details>
+<details class="workspace-panel" id="panel-news" data-panel="news"><summary>完整新闻流 <span class="panel-count" id="news-count">读取中</span></summary>
+<section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}" data-analysis-priority-url="{% url 'personal_analysis_priority' %}">
   <div class="section-head"><div><p class="eyebrow">JIN10 PRIVATE FLASH</p><h2 id="news-title">金十快讯</h2></div><span class="small-tag">金十报道／待交叉核实</span></div>
+  <p class="muted" id="news-screening-counts">筛选计数正在读取；旧新闻只隐藏，不删除。</p>
   <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button button-primary" type="button" data-news-filter="all" aria-pressed="true">全部快讯</button><button class="button" type="button" data-news-filter="interest" aria-pressed="false">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
   <div class="news-interests" id="news-interest-controls" aria-label="独立新闻关注"></div>
   <div id="event-filter-panel" class="event-filter-panel" hidden>
@@ -110,10 +122,14 @@
   <button class="button button-outline new-news-banner" type="button" id="new-news-banner" hidden></button>
   <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">正在读取个人新闻缓存…</div></div>
 </section>
+</details>
+<details class="workspace-panel" id="panel-sentiment" data-panel="sentiment"><summary>新闻情绪观察 <span class="panel-count" id="sentiment-count">待分析</span></summary><p class="muted">仅描述已缓存、已去重的供应商事件；与实际行情变化分列，不作因果判断。</p><div id="personal-sentiment"></div></details>
+<details class="workspace-panel" id="panel-advanced" data-panel="advanced"><summary>高级设置</summary><p><a href="{% url 'user_settings' %}">时区与语言设置</a></p><p class="muted" id="analysis-worker-state">分析服务状态待读取</p></details>
 <script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}"></script>
 <script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
 {% endif %}
 
+<details class="workspace-panel" id="panel-facts" data-panel="facts"><summary>历史财报事实卡 <span class="panel-count">{{ fact_cards|length }}</span></summary>
 <section class="card facts-section" aria-labelledby="facts-title">
   <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史训练期材料 · 非最新财报</span></div>
   {% if personal_mode %}<p class="muted">本机个人开发视图。以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
@@ -136,4 +152,5 @@
     <div class="empty-state"><strong>暂无可公开展示的事实卡</strong><p>研究线的私人原件、事实草稿和授权资料不会自动转入多人页面。</p></div>
   {% endif %}
 </section>
+</details>
 {% endblock %}

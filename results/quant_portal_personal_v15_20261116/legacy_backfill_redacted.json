@@ -1,0 +1,13 @@
+{
+  "schema": "personal_demo_v15_legacy_screening",
+  "at_utc": "2026-11-16T04:41:40.319903Z",
+  "rule_version": "tech_macro_relevance_v15_2",
+  "legacy_latest_versions_reviewed": 241,
+  "included": 30,
+  "pending_review": 40,
+  "excluded_hidden_not_deleted": 171,
+  "news_rows_after": 241,
+  "code_sha256": "492a63d0536ded889b2a7e36d18d395f031aea9a0a072f526e44f43f7fd25c01",
+  "relevance_code_sha256": "9ee0fcb819a0e10a06db2ae0b7a8ecd631f3c187d153e2729fc9d3e29a14c90a",
+  "scope": "Existing private cache only; labels are deterministic relevance candidates, not verified news truth."
+}
