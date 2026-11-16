@@ -988,6 +988,7 @@
     "report_zh": "reports/2026-11-16_quant_portal_personal_feed_v11.zh.md",
     "plan_execution": "results/quant_portal_personal_feed_v11_20261116/plan_execution.csv",
     "runtime_redacted": "results/quant_portal_personal_feed_v11_20261116/runtime_redacted.json",
+    "git_sync_redacted": "results/quant_portal_personal_feed_v11_20261116/git_sync_redacted.json",
     "browser_visual": "results/quant_portal_personal_feed_v11_20261116/browser_visual_isolated_redacted.json",
     "selected_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
     "subscription_budget_scope": "LOCAL_SIX_KEY_NOT_ACCOUNT_QUOTA",

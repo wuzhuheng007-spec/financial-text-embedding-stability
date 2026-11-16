@@ -1,0 +1,17 @@
+{
+  "schema": "personal_feed_v11_git_sync_receipt",
+  "branch": "codex/sync-research-progress-20261113",
+  "code_commit": "141bac23fa209c0fe6f643e7d4b98afcdb5cf60d",
+  "remote_code_commit_equal": true,
+  "remote_key_blob_readback": {
+    "apps/quant_portal/core/views.py": true,
+    "apps/quant_portal/static/core/personal_feed.js": true,
+    "scripts/quant_personal_feed/store.py": true,
+    "configs/quant_portal_personal_feeds_v11_20261116.json": true,
+    "reports/2026-11-16_quant_portal_personal_feed_v11.zh.md": true,
+    "results/quant_portal_personal_feed_v11_20261116/runtime_redacted.json": true
+  },
+  "default_branch_merged": false,
+  "publication_scope": "CODE_CONFIG_REDACTED_RECEIPTS_DOCS_ONLY",
+  "private_databases_and_screenshots_published": false
+}

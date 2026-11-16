@@ -16,3 +16,5 @@ The feed was stopped and restarted with its cached data and six selections retai
 The official [moomoo subscription guide](https://open.moomoo.com/api/quote/push/subscribe) documents acknowledgements, unsubscribe behavior and account-dependent quotas. Its [push format](https://open.moomoo.com/api/quote/push/data-format) supplies the millisecond source timestamp; the quote example does not supply currency or a delay flag. The [Jin10 MCP guide](https://mcp.jin10.com/app/doc.html) lists `list_flash` and an example structure; this run still binds parsing to the negotiated schema and actual response.
 
 **Remaining limits:** No live owner-browser session or market-open progression was observed. Actual account quotas and Jin10 historical completeness are unverified. Financial input v2.5 remains `REJECTED_CANDIDATE`; model inference, return prediction and trading were not run.
+
+Code and redacted results were pushed to the existing collaboration branch. The [remote code readback](../results/quant_portal_personal_feed_v11_20261116/git_sync_redacted.json) is separate from the local handoff ZIP check; the default branch was not merged.

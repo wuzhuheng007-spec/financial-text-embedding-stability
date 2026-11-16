@@ -16,3 +16,5 @@
 官方 [moomoo 订阅文档](https://open.moomoo.com/api/quote/push/subscribe)说明服务端确认、取消订阅及实际额度取决于账户权限；[推送字段文档](https://open.moomoo.com/api/quote/push/data-format)给出来源毫秒时间，但没有在该报价示例中给出币种或延迟字段。[金十 MCP 文档](https://mcp.jin10.com/app/doc.html)列出 `list_flash` 及示例结构；本轮解析仍以实际协商 Schema 和本机响应为准。
 
 **限制：**个人账户的真实浏览器会话未观察；美股开市推送、供应商完整配额和金十历史覆盖未核实。财务输入 v2.5 继续为 `REJECTED_CANDIDATE`；模型推理、收益预测和交易均未运行。
+
+代码和脱敏结果已推送至既有协作分支；[远端代码回读回执](../results/quant_portal_personal_feed_v11_20261116/git_sync_redacted.json)与本机交接 ZIP 分开核验，未合并默认分支。
