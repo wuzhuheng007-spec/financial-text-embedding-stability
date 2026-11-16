@@ -1106,6 +1106,8 @@
     "currency_and_delay": "UNKNOWN_WHEN_PROVIDER_EVIDENCE_ABSENT",
     "public_market_data_enabled": false,
     "personal_database_preserved": true,
+    "github_code_sync": "BAD6EA1_PUSHED_REMOTE_SHA_AND_FIVE_BLOBS_VERIFIED",
+    "redacted_handoff_zip": "LOCAL_CRC_MEMBER_SHA_UTF8_BOM_VERIFIED",
     "financial_input_v25": "REJECTED_CANDIDATE",
     "model_fit_calls": 0,
     "model_inference_calls": 0,
