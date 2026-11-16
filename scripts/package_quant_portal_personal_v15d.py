@@ -99,6 +99,7 @@ def main() -> None:
         "completions, two same-team source-compatible cards. Nine mechanical completions "
         "were rejected. Supplier reports remain unverified. The two approved full cards, "
         "all raw news/model text and private SQLite databases are deliberately absent. "
+        "The continuous analysis worker still uses v1.5b; v1.5d was a frozen batch only. "
         "Moomoo English news is not connected to the personal feed. Browser visual QA "
         "for this revision is NOT_RUN. Financial v2.5 remains REJECTED_CANDIDATE; "
         "no financial prediction or trade ran.\n\n"

@@ -1194,6 +1194,7 @@
     "review_type": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT_GOLD",
     "supplier_claims_independently_verified": false,
     "approved_cache": "OWNER_ONLY_SOURCE_VERSION_AND_CONTENT_HASH_BOUND",
+    "live_analysis_worker_contract": "V15B_EXISTING_V15D_FROZEN_BATCH_ONLY",
     "moomoo_english_news_personal_feed": "NOT_CONNECTED_LANGUAGE_AND_PERMISSION_PENDING_BOUNDED_CHECK",
     "browser_visual_desktop_and_390px": "NOT_RUN",
     "runtime_receipt": "results/quant_portal_personal_v15d_20261116/runtime_redacted.json",
