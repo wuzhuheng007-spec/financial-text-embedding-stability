@@ -14,7 +14,11 @@
   "remaining_drafts_are_independently_verified": false,
   "v16_3_bounded_old_failure_trial": "FALLBACK; invalid literal evidence ID and JSON errors retained",
   "v16_4_bounded_old_failure_trial": "FALLBACK; missing counterpoint and JSON errors retained",
+  "v16_4_first_mechanical_drafts_source_reviewed": 3,
+  "v16_4_first_mechanical_drafts_content_accepted": 0,
+  "v16_4_first_mechanical_drafts_content_rejected": 3,
+  "v16_4_auto_draft_display": "HELD_AFTER_REAL_SOURCE_REVIEW_FAILURES",
   "v16_4_live_worker": "RUNNING; latest counts and actual prompt version in runtime_redacted.json",
-  "display_policy": "Only current-contract mechanically accepted fields are shown as unreviewed AI drafts. Rejected older output is never relabeled. When unavailable, the owner sees a source excerpt, relevance evidence and labeled rule watch item.",
+  "display_policy": "Current-contract mechanical drafts are held for content review and are not displayed as AI text. Rejected older output is never relabeled. Previously reviewed cards retain their separate labels. When current AI text is unavailable, the owner sees a source excerpt, relevance evidence and labeled rule watch item.",
   "claim_limit": "Mechanical validation does not establish source truth or semantic correctness. No model training, financial prediction or trade ran."
 }

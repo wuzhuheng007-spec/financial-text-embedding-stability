@@ -105,6 +105,28 @@ def test_old_rejected_result_not_promoted_without_matching_new_version(tmp_path)
     assert result["news"][0]["analysis_display_kind"] == "SOURCE_RULE_FALLBACK"
 
 
+def test_mechanical_draft_is_held_after_real_source_review_failures(tmp_path, monkeypatch):
+    monkeypatch.setattr(analysis_v16, "DB", tmp_path / "analysis.sqlite3")
+    db = analysis_v16.open_db()
+    db.execute("""INSERT INTO analysis_jobs(owner_id,item_key,version,content_sha256,
+      model_revision,prompt_version,schema_version,status,priority,enqueued_at,result_json)
+      VALUES(1,'a',1,'b','model',?,?,'DRAFT',1,'2026-11-16T00:00:00Z',?)""",
+      (analysis_v16.PROMPT_VERSION, analysis_v16.SCHEMA_VERSION,
+       json.dumps({"analysis_zh":"unsupported"})))
+    db.close()
+    data = {"news":[{"item_key":"a","version":1,"content_sha256":"b",
+                     "received_at":"2026-11-16T00:00:00Z"}],"top10":[]}
+    result = overlay(data, owner_id=1, analysis_db=tmp_path / "analysis.sqlite3",
+                     config={"model_revision":"model","model_load_timeout_seconds":240,
+                             "generation_timeout_seconds":180,
+                             "sentiment_windows_hours":[1],"sentiment_min_events":2})
+    item = result["news"][0]
+    assert item["analysis_mechanical_status"] == "DRAFT"
+    assert item["analysis_status"] == "REVIEW_PENDING"
+    assert item["analysis"] is None
+    assert item["analysis_display_kind"] == "SOURCE_RULE_FALLBACK"
+
+
 def test_new_contract_cannot_change_prior_version_status(tmp_path, monkeypatch):
     monkeypatch.setattr(analysis_v16, "DB", tmp_path / "analysis.sqlite3")
     monkeypatch.setattr(analysis_v16, "_source", lambda *_: None)

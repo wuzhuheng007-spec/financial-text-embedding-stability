@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102c40">
   <title>{% block title %}Quant · 科技股观察台{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'core/portal.css' %}">
+  <link rel="stylesheet" href="{% static 'core/portal.css' %}?v=personal-v16-4c">
 </head>
 <body>
   <a class="skip-link" href="#main">跳转到主要内容</a>
   <div class="shell">
     <aside class="sidebar" aria-label="主要导航">
       <div class="brand">QUANT<span class="brand-dot">.</span></div>
-      <p class="brand-sub">RESEARCH OBSERVATORY</p>
+      <p class="brand-sub">研究观察台</p>
       <nav class="side-nav">
         <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>市场观察</a>
         {% if user.is_authenticated %}<a href="{% url 'user_settings' %}" {% if request.resolver_match.url_name == 'user_settings' %}aria-current="page"{% endif %}>个人设置</a>{% endif %}
@@ -23,11 +23,11 @@
     <div class="page-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">TECHNOLOGY · EVENTS · EVIDENCE</p>
+          <p class="eyebrow">科技 · 事件 · 证据</p>
           <p class="topbar-title">本机个人测试版 · 显示时区 {{ display_timezone|default:'Asia/Shanghai' }}</p>
         </div>
         <div class="account-actions">
-          {% if user.is_authenticated %}<form method="post" action="{% url 'change_language' %}" class="language-switch">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language == 'zh' %}aria-current="true"{% endif %}>中文</button><span aria-hidden="true">/</span><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>{% endif %}
+          {% if user.is_authenticated %}<form method="post" action="{% url 'change_language' %}" class="language-switch" translate="no">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language == 'zh' %}aria-current="true"{% endif %}>中文</button><span aria-hidden="true">/</span><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>{% endif %}
           {% if user.is_authenticated %}
           <span class="account-name">{{ user.get_username }}</span>
           <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-button" type="submit">退出</button></form>
@@ -43,7 +43,7 @@
       <footer class="footer">开发测试页面。财报事实为历史材料；无行情时明确显示未接入。预测和交易功能未启用。</footer>
     </div>
   </div>
-  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}"></script>
+  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v16-4c"></script>
   <script defer charset="utf-8" src="{% static 'core/workspace_v15.js' %}"></script>
 </body>
 </html>

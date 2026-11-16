@@ -2,6 +2,9 @@
 (() => {
   const language=document.documentElement.dataset.language||'zh';
   const catalog={
+    '研究观察台':'RESEARCH OBSERVATORY','科技 · 事件 · 证据':'TECHNOLOGY · EVENTS · EVIDENCE',
+    '本机测试 · 只读':'LOCAL TEST · READ ONLY',
+    '本机个人测试版 · 显示时区 ':'Local personal test · Display timezone ',
     '市场观察':'Market overview','个人设置':'Personal settings','退出':'Sign out','登录':'Sign in',
     '跳转到主要内容':'Skip to main content','只读研究 · 无交易执行':'Read-only research · No trading',
     '数据与模型权限单独核验':'Data and model rights reviewed separately',
@@ -51,6 +54,7 @@
     '混合':'Mixed','样本不足':'Insufficient sample','未分析':'Not analyzed',
     '直接相关':'Directly related','产业链':'Industry chain','相关宏观':'Relevant macro',
     '未连接':'Not connected','连接中':'Connecting','已连接':'Connected','断开':'Disconnected',
+    '已连接 · 延迟未知':'Connected · delay unverified',
     '休市':'Market closed','数据陈旧':'Stale data','认证失效':'Authentication expired',
     '限流':'Rate limited','正在读取个人缓存；暂无报价时会显示原因。':'Reading private cache; unavailable quotes will show a reason.',
     '历史训练期材料 · 非最新财报':'Historical training-period material · not latest earnings',
@@ -61,7 +65,13 @@
     '分时段定时快照：':'Session snapshots: ','最近成功：':'Last success: ',
     '今日尝试（旧阶段仅下界）：':'Today attempts (old stage lower bound only): ',
     '业务成功：':'Business successes: ','可能有新闻缺口':'Possible news coverage gap',
-    '业务失败：':'Business failures: ','采集线程已退出':'Collector thread stopped',
+    '业务失败：':'Business failures: ','最近业务成功：':'Last business success: ',
+    'v1.1业务成功：':'v1.1 business successes: ','v1.1失败：':'v1.1 failures: ',
+    '原因：':'Reason: ','采集线程已退出':'Collector thread stopped',
+    '最新缓存报价收到时间：':'Latest cached quote receipt: ',
+    '最新分时段报价来源时间：':'Latest session quote source time: ',
+    '重复包（v1.1 计数）：':'Duplicate packets (v1.1 count): ',
+    '今时段定时快照：':'Session snapshot: ',
     '采集线程运行中':'Collector thread running','线程状态未知':'Thread status unknown',
     '报价时段':'Quote session','最近有来源时间':'Latest with source time',
     '暂无报价':'No quote','币种待核实':'Currency unverified','币种未知':'Currency unknown',

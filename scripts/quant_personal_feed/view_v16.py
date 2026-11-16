@@ -9,6 +9,10 @@ from pathlib import Path
 
 from .analysis_contract_v16 import PROMPT_VERSION, SCHEMA_VERSION
 
+# Three source-reviewed v16.4 mechanical drafts had unsupported content. Keep
+# subsequent drafts private until a content-review path is explicitly added.
+AUTO_DRAFT_DISPLAY_ENABLED = False
+
 
 def _time(value):
     try:
@@ -55,13 +59,17 @@ def overlay(data: dict, *, owner_id: int, analysis_db: Path, config: dict) -> di
             item["analysis"] = None
             item["analysis_display_kind"] = "SOURCE_RULE_FALLBACK"
             continue
-        item["analysis_status"] = job["status"]
+        item["analysis_status"] = ("REVIEW_PENDING" if job["status"] == "DRAFT" and
+                                   not AUTO_DRAFT_DISPLAY_ENABLED else job["status"])
+        item["analysis_mechanical_status"] = job["status"]
         item["analysis_error_class"] = job["error_class"]
         item["analysis_model_revision"] = job["model_revision"]
         item["analysis_prompt_version"] = job["prompt_version"]
         item["analysis_schema_version"] = job["schema_version"]
         item["analysis_completed_at"] = job["completed_at"]
-        item["analysis"] = json.loads(job["result_json"]) if job["status"] == "DRAFT" and job["result_json"] else None
+        item["analysis"] = (json.loads(job["result_json"]) if
+                            AUTO_DRAFT_DISPLAY_ENABLED and job["status"] == "DRAFT" and
+                            job["result_json"] else None)
         item["analysis_validation"] = json.loads(job["validation_json"]) if job["validation_json"] else None
         item["analysis_display_kind"] = "AI_DRAFT_AUTO_CHECKED" if item["analysis"] else "SOURCE_RULE_FALLBACK"
     by_key = {(item["item_key"], item["version"]): item for item in data.get("news", [])}

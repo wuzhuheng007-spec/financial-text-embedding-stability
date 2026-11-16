@@ -1,11 +1,11 @@
 {
   "schema": "quant_portal_personal_v16_runtime_redacted_v1",
-  "observed_at_utc": "2026-11-16T08:02:56.706029Z",
-  "observed_at_asia_shanghai": "2026-11-16T16:02:56.706029+08:00",
+  "observed_at_utc": "2026-11-16T08:19:56.831392Z",
+  "observed_at_asia_shanghai": "2026-11-16T16:19:56.831392+08:00",
   "code_and_config_sha256": {
     "scripts/quant_personal_feed/analysis_contract_v16.py": "7c4a8d612e6335bbc2ef4845d91e6f12a0629375a199e61c662a342783a4f126",
     "scripts/quant_personal_feed/analysis_v16.py": "f87c8f7ffbf14f3882047d4bfb0f79d694fb599b1ae1388142fa67b020f8ad17",
-    "scripts/quant_personal_feed/view_v16.py": "e4a3932a35afce27378e1a78d28ea62978ec74f48c0cff595d53ca63b115a38d",
+    "scripts/quant_personal_feed/view_v16.py": "14efc180b2275fe2dc625b5b233169e7420ea23efbbeb690a43f1d3f585368dc",
     "scripts/quant_personal_feed/quote_select_v16.py": "6b93140794ea1ed8bf114168302176ab7ff6c31fb204d9f04e84e1dff121514f",
     "scripts/quant_personal_feed/store.py": "0de8c3aabb8e1505ac8f14f22618d683657f00eeaf7289a9d3c66d4abb28e049",
     "scripts/quant_personal_feed/timeline.py": "f6b74d4aa7617009fa7959b17aaeb4f7f596c24344c9c324adf0fb8e3a702037",
@@ -80,10 +80,10 @@
     }
   },
   "feed": {
-    "news_items": 261,
-    "session_quote_rows": 31257,
+    "news_items": 264,
+    "session_quote_rows": 32950,
     "news_title_kinds_in_page_window": {
-      "SOURCE_FIRST_SENTENCE": 48,
+      "SOURCE_FIRST_SENTENCE": 51,
       "SOURCE_EXCERPT_INCOMPLETE": 1,
       "SUPPLIER_TITLE": 1
     },
@@ -91,28 +91,28 @@
       {
         "provider": "jin10",
         "state": "CONNECTED",
-        "heartbeat_at": "2026-11-16T08:02:53.710284Z",
-        "last_success_at": "2026-11-16T08:02:03.545738Z"
+        "heartbeat_at": "2026-11-16T08:19:53.420207Z",
+        "last_success_at": "2026-11-16T08:19:08.031451Z"
       },
       {
         "provider": "moomoo",
         "state": "CONNECTED_DELAY_UNKNOWN",
-        "heartbeat_at": "2026-11-16T08:02:56.116820Z",
-        "last_success_at": "2026-11-16T08:02:56.116820Z"
+        "heartbeat_at": "2026-11-16T08:19:55.527238Z",
+        "last_success_at": "2026-11-16T08:19:55.527238Z"
       },
       {
         "provider": "moomoo_snapshot",
         "state": "CONNECTING",
-        "heartbeat_at": "2026-11-16T08:02:56.162078Z",
-        "last_success_at": "2026-11-16T08:01:57.533632Z"
+        "heartbeat_at": "2026-11-16T08:19:55.813711Z",
+        "last_success_at": "2026-11-16T08:18:57.263182Z"
       }
     ],
-    "included_news_in_page_window": 50
+    "included_news_in_page_window": 53
   },
   "analysis": {
     "worker": {
       "pid": 269616,
-      "heartbeat_at": "2026-11-16T08:02:10.452906Z",
+      "heartbeat_at": "2026-11-16T08:19:45.784682Z",
       "state": "RUNNING",
       "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
       "prompt_version": "personal_news_conditional_v16_4",
@@ -134,9 +134,9 @@
         "PENDING": 29
       },
       "personal_news_conditional_v16_4": {
-        "DRAFT": 2,
-        "FALLBACK": 10,
-        "PENDING": 29,
+        "DRAFT": 8,
+        "FALLBACK": 23,
+        "PENDING": 21,
         "RUNNING": 1
       }
     },
@@ -155,13 +155,15 @@
         "PARSE_JSONDecodeError": 1
       },
       "personal_news_conditional_v16_4": {
-        "MECHANICAL_PASS": 2,
-        "EVIDENCE_ID_INVALID": 1,
-        "NO_DISPLAYABLE_LANGUAGE": 11,
-        "PARSE_JSONDecodeError": 9
+        "MECHANICAL_PASS": 8,
+        "EVIDENCE_ID_INVALID": 3,
+        "NO_DISPLAYABLE_LANGUAGE": 23,
+        "PARSE_JSONDecodeError": 18,
+        "SCHEMA_NOT_EXACT": 2
       }
     },
     "current_prompt_version": "personal_news_conditional_v16_4",
+    "auto_draft_display_enabled": false,
     "mechanical_pass_is_not_source_review": true
   },
   "limitations": [

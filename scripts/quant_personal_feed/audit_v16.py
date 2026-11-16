@@ -14,6 +14,7 @@ from .news_display_v16 import source_title
 from .quote_select_v16 import choose_latest, read_latest
 from .security_profiles_v16 import read_profiles
 from .store import read_personal_cache
+from .view_v16 import AUTO_DRAFT_DISPLAY_ENABLED
 
 RESULT = ROOT / "results/quant_portal_personal_v16_20261116/runtime_redacted.json"
 CONFIG = ROOT / "configs/quant_portal_personal_v16_20261116.json"
@@ -114,6 +115,7 @@ def run() -> dict:
             "included_news_in_page_window": len(data.get("news", []))},
         "analysis": {"worker": worker, "jobs_by_contract": jobs, "attempts_by_contract": attempts,
                      "current_prompt_version": config["prompt_version"],
+                     "auto_draft_display_enabled": AUTO_DRAFT_DISPLAY_ENABLED,
                      "mechanical_pass_is_not_source_review": True},
         "limitations": ["No independent source verification of supplier news", "No inference from missing currency or delay fields", "No financial prediction or trading"],
     }

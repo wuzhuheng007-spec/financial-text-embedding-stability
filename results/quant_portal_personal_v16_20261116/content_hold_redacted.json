@@ -1,0 +1,23 @@
+{
+  "schema": "quant_personal_v16_content_hold_redacted_v1",
+  "review_scope": "First three v16.4 mechanically accepted owner-cache news drafts, in completion order",
+  "private_analysis_backup_quick_check": "ok",
+  "private_analysis_backup_sha256": "65961fc6ad03e7dcb5c51d77a773017e12bb15a7524b3e17873654f5609f7726",
+  "mechanical_drafts_reviewed": 3,
+  "content_accepted": 0,
+  "content_rejected": 3,
+  "case_reasons": [
+    "A mixed-source roundup cited unrelated spans and speculated about a company's costs.",
+    "A reported geopolitical accusation was restated as an established event; a follow-up source was chosen without support.",
+    "An English rendering changed the speaker's personal name and overstated the policy implication."
+  ],
+  "display_change": "Current v16.4 mechanical drafts are held as REVIEW_PENDING and show source excerpts plus labeled rule watch items. Previously accepted v15d cards remain separately labeled.",
+  "owner_cache_readback": {
+    "current_contract": "personal_news_conditional_v16_4",
+    "mechanical_drafts_shown_as_ai": 0,
+    "previously_reviewed_cards_shown": 2,
+    "news_window_at_check": 50
+  },
+  "source_claims_independently_verified": false,
+  "review_type": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT_GOLD"
+}

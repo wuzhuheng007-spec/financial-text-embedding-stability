@@ -2,7 +2,7 @@
   "schema": "quant_personal_v16_browser_acceptance_redacted_v1",
   "url": "http://127.0.0.1:8765/",
   "browser": "Microsoft Edge, existing owner session",
-  "observed_build": "v16.3 layout and cache display before the final v16.4 prompt and headline-overlay restart",
+  "observed_build": "v16.3 layout was observed first; final v16.4 content-hold build was then reloaded and inspected in the existing owner session",
   "actual_checks": {
     "desktop_chinese": "VISUALLY_OBSERVED",
     "desktop_english": "VISUALLY_OBSERVED",
@@ -14,7 +14,33 @@
     "whole_page_horizontal_overflow": "NOT_OBSERVED_IN_CHECKED_VIEWS",
     "missing_english_supplier_translation": "VISIBLE_AS_TRANSLATION_PENDING_WITH_ORIGINAL"
   },
-  "final_v16_4_visual_recheck": "INTERRUPTED_BY_CONCURRENT_USER_INPUT_IN_EDGE_WINDOW; final page HTTP and CSS 200 plus code checks are separate from visual acceptance",
+  "final_v16_4_visual_recheck": {
+    "status": "OBSERVED_AFTER_EXPLICIT_RELOAD",
+    "observed_at_utc": "2026-11-16T08:11:29Z",
+    "viewports": ["desktop", "390x700 responsive viewport"],
+    "languages": ["zh", "en"],
+    "url_confirmed": "http://127.0.0.1:8765/",
+    "rejected_current_contract_ai_text_visible_after_reload": false,
+    "review_pending_and_source_rule_fallback_visible": true,
+    "browser_tab_before_reload": "Old in-memory page still showed a previously rejected AI draft; reload loaded the content-hold build. Existing open tabs need one refresh after deployment."
+  },
+  "final_ui_layout_recheck": {
+    "observed_at_utc": "2026-11-16T08:19:12Z",
+    "browser": "Microsoft Edge, existing owner session; responsive device toolbar",
+    "viewports": ["desktop", "390x700"],
+    "languages": ["zh", "en"],
+    "result": "VISUALLY_OBSERVED_AFTER_CACHE_BUST_AND_RELOAD",
+    "owner_name_at_390px": "FULLY_VISIBLE_ON_OWN_LINE",
+    "english_connection_badge_at_390px": "WRAPPED_WITHIN_CARD",
+    "english_topbar_and_status": "TRANSLATED_IN_ACTUAL_BROWSER",
+    "whole_page_horizontal_overflow": "NOT_OBSERVED_IN_CHECKED_VIEWS",
+    "source_file_sha256": {
+      "apps/quant_portal/templates/core/base.html": "4a979bc1092cf3134e6f2b9c901dbcec742b2cc77fa2f088cf0f1a315e142477",
+      "apps/quant_portal/templates/core/dashboard.html": "47c268f83a437de980344da1179be7c906ffa2851958aa69c7fbe2b913e82be3",
+      "apps/quant_portal/static/core/portal.css": "b41fc00457ed78153030b03d089d77c6311ed7fee004341cbc3bb8e9b54bebc",
+      "apps/quant_portal/static/core/i18n_v15.js": "1dbaf110b07a0cb11761f850bdea9eaeb8fce88529aa4bf3402495e7aa69eb37"
+    }
+  },
   "private_screenshots_uploaded": false,
   "limitation": "Browser observation is an interface check, not source verification or model content acceptance."
 }

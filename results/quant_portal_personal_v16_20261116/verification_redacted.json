@@ -1,0 +1,31 @@
+{
+  "schema": "quant_personal_v16_verification_redacted_v1",
+  "observed_at_utc": "2026-11-16T08:23:10Z",
+  "environment": "Windows; personal portal local Python 3.11 virtual environment; synthetic test SECRET_KEY; DJANGO_TESTING=1; DEBUG=1 for isolated local tests",
+  "checks": [
+    {
+      "command": "python -m pytest tests/test_quant_personal_v16.py -q",
+      "result": "PASS",
+      "count": 11,
+      "nature": "focused software tests"
+    },
+    {
+      "command": "apps/quant_portal/var/.venv/Scripts/python.exe apps/quant_portal/manage.py test core.tests core.test_personal_feed --verbosity 1",
+      "result": "PASS",
+      "count": 32,
+      "nature": "isolated Django test database, including the eight owner-feed tests; earlier 14-test subset is not additive"
+    },
+    {
+      "command": "node --check apps/quant_portal/static/core/i18n_v15.js",
+      "result": "PASS",
+      "nature": "syntax check"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "nature": "patch whitespace check"
+    }
+  ],
+  "setup_deviation": "An initial broad Django invocation used production-mode static storage without a collected staticfiles manifest and failed at template rendering (missing core/i18n_v15.js manifest entry). The same 32-test set passed under the documented local test configuration DEBUG=1. The production static build was not part of this local personal-demo acceptance.",
+  "claim_limit": "Software tests do not establish supplier facts, AI analysis quality, or long-run feed stability."
+}
