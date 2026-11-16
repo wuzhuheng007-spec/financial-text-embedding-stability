@@ -22,6 +22,7 @@ CONFIG = ROOT / "configs/quant_portal_personal_v16_20261116.json"
 DB = ROOT / "apps/quant_portal/var/personal_analysis_v16.sqlite3"
 PID = ROOT / "apps/quant_portal/var/personal_analysis_v16.pid.json"
 STOP = ROOT / "apps/quant_portal/var/personal_analysis_v16.stop"
+PAUSED = ROOT / "apps/quant_portal/var/personal_analysis_v16.paused"
 PRIVATE = ROOT / "apps/quant_portal/var/analysis_v16_requests"
 RUNTIME = ROOT / "apps/quant_portal/var/analysis_v15b_model_runtime.json"
 OLD = ROOT / "apps/quant_portal/var/personal_analysis_v15b.sqlite3"
@@ -256,6 +257,8 @@ def process_one(db: sqlite3.Connection, owner: int, config: dict, job: sqlite3.R
 
 
 def run(max_items: int | None = None) -> None:
+    if PAUSED.exists():
+        raise RuntimeError("ANALYSIS_V16_PAUSED_FOR_V17")
     config = cfg()
     owner = owner_id()
     db = open_db()
@@ -273,7 +276,7 @@ def run(max_items: int | None = None) -> None:
         db.execute("""UPDATE analysis_jobs SET status='FALLBACK',error_class='PRIOR_RUN_INTERRUPTED',completed_at=?
           WHERE owner_id=? AND model_revision=? AND prompt_version=? AND schema_version=? AND status='RUNNING'""",
           (now(),owner,config["model_revision"],PROMPT_VERSION,SCHEMA_VERSION))
-        while not stopping and not STOP.exists():
+        while not stopping and not STOP.exists() and not PAUSED.exists():
             db.execute("""INSERT INTO analysis_worker_state(owner_id,pid,heartbeat_at,state,
               model_revision,prompt_version,schema_version) VALUES(?,?,?,'RUNNING',?,?,?)
               ON CONFLICT(owner_id) DO UPDATE SET pid=excluded.pid,heartbeat_at=excluded.heartbeat_at,
@@ -318,7 +321,11 @@ def main() -> None:
               FROM analysis_jobs WHERE owner_id=? AND model_revision=? AND prompt_version=?
               AND schema_version=? GROUP BY status""",
               (owner_id(),config["model_revision"],PROMPT_VERSION,SCHEMA_VERSION))}
-            print(json.dumps({"worker": dict(state) if state else None, "counts": counts}, ensure_ascii=False))
+            recorded = dict(state) if state else None
+            print(json.dumps({"worker": recorded, "effective_state":
+                "PAUSED_FOR_V17" if PAUSED.exists() else
+                (recorded["state"] if recorded else "NOT_STARTED"),
+                "counts": counts}, ensure_ascii=False))
             return
         if args.action == "reprocess-old-failure":
             print(json.dumps(enqueue_one_old_failure(db,owner_id(),cfg()),ensure_ascii=False))

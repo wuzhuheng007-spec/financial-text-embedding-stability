@@ -1,0 +1,33 @@
+{
+  "schema": "personal_news_v17_interpretation_review_redacted",
+  "review_type": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT_GOLD",
+  "B_attempted": 4,
+  "B_mechanical_valid": 1,
+  "B_semantic_accepted": 0,
+  "T_attempted": 0,
+  "T_stop_reason": "NO_SOURCE_SUPPORTED_B_OUTPUT_TO_TRANSLATE",
+  "items": [
+    {
+      "task_id": "V17-01",
+      "decision": "REJECT",
+      "reason_code": "CHANNEL_NULL"
+    },
+    {
+      "task_id": "V17-03",
+      "decision": "REJECT",
+      "reason_code": "CHANNEL_NULL"
+    },
+    {
+      "task_id": "V17-06",
+      "decision": "REJECT",
+      "reason_code": "CHANNEL_NULL"
+    },
+    {
+      "task_id": "V17-07",
+      "decision": "REJECT",
+      "reason_code": "UNSUPPORTED_SUPPLY_INFERENCE"
+    }
+  ],
+  "claim_truth": "SUPPLIER_REPORTS_UNVERIFIED",
+  "v16_prior_accepted_cards_unchanged": true
+}

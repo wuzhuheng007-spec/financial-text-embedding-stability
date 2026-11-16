@@ -1,0 +1,29 @@
+{
+  "schema": "news_sentiment_factor_v1_frozen_protocol",
+  "window": ["2025-04-01", "2026-07-31"],
+  "ordinary_stock_pilot": ["US.NVDA", "US.MU"],
+  "etf_context_separate": ["US.TQQQ", "US.QQQ", "US.SOXX", "US.SPY"],
+  "other_watchlist": "NO_SAVED_HISTORICAL_PRICE_SERIES_IN_THIS_PILOT; DO_NOT_INFER_COVERAGE",
+  "signal_cutoff": "17:00 America/New_York after the named trading session; retrospective date proxy until bar availability is verified",
+  "execution_reference": "next regular-session open after signal cutoff; use only verified action-adjusted returns for outcome labels",
+  "primary_horizon_trading_days": 5,
+  "auxiliary_horizons_trading_days": [1, 20],
+  "split": {"train_end": "2026-03-31", "validation_end": "2026-05-31", "contaminated_holdout_end": "2026-07-31"},
+  "boundary_rule": "exclude any outcome window crossing a split boundary",
+  "strict_news_availability": "requires proven historical first-available time and source version",
+  "date_proxy": "separate development group; official announcement date then one complete US regular trading session before use; not proof of actual historical visibility",
+  "event_dedup": "issuer document, attachments and same-origin reprints share event_group_id; independent provenance retained",
+  "feature_definitions": {
+    "tone": "source-supported directional wording by entity; missing when not validated",
+    "uncertainty": "source-supported uncertainty cue; missing when not validated",
+    "news_count": "distinct eligible event groups available before cutoff; null when source coverage unknown",
+    "novelty": "new information relative to prior eligible event groups; null without adequate prior archive",
+    "event_type": "source-supported category, not source_kind alone",
+    "price_control": "unadjusted same-session close/open ratio and volume from saved historical bars; retrospective availability caveat"
+  },
+  "comparison": ["A_PRICE_VOLUME", "B_PRICE_VOLUME_PLUS_COUNT", "C_PRICE_VOLUME_PLUS_CONTENT", "D_ALL"],
+  "candidate_model": "regularized linear; train-only fitting and selection, no fit until qualified coverage",
+  "evaluation": "cross-sectional Pearson IC, Spearman Rank IC, daily valid n, coverage, date-block intervals only when sufficient cross-section and qualified labels",
+  "known_exposure": "2026-04 to 2026-05 validation repeatedly used; 2026-06 to 2026-07 test labels previously viewed; no independent test claim",
+  "this_run": "COVERAGE_AND_PANEL_ONLY_IF_HISTORICAL_NEWS_INCOMPLETE"
+}

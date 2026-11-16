@@ -1,0 +1,21 @@
+{
+  "schema": "news_sentiment_factor_v1_candidate_sources",
+  "checked_at_utc": "2026-11-16T16:09:05Z",
+  "finbert": {
+    "official_model_page": "https://huggingface.co/ProsusAI/finbert",
+    "official_api": "https://huggingface.co/api/models/ProsusAI/finbert",
+    "observed_repository_sha": "0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031",
+    "observed_last_modified_utc": "2026-10-12T09:04:17Z",
+    "license": "cc-by-nc-sa-4.0",
+    "language": "English",
+    "status": "CANDIDATE_ONLY_NOT_DOWNLOADED_NOT_RUN",
+    "temporal_note": "Current repository revision was last modified after the study window. A historical pretraining and artifact-availability audit is required before point-in-time research use."
+  },
+  "english_lexicon": {
+    "official_source": "https://sraf.nd.edu/loughranmcdonald-master-dictionary/",
+    "observed_page_version": "Updated March 2026; Loughran-McDonald_MasterDictionary_1993-2025.csv",
+    "rights_as_stated": "Free for academic research; commercial licensing separately required",
+    "status": "SOURCE_IDENTIFIED_NOT_DOWNLOADED_NOT_SCORED",
+    "temporal_note": "Current dictionary version cannot be treated as historically available on every 2025 signal date without a version audit."
+  }
+}

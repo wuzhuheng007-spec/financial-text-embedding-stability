@@ -41,6 +41,8 @@
     FAILED:['失败','Failed'],REVIEW_PENDING:['模型已生成，待内容核对','Generated; content review pending'],
     REVIEW_REJECTED:['内容核对未通过','Content review rejected'],
     DRAFT:['AI 草稿 · 自动检查通过','AI draft · automated checks passed'],
+    STAGED_PARTIAL:['部分来源字段已核对','Some source fields reviewed'],
+    STAGED_REVIEWED:['分步开发草稿已核对','Staged development draft reviewed'],
     FALLBACK:['来源与规则提示可用','Source and rule notes available'],
     SUPERSEDED:['已被更正版本替代','Superseded']};
   const toneLabels = {POSITIVE:['正面','Positive'],NEGATIVE:['负面','Negative'],NEUTRAL:['中性','Neutral'],
@@ -355,7 +357,7 @@
     });
     sentimentBox.replaceChildren(grid);
     const worker=document.getElementById('analysis-worker-state');
-    if (worker) worker.textContent=`${bilingual(['分析后台','Analysis worker'])}: ${current?.analysis_worker_state||'NOT_STARTED'} · ${bilingual(['契约','Contract'])}: ${current?.analysis_contract_version||'未运行'} · ${bilingual(['队列','Queue'])}: ${current?.analysis_queue_count ?? 0}`;
+    if (worker) worker.textContent=`${bilingual(['分析后台','Analysis worker'])}: ${current?.analysis_worker_state||'NOT_STARTED'} · ${bilingual(['旧契约','Old contract'])}: ${current?.analysis_contract_version||'未运行'} · ${bilingual(['分步试验','Staged batch'])}: ${current?.staged_analysis_status||'NOT_READY'} · ${bilingual(['队列','Queue'])}: ${current?.analysis_queue_count ?? 0}`;
     const counts=document.getElementById('news-screening-counts');
     const m=current?.news_screening_metrics||{};
     const legacy=current?.news_screening_counts||{};
@@ -376,6 +378,37 @@
     const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
     wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
     wrap.append(node('p','muted',`${bilingual(['关联依据','Relevance evidence'])}: ${item.screening_v15?.evidence_phrase || item.focus_reason || bilingual(['规则未能定位短语','No rule phrase located'])}`));
+    if (item.staged_task_id) {
+      if (item.staged_source_candidate_count > 1)
+        wrap.append(node('p','muted',bilingual(['这是一条多事件快讯；本次只审阅第一个可分段事件，其余事件尚未分析。','This bulletin contains multiple numbered items. Only the first was reviewed in this batch.'])));
+      if (item.staged_extraction?.length) {
+        wrap.append(node('p','analysis-status',bilingual(['分步提取：同团队仅核对以下字段；完整提取契约未通过','Staged extraction: only the fields below passed same-team review; the full contract failed'])));
+        const labels={actor:['主体','Actor'],attribution:['发言人／署名','Speaker / attribution'],entities:['涉及对象','Mentioned entity'],numbers:['原文数字','Source number']};
+        for (const field of item.staged_extraction) {
+          const kind=field.field.split('.')[0];
+          const line=node('p','analysis-fact');
+          const unit=field.unit && !String(field.value||'').includes(field.unit) ? ` ${field.unit}` : '';
+          line.append(node('span',null,`${bilingual(labels[kind]||['来源字段','Source field'])}: ${field.value ?? ''}${unit} · ${bilingual(['引文','Quote'])}: `));
+          const quote=node('span',null,field.quote); quote.dataset.sourceOriginal='1'; line.append(quote); wrap.append(line);
+        }
+      }
+      const draft=item.staged_interpretation;
+      if (draft) {
+        wrap.append(node('p','analysis-status',bilingual(['AI 条件式开发草稿 · 同团队审阅；报道本身未独立核实','Conditional AI development draft · same-team review; supplier report unverified'])));
+        const translated=item.staged_translation;
+        const fields=language==='en' && translated ?
+          [translated.interpretation_en,translated.condition_en,translated.gap_en] :
+          [draft.interpretation,draft.condition,draft.gap];
+        if (language==='en' && !translated)
+          wrap.append(node('p','muted',bilingual(['英文待翻译；以下保留原语言草稿。','English translation pending; original-language draft follows.'])));
+        const names=[['条件式解读','Conditional interpretation'],['成立条件','Condition'],['证据缺口','Evidence gap']];
+        fields.forEach((value,i)=>{if(value) wrap.append(node('p',null,`${bilingual(names[i])}: ${value}`));});
+        wrap.append(node('p','muted',`${bilingual(['渠道标签','Channel tag'])}: ${draft.channel || 'UNKNOWN'}`));
+      } else {
+        wrap.append(node('p','muted',`${bilingual(['规则提示 · 后续观察','Rule note · What to watch'])}: ${bilingual(sourceHint)}`));
+      }
+      return wrap;
+    }
     const a=item.analysis;
     if (!a || !['COMPLETE','DRAFT'].includes(status)) {
       wrap.append(node('p','muted',`${bilingual(['规则提示 · 后续观察','Rule note · What to watch'])}: ${bilingual(sourceHint)}`));

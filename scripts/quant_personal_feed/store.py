@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+import time
 from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -56,6 +57,7 @@ class PersonalFeedStore:
         retention = json.loads(timeline_config.read_text(encoding="utf-8")) if timeline_config.is_file() else {}
         self.raw_response_recent_hours = int(retention.get("raw_response_recent_hours", 48))
         self.raw_response_extra_count = int(retention.get("raw_response_extra_count", 100))
+        self._next_raw_retention_monotonic = 0.0
         if not 1 <= self.raw_response_recent_hours <= 168 or not 0 <= self.raw_response_extra_count <= 1000:
             raise ValueError("Invalid personal raw-response retention limits")
         self.db.executescript("""
@@ -404,15 +406,29 @@ class PersonalFeedStore:
             # those missing responses. Older unreferenced extras stay bounded.
             cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
                       ).isoformat().replace("+00:00","Z")
-            self.db.execute("""DELETE FROM session_raw_responses WHERE sha256 IN (
+            # Compute the latest visible cell once per owner/symbol/session.
+            # The former correlated subquery sorted the quote history once for
+            # every row while holding a write lock, starving the news worker.
+            if time.monotonic() >= self._next_raw_retention_monotonic:
+                self.db.execute("""WITH latest AS (
+              SELECT raw_sha256, ROW_NUMBER() OVER (
+                PARTITION BY owner_id,symbol,session
+                ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
+                  parent_source_at_hint DESC,received_at DESC,id DESC
+              ) AS rank_in_cell FROM session_quotes
+            ), referenced AS (
+              SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
+              UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
+            )
+            DELETE FROM session_raw_responses WHERE sha256 IN (
               SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
-                SELECT q.raw_sha256 FROM session_quotes q WHERE q.received_at>=? OR q.id=(
-                  SELECT q2.id FROM session_quotes q2 WHERE q2.owner_id=q.owner_id
-                    AND q2.symbol=q.symbol AND q2.session=q.session
-                  ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
-                    q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
+                SELECT raw_sha256 FROM referenced
               ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET ?
             )""", (cutoff,self.raw_response_extra_count))
+                # A live push can arrive every second. Repeating the full
+                # retention walk per push needlessly holds SQLite's writer
+                # lock and can starve the independent Jin10 collector.
+                self._next_raw_retention_monotonic = time.monotonic() + 300
             self.db.commit()
         except BaseException:
             self.db.rollback()

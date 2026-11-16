@@ -1,6 +1,20 @@
 # Quant Portal 个人测试版使用说明
 
-## v1.6 当前状态
+## v1.7 当前使用状态
+
+[本机页面](http://127.0.0.1:8765/)继续显示六只证券的已采集报价、金十供应商快讯、重点事件和历史事实卡。旧 v16.4 自动分析队列已暂停；旧任务与响应没有删除。点新闻仍能读原文、匹配理由和规则提示；本轮仅有少量同团队核对的逐字字段片段，**没有通过来源核对的新 AI 条件式解释，也没有运行新翻译**。英文缺失时会标明回退到原文。新闻报道本身仍待独立核实。
+
+在仓库根目录分别查看门户、采集与分析：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/local.ps1 status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 status
+```
+
+当前分析状态应为 `ANALYSIS_PAUSED_FOR_V17`，不是采集停止。若分析脚本显示 `PAUSED_FOR_V17`，直接执行旧版 `start` 会拒绝启动；待另一次明确的内容验收通过后，再单独执行 `resume` 与 `start`。金十或 moomoo 短时断开时先看各自的最近成功时间，不把旧报价或新闻判作新数据。
+
+## v1.6 已保存说明
 
 登录[本机页面](http://127.0.0.1:8765/)后，自选和行情卡共用最新**报价来源时间**的价格。证券名称及股票／ETF 类型已回填；供应商未提供币种、官方夜盘交易日或延迟字段时，页面会说明证据缺口。夜盘报价时段与常规市场状态分开显示，点“数据详情”可查看原始状态和本机接收时间。新闻没有供应商标题时，会用原文首句作“摘录”标题；来源仍是金十报道，尚待交叉核实。新版 AI 草稿因逐条核源失败而暂停自动展示；可读来源摘录、相关性依据和标明为“规则提示”的后续观察事项，旧版已通过同团队核对的卡片另有标签。英文新闻翻译尚未完成的部分显示“待翻译”和原文。
 

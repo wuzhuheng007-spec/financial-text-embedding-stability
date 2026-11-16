@@ -1,0 +1,8 @@
+{
+  "schema": "personal_news_v17_revision_log",
+  "frozen_A_result": "8 raw responses saved, 0 complete A contracts valid; never overwritten or rescored as full successes",
+  "finding": "The pinned model repeatedly returned scalar claim_kind and tone where the frozen schema required field-specific value/quote objects. One frozen denial-category selection chose an unrelated first numbered subitem.",
+  "postrun_action": "A separate CODEX_REVIEW field-subset development branch accepts only source-exact, semantically checked individual fields for B. It does not repair A raw responses, change the prompt or count any partial item as an A success.",
+  "comparison_limit": "B and T results from these four reviewed subsets are reviewer-assisted development observations, not a clean end-to-end model-only comparison with v16.4.",
+  "denial_case": "Not covered by the actual A model input because the preselected candidate index selected a different subitem; preserved as a selection failure rather than replaced after seeing output."
+}

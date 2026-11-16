@@ -1,0 +1,43 @@
+{
+  "A_B_C_D_fit_calls": 0,
+  "IC_calculated": false,
+  "calendar_trading_days": 335,
+  "config_sha256": "26c2663f7dacc50d9efca0777e7fa4e0953b178422a31c6ef4ff6310192408a1",
+  "current_cache_first_received_at": "2026-11-16T01:05:11.075967Z",
+  "current_cache_last_received_at": "2026-11-16T16:22:55.801346Z",
+  "current_cache_published_in_study_window": 0,
+  "current_personal_cache_version_rows": 273,
+  "generated_at_utc": "2026-11-16T16:24:45.639047Z",
+  "historical_news_archive": "UNQUALIFIED; current personal cache and search hits are not a full archive",
+  "issuer_event_groups_with_eligible_date_proxy": {
+    "MU": 19,
+    "NVDA": 20
+  },
+  "monthly_rows": 96,
+  "official_documents_in_window": 60,
+  "official_event_groups_by_symbol": {
+    "GLOBAL": 11,
+    "MU": 19,
+    "NVDA": 20
+  },
+  "official_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "price_action_note": "Dated rehab checked only for TQQQ,NVDA,MU; raw close/open features are descriptive and bar availability is retrospective",
+  "price_input_sha256": {
+    "normalized_daily_expansion_v1.csv": "c730e55596d0596a3bb6c670d28e9e83b6a9191dac3203121a146978615f4fcf",
+    "normalized_daily_v1.csv": "9c9d3186dce4ff7b209db1061f152bce5870582e812edaae8349006111a9381f"
+  },
+  "price_symbols": [
+    "US.NVDA",
+    "US.MU",
+    "US.TQQQ",
+    "US.QQQ",
+    "US.SOXX",
+    "US.SPY"
+  ],
+  "prior_exposure": "2026-04 to 2026-05 validation repeatedly used; 2026-06 to 2026-07 test labels previously viewed; no independent test claim",
+  "saved_official_trading_calendar_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+  "schema": "news_sentiment_factor_v1_coverage_redacted",
+  "stock_panel_rows": 670,
+  "stock_panel_sha256_private": "cfa835f5cb25020c08cee32665f095a2db13daaaacdb186fc1a517adab6a502d",
+  "stop_reason": "HISTORICAL_NEWS_COVERAGE_AND_POINT_IN_TIME_AVAILABILITY_UNQUALIFIED"
+}

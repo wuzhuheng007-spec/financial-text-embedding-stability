@@ -1,0 +1,72 @@
+{
+  "schema": "personal_news_v17_postrun_field_recovery_review",
+  "review_type": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT_GOLD",
+  "full_contract_mechanically_valid": 0,
+  "partial_recovery_added_after_A_results": true,
+  "partial_candidate_count": 4,
+  "rejected_count": 4,
+  "no_raw_answer_changed": true,
+  "no_partials_counted_as_full_A_success": true,
+  "items": [
+    {
+      "task_id": "V17-01",
+      "decision": "ACCEPT_PARTIAL",
+      "field_paths": [
+        "attribution",
+        "numbers.1"
+      ],
+      "reason_code": "PARTIAL_AGENCY_NUMERIC"
+    },
+    {
+      "task_id": "V17-02",
+      "decision": "REJECT",
+      "field_paths": [],
+      "reason_code": "ALLEGATION_ATTRIBUTION_MISMATCH"
+    },
+    {
+      "task_id": "V17-03",
+      "decision": "ACCEPT_PARTIAL",
+      "field_paths": [
+        "attribution"
+      ],
+      "reason_code": "PARTIAL_SPEAKER"
+    },
+    {
+      "task_id": "V17-04",
+      "decision": "REJECT",
+      "field_paths": [],
+      "reason_code": "PRODUCT_ENTITY_MISMATCH"
+    },
+    {
+      "task_id": "V17-05",
+      "decision": "REJECT",
+      "field_paths": [],
+      "reason_code": "ACTOR_ATTRIBUTION_CONFUSION"
+    },
+    {
+      "task_id": "V17-06",
+      "decision": "ACCEPT_PARTIAL",
+      "field_paths": [
+        "attribution",
+        "entities.2"
+      ],
+      "reason_code": "PARTIAL_SPOKESPERSON_ENTITY"
+    },
+    {
+      "task_id": "V17-07",
+      "decision": "ACCEPT_PARTIAL",
+      "field_paths": [
+        "numbers.0",
+        "numbers.1",
+        "numbers.2"
+      ],
+      "reason_code": "PARTIAL_NUMBERS_PERIOD_UNBOUND"
+    },
+    {
+      "task_id": "V17-08",
+      "decision": "REJECT",
+      "field_paths": [],
+      "reason_code": "DENIAL_SELECTION_DEFECT"
+    }
+  ]
+}

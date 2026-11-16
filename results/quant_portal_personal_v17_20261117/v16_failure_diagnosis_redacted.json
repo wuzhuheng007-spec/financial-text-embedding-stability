@@ -1,0 +1,44 @@
+{
+  "schema": "personal_news_v17_prior_rejection_diagnosis",
+  "review_type": "CODEX_REVIEW_SAME_TEAM_PRIVATE_SOURCE_AND_RAW_RESPONSE",
+  "source_truth": "Supplier reports not independently fact-checked",
+  "records": [
+    {
+      "item_key_prefix": "d50e2388ef23",
+      "v16_raw_sha256": "04cc75cec40f8e09c2ebe91d177cf6e9dd85b21ccf35acf5f44e589037325757",
+      "source_structure": "14_NUMBERED_SUBEVENTS",
+      "source_truncated": false,
+      "input_tokens": 779,
+      "generated_tokens": 141,
+      "configured_max_new_tokens": 384,
+      "finish_reason": "NOT_RECORDED_BY_V16_RUNNER",
+      "parse_mode": "FENCE_ADAPTED",
+      "errors": ["MIXED_EVENTS_COLLAPSED", "CLAIM_EVIDENCE_MISMATCH", "UNSUPPORTED_COST_CHANNEL", "INVENTED_FOLLOWUP"]
+    },
+    {
+      "item_key_prefix": "0f8b8d9d2390",
+      "v16_raw_sha256": "249abce516d58232eac449ab436d64df948d7002f893d864087c07b517835fe4",
+      "source_structure": "ATTRIBUTED_OFFICIAL_ALLEGATION",
+      "source_truncated": false,
+      "input_tokens": 499,
+      "generated_tokens": 193,
+      "configured_max_new_tokens": 384,
+      "finish_reason": "NOT_RECORDED_BY_V16_RUNNER",
+      "parse_mode": "FENCE_ADAPTED",
+      "errors": ["ATTRIBUTED_ALLEGATION_PROMOTED_TO_FACT", "SPEAKER_SOURCE_ROLE_CONFUSION", "INVENTED_FOLLOWUP"]
+    },
+    {
+      "item_key_prefix": "0c87d0a5ff31",
+      "v16_raw_sha256": "e77e22bdbe03fe27ed9afb5b1fc5f80b3b28e2458df64fc6de8675100084b7a9",
+      "source_structure": "SINGLE_SPEAKER_POLICY_COMMENT",
+      "source_truncated": false,
+      "input_tokens": 366,
+      "generated_tokens": 203,
+      "configured_max_new_tokens": 384,
+      "finish_reason": "NOT_RECORDED_BY_V16_RUNNER",
+      "parse_mode": "RAW_JSON",
+      "errors": ["PROPER_NAME_CHANGED_IN_TRANSLATION", "SPEAKER_VS_INSTITUTION_CONFUSION", "INVENTED_FOLLOWUP"]
+    }
+  ],
+  "conclusion": "The known failures were semantic and attribution failures, not merely JSON parsing or evidence-ID existence. Token counts are below the configured maximum, but v16 did not record an explicit generation finish reason."
+}

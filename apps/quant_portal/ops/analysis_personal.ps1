@@ -1,10 +1,11 @@
-param([Parameter(Mandatory=$true,Position=0)][ValidateSet('start','status','stop')][string]$Action)
+param([Parameter(Mandatory=$true,Position=0)][ValidateSet('start','status','stop','pause','resume')][string]$Action)
 $ErrorActionPreference='Stop'
 $Repo=(Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 $Var=Join-Path $Repo 'apps/quant_portal/var'
 $Runtime=Join-Path $Var 'analysis_v15b_model_runtime.json'
 $PidFile=Join-Path $Var 'personal_analysis_v16.pid.json'
 $StopFile=Join-Path $Var 'personal_analysis_v16.stop'
+$PauseFile=Join-Path $Var 'personal_analysis_v16.paused'
 $OldPidFile=Join-Path $Var 'personal_analysis_v15b.pid.json'
 
 function Get-VerifiedAnalysis {
@@ -17,11 +18,27 @@ function Get-VerifiedAnalysis {
 
 if ($Action -eq 'status') {
     $running=Get-VerifiedAnalysis
-    Write-Output $(if($running){"ANALYSIS_RUNNING pid=$($running.pid)"}else{'ANALYSIS_STOPPED_OR_UNTRACKED'})
+    Write-Output $(if($running){"ANALYSIS_RUNNING pid=$($running.pid)"}elseif(Test-Path -LiteralPath $PauseFile){'ANALYSIS_PAUSED_FOR_V17'}else{'ANALYSIS_STOPPED_OR_UNTRACKED'})
     Push-Location $Repo
     try { & python -m scripts.quant_personal_feed.analysis_v16 status }
     finally { Pop-Location }
     exit 0
+}
+if ($Action -eq 'pause') {
+    Set-Content -LiteralPath $PauseFile -Value 'Paused for bounded v1.7 development; preserve jobs and responses.' -Encoding utf8
+    if (Get-VerifiedAnalysis) {
+        Set-Content -LiteralPath $StopFile -Value 'stop' -Encoding ascii
+        for($i=0;$i -lt 30;$i++) {
+            if (-not (Get-VerifiedAnalysis)) { Write-Output 'ANALYSIS_PAUSED_FOR_V17'; exit 0 }
+            Start-Sleep -Seconds 1
+        }
+        Write-Output 'ANALYSIS_PAUSE_PENDING_CURRENT_BOUNDED_GENERATION'; exit 2
+    }
+    Write-Output 'ANALYSIS_PAUSED_FOR_V17'; exit 0
+}
+if ($Action -eq 'resume') {
+    Remove-Item -LiteralPath $PauseFile -ErrorAction SilentlyContinue
+    Write-Output 'ANALYSIS_V16_PAUSE_CLEARED_NOT_STARTED'; exit 0
 }
 if ($Action -eq 'stop') {
     if (-not (Get-VerifiedAnalysis)) { Write-Output 'ANALYSIS_STOPPED'; exit 0 }
@@ -33,6 +50,7 @@ if ($Action -eq 'stop') {
     Write-Output 'ANALYSIS_STOP_PENDING_CURRENT_BOUNDED_GENERATION'
     exit 2
 }
+if (Test-Path -LiteralPath $PauseFile) { Write-Output 'ANALYSIS_V16_PAUSED_FOR_V17'; exit 2 }
 if (Get-VerifiedAnalysis) { Write-Output 'ANALYSIS_ALREADY_RUNNING'; exit 0 }
 if (Test-Path -LiteralPath $OldPidFile) {
     $oldRecord=Get-Content -LiteralPath $OldPidFile -Raw | ConvertFrom-Json

@@ -1,0 +1,32 @@
+{
+  "all_ready": true,
+  "checked_at_utc": "2026-11-16T16:14:10.440428Z",
+  "checks": [
+    {
+      "error": null,
+      "input_tokens": 277,
+      "task_id": "V17-01",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 270,
+      "task_id": "V17-03",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 414,
+      "task_id": "V17-06",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 549,
+      "task_id": "V17-07",
+      "within_budget": true
+    }
+  ],
+  "runner_sha256": "1d534c072cfedd2a75fd6c927a6e3d01e0bbf4f8be4dcde2d25fee6b4152651c",
+  "stage": "B"
+}

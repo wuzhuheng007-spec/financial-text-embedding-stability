@@ -1,0 +1,246 @@
+{
+  "attempts": [
+    {
+      "elapsed_seconds": 35.92200000002049,
+      "error": null,
+      "mechanical_errors": [
+        "category_SHAPE",
+        "claim_kind_SHAPE",
+        "tone_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 143,
+        "input_tokens": 291,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "1cf16fd18593a04e58ba6af07318c243ca2b9aec736e23a796f783e0032f89ca",
+      "stage": "A",
+      "task_id": "V17-01"
+    },
+    {
+      "elapsed_seconds": 31.65600000001723,
+      "error": null,
+      "mechanical_errors": [
+        "attribution_VALUE_NOT_IN_QUOTE",
+        "claim_kind_SHAPE",
+        "tone_SHAPE",
+        "entities_0_SHAPE",
+        "entities_1_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 170,
+        "input_tokens": 418,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "4f05ce506f65867e33a2f5f7575a98dd30a8c620f74683e477bdda28043ed360",
+      "stage": "A",
+      "task_id": "V17-02"
+    },
+    {
+      "elapsed_seconds": 23.25,
+      "error": null,
+      "mechanical_errors": [
+        "tone_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 82,
+        "input_tokens": 304,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "cc3581b0eeadfd39b35c320a28badd883c6b83f4f3564c58de25133ea5ddfea5",
+      "stage": "A",
+      "task_id": "V17-03"
+    },
+    {
+      "elapsed_seconds": 27.360000000044238,
+      "error": null,
+      "mechanical_errors": [
+        "tone_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 152,
+        "input_tokens": 407,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "a82d3d82b9df3bfba5add9312f6383b12655d8fcac15f85531f5bcfce3efff93",
+      "stage": "A",
+      "task_id": "V17-04"
+    },
+    {
+      "elapsed_seconds": 22.06199999997625,
+      "error": null,
+      "mechanical_errors": [
+        "tone_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 72,
+        "input_tokens": 280,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "f42136f81eab05102fed861d174aff37b1ecf5634ddf3bc3256cf2aac3f8727f",
+      "stage": "A",
+      "task_id": "V17-05"
+    },
+    {
+      "elapsed_seconds": 27.5,
+      "error": null,
+      "mechanical_errors": [
+        "claim_kind_SHAPE",
+        "tone_SHAPE",
+        "entities_0_QUOTE_NOT_FOUND"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 149,
+        "input_tokens": 428,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "13b540b18e8b1cee976e6bb67037bb40098340ecf6eefb028c4bea1bd51443f2",
+      "stage": "A",
+      "task_id": "V17-06"
+    },
+    {
+      "elapsed_seconds": 33.31300000002375,
+      "error": null,
+      "mechanical_errors": [
+        "category_SHAPE",
+        "claim_kind_SHAPE",
+        "tone_SHAPE",
+        "entities_0_SHAPE",
+        "entities_1_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 237,
+        "input_tokens": 514,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "0f90ce644a4ced4b1eab1d9f7abc57ae5fd01b20e26fca5d3468b70d0f4fcd3c",
+      "stage": "A",
+      "task_id": "V17-07"
+    },
+    {
+      "elapsed_seconds": 22.42200000002049,
+      "error": null,
+      "mechanical_errors": [
+        "category_SHAPE",
+        "tone_SHAPE"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 74,
+        "input_tokens": 285,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "882b8b855c45f96b0949871f21d2c1003f31669f19bd7a6134e2f0f83d91a462",
+      "stage": "A",
+      "task_id": "V17-08"
+    }
+  ],
+  "counts": {
+    "attempted": 8,
+    "failures": [
+      {
+        "error": [
+          "category_SHAPE",
+          "claim_kind_SHAPE",
+          "tone_SHAPE"
+        ],
+        "task_id": "V17-01"
+      },
+      {
+        "error": [
+          "attribution_VALUE_NOT_IN_QUOTE",
+          "claim_kind_SHAPE",
+          "tone_SHAPE",
+          "entities_0_SHAPE",
+          "entities_1_SHAPE"
+        ],
+        "task_id": "V17-02"
+      },
+      {
+        "error": [
+          "tone_SHAPE"
+        ],
+        "task_id": "V17-03"
+      },
+      {
+        "error": [
+          "tone_SHAPE"
+        ],
+        "task_id": "V17-04"
+      },
+      {
+        "error": [
+          "tone_SHAPE"
+        ],
+        "task_id": "V17-05"
+      },
+      {
+        "error": [
+          "claim_kind_SHAPE",
+          "tone_SHAPE",
+          "entities_0_QUOTE_NOT_FOUND"
+        ],
+        "task_id": "V17-06"
+      },
+      {
+        "error": [
+          "category_SHAPE",
+          "claim_kind_SHAPE",
+          "tone_SHAPE",
+          "entities_0_SHAPE",
+          "entities_1_SHAPE"
+        ],
+        "task_id": "V17-07"
+      },
+      {
+        "error": [
+          "category_SHAPE",
+          "tone_SHAPE"
+        ],
+        "task_id": "V17-08"
+      }
+    ],
+    "mechanical_valid": 0,
+    "raw_saved": 8,
+    "skipped_budget": 0,
+    "skipped_prior_review": 0,
+    "tasks": 8
+  },
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_staged_v17_1",
+  "run_at_utc": "2026-11-16T16:11:48.022966Z",
+  "schema": "personal_news_v17_bounded_run_redacted_v1",
+  "selection_manifest_sha256": "e809bd244e78b5c56e8d7b66b9442ff39e66a3a390eaa68a02134e43d838e531",
+  "stage": "A"
+}

@@ -1,0 +1,112 @@
+{
+  "attempts": [
+    {
+      "elapsed_seconds": 23.40600000001723,
+      "error": null,
+      "mechanical_errors": [
+        "CHANNEL_ENUM"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 43,
+        "input_tokens": 277,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "f2495a43c37b891f5cad57d1cadef6b199fb61067475d62b550f0afbf69c1166",
+      "stage": "B",
+      "task_id": "V17-01"
+    },
+    {
+      "elapsed_seconds": 23.20299999997951,
+      "error": null,
+      "mechanical_errors": [
+        "CHANNEL_ENUM"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 55,
+        "input_tokens": 270,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "ef07ebab27231efec875cbdabb7d1612f8901bedd139d8992525fe8183254bfb",
+      "stage": "B",
+      "task_id": "V17-03"
+    },
+    {
+      "elapsed_seconds": 22.73499999998603,
+      "error": null,
+      "mechanical_errors": [
+        "CHANNEL_ENUM"
+      ],
+      "mechanical_valid": false,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 80,
+        "input_tokens": 414,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "458355b9eb647d6e288394ed5a776761e2301198dacfdf125afe4ed8e85cf770",
+      "stage": "B",
+      "task_id": "V17-06"
+    },
+    {
+      "elapsed_seconds": 21.31200000003446,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "model_metadata": {
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 62,
+        "input_tokens": 549,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "FENCE_ADAPTED",
+      "raw_sha256": "7ac15f52e11bed9f86cbde6fbd142cbf5103f88cdacab639a5c26de635cbd319",
+      "stage": "B",
+      "task_id": "V17-07"
+    }
+  ],
+  "counts": {
+    "attempted": 4,
+    "failures": [
+      {
+        "error": [
+          "CHANNEL_ENUM"
+        ],
+        "task_id": "V17-01"
+      },
+      {
+        "error": [
+          "CHANNEL_ENUM"
+        ],
+        "task_id": "V17-03"
+      },
+      {
+        "error": [
+          "CHANNEL_ENUM"
+        ],
+        "task_id": "V17-06"
+      }
+    ],
+    "mechanical_valid": 1,
+    "raw_saved": 4,
+    "skipped_budget": 0,
+    "skipped_prior_review": 4,
+    "tasks": 8
+  },
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_staged_v17_1",
+  "run_at_utc": "2026-11-16T16:15:46.729517Z",
+  "schema": "personal_news_v17_bounded_run_redacted_v1",
+  "selection_manifest_sha256": "e809bd244e78b5c56e8d7b66b9442ff39e66a3a390eaa68a02134e43d838e531",
+  "stage": "B"
+}

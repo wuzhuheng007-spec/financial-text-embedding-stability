@@ -1,0 +1,10 @@
+{
+  "all_labels_not_computed": true,
+  "full_archive_news_features_missing": true,
+  "partial_saved_issuer_event_count_present": true,
+  "private_panel_path": "artifacts/news_sentiment_factor_v1_20261117/company_day_panel_private.jsonl",
+  "private_panel_sha256": "cfa835f5cb25020c08cee32665f095a2db13daaaacdb186fc1a517adab6a502d",
+  "purpose": "traceable input inventory, not model fit or predictive validation",
+  "rows": 670,
+  "schema": "news_sentiment_factor_v1_panel_manifest"
+}

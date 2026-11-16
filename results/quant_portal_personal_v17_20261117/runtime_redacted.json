@@ -1,0 +1,61 @@
+{
+  "captured_at_asia_shanghai": "2026-11-17T00:35:38.486744+08:00",
+  "captured_at_utc": "2026-11-16T16:35:38.486744Z",
+  "code_sha256": {
+    "apps/quant_portal/core/personal_feed_cache.py": "440fcaeef5a649c9bc07b7bc12b8090ac4702e7d129e19f06349ee2edd6629d4",
+    "apps/quant_portal/static/core/personal_feed.js": "eabdbaf12d0ea53181a6386c68e0c92b580905e24ab560cd22492831e7933088",
+    "scripts/quant_personal_feed/store.py": "e8bd2f2dbdc8acbdb8d98f7386c5682a017fcb2976a17e5bdbf2a1aec390f2a0",
+    "scripts/quant_personal_feed/view_v17.py": "d99243f50659b88e4359203ef854be43e81a09ad88a5a94d4d88d8fadcb330d3"
+  },
+  "news_version_rows": 275,
+  "old_continuous_analysis": "PAUSED_FOR_V17",
+  "owner_page_visual_acceptance": "PENDING_OWNER_LOGIN",
+  "portal_login_http": 200,
+  "providers": [
+    {
+      "business_attempts_today": 446,
+      "business_success_total": 409,
+      "duplicate_quote_packets": 0,
+      "heartbeat_at": "2026-11-16T16:35:32.821401Z",
+      "last_error_class": null,
+      "last_success_at": "2026-11-16T16:34:41.144689Z",
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "worker_alive": 1
+    },
+    {
+      "business_attempts_today": 0,
+      "business_success_total": 0,
+      "duplicate_quote_packets": 66813,
+      "heartbeat_at": "2026-11-16T16:35:38.502397Z",
+      "last_error_class": null,
+      "last_success_at": "2026-11-16T16:35:38.502397Z",
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "worker_alive": 1
+    },
+    {
+      "business_attempts_today": 297,
+      "business_success_total": 294,
+      "duplicate_quote_packets": 0,
+      "heartbeat_at": "2026-11-16T16:34:52.623160Z",
+      "last_error_class": null,
+      "last_success_at": "2026-11-16T16:34:52.623160Z",
+      "provider": "moomoo_snapshot",
+      "state": "CONNECTED",
+      "worker_alive": 1
+    }
+  ],
+  "quote_symbols": [
+    "MU",
+    "NVDA",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "TQQQ"
+  ],
+  "schema": "personal_v17_runtime_aggregate_v1",
+  "v17_bounded_A_calls": 8,
+  "v17_bounded_B_calls": 4,
+  "v17_bounded_T_calls": 0
+}

@@ -33,6 +33,7 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
     from scripts.quant_personal_feed.collector import verified_current_symbols, ROOT
     from scripts.quant_personal_feed.view_v15 import enrich
     from scripts.quant_personal_feed.view_v16 import overlay
+    from scripts.quant_personal_feed.view_v17 import overlay as overlay_v17
     from scripts.quant_personal_feed.news_display_v16 import source_title
     from scripts.quant_personal_feed.event_rules import (
         ENTITY_RULES, CATEGORY_RULES, RULE_VERSION, TECH_PRESET_ENTITIES,
@@ -63,9 +64,20 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
         "tech_preset": {"entities": TECH_PRESET_ENTITIES, "categories": TECH_PRESET_CATEGORIES}}
     data["event_rule_version"] = RULE_VERSION
     now = datetime.now(timezone.utc)
+    # Snapshot polling is scheduled once per minute; a 20-second websocket
+    # heartbeat threshold falsely reports it disconnected between normal polls.
+    snapshot_stale_seconds = 120
+    try:
+        import json
+        snapshot_policy = json.loads((ROOT / "configs/quant_portal_personal_sessions_v13_20261116.json")
+                                     .read_text(encoding="utf-8"))
+        snapshot_stale_seconds = max(120, 2 * int(snapshot_policy["snapshot_poll_seconds"]))
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
     for state in data["states"]:
         heartbeat = _parse_utc(state.get("heartbeat_at"))
-        if heartbeat is None or (now-heartbeat).total_seconds() > 20:
+        stale_after = snapshot_stale_seconds if state.get("provider") == "moomoo_snapshot" else 20
+        if heartbeat is None or (now-heartbeat).total_seconds() > stale_after:
             state["state"] = "DISCONNECTED"
             state["heartbeat_stale"] = True
         else:
@@ -96,6 +108,7 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
             analysis_db=ROOT / "apps/quant_portal/var/personal_analysis_v16.sqlite3",
             config={**v16,"sentiment_windows_hours":v15["sentiment_windows_hours"],
                     "sentiment_min_events":v15["sentiment_min_events"]})
+        data=overlay_v17(data,private_dir=ROOT / "artifacts/quant_personal_v17_20261117")
     except (OSError, ValueError, KeyError):
         # A broken analysis view must not interrupt independent prices or news.
         data["analysis_worker_state"]="VIEW_UNAVAILABLE"

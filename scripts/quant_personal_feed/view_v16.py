@@ -42,7 +42,9 @@ def overlay(data: dict, *, owner_id: int, analysis_db: Path, config: dict) -> di
     data["analysis_contract_version"] = PROMPT_VERSION
     data["analysis_schema_version"] = SCHEMA_VERSION
     data["analysis_queue_count"] = count
-    if worker:
+    if (analysis_db.parent / "personal_analysis_v16.paused").exists():
+        data["analysis_worker_state"] = "PAUSED_FOR_V17"
+    elif worker:
         heartbeat = _time(worker["heartbeat_at"])
         max_stale = config["model_load_timeout_seconds"] + config["generation_timeout_seconds"] + 60
         stale = heartbeat is None or (datetime.now(timezone.utc)-heartbeat).total_seconds() > max_stale

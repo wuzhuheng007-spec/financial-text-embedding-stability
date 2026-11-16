@@ -1,0 +1,13 @@
+{
+  "schema": "news_sentiment_factor_v1_small_source_probe",
+  "receipt_written_at_utc": "2026-11-16T16:09:05Z",
+  "business_call_timestamp_precision": "NOT_LOGGED_EXACTLY_FOR_EACH_CALL",
+  "calls": [
+    {"provider": "Jin10 MCP", "tool": "search_news", "keyword": "NVDA", "status": 200, "returned": 0, "has_more": false},
+    {"provider": "Jin10 MCP", "tool": "search_news", "keyword": "Micron", "status": 200, "returned": 0, "has_more": false},
+    {"provider": "Jin10 MCP", "tool": "search_news", "keyword": "美光", "status": 200, "returned": 10, "in_requested_study_window": 7, "has_more": true,
+     "page_time_bounds_as_returned": ["2026-06-23T10:55:54+08:00", "2026-10-01T07:25:09+08:00"]}
+  ],
+  "meaning": "Keyword search has no verified full historical date coverage; a page with seven in-window hits does not establish a complete archive. No article text was stored from these probes.",
+  "historical_data_fit_gate": "BLOCKED_BY_COVERAGE_AND_POINT_IN_TIME_EVIDENCE"
+}

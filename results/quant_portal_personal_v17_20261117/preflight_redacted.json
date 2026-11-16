@@ -1,0 +1,72 @@
+{
+  "all_ready": true,
+  "checked_at_utc": "2026-11-16T16:07:48.474855Z",
+  "checks": [
+    {
+      "error": null,
+      "input_tokens": 291,
+      "source_hash": "04b74d04830e8690477a6a3bb9cba284f7297e358e3b454faba25013bd0bf83d",
+      "task_id": "V17-01",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 418,
+      "source_hash": "227659f9a827bdfa9b846cd59ac5895a818bb6192983fd0782c1e5b2a38eb05c",
+      "task_id": "V17-02",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 304,
+      "source_hash": "4244a298ee39221e277f7b7782f82d86f1be275f8319628e7bb7cfa73605bf74",
+      "task_id": "V17-03",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 407,
+      "source_hash": "421aa4a1c1c67ddce8297014f58bdec75b184a5e1b6b6a7cb1bee2247609056e",
+      "task_id": "V17-04",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 280,
+      "source_hash": "5355ec6629fcb65df8bb4453005a6c4f19092439ad5e3b7351bff6c939fbf334",
+      "task_id": "V17-05",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 428,
+      "source_hash": "ddbece88a744c8e91c4aa340f8fc0bec3064e2e6ca54dd44b80de008312d3529",
+      "task_id": "V17-06",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 514,
+      "source_hash": "a763f3b0ba1c3c440cf45441d104279bd91b54cb97152ae99d81ca0554cf8f11",
+      "task_id": "V17-07",
+      "within_budget": true
+    },
+    {
+      "error": null,
+      "input_tokens": 285,
+      "source_hash": "79865548ea0f91cb93a908af54a424c66df8979e0bfe1031782b831af8564678",
+      "task_id": "V17-08",
+      "within_budget": true
+    }
+  ],
+  "frozen_hashes": {
+    "artifacts\\quant_personal_v17_20261117\\selection_private.json": "e809bd244e78b5c56e8d7b66b9442ff39e66a3a390eaa68a02134e43d838e531",
+    "configs\\quant_portal_personal_v17_20261117.json": "0a0834e0546a84ea8fc08c3cac7effa9cf848bd7c0709a8cc942b6226140e26d",
+    "scripts\\quant_personal_feed\\analysis_contract_v17.py": "891a7f1acfe0901bccc563d7a418b25e92bc98af92426eabc9cc2a184615900d",
+    "scripts\\quant_personal_feed\\analysis_v17_batch.py": "6273eab15a0f66606305c890924aadfe2b47fdd92b9aa70f5c8b57113b2ddfab",
+    "scripts\\quant_personal_feed\\generate_v17.py": "40184b36232313612956d9f8aefcd595789b94f3b7e0086c8b6f3241ef9ba32d"
+  },
+  "max_input_tokens": 2048,
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "schema": "personal_news_v17_preflight_redacted_v1"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "personal_news_staged_bounded_development_v17_1",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_staged_v17_1",
+  "schema_version": "personal_news_staged_schema_v17_1",
+  "seed": 1729,
+  "max_items": 8,
+  "max_source_characters_per_candidate": 1000,
+  "max_input_tokens": 2048,
+  "max_new_tokens": {"A": 512, "B": 256, "T": 256},
+  "model_load_timeout_seconds": 240,
+  "generation_timeout_seconds": 180,
+  "retries": 0,
+  "source_language": "zh",
+  "run_type": "DEVELOPMENT_REGRESSION_AND_SAVED_NEWS_NOT_INDEPENDENT_TEST",
+  "continuous_generation": "PAUSED"
+}
