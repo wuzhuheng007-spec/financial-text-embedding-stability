@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT.parent / "quant" / "handoffs" / "quant_personal_demo_v15d_20261116"
+OUT = ROOT.parent / "quant" / "handoffs" / "quant_personal_demo_v15d_20261116_verified"
 FILES = [
     "README.md",
     "apps/quant_portal/README.md",
