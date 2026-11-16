@@ -1,0 +1,10 @@
+{
+  "schema": "quant_personal_v16_quote_audit_correction_v1",
+  "superseded_receipt_commit": "3dc1ebdb0969735014377a8ddda2480be59fb4aa",
+  "original_flag": "NVDA differed between two sequential reads of an actively updating cache",
+  "diagnosis": "The audit read the dashboard cache and chart selector in separate SQLite transactions. A supplier update could arrive between them, so the flag did not establish an inconsistency within one cache version.",
+  "correction": "Read both selection rules in one SQLite read transaction without changing stored quotes.",
+  "corrected_result": "Six of six compared price, session and source-time tuples matched in the same snapshot.",
+  "source_data_modified": false,
+  "software_check": "10 focused tests passed after the audit correction"
+}

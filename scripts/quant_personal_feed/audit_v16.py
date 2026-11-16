@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 
 from .collector import ROOT
 from .news_display_v16 import source_title
-from .quote_select_v16 import read_latest
+from .quote_select_v16 import choose_latest, read_latest
 from .security_profiles_v16 import read_profiles
 from .store import read_personal_cache
 
@@ -56,12 +56,25 @@ def run() -> dict:
     data = read_personal_cache(feed, owner_id, news_limit=200, included_only=True)
     profiles = read_profiles()
     with sqlite3.connect(feed.resolve().as_uri() + "?mode=ro", uri=True) as db:
-        selected = {symbol: read_latest(db, owner_id, symbol) for symbol in profiles}
-        current = data.get("latest_quotes", {})
-        equality = {symbol: all((selected[symbol] or {}).get(field) ==
-                                (current.get(symbol) or {}).get(field)
-                                for field in ("price_text", "session", "source_at"))
-                    for symbol in profiles}
+        db.row_factory = sqlite3.Row
+        # Hold one read transaction while comparing the dashboard and chart
+        # selection rules. Two separate live reads can straddle a new push.
+        db.execute("BEGIN")
+        equality = {}
+        source_time_present = {}
+        for symbol in profiles:
+            sessions = [dict(row) for row in db.execute("""SELECT symbol,session,price_text,
+              source_at,received_at FROM session_quotes WHERE owner_id=? AND symbol=?""",
+              (owner_id, symbol))]
+            legacy = db.execute("""SELECT symbol,provider_code,price_text,currency,provider_time,
+              received_at,market_state,delay_status FROM quotes WHERE owner_id=? AND symbol=?
+              ORDER BY julianday(provider_time) DESC,received_at DESC,id DESC LIMIT 1""",
+              (owner_id, symbol)).fetchone()
+            dashboard = choose_latest(symbol, sessions, dict(legacy) if legacy else None)
+            chart = read_latest(db, owner_id, symbol)
+            equality[symbol] = all((dashboard or {}).get(field) == (chart or {}).get(field)
+                                   for field in ("price_text", "session", "source_at"))
+            source_time_present[symbol] = bool((dashboard or {}).get("source_at"))
         feed_counts = {
             "news_items": db.execute("SELECT COUNT(*) FROM news_items WHERE owner_id=?", (owner_id,)).fetchone()[0],
             "session_quote_rows": db.execute("SELECT COUNT(*) FROM session_quotes WHERE owner_id=?", (owner_id,)).fetchone()[0],
@@ -90,8 +103,8 @@ def run() -> dict:
                                          "source_response_sha256": p.get("response_sha256")}
                               for symbol, p in profiles.items()},
         "quote_selection": {"checked_symbols": len(equality), "all_cache_selection_equal": all(equality.values()),
-                            "per_symbol_equal": equality, "source_time_present":
-                            {symbol: bool((current.get(symbol) or {}).get("source_at")) for symbol in profiles}},
+                            "comparison_scope": "SAME_SQLITE_READ_TRANSACTION",
+                            "per_symbol_equal": equality, "source_time_present": source_time_present},
         "feed": {**feed_counts, "news_title_kinds_in_page_window": dict(Counter(
             source_title(item.get("title"), item.get("content"))[1]
             for item in data.get("news", []))), "provider_states": [

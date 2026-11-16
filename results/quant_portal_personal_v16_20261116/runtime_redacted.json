@@ -1,7 +1,7 @@
 {
   "schema": "quant_portal_personal_v16_runtime_redacted_v1",
-  "observed_at_utc": "2026-11-16T08:02:25.698169Z",
-  "observed_at_asia_shanghai": "2026-11-16T16:02:25.698169+08:00",
+  "observed_at_utc": "2026-11-16T08:02:56.706029Z",
+  "observed_at_asia_shanghai": "2026-11-16T16:02:56.706029+08:00",
   "code_and_config_sha256": {
     "scripts/quant_personal_feed/analysis_contract_v16.py": "7c4a8d612e6335bbc2ef4845d91e6f12a0629375a199e61c662a342783a4f126",
     "scripts/quant_personal_feed/analysis_v16.py": "f87c8f7ffbf14f3882047d4bfb0f79d694fb599b1ae1388142fa67b020f8ad17",
@@ -60,13 +60,14 @@
   },
   "quote_selection": {
     "checked_symbols": 6,
-    "all_cache_selection_equal": false,
+    "all_cache_selection_equal": true,
+    "comparison_scope": "SAME_SQLITE_READ_TRANSACTION",
     "per_symbol_equal": {
       "TQQQ": true,
       "QQQ": true,
       "SOXX": true,
       "SPY": true,
-      "NVDA": false,
+      "NVDA": true,
       "MU": true
     },
     "source_time_present": {
@@ -80,7 +81,7 @@
   },
   "feed": {
     "news_items": 261,
-    "session_quote_rows": 31197,
+    "session_quote_rows": 31257,
     "news_title_kinds_in_page_window": {
       "SOURCE_FIRST_SENTENCE": 48,
       "SOURCE_EXCERPT_INCOMPLETE": 1,
@@ -90,19 +91,19 @@
       {
         "provider": "jin10",
         "state": "CONNECTED",
-        "heartbeat_at": "2026-11-16T08:02:20.199652Z",
+        "heartbeat_at": "2026-11-16T08:02:53.710284Z",
         "last_success_at": "2026-11-16T08:02:03.545738Z"
       },
       {
         "provider": "moomoo",
         "state": "CONNECTED_DELAY_UNKNOWN",
-        "heartbeat_at": "2026-11-16T08:02:25.319572Z",
-        "last_success_at": "2026-11-16T08:02:25.319572Z"
+        "heartbeat_at": "2026-11-16T08:02:56.116820Z",
+        "last_success_at": "2026-11-16T08:02:56.116820Z"
       },
       {
         "provider": "moomoo_snapshot",
-        "state": "CONNECTED",
-        "heartbeat_at": "2026-11-16T08:01:57.533632Z",
+        "state": "CONNECTING",
+        "heartbeat_at": "2026-11-16T08:02:56.162078Z",
         "last_success_at": "2026-11-16T08:01:57.533632Z"
       }
     ],
@@ -156,7 +157,7 @@
       "personal_news_conditional_v16_4": {
         "MECHANICAL_PASS": 2,
         "EVIDENCE_ID_INVALID": 1,
-        "NO_DISPLAYABLE_LANGUAGE": 10,
+        "NO_DISPLAYABLE_LANGUAGE": 11,
         "PARSE_JSONDecodeError": 9
       }
     },
