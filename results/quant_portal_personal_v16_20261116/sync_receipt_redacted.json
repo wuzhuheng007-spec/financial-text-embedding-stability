@@ -1,0 +1,21 @@
+{
+  "schema": "quant_personal_v16_sync_receipt_redacted_v1",
+  "verified_at_utc": "2026-11-16T08:02:14Z",
+  "repository": "https://github.com/wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/sync-research-progress-20261113",
+  "content_commit": "778e63331cbc5be95fdbfda0b560d824dcd69b8f",
+  "remote_branch_matched_content_commit": true,
+  "remote_blob_readback": {
+    "analysis_worker": true,
+    "quote_selector": true,
+    "portal_javascript": true,
+    "chinese_report": true,
+    "runtime_receipt": true,
+    "status": true
+  },
+  "selected_content_files": 41,
+  "credential_pattern_hits_in_selected_files": 0,
+  "restricted_binary_extensions_in_selected_files": 0,
+  "unrelated_untracked_files_preserved": true,
+  "default_branch_merged": false
+}
