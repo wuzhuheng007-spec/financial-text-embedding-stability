@@ -1,0 +1,30 @@
+{
+  "schema": "quant_portal_personal_feed_v11_test_summary",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "software": {
+    "private_cache_unit_tests": {"passed": 6, "failed": 0, "command": "python -m unittest tests.test_quant_personal_feed -v"},
+    "django_full_suite": {"passed": 28, "failed": 0, "command": "apps/quant_portal/var/.venv/Scripts/python.exe apps/quant_portal/manage.py test core --noinput -v 1"},
+    "django_focused_six_included_in_full_suite": true,
+    "js_syntax": "PASS",
+    "python_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "real_provider_snapshot": "runtime_redacted.json",
+  "real_bounded_subscription_probe": "subscription_probe_redacted.json",
+  "owner_route_readback": "portal_readback_redacted.json",
+  "browser": {
+    "mode": "ISOLATED_COPY_SAME_CODE_EDGE",
+    "receipt": "browser_visual_isolated_redacted.json",
+    "desktop_width_px": 1440,
+    "mobile_width_px": 390,
+    "whole_page_overflow": false,
+    "js_page_errors": 0,
+    "synthetic_banner_case_separate_from_provider_observation": true,
+    "live_owner_browser_session": "NOT_OBSERVED"
+  },
+  "market_open_quote_progression": "NOT_RUN_MARKET_CLOSED",
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "trade_calls": 0
+}

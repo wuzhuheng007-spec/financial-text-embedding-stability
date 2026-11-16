@@ -1,3 +1,9 @@
+# 2026-11-16 — Personal feed v1.1
+
+Kept the loopback moomoo and Jin10 connections while adding source-time-aware quote deduplication, separate push/insert/heartbeat counters, bounded Jin10 attempt and handshake accounting, owner-only six-key quote selection, and separate news interests. The dashboard now preserves the reading position when new flashes arrive and labels closed or old quotes with their source time. The prior duplicate cache remains untouched. The [report](../../reports/2026-11-16_quant_portal_personal_feed_v11.en.md) and [plan–actual ledger](../../results/quant_portal_personal_feed_v11_20261116/plan_execution.csv) keep software, source, browser and market-open checks separate. Financial input v2.5 stays `REJECTED_CANDIDATE`.
+
+---
+
 # 2026-11-16 — Personal loopback feeds / 本机私人行情与快讯
 
 The [English report](../../reports/2026-11-16_quant_portal_personal_feed.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_feed.zh.md), [P0–P7 ledger](../../results/quant_portal_personal_feed_20261116/plan_execution.csv) and [redacted runtime receipt](../../results/quant_portal_personal_feed_20261116/runtime_redacted.json) record read-only moomoo quote push for six verified US symbols and Jin10 latest-flash polling into a private owner-bound cache. The loopback portal polls only the cache; public redistribution remains off. Closed-market quotes and news were actually received. Market-open push, account-specific quotas and new desktop/390px visual acceptance remain unverified. Financial input v2.5 stays `REJECTED_CANDIDATE`; no model or financial evaluation ran.

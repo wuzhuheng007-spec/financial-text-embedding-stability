@@ -31,7 +31,7 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
     cache_path = under_root(config["cache_db"])
     now = datetime.now(timezone.utc)
     result = {
-        "schema": "quant_portal_personal_feeds_redacted_receipt_v1",
+        "schema": "quant_portal_personal_feeds_redacted_receipt_v11",
         "observed_at_utc": now.isoformat().replace("+00:00", "Z"),
         "observed_at_asia_shanghai": now.astimezone(ZoneInfo("Asia/Shanghai")).isoformat(),
         "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
@@ -44,7 +44,7 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
         "jin10_local_poll_interval_seconds": config["jin10"]["poll_interval_seconds"],
         "jin10_local_max_business_calls_per_utc_day": config["jin10"]["max_business_calls_per_utc_day"],
         "portal_cache_poll_interval_seconds": 5,
-        "browser_visual_acceptance": "NOT_RUN_CUA_POLICY_STOP",
+        "browser_visual_acceptance": "SEE_SEPARATE_ISOLATED_BROWSER_RECEIPT",
     }
     if cache_path.is_file():
         with closing(sqlite3.connect(cache_path)) as db:
@@ -53,12 +53,21 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
             for row in db.execute("SELECT * FROM provider_state ORDER BY provider"):
                 item = {key: row[key] for key in (
                     "provider", "state", "heartbeat_at", "last_success_at",
-                    "last_received_at", "last_source_at", "last_error_class")}
+                    "last_received_at", "last_source_at", "last_error_class",
+                    "worker_alive", "coverage_gap")}
                 if row["provider"] == "jin10":
                     item["mcp_http_requests_total_since_cache_creation"] = row["requests_total"]
                     item["business_calls_today_utc"] = row["business_calls_today"]
+                    item["business_attempts_today_utc_legacy_lower_bound"] = row["business_attempts_today"]
+                    item["business_success_since_v11"] = row["business_success_total"]
+                    item["business_failure_since_v11"] = row["business_failure_total"]
+                    item["handshake_attempts_since_v11"] = row["handshake_attempts_total"]
+                    item["handshake_success_since_v11"] = row["handshake_success_total"]
                 else:
-                    item["request_count_status"] = "NOT_INSTRUMENTED_WEBSOCKET_PUSH"
+                    item["last_push_at"] = row["last_push_at"]
+                    item["last_new_quote_at_since_v11"] = row["last_quote_saved_at"]
+                    item["duplicate_quote_packets_since_v11"] = row["duplicate_quote_packets"]
+                    item["request_count_status"] = "NOT_APPLICABLE_WEBSOCKET_PUSH"
                 providers.append(item)
             result["providers"] = providers
             result["quote_symbols"] = [dict(row) for row in db.execute("""
@@ -71,6 +80,8 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
             """, (user_id,))]
             result["symbol_status"] = [dict(row) for row in db.execute(
                 "SELECT symbol,state,reason FROM symbol_state WHERE owner_id=? ORDER BY symbol", (user_id,))]
+            result["desired_subscription_symbols"] = [row[0] for row in db.execute(
+                "SELECT symbol FROM quote_selection WHERE owner_id=? AND desired=1 ORDER BY position", (user_id,))]
             result["jin10_news_items"] = db.execute(
                 "SELECT COUNT(*) FROM news_items WHERE owner_id=?", (user_id,)).fetchone()[0]
             result["jin10_news_versions"] = db.execute(
@@ -95,7 +106,7 @@ def build_receipt(config_path: Path, baseline_backup: Path | None = None) -> dic
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/quant_portal_personal_feeds_v1.json")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json")
     parser.add_argument("--baseline-backup", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()

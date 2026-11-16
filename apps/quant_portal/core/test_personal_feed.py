@@ -8,6 +8,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .personal_feed_cache import REPO_ROOT
+from .models import WatchlistItem
 
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -62,3 +63,67 @@ class PersonalFeedViewTests(TestCase):
                 other = get_user_model().objects.create_user("other@example.test",password="test-password-long")
                 self.client.force_login(other)
                 self.assertEqual(self.client.get(reverse("personal_feed_json")).status_code, 404)
+                self.assertEqual(self.client.post(reverse("personal_quote_selection"),
+                                  {"symbol":"TQQQ","action":"unsubscribe"}).status_code,404)
+                self.assertEqual(self.client.post(reverse("personal_news_interest"),
+                                  {"interest_key":"SPACEX","enabled":"1"}).status_code,404)
+
+    def test_owner_news_interest_is_separate_from_quote_selection(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache_path=Path(folder) / "sidecar.sqlite3"
+            with override_settings(PERSONAL_MODE=True,PERSONAL_FEED_DB_PATH=cache_path):
+                owner=get_user_model().objects.create_user("owner@local.invalid",password="test-password-long")
+                self.client.force_login(owner)
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                cache.ensure_selection(["TQQQ"])
+                cache.close()
+                response=self.client.post(reverse("personal_news_interest"),
+                    {"interest_key":"SPACEX","enabled":"0"})
+                self.assertEqual(response.status_code,200)
+                data=self.client.get(reverse("personal_feed_json")).json()
+                self.assertFalse(next(x for x in data["news_interests"] if x["interest_key"]=="SPACEX")["enabled"])
+                self.assertEqual([x["symbol"] for x in data["selection"] if x["desired"]],["TQQQ"])
+
+    def test_watchlist_add_does_not_subscribe_and_replacement_is_explicit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache_path=Path(folder) / "sidecar.sqlite3"
+            with override_settings(PERSONAL_MODE=True,PERSONAL_FEED_DB_PATH=cache_path):
+                owner=get_user_model().objects.create_user("owner@local.invalid",password="test-password-long")
+                self.client.force_login(owner)
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                cache.ensure_selection(["TQQQ","QQQ","SOXX","SPY","NVDA","MU"])
+                cache.close()
+                WatchlistItem.objects.create(user=owner,symbol="AMD",asset_type="EQUITY")
+                denied=self.client.post(reverse("personal_quote_selection"),
+                    {"symbol":"AMD","action":"subscribe"})
+                self.assertEqual(denied.json()["result"],"BUDGET_FULL")
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                self.assertNotIn("AMD",cache.selection()[1])
+                cache.close()
+                accepted=self.client.post(reverse("personal_quote_selection"),
+                    {"symbol":"AMD","action":"subscribe","replace_symbol":"MU"})
+                self.assertEqual(accepted.json()["result"],"PENDING_SUBSCRIBE")
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                self.assertEqual(len(cache.selection()[1]),6)
+                self.assertIn("AMD",cache.selection()[1])
+                self.assertNotIn("MU",cache.selection()[1])
+                cache.close()
+
+    def test_selected_symbol_must_stop_before_watchlist_removal(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache_path=Path(folder) / "sidecar.sqlite3"
+            with override_settings(PERSONAL_MODE=True,PERSONAL_FEED_DB_PATH=cache_path):
+                owner=get_user_model().objects.create_user("owner@local.invalid",password="test-password-long")
+                item=WatchlistItem.objects.create(user=owner,symbol="TQQQ",asset_type="ETF")
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                cache.ensure_selection(["TQQQ"])
+                cache.close()
+                self.client.force_login(owner)
+                self.client.post(reverse("watchlist_remove",args=[item.pk]))
+                self.assertTrue(WatchlistItem.objects.filter(pk=item.pk).exists())
+                cache=PersonalFeedStore(cache_path,owner.pk)
+                cache.change_selection("TQQQ","unsubscribe",{"TQQQ"},6)
+                cache.symbol_state(owner.pk,"TQQQ","STOPPED","USER_UNSUBSCRIBED")
+                cache.close()
+                self.client.post(reverse("watchlist_remove",args=[item.pk]))
+                self.assertFalse(WatchlistItem.objects.filter(pk=item.pk).exists())

@@ -66,6 +66,57 @@ class PersonalFeedCacheTests(unittest.TestCase):
             self.assertIsNone(result["news"][0]["source_url"])
             self.assertEqual(result["news"][0]["content"],"<script>changed</script>")
 
+    def test_late_old_quote_cannot_replace_newer_source_time(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache = PersonalFeedStore(Path(folder) / "feed.sqlite3", 7)
+            try:
+                def quote(source, received, price):
+                    return {"instrument_id":"US.MU","provider_time":source,
+                            "received_at":received,"payload":{"price":price}}
+                self.assertTrue(cache.put_quote(7,quote("2026-11-16T14:00:00Z","2026-11-16T14:00:01Z",10),
+                                                symbol="MU",display_name="MU",market_state="US_1",limit=10))
+                self.assertTrue(cache.put_quote(7,quote("2026-11-16T13:59:00Z","2026-11-16T14:00:02Z",9),
+                                                symbol="MU",display_name="MU",market_state="US_1",limit=10))
+                self.assertTrue(cache.put_quote(7,quote("2026-11-16T14:01:00Z","2026-11-16T14:01:01Z",10),
+                                                symbol="MU",display_name="MU",market_state="US_1",limit=10))
+                self.assertEqual(read_personal_cache(cache.path,7)["quotes"][0]["provider_time"],
+                                 "2026-11-16T14:01:00Z")
+                self.assertEqual(cache.db.execute("SELECT COUNT(*) FROM quotes").fetchone()[0],3)
+            finally:
+                cache.close()
+
+    def test_selection_requires_verified_code_and_explicit_replacement(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache = PersonalFeedStore(Path(folder) / "feed.sqlite3", 7)
+            try:
+                cache.ensure_selection(["TQQQ","NVDA"])
+                verified={"TQQQ","NVDA","MU"}
+                self.assertEqual(cache.change_selection("SPACE_X","subscribe",verified,2),"UNVERIFIED_CODE")
+                self.assertEqual(cache.change_selection("MU","subscribe",verified,2),"BUDGET_FULL")
+                self.assertEqual(cache.selection()[1],["TQQQ","NVDA"])
+                self.assertEqual(cache.change_selection("MU","subscribe",verified,2,"TQQQ"),"PENDING_SUBSCRIBE")
+                self.assertEqual(cache.selection()[1],["NVDA","MU"])
+                self.assertEqual(cache.change_selection("MU","subscribe",verified,2),"ALREADY_SELECTED")
+            finally:
+                cache.close()
+
+    def test_provider_success_time_only_changes_on_success(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache = PersonalFeedStore(Path(folder) / "feed.sqlite3", 7)
+            try:
+                cache.state("jin10","CONNECTING")
+                cache.provider_metric("jin10",business_attempts_today=1,handshake_attempts_total=1)
+                before = cache.db.execute("SELECT * FROM provider_state WHERE provider='jin10'").fetchone()
+                self.assertIsNone(before["last_success_at"])
+                cache.state("jin10","DISCONNECTED",error_class="McpProtocolError")
+                cache.provider_metric("jin10",business_failure_total=1)
+                after = cache.db.execute("SELECT * FROM provider_state WHERE provider='jin10'").fetchone()
+                self.assertIsNone(after["last_success_at"])
+                self.assertEqual(after["business_attempts_today"],1)
+                self.assertEqual(after["business_failure_total"],1)
+            finally:
+                cache.close()
+
 
 if __name__ == "__main__":
     unittest.main()

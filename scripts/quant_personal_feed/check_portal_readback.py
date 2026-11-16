@@ -56,7 +56,7 @@ def main() -> None:
         "page_has_private_news_root": 'id="personal-news"' in body,
         "page_has_local_cache_js": "personal_feed.js" in body,
         "page_has_public_approval_wait_notice": "等待公共展示批准" in body,
-        "browser_visual_acceptance": "NOT_RUN_CUA_POLICY_STOP",
+        "browser_visual_acceptance": "ISOLATED_BROWSER_QA_SEPARATE_RECEIPT",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes((json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))

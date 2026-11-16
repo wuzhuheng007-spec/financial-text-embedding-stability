@@ -1,0 +1,8 @@
+{
+  "initial_six_preserved": true,
+  "stop_acknowledged": true,
+  "resume_acknowledged": true,
+  "stop_result": "PENDING_STOP",
+  "restore_result": "PENDING_SUBSCRIBE",
+  "final_selected_count": 6
+}

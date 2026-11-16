@@ -19,7 +19,7 @@ def load_config(path: Path) -> dict:
     if not path.is_relative_to(ROOT) or not path.is_file():
         raise ValueError("Feed config must be an existing repository file")
     config = json.loads(path.read_text(encoding="utf-8"))
-    if config.get("schema") != "quant_portal_personal_feeds_v1":
+    if config.get("schema") not in {"quant_portal_personal_feeds_v1", "quant_portal_personal_feeds_v11"}:
         raise ValueError("Unexpected personal feed config version")
     for key in ("portal_db", "cache_db", "mapping_receipt_path"):
         under_root(config[key])
@@ -58,6 +58,7 @@ def run(config_path: Path) -> None:
     stop_path.unlink(missing_ok=True)
     user_id = owner_id(config)
     store = PersonalFeedStore(under_root(config["cache_db"]),user_id)
+    store.ensure_selection(config["moomoo"]["priority_symbols"])
     store.close()
     stop = threading.Event()
 
@@ -82,6 +83,12 @@ def run(config_path: Path) -> None:
                 db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
                 try:
                     db.state(name,"DISCONNECTED",error_class=type(exc).__name__)
+                finally:
+                    db.close()
+            finally:
+                db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
+                try:
+                    db.provider_metric(name,worker_alive=0)
                 finally:
                     db.close()
         thread = threading.Thread(target=wrapped,name=f"personal-{name}",daemon=True)
@@ -109,7 +116,7 @@ def run(config_path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action",choices=("run","status","stop"))
-    parser.add_argument("--config",type=Path,default=ROOT / "configs/quant_portal_personal_feeds_v1.json")
+    parser.add_argument("--config",type=Path,default=ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json")
     args = parser.parse_args()
     config = load_config(args.config)
     var = (ROOT / "apps/quant_portal/var").resolve()
@@ -124,9 +131,18 @@ def main() -> None:
                           "states":[{"provider":x["provider"],"state":x["state"],
                                      "heartbeat_at":x["heartbeat_at"],
                                      "last_success_at":x["last_success_at"],
-                                     "business_calls_today":x["business_calls_today"]}
+                                     "last_push_at":x.get("last_push_at"),
+                                     "last_quote_saved_at":x.get("last_quote_saved_at"),
+                                     "duplicate_quote_packets":x.get("duplicate_quote_packets"),
+                                     "business_attempts_today":x.get("business_attempts_today"),
+                                     "business_calls_today":x["business_calls_today"],
+                                     "business_failure_total":x.get("business_failure_total"),
+                                     "handshake_attempts_total":x.get("handshake_attempts_total"),
+                                     "worker_alive":x.get("worker_alive"),
+                                     "coverage_gap":x.get("coverage_gap")}
                                     for x in cache["states"]],
                           "quote_symbols":[x["symbol"] for x in cache["quotes"]],
+                          "desired_symbols":[x["symbol"] for x in cache.get("selection",[]) if x["desired"]],
                           "cached_news_items":cache["news_total"]},ensure_ascii=False))
         return
     run(args.config)

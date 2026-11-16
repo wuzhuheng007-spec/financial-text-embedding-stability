@@ -1,0 +1,173 @@
+{
+  "schema": "quant_portal_personal_feeds_redacted_receipt_v11",
+  "observed_at_utc": "2026-11-16T01:54:55.432081Z",
+  "observed_at_asia_shanghai": "2026-11-16T09:54:55.432081+08:00",
+  "config_sha256": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7",
+  "loopback_only": true,
+  "personal_mode": true,
+  "public_rebroadcast_enabled": false,
+  "trade_calls": 0,
+  "provider_account_quota": "UNKNOWN",
+  "jin10_vendor_polling_limit": "NOT_CONFIRMED",
+  "jin10_local_poll_interval_seconds": 60,
+  "jin10_local_max_business_calls_per_utc_day": 1440,
+  "portal_cache_poll_interval_seconds": 5,
+  "browser_visual_acceptance": "SEE_SEPARATE_ISOLATED_BROWSER_RECEIPT",
+  "providers": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-16T01:54:55.051699Z",
+      "last_success_at": "2026-11-16T01:54:45.028937Z",
+      "last_received_at": "2026-11-16T01:54:45.008705Z",
+      "last_source_at": "2026-11-16T01:44:15Z",
+      "last_error_class": null,
+      "worker_alive": 1,
+      "coverage_gap": null,
+      "mcp_http_requests_total_since_cache_creation": 72,
+      "business_calls_today_utc": 51,
+      "business_attempts_today_utc_legacy_lower_bound": 51,
+      "business_success_since_v11": 16,
+      "business_failure_since_v11": 0,
+      "handshake_attempts_since_v11": 6,
+      "handshake_success_since_v11": 2
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_MARKET_CLOSED",
+      "heartbeat_at": "2026-11-16T01:54:55.092945Z",
+      "last_success_at": "2026-11-16T01:54:55.092945Z",
+      "last_received_at": "2026-11-16T01:54:55.091941Z",
+      "last_source_at": "2026-11-13T22:00:00.063000Z",
+      "last_error_class": null,
+      "worker_alive": 1,
+      "coverage_gap": null,
+      "last_push_at": "2026-11-16T01:54:55.091941Z",
+      "last_new_quote_at_since_v11": null,
+      "duplicate_quote_packets_since_v11": 2232,
+      "request_count_status": "NOT_APPLICABLE_WEBSOCKET_PUSH"
+    }
+  ],
+  "quote_symbols": [
+    {
+      "symbol": "MU",
+      "earliest_source_time": "2026-11-13T22:00:00.041000Z",
+      "latest_source_time": "2026-11-13T22:00:00.041000Z",
+      "latest_received_at": "2026-11-16T01:14:09.478592Z",
+      "saved_rows": 362,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "NVDA",
+      "earliest_source_time": "2026-11-13T22:00:00.044000Z",
+      "latest_source_time": "2026-11-13T22:00:00.044000Z",
+      "latest_received_at": "2026-11-16T01:14:09.447689Z",
+      "saved_rows": 1000,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "QQQ",
+      "earliest_source_time": "2026-11-13T22:00:00.048000Z",
+      "latest_source_time": "2026-11-13T22:00:00.048000Z",
+      "latest_received_at": "2026-11-16T01:14:07.625760Z",
+      "saved_rows": 604,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "SOXX",
+      "earliest_source_time": "2026-11-13T22:00:00.059000Z",
+      "latest_source_time": "2026-11-13T22:00:00.059000Z",
+      "latest_received_at": "2026-11-16T01:14:08.254358Z",
+      "saved_rows": 418,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "SPY",
+      "earliest_source_time": "2026-11-13T21:15:05.071000Z",
+      "latest_source_time": "2026-11-13T21:15:05.071000Z",
+      "latest_received_at": "2026-11-16T01:14:08.852025Z",
+      "saved_rows": 304,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "TQQQ",
+      "earliest_source_time": "2026-11-13T22:00:00.063000Z",
+      "latest_source_time": "2026-11-13T22:00:00.063000Z",
+      "latest_received_at": "2026-11-16T01:14:07.022412Z",
+      "saved_rows": 451,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    }
+  ],
+  "symbol_status": [
+    {
+      "symbol": "MU",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "NVDA",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "QQQ",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "SOXX",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "SPY",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "TQQQ",
+      "state": "SUBSCRIBED",
+      "reason": null
+    }
+  ],
+  "desired_subscription_symbols": [
+    "TQQQ",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "NVDA",
+    "MU"
+  ],
+  "jin10_news_items": 92,
+  "jin10_news_versions": 92,
+  "jin10_key_kinds": [
+    {
+      "source_key_kind": "SOURCE_URL_CANDIDATE",
+      "items": 92
+    }
+  ],
+  "owner_data_preservation": {
+    "auth_user": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 1
+    },
+    "core_watchlistitem": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 6
+    },
+    "core_userpreferences": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 1
+    },
+    "core_publicfactcard": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 14
+    }
+  }
+}

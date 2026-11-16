@@ -9,7 +9,7 @@ $Var = Join-Path $RepoRoot 'apps/quant_portal/var'
 $PidFile = Join-Path $Var 'personal_feed.pid.json'
 $OutLog = Join-Path $Var 'personal_feed.stdout.log'
 $ErrLog = Join-Path $Var 'personal_feed.stderr.log'
-$Config = Join-Path $RepoRoot 'configs/quant_portal_personal_feeds_v1.json'
+$Config = Join-Path $RepoRoot 'configs/quant_portal_personal_feeds_v11_20261116.json'
 $Python = (Get-Command python -ErrorAction Stop).Source
 
 function Get-VerifiedFeed {
@@ -17,7 +17,8 @@ function Get-VerifiedFeed {
     $Record = Get-Content -LiteralPath $PidFile -Raw | ConvertFrom-Json
     $Proc = Get-CimInstance Win32_Process -Filter "ProcessId=$($Record.pid)" -ErrorAction SilentlyContinue
     if ($null -eq $Proc -or $Proc.CommandLine -notlike '*scripts.quant_personal_feed.cli*run*') { return $null }
-    if ($Proc.CommandLine -notlike "*$Config*") { return $null }
+    $OldConfig = Join-Path $RepoRoot 'configs/quant_portal_personal_feeds_v1.json'
+    if ($Proc.CommandLine -notlike "*$Config*" -and $Proc.CommandLine -notlike "*$OldConfig*") { return $null }
     return $Record
 }
 

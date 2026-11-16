@@ -1,0 +1,41 @@
+{
+  "checked_at_utc": "2026-11-16T01:56:32.370561+00:00",
+  "target": "ISOLATED_COPY_SAME_CODE_127.0.0.1_8766",
+  "desktop": {
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "quoteCards": 6,
+    "newsCards": 51,
+    "watchControls": 4,
+    "interestButtons": 3,
+    "sourceLinks": 48,
+    "noSourceNotes": 3,
+    "sourceTimeLabels": 6,
+    "unknownCurrencyLabels": 6,
+    "states": [
+      "断开",
+      "断开"
+    ]
+  },
+  "mobile_390": {
+    "viewport": 390,
+    "scrollWidth": 390,
+    "quoteCards": 6,
+    "newsCards": 52,
+    "watchControls": 4,
+    "interestButtons": 3,
+    "sourceLinks": 48,
+    "noSourceNotes": 4,
+    "sourceTimeLabels": 6,
+    "unknownCurrencyLabels": 6,
+    "states": [
+      "断开",
+      "断开"
+    ]
+  },
+  "interest_filter_result_count": 7,
+  "synthetic_new_message_banner_seen": true,
+  "synthetic_new_message_banner_resolved": true,
+  "isolated_unsubscribe_pending": "EARLIER_ISOLATED_RUN_ONLY",
+  "page_error_count": 0
+}

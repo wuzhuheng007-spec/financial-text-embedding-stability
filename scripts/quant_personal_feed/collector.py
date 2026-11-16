@@ -41,7 +41,17 @@ def owner_id(config: dict) -> int:
     return int(rows[0][0])
 
 
-def verified_subscriptions(config: dict) -> tuple[dict, list[dict], dict[str, str]]:
+def verified_current_symbols(config: dict) -> dict[str, str]:
+    mapping_path = under_root(config["mapping_receipt_path"])
+    if hashlib.sha256(mapping_path.read_bytes()).hexdigest() != config["mapping_receipt_sha256"]:
+        raise ValueError("Official current security mapping receipt changed")
+    mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
+    return {row["requested_symbol"]: row["provider_code"] for row in mapping.get("rows", [])
+            if row.get("identity_scope") == "CURRENT_ONLY" and row.get("provider_market") == "US"
+            and row.get("provider_code")}
+
+
+def verified_subscriptions(config: dict, desired_symbols: list[str] | None = None) -> tuple[dict, list[dict], dict[str, str]]:
     mapping_path = under_root(config["mapping_receipt_path"])
     if hashlib.sha256(mapping_path.read_bytes()).hexdigest() != config["mapping_receipt_sha256"]:
         raise ValueError("Official current security mapping receipt changed")
@@ -63,7 +73,7 @@ def verified_subscriptions(config: dict) -> tuple[dict, list[dict], dict[str, st
             if row.get("provider_name"):
                 names[row["requested_symbol"]] = row["provider_name"]
     selected, unavailable = [], []
-    for symbol in config["moomoo"]["priority_symbols"]:
+    for symbol in (desired_symbols if desired_symbols is not None else config["moomoo"]["priority_symbols"]):
         row = current.get(symbol)
         if not row or not row.get("provider_code") or row.get("provider_market") != "US":
             unavailable.append({"symbol": symbol, "reason": "NO_VERIFIED_CURRENT_US_PROVIDER_CODE"})
@@ -72,10 +82,11 @@ def verified_subscriptions(config: dict) -> tuple[dict, list[dict], dict[str, st
         selected.append({"requested_symbol": symbol, "provider_code": code,
                          "instrument_id": code, "market": "US", "kind": "QUOTE",
                          "verification_status": "VERIFIED_EXACT_PROVIDER_CODE_MARKET"})
-    if not selected or len(selected) > 6:
+    budget = config["moomoo"].get("local_subscription_key_budget", 6)
+    if not selected or len(selected) > budget or budget > 6:
         raise ValueError("Personal six-key subscription budget invalid")
     live = {"provider": PROVIDER_NAME, "endpoint": WS_URL, "scope": "quote:read",
-            "entitlement_state": "BOUNDED_PERSONAL", "subscription_key_budget": len(selected),
+            "entitlement_state": "BOUNDED_PERSONAL", "subscription_key_budget": budget,
             "mapping_receipt_path": config["mapping_receipt_path"],
             "mapping_receipt_sha256": config["mapping_receipt_sha256"],
             "subscriptions": selected, "unserved_subscriptions": unavailable}
@@ -89,12 +100,19 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
     max_attempts = config["moomoo"]["max_reconnect_attempts"]
     attempt = 0
     try:
-        live, unavailable, names = verified_subscriptions(config)
-        for row in unavailable:
-            store.symbol_state(user_id,row["symbol"],"UNAVAILABLE",row["reason"])
-        for row in live["subscriptions"]:
-            store.symbol_state(user_id,row["requested_symbol"],"CONNECTING")
+        store.ensure_selection(config["moomoo"]["priority_symbols"])
+        store.provider_metric("moomoo", worker_alive=1)
         while not stop.is_set() and attempt < max_attempts:
+            generation, desired = store.selection()
+            if not desired:
+                store.state("moomoo", "NO_SUBSCRIPTIONS")
+                stop.wait(2)
+                continue
+            live, unavailable, names = verified_subscriptions(config, desired)
+            for row in unavailable:
+                store.symbol_state(user_id,row["symbol"],"UNAVAILABLE",row["reason"])
+            for row in live["subscriptions"]:
+                store.symbol_state(user_id,row["requested_symbol"],"CONNECTING")
             adapter = MoomooWebSocketPush(
                 live=live, token_store=LocalTokenStore(TOKEN_FILE),
                 status_path=under_root(config["moomoo"]["status_path"]))
@@ -112,7 +130,14 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                         store.symbol_state(user_id,symbol,"UNAVAILABLE",skipped.get(code,"NO_ACK"))
                 state = adapter.connection_state
                 store.state("moomoo",state,success=True)
+                attempt = 0
                 while not stop.is_set():
+                    new_generation, new_desired = store.selection()
+                    if new_generation != generation:
+                        for old in desired:
+                            if old not in new_desired:
+                                store.symbol_state(user_id,old,"STOPPED","USER_UNSUBSCRIBED")
+                        break
                     event = adapter.next_message(timeout_seconds=2)
                     state = adapter.connection_state
                     if event and event.get("kind") == "QUOTE":
@@ -128,8 +153,12 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                                 limit=config["retention"]["quotes_per_symbol"])
                             store.state("moomoo",state,success=True,
                                 source_at=quote["provider_time"],received_at=quote["received_at"])
+                            store.provider_metric("moomoo",last_push_at=quote["received_at"])
                             if saved:
                                 store.symbol_state(user_id,symbol,"RECEIVED")
+                                store.provider_metric("moomoo",last_quote_saved_at=quote["received_at"])
+                            else:
+                                store.provider_metric("moomoo",duplicate_quote_packets=1)
                     elif event and event.get("kind") == "GAP":
                         store.state("moomoo","PARTIAL_SYMBOL_UNAVAILABLE",error_class=event["gap"].get("reason"))
                     else:
@@ -153,15 +182,22 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
         if stop.is_set():
             store.state("moomoo","DISCONNECTED",error_class="USER_STOP")
     finally:
+        store.provider_metric("moomoo",worker_alive=0)
         store.close()
 
 
-def _jin10_session(config: dict) -> tuple[McpSession, dict]:
+def _jin10_session(config: dict, store: PersonalFeedStore) -> tuple[McpSession, dict]:
     session = McpSession(max_requests=20,
                          timeout_seconds=config["jin10"]["timeout_seconds"],
                          max_response_bytes=config["jin10"]["max_response_bytes"])
+    store.state("jin10", "CONNECTING", request_increment=1)
+    store.provider_metric("jin10",handshake_attempts_total=1)
     session.initialize()
+    store.state("jin10", "CONNECTING", request_increment=1)
+    store.provider_metric("jin10",handshake_attempts_total=1)
     session.initialized()
+    store.state("jin10", "CONNECTING", request_increment=1)
+    store.provider_metric("jin10",handshake_attempts_total=1)
     listing = session.list_tools().payload["result"]
     tools = [t for t in listing.get("tools", []) if t.get("name") == config["jin10"]["tool"]]
     if len(tools) != 1:
@@ -169,6 +205,7 @@ def _jin10_session(config: dict) -> tuple[McpSession, dict]:
     schema = tools[0].get("inputSchema", {})
     if schema.get("type") != "object" or set(schema.get("required", [])):
         raise McpProtocolError("Fresh flash input schema does not permit an empty latest-page request")
+    store.provider_metric("jin10",handshake_success_total=1)
     return session, schema
 
 
@@ -206,31 +243,42 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
     interval = config["jin10"]["poll_interval_seconds"]
     max_calls = config["jin10"]["max_business_calls_per_utc_day"]
     try:
+        store.provider_metric("jin10",worker_alive=1)
         if interval < 60 or not 1 <= max_calls <= 1440:
             raise ValueError("Jin10 local budget requires >=60s spacing and <=1440 business calls/UTC day")
         while not stop.is_set():
-            if store.daily_business_calls("jin10") >= max_calls:
+            if store.daily_business_attempts("jin10") >= max_calls:
                 store.state("jin10","REQUEST_BUDGET_PAUSED",error_class="LOCAL_DAILY_CAP")
                 _wait_heartbeat(store,"jin10","REQUEST_BUDGET_PAUSED",stop,min(interval,60))
                 continue
+            business_attempted = False
             try:
                 store.state("jin10","CONNECTING" if session is None else "CONNECTED")
                 if session is None or session.requests_used >= 18:
-                    session, _schema = _jin10_session(config)
-                    store.state("jin10","CONNECTED",success=True,request_increment=3)
+                    session, _schema = _jin10_session(config,store)
+                    store.state("jin10","CONNECTED")
                 before = time.monotonic()
                 # A fresh first page is the latest feed; a returned cursor points
                 # backwards. Subsequent polls re-read one page and deduplicate.
+                store.state("jin10","CONNECTED",request_increment=1)
+                store.provider_metric("jin10",business_attempts_today=1)
+                business_attempted = True
                 reply = session.call_tool(config["jin10"]["tool"], {})
                 received = utc_now()
-                store.state("jin10","CONNECTED",success=True,request_increment=1,
-                            business_increment=1,received_at=received)
                 payload, _locator = unwrap_mcp_payload(reply.payload)
                 if payload.get("status") != 200 or not isinstance(payload.get("data"),dict):
                     raise McpProtocolError("Flash business response rejected")
                 items = payload["data"].get("items")
                 if not isinstance(items,list):
                     raise McpProtocolError("Flash page lacks items array")
+                keys = [hashlib.sha256(json.dumps((item.get("id"),item.get("url"),item.get("time"),
+                        item.get("title"),item.get("content")),ensure_ascii=False).encode("utf-8")).hexdigest()
+                        for item in items if isinstance(item,dict)]
+                prior = store.db.execute("SELECT last_page_fingerprints FROM provider_state WHERE provider='jin10'").fetchone()
+                prior_keys = set(json.loads(prior[0])) if prior and prior[0] else set()
+                if prior_keys and keys and not prior_keys.intersection(keys):
+                    store.provider_metric("jin10",coverage_gap="POSSIBLE_GAP_NO_PAGE_OVERLAP")
+                store.provider_metric("jin10",last_page_fingerprints=json.dumps(keys))
                 for item in items:
                     if isinstance(item,dict) and (item.get("content") or item.get("title")):
                         store.put_news(user_id,item,received_at=received,
@@ -239,16 +287,20 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                 source_times = [stamp for item in items if isinstance(item,dict)
                                 if (stamp := published_utc(item.get("time")))]
                 store.state("jin10","CONNECTED",success=True,received_at=received,
-                            source_at=max(source_times) if source_times else None)
+                            source_at=max(source_times) if source_times else None,
+                            business_increment=1)
+                store.provider_metric("jin10",business_success_total=1)
                 failures = 0
                 # Each successful latest-page poll is one completed cycle, even
                 # when every item was already cached; no synthetic item is made.
                 _wait_heartbeat(store,"jin10","CONNECTED",stop,
                                 max(0,interval-(time.monotonic()-before)))
             except McpHttpError as exc:
+                if business_attempted:
+                    store.provider_metric("jin10",business_failure_total=1)
                 store.state("jin10","AUTH_EXPIRED" if exc.status in (401,403)
                             else "RATE_LIMITED" if exc.status==429 else "DISCONNECTED",
-                            error_class=f"HTTP_{exc.status}",request_increment=1)
+                            error_class=f"HTTP_{exc.status}")
                 if exc.status in (401,403):
                     return
                 if exc.status == 429:
@@ -261,6 +313,8 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                     _wait_heartbeat(store,"jin10","DISCONNECTED",stop,min(60,2**failures*5))
                 session = None
             except Exception as exc:
+                if business_attempted:
+                    store.provider_metric("jin10",business_failure_total=1)
                 failures += 1
                 store.state("jin10","DISCONNECTED",error_class=type(exc).__name__)
                 if failures >= config["jin10"]["max_reconnect_attempts"]:
@@ -269,4 +323,5 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                 _wait_heartbeat(store,"jin10","DISCONNECTED",stop,min(60,2**failures*5))
         store.state("jin10","DISCONNECTED",error_class="USER_STOP")
     finally:
+        store.provider_metric("jin10",worker_alive=0)
         store.close()

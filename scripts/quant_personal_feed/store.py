@@ -68,6 +68,7 @@ class PersonalFeedStore:
             delay_status TEXT NOT NULL, content_sha256 TEXT NOT NULL,
             UNIQUE(owner_id,provider,symbol,provider_time,content_sha256));
           CREATE INDEX IF NOT EXISTS quotes_latest ON quotes(owner_id,symbol,received_at DESC,id DESC);
+          CREATE INDEX IF NOT EXISTS quotes_source_latest ON quotes(owner_id,symbol,provider_time DESC,received_at DESC,id DESC);
           CREATE TABLE IF NOT EXISTS symbol_state (
             symbol TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, state TEXT NOT NULL,
             reason TEXT, updated_at TEXT NOT NULL);
@@ -83,6 +84,14 @@ class PersonalFeedStore:
             content_sha256 TEXT NOT NULL, raw_item_json TEXT NOT NULL,
             UNIQUE(item_key,content_sha256));
           CREATE INDEX IF NOT EXISTS news_latest ON news_versions(owner_id,received_at DESC,id DESC);
+          CREATE TABLE IF NOT EXISTS quote_selection (
+            symbol TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, desired INTEGER NOT NULL,
+            position INTEGER NOT NULL, updated_at TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS selection_meta (
+            singleton INTEGER PRIMARY KEY CHECK(singleton=1), generation INTEGER NOT NULL);
+          CREATE TABLE IF NOT EXISTS news_interest (
+            interest_key TEXT PRIMARY KEY, owner_id INTEGER NOT NULL,
+            enabled INTEGER NOT NULL, updated_at TEXT NOT NULL);
         """)
         row = self.db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
         if row is None:
@@ -91,6 +100,25 @@ class PersonalFeedStore:
             self.db.close()
             raise ValueError("Personal feed cache is bound to a different owner; refuse access")
         self.owner_id = owner_id
+        additions = {
+            "last_push_at": "TEXT", "last_quote_saved_at": "TEXT",
+            "duplicate_quote_packets": "INTEGER NOT NULL DEFAULT 0",
+            "business_attempts_today": "INTEGER NOT NULL DEFAULT 0",
+            "business_success_total": "INTEGER NOT NULL DEFAULT 0",
+            "business_failure_total": "INTEGER NOT NULL DEFAULT 0",
+            "handshake_attempts_total": "INTEGER NOT NULL DEFAULT 0",
+            "handshake_success_total": "INTEGER NOT NULL DEFAULT 0",
+            "worker_alive": "INTEGER NOT NULL DEFAULT 0",
+            "coverage_gap": "TEXT",
+            "last_page_fingerprints": "TEXT",
+        }
+        columns = {row[1] for row in self.db.execute("PRAGMA table_info(provider_state)")}
+        for name, definition in additions.items():
+            if name not in columns:
+                self.db.execute(f"ALTER TABLE provider_state ADD COLUMN {name} {definition}")
+        # Legacy counter is only a lower bound: older failures were not counted.
+        self.db.execute("""UPDATE provider_state SET business_attempts_today=business_calls_today
+          WHERE business_day_utc=? AND business_attempts_today<business_calls_today""", (utc_now()[:10],))
 
     def close(self) -> None:
         self.db.close()
@@ -101,6 +129,7 @@ class PersonalFeedStore:
               business_increment: int = 0) -> None:
         now = utc_now()
         day = now[:10]
+        prior = self.db.execute("SELECT business_day_utc FROM provider_state WHERE provider=?", (provider,)).fetchone()
         self.db.execute("""
           INSERT INTO provider_state(provider,state,heartbeat_at,last_success_at,
             last_received_at,last_source_at,last_error_class,requests_total,
@@ -110,7 +139,9 @@ class PersonalFeedStore:
             state=excluded.state, heartbeat_at=excluded.heartbeat_at,
             last_success_at=COALESCE(excluded.last_success_at,provider_state.last_success_at),
             last_received_at=COALESCE(excluded.last_received_at,provider_state.last_received_at),
-            last_source_at=COALESCE(excluded.last_source_at,provider_state.last_source_at),
+            last_source_at=CASE WHEN excluded.last_source_at IS NULL THEN provider_state.last_source_at
+              WHEN provider_state.last_source_at IS NULL OR excluded.last_source_at>provider_state.last_source_at
+              THEN excluded.last_source_at ELSE provider_state.last_source_at END,
             last_error_class=excluded.last_error_class,
             requests_total=provider_state.requests_total+excluded.requests_total,
             business_calls_today=CASE WHEN provider_state.business_day_utc=excluded.business_day_utc
@@ -119,11 +150,95 @@ class PersonalFeedStore:
             business_day_utc=excluded.business_day_utc
         """, (provider,state,now,now if success else None,received_at,source_at,
               error_class,request_increment,business_increment,day))
+        if prior and prior[0] != day:
+            self.db.execute("UPDATE provider_state SET business_attempts_today=0 WHERE provider=?", (provider,))
 
     def daily_business_calls(self, provider: str) -> int:
         row = self.db.execute("SELECT business_calls_today,business_day_utc FROM provider_state WHERE provider=?",
                               (provider,)).fetchone()
         return row["business_calls_today"] if row and row["business_day_utc"] == utc_now()[:10] else 0
+
+    def daily_business_attempts(self, provider: str) -> int:
+        row = self.db.execute("SELECT business_attempts_today,business_day_utc FROM provider_state WHERE provider=?",
+                              (provider,)).fetchone()
+        return row["business_attempts_today"] if row and row["business_day_utc"] == utc_now()[:10] else 0
+
+    def provider_metric(self, provider: str, **changes: object) -> None:
+        allowed = {"last_push_at", "last_quote_saved_at", "duplicate_quote_packets",
+                   "business_attempts_today", "business_success_total", "business_failure_total",
+                   "handshake_attempts_total", "handshake_success_total", "worker_alive", "coverage_gap",
+                   "last_page_fingerprints"}
+        if not changes or set(changes) - allowed:
+            raise ValueError("Unknown provider metric")
+        row = self.db.execute("SELECT state FROM provider_state WHERE provider=?", (provider,)).fetchone()
+        if row is None:
+            self.state(provider, "CONNECTING")
+        increments = {"duplicate_quote_packets", "business_attempts_today", "business_success_total",
+                      "business_failure_total", "handshake_attempts_total", "handshake_success_total"}
+        assignments = [f"{key}={key}+?" if key in increments else f"{key}=?" for key in changes]
+        self.db.execute(f"UPDATE provider_state SET {', '.join(assignments)} WHERE provider=?",
+                        (*changes.values(), provider))
+
+    def ensure_selection(self, symbols: list[str]) -> None:
+        self.db.execute("INSERT OR IGNORE INTO selection_meta(singleton,generation) VALUES(1,0)")
+        if self.db.execute("SELECT COUNT(*) FROM quote_selection WHERE owner_id=?", (self.owner_id,)).fetchone()[0] == 0:
+            for position, symbol in enumerate(symbols):
+                self.db.execute("INSERT INTO quote_selection VALUES(?,?,?,?,?)",
+                                (symbol,self.owner_id,1,position,utc_now()))
+        for key in ("SNDK", "SKHYNIX", "SPACEX"):
+            self.db.execute("INSERT OR IGNORE INTO news_interest VALUES(?,?,1,?)",
+                            (key,self.owner_id,utc_now()))
+
+    def selection(self) -> tuple[int, list[str]]:
+        row = self.db.execute("SELECT generation FROM selection_meta WHERE singleton=1").fetchone()
+        generation = row[0] if row else 0
+        rows = self.db.execute("SELECT symbol FROM quote_selection WHERE owner_id=? AND desired=1 ORDER BY position,symbol",
+                               (self.owner_id,)).fetchall()
+        return generation, [r[0] for r in rows]
+
+    def change_selection(self, symbol: str, action: str, verified_symbols: set[str],
+                         budget: int, replace_symbol: str | None = None) -> str:
+        if action not in {"subscribe", "unsubscribe"}:
+            return "INVALID_ACTION"
+        if action == "subscribe" and symbol not in verified_symbols:
+            return "UNVERIFIED_CODE"
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            _, desired = self.selection()
+            if action == "unsubscribe":
+                if symbol not in desired:
+                    result = "ALREADY_STOPPED"
+                else:
+                    self.db.execute("UPDATE quote_selection SET desired=0,updated_at=? WHERE symbol=? AND owner_id=?",
+                                    (utc_now(),symbol,self.owner_id))
+                    result = "PENDING_STOP"
+            elif symbol in desired:
+                result = "ALREADY_SELECTED"
+            elif len(desired) >= budget and (not replace_symbol or replace_symbol not in desired or replace_symbol == symbol):
+                result = "BUDGET_FULL"
+            else:
+                if replace_symbol:
+                    self.db.execute("UPDATE quote_selection SET desired=0,updated_at=? WHERE symbol=? AND owner_id=?",
+                                    (utc_now(),replace_symbol,self.owner_id))
+                position = self.db.execute("SELECT COALESCE(MAX(position),-1)+1 FROM quote_selection").fetchone()[0]
+                self.db.execute("""INSERT INTO quote_selection(symbol,owner_id,desired,position,updated_at)
+                  VALUES(?,?,?,?,?) ON CONFLICT(symbol) DO UPDATE SET desired=1,position=excluded.position,
+                  updated_at=excluded.updated_at""", (symbol,self.owner_id,1,position,utc_now()))
+                result = "PENDING_SUBSCRIBE"
+            if result in {"PENDING_STOP", "PENDING_SUBSCRIBE"}:
+                self.db.execute("UPDATE selection_meta SET generation=generation+1 WHERE singleton=1")
+            self.db.execute("COMMIT")
+            return result
+        except Exception:
+            self.db.execute("ROLLBACK")
+            raise
+
+    def set_news_interest(self, key: str, enabled: bool) -> None:
+        if key not in {"SNDK", "SKHYNIX", "SPACEX"}:
+            raise ValueError("Unknown news interest")
+        self.db.execute("""INSERT INTO news_interest VALUES(?,?,?,?) ON CONFLICT(interest_key)
+          DO UPDATE SET enabled=excluded.enabled,updated_at=excluded.updated_at""",
+          (key,self.owner_id,int(enabled),utc_now()))
 
     def symbol_state(self, owner_id: int, symbol: str, state: str, reason: str | None = None) -> None:
         if owner_id != self.owner_id:
@@ -154,7 +269,7 @@ class PersonalFeedStore:
            quote.get("delay_status") or "UNKNOWN",digest))
         inserted = self.db.total_changes > before
         self.db.execute("""DELETE FROM quotes WHERE id IN (
-          SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY received_at DESC,id DESC
+          SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY provider_time DESC,received_at DESC,id DESC
           LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
         return inserted
 
@@ -220,19 +335,26 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
         quotes = db.execute("""SELECT q.symbol,q.provider_code,q.display_name,q.price_text,
           q.currency,q.provider_time,q.received_at,q.market_state,q.delay_status FROM quotes q
           WHERE q.owner_id=? AND q.id=(SELECT q2.id FROM quotes q2 WHERE q2.owner_id=q.owner_id
-            AND q2.symbol=q.symbol ORDER BY q2.received_at DESC,q2.id DESC LIMIT 1)
+            AND q2.symbol=q.symbol ORDER BY q2.provider_time DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
           ORDER BY q.symbol""", (owner_id,)).fetchall()
         news = db.execute("""SELECT v.provider_id,v.title,v.content,v.source_url,
           v.published_raw,v.published_at_utc,v.received_at,v.version,
-          i.source_key_kind FROM news_versions v JOIN news_items i ON i.item_key=v.item_key
+          i.source_key_kind,i.item_key FROM news_versions v JOIN news_items i ON i.item_key=v.item_key
           WHERE v.owner_id=? AND v.version=i.latest_version
           ORDER BY v.received_at DESC,v.id DESC LIMIT ?""", (owner_id,news_limit)).fetchall()
         states = db.execute("SELECT * FROM provider_state ORDER BY provider").fetchall()
         symbols = db.execute("SELECT symbol,state,reason,updated_at FROM symbol_state WHERE owner_id=?",
                              (owner_id,)).fetchall()
+        tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        selection = db.execute("SELECT symbol,desired,updated_at FROM quote_selection WHERE owner_id=? ORDER BY position,symbol",
+                               (owner_id,)).fetchall() if "quote_selection" in tables else []
+        interests = db.execute("SELECT interest_key,enabled FROM news_interest WHERE owner_id=? ORDER BY interest_key",
+                               (owner_id,)).fetchall() if "news_interest" in tables else []
         news_total = db.execute("SELECT COUNT(*) FROM news_items WHERE owner_id=?",(owner_id,)).fetchone()[0]
         return {"quotes": [dict(row) for row in quotes],
                 "news": [dict(row) for row in news],
                 "news_total": news_total,
                 "states": [dict(row) for row in states],
-                "symbols": [dict(row) for row in symbols], "cache_state": "READY"}
+                "symbols": [dict(row) for row in symbols],
+                "selection": [dict(row) for row in selection],
+                "news_interests": [dict(row) for row in interests], "cache_state": "READY"}

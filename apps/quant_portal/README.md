@@ -20,6 +20,10 @@ The local process, invite, database, secret and logs are under ignored `apps/qua
 
 The personal feed worker has its own start, status and stop commands. `start_personal.ps1` and `stop_personal.ps1` coordinate it with the portal. Repeated start does not create a second feed worker. Only the existing local owner can read `/personal-feed.json`; a different account gets HTTP 404. The worker uses an existing encrypted `quote:read` credential and the local `JIN10_MCP_TOKEN` without exposing them in the browser. Market closure, source timestamps, receipt timestamps and unknown delay or currency are shown separately. The account-specific moomoo quota and Jin10 vendor polling limit remain unconfirmed; `1440` is a local daily call cap, not a supplier allowance.
 
+Personal feed v1.1 separates watchlist membership from quote subscription. The owner can subscribe or stop an already verified code on the dashboard; at the six-key local budget, the owner explicitly chooses which current subscription to replace. The background worker applies the change and the page waits for its acknowledgement. SNDK, SK hynix and SpaceX are separate news interests; a news interest does not create a price series. The dashboard keeps the last cached quote visible with its source time during market closure or a feed interruption. It polls only the local cache every five seconds. [v1.1 report](../../reports/2026-11-16_quant_portal_personal_feed_v11.en.md) and [plan–actual](../../results/quant_portal_personal_feed_v11_20261116/plan_execution.csv).
+
+To record a manual market-open check during a real US regular session, run `python -m scripts.quant_personal_feed.open_market_acceptance --config configs/quant_portal_personal_feeds_v11_20261116.json --seconds 120`. Its private receipt is written under the ignored app `var/` directory. The command observes cached source-time progression and does not change subscriptions.
+
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 start
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 status

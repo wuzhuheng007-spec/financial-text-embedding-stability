@@ -163,6 +163,75 @@ def personal_feed_json(request):
 
 @login_required
 @require_POST
+def personal_quote_selection(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal feed unavailable")
+    symbol = str(request.POST.get("symbol", "")).strip().upper()
+    action = str(request.POST.get("action", "")).strip()
+    replace_symbol = str(request.POST.get("replace_symbol", "")).strip().upper() or None
+    if not symbol or len(symbol) > 16 or not symbol.isascii() or not symbol.replace(".", "").isalnum():
+        return JsonResponse({"result": "INVALID_SYMBOL"}, status=400)
+    if action == "subscribe" and not WatchlistItem.objects.filter(user=request.user,symbol=symbol).exists():
+        return JsonResponse({"result": "ADD_TO_WATCHLIST_FIRST"}, status=400)
+    import json
+    import sys
+    from pathlib import Path
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0,str(REPO_ROOT))
+    from scripts.quant_personal_feed.store import PersonalFeedStore
+    from scripts.quant_personal_feed.collector import verified_current_symbols
+    config = json.loads((REPO_ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json").read_text(encoding="utf-8"))
+    try:
+        verified = verified_current_symbols(config)
+        store = PersonalFeedStore(Path(settings.PERSONAL_FEED_DB_PATH),request.user.pk)
+        try:
+            store.ensure_selection(config["moomoo"]["priority_symbols"])
+            result = store.change_selection(symbol,action,set(verified),
+                                            config["moomoo"]["local_subscription_key_budget"],replace_symbol)
+            if result == "PENDING_SUBSCRIBE":
+                store.symbol_state(request.user.pk,symbol,"WAITING_SUBSCRIPTION","SERVER_ACK_PENDING")
+                if replace_symbol:
+                    store.symbol_state(request.user.pk,replace_symbol,"WAITING_STOP","REPLACEMENT_REQUESTED")
+            elif result == "PENDING_STOP":
+                store.symbol_state(request.user.pk,symbol,"WAITING_STOP","SERVER_UNSUBSCRIBE_PENDING")
+        finally:
+            store.close()
+    except (OSError, ValueError, KeyError):
+        return JsonResponse({"result": "MAPPING_OR_CACHE_UNAVAILABLE"}, status=503)
+    response = JsonResponse({"result": result})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+@require_POST
+def personal_news_interest(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal feed unavailable")
+    key = str(request.POST.get("interest_key", "")).strip().upper()
+    enabled = request.POST.get("enabled") == "1"
+    import sys
+    from pathlib import Path
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0,str(REPO_ROOT))
+    from scripts.quant_personal_feed.store import PersonalFeedStore
+    try:
+        store = PersonalFeedStore(Path(settings.PERSONAL_FEED_DB_PATH),request.user.pk)
+        try:
+            store.set_news_interest(key,enabled)
+        finally:
+            store.close()
+    except ValueError:
+        return JsonResponse({"result": "INVALID_INTEREST"}, status=400)
+    response = JsonResponse({"result":"UPDATED","interest_key":key,"enabled":enabled})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+@require_POST
 def watchlist_add(request):
     form = WatchlistItemForm(request.POST)
     if form.is_valid():
@@ -175,7 +244,8 @@ def watchlist_add(request):
             # Keep errors generic; neither another user's list nor DB details are exposed.
             messages.error(request, "Invalid or duplicate watchlist item.")
         else:
-            messages.success(request, "Watchlist item added as an unverified security candidate.")
+            messages.success(request, "已加入自选；行情订阅需另行确认。" if settings.PERSONAL_MODE
+                             else "Watchlist item added as an unverified security candidate.")
     else:
         messages.error(request, "Invalid watchlist item.")
     return redirect("dashboard")
@@ -185,6 +255,14 @@ def watchlist_add(request):
 @require_POST
 def watchlist_remove(request, pk):
     item = get_object_or_404(WatchlistItem, pk=pk, user=request.user)
+    if settings.PERSONAL_MODE and request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME:
+        feed = for_owner(request.user,set())
+        selected = {row["symbol"] for row in feed.get("selection",[]) if row["desired"]}
+        pending_stop = {row["symbol"] for row in feed.get("symbols",[])
+                        if row["state"] == "WAITING_STOP"}
+        if item.symbol in selected or item.symbol in pending_stop:
+            messages.error(request,"请先停止该证券行情订阅，等待确认后再移除自选。")
+            return redirect("dashboard")
     item.delete()
     messages.success(request, "Watchlist item removed.")
     return redirect("dashboard")
