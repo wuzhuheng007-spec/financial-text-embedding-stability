@@ -1,0 +1,38 @@
+{
+  "schema": "financial_text_v24_pre_freeze_code_audit_redacted_v1",
+  "audited_at_utc": "2026-11-16T00:05:31.373979+00:00",
+  "audited_at_asia_shanghai": "2026-11-16T08:05:31.373979+08:00",
+  "review_role": "SAME_TEAM_CODEX_READ_ONLY",
+  "status": "PENDING_RECHECK",
+  "findings": [
+    {
+      "id": "V24_AUDIT_001",
+      "severity": "BLOCKING_GATE",
+      "location": [
+        "scripts/market_observer_financial_text_v24/semantic.py:325-326",
+        "scripts/market_observer_financial_text_v24/evaluate.py:195-204",
+        "scripts/market_observer_financial_text_v24/evaluate.py:361-363"
+      ],
+      "observed_contract": "Production parser emits UNKNOWN for every footnote. Scorer requires NOT_APPLICABLE for the three NVDA selected tables where frozen reference says no footnote is required.",
+      "impact": "Six known NVDA witness cells cannot satisfy fully_bound=6 even if all other relations are correct.",
+      "required_recheck": "Confirm parser distinguishes source-supported absence from unresolved MU footnote links; run source regression and retain failed pre-freeze result.",
+      "resolution_status": "PENDING_RECHECK"
+    },
+    {
+      "id": "V24_AUDIT_002",
+      "severity": "SCORER_BLIND_SPOT",
+      "location": [
+        "scripts/market_observer_financial_text_v24/semantic.py:327-357",
+        "scripts/market_observer_financial_text_v24/evaluate.py:221-235",
+        "scripts/market_observer_financial_text_v24/evaluate.py:295",
+        "scripts/market_observer_financial_text_v24/evaluate.py:356-363"
+      ],
+      "observed_contract": "Parser uses MECHANICALLY_COMPLETE, while scorer only checks full_status == EXPLICIT when counting wrong_complete_declarations. Parser completeness does not include all applicable currency/footnote states.",
+      "impact": "An incorrectly complete declaration can escape the named failure counter and gate.",
+      "required_recheck": "Align declared status vocabulary and scorer check; ensure applicable known/unknown unit states and unresolved links are not silently declared complete.",
+      "resolution_status": "PENDING_RECHECK"
+    }
+  ],
+  "frozen_reference_modified": false,
+  "source_text_or_values_included": false
+}

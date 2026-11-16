@@ -1,0 +1,41 @@
+{
+  "schema": "financial_text_v24_pre_freeze_development_score_audit_redacted_v1",
+  "recorded_at_utc": "2026-11-16T00:08:05.675602+00:00",
+  "recorded_at_asia_shanghai": "2026-11-16T08:08:05.675602+08:00",
+  "status": "PRE_FREEZE_DEVELOPMENT_SCORE_NOT_FROZEN",
+  "review_role": "SAME_TEAM_CODEX_READ_ONLY",
+  "first_or_final_pass": false,
+  "description": "One in-memory diagnostic parse and scorer call on the four already reviewed training-period tables. This was performed during active code revisions. It is not the frozen regression run and does not establish first-try success.",
+  "code_hashes_observed_at_receipt_time_not_captured_at_execution": {
+    "scripts/market_observer_financial_text_v24/semantic.py": "0ac82f4c5b3934187a2aa71a4468bdd3b8211e7523c936779dce102f83789a53",
+    "scripts/market_observer_financial_text_v24/evaluate.py": "ac7a5ae9bb0456426f1672e447a8617b7ea4639bb41c91fecd53eaec7d0955e6"
+  },
+  "code_hash_limitation": "The diagnostic invocation did not save contemporaneous code hashes. These hashes were measured when this receipt was written, so exact execution-byte identity is not asserted.",
+  "input_reference_hashes": {
+    "selection_manifest_sha256": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+    "expected_relations_sha256": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a"
+  },
+  "diagnostic_counts": {
+    "source_tables": 4,
+    "expected_numeric_cells": 138,
+    "nvda_witness_fully_bound": 6,
+    "mu_known_fields_complete": 48,
+    "false_header_rows": 0,
+    "false_header_links": 0,
+    "wrong_period_links": 0,
+    "wrong_unit_scope_cells": 0,
+    "wrong_complete_declarations": 0,
+    "unverified_explicit_links": 0,
+    "unverified_explicit_relations": 0,
+    "unexpected_numeric_cells": 0,
+    "missed_numeric_cells": 0,
+    "wrong_explicit_fields": 0,
+    "unknown_fields_on_known_source": 0,
+    "conflict_fields_on_known_source": 0,
+    "correct_abstentions": 78
+  },
+  "diagnostic_small_scope_gate_returned": "PASS",
+  "frozen_final_run_performed": false,
+  "output_row_data_included": false,
+  "private_source_or_cell_values_included": false
+}

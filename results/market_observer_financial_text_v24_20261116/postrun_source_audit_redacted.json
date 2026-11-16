@@ -1,0 +1,112 @@
+{
+  "schema": "financial_text_v24_postrun_source_audit_redacted_v1",
+  "audited_at_utc": "2026-11-16T00:14:08.233495+00:00",
+  "audited_at_asia_shanghai": "2026-11-16T08:14:08.233495+08:00",
+  "run_id": "frozen_v1",
+  "frozen_run_at_utc": "2026-11-16T00:11:38.070720+00:00",
+  "frozen_run_at_asia_shanghai": "2026-11-16T08:11:38.070720+08:00",
+  "audit_role": "SAME_TEAM_CODEX_REVIEW_NOT_INDEPENDENT_HUMAN_GOLD",
+  "scope": "four frozen saved NVDA/MU training-period tables only; no later-window documents or labels",
+  "artifact_sha256": {
+    "frozen_run_receipt": "c3caed13c18c7faf5884b8fc83497bd4f3c33ee69f1c19c6604a7e4ed8fb1905",
+    "public_evaluation": "8a0918a2eea36b37ddebe2f9bfb12a53756439af1175c699c09929e6ee7b4442",
+    "private_per_cell_ledger": "f0725647f2b3de44514db56bf9aad52bf1233bc20356927500827bac66bf9de9",
+    "private_bom_csv": "41f0939e2f397e38d00a071ff94621b1d966225b99ac914d7be8a3c78ba5a8ce",
+    "selection_manifest": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+    "expected_relations": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a"
+  },
+  "source_raw_sha256": {
+    "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+    "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+    "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+    "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909"
+  },
+  "frozen_dependency_file_count": 20,
+  "checks": {
+    "public_freeze_sha_matches": true,
+    "public_private_ledger_sha_matches": true,
+    "public_private_csv_sha_matches": true,
+    "public_selection_sha_matches": true,
+    "public_reference_sha_matches": true,
+    "private_embedded_public_summary_matches": true,
+    "all_frozen_dependency_file_hashes_match": true,
+    "all_four_raw_source_hashes_match": true,
+    "six_nvda_witnesses_match_prior_frozen_ids_and_paths": true,
+    "six_nvda_witnesses_ledger_fully_bound": true,
+    "ledger_138_cells_one_to_one_and_claims_consistent": true,
+    "csv_utf8_bom_and_field_rows_match_json": true,
+    "public_key_counts_match_ledger": true
+  },
+  "source_review_method": [
+    "Read saved ledger, frozen reference and the four saved raw HTML documents; did not rerun production parser or scorer.",
+    "For every expected cell, checked ledger/source DOM identity and source text for value, row metric, period or comparison label, basis, unit scale and applicable footnote marker.",
+    "Checked each emitted source path resolves in the saved raw HTML; checked every EXPLICIT edge receipt is frozen-source-supported and no forbidden or unverified edge is reported.",
+    "Reconciled all field decisions, witness flags, BOM CSV rows and public aggregate counts with saved private ledger."
+  ],
+  "source_path_review": {
+    "unique_source_paths_resolved_across_four_tables": 255,
+    "expected_numeric_cell_dom_paths_reviewed": 138,
+    "explicit_source_edges_reviewed": 1104,
+    "forbidden_data_header_paths_in_frozen_reference": 195,
+    "forbidden_header_links_reported": 0
+  },
+  "decision_counts": {
+    "CORRECT_ABSTENTION": 78,
+    "CORRECT_EXPLICIT": 807,
+    "CORRECT_NOT_APPLICABLE": 255
+  },
+  "correct_abstention_breakdown": {
+    "mu_currency_unknown": 30,
+    "mu_footnote_link_unknown": 48
+  },
+  "table_counts": [
+    {
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "ledger_cells": 30,
+      "known_fields_complete": 30,
+      "fully_bound": 30,
+      "source_paths_resolved_in_readonly_html_review": 57,
+      "source_relation_check": "NO_CONTRADICTION_FOUND"
+    },
+    {
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "ledger_cells": 30,
+      "known_fields_complete": 30,
+      "fully_bound": 30,
+      "source_paths_resolved_in_readonly_html_review": 57,
+      "source_relation_check": "NO_CONTRADICTION_FOUND"
+    },
+    {
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "ledger_cells": 30,
+      "known_fields_complete": 30,
+      "fully_bound": 30,
+      "source_paths_resolved_in_readonly_html_review": 57,
+      "source_relation_check": "NO_CONTRADICTION_FOUND"
+    },
+    {
+      "issuer_symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "ledger_cells": 48,
+      "known_fields_complete": 48,
+      "fully_bound": 0,
+      "source_paths_resolved_in_readonly_html_review": 84,
+      "source_relation_check": "NO_CONTRADICTION_FOUND"
+    }
+  ],
+  "saved_public_gate": "PASS",
+  "audit_result": "NO_LEDGER_SOURCE_CONTRADICTION_FOUND",
+  "gate_interpretation": "PASS applies to four known training-material tables: 138 of 138 expected cells have the frozen known fields complete; 90 are fully bound. All 48 MU cells retain unresolved source fields and none is fully bound. This is not independent accuracy, full financial fact admission, model performance or production readiness.",
+  "limitations": [
+    "The same team created and reviewed the frozen reference; this audit is not an independent human gold assessment.",
+    "The source relation review checks saved official HTML and frozen cell/header/field locations, but cannot establish correctness for unseen tables or later issuer materials.",
+    "MU retains 30 unknown currency links and 48 unresolved footnote definition links; correct abstention is distinct from a fully sourced relation.",
+    "No eight-event full build, 20,000-character packing, model fitting, model inference or return evaluation occurred in this run."
+  ],
+  "frozen_code_reference_and_run_outputs_modified": false,
+  "private_source_text_or_cell_values_included": false,
+  "error_codes": []
+}

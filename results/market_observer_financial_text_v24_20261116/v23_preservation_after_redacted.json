@@ -1,0 +1,9 @@
+{
+  "schema": "v24_v23_preservation_after_v1",
+  "checked_at_utc": "2026-11-16T00:12:02.1852131+00:00",
+  "checked_at_asia_shanghai": "2026-11-16T08:12:02.1852131+08:00",
+  "previously_hashed_file_count": 25,
+  "unchanged_file_count": 25,
+  "changed_or_missing_paths": [],
+  "previous_receipt_sha256": "779ab009c177a1124b6ea3d41e84607c3e02bde4d966ac6d4a2f2adb444362fe"
+}

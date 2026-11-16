@@ -1,0 +1,50 @@
+{
+  "schema": "market_observer_financial_text_v24_small_table_plan_v1",
+  "drafted_at_utc": "2026-11-15T23:58:31Z",
+  "execution_timezone": "Asia/Shanghai",
+  "status": "FROZEN_BEFORE_REAL_REGRESSION",
+  "frozen_at_utc": "2026-11-16T00:11:26Z",
+  "frozen_at_asia_shanghai": "2026-11-16T08:11:26+08:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "baseline_commit": "e371a70289730abc4d20bf0a1bce1fc622f8f78c",
+  "purpose": "SMALL_REAL_TABLE_SEMANTIC_KERNEL_REGRESSION_ONLY",
+  "source": {
+    "saved_training_window_start": "2025-04-01",
+    "saved_training_window_end": "2026-03-31",
+    "symbols": ["NVDA", "MU"],
+    "selection_receipt": "results/market_observer_financial_text_v24_20261116/reference_freeze_redacted.json",
+    "private_selection_manifest": "artifacts/market_observer_financial_text_v24_20261116/selection_manifest.private.json",
+    "private_selection_manifest_sha256": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+    "private_expected_relations": "artifacts/market_observer_financial_text_v24_20261116/expected_relations.private.json",
+    "private_expected_relations_sha256": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a",
+    "selected_tables": 4,
+    "known_nvda_witnesses": 6,
+    "source_reviewed_expected_numeric_cells": 138,
+    "new_downloads": 0,
+    "forbidden_reads": ["2026-04-01 through 2026-07-31 source bodies or return labels", "account and private market data"]
+  },
+  "parser": {
+    "version": "v2.4",
+    "scope": "TABLE_SEMANTIC_RELATION_KERNEL_ONLY",
+    "order": ["logical_grid", "physical_cell_roles", "row_and_header_scope", "period_unit_basis_links", "topic_filter_last"],
+    "unit_fields": ["currency", "scale", "measurement_kind"],
+    "unknown_and_conflict_first_class": true,
+    "no_company_candidate_amount_or_document_path_hardcoding": true,
+    "production_forbidden_inputs": ["private_expected_relations", "candidate_ids", "review_scores", "return_labels", "later_period_material"]
+  },
+  "evaluation": {
+    "one_real_regression_after_freeze": true,
+    "full_eight_event_builds": 0,
+    "model_fit_calls": 0,
+    "model_inference_calls": 0,
+    "no_20000_character_adapter": true,
+    "unit_of_evaluation": "frozen source cell and applicable semantic field plus table-wide row-role audit",
+    "complete_requires_all_applicable_source_supported_links": true,
+    "unknown_or_conflict_separate_from_complete": true,
+    "unreviewed_explicit_relation_blocks_acceptance": true,
+    "known_false_header_or_cross_scope_unit_or_wrong_complete_blocks_acceptance": true,
+    "six_nvda_witnesses_all_abstain_not_success": true,
+    "legacy_fragment_scores_untouched": true,
+    "independent_test_claim_allowed": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "financial_text_v24_p0_baseline_redacted_v1",
+  "observed_at_utc": "2026-11-15T23:53:26.875657+00:00",
+  "observed_at_asia_shanghai": "2026-11-16T07:53:26.875657+08:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "head": "e371a70289730abc4d20bf0a1bce1fc622f8f78c",
+  "reference_baseline": "e371a70289730abc4d20bf0a1bce1fc622f8f78c",
+  "tracked_diff_paths": [],
+  "required_file_sha256": {
+    "README.md": "e9f204fd7257a381a0f74f10706db2fb3165fb0652cbf8f1a3b499911ac0262b",
+    "SHARING_SCOPE.md": "a7780f30db8b11864d890a4ceac3567d20d8c3cefff8a9474507c86d2775b8da",
+    "docs/news_research/STATUS.json": "f445ed1c4a8fdc0836d0d20c8c04b9ccc7c77a473fd1bfb45fc8d52b1d9dbecc",
+    "reports/2026-11-16_market_observer_financial_text_v23.zh.md": "4f80db0f890698c7db0855b9a7daa68f8694b952e54084640340095ba64c83dc",
+    "results/market_observer_financial_text_v23_20261116/postrun_false_header_diagnosis_redacted.json": "b418700d6da3e4bdac7ca26ca516af66b2adf01e9d2c53f818f9a7fd4a5b36a2",
+    "scripts/market_observer_financial_text_v23/structure.py": "bd16bfeb8f062d20aada9fb7878271f26afd527e7e5850180db19077c7c889e7",
+    "scripts/market_observer_financial_text_v23/evaluate.py": "c9bd58eb92b1f8394e84cdf4006e2e75c1c6fd14fe698be385ac062e87c0665c",
+    "configs/market_observer_financial_text_v23_20261116.json": "87f7060d1eb6b53af53fd325948bb1118ff4aa8a57ca27d88eabb61fe12e039b"
+  },
+  "repo_agents_file_present": false,
+  "user_supplied_agents_instructions_apply": true,
+  "source_scope": "saved NVDA/MU 2025-04-01 to 2026-03-31 only",
+  "new_downloads": 0,
+  "model_inference_calls": 0,
+  "model_fit_calls": 0,
+  "return_labels_read": false,
+  "april_july_bodies_read": false
+}

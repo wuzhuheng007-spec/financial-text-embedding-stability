@@ -1,0 +1,45 @@
+{
+  "schema": "financial_text_v24_freeze_v1",
+  "run_id": "frozen_v1",
+  "frozen_at_utc": "2026-11-16T00:11:32.457703+00:00",
+  "frozen_at_asia_shanghai": "2026-11-16T08:11:32.457703+08:00",
+  "file_sha256": {
+    "scripts/market_observer_financial_text_v24/__init__.py": "f1644505eaecfc71d522fb957110f8babdffd4a78bdd25fbe817b2fc0de16553",
+    "scripts/market_observer_financial_text_v24/semantic.py": "294c7d320d173f3037fab41f5a2ab203b7c80fcc72181a27685181c39b905ac7",
+    "scripts/market_observer_financial_text_v24/evaluate.py": "ac7a5ae9bb0456426f1672e447a8617b7ea4639bb41c91fecd53eaec7d0955e6",
+    "scripts/market_observer_financial_text_v23/__init__.py": "c66eaa12ef6bc313e6eb3543f5060e0455a9d1c1667e6297cbde2d1282c9b8ad",
+    "scripts/market_observer_financial_text_v23/structure.py": "bd16bfeb8f062d20aada9fb7878271f26afd527e7e5850180db19077c7c889e7",
+    "scripts/market_observer_financial_text_v21/__init__.py": "8648eedff92d31d6b2ace51b85f7e2694ad9c6827a97570055ebe09a77bdc817",
+    "scripts/market_observer_financial_text_v21/parser.py": "cd42de10a7f94061147bde91aea494969b13a9136df86a78e152300f920fcc24",
+    "scripts/freeze_market_observer_financial_text_v24.py": "29a7a9d82e549c3f56378ac4567352d932c79f2cb6a1dce7277c56b7cbfac66d",
+    "configs/market_observer_financial_text_v24_20261116.json": "1573b82241623ec5c80ea3f1a477403968c99a586eb08ced7ad1f30ccb5e6b3c",
+    "results/market_observer_financial_text_v24_20261116/reference_freeze_redacted.json": "868df38877901741d80898bac0aba6dfff516f3d59de7a8c7159e865e59735f8",
+    "artifacts/market_observer_financial_text_v24_20261116/selection_manifest.private.json": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+    "artifacts/market_observer_financial_text_v24_20261116/expected_relations.private.json": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a",
+    "artifacts/market_observer_financial_text_v24_20261116/freeze_hashes.private.json": "d7f5896c625e79006f3063514612c8385f5efd5c13c6008e578e20ef1ed37d3d",
+    "artifacts/market_observer_official_20261115/corpus_manifest.json": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+    "artifacts/market_observer_financial_text_v24_20261116/mu_2025-06-25_table1.private.html": "9c2e6c50cc2109afce88c22c95a4c36cab8f89edaeb97dc7924d9b773c0a3233",
+    "artifacts/market_observer_financial_text_v24_20261116/nvda_2025-08-27_table0.private.html": "7d4f9ec6f680caaf2077cacb3cafd50884e69dba4d53d410d1516670fc03c1d1",
+    "artifacts/market_observer_financial_text_v24_20261116/nvda_2025-11-19_table0.private.html": "dc4387deaf564cc6de2ac738fc4afceafbb2d142863481a2f51d1b6d0b5b7d3f",
+    "artifacts/market_observer_financial_text_v24_20261116/nvda_2026-02-25_table0.private.html": "4cc2f9f49a9a874bff8456469a6b804ef90f93bee6412186cb6e7315ebb9630e",
+    "tests/test_market_observer_financial_text_v24_evaluate.py": "9dbe06a7a17d227e0c75a33596faeda941e0c3e0162e2c12089e816bf2a08a3c",
+    "tests/test_market_observer_financial_text_v24_semantic.py": "5b6ba3abd43579d6562b65f1c2ae68ebbbb9838848f5017cae131ef6ad5ddd98"
+  },
+  "source_raw_sha256": {
+    "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+    "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+    "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+    "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909"
+  },
+  "runtime": {
+    "python": "3.11.9",
+    "beautifulsoup4": "4.15.0",
+    "numpy": "2.4.6",
+    "git_head": "e371a70289730abc4d20bf0a1bce1fc622f8f78c"
+  },
+  "expected_tables": 4,
+  "expected_value_cells": 138,
+  "source_scope": "2025-04-01_to_2026-03-31_saved_NVDA_MU_training_only",
+  "independent_gold": false,
+  "evaluation_runs_on_this_receipt": 0
+}

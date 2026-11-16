@@ -1,0 +1,16 @@
+{
+  "schema": "financial_text_v24_dev_synthetic_receipt_v1",
+  "run_role": "PRE_FREEZE_DEVELOPMENT_NOT_FINAL",
+  "at_utc": "2026-11-16T00:09:33.644216+00:00",
+  "command": "python -m pytest -q tests/test_market_observer_financial_text_v24_semantic.py tests/test_market_observer_financial_text_v24_evaluate.py",
+  "exit_code": 0,
+  "file_sha256": {
+    "scripts/market_observer_financial_text_v24/semantic.py": "294c7d320d173f3037fab41f5a2ab203b7c80fcc72181a27685181c39b905ac7",
+    "scripts/market_observer_financial_text_v24/evaluate.py": "ac7a5ae9bb0456426f1672e447a8617b7ea4639bb41c91fecd53eaec7d0955e6",
+    "tests/test_market_observer_financial_text_v24_semantic.py": "5b6ba3abd43579d6562b65f1c2ae68ebbbb9838848f5017cae131ef6ad5ddd98",
+    "tests/test_market_observer_financial_text_v24_evaluate.py": "9dbe06a7a17d227e0c75a33596faeda941e0c3e0162e2c12089e816bf2a08a3c"
+  },
+  "stdout": ".................                                                        [100%]\n17 passed in 0.42s\n",
+  "stderr": "",
+  "failure_class": null
+}

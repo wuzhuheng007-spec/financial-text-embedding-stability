@@ -1,0 +1,24 @@
+{
+  "schema": "financial_text_v24_dev_synthetic_failure_receipt_v1",
+  "run_role": "PRE_FREEZE_DEVELOPMENT_NOT_FINAL",
+  "observed_at_utc": null,
+  "recorded_at_utc": "2026-11-16T00:10:06.842219+00:00",
+  "evidence": "terminal tool output from first public pytest run and architect pre-fix attempt receipt",
+  "exit_code": 1,
+  "passed": 13,
+  "failed": 4,
+  "failure_class": "quarter_label_Q1_2025_not_recognized",
+  "failed_tests": [
+    "test_multilayer_header_and_mixed_basis_do_not_bleed",
+    "test_nested_table_is_not_parent_table_value_or_header",
+    "test_quarter_digits_are_headers_and_non_topic_amounts_are_data",
+    "test_repeated_header_carries_only_valid_scope"
+  ],
+  "pre_fix_parser_sha256": "0ac82f4c5b3934187a2aa71a4468bdd3b8211e7523c936779dce102f83789a53",
+  "file_sha256_at_receipt": {
+    "scripts/market_observer_financial_text_v24/evaluate.py": "ac7a5ae9bb0456426f1672e447a8617b7ea4639bb41c91fecd53eaec7d0955e6",
+    "tests/test_market_observer_financial_text_v24_semantic.py": "5b6ba3abd43579d6562b65f1c2ae68ebbbb9838848f5017cae131ef6ad5ddd98",
+    "tests/test_market_observer_financial_text_v24_evaluate.py": "9dbe06a7a17d227e0c75a33596faeda941e0c3e0162e2c12089e816bf2a08a3c"
+  },
+  "hash_note": "Non-parser files are hashed at receipt time; parser hash supplied by architect pre-fix attempt receipt. No exact earlier timestamp is inferred."
+}

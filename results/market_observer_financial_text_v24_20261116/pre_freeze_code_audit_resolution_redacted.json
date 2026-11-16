@@ -1,0 +1,67 @@
+{
+  "schema": "financial_text_v24_pre_freeze_code_audit_resolution_redacted_v1",
+  "inspected_at_utc": "2026-11-16T00:11:10.525388+00:00",
+  "inspected_at_asia_shanghai": "2026-11-16T08:11:10.525388+08:00",
+  "status": "CODE_INSPECTION_RESOLVED_PENDING_FROZEN_RUN",
+  "audit_role": "SAME_TEAM_CODEX_READ_ONLY",
+  "prior_findings_receipts_sha256": {
+    "pre_freeze_code_audit_redacted.json": "7926b83291e06bbaa6905365211afcb07ba06858156f21a2c3d43bcbf7bd93e5",
+    "pre_freeze_code_audit_supplement_redacted.json": "abac45953e570226217e05b2652cd1aafab016a11456495109d07377cabe4f52"
+  },
+  "inspected_file_sha256": {
+    "scripts/market_observer_financial_text_v24/semantic.py": "294c7d320d173f3037fab41f5a2ab203b7c80fcc72181a27685181c39b905ac7",
+    "scripts/market_observer_financial_text_v24/evaluate.py": "ac7a5ae9bb0456426f1672e447a8617b7ea4639bb41c91fecd53eaec7d0955e6",
+    "scripts/freeze_market_observer_financial_text_v24.py": "4cf4701a5676de8e3e453a4c9a2348c039100d554e9efefdf078a2e82ca87569",
+    "scripts/package_market_observer_financial_text_v24_handoff.py": "6dc737d1aa8c7e945337db89f7e1ed34f8c8dcd7cb2f6515acb44d2ee765e1cf",
+    "tests/test_market_observer_financial_text_v24_semantic.py": "5b6ba3abd43579d6562b65f1c2ae68ebbbb9838848f5017cae131ef6ad5ddd98",
+    "tests/test_market_observer_financial_text_v24_evaluate.py": "9dbe06a7a17d227e0c75a33596faeda941e0c3e0162e2c12089e816bf2a08a3c"
+  },
+  "resolutions": [
+    {
+      "id": "V24_AUDIT_001",
+      "code_inspection_status": "RESOLVED_PENDING_FROZEN_RUN",
+      "evidence": [
+        "scripts/market_observer_financial_text_v24/semantic.py:195-220",
+        "scripts/market_observer_financial_text_v24/evaluate.py:257-274",
+        "tests/test_market_observer_financial_text_v24_evaluate.py:131-160"
+      ],
+      "finding_resolution": "Parser returns NOT_APPLICABLE when no applicable footnote marker exists; evaluator accepts that for the NVDA no-footnote reference, while marked unresolved MU links are treated separately."
+    },
+    {
+      "id": "V24_AUDIT_002",
+      "code_inspection_status": "RESOLVED_PENDING_FROZEN_RUN",
+      "evidence": [
+        "scripts/market_observer_financial_text_v24/semantic.py:379-391",
+        "scripts/market_observer_financial_text_v24/evaluate.py:305-311",
+        "tests/test_market_observer_financial_text_v24_evaluate.py:161-168"
+      ],
+      "finding_resolution": "Parser includes applicable currency and unresolved footnote in full-status calculation; evaluator now checks MECHANICALLY_COMPLETE and flags a declaration unsupported by the frozen source review."
+    },
+    {
+      "id": "V24_AUDIT_003",
+      "code_inspection_status": "RESOLVED_PENDING_FROZEN_RUN",
+      "evidence": [
+        "scripts/market_observer_financial_text_v24/semantic.py:195-220",
+        "scripts/market_observer_financial_text_v24/evaluate.py:257-274",
+        "tests/test_market_observer_financial_text_v24_evaluate.py:131-152"
+      ],
+      "finding_resolution": "Evaluator accepts UNKNOWN for an unresolved MU footnote only with a source-located frozen marker in an eligible cell and rejects a definition target passed as a marker."
+    }
+  ],
+  "freeze_and_package_review": {
+    "imported_project_code_hashed": "v24 semantic/evaluate and init, v23 structure/init, v21 parser/init listed in freeze dependencies",
+    "selection_input_hashed": "private source corpus manifest listed in freeze dependencies and checked against selection manifest source hash",
+    "zip_readback": "all folder files including HANDOFF_README.md and MANIFEST_SHA256.json compared to ZIP members after CRC check",
+    "runtime_verification": "PENDING_FROZEN_RUN_OR_PACKAGING"
+  },
+  "synthetic_suite": "17 tests reported passing by implementation agents; this read-only reviewer inspected test code but did not rerun it",
+  "four_table_rescore_after_final_pre_freeze_files": "NOT_RUN_BY_THIS_REVIEWER",
+  "final_frozen_regression": "NOT_RUN_BY_THIS_REVIEWER",
+  "source_text_or_values_included": false,
+  "frozen_reference_modified": false,
+  "limitations": [
+    "Code inspection and fictional tests do not establish financial semantic correctness on sources.",
+    "The earlier in-memory diagnostic score was pre-freeze and did not capture contemporaneous code hashes; it is not the final run.",
+    "The final frozen CLI run and source-level adjudication remain to be recorded separately."
+  ]
+}

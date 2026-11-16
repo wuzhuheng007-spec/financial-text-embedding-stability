@@ -1,0 +1,97 @@
+{
+  "schema": "v24_reference_audit_redacted_v1",
+  "audited_at_utc": "2026-11-16T00:02:27.710939+00:00",
+  "audited_at_asia_shanghai": "2026-11-16T08:02:27.710939+08:00",
+  "audit_role": "SAME_TEAM_CODEX_READ_ONLY",
+  "reference_role": "CODEX_REFERENCE_DRAFT_NOT_INDEPENDENT_GOLD",
+  "scope": "saved NVDA/MU issuer earnings material dated 2025-04-01 to 2026-03-31; no downloads, model runs, or later-window material",
+  "source_and_reference_hashes": {
+    "corpus_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+    "selection_manifest_sha256": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+    "expected_relations_sha256": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a",
+    "freeze_script_sha256": "553f9b4a1bf4e11ee93ad5704ee010b84e8479562c815976bd774dfc66bfec73"
+  },
+  "checks": {
+    "selection_manifest_hash_matches_freeze": true,
+    "expected_relations_hash_matches_freeze": true,
+    "freeze_script_hash_matches_freeze": true,
+    "corpus_manifest_hash_matches_selection": true,
+    "six_nvda_witness_ids_and_dom_paths_match_v23": true,
+    "mu_selection_is_first_qualifying_in_scanned_date_document_dom_order": true,
+    "all_expected_source_tables_within_training_window": true
+  },
+  "mu_selection": {
+    "saved_training_earnings_document_count": 4,
+    "first_document_announcement_date": "2025-06-25",
+    "scanned_table_count_until_first_qualifying": 2,
+    "selected_table_dom_order_zero_based": 1,
+    "selection_rule_verified": true
+  },
+  "totals": {
+    "source_table_count": 4,
+    "expected_numeric_cell_count": 138,
+    "unique_numeric_cell_path_count": 138,
+    "forbidden_data_header_path_count": 195,
+    "frozen_nvda_witness_count": 6
+  },
+  "table_checks": [
+    {
+      "source_document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "table_dom_order_zero_based": 0,
+      "raw_body_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "table_outer_html_sha256": "471698f88dbe6a1c2726f4674440c0382c85f8a11b7b9758166f98d6cfb54814",
+      "expected_value_cell_count": 30,
+      "unique_value_dom_path_count": 30,
+      "forbidden_data_header_path_count": 43,
+      "structural_and_source_text_check": "PASS",
+      "error_codes": []
+    },
+    {
+      "source_document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "table_dom_order_zero_based": 0,
+      "raw_body_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "table_outer_html_sha256": "8085c3de4b53906b85374a706e5fd78104a468cbb47e011f620bfa5ace189e3b",
+      "expected_value_cell_count": 30,
+      "unique_value_dom_path_count": 30,
+      "forbidden_data_header_path_count": 43,
+      "structural_and_source_text_check": "PASS",
+      "error_codes": []
+    },
+    {
+      "source_document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "issuer_symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "table_dom_order_zero_based": 0,
+      "raw_body_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "table_outer_html_sha256": "55b0e7bf1dd1b5352a3315bf4cb701e988f7414357465e9b91f4f88c3c51626a",
+      "expected_value_cell_count": 30,
+      "unique_value_dom_path_count": 30,
+      "forbidden_data_header_path_count": 43,
+      "structural_and_source_text_check": "PASS",
+      "error_codes": []
+    },
+    {
+      "source_document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "issuer_symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "table_dom_order_zero_based": 1,
+      "raw_body_sha256": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909",
+      "table_outer_html_sha256": "4589219aa1f4deb8092ec1301602e5ccad9d76cf1e88974698fab0bf2d1239bd",
+      "expected_value_cell_count": 48,
+      "unique_value_dom_path_count": 48,
+      "forbidden_data_header_path_count": 66,
+      "structural_and_source_text_check": "PASS",
+      "error_codes": []
+    }
+  ],
+  "limitations": [
+    "Structural location and source-text presence were programmatically checked for each expected cell; this is not independent human adjudication of 138 financial meanings.",
+    "MU (1)/(2) footnote blocks lack direct HTML anchors; a precise link may remain UNKNOWN, while a wrong target must fail.",
+    "A small training-material regression reference cannot establish general parser accuracy or production fact admission."
+  ],
+  "frozen_reference_modified": false
+}

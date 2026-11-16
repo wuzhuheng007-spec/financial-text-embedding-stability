@@ -1,0 +1,110 @@
+{
+  "schema": "financial_text_v24_reference_freeze_redacted_v1",
+  "frozen_at_utc": "2026-11-15T23:57:09.934262+00:00",
+  "frozen_at_asia_shanghai": "2026-11-16T07:57:09.934262+08:00",
+  "scope": "SAVED_TRAINING_EARNINGS_2025-04-01_TO_2026-03-31_ONLY",
+  "review_role": "CODEX_REFERENCE_DRAFT",
+  "independent_gold": false,
+  "selection_rule": "Three v2.3 diagnosed NVIDIA tables plus earliest saved MU earnings table in date/document-id/DOM order with >=2 explicit fiscal-quarter labels, amount scale, and EPS exception or basis",
+  "private_selection_manifest_sha256": "ae8a33ad000b11d895841d8a7bc666772dedfebf20d233bb54add5cb02e5234d",
+  "private_expected_relations_sha256": "1a9f704e8a0ff60477bc12f0f42f947de8cda63f97b5755b1a7601678e62f43a",
+  "private_freeze_receipt_sha256": "d7f5896c625e79006f3063514612c8385f5efd5c13c6008e578e20ef1ed37d3d",
+  "source_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "source_tables": [
+    {
+      "symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+      "raw_body_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "table_dom_path": "document:nth-of-type(1) > type:nth-of-type(1) > sequence:nth-of-type(1) > filename:nth-of-type(1) > description:nth-of-type(1) > text:nth-of-type(1) > html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(18) > table:nth-of-type(1)",
+      "table_dom_order_zero_based": 0,
+      "table_outer_html_sha256": "471698f88dbe6a1c2726f4674440c0382c85f8a11b7b9758166f98d6cfb54814",
+      "private_snippet_sha256": "7d4f9ec6f680caaf2077cacb3cafd50884e69dba4d53d410d1516670fc03c1d1",
+      "source_reviewed_data_value_cells": 30,
+      "frozen_known_witnesses": 2,
+      "row_role_counts": {
+        "BASIS_HEADER": 1,
+        "DATA": 6,
+        "SPACER": 1,
+        "UNIT_AND_COLUMN_HEADER": 1
+      },
+      "forbidden_data_cell_header_target_count": 43
+    },
+    {
+      "symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm",
+      "raw_body_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "table_dom_path": "document:nth-of-type(1) > type:nth-of-type(1) > sequence:nth-of-type(1) > filename:nth-of-type(1) > description:nth-of-type(1) > text:nth-of-type(1) > html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(16) > table:nth-of-type(1)",
+      "table_dom_order_zero_based": 0,
+      "table_outer_html_sha256": "8085c3de4b53906b85374a706e5fd78104a468cbb47e011f620bfa5ace189e3b",
+      "private_snippet_sha256": "dc4387deaf564cc6de2ac738fc4afceafbb2d142863481a2f51d1b6d0b5b7d3f",
+      "source_reviewed_data_value_cells": 30,
+      "frozen_known_witnesses": 2,
+      "row_role_counts": {
+        "BASIS_HEADER": 1,
+        "DATA": 6,
+        "SPACER": 1,
+        "UNIT_AND_COLUMN_HEADER": 1
+      },
+      "forbidden_data_cell_header_target_count": 43
+    },
+    {
+      "symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm",
+      "raw_body_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "table_dom_path": "document:nth-of-type(1) > type:nth-of-type(1) > sequence:nth-of-type(1) > filename:nth-of-type(1) > description:nth-of-type(1) > text:nth-of-type(1) > html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(19) > table:nth-of-type(1)",
+      "table_dom_order_zero_based": 0,
+      "table_outer_html_sha256": "55b0e7bf1dd1b5352a3315bf4cb701e988f7414357465e9b91f4f88c3c51626a",
+      "private_snippet_sha256": "4cc2f9f49a9a874bff8456469a6b804ef90f93bee6412186cb6e7315ebb9630e",
+      "source_reviewed_data_value_cells": 30,
+      "frozen_known_witnesses": 2,
+      "row_role_counts": {
+        "BASIS_HEADER": 1,
+        "DATA": 6,
+        "SPACER": 1,
+        "UNIT_AND_COLUMN_HEADER": 1
+      },
+      "forbidden_data_cell_header_target_count": 43
+    },
+    {
+      "symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000019/a2025q3ex991-pressrelease.htm",
+      "raw_body_sha256": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909",
+      "table_dom_path": "document:nth-of-type(1) > type:nth-of-type(1) > sequence:nth-of-type(1) > filename:nth-of-type(1) > description:nth-of-type(1) > text:nth-of-type(1) > html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(26) > table:nth-of-type(1)",
+      "table_dom_order_zero_based": 1,
+      "table_outer_html_sha256": "4589219aa1f4deb8092ec1301602e5ccad9d76cf1e88974698fab0bf2d1239bd",
+      "private_snippet_sha256": "9c2e6c50cc2109afce88c22c95a4c36cab8f89edaeb97dc7924d9b773c0a3233",
+      "source_reviewed_data_value_cells": 48,
+      "frozen_known_witnesses": 0,
+      "row_role_counts": {
+        "DATA": 8,
+        "PERIOD_HEADER": 1,
+        "SPACER": 2,
+        "TITLE": 1,
+        "UNIT_AND_BASIS_HEADER": 1
+      },
+      "forbidden_data_cell_header_target_count": 66
+    }
+  ],
+  "denominators": {
+    "tables": 4,
+    "nvda_old_witnesses": 6,
+    "nvda_numeric_cells": 90,
+    "mu_numeric_cells": 48,
+    "total_numeric_cells": 138
+  },
+  "coverage_gate": "Every EXPLICIT relation emitted in these tables must map to frozen source-reviewed ranges; unreferenced emissions are UNVERIFIED and block small-scope pass until source review.",
+  "reference_limits": [
+    "Three NVIDIA tables are known v2.3 failures; MU was the earliest saved training exhibit/table matching the fixed structural predicate.",
+    "Rows, header bands and value-cell spans were checked against saved source HTML by the same Codex team; this is not an independent test or human gold.",
+    "Full source HTML, snippets, exact numeric cells, row-level expected links and private review stay in ignored artifacts/.",
+    "No new source download, model call, return-label read or April-July body read occurred in reference selection."
+  ]
+}

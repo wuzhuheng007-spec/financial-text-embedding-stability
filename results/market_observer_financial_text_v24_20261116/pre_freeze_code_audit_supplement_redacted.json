@@ -1,0 +1,24 @@
+{
+  "schema": "financial_text_v24_pre_freeze_code_audit_supplement_redacted_v1",
+  "audited_at_utc": "2026-11-16T00:06:31.407314+00:00",
+  "audited_at_asia_shanghai": "2026-11-16T08:06:31.407314+08:00",
+  "review_role": "SAME_TEAM_CODEX_READ_ONLY",
+  "status": "PENDING_RECHECK",
+  "findings": [
+    {
+      "id": "V24_AUDIT_003",
+      "severity": "BLOCKING_GATE",
+      "location": [
+        "scripts/market_observer_financial_text_v24/semantic.py:183-210",
+        "scripts/market_observer_financial_text_v24/evaluate.py:195-210",
+        "scripts/market_observer_financial_text_v24/evaluate.py:351-363"
+      ],
+      "observed_contract": "For a marked MU footnote without a direct HTML definition anchor, parser returns UNKNOWN while retaining the marker source DOM path. Scorer accepts UNKNOWN only when the source path list is empty.",
+      "impact": "All 48 MU candidate values can be rejected as WRONG_EXPLICIT and the mu_known_fields_complete=48 gate can become unreachable.",
+      "required_recheck": "Allow a source-located marker with unresolved definition as an abstention while rejecting a wrong definition target; check against frozen expected marker/definition fields.",
+      "resolution_status": "PENDING_RECHECK"
+    }
+  ],
+  "frozen_reference_modified": false,
+  "source_text_or_values_included": false
+}

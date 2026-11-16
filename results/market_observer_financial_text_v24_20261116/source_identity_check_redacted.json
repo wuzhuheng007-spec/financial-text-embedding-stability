@@ -1,0 +1,42 @@
+{
+  "schema": "financial_text_v24_online_source_identity_v1",
+  "checked_at_utc": "2026-11-16T00:02:48Z",
+  "checked_at_asia_shanghai": "2026-11-16T08:02:48+08:00",
+  "method": "Read-only opening of four SEC-hosted source URLs; no file added to the research corpus",
+  "scope": "Publisher, exhibit identity, issuer, and announced date only; saved local bytes separately identified by frozen SHA-256",
+  "checks": [
+    {
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000207/q2fy26pr.htm",
+      "issuer": "NVIDIA",
+      "release_date": "2025-08-27",
+      "sec_exhibit_identity": "EX-99.1",
+      "status": "MATCH"
+    },
+    {
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000228/q3fy26pr.htm",
+      "issuer": "NVIDIA",
+      "release_date": "2025-11-19",
+      "sec_exhibit_identity": "EX-99.1",
+      "status": "MATCH"
+    },
+    {
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26pr.htm",
+      "issuer": "NVIDIA",
+      "release_date": "2026-02-25",
+      "sec_exhibit_identity": "EX-99.1",
+      "status": "MATCH"
+    },
+    {
+      "source_url": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000019/a2025q3ex991-pressrelease.htm",
+      "issuer": "Micron Technology",
+      "release_date": "2025-06-25",
+      "sec_exhibit_identity": "EX-99.1",
+      "status": "MATCH"
+    }
+  ],
+  "limits": [
+    "Public web check confirms source-page identity, not exact equality with saved local body bytes or all cell-level financial meanings.",
+    "The private source audit verifies saved SHA-256, DOM locations and expected relation pointers separately.",
+    "No new filing body was stored as a dataset item."
+  ]
+}
