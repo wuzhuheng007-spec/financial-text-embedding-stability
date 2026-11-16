@@ -1,0 +1,12 @@
+{
+  "checked_at_utc": "2026-11-16T03:25:57.482334+00:00",
+  "private_backup_sha256": "882e0367299630f6e39921caaceaa9b8ffbc515f3589c42d5afb4384c9d0ef3e",
+  "wrong_derived_trade_date_rows_before": 519,
+  "rows_with_source_price_hash_preserved": 519,
+  "rows_corrected_to_unknown": 519,
+  "legacy_wrong_basis_remaining": 0,
+  "before_backup_integrity": "ok",
+  "live_cache_integrity": "ok",
+  "original_quote_values_in_receipt": false,
+  "private_backup_uploaded": false
+}

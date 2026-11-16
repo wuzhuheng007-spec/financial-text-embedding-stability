@@ -1,3 +1,9 @@
+# 2026-11-16 — Personal Demo v1.3 quote sessions
+
+Added separate premarket, regular, after-hours and overnight owner-cache rows for the existing six symbols. QUOTE push child timestamps are used when present; a bounded one-batch-per-minute read-only REST snapshot supplements the base quote. Missing child times, currency, delay and official overnight trading day stay unknown. The 519 newly cached rows with a wrongly derived New York calendar trade date were corrected after an integrity-checked private backup. [English report](../../reports/2026-11-16_quant_portal_personal_sessions_v13.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_sessions_v13.zh.md), [P0–P6 ledger](../../results/quant_portal_personal_sessions_v13_20261116/plan_execution.csv). Financial input v2.5 remains `REJECTED_CANDIDATE`; no model or trading ran.
+
+---
+
 # 2026-11-16 — Personal Demo v1.2 event view
 
 Added owner-only explainable multi-label event classification, a priority tab with company/category/time filters and editable technology interests, conservative suspected-related-report expansion, and a five-second local-cache market observation script. The private 30-item development check and isolated Edge 1440/390px browser acceptance are recorded in the [English report](../../reports/2026-11-16_quant_portal_personal_events_v12.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_events_v12.zh.md), and [P0–P6 ledger](../../results/quant_portal_personal_feed_v12_20261116/plan_execution.csv). A weekend precheck did not complete regular-session acceptance. Financial input v2.5 remains `REJECTED_CANDIDATE`; no model, prediction, trading or public deployment ran.

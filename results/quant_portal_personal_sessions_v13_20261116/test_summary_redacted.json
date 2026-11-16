@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-11-16T03:21:21.799646+00:00",
+  "pytest_focused_result": "32 passed",
+  "pytest_cases_total": 32,
+  "pytest_log": "focused_tests.log",
+  "pytest_log_sha256": "e1d04e45f2aa572b4be5e2a61236eca264fda0d9466c064ddbd2e010182eccd9",
+  "django_owner_route_result": "8 passed",
+  "django_owner_route_test_module": "apps/quant_portal/core/test_personal_feed.py",
+  "django_test_database": "EPHEMERAL_ISOLATED",
+  "javascript_syntax": "PASS_NODE_CHECK",
+  "python_compile": "PASS",
+  "earlier_regression_failure": "Existing market-state test expected code 11 to mean entire market closed; updated after official enum review and reran successfully",
+  "scope": "SOFTWARE_CHECKS_NOT_MARKET_DATA_ACCURACY_OR_CONTINUOUS_SESSION_ACCEPTANCE",
+  "new_retention_test": "Quiet-session raw evidence retained and legacy missing raw refreshed"
+}

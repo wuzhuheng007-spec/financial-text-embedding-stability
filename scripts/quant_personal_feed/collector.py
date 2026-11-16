@@ -18,6 +18,7 @@ from scripts.market_observer_v1.moomoo_ws import MoomooWebSocketPush, PROVIDER_N
 from scripts.market_observer_v1.service import AuthorizationError, QuotaError
 
 from .store import PersonalFeedStore, published_utc, utc_now
+from .session_quotes import parse_push_children
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -151,6 +152,17 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                             saved = store.put_quote(user_id,quote,symbol=symbol,
                                 display_name=names.get(symbol,symbol),market_state=market_state,
                                 limit=config["retention"]["quotes_per_symbol"])
+                            provider_data = quote.get("payload", {}).get("provider_data")
+                            if isinstance(provider_data, dict):
+                                raw_push = json.dumps(provider_data,ensure_ascii=False,sort_keys=True)
+                                digest = hashlib.sha256(raw_push.encode("utf-8")).hexdigest()
+                                children = parse_push_children(quote,raw_sha256=digest)
+                                if children:
+                                    store.put_session_quotes(user_id,children,
+                                        states={symbol:{row["session"]:("HAS_SOURCE_TIME" if row["source_at"]
+                                                         else "SNAPSHOT_TIME_UNKNOWN") for row in children}},
+                                        checked_at=quote["received_at"],raw_json=raw_push,
+                                        raw_sha256=digest,source_channel="WS_QUOTE")
                             store.state("moomoo",state,success=True,
                                 source_at=quote["provider_time"],received_at=quote["received_at"])
                             store.provider_metric("moomoo",last_push_at=quote["received_at"])

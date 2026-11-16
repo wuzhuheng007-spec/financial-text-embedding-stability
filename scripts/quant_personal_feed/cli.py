@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 
 from .collector import ROOT, owner_id, run_jin10, run_moomoo, under_root
+from .session_poll import run_moomoo_snapshot
 from .store import PersonalFeedStore, read_personal_cache, utc_now
 
 
@@ -98,6 +99,7 @@ def run(config_path: Path) -> None:
     try:
         if config["moomoo"]["enabled"]:
             launch("moomoo",run_moomoo)
+            launch("moomoo_snapshot",run_moomoo_snapshot)
         if config["jin10"]["enabled"]:
             launch("jin10",run_jin10)
         while not stop.is_set():

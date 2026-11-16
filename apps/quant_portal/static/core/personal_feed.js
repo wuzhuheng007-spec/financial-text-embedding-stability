@@ -31,6 +31,8 @@
   let newsSignature = '';
   let renderedNews = [];
   let eventControlSignature = '';
+  const sessionChoice = new Map();
+  const sessionLabels = {PREMARKET:'盘前', REGULAR:'常规', AFTERHOURS:'盘后', OVERNIGHT:'夜盘'};
 
   function csrfToken() {
     return document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
@@ -68,11 +70,13 @@
     const sourceAt = Date.parse(quote.provider_time);
     const stale = Number.isFinite(sourceAt) && Date.now() - sourceAt > 10 * 60 * 1000;
     if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return '采集已断开 · 保留最后报价';
-    if (provider?.state === 'CONNECTED_MARKET_CLOSED' || quote.market_state === 'US_11' || quote.market_state === 'US_6') return '连接活跃 · 休市报价未变化（非实时成交）';
+    if (provider?.state === 'CONNECTED_MARKET_CLOSED' || quote.market_state === 'US_6') return '连接活跃 · 休市报价未变化（非实时成交）';
+    if (quote.market_state === 'US_11') return '盘后已结束 · 夜盘状态未核实';
     if (stale) return '连接状态见上方 · 报价来源时间较旧';
     return '最新缓存报价 · 实时性未核实';
   }
   function renderStates() {
+    const snapshot = stateOf('moomoo_snapshot');
     for (const name of ['moomoo', 'jin10']) {
       const state = stateOf(name);
       const pill = document.getElementById(`${name}-state`);
@@ -81,34 +85,83 @@
       pill.textContent = stateLabels[state?.state] || state?.state || '尚未启动';
       const worker = state?.worker_alive === 0 ? '采集线程已退出' : state?.worker_alive === 1 ? '采集线程运行中' : '线程状态未知';
       times.textContent = name === 'moomoo' ?
-        `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最近新增报价（v1.1）：${stamp(state?.last_quote_saved_at)} · 最新报价来源时间：${stamp(state?.last_source_at)} · 重复包（v1.1）：${state?.duplicate_quote_packets ?? '未知'}${state?.last_error_class ? ' · 原因：' + state.last_error_class : ''}` :
+        `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最近新增报价（v1.1）：${stamp(state?.last_quote_saved_at)} · 最新报价来源时间：${stamp(state?.last_source_at)} · 重复包（v1.1）：${state?.duplicate_quote_packets ?? '未知'}` +
+        ` · 分时段定时快照：${stateLabels[snapshot?.state] || snapshot?.state || '未启动'} · 最近成功：${stamp(snapshot?.last_success_at)}` +
+        `${state?.last_error_class ? ' · 原因：' + state.last_error_class : ''}` :
         `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近业务成功：${stamp(state?.last_success_at)} · 今日尝试（旧阶段仅下界）：${state?.business_attempts_today ?? '未知'} · v1.1业务成功：${state?.business_success_total ?? '未知'} · v1.1失败：${state?.business_failure_total ?? '未知'}${state?.coverage_gap ? ' · 可能有新闻缺口' : ''}${state?.last_error_class ? ' · 原因：' + state.last_error_class : ''}`;
     }
   }
-  function quoteElement(symbol, quote, symbolState, provider, selected) {
+  function quoteElement(symbol, quote, symbolState, provider, snapshotProvider, selected, sessionRows, capabilityRows) {
     const article = node('article', 'snapshot-item');
     const head = node('div');
     head.append(node('strong', null, symbol));
     head.append(node('p', 'muted', quote?.display_name && quote.display_name !== symbol ? quote.display_name : '已核对证券代码'));
+    const selectedSession = sessionChoice.get(symbol) || 'AUTO';
+    const picker = node('select', 'session-picker');
+    picker.setAttribute('aria-label', `${symbol} 报价时段`);
+    for (const [key, label] of [['AUTO','最近有来源时间'],...Object.entries(sessionLabels)]) {
+      const option = node('option', null, label); option.value = key; picker.append(option);
+    }
+    picker.value = selectedSession;
+    picker.addEventListener('change', () => { sessionChoice.set(symbol, picker.value); quoteSignature=''; renderQuotes(); });
+    head.append(picker);
+    const bySession = new Map(sessionRows.map(x => [x.session,x]));
+    const byCapability = new Map(capabilityRows.map(x => [x.session,x]));
+    const sourceRank = {REGULAR:4,OVERNIGHT:3,AFTERHOURS:2,PREMARKET:1};
+    const sourced = sessionRows.filter(x => x.source_at && Number.isFinite(Date.parse(x.source_at)))
+      .sort((a,b) => Date.parse(b.source_at)-Date.parse(a.source_at) ||
+        (sourceRank[b.session] || 0)-(sourceRank[a.session] || 0));
+    const shown = selectedSession === 'AUTO' ? sourced[0] || null : bySession.get(selectedSession) || null;
+    const capability = selectedSession === 'AUTO' ? null : byCapability.get(selectedSession);
     const value = node('div', 'snapshot-value');
-    value.append(node('strong', null, quote?.price_text ?? '暂无报价'));
-    value.append(node('span', null, quote?.currency || '币种待核实'));
+    value.append(node('strong', null, shown?.price_text ?? (selectedSession === 'AUTO' ? quote?.price_text : null) ?? '暂无报价'));
+    value.append(node('span', null, shown?.currency || quote?.currency || '币种待核实'));
     const meta = node('div', 'snapshot-meta');
     const reason = symbolState?.reason ? ` · ${symbolState.reason}` : '';
-    meta.textContent = `${quoteLabel(quote, provider, selected)}${reason}\n来源时间：${stamp(quote?.provider_time)}\n本机收到：${stamp(quote?.received_at)}\n延迟：${quote?.delay_status || '未知'} · 市场：${quote?.market_state || '未知'}`;
+    if (shown) {
+      const timeText = shown.source_at ? stamp(shown.source_at) : '未知（供应商子报价无独立时间）';
+      const dateHint = shown.parent_date_hint && !shown.trade_date ?
+        `\n父报价日期线索：${shown.parent_date_hint}（非本时段成交日期）` : '';
+      const closed = provider?.state === 'CONNECTED_MARKET_CLOSED' ? ' · 当前市场休市，非实时成交' : '';
+      const activeFeed = shown.source_channel === 'REST_STOCK_QUOTE' ? snapshotProvider : provider;
+      const feedState = stateLabels[activeFeed?.state] || activeFeed?.state || '未知';
+      const marketCode = quote?.market_state === 'US_11' ? 'US_11（盘后结束；夜盘另行判断）' :
+        quote?.market_state || '未知';
+      meta.textContent = `${sessionLabels[shown.session]}报价 · ${shown.source_channel === 'REST_STOCK_QUOTE' ? '定时快照' : '原有推送'}${closed}${reason}` +
+        `\n来源时间：${timeText}\n本机获取：${stamp(shown.received_at)}\n交易日：${shown.trade_date || '未知'}` +
+        `${dateHint}\n采集：${feedState} · 市场状态：${marketCode}` +
+        `\n延迟：${shown.delay_status || 'UNKNOWN'} · 币种：${shown.currency || '未知'}` +
+        `\n价格字段：${shown.provider_field_path} · 时间字段：${shown.source_time_field_path || '未知'}`;
+      if (!shown.source_at) meta.textContent += '\n时间证据不足：不能判定此报价仍属当前时段或实时更新';
+    } else if (selectedSession === 'AUTO' && quote) {
+      meta.textContent = `${quoteLabel(quote, provider, selected)} · 原有未分时段缓存${reason}` +
+        `\n来源时间：${stamp(quote.provider_time)}\n本机收到：${stamp(quote.received_at)}\n时段：未核实 · 延迟：${quote.delay_status || '未知'}`;
+    } else {
+      meta.textContent = `该时段暂无可用报价${reason}\n接入状态：${capability?.state || '尚未核实'}` +
+        `\n最近检查：${stamp(capability?.checked_at)}；空字段不等于无权限或休市`;
+    }
+    const regular = bySession.get('REGULAR');
+    if (regular && selectedSession !== 'REGULAR') {
+      meta.textContent += `\n常规报价参考：${regular.price_text} · 来源 ${stamp(regular.source_at)}（独立保留）`;
+    }
     article.append(head, value, meta);
     return article;
   }
   function renderQuotes() {
-    const signature = JSON.stringify([current?.quotes,current?.symbols,current?.selection,stateOf('moomoo')?.state]);
+    const signature = JSON.stringify([current?.quotes,current?.session_quotes,current?.session_capabilities,
+      current?.symbols,current?.selection,stateOf('moomoo')?.state,[...sessionChoice]]);
     if (signature === quoteSignature) return;
     quoteSignature = signature;
     const bySymbol = new Map((current?.quotes || []).map(x => [x.symbol, x]));
+    const sessions = current?.session_quotes || [];
+    const capabilities = current?.session_capabilities || [];
     const states = new Map((current?.symbols || []).map(x => [x.symbol, x]));
     const selected = new Set((current?.selection || []).filter(x => x.desired).map(x => x.symbol));
     const moomoo = stateOf('moomoo');
+    const snapshot = stateOf('moomoo_snapshot');
     const all = [...new Set([...priority, ...(current?.selection || []).filter(x => x.desired).map(x => x.symbol), ...bySymbol.keys()])];
-    quoteBox.replaceChildren(...all.map(symbol => quoteElement(symbol, bySymbol.get(symbol), states.get(symbol), moomoo, selected.has(symbol))));
+    quoteBox.replaceChildren(...all.map(symbol => quoteElement(symbol, bySymbol.get(symbol), states.get(symbol), moomoo, snapshot,
+      selected.has(symbol), sessions.filter(x => x.symbol === symbol),capabilities.filter(x => x.symbol === symbol))));
     document.querySelectorAll('[data-watch-symbol]').forEach(el => {
       const symbol = el.dataset.watchSymbol;
       const quote = bySymbol.get(symbol);

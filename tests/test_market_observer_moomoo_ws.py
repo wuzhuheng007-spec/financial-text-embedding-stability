@@ -220,7 +220,10 @@ def test_quote_time_market_closed_and_unbound_kline_are_not_live_labels(tmp_path
     source._enqueue_push({"type": "MARKET_STATE", "data": {"market": "US", "status": 6}})
     assert source.connection_state == "CONNECTED_MARKET_CLOSED"
     source._enqueue_push({"type": "MARKET_STATE", "data": {"market": "US", "status": 11}})
-    assert source.connection_state == "CONNECTED_MARKET_CLOSED"
+    # AFTER_HOURS_END says nothing about the separate overnight session.
+    assert source.connection_state == "CONNECTED_DELAY_UNKNOWN"
+    source._enqueue_push({"type": "MARKET_STATE", "data": {"market": "US", "status": 37}})
+    assert source.connection_state == "CONNECTED_DELAY_UNKNOWN"
     source._enqueue_push({"type": "QUOTE", "symbol": "US.NVDA",
                           "data": {"data_time_ms": 1763154000000, "last_price": 100}})
     quote = source.next_message(1)

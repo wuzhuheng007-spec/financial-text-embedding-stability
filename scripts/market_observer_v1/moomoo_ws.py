@@ -270,10 +270,9 @@ class MoomooWebSocketPush:
                     and isinstance(data.get("status"), int) and not isinstance(data["status"], bool)):
                 self._market_state[data["market"]] = data["status"]
                 subscribed_markets = {s["provider_code"].split(".", 1)[0] for s in self._subscriptions}
-                # Official market_state 11 is US AFTER_HOURS_END. It is not
-                # an open regular session; do not display Friday's quote as
-                # a Sunday live update.
-                if subscribed_markets and all(self._market_state.get(m) in {0, 6, 11}
+                # AFTER_HOURS_END (11) does not establish that the separate
+                # US overnight session has closed.
+                if subscribed_markets and all(self._market_state.get(m) in {0, 6}
                                               for m in subscribed_markets):
                     self.connection_state = "CONNECTED_MARKET_CLOSED"
                 else:

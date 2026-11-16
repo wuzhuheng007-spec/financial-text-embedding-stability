@@ -69,6 +69,23 @@ class PersonalFeedStore:
             UNIQUE(owner_id,provider,symbol,provider_time,content_sha256));
           CREATE INDEX IF NOT EXISTS quotes_latest ON quotes(owner_id,symbol,received_at DESC,id DESC);
           CREATE INDEX IF NOT EXISTS quotes_source_latest ON quotes(owner_id,symbol,provider_time DESC,received_at DESC,id DESC);
+          CREATE TABLE IF NOT EXISTS session_quotes (
+            id INTEGER PRIMARY KEY, owner_id INTEGER NOT NULL, symbol TEXT NOT NULL,
+            provider_code TEXT NOT NULL, session TEXT NOT NULL, price_text TEXT NOT NULL,
+            currency TEXT, source_at TEXT, received_at TEXT NOT NULL,
+            provider_field_path TEXT NOT NULL, source_time_field_path TEXT,
+            trade_date TEXT, date_basis TEXT NOT NULL,
+            parent_date_hint TEXT, parent_source_at_hint TEXT, delay_status TEXT NOT NULL,
+            source_channel TEXT NOT NULL, raw_sha256 TEXT NOT NULL);
+          CREATE INDEX IF NOT EXISTS session_quotes_latest ON session_quotes
+            (owner_id,symbol,session,source_at DESC,received_at DESC,id DESC);
+          CREATE TABLE IF NOT EXISTS session_capabilities (
+            owner_id INTEGER NOT NULL, symbol TEXT NOT NULL, session TEXT NOT NULL,
+            state TEXT NOT NULL, checked_at TEXT NOT NULL, source_channel TEXT NOT NULL,
+            PRIMARY KEY(owner_id,symbol,session));
+          CREATE TABLE IF NOT EXISTS session_raw_responses (
+            sha256 TEXT PRIMARY KEY, received_at TEXT NOT NULL,
+            source_channel TEXT NOT NULL, raw_json TEXT NOT NULL);
           CREATE TABLE IF NOT EXISTS symbol_state (
             symbol TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, state TEXT NOT NULL,
             reason TEXT, updated_at TEXT NOT NULL);
@@ -119,6 +136,11 @@ class PersonalFeedStore:
         for name, definition in additions.items():
             if name not in columns:
                 self.db.execute(f"ALTER TABLE provider_state ADD COLUMN {name} {definition}")
+        session_columns = {row[1] for row in self.db.execute("PRAGMA table_info(session_quotes)")}
+        if "parent_source_at_hint" not in session_columns:
+            self.db.execute("ALTER TABLE session_quotes ADD COLUMN parent_source_at_hint TEXT")
+        if "source_time_field_path" not in session_columns:
+            self.db.execute("ALTER TABLE session_quotes ADD COLUMN source_time_field_path TEXT")
         # Legacy counter is only a lower bound: older failures were not counted.
         self.db.execute("""UPDATE provider_state SET business_attempts_today=business_calls_today
           WHERE business_day_utc=? AND business_attempts_today<business_calls_today""", (utc_now()[:10],))
@@ -288,6 +310,80 @@ class PersonalFeedStore:
           LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
         return inserted
 
+    def put_session_quotes(self, owner_id: int, rows: list[dict], *,
+                           states: dict[str, dict[str, str]], checked_at: str,
+                           raw_json: str | None = None, raw_sha256: str | None = None,
+                           source_channel: str) -> dict[str, int]:
+        """Append changed session values; never overwrite prior quote evidence."""
+        from .session_quotes import SESSIONS
+        if owner_id != self.owner_id:
+            raise ValueError("Owner ID mismatch")
+        inserted = duplicate = 0
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            if raw_json is not None and raw_sha256 is not None:
+                if hashlib.sha256(raw_json.encode("utf-8")).hexdigest() != raw_sha256:
+                    raise ValueError("Raw response hash mismatch")
+                self.db.execute("""INSERT OR IGNORE INTO session_raw_responses
+                  (sha256,received_at,source_channel,raw_json) VALUES(?,?,?,?)""",
+                  (raw_sha256,checked_at,source_channel,raw_json))
+            for symbol, by_session in states.items():
+                for session, state in by_session.items():
+                    if session not in SESSIONS or state not in {"HAS_SOURCE_TIME", "SNAPSHOT_TIME_UNKNOWN",
+                       "NO_OBSERVED_VALUE", "NO_OBSERVED_VALUE_OR_TIME", "DATE_CONFLICT", "NOT_YET_VERIFIED"}:
+                        raise ValueError("Invalid session state")
+                    self.db.execute("""INSERT INTO session_capabilities
+                      (owner_id,symbol,session,state,checked_at,source_channel) VALUES(?,?,?,?,?,?)
+                      ON CONFLICT(owner_id,symbol,session) DO UPDATE SET
+                      state=excluded.state,checked_at=excluded.checked_at,
+                      source_channel=excluded.source_channel""",
+                      (owner_id,symbol,session,state,checked_at,source_channel))
+            for row in rows:
+                if row["session"] not in SESSIONS:
+                    raise ValueError("Invalid session")
+                latest = self.db.execute("""SELECT price_text,source_at,parent_date_hint,
+                  source_time_field_path,date_basis,raw_sha256 FROM session_quotes
+                  WHERE owner_id=? AND symbol=? AND session=? AND source_channel=?
+                  ORDER BY id DESC LIMIT 1""",
+                  (owner_id,row["symbol"],row["session"],source_channel)).fetchone()
+                if (latest and latest["price_text"] == row["price_text"] and
+                    latest["source_at"] == row["source_at"] and
+                    latest["parent_date_hint"] == row["parent_date_hint"] and
+                    latest["source_time_field_path"] == row.get("source_time_field_path") and
+                    latest["date_basis"] == row["date_basis"] and
+                    self.db.execute("SELECT 1 FROM session_raw_responses WHERE sha256=?",
+                                    (latest["raw_sha256"],)).fetchone()):
+                    duplicate += 1
+                    continue
+                self.db.execute("""INSERT INTO session_quotes
+                  (owner_id,symbol,provider_code,session,price_text,currency,source_at,
+                   received_at,provider_field_path,source_time_field_path,trade_date,date_basis,parent_date_hint,
+                   parent_source_at_hint,delay_status,source_channel,raw_sha256)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                  (owner_id,row["symbol"],row["provider_code"],row["session"],row["price_text"],
+                   row["currency"],row["source_at"],row["received_at"],
+                   row["provider_field_path"],row.get("source_time_field_path"),
+                   row["trade_date"],row["date_basis"],
+                   row["parent_date_hint"],row.get("parent_source_at_hint"),row["delay_status"],source_channel,row["raw_sha256"]))
+                inserted += 1
+            # Retain the original response for every visible session value,
+            # plus at most 100 other recent responses. A quiet old session
+            # must not lose its provenance during active overnight pushes.
+            self.db.execute("""DELETE FROM session_raw_responses WHERE sha256 IN (
+              SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
+                SELECT q.raw_sha256 FROM session_quotes q WHERE q.id=(
+                  SELECT q2.id FROM session_quotes q2 WHERE q2.owner_id=q.owner_id
+                    AND q2.symbol=q.symbol AND q2.session=q.session
+                  ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
+                    q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
+              ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET 100
+            )""")
+            self.db.commit()
+        except BaseException:
+            self.db.rollback()
+            raise
+        return {"inserted": inserted, "duplicate": duplicate}
+
     def put_news(self, owner_id: int, item: dict, *, received_at: str,
                  max_items: int, max_versions: int) -> str:
         if owner_id != self.owner_id:
@@ -368,7 +464,21 @@ def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> d
         event_prefs = db.execute("SELECT entities_json,categories_json,updated_at FROM event_preferences WHERE owner_id=?",
                                  (owner_id,)).fetchone() if "event_preferences" in tables else None
         news_total = db.execute("SELECT COUNT(*) FROM news_items WHERE owner_id=?",(owner_id,)).fetchone()[0]
+        session_quotes = db.execute("""SELECT q.symbol,q.provider_code,q.session,q.price_text,q.currency,
+          q.source_at,q.received_at,q.provider_field_path,q.source_time_field_path,
+          q.trade_date,q.date_basis,
+          q.parent_date_hint,q.parent_source_at_hint,q.delay_status,q.source_channel FROM session_quotes q
+          WHERE q.owner_id=? AND q.id=(SELECT q2.id FROM session_quotes q2
+            WHERE q2.owner_id=q.owner_id AND q2.symbol=q.symbol AND q2.session=q.session
+            ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
+              q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
+          ORDER BY q.symbol,q.session""", (owner_id,)).fetchall() if "session_quotes" in tables else []
+        session_capabilities = db.execute("""SELECT symbol,session,state,checked_at,source_channel
+          FROM session_capabilities WHERE owner_id=? ORDER BY symbol,session""",
+          (owner_id,)).fetchall() if "session_capabilities" in tables else []
         return {"quotes": [dict(row) for row in quotes],
+                "session_quotes": [dict(row) for row in session_quotes],
+                "session_capabilities": [dict(row) for row in session_capabilities],
                 "news": [dict(row) for row in news],
                 "news_total": news_total,
                 "states": [dict(row) for row in states],

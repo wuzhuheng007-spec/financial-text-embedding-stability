@@ -1,0 +1,372 @@
+{
+  "schema": "quant_portal_personal_sessions_v13_redacted",
+  "checked_at_utc": "2026-11-16T03:23:38.986827+00:00",
+  "checked_at_shanghai": "2026-11-16T11:23:38.986827+08:00",
+  "baseline_commit": "30d315263db784e5c9bacadfcc0fd2ea1323e33e",
+  "six_symbol_rest_probe": {
+    "http_status": 200,
+    "business_code": 0,
+    "rows": 6,
+    "raw_response_sha256": "ab97b2e3d0cbf1497645ee549e1967acc362b357b7f3df980f3ad5f272d47c54",
+    "timestamp_note": "Private probe UTC label used local wall time; not used as UTC evidence"
+  },
+  "observation": {
+    "start_at_utc": "2026-11-16T03:17:00.875618Z",
+    "end_at_utc": "2026-11-16T03:22:01.110378Z",
+    "elapsed_seconds": 300.234,
+    "cache_reads": 60,
+    "snapshot_business_attempt_delta": 5,
+    "provider_states_seen": {
+      "moomoo": [
+        "CONNECTED_DELAY_UNKNOWN"
+      ],
+      "moomoo_snapshot": [
+        "CONNECTED",
+        "CONNECTING"
+      ],
+      "jin10": [
+        "CONNECTED"
+      ]
+    },
+    "private_receipt_sha256": "d55b2e213430fb871add233df4754955d20df121b65a9db5d2bc3fe48246206e",
+    "input_sha256_at_start": {
+      "scripts\\quant_personal_feed\\session_acceptance.py": "cc656ef9646f18f8d9f02457997516f7ecd5f13721dcd2891fe5803cbc928d17",
+      "scripts\\quant_personal_feed\\store.py": "3f36291f9a36bb018d0505e22fd890f85112125bd7467995c88f097cca929e61",
+      "scripts\\quant_personal_feed\\session_quotes.py": "d4d38626542fa72da3c72f2db8e9d3ea083d515c8791a427ccd36aaeef5e8adf",
+      "configs\\quant_portal_personal_feeds_v11_20261116.json": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7"
+    }
+  },
+  "cells": [
+    {
+      "symbol": "TQQQ",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "TQQQ",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "TQQQ",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "TQQQ",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 26,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "QQQ",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "QQQ",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "QQQ",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "QQQ",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 32,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SOXX",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SOXX",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SOXX",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SOXX",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 7,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SPY",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SPY",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SPY",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "SPY",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 10,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "NVDA",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "NVDA",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "NVDA",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "NVDA",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 55,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "MU",
+      "session": "PREMARKET",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "MU",
+      "session": "REGULAR",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "REST_STOCK_QUOTE",
+      "trade_date_known": true,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "MU",
+      "session": "AFTERHOURS",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 0,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    },
+    {
+      "symbol": "MU",
+      "session": "OVERNIGHT",
+      "snapshot_observed": true,
+      "source_time_known": true,
+      "source_time_advances_in_window": 13,
+      "source_channel": "WS_QUOTE",
+      "trade_date_known": false,
+      "currency_known": false,
+      "delay_known": false
+    }
+  ],
+  "totals": {
+    "session_cells": 24,
+    "cells_with_values": 24,
+    "cells_with_source_time": 24,
+    "cells_with_source_time_advances": 6,
+    "cells_with_official_trade_date": 6
+  },
+  "latest_source_time_by_session_utc": {
+    "PREMARKET": "2026-11-13T14:30:01.676000Z",
+    "REGULAR": "2026-11-13T21:00:00Z",
+    "AFTERHOURS": "2026-11-14T01:02:45.923000Z",
+    "OVERNIGHT": "2026-11-16T03:23:38.121000Z"
+  },
+  "owner_data_counts": {
+    "accounts": 1,
+    "watchlist": 6,
+    "settings": 1,
+    "historical_fact_cards": 14
+  },
+  "visible_session_raw_provenance": {
+    "visible_cells": 24,
+    "raw_response_present": 24
+  },
+  "post_observation_change": "RAW_RESPONSE_RETENTION_ONLY; SOURCE_TIME_COMPARISON_UNCHANGED",
+  "news_cached_items": 168,
+  "desired_symbols": [
+    "TQQQ",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "NVDA",
+    "MU"
+  ],
+  "provider_states_at_receipt": {
+    "jin10": {
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "last_success_at": "2026-11-16T03:22:59.890486Z"
+    },
+    "moomoo": {
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "worker_alive": 1,
+      "last_success_at": "2026-11-16T03:23:38.413223Z"
+    },
+    "moomoo_snapshot": {
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "last_success_at": "2026-11-16T03:22:56.963525Z"
+    }
+  },
+  "code_config_sha256": {
+    "scripts/quant_personal_feed/session_quotes.py": "d4d38626542fa72da3c72f2db8e9d3ea083d515c8791a427ccd36aaeef5e8adf",
+    "scripts/quant_personal_feed/session_poll.py": "b4cb163711596857d10d0ea59436234d55d099fd9b5f3742f02180d235d050af",
+    "scripts/quant_personal_feed/session_acceptance.py": "cc656ef9646f18f8d9f02457997516f7ecd5f13721dcd2891fe5803cbc928d17",
+    "scripts/quant_personal_feed/store.py": "3bd2e3b13eb392ee903381308ed546f5b29c47cd3bd5a4ecbcdb9bc8a01d94e8",
+    "scripts/quant_personal_feed/collector.py": "6fa883612c37fc03de020ab48dfa17681547ef3313331b34f8260004d0dae89d",
+    "scripts/quant_personal_feed/cli.py": "58308211360d7ac7ef4995f5890a4422d225fd14332d0150ce62b1261a485075",
+    "scripts/market_observer_v1/moomoo_ws.py": "7d7c61a47b7a13123553a41dd960a47031db5a9a5c61539e82e8cb0adeadb576",
+    "apps/quant_portal/static/core/personal_feed.js": "b5830540d0ef7f1a94a5715902f84090d62224238dace32728e832b3c3980b8c",
+    "configs/quant_portal_personal_sessions_v13_20261116.json": "e5e79a92931e75c94ed196d716055f4558003e94ff0f01b6a27ad02cbafcb690",
+    "configs/quant_portal_personal_feeds_v11_20261116.json": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7"
+  },
+  "private_db_uploaded": false,
+  "raw_prices_uploaded": false,
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "trade_calls": 0
+}

@@ -1,0 +1,109 @@
+{
+  "checked_at_utc": "2026-11-16T03:16:27.891543+00:00",
+  "target": "ISOLATED_EDGE_TEST_ACCOUNT_PORT_8768_SAVED_REAL_RESPONSE",
+  "views": {
+    "desktop": {
+      "viewport": 1440,
+      "scroll_width": 1440,
+      "quote_cards": 6,
+      "selectors": 6,
+      "all_options": [
+        "AUTO",
+        "PREMARKET",
+        "REGULAR",
+        "AFTERHOURS",
+        "OVERNIGHT"
+      ],
+      "nvda_sessions": {
+        "PREMARKET": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        },
+        "REGULAR": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": false,
+          "regular_reference": false,
+          "own_session_label": true
+        },
+        "AFTERHOURS": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        },
+        "OVERNIGHT": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        }
+      },
+      "jin10_news_visible": true,
+      "focus_tab_visible": true
+    },
+    "mobile_390": {
+      "viewport": 390,
+      "scroll_width": 390,
+      "quote_cards": 6,
+      "selectors": 6,
+      "all_options": [
+        "AUTO",
+        "PREMARKET",
+        "REGULAR",
+        "AFTERHOURS",
+        "OVERNIGHT"
+      ],
+      "nvda_sessions": {
+        "PREMARKET": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        },
+        "REGULAR": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": false,
+          "regular_reference": false,
+          "own_session_label": true
+        },
+        "AFTERHOURS": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        },
+        "OVERNIGHT": {
+          "has_value": true,
+          "child_time_unknown": false,
+          "source_time_field_visible": true,
+          "trade_date_unknown": true,
+          "regular_reference": true,
+          "own_session_label": true
+        }
+      },
+      "jin10_news_visible": true,
+      "focus_tab_visible": true
+    }
+  },
+  "page_error_types": [],
+  "nonlocal_request_count": 0,
+  "owner_personal_db_used": false,
+  "private_screenshots_uploaded": false,
+  "saved_provider_prices_uploaded": false
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "quant_portal_personal_sessions_v13",
+  "baseline_commit": "30d315263db784e5c9bacadfcc0fd2ea1323e33e",
+  "timezone_display": "Asia/Shanghai",
+  "source_timezone": "America/New_York",
+  "symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+  "sessions": ["PREMARKET", "REGULAR", "AFTERHOURS", "OVERNIGHT"],
+  "existing_quote_subscriptions_added": 0,
+  "stock_quote_endpoint": "https://webapi.moomoo.com/api/v1.0/quote/stock-quote",
+  "snapshot_poll_seconds": 60,
+  "snapshot_batch_limit": 6,
+  "local_snapshot_attempt_budget_per_utc_day": 1440,
+  "source_time_rule": "REGULAR_PARENT_DATA_TIME_ONLY; CHILD_TIME_UNKNOWN_UNLESS_CHILD_TIMESTAMP_EXPLICIT",
+  "child_zero_rule": "NO_OBSERVED_VALUE_NOT_PERMISSION_DENIAL",
+  "browser_cache_poll_seconds": 5,
+  "public_display": false,
+  "model_calls": 0,
+  "trade_calls": 0
+}
