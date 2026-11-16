@@ -1,0 +1,196 @@
+{
+  "at_asia_shanghai": "2026-11-16T08:42:04.791904+08:00",
+  "at_utc": "2026-11-16T00:42:04.791904+00:00",
+  "audit_role": "CODEX_REVIEW_OF_SEEN_TRAINING_MATERIAL_NOT_INDEPENDENT_GOLD",
+  "candidate_tracking": {
+    "all_candidates": 71,
+    "old34_match_status_counts": {
+      "AMBIGUOUS_SOURCE_ANCHOR": 4,
+      "NO_SOURCE_ANCHOR": 4,
+      "UNIQUE_SOURCE_ANCHOR": 26
+    },
+    "old34_pack_status_counts": {
+      "NOT_PACKED": 8,
+      "OMITTED_WHOLE_GROUP_OVER_BUDGET": 4,
+      "VISIBLE_CLOSED_PENDING_SEMANTIC_REVIEW": 22
+    },
+    "old34_parse_status_counts": {
+      "MECHANICALLY_COMPLETE_PENDING_SOURCE_REVIEW": 14,
+      "NOT_LOCATED": 8,
+      "RELATION_UNKNOWN": 12
+    },
+    "old_fragment_complete_denominator": 34,
+    "source_ambiguous": 11,
+    "source_semantic_complete_not_claimed_for_new_tables": true,
+    "source_supported": 60,
+    "source_supported_match_status_counts": {
+      "AMBIGUOUS_SOURCE_ANCHOR": 4,
+      "NO_SOURCE_ANCHOR": 4,
+      "PARAGRAPH_SEPARATE": 20,
+      "UNIQUE_SOURCE_ANCHOR": 32
+    },
+    "source_supported_pack_status_counts": {
+      "NOT_PACKED": 8,
+      "OMITTED_WHOLE_GROUP_OVER_BUDGET": 8,
+      "PARAGRAPH_OMITTED_WHOLE_GROUP_OVER_BUDGET": 20,
+      "VISIBLE_CLOSED_PENDING_SEMANTIC_REVIEW": 24
+    },
+    "source_supported_parse_status_counts": {
+      "MECHANICALLY_COMPLETE_PENDING_SOURCE_REVIEW": 16,
+      "NOT_LOCATED": 8,
+      "PARAGRAPH_INVENTORIED_UNSTRUCTURED": 20,
+      "RELATION_UNKNOWN": 16
+    }
+  },
+  "evidence_sha256": {
+    "adapter_code": "6f58dd2585264d9654db0bbc641c95e2a9cf33f1f171e92efdc69bb473c5860b",
+    "evaluator_code": "9ff4716f29c4c5772e5d2988c4e127dad4961848d9bc3b23d4d52a3a153e13b2",
+    "frozen_private_reference": "c1c7288ebf16c1f64004b84c160a89773f29493aa17ba12146e85cb1c6e6a79d",
+    "preflight_redacted": "fc20a702d44abceeea20f9e3d7a2f41935cd4f17f9c484d6e0afe5bcc332541c",
+    "private_fixed_pack": "e0cceae84f3d3b667a13860a9290a6a233a4a3dca629a54314613e4607e7250f",
+    "private_full_parse": "44cc51cb7ffb455163084c2e01f7fa42942cb25219c9753127a3e0b358cc78b4"
+  },
+  "four_table_regression": {
+    "all_fields_complete": 90,
+    "expected_cells": 138,
+    "expected_tables": 4,
+    "extra_wrong_source_paths": 0,
+    "forbidden_header_links": 0,
+    "frozen_nvda_witnesses": 6,
+    "frozen_nvda_witnesses_all_fields_complete": 6,
+    "known_fields_complete": 138,
+    "micron_table_pack_status_counts": {
+      "NON_TARGET_TOPIC": 12,
+      "SELECTED": 4,
+      "WHOLE_GROUP_OVER_BUDGET": 32
+    },
+    "missed_cells": 0,
+    "nvda_witness_pack_status_counts": {
+      "SELECTED": 6
+    },
+    "per_referenced_table": [
+      {
+        "counts": {
+          "all_fields_complete": 30,
+          "expected_cells": 30,
+          "frozen_witnesses": 2,
+          "frozen_witnesses_all_fields_complete": 2,
+          "known_fields_complete": 30,
+          "matched_cells": 30,
+          "missed_cells": 0,
+          "wrong_complete_declarations": 0
+        },
+        "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+        "symbol": "NVDA"
+      },
+      {
+        "counts": {
+          "all_fields_complete": 30,
+          "expected_cells": 30,
+          "frozen_witnesses": 2,
+          "frozen_witnesses_all_fields_complete": 2,
+          "known_fields_complete": 30,
+          "matched_cells": 30,
+          "missed_cells": 0,
+          "wrong_complete_declarations": 0
+        },
+        "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+        "symbol": "NVDA"
+      },
+      {
+        "counts": {
+          "all_fields_complete": 30,
+          "expected_cells": 30,
+          "frozen_witnesses": 2,
+          "frozen_witnesses_all_fields_complete": 2,
+          "known_fields_complete": 30,
+          "matched_cells": 30,
+          "missed_cells": 0,
+          "wrong_complete_declarations": 0
+        },
+        "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+        "symbol": "NVDA"
+      },
+      {
+        "counts": {
+          "all_fields_complete": 0,
+          "expected_cells": 48,
+          "known_fields_complete": 48,
+          "matched_cells": 48,
+          "missed_cells": 0,
+          "wrong_complete_declarations": 0
+        },
+        "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+        "symbol": "MU"
+      }
+    ],
+    "wrong_complete_declarations": 0
+  },
+  "full_parse_and_pack": {
+    "all_eight_within_20000": true,
+    "closure_pass_events": 8,
+    "dangling_reference_count": 0,
+    "mechanically_complete_table_groups": 340,
+    "mechanically_complete_table_groups_selected": 96,
+    "model_visible_source_spans_checked": 298,
+    "parsed_documents": 16,
+    "parsed_events": 8,
+    "per_event_characters": [
+      {
+        "characters": 19722,
+        "event_group_id": "sec:0001045810:0001045810-25-000115",
+        "sha256": "f946a1d41d61b7aa9e03e33c732c6436f516e1f77c324c708d0d7418acf18c5e"
+      },
+      {
+        "characters": 19959,
+        "event_group_id": "sec:0000723125:0000723125-25-000019",
+        "sha256": "58f3be59503cc2bc20f41075b1d02830558b06dadf683284de07ef151a93cc06"
+      },
+      {
+        "characters": 19715,
+        "event_group_id": "sec:0001045810:0001045810-25-000207",
+        "sha256": "2d18f97a32d14513d1685b71d89c70f23e4c0fa22d6ef5c3656248093215ec1b"
+      },
+      {
+        "characters": 19677,
+        "event_group_id": "sec:0000723125:0000723125-25-000024",
+        "sha256": "7ac557ec2920d0aa121275152b48550578055201d149c74f0d66085df45e51aa"
+      },
+      {
+        "characters": 19715,
+        "event_group_id": "sec:0001045810:0001045810-25-000228",
+        "sha256": "055d7b0e1a24b5e23b6b613a82d7296d0c189d29ad3125984270ea835e7e32c3"
+      },
+      {
+        "characters": 19973,
+        "event_group_id": "sec:0000723125:0000723125-25-000044",
+        "sha256": "7ea59240d6763bd9c93e9ecf3517498e6af313fdc97e530afcc74ee672aba812"
+      },
+      {
+        "characters": 19713,
+        "event_group_id": "sec:0001045810:0001045810-26-000019",
+        "sha256": "40e229694b5593250744727f146e55b46212d869040ea05bde63cb6d37a4b9eb"
+      },
+      {
+        "characters": 19641,
+        "event_group_id": "sec:0000723125:0000723125-26-000004",
+        "sha256": "30c5fe103c40e62120fc4f38966aa24ba61e6eca0b51f8a55d187d49914c2885"
+      }
+    ],
+    "promotion_status": "REJECTED_CANDIDATE_SOURCE_SEMANTICS_NOT_FULLY_REVIEWED",
+    "selected_table_groups": 120,
+    "selected_unstructured_passages": 6,
+    "source_span_failure_count": 0,
+    "tables_processed": 78
+  },
+  "model_fit_calls": 0,
+  "model_inference_calls": 0,
+  "notes": [
+    "Four-table counts are prior same-source regression, not all 78 parsed tables.",
+    "UNKNOWN and missing footnote links stay incomplete; 20 paragraph candidates are unstructured.",
+    "Pack visibility does not establish financial semantic correctness or model performance."
+  ],
+  "return_evaluation_calls": 0,
+  "schema": "financial_text_v25_postrun_regression_audit_redacted_v1",
+  "source_scope": "EIGHT_SAVED_TRAINING_EVENTS_ONLY"
+}

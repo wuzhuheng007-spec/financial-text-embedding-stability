@@ -1,0 +1,41 @@
+# Financial input v2.5: eight-event expansion and fixed-budget packaging
+
+**Run date: 16 November 2026, Asia/Shanghai (UTC+08:00).** This development check reused eight saved NVIDIA/Micron earnings events and 16 official source files dated 28 May 2025 to 18 March 2026. The working branch and remote started at `75133b055f4238eff5af3a4ed16115c8b717a01a`; the frozen v2.4 table kernel was unchanged. No new source download, April–July 2026 body or return-label read, model call, fit, return evaluation, or personal-app fact-card change occurred. Prior validation exposure means these are previously seen training materials, not an independent test.
+
+## Result and limits
+
+All **8 events and 16/16 documents** were processed in one frozen parse. The source census found 154 tables: 78 processed, 68 classified as nested/layout and 8 structurally unsupported, with individual reasons retained privately. One subsequent pack produced eight diagnostic model-visible inputs, all below **20,000 Unicode characters per event**. It selected 120 table evidence groups and six explicitly unstructured passages; exact reference closure passed for 8/8 packs and 298 visible source spans matched the saved originals. These are engineering checks, not source-semantic approval. [Frozen parse](../results/market_observer_financial_text_v25_20261116/parse_frozen_v1_redacted.json), [pack](../results/market_observer_financial_text_v25_20261116/pack_frozen_v1_redacted.json), [readback audit](../results/market_observer_financial_text_v25_20261116/postrun_regression_audit_redacted.json).
+
+Among the **60 previously source-supported candidates**, 16 table candidates had a unique, mechanically complete value-cell relation and were visible. Same-team source review found **15/60 source-complete after parsing and 15/60 source-complete in the final text**, with one erroneous footnote binding among those 16. The remaining 55 of all 71 candidates were not adjudicated for their new full relation; this 15/60 is not an extraction-accuracy estimate. Another 16 source-supported candidates had unknown relations (eight visible, eight omitted for budget), 20 were paragraph candidates kept outside table parsing and all omitted for budget, and eight lacked a unique new cell anchor. The last eight are matching/parse uncertainty, not proven loss of source content. The 11 previously ambiguous candidates remain ambiguous. The old 34 strictly complete *contiguous fragments* have a separate outcome: 22 visible now, four omitted for budget, and eight without a unique anchor. Fragment retention and structural completeness are different metrics. [Frozen reference](../results/market_observer_financial_text_v25_20261116/reference_freeze_redacted.json), [source audit](../results/market_observer_financial_text_v25_20261116/source_audit_frozen_v1_redacted.json), [final evaluation](../results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json).
+
+**A new false mechanically complete binding was found.** In the earliest NVIDIA event, an EPS source footnote affects per-share interpretation, while the frozen parser marks that footnote `NOT_APPLICABLE`. The source audit records **15 COMPLETE and one ERROR** across the 16 reviewed mechanically complete, source-supported candidate anchors, plus 84 checked explicit source paths including repeated paths. Neither the frozen parse nor pack was revised. All eight packed inputs remain `REJECTED_CANDIDATE`; there is no promotion to verified facts or a model input. The error row's `pack_status` says its reference is visible, but its `source_binding_status=ERROR` controls the interpretation: the candidate is rejected. A successful four-table regression cannot cover the other processed tables. [Source audit](../results/market_observer_financial_text_v25_20261116/source_audit_frozen_v1_redacted.json), [final evaluation](../results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json).
+
+The prior v2.4 four-table checks replayed under this expansion: 138/138 expected cells complete on source-known fields, 90/138 complete on all fields, and six of six known NVIDIA witnesses parsed and packed. The selected Micron table remains 48/48 complete on known fields and 0/48 on all fields; of those cells, four were selected, 32 omitted for budget and 12 were outside target topics. Its unresolved currency and footnote evidence was not inferred. [Prior v2.4 report](2026-11-16_market_observer_financial_text_v24.en.md), [current regression readback](../results/market_observer_financial_text_v25_20261116/postrun_regression_audit_redacted.json).
+
+| Event date | Symbol | Visible Unicode characters | Table groups | Unstructured passages |
+| --- | --- | ---: | ---: | ---: |
+| 2025-05-28 | NVDA | 19,722 | 17 | 0 |
+| 2025-06-25 | MU | 19,959 | 13 | 2 |
+| 2025-08-27 | NVDA | 19,715 | 17 | 0 |
+| 2025-09-23 | MU | 19,677 | 13 | 1 |
+| 2025-11-19 | NVDA | 19,715 | 17 | 0 |
+| 2025-12-17 | MU | 19,973 | 13 | 2 |
+| 2026-02-25 | NVDA | 19,713 | 17 | 0 |
+| 2026-03-18 | MU | 19,641 | 13 | 1 |
+
+The [frozen pack receipt](../results/market_observer_financial_text_v25_20261116/pack_frozen_v1_redacted.json) binds each row to an event ID and the final text hash. Python `len()` counts the actual serialized Unicode text, including IDs, context, references, labels, separators and status. Source strings and financial values stay local.
+
+## Plan versus execution
+
+| Stage | Plan | Actual and evidence | Status |
+| --- | --- | --- | --- |
+| P0 | Preserve baseline, sources and rules | The 8-event/16-source corpus, 71-candidate reference and 27 dependencies were [frozen before the full run](../results/market_observer_financial_text_v25_20261116/preflight_frozen_v1_redacted.json). | Complete |
+| P1 | Discover all tables and keep paragraph status separate | All 154 tables received a disposition; the v2.4 kernel was unchanged. [Parse receipt](../results/market_observer_financial_text_v25_20261116/parse_frozen_v1_redacted.json). | Complete |
+| P2 | Dynamic evaluation and negative controls | The source reference sets denominators, footnotes have distinct states, and extra wrong paths fail; 24 synthetic tests passed. | Complete as software |
+| P3 | One full parse and source review | 16/16 source files parsed; all 16 mechanically complete source-supported candidates were reviewed, with 15 complete and one EPS footnote error. Other parser output remains unreviewed. | Executed; semantic gate failed |
+| P4 | One whole-group fixed-budget pack | 8/8 diagnostic packs fit and close their references; all remain rejected candidates. [Pack receipt](../results/market_observer_financial_text_v25_20261116/pack_frozen_v1_redacted.json). | Diagnostic run complete |
+| P5 | Three-layer comparison, old 34, six witnesses and Micron | The old four-table checks replayed; candidate and budget losses were separated, with final candidate decisions in the [evaluation receipt](../results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json). | Bounded comparison complete; full semantic review not done |
+| P6 | Stop promotion on a wrong complete claim or dangling reference | No dangling reference; one wrong footnote applicability makes the promotion gate fail. | Stop condition triggered |
+| P7 | Reports, ledger, Git and redacted handoff | Reports are prepared; Git push and ZIP status belong to the separate sync receipt. | Sync pending |
+
+The 24 synthetic checks, 16 real document parses, eight packs and 16 same-team reviewed candidate bindings have different denominators and cannot be added as independent experiments. Model fits, model inference and return evaluation each remained **zero**. The next version should correct source-scoped footnote handling and revisit why all 20 reviewed paragraph candidates miss the fixed budget, then pass a source regression before any bounded extraction call. No result here establishes general extraction accuracy, financial prediction or trading value.

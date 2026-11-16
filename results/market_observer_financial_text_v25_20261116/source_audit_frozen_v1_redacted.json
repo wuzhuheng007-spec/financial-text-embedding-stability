@@ -1,0 +1,35 @@
+{
+  "schema": "financial_text_v25_source_audit_redacted_v1",
+  "at_utc": "2026-11-16T00:43:12.492247+00:00",
+  "at_asia_shanghai": "2026-11-16T08:43:12.492247+08:00",
+  "review_role": "CODEX_REVIEW_SAME_TEAM_NOT_INDEPENDENT_GOLD",
+  "reference_sha256": "c1c7288ebf16c1f64004b84c160a89773f29493aa17ba12146e85cb1c6e6a79d",
+  "parse_sha256": "44cc51cb7ffb455163084c2e01f7fa42942cb25219c9753127a3e0b358cc78b4",
+  "pack_sha256": "e0cceae84f3d3b667a13860a9290a6a233a4a3dca629a54314613e4607e7250f",
+  "private_audit_sha256": "ff04774cd0925715f1e0b8be71e75175dfd5a284596e23df8ab0ae617549c5cd",
+  "audit_script_sha256": "50299006baa1872627d208ad322cb953579362bb4f5fcacb7ca003f918d4364a",
+  "candidate_decision_counts": {
+    "COMPLETE": 15,
+    "ERROR": 1
+  },
+  "scope_counts": {
+    "mechanically_complete_supported_candidates": 16,
+    "new_first_nvda_table_review": 4,
+    "source_complete": 15,
+    "source_errors": 1,
+    "in_prior_four_table_review": 12
+  },
+  "reviewed_explicit_source_paths_with_repeats": 84,
+  "limitations": [
+    "Only 16 unique supported candidate mechanically complete bindings reviewed",
+    "Other parser bindings and partial/ambiguous candidates remain unreviewed",
+    "Inherited v2.4 same-team source reference for twelve reviewed candidate cells"
+  ],
+  "false_complete_case": {
+    "event_date": "2025-05-28",
+    "symbol": "NVDA",
+    "topic": "eps",
+    "field": "footnote",
+    "decision": "ERROR"
+  }
+}

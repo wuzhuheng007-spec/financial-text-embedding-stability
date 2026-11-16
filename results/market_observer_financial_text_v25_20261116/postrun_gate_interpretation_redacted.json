@@ -1,0 +1,23 @@
+{
+  "schema": "financial_text_v25_postrun_gate_interpretation_v1",
+  "scope": "SEEN_TRAINING_MATERIAL_DEVELOPMENT_ONLY",
+  "evidence": {
+    "frozen_evaluation": "results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json",
+    "same_team_source_audit": "results/market_observer_financial_text_v25_20261116/source_audit_frozen_v1_redacted.json",
+    "postrun_regression": "results/market_observer_financial_text_v25_20261116/postrun_regression_audit_redacted.json"
+  },
+  "interpretation": {
+    "source_reviewed_candidate_bindings": 16,
+    "source_complete": 15,
+    "source_error": 1,
+    "unreviewed_candidates": 55,
+    "known_error": "2025-05-28 NVIDIA EPS asterisk footnote was falsely marked NOT_APPLICABLE by the frozen parser",
+    "pack_visibility_is_not_semantic_acceptance": true,
+    "source_binding_error_overrides_visible_closed_pack_status": true,
+    "all_eight_packs_remain": "REJECTED_CANDIDATE",
+    "promotion_gate": "FAIL_FALSE_COMPLETE_FOOTNOTE_AND_INCOMPLETE_SEMANTIC_COVERAGE"
+  },
+  "new_model_inference_calls": 0,
+  "new_model_fit_calls": 0,
+  "return_evaluation_calls": 0
+}

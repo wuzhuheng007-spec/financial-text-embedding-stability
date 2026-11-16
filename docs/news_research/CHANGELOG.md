@@ -1,3 +1,11 @@
+# 2026-11-16 — Financial input v2.5 / 财务输入 v2.5
+
+The [English report](../../reports/2026-11-16_market_observer_financial_text_v25.en.md), [中文报告](../../reports/2026-11-16_market_observer_financial_text_v25.zh.md), [P0–P7 ledger](../../results/market_observer_financial_text_v25_20261116/plan_execution.csv), [frozen evaluation](../../results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json) and [same-team source audit](../../results/market_observer_financial_text_v25_20261116/source_audit_frozen_v1_redacted.json) record one eight-event expansion parse and one fixed-budget diagnostic pack using 16 saved NVDA/MU training originals. The old six NVIDIA witnesses remain parsed and visible. Of 16 mechanically complete, source-supported candidate bindings, 15 passed source review and one EPS footnote binding failed; 20 paragraph candidates were omitted under budget. All eight packs remain `REJECTED_CANDIDATE`. This is seen-training development only; no model fit, inference, return score, download or personal-app change occurred.
+
+已完成八事件与定额装包的开发检查，但新增每股数据脚注错误触发停止晋升条件；段落候选在预算中全部遗漏。旧结果保留，未运行模型或收益实验。
+
+---
+
 # 2026-11-16 — Financial table semantics v2.4 / 财务表格语义内核 v2.4
 
 The [English summary](../../reports/2026-11-16_market_observer_financial_text_v24.en.md), [Chinese report](../../reports/2026-11-16_market_observer_financial_text_v24.zh.md), [P0–P5 ledger](../../results/market_observer_financial_text_v24_20261116/plan_execution.csv) and [one frozen four-table regression](../../results/market_observer_financial_text_v24_20261116/evaluation_frozen_v1_redacted.json) document a new structure-first parser. Six of six previously failed NVIDIA witnesses are now fully source-bound; all 138 checked numeric cells have correct known-field links, with no false data-row header, wrong period/unit scope, or wrong complete claim. Micron retains 30 unknown monetary currencies and 48 unresolved footnote links, so its 48 cells are known-field complete but not fully bound. The same 17 public synthetic methods passed after a logged 13/17 development failure. This small, previously seen training regression does not establish general extraction or financial value. Eight-event input building, model calls, return scoring and personal-app changes were not run; v2.3 negative results remain intact.

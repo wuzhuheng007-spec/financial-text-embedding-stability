@@ -1,0 +1,76 @@
+{
+  "schema": "financial_text_v25_expansion_plan_v1",
+  "drafted_at_utc": "2026-11-16T00:32:40Z",
+  "execution_timezone": "Asia/Shanghai",
+  "status": "FROZEN_BEFORE_FULL_RUN",
+  "frozen_at_utc": "2026-11-16T00:39:04.390706+00:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "baseline_commit": "75133b055f4238eff5af3a4ed16115c8b717a01a",
+  "source": {
+    "manifest": "artifacts/market_observer_official_20261115/corpus_manifest.json",
+    "symbols": [
+      "NVDA",
+      "MU"
+    ],
+    "announcement_date_start": "2025-04-01",
+    "announcement_date_end": "2026-03-31",
+    "expected_event_groups": 8,
+    "expected_earnings_exhibits": 8,
+    "expected_matched_filings": 8,
+    "new_downloads": 0,
+    "forbidden_reads": [
+      "2026-04-01 through 2026-07-31 source bodies",
+      "return labels",
+      "personal database"
+    ]
+  },
+  "selection": {
+    "source_structure_only": true,
+    "reference_paths_as_selection_inputs": false,
+    "exhibit_precedes_matched_filing": true,
+    "topic_order": [
+      "revenue",
+      "net_income",
+      "earnings_per_share",
+      "gross_margin",
+      "next_quarter_or_full_year_guidance",
+      "capital_expenditures",
+      "operating_cash_flow",
+      "free_cash_flow",
+      "important_segment_revenue"
+    ],
+    "paragraphs_separate_from_tables": true,
+    "all_exclusions_reasoned": true,
+    "relation_priority": "MECHANICALLY_COMPLETE_FIRST_THEN_PARTIAL_UNKNOWN"
+  },
+  "adapter": {
+    "max_unicode_characters_per_event": 20000,
+    "character_count": "Python len(final serialized Unicode model-visible text including labels, references, separators, and status)",
+    "whole_evidence_groups_only": true,
+    "shared_context_deduplicated": true,
+    "unknown_explicit": true,
+    "conflict_never_complete": true,
+    "known_false_complete_rejected": true,
+    "one_full_parse_and_one_pack_after_freeze": true
+  },
+  "evaluation": {
+    "candidate_reference_count": 71,
+    "prior_source_supported": 60,
+    "prior_ambiguous": 11,
+    "prior_fragment_complete": 34,
+    "four_table_reference_preserved": true,
+    "dynamic_denominator_from_frozen_reference": true,
+    "new_complete_claims_require_source_review": true,
+    "unknown_not_full_complete": true,
+    "separate_source_parse_pack_layers": true,
+    "training_material_development_only": true
+  },
+  "prohibited": [
+    "model inference",
+    "model fitting",
+    "return evaluation",
+    "personal application fact-card replacement",
+    "production selection from candidate answers"
+  ],
+  "frozen_at_asia_shanghai": "2026-11-16T08:39:04.390706+08:00"
+}

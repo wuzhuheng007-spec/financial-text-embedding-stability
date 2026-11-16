@@ -1,0 +1,31 @@
+{
+  "schema": "financial_text_v25_audit_helper_attempts_redacted_v1",
+  "recorded_at_utc": "2026-11-16T00:44:16.875236+00:00",
+  "recorded_at_asia_shanghai": "2026-11-16T08:44:16.875236+08:00",
+  "evidence_level": "EXECUTION_NOTES_NOT_PERSISTED_STACK_TRACES",
+  "attempts": [
+    {
+      "order": 1,
+      "stage": "private_helper_import",
+      "error_type": "ModuleNotFoundError",
+      "cause": "repo root absent from script import path",
+      "effect": "stopped before audit output was written"
+    },
+    {
+      "order": 2,
+      "stage": "private_helper_unit_check",
+      "error_type": "ValueError",
+      "cause": "per_share reference spelling absent from private comparison alias set",
+      "effect": "stopped before audit output was written"
+    }
+  ],
+  "correction": "Private audit helper import path and per_share alias were corrected before final source-audit output; frozen parser, packer and evaluator were not edited.",
+  "final_private_helper_sha256": "50299006baa1872627d208ad322cb953579362bb4f5fcacb7ca003f918d4364a",
+  "final_private_source_audit_sha256": "ff04774cd0925715f1e0b8be71e75175dfd5a284596e23df8ab0ae617549c5cd",
+  "frozen_runtime_hash_unchanged": {
+    "scripts/market_observer_financial_text_v24/semantic.py": true,
+    "scripts/market_observer_financial_text_v25/adapter.py": true,
+    "scripts/market_observer_financial_text_v25/evaluate.py": true,
+    "scripts/market_observer_financial_text_v25/run.py": true
+  }
+}
