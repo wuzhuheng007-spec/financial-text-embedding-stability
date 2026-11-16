@@ -46,7 +46,7 @@ def validate_live_config(live: dict[str, Any], *, repo_root: Path | None = None)
         raise ValueError("live config must request only quote:read")
     entitlement_state = live.get("entitlement_state")
     if entitlement_state not in {"ACCOUNT_CONFIRMED", "BOUNDED_PROBE",
-                                 "BOUNDED_ACCOUNT_QUOTA_PROBE"}:
+                                 "BOUNDED_ACCOUNT_QUOTA_PROBE", "BOUNDED_PERSONAL"}:
         raise ValueError("account-specific quote entitlement has not been confirmed or capped for probing")
     limit = live.get("subscription_key_budget")
     if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
@@ -58,6 +58,8 @@ def validate_live_config(live: dict[str, Any], *, repo_root: Path | None = None)
         raise ValueError("configured subscriptions exceed key budget")
     if entitlement_state == "BOUNDED_PROBE" and (len(subscriptions) != 1 or limit != 1):
         raise ValueError("bounded probe must use exactly one subscription key")
+    if entitlement_state == "BOUNDED_PERSONAL" and (len(subscriptions) > 6 or limit > 6):
+        raise ValueError("unknown-quota personal intake is capped at six verified quote keys")
     if entitlement_state == "BOUNDED_ACCOUNT_QUOTA_PROBE" and not live.get("entitlement_evidence"):
         raise ValueError("account quota probe receipt locator required")
     if entitlement_state == "ACCOUNT_CONFIRMED" and not live.get("entitlement_evidence"):
@@ -75,6 +77,8 @@ def validate_live_config(live: dict[str, Any], *, repo_root: Path | None = None)
             raise ValueError("instrument ID must equal the verified provider code")
         if row.get("kind") not in {"QUOTE", "KLINE_1M"}:
             raise ValueError("only quote and one-minute K-line subscriptions are permitted")
+        if entitlement_state == "BOUNDED_PERSONAL" and row.get("kind") != "QUOTE":
+            raise ValueError("unknown-quota personal intake permits basic quotes only")
         if row.get("market") != code.split(".", 1)[0]:
             raise ValueError("subscription market conflicts with verified provider code")
     if not live.get("mapping_receipt_sha256"):

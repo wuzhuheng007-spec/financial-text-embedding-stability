@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, connection, transaction
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from .forms import EmailAuthenticationForm, InviteRegistrationForm, UserPreferencesForm, WatchlistItemForm
 from .models import Invitation, ProviderState, PublicFactCard, PublicMarketSnapshot, UserPreferences, WatchlistItem
 from .rate_limit import clear_account_failure, is_blocked, record_failure
+from .personal_feed_cache import for_owner
 
 
 def healthz(request):
@@ -144,7 +145,20 @@ def dashboard(request):
         "watchlist_form": WatchlistItemForm(),
         "display_timezone": request.display_timezone,
         "personal_mode": settings.PERSONAL_MODE,
+        "personal_feed_enabled": (settings.PERSONAL_MODE and
+                                  request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME),
     })
+
+
+@login_required
+def personal_feed_json(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal feed unavailable")
+    symbols = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    data = for_owner(request.user, symbols)
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @login_required

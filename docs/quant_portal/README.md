@@ -1,8 +1,10 @@
 # Quant Portal: personal test first
 
+The [16 November personal live-feed report](../../reports/2026-11-16_quant_portal_personal_feed.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_feed.zh.md), [P0–P7 plan–actual](../../results/quant_portal_personal_feed_20261116/plan_execution.csv), [redacted runtime receipt](../../results/quant_portal_personal_feed_20261116/runtime_redacted.json)) records a loopback-only personal moomoo/Jin10 connection. Six quote symbols and Jin10 flash items entered a separate owner-bound cache; the page uses a five-second local cache poll. The market was closed during the observed push, so market-open updates remain unverified. Public display stays off. Desktop/390px visual acceptance for this new feed layout is `NOT_RUN` after the computer-use tool stopped. Financial input v2.5 remains `REJECTED_CANDIDATE`.
+
 The latest [personal acceptance report](../../reports/2026-11-16_quant_portal_personal_acceptance.en.md) ([中文报告](../../reports/2026-11-16_quant_portal_personal_acceptance.zh.md), [P0–P6 ledger](../../results/quant_portal_personal_acceptance_20261116/plan_execution.csv)) covers an existing owner account, isolated real-Edge flows, desktop/390px visual checks, two historical guidance cards, a booted backup copy and final-code local restart. Use the [one-page Chinese owner guide](personal_user_guide.zh.md) for everyday start, login, watchlist, guidance, backup, password reset and stop. The owner has not yet been observed using the final page in this turn.
 
-The current deliverable is a **loopback-only personal test** in [apps/quant_portal](../../apps/quant_portal). It provides a private account, editable watchlist, personal settings and source-linked historical NVDA/MU SEC fact summaries. Prices and Jin10/moomoo news are **not connected** in this app. No fabricated quote, prediction or market result is shown. The original private research Site and research scripts remain separate.
+The current deliverable is a **loopback-only personal test** in [apps/quant_portal](../../apps/quant_portal). It provides a private account, editable watchlist, personal settings, source-linked historical NVDA/MU SEC fact summaries, and an owner-only cache of read-only quotes and flash news. No fabricated quote, prediction or market result is shown. The original private research Site and research scripts remain separate.
 
 Read in this order:
 
@@ -13,4 +15,4 @@ Read in this order:
 
 The local fact-card input is the already redacted, SHA-pinned [v4 research summary](../../results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json), and [two official SEC exhibits](../../results/quant_portal_20261116/fact_source_web_check.json) were revisited for the selected values. They are same-team `CODEX_REVIEW_DEVELOPMENT` material with historical fiscal periods, not independent human gold or current earnings. The financial-text 20,000-character model-input gap, exposed validation periods, formal M5 admission and financial evaluation remain unchanged.
 
-Invitation-only multiuser operation, PostgreSQL containers, public DNS/HTTPS, provider feeds and load capacity are a **later plan**. No Alibaba Cloud resource was purchased or deployed in this round. The private Site has not been made public.
+Invitation-only multiuser operation, PostgreSQL containers, public DNS/HTTPS and load capacity are a **later plan**. The personal local feed does not authorize public redistribution. No Alibaba Cloud resource was purchased or deployed in this round. The private Site has not been made public.

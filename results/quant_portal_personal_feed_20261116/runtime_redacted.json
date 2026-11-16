@@ -1,0 +1,154 @@
+{
+  "schema": "quant_portal_personal_feeds_redacted_receipt_v1",
+  "observed_at_utc": "2026-11-16T01:22:19.222990Z",
+  "observed_at_asia_shanghai": "2026-11-16T09:22:19.222990+08:00",
+  "config_sha256": "5ced25655f111f5d31b65beb4ad94f8715352a9e331e21e3426033a1e2e0cff9",
+  "loopback_only": true,
+  "personal_mode": true,
+  "public_rebroadcast_enabled": false,
+  "trade_calls": 0,
+  "provider_account_quota": "UNKNOWN",
+  "jin10_vendor_polling_limit": "NOT_CONFIRMED",
+  "jin10_local_poll_interval_seconds": 60,
+  "jin10_local_max_business_calls_per_utc_day": 1440,
+  "portal_cache_poll_interval_seconds": 5,
+  "browser_visual_acceptance": "NOT_RUN_CUA_POLICY_STOP",
+  "providers": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-16T01:22:17.682643Z",
+      "last_success_at": "2026-11-16T01:22:02.646766Z",
+      "last_received_at": "2026-11-16T01:22:02.627619Z",
+      "last_source_at": "2026-11-16T01:10:14Z",
+      "last_error_class": null,
+      "requests_total": 30,
+      "business_calls_today": 18
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_MARKET_CLOSED",
+      "heartbeat_at": "2026-11-16T01:22:19.013502Z",
+      "last_success_at": "2026-11-16T01:22:19.013502Z",
+      "last_received_at": "2026-11-16T01:22:19.013502Z",
+      "last_source_at": "2026-11-13T22:00:00.041000Z",
+      "last_error_class": null,
+      "requests_total": 0,
+      "business_calls_today": 0
+    }
+  ],
+  "quote_symbols": [
+    {
+      "symbol": "MU",
+      "earliest_source_time": "2026-11-13T22:00:00.041000Z",
+      "latest_source_time": "2026-11-13T22:00:00.041000Z",
+      "latest_received_at": "2026-11-16T01:14:09.478592Z",
+      "saved_rows": 362,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "NVDA",
+      "earliest_source_time": "2026-11-13T22:00:00.044000Z",
+      "latest_source_time": "2026-11-13T22:00:00.044000Z",
+      "latest_received_at": "2026-11-16T01:14:09.447689Z",
+      "saved_rows": 1000,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "QQQ",
+      "earliest_source_time": "2026-11-13T22:00:00.048000Z",
+      "latest_source_time": "2026-11-13T22:00:00.048000Z",
+      "latest_received_at": "2026-11-16T01:14:07.625760Z",
+      "saved_rows": 604,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "SOXX",
+      "earliest_source_time": "2026-11-13T22:00:00.059000Z",
+      "latest_source_time": "2026-11-13T22:00:00.059000Z",
+      "latest_received_at": "2026-11-16T01:14:08.254358Z",
+      "saved_rows": 418,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "SPY",
+      "earliest_source_time": "2026-11-13T21:15:05.071000Z",
+      "latest_source_time": "2026-11-13T21:15:05.071000Z",
+      "latest_received_at": "2026-11-16T01:14:08.852025Z",
+      "saved_rows": 304,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    },
+    {
+      "symbol": "TQQQ",
+      "earliest_source_time": "2026-11-13T22:00:00.063000Z",
+      "latest_source_time": "2026-11-13T22:00:00.063000Z",
+      "latest_received_at": "2026-11-16T01:14:07.022412Z",
+      "saved_rows": 451,
+      "distinct_display_prices": 1,
+      "distinct_source_times": 1
+    }
+  ],
+  "symbol_status": [
+    {
+      "symbol": "MU",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "NVDA",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "QQQ",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "SOXX",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "SPY",
+      "state": "SUBSCRIBED",
+      "reason": null
+    },
+    {
+      "symbol": "TQQQ",
+      "state": "SUBSCRIBED",
+      "reason": null
+    }
+  ],
+  "jin10_news_items": 35,
+  "jin10_news_versions": 35,
+  "jin10_key_kinds": [
+    {
+      "source_key_kind": "SOURCE_URL_CANDIDATE",
+      "items": 35
+    }
+  ],
+  "owner_data_preservation": {
+    "auth_user": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 1
+    },
+    "core_watchlistitem": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 6
+    },
+    "core_userpreferences": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 1
+    },
+    "core_publicfactcard": {
+      "same_rows_as_prechange_backup": true,
+      "current_row_count": 14
+    }
+  }
+}

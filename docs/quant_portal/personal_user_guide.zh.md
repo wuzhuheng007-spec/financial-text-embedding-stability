@@ -1,6 +1,6 @@
 # Quant Portal 个人测试版使用说明
 
-本版只在这台电脑的 `127.0.0.1:8765` 运行。自选股是待核实的证券代码；财报卡是有来源定位的**历史训练期材料**，不是最新行情或投资建议。moomoo 行情和金十新闻未接入此页面。
+本版只在这台电脑的 `127.0.0.1:8765` 运行。自选股是待核实的证券代码；财报卡是有来源定位的**历史训练期材料**，不是最新行情或投资建议。页面现在读取单独后台进程保存的私人 moomoo 行情和金十快讯；其他账户不能读取这些私人缓存。
 
 ## 启动与登录
 
@@ -19,6 +19,19 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/st
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/reset_personal_password.ps1
 ```
 
+## 私人行情和快讯
+
+首页每 5 秒读取一次本机缓存，不会因此请求供应商。后台对六只已核对代码 TQQQ、QQQ、SOXX、SPY、NVDA、MU 维持一个 moomoo 只读推送连接，并每 60 秒最多读取一页最新金十快讯。可切换“全部快讯”和“我的关注”；后者按公司别名及宏观主题筛选，未命中时仍可查看全部缓存。金十内容标为“待交叉核实”。
+
+行情分别显示来源时间和本机收到时间。休市时显示最后可得报价及时间，不表示此刻有成交；延迟、币种或账户配额若未核实会显示未知。新闻时间如无时区依据也会明确提示。其他自选证券若尚未进入六只订阅范围，页面会逐只显示暂无个人报价。行情和快讯均不构成交易建议。
+
+若两条数据都未更新，先运行下方 `status_personal.ps1`；它分别显示门户和采集进程状态。需要单独重启采集时运行：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 stop
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/feed_personal.ps1 start
+```
+
 ## 自选股与财报卡
 
 主页面的“加入自选”输入证券代码、可选名称和类别后提交。页面会提示重复代码；删除前请确认目标行。修改后刷新页面检查保留状态。“个人设置”中可切换显示时区。代码关联只是观察候选，不等于已核实历史证券身份。
@@ -35,7 +48,7 @@ python apps/quant_portal/ops/restore_probe_personal.py apps/quant_portal/backups
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/stop_personal.ps1
 ```
 
-若页面打不开，先运行 `status_personal.ps1`；显示 `STOPPED_OR_UNTRACKED` 时再启动。若端口被其他进程占用，启动脚本会拒绝接管，应先查明占用者。若财报卡缺失，检查导入回执及来源哈希，不要补写数字。行情/新闻显示未接入是当前范围，不表示今天没有新闻或没有成交。
+若页面打不开，先运行 `status_personal.ps1`；显示 `STOPPED_OR_UNTRACKED` 时再启动。若端口被其他进程占用，启动脚本会拒绝接管，应先查明占用者。若财报卡缺失，检查导入回执及来源哈希，不要补写数字。行情或新闻显示断开时，旧缓存仍会保留并标明状态；不要据此判断今天没有新闻或成交。
 
 确需回退个人数据库时，先停止服务，再运行 `backup_personal.py` 为**当前**库另留一份新备份。选定要恢复的旧备份，运行 `restore_probe_personal.py` 校验其私人回执、SHA-256 与完整性；核对文件名和目录后，确认 8765 端口没有监听进程，再执行下面的单文件复制。不要删除备份或在服务运行时覆盖数据库。
 

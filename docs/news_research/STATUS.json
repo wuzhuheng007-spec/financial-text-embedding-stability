@@ -1,6 +1,6 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.30",
+  "version": "1.31",
   "updated_date": "2026-11-16",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
@@ -957,6 +957,26 @@
     "github_sync": "INITIAL_RESEARCH_COMMIT_PUSHED_REMOTE_SHA_AND_KEY_BLOBS_READ_BACK",
     "redacted_handoff_zip": "INITIAL_GIT_SNAPSHOT_LOCAL_CRC_AND_MEMBER_BYTES_PASS",
     "sync_receipt": "results/market_observer_financial_text_v24_20261116/git_handoff_sync_redacted.json",
+    "formal_m5_financial_experiment": "NOT_RUN"
+  },
+  "quant_portal_personal_feed_v1": {
+    "date": "2026-11-16",
+    "timezone": "Asia/Shanghai",
+    "status": "PERSONAL_LOOPBACK_FEEDS_CONNECTED_MARKET_CLOSED_VISUAL_PENDING",
+    "portal_url": "http://127.0.0.1:8765/",
+    "report_en": "reports/2026-11-16_quant_portal_personal_feed.en.md",
+    "report_zh": "reports/2026-11-16_quant_portal_personal_feed.zh.md",
+    "plan_execution": "results/quant_portal_personal_feed_20261116/plan_execution.csv",
+    "runtime_redacted": "results/quant_portal_personal_feed_20261116/runtime_redacted.json",
+    "moomoo_priority_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+    "moomoo_market_open_push_verified": false,
+    "jin10_latest_page_poll_seconds": 60,
+    "portal_private_cache_poll_seconds": 5,
+    "public_market_data_enabled": false,
+    "browser_visual_acceptance": "NOT_RUN_CUA_POLICY_STOP",
+    "personal_owner_data_preserved": true,
+    "model_fit_calls": 0,
+    "model_inference_calls": 0,
     "formal_m5_financial_experiment": "NOT_RUN"
   },
   "market_observer_financial_text_v25": {

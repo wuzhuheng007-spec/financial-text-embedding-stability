@@ -1,3 +1,11 @@
+# 2026-11-16 — Personal loopback feeds / 本机私人行情与快讯
+
+The [English report](../../reports/2026-11-16_quant_portal_personal_feed.en.md), [中文报告](../../reports/2026-11-16_quant_portal_personal_feed.zh.md), [P0–P7 ledger](../../results/quant_portal_personal_feed_20261116/plan_execution.csv) and [redacted runtime receipt](../../results/quant_portal_personal_feed_20261116/runtime_redacted.json) record read-only moomoo quote push for six verified US symbols and Jin10 latest-flash polling into a private owner-bound cache. The loopback portal polls only the cache; public redistribution remains off. Closed-market quotes and news were actually received. Market-open push, account-specific quotas and new desktop/390px visual acceptance remain unverified. Financial input v2.5 stays `REJECTED_CANDIDATE`; no model or financial evaluation ran.
+
+本机个人页面已接入私人行情与金十快讯缓存；休市报价保留来源时间，不称实时成交。新版页面的桌面及窄屏视觉检查因电脑控制工具中止而未完成。
+
+---
+
 # 2026-11-16 — Financial input v2.5 / 财务输入 v2.5
 
 The [English report](../../reports/2026-11-16_market_observer_financial_text_v25.en.md), [中文报告](../../reports/2026-11-16_market_observer_financial_text_v25.zh.md), [P0–P7 ledger](../../results/market_observer_financial_text_v25_20261116/plan_execution.csv), [frozen evaluation](../../results/market_observer_financial_text_v25_20261116/evaluation_frozen_v1_redacted.json) and [same-team source audit](../../results/market_observer_financial_text_v25_20261116/source_audit_frozen_v1_redacted.json) record one eight-event expansion parse and one fixed-budget diagnostic pack using 16 saved NVDA/MU training originals. The old six NVIDIA witnesses remain parsed and visible. Of 16 mechanically complete, source-supported candidate bindings, 15 passed source review and one EPS footnote binding failed; 20 paragraph candidates were omitted under budget. All eight packs remain `REJECTED_CANDIDATE`. This is seen-training development only; no model fit, inference, return score, download or personal-app change occurred.

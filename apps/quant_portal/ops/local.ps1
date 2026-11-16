@@ -168,6 +168,6 @@ try {
         Remove-Item -LiteralPath $PidPath -ErrorAction SilentlyContinue
         throw
     }
-    Write-Output "STARTED http://127.0.0.1:$Port/ (local SQLite, private historical facts only)"
+    Write-Output "STARTED http://127.0.0.1:$Port/ (local SQLite; personal feeds are a separate worker)"
     Write-Output "Read the one-time invite privately from: $(Join-Path $StateDir 'personal_invite.txt')"
 } finally { Pop-Location }

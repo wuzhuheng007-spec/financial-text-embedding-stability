@@ -1,0 +1,22 @@
+{
+  "schema": "quant_portal_personal_readback_redacted_v1",
+  "owner_feed_http": 200,
+  "anonymous_feed_http": 302,
+  "cache_control": "private, no-store",
+  "quote_symbols": [
+    "MU",
+    "NVDA",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "TQQQ"
+  ],
+  "cached_news_items": 33,
+  "returned_news_items": 33,
+  "page_http": 200,
+  "page_has_private_quote_root": true,
+  "page_has_private_news_root": true,
+  "page_has_local_cache_js": true,
+  "page_has_public_approval_wait_notice": false,
+  "browser_visual_acceptance": "NOT_RUN_CUA_POLICY_STOP"
+}

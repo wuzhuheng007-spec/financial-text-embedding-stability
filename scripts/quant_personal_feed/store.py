@@ -1,0 +1,238 @@
+"""Private sidecar SQLite cache, bound to exactly one portal owner ID.
+
+The public Django market tables and the owner's account database are not used
+as provider caches. Provider text and quote values never enter public receipts.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import sqlite3
+from contextlib import closing
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.parse import urlsplit
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def published_utc(value: object) -> str | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return None
+    return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def safe_source_url(value: object) -> str | None:
+    if not isinstance(value, str) or any(ord(c) < 32 for c in value):
+        return None
+    try:
+        parts = urlsplit(value)
+        if parts.scheme == "https" and parts.hostname and not parts.username and not parts.password:
+            return value
+    except ValueError:
+        pass
+    return None
+
+
+class PersonalFeedStore:
+    def __init__(self, path: Path, owner_id: int):
+        if owner_id <= 0:
+            raise ValueError("A real portal owner ID is required")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self.path = path
+        self.db = sqlite3.connect(path, timeout=10, isolation_level=None)
+        self.db.row_factory = sqlite3.Row
+        self.db.execute("PRAGMA journal_mode=WAL")
+        self.db.execute("PRAGMA busy_timeout=10000")
+        self.db.executescript("""
+          CREATE TABLE IF NOT EXISTS owner_binding (
+            singleton INTEGER PRIMARY KEY CHECK(singleton=1), owner_id INTEGER NOT NULL);
+          CREATE TABLE IF NOT EXISTS provider_state (
+            provider TEXT PRIMARY KEY, state TEXT NOT NULL, heartbeat_at TEXT NOT NULL,
+            last_success_at TEXT, last_received_at TEXT, last_source_at TEXT,
+            last_error_class TEXT, requests_total INTEGER NOT NULL DEFAULT 0,
+            business_calls_today INTEGER NOT NULL DEFAULT 0, business_day_utc TEXT);
+          CREATE TABLE IF NOT EXISTS quotes (
+            id INTEGER PRIMARY KEY, owner_id INTEGER NOT NULL, provider TEXT NOT NULL,
+            symbol TEXT NOT NULL, provider_code TEXT NOT NULL, display_name TEXT,
+            price_text TEXT NOT NULL, currency TEXT, provider_time TEXT NOT NULL,
+            received_at TEXT NOT NULL, market_state TEXT NOT NULL,
+            delay_status TEXT NOT NULL, content_sha256 TEXT NOT NULL,
+            UNIQUE(owner_id,provider,symbol,provider_time,content_sha256));
+          CREATE INDEX IF NOT EXISTS quotes_latest ON quotes(owner_id,symbol,received_at DESC,id DESC);
+          CREATE TABLE IF NOT EXISTS symbol_state (
+            symbol TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, state TEXT NOT NULL,
+            reason TEXT, updated_at TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS news_items (
+            item_key TEXT PRIMARY KEY, owner_id INTEGER NOT NULL,
+            source_key_kind TEXT NOT NULL, first_received_at TEXT NOT NULL,
+            latest_received_at TEXT NOT NULL, latest_version INTEGER NOT NULL);
+          CREATE TABLE IF NOT EXISTS news_versions (
+            id INTEGER PRIMARY KEY, item_key TEXT NOT NULL REFERENCES news_items(item_key),
+            owner_id INTEGER NOT NULL, version INTEGER NOT NULL, provider_id TEXT,
+            title TEXT, content TEXT NOT NULL, source_url TEXT,
+            published_raw TEXT, published_at_utc TEXT, received_at TEXT NOT NULL,
+            content_sha256 TEXT NOT NULL, raw_item_json TEXT NOT NULL,
+            UNIQUE(item_key,content_sha256));
+          CREATE INDEX IF NOT EXISTS news_latest ON news_versions(owner_id,received_at DESC,id DESC);
+        """)
+        row = self.db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
+        if row is None:
+            self.db.execute("INSERT INTO owner_binding(singleton,owner_id) VALUES(1,?)", (owner_id,))
+        elif row["owner_id"] != owner_id:
+            self.db.close()
+            raise ValueError("Personal feed cache is bound to a different owner; refuse access")
+        self.owner_id = owner_id
+
+    def close(self) -> None:
+        self.db.close()
+
+    def state(self, provider: str, state: str, *, success: bool = False,
+              source_at: str | None = None, received_at: str | None = None,
+              error_class: str | None = None, request_increment: int = 0,
+              business_increment: int = 0) -> None:
+        now = utc_now()
+        day = now[:10]
+        self.db.execute("""
+          INSERT INTO provider_state(provider,state,heartbeat_at,last_success_at,
+            last_received_at,last_source_at,last_error_class,requests_total,
+            business_calls_today,business_day_utc)
+          VALUES(?,?,?,?,?,?,?,?,?,?)
+          ON CONFLICT(provider) DO UPDATE SET
+            state=excluded.state, heartbeat_at=excluded.heartbeat_at,
+            last_success_at=COALESCE(excluded.last_success_at,provider_state.last_success_at),
+            last_received_at=COALESCE(excluded.last_received_at,provider_state.last_received_at),
+            last_source_at=COALESCE(excluded.last_source_at,provider_state.last_source_at),
+            last_error_class=excluded.last_error_class,
+            requests_total=provider_state.requests_total+excluded.requests_total,
+            business_calls_today=CASE WHEN provider_state.business_day_utc=excluded.business_day_utc
+              THEN provider_state.business_calls_today+excluded.business_calls_today
+              ELSE excluded.business_calls_today END,
+            business_day_utc=excluded.business_day_utc
+        """, (provider,state,now,now if success else None,received_at,source_at,
+              error_class,request_increment,business_increment,day))
+
+    def daily_business_calls(self, provider: str) -> int:
+        row = self.db.execute("SELECT business_calls_today,business_day_utc FROM provider_state WHERE provider=?",
+                              (provider,)).fetchone()
+        return row["business_calls_today"] if row and row["business_day_utc"] == utc_now()[:10] else 0
+
+    def symbol_state(self, owner_id: int, symbol: str, state: str, reason: str | None = None) -> None:
+        if owner_id != self.owner_id:
+            raise ValueError("Owner ID mismatch")
+        self.db.execute("""INSERT INTO symbol_state(symbol,owner_id,state,reason,updated_at)
+          VALUES(?,?,?,?,?) ON CONFLICT(symbol) DO UPDATE SET owner_id=excluded.owner_id,
+          state=excluded.state,reason=excluded.reason,updated_at=excluded.updated_at""",
+          (symbol,owner_id,state,reason,utc_now()))
+
+    def put_quote(self, owner_id: int, quote: dict, *, symbol: str, display_name: str,
+                  market_state: str, limit: int) -> bool:
+        if owner_id != self.owner_id:
+            raise ValueError("Owner ID mismatch")
+        price = quote.get("payload", {}).get("price")
+        if isinstance(price, bool) or not isinstance(price, (int,float,str)) or str(price).strip() == "":
+            return False
+        # The personal card displays last price. Other push fields can change
+        # while provider_time and last price stay fixed during a closed market;
+        # those repeated packets must not fill the bounded quote history.
+        digest = hashlib.sha256(str(price).encode("utf-8")).hexdigest()
+        before = self.db.total_changes
+        self.db.execute("""INSERT OR IGNORE INTO quotes
+          (owner_id,provider,symbol,provider_code,display_name,price_text,currency,
+           provider_time,received_at,market_state,delay_status,content_sha256)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?)""",
+          (owner_id,"MOOMOO_WEBAPI_WS",symbol,quote["instrument_id"],display_name,
+           str(price),None,quote["provider_time"],quote["received_at"],market_state,
+           quote.get("delay_status") or "UNKNOWN",digest))
+        inserted = self.db.total_changes > before
+        self.db.execute("""DELETE FROM quotes WHERE id IN (
+          SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY received_at DESC,id DESC
+          LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
+        return inserted
+
+    def put_news(self, owner_id: int, item: dict, *, received_at: str,
+                 max_items: int, max_versions: int) -> str:
+        if owner_id != self.owner_id:
+            raise ValueError("Owner ID mismatch")
+        title = str(item.get("title") or "")
+        content = str(item.get("content") or "")
+        published_raw = str(item.get("time") or "")
+        url = safe_source_url(item.get("url"))
+        provider_id = str(item.get("id")) if item.get("id") not in (None, "") else None
+        if provider_id:
+            key_kind, source_key = "PROVIDER_ID_CANDIDATE", provider_id
+        elif url:
+            key_kind, source_key = "SOURCE_URL_CANDIDATE", url
+        else:
+            key_kind, source_key = "TIME_TEXT_FALLBACK", published_raw + "\n" + (title or content[:120])
+        item_key = hashlib.sha256((key_kind + "\n" + source_key).encode("utf-8")).hexdigest()
+        digest = hashlib.sha256((title + "\n" + content).encode("utf-8")).hexdigest()
+        current = self.db.execute("SELECT latest_version FROM news_items WHERE item_key=?", (item_key,)).fetchone()
+        if current is None:
+            self.db.execute("""INSERT INTO news_items
+              (item_key,owner_id,source_key_kind,first_received_at,latest_received_at,latest_version)
+              VALUES(?,?,?,?,?,1)""", (item_key,owner_id,key_kind,received_at,received_at))
+            version = 1
+        else:
+            existing = self.db.execute("SELECT 1 FROM news_versions WHERE item_key=? AND content_sha256=?",
+                                       (item_key,digest)).fetchone()
+            if existing:
+                self.db.execute("UPDATE news_items SET latest_received_at=? WHERE item_key=?",
+                                (received_at,item_key))
+                return "DUPLICATE"
+            version = current["latest_version"]+1
+            self.db.execute("UPDATE news_items SET latest_received_at=?,latest_version=? WHERE item_key=?",
+                            (received_at,version,item_key))
+        self.db.execute("""INSERT INTO news_versions
+          (item_key,owner_id,version,provider_id,title,content,source_url,published_raw,
+           published_at_utc,received_at,content_sha256,raw_item_json)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?)""",
+          (item_key,owner_id,version,provider_id,title,content,url,published_raw,
+           published_utc(published_raw),received_at,digest,json.dumps(item,ensure_ascii=False)))
+        self.db.execute("""DELETE FROM news_versions WHERE id IN (
+          SELECT id FROM news_versions WHERE item_key=? ORDER BY version DESC LIMIT -1 OFFSET ?)""",
+          (item_key,max_versions))
+        self.db.execute("""DELETE FROM news_items WHERE item_key IN (
+          SELECT item_key FROM news_items WHERE owner_id=? ORDER BY latest_received_at DESC
+          LIMIT -1 OFFSET ?)""", (owner_id,max_items))
+        self.db.execute("DELETE FROM news_versions WHERE item_key NOT IN (SELECT item_key FROM news_items)")
+        return "NEW" if version == 1 else "REVISION"
+
+
+def read_personal_cache(path: Path, owner_id: int, *, news_limit: int = 40) -> dict:
+    """Return owner-only values to an already authenticated loopback view."""
+    if not path.is_file():
+        return {"quotes": [], "news": [], "news_total": 0, "states": [], "symbols": [], "cache_state": "NOT_STARTED"}
+    uri = path.resolve().as_uri() + "?mode=ro"
+    with closing(sqlite3.connect(uri, uri=True, timeout=5)) as db:
+        db.row_factory = sqlite3.Row
+        binding = db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
+        if binding is None or binding["owner_id"] != owner_id:
+            return {"quotes": [], "news": [], "news_total": 0, "states": [], "symbols": [], "cache_state": "OWNER_MISMATCH"}
+        quotes = db.execute("""SELECT q.symbol,q.provider_code,q.display_name,q.price_text,
+          q.currency,q.provider_time,q.received_at,q.market_state,q.delay_status FROM quotes q
+          WHERE q.owner_id=? AND q.id=(SELECT q2.id FROM quotes q2 WHERE q2.owner_id=q.owner_id
+            AND q2.symbol=q.symbol ORDER BY q2.received_at DESC,q2.id DESC LIMIT 1)
+          ORDER BY q.symbol""", (owner_id,)).fetchall()
+        news = db.execute("""SELECT v.provider_id,v.title,v.content,v.source_url,
+          v.published_raw,v.published_at_utc,v.received_at,v.version,
+          i.source_key_kind FROM news_versions v JOIN news_items i ON i.item_key=v.item_key
+          WHERE v.owner_id=? AND v.version=i.latest_version
+          ORDER BY v.received_at DESC,v.id DESC LIMIT ?""", (owner_id,news_limit)).fetchall()
+        states = db.execute("SELECT * FROM provider_state ORDER BY provider").fetchall()
+        symbols = db.execute("SELECT symbol,state,reason,updated_at FROM symbol_state WHERE owner_id=?",
+                             (owner_id,)).fetchall()
+        news_total = db.execute("SELECT COUNT(*) FROM news_items WHERE owner_id=?",(owner_id,)).fetchone()[0]
+        return {"quotes": [dict(row) for row in quotes],
+                "news": [dict(row) for row in news],
+                "news_total": news_total,
+                "states": [dict(row) for row in states],
+                "symbols": [dict(row) for row in symbols], "cache_state": "READY"}

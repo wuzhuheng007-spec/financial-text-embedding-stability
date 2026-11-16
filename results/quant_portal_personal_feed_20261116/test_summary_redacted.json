@@ -1,0 +1,22 @@
+{
+  "schema": "quant_portal_personal_feed_test_summary_v1",
+  "date_asia_shanghai": "2026-11-16",
+  "synthetic_cache_unittest": {"passed": 3, "failed": 0, "scope": "owner isolation, quote dedup/revision, news versioning, unsafe URL and Retry-After"},
+  "django_core_suite": {"passed": 25, "failed": 0, "scope": "existing portal checks plus three personal-feed endpoint checks in isolated test DB"},
+  "independent_test_count_claim": "NOT_COMBINED_WITH_PRIOR_PORTAL_SUITES",
+  "python_compileall": "PASS",
+  "javascript_node_check": "PASS",
+  "actual_private_cache_readback": "PASS_SEE_PORTAL_READBACK_REDACTED_JSON",
+  "actual_provider_data_received": "PASS_SEE_RUNTIME_REDACTED_JSON",
+  "owner_data_row_digest_comparison": "PASS_FOUR_TABLES_SEE_RUNTIME_REDACTED_JSON",
+  "duplicate_start": "PASS_ALREADY_RUNNING_NO_SECOND_WORKER",
+  "graceful_stop": "PASS_UNSUBSCRIBE_ACKNOWLEDGED_AND_CACHE_RETAINED",
+  "desktop_browser_visual": "NOT_RUN_CUA_POLICY_STOP",
+  "narrow_390px_browser_visual": "NOT_RUN_CUA_POLICY_STOP",
+  "market_open_push": "NOT_RUN_MARKET_CLOSED",
+  "initial_development_failures_preserved": [
+    "First synthetic cache test exposed an unclosed read-only SQLite connection; fixed with contextlib.closing and reran.",
+    "First local portal readback helper lacked Django test-only settings and middleware timezone; corrected before accepted readback.",
+    "Closed-market quote cache showed repeated packets with unchanged price and source timestamp. Dedup key was narrowed to displayed price plus the existing source-timestamp uniqueness key; old private rows retained."
+  ]
+}
