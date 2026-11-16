@@ -1,0 +1,11 @@
+{
+  "schema": "quant_portal_personal_timeline_v14_audit_correction",
+  "issue": "The first real-cache audit found timestamp readback mismatches because the API view rounded saved microseconds to milliseconds.",
+  "first_audit_receipt_preserved": false,
+  "first_audit_exact_failure_denominator": "NOT_REPORTED_BECAUSE_INITIAL_RECEIPT_WAS_OVERWRITTEN",
+  "repair": "Preserve full source and first-receipt timestamp precision in the owner timeline API, and compare parsed UTC times in the redacted audit.",
+  "regression": "test_timestamp_precision_and_mixed_iso_revision_order",
+  "final_audit": "real_cache_audit_redacted.json",
+  "final_audit_input": "private_input_snapshot_sha256 in final audit",
+  "score_policy": "The initial failure is retained as a correction record; final checks are not presented as first-attempt success."
+}

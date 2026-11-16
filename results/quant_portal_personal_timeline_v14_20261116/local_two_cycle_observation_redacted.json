@@ -1,0 +1,67 @@
+{
+  "schema": "quant_portal_personal_timeline_v14_local_samples",
+  "sample_count": 3,
+  "requested_interval_seconds": 5,
+  "supplier_requests_from_script": 0,
+  "source": "OWNER_BOUND_LOCAL_SQLITE_CACHE",
+  "samples": [
+    {
+      "read_at_utc": "2026-11-16T04:02:43.845891Z",
+      "symbols": [
+        {
+          "symbol": "TQQQ",
+          "displayed_points": 394,
+          "latest_source_at": "2026-11-16T04:02:32.094000Z",
+          "related_news": 11,
+          "cache_state": "READY"
+        },
+        {
+          "symbol": "NVDA",
+          "displayed_points": 498,
+          "latest_source_at": "2026-11-16T04:02:35.560000Z",
+          "related_news": 13,
+          "cache_state": "READY"
+        }
+      ]
+    },
+    {
+      "read_at_utc": "2026-11-16T04:02:49.112851Z",
+      "symbols": [
+        {
+          "symbol": "TQQQ",
+          "displayed_points": 394,
+          "latest_source_at": "2026-11-16T04:02:32.094000Z",
+          "related_news": 11,
+          "cache_state": "READY"
+        },
+        {
+          "symbol": "NVDA",
+          "displayed_points": 498,
+          "latest_source_at": "2026-11-16T04:02:47.821000Z",
+          "related_news": 13,
+          "cache_state": "READY"
+        }
+      ]
+    },
+    {
+      "read_at_utc": "2026-11-16T04:02:54.343564Z",
+      "symbols": [
+        {
+          "symbol": "TQQQ",
+          "displayed_points": 394,
+          "latest_source_at": "2026-11-16T04:02:32.094000Z",
+          "related_news": 11,
+          "cache_state": "READY"
+        },
+        {
+          "symbol": "NVDA",
+          "displayed_points": 498,
+          "latest_source_at": "2026-11-16T04:02:53.246000Z",
+          "related_news": 13,
+          "cache_state": "READY"
+        }
+      ]
+    }
+  ],
+  "interpretation_limit": "Local cache progress only; browser visual acceptance is recorded separately."
+}

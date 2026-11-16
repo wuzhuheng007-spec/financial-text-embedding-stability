@@ -1,0 +1,18 @@
+{
+  "schema": "quant_portal_personal_timeline_v14",
+  "baseline_commit": "2aec1f325e91825e42cc4a6589aaeaff834033e1",
+  "provider_requests_added": 0,
+  "quote_subscriptions_added": 0,
+  "sessions": ["PREMARKET", "REGULAR", "AFTERHOURS", "OVERNIGHT"],
+  "ranges_seconds": {"30m": 1800, "2h": 7200, "24h": 86400, "all": 604800},
+  "default_range": "2h",
+  "max_points_per_response": 500,
+  "max_scan_rows_per_response": 50000,
+  "max_news_items_per_response": 100,
+  "segment_gap_seconds": 180,
+  "raw_response_recent_hours": 48,
+  "raw_response_extra_count": 100,
+  "history_prune_enabled": false,
+  "browser_cache_poll_seconds": 5,
+  "public_display": false
+}

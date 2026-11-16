@@ -1,0 +1,442 @@
+{
+  "schema": "quant_portal_personal_timeline_v14_audit",
+  "observed_at_utc": "2026-11-16T04:01:22.592954Z",
+  "observed_at_asia_shanghai": "2026-11-16T12:01:22.592954+08:00",
+  "feed_config_sha256": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7",
+  "timeline_config_sha256": "b944197b14c83714e7d66c714d080a59308118ea265e9924d245a55eed12a99e",
+  "timeline_code_sha256": "2aba431ba72d0b121915cb34c8c44d93af34676e861ba241475d03b268912e5f",
+  "store_code_sha256": "90ca8b10af9d40452a9e18c3c49ad1dc712e527687f7f29bc21c484cff58aefc",
+  "classifier_code_sha256": "34f9c4d75540035b33be5cbf9f3b0e3f2b276080a9354aef3cbb8bd668f3b81b",
+  "audit_code_sha256": "fb8b583c105f53736acd725c63eedc4e2d35d12d24c61fe409f4f16237fcff0e",
+  "private_input_snapshot_path": "apps\\quant_portal\\var\\v14_20261116\\timeline_audit_20261116T0401Z.sqlite3",
+  "private_input_snapshot_sha256": "ebc3741c94594d40ce9e583daf31489a65ddc4794f33a128cb8500620727ac28",
+  "input_snapshot_bytes": 5197824,
+  "cache_db_bytes": 5148672,
+  "cache_wal_bytes": 4523792,
+  "session_quote_rows": 4204,
+  "raw_response_rows": 1220,
+  "quote_rows_without_retained_raw_response": 2890,
+  "post_upgrade_raw_availability": {
+    "quote_rows": 1185,
+    "rows_without_raw": 0,
+    "upgrade_start_utc": "2026-11-16T03:48:00Z"
+  },
+  "news_item_rows": 196,
+  "provider_states": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:01:18.678040Z",
+      "last_success_at": "2026-11-16T04:00:48.631292Z"
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:01:20.997220Z",
+      "last_success_at": "2026-11-16T04:01:20.997220Z"
+    },
+    {
+      "provider": "moomoo_snapshot",
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:00:43.727850Z",
+      "last_success_at": "2026-11-16T04:00:43.727850Z"
+    }
+  ],
+  "audited_symbols": [
+    {
+      "symbol": "TQQQ",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:02:30.723000Z",
+          "last_source_at": "2026-11-14T01:02:30.723000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 417,
+          "source_time_known_rows": 383,
+          "first_source_at": "2026-11-16T03:08:04.117000Z",
+          "last_source_at": "2026-11-16T04:01:13.810000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:00.114000Z",
+          "last_source_at": "2026-11-13T14:30:00.114000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 386,
+      "valid_unique_points": 386,
+      "sampled": false,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 193,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 385,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 22,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:02:43.074000Z",
+          "last_source_at": "2026-11-14T01:02:43.074000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 648,
+          "source_time_known_rows": 616,
+          "first_source_at": "2026-11-16T03:08:01.309000Z",
+          "last_source_at": "2026-11-16T04:01:04.498000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:01.135000Z",
+          "last_source_at": "2026-11-13T14:30:01.135000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 494,
+      "valid_unique_points": 619,
+      "sampled": true,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 247,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 493,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 22,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    },
+    {
+      "symbol": "SOXX",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:02:37.830000Z",
+          "last_source_at": "2026-11-14T01:02:37.830000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 197,
+          "source_time_known_rows": 171,
+          "first_source_at": "2026-11-16T03:07:52.863000Z",
+          "last_source_at": "2026-11-16T03:59:32.503000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:01.479000Z",
+          "last_source_at": "2026-11-13T14:30:01.479000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 174,
+      "valid_unique_points": 174,
+      "sampled": false,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 87,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 173,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 22,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:01:15.137000Z",
+          "last_source_at": "2026-11-14T01:01:15.137000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 179,
+          "source_time_known_rows": 151,
+          "first_source_at": "2026-11-16T03:07:49.396000Z",
+          "last_source_at": "2026-11-16T04:01:01.315000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:00.674000Z",
+          "last_source_at": "2026-11-13T14:30:00.674000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 154,
+      "valid_unique_points": 154,
+      "sampled": false,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 77,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 153,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 22,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    },
+    {
+      "symbol": "NVDA",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:02:45.923000Z",
+          "last_source_at": "2026-11-14T01:02:45.923000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 2246,
+          "source_time_known_rows": 2212,
+          "first_source_at": "2026-11-16T03:08:24.746000Z",
+          "last_source_at": "2026-11-16T04:01:20.979000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:01.270000Z",
+          "last_source_at": "2026-11-13T14:30:01.270000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 498,
+      "valid_unique_points": 2215,
+      "sampled": true,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 249,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 497,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 26,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    },
+    {
+      "symbol": "MU",
+      "coverage": [
+        {
+          "session": "AFTERHOURS",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-14T01:02:39.672000Z",
+          "last_source_at": "2026-11-14T01:02:39.672000Z"
+        },
+        {
+          "session": "OVERNIGHT",
+          "saved_rows": 439,
+          "source_time_known_rows": 405,
+          "first_source_at": "2026-11-16T03:08:17.948000Z",
+          "last_source_at": "2026-11-16T04:01:06.152000Z"
+        },
+        {
+          "session": "PREMARKET",
+          "saved_rows": 5,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T14:30:01.676000Z",
+          "last_source_at": "2026-11-13T14:30:01.676000Z"
+        },
+        {
+          "session": "REGULAR",
+          "saved_rows": 3,
+          "source_time_known_rows": 3,
+          "first_source_at": "2026-11-13T21:00:00Z",
+          "last_source_at": "2026-11-13T21:00:00Z"
+        }
+      ],
+      "returned_points": 408,
+      "valid_unique_points": 408,
+      "sampled": false,
+      "point_checks": [
+        {
+          "sample_index": 0,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 204,
+          "saved_row_exact_match": true
+        },
+        {
+          "sample_index": 407,
+          "saved_row_exact_match": true
+        }
+      ],
+      "related_news_returned": 23,
+      "news_time_checks": [
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        },
+        {
+          "supplier_time_matches_saved_version": true,
+          "first_receipt_matches_saved_item": true
+        }
+      ]
+    }
+  ],
+  "supplier_requests_added_by_audit": 0,
+  "scope_note": "Owner-only read of saved cache; prices, bodies and item keys omitted."
+}

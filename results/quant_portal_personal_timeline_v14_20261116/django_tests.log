@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\ROG\Documents\ChatGPT\financial-text-embedding-stability-sync-20261113\apps\quant_portal\manage.py", line 9, in <module>
+    from django.core.management import execute_from_command_line
+ModuleNotFoundError: No module named 'django'

@@ -1,6 +1,8 @@
 # News research — current scope / 新闻研究当前方向
 
-Updated 2026-11-16 (Asia/Shanghai), personal quote-session view v1.3 on loopback moomoo/Jin10 feeds; financial input v2.5 paused as `REJECTED_CANDIDATE` / status 1.34.
+Updated 2026-11-16 (Asia/Shanghai), personal saved-quote curve and news timeline v1.4 on loopback moomoo/Jin10 feeds; financial input v2.5 paused as `REJECTED_CANDIDATE` / status 1.35.
+
+The [personal timeline v1.4 report](../../reports/2026-11-16_quant_portal_personal_timeline_v14.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_timeline_v14.zh.md), [plan–actual](../../results/quant_portal_personal_timeline_v14_20261116/plan_execution.csv)) covers source-time-only curves for six saved symbols, four session selections and an all-session view, and a Jin10 publication-time marker list with local receipt time kept separate. The browser uses the private cache only. A frozen SQLite snapshot, signed-in Edge checks and the preserved SPY two-window reconciliation support the limited acceptance; older raw responses already pruned by v1.3 remain missing. Other sessions' continuous updates, verified news facts, prediction and trading remain untested.
 
 The [personal quote-session v1.3 report](../../reports/2026-11-16_quant_portal_personal_sessions_v13.en.md) ([中文](../../reports/2026-11-16_quant_portal_personal_sessions_v13.zh.md), [plan–actual](../../results/quant_portal_personal_sessions_v13_20261116/plan_execution.csv)) records six owner-only cards with separate premarket, regular, after hours and overnight values. Existing WebSocket subscriptions supplied child source timestamps; one bounded REST batch per minute supplements the base quote. The first five-minute cache observation saw source-time advances for all six overnight fields only. A frozen-code second observation, source-time limits and isolated desktop/390px acceptance are recorded separately. This is not market prediction or a public market-data license.
 

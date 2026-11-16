@@ -162,6 +162,29 @@ def personal_feed_json(request):
 
 
 @login_required
+def personal_timeline_json(request):
+    """Read only the bound personal cache; page refresh never calls a supplier."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Personal timeline unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_personal_feed.timeline import read_timeline
+    try:
+        data = read_timeline(settings.PERSONAL_FEED_DB_PATH, request.user.pk,
+            symbol=request.GET.get("symbol", "").strip().upper(),
+            session=request.GET.get("session", "ALL"),
+            range_key=request.GET.get("range", "2h"),
+            end_at=request.GET.get("end") or None)
+    except ValueError:
+        return JsonResponse({"error": "INVALID_TIMELINE_REQUEST"}, status=400)
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
 @require_POST
 def personal_quote_selection(request):
     if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:

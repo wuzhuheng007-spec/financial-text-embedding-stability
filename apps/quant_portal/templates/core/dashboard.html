@@ -79,6 +79,25 @@
 </div>
 
 {% if personal_feed_enabled %}
+<section class="card timeline-section" id="personal-timeline" data-timeline-url="{% url 'personal_timeline_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="timeline-title" hidden>
+  <div class="section-head"><div><p class="eyebrow">SAVED QUOTE TIMELINE</p><h2 id="timeline-title">已采集报价曲线</h2></div><span class="small-tag">本机个人缓存 · 非逐笔成交或完整K线</span></div>
+  <div class="timeline-controls">
+    <label>证券 <select id="timeline-symbol" aria-label="图表证券"></select></label>
+    <label>时段 <select id="timeline-session" aria-label="图表时段"><option value="ALL">全部时段</option><option value="PREMARKET">盘前</option><option value="REGULAR">常规</option><option value="AFTERHOURS">盘后</option><option value="OVERNIGHT">夜盘</option></select></label>
+    <label>范围 <select id="timeline-range" aria-label="图表范围"><option value="30m">最近30分钟</option><option value="2h" selected>最近2小时</option><option value="24h">最近24小时</option><option value="all">全部已采集（最多7天）</option></select></label>
+    <button class="button button-outline" id="timeline-zoom-in" type="button">放大</button>
+    <button class="button button-outline" id="timeline-zoom-out" type="button">缩小</button>
+    <button class="button button-primary" id="timeline-latest" type="button">回到最新</button>
+  </div>
+  <p class="muted timeline-summary" id="timeline-summary" role="status">点击上方行情卡查看曲线。</p>
+  <p class="muted timeline-coverage" id="timeline-coverage"></p>
+  <div class="timeline-plot"><svg id="timeline-svg" viewBox="0 0 900 320" role="img" aria-label="已采集报价曲线"></svg></div>
+  <div class="timeline-hover" id="timeline-hover" aria-live="polite">点选报价点查看价格、时段和来源时间。</div>
+  <div class="timeline-legend"><span class="pre">盘前</span><span class="regular">常规</span><span class="after">盘后</span><span class="overnight">夜盘</span><span>曲线在时段切换或观测间隔处断开</span></div>
+  <h3>相关新闻时间轴</h3>
+  <p class="muted">标记使用金十提供的新闻发布时间；本机首次收到时间另列。关联来自文字规则，报道仍待交叉核实；并不说明新闻造成价格变化。</p>
+  <div id="timeline-news" class="timeline-news"><div class="empty-state">选择证券后显示相关报道。</div></div>
+</section>
 <section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}">
   <div class="section-head"><div><p class="eyebrow">JIN10 PRIVATE FLASH</p><h2 id="news-title">金十快讯</h2></div><span class="small-tag">金十报道／待交叉核实</span></div>
   <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button button-primary" type="button" data-news-filter="all" aria-pressed="true">全部快讯</button><button class="button" type="button" data-news-filter="interest" aria-pressed="false">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
@@ -92,6 +111,7 @@
   <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">正在读取个人新闻缓存…</div></div>
 </section>
 <script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}"></script>
+<script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
 {% endif %}
 
 <section class="card facts-section" aria-labelledby="facts-title">

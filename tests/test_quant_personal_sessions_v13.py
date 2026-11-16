@@ -114,7 +114,9 @@ class SessionQuoteTests(unittest.TestCase):
                     WHERE session='PREMARKET' ORDER BY id DESC LIMIT 1""").fetchone()[0]
                 self.assertTrue(store.db.execute("SELECT 1 FROM session_raw_responses WHERE sha256=?",
                                                  (visible,)).fetchone())
-                self.assertLessEqual(store.db.execute("SELECT COUNT(*) FROM session_raw_responses").fetchone()[0],104)
+                # v1.4 also protects originals behind the recent curve window;
+                # older unreferenced extras still have a bounded tail.
+                self.assertLessEqual(store.db.execute("SELECT COUNT(*) FROM session_raw_responses").fetchone()[0],105)
                 store.db.execute("DELETE FROM session_raw_responses WHERE sha256=?",(visible,))
                 self.assertGreaterEqual(ingest(105)["inserted"],4)
                 latest=store.db.execute("""SELECT raw_sha256 FROM session_quotes

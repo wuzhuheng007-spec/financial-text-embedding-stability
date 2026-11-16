@@ -105,6 +105,15 @@
     picker.value = selectedSession;
     picker.addEventListener('change', () => { sessionChoice.set(symbol, picker.value); quoteSignature=''; renderQuotes(); });
     head.append(picker);
+    const openChart = () => document.dispatchEvent(new CustomEvent('personal-chart-open', {
+      detail: {symbol, session: sessionChoice.get(symbol) || 'AUTO'}}));
+    const chartButton = node('button', 'button button-outline chart-open-button', '查看曲线');
+    chartButton.type = 'button';
+    chartButton.addEventListener('click', openChart);
+    head.append(chartButton);
+    article.addEventListener('click', event => {
+      if (!event.target.closest('button,select,a')) openChart();
+    });
     const bySession = new Map(sessionRows.map(x => [x.session,x]));
     const byCapability = new Map(capabilityRows.map(x => [x.session,x]));
     const sourceRank = {REGULAR:4,OVERNIGHT:3,AFTERHOURS:2,PREMARKET:1};

@@ -1,0 +1,23 @@
+{
+  "schema": "quant_portal_personal_timeline_v14_browser_visual",
+  "date": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "surface": "existing owner-signed-in Microsoft Edge at http://127.0.0.1:8765/",
+  "method": "actual browser accessibility and screenshots; no screenshot exported",
+  "checks": {
+    "desktop_quote_card_opens_chart": "PASS_TQQQ",
+    "desktop_saved_quote_line_and_news_markers_visible": "PASS",
+    "session_switch": "PASS_QQQ_ALL_TO_PREMARKET_TO_OVERNIGHT",
+    "empty_quote_range": "PASS_QQQ_PREMARKET_TWO_HOUR_WINDOW_SHOWED_ZERO_POINTS_WITH_OLDER_CACHE_COVERAGE_SEPARATELY_SHOWN",
+    "zoom": "PASS_QQQ_TWO_HOUR_VIEW_ZOOMED_TO_ONE_HOUR_WITH_NEW_QUOTE_NOTICE",
+    "return_to_latest": "PASS",
+    "news_click": "PASS_LOCATED_NEAR_PUBLICATION_TIME_WITH_SUPPLIER_TIME_LOCAL_FIRST_RECEIPT_AND_RULE_REASON_DISTINCT",
+    "causal_language": "PASS_NEARBY_QUOTE_LABEL_SAYS_TIME_PROXIMITY_ONLY",
+    "mobile_390px": "PASS_AFTER_CSS_CORRECTION_CONTROLS_STACKED_CHART_SCROLL_RESTRICTED_TO_ITS_CARD",
+    "all_four_sessions_live_updates": "NOT_TESTED_ONLY_OVERNIGHT_ACTIVE_DURING_BROWSER_CHECK",
+    "unknown_time_news_visual_example": "NOT_TESTED_SYNTHETIC_CONTRACT_CHECK_ONLY"
+  },
+  "correction": "The first 390px view crowded chart controls; a one-column control layout was added and the same narrow view was reopened before acceptance.",
+  "privacy": "No private quote, news body, account credential or screenshot is in this receipt.",
+  "scope": "Observed local owner browser behavior; not a claim of complete supplier tick history or independently verified news."
+}

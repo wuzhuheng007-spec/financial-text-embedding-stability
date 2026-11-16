@@ -9,7 +9,7 @@ import hashlib
 import json
 import sqlite3
 from contextlib import closing
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -52,6 +52,12 @@ class PersonalFeedStore:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA busy_timeout=10000")
+        timeline_config = Path(__file__).resolve().parents[2] / "configs/quant_portal_personal_timeline_v14_20261116.json"
+        retention = json.loads(timeline_config.read_text(encoding="utf-8")) if timeline_config.is_file() else {}
+        self.raw_response_recent_hours = int(retention.get("raw_response_recent_hours", 48))
+        self.raw_response_extra_count = int(retention.get("raw_response_extra_count", 100))
+        if not 1 <= self.raw_response_recent_hours <= 168 or not 0 <= self.raw_response_extra_count <= 1000:
+            raise ValueError("Invalid personal raw-response retention limits")
         self.db.executescript("""
           CREATE TABLE IF NOT EXISTS owner_binding (
             singleton INTEGER PRIMARY KEY CHECK(singleton=1), owner_id INTEGER NOT NULL);
@@ -60,6 +66,9 @@ class PersonalFeedStore:
             last_success_at TEXT, last_received_at TEXT, last_source_at TEXT,
             last_error_class TEXT, requests_total INTEGER NOT NULL DEFAULT 0,
             business_calls_today INTEGER NOT NULL DEFAULT 0, business_day_utc TEXT);
+          CREATE TABLE IF NOT EXISTS provider_state_events (
+            id INTEGER PRIMARY KEY, provider TEXT NOT NULL, state TEXT NOT NULL, at_utc TEXT NOT NULL);
+          CREATE INDEX IF NOT EXISTS provider_state_events_time ON provider_state_events(provider,at_utc);
           CREATE TABLE IF NOT EXISTS quotes (
             id INTEGER PRIMARY KEY, owner_id INTEGER NOT NULL, provider TEXT NOT NULL,
             symbol TEXT NOT NULL, provider_code TEXT NOT NULL, display_name TEXT,
@@ -79,6 +88,8 @@ class PersonalFeedStore:
             source_channel TEXT NOT NULL, raw_sha256 TEXT NOT NULL);
           CREATE INDEX IF NOT EXISTS session_quotes_latest ON session_quotes
             (owner_id,symbol,session,source_at DESC,received_at DESC,id DESC);
+          CREATE INDEX IF NOT EXISTS session_quotes_source_range ON session_quotes
+            (owner_id,symbol,source_at);
           CREATE TABLE IF NOT EXISTS session_capabilities (
             owner_id INTEGER NOT NULL, symbol TEXT NOT NULL, session TEXT NOT NULL,
             state TEXT NOT NULL, checked_at TEXT NOT NULL, source_channel TEXT NOT NULL,
@@ -154,7 +165,7 @@ class PersonalFeedStore:
               business_increment: int = 0) -> None:
         now = utc_now()
         day = now[:10]
-        prior = self.db.execute("SELECT business_day_utc FROM provider_state WHERE provider=?", (provider,)).fetchone()
+        prior = self.db.execute("SELECT business_day_utc,state FROM provider_state WHERE provider=?", (provider,)).fetchone()
         self.db.execute("""
           INSERT INTO provider_state(provider,state,heartbeat_at,last_success_at,
             last_received_at,last_source_at,last_error_class,requests_total,
@@ -175,6 +186,11 @@ class PersonalFeedStore:
             business_day_utc=excluded.business_day_utc
         """, (provider,state,now,now if success else None,received_at,source_at,
               error_class,request_increment,business_increment,day))
+        if prior is None or prior["state"] != state:
+            self.db.execute("INSERT INTO provider_state_events(provider,state,at_utc) VALUES(?,?,?)",
+                            (provider,state,now))
+            self.db.execute("DELETE FROM provider_state_events WHERE at_utc<?",
+                            ((datetime.now(timezone.utc)-timedelta(days=7)).isoformat().replace("+00:00","Z"),))
         if prior and prior[0] != day:
             self.db.execute("UPDATE provider_state SET business_attempts_today=0 WHERE provider=?", (provider,))
 
@@ -366,18 +382,21 @@ class PersonalFeedStore:
                    row["trade_date"],row["date_basis"],
                    row["parent_date_hint"],row.get("parent_source_at_hint"),row["delay_status"],source_channel,row["raw_sha256"]))
                 inserted += 1
-            # Retain the original response for every visible session value,
-            # plus at most 100 other recent responses. A quiet old session
-            # must not lose its provenance during active overnight pushes.
+            # Keep current visible cells and every response supporting a quote
+            # received in the configured recent chart window. The pre-v1.4
+            # policy already pruned some older originals; it cannot recreate
+            # those missing responses. Older unreferenced extras stay bounded.
+            cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
+                      ).isoformat().replace("+00:00","Z")
             self.db.execute("""DELETE FROM session_raw_responses WHERE sha256 IN (
               SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
-                SELECT q.raw_sha256 FROM session_quotes q WHERE q.id=(
+                SELECT q.raw_sha256 FROM session_quotes q WHERE q.received_at>=? OR q.id=(
                   SELECT q2.id FROM session_quotes q2 WHERE q2.owner_id=q.owner_id
                     AND q2.symbol=q.symbol AND q2.session=q.session
                   ORDER BY (q2.source_at IS NOT NULL) DESC,q2.source_at DESC,
                     q2.parent_source_at_hint DESC,q2.received_at DESC,q2.id DESC LIMIT 1)
-              ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET 100
-            )""")
+              ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET ?
+            )""", (cutoff,self.raw_response_extra_count))
             self.db.commit()
         except BaseException:
             self.db.rollback()

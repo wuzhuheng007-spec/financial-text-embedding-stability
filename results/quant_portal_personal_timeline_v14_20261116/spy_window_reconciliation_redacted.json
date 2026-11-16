@@ -1,0 +1,43 @@
+{
+  "schema": "v14_spy_v13_window_reconciliation",
+  "windows": [
+    {
+      "private_receipt": "session_acceptance_dev_before_final.json",
+      "sha256": "b6d03119701098c7536d13d81a776b0a0b97b4c85354a73c48e0a2861ab408be",
+      "status": "VERIFIED_SAVED_WINDOW",
+      "start_at_utc": "2026-11-16T03:08:53.903647Z",
+      "end_at_utc": "2026-11-16T03:13:53.972419Z",
+      "elapsed_seconds": 300.078,
+      "cache_reads": 61,
+      "input_sha256_at_start": null,
+      "SPY_OVERNIGHT": {
+        "visible_samples": 61,
+        "source_time_advances": 11,
+        "first_source_at": "2026-11-16T03:07:49.396000Z",
+        "last_source_at": "2026-11-16T03:12:52.122000Z"
+      }
+    },
+    {
+      "private_receipt": "session_acceptance_private.json",
+      "sha256": "d55b2e213430fb871add233df4754955d20df121b65a9db5d2bc3fe48246206e",
+      "status": "VERIFIED_SAVED_WINDOW",
+      "start_at_utc": "2026-11-16T03:17:00.875618Z",
+      "end_at_utc": "2026-11-16T03:22:01.110378Z",
+      "elapsed_seconds": 300.234,
+      "cache_reads": 60,
+      "input_sha256_at_start": {
+        "scripts\\quant_personal_feed\\session_acceptance.py": "cc656ef9646f18f8d9f02457997516f7ecd5f13721dcd2891fe5803cbc928d17",
+        "scripts\\quant_personal_feed\\store.py": "3f36291f9a36bb018d0505e22fd890f85112125bd7467995c88f097cca929e61",
+        "scripts\\quant_personal_feed\\session_quotes.py": "d4d38626542fa72da3c72f2db8e9d3ea083d515c8791a427ccd36aaeef5e8adf",
+        "configs\\quant_portal_personal_feeds_v11_20261116.json": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7"
+      },
+      "SPY_OVERNIGHT": {
+        "visible_samples": 60,
+        "source_time_advances": 10,
+        "first_source_at": "2026-11-16T03:17:00.459000Z",
+        "last_source_at": "2026-11-16T03:21:53.982000Z"
+      }
+    }
+  ],
+  "interpretation": "11 and 10 source-time advances belong to two distinct five-minute saved-cache observation windows; neither count is an independent trading result."
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "quant_portal_personal_timeline_v14_runtime",
+  "observed_at_utc": "2026-11-16T04:02:06.665515Z",
+  "observed_at_asia_shanghai": "2026-11-16T12:02:06.665515+08:00",
+  "portal_status": "RUNNING pid=270008 ready_http=200 css_http=200 url=http://127.0.0.1:8765/",
+  "feed_status": "FEED_RUNNING pid=240820",
+  "ready_http": 200,
+  "chart_script_http": 200,
+  "portal_counts": {
+    "auth_user": 1,
+    "core_watchlistitem": 6,
+    "core_userpreferences": 1,
+    "core_publicfactcard": 14
+  },
+  "owner_binding_matches": true,
+  "desired_quote_symbols": [
+    "TQQQ",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "NVDA",
+    "MU"
+  ],
+  "news_items": 197,
+  "provider_states": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:02:03.798880Z",
+      "last_success_at": "2026-11-16T04:01:48.774787Z"
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:02:05.561457Z",
+      "last_success_at": "2026-11-16T04:02:05.561457Z"
+    },
+    {
+      "provider": "moomoo_snapshot",
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-16T04:01:43.478965Z",
+      "last_success_at": "2026-11-16T04:01:43.478965Z"
+    }
+  ],
+  "feed_config_sha256": "68a0df120264b048a7a3b15d0085e7d2c4ba241b941aaa52015f8b81aea86cb7",
+  "timeline_config_sha256": "b944197b14c83714e7d66c714d080a59308118ea265e9924d245a55eed12a99e",
+  "supplier_requests_from_audit": 0,
+  "scope_note": "Only loopback HTTP and local private SQLite metadata; no account identifier, price or body emitted."
+}
