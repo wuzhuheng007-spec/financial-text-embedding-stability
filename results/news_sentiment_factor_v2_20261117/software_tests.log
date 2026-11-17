@@ -1,0 +1,15 @@
+test_dictionary_score_is_text_tone_not_return (tests.test_news_sentiment_factor_v2.SentimentV2MechanicsTests.test_dictionary_score_is_text_tone_not_return) ... ok
+test_price_reader_stops_before_later_rows (tests.test_news_sentiment_factor_v2.SentimentV2MechanicsTests.test_price_reader_stops_before_later_rows) ... ok
+test_too_few_events_never_produces_correlation (tests.test_news_sentiment_factor_v2.SentimentV2MechanicsTests.test_too_few_events_never_produces_correlation) ... ok
+test_bad_evidence_rejected (tests.test_news_extraction_v182.Extraction182ContractTests.test_bad_evidence_rejected) ... ok
+test_empty_abstention_is_not_coverage (tests.test_news_extraction_v182.Extraction182ContractTests.test_empty_abstention_is_not_coverage) ... ok
+test_nested_report_and_prediction_allowed (tests.test_news_extraction_v182.Extraction182ContractTests.test_nested_report_and_prediction_allowed) ... ok
+test_old_unknown_adapter_only_exact_sentinel (tests.test_news_extraction_v182.Extraction182ContractTests.test_old_unknown_adapter_only_exact_sentinel) ... ok
+test_reported_allegation_and_denial_remain_distinct (tests.test_news_extraction_v182.Extraction182ContractTests.test_reported_allegation_and_denial_remain_distinct) ... ok
+test_unknown_claim_cannot_carry_evidence (tests.test_news_extraction_v182.Extraction182ContractTests.test_unknown_claim_cannot_carry_evidence) ... ok
+test_unsupported_role_rejected (tests.test_news_extraction_v182.Extraction182ContractTests.test_unsupported_role_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.006s
+
+OK

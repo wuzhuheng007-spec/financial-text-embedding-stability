@@ -1,0 +1,128 @@
+{
+  "schema": "news_extraction_v182_field_review_redacted_1",
+  "reviewed_at_utc": "2026-11-17T02:58:04.996678+00:00",
+  "attempted_denominator": 16,
+  "parseable_field_denominator": 7,
+  "format_not_evaluable": 9,
+  "mechanical_valid": 4,
+  "content_accept": 0,
+  "prospective_tone_qualified": 0,
+  "full_abstention": 1,
+  "out_of_focus_first_subevent": 1,
+  "field_status_counts": {
+    "actor": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "CORRECT": 3,
+      "ERROR": 3,
+      "NOT_APPLICABLE": 1
+    },
+    "speaker": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "ERROR": 3,
+      "NOT_APPLICABLE": 3,
+      "OMITTED": 1
+    },
+    "reporter": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "OMITTED": 5,
+      "NOT_APPLICABLE": 2
+    },
+    "claim_object": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "NOT_APPLICABLE": 3,
+      "OMITTED": 4
+    },
+    "claim_kind": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "OMITTED": 6,
+      "ERROR": 1
+    },
+    "category": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "ERROR": 4,
+      "CORRECT": 1,
+      "OMITTED": 1,
+      "JUSTIFIED_ABSTAIN": 1
+    },
+    "tone": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "UNRESOLVED": 1,
+      "ERROR": 2,
+      "JUSTIFIED_ABSTAIN": 2,
+      "CORRECT": 2
+    },
+    "uncertainty": {
+      "NOT_EVALUABLE_FORMAT": 9,
+      "OMITTED": 3,
+      "NOT_APPLICABLE": 4
+    }
+  },
+  "issues_by_task": {
+    "V182-01": [
+      "FORMAT_ERROR"
+    ],
+    "V182-02": [
+      "FORMAT_ERROR"
+    ],
+    "V182-03": [
+      "REPORTER_MISLABELED_AS_SPEAKER",
+      "ANNOUNCED_ACTION_OMITTED",
+      "FUTURE_QUALIFIER_OMITTED"
+    ],
+    "V182-04": [
+      "METRIC_MISLABELED_AS_ACTOR",
+      "REPORTER_MISLABELED_AS_SPEAKER",
+      "GDP_CATEGORY_WRONG",
+      "NEGATIVE_WORDING_LOST"
+    ],
+    "V182-05": [
+      "FORMAT_ERROR"
+    ],
+    "V182-06": [
+      "EXPLICIT_REPORTED_SOURCE_OMITTED",
+      "SEEKING_ACQUISITION_UNCERTAINTY_OMITTED",
+      "CLAIM_OMITTED"
+    ],
+    "V182-07": [
+      "FORMAT_ERROR"
+    ],
+    "V182-08": [
+      "REGULATED_OBJECT_MISLABELED_AS_ACTOR",
+      "MACRO_CATEGORY_WRONG",
+      "CLAIM_OMITTED"
+    ],
+    "V182-09": [
+      "FORMAT_ERROR"
+    ],
+    "V182-10": [
+      "STATEMENT_ISSUER_MISLABELED_AS_EVENT_ACTOR",
+      "ATTRIBUTION_AND_CATEGORY_OMITTED",
+      "CLAIM_OMITTED"
+    ],
+    "V182-11": [
+      "FORMAT_ERROR"
+    ],
+    "V182-12": [
+      "OUT_OF_FOCUS_FIRST_SUBEVENT",
+      "FULL_ABSTENTION_NOT_EXTRACTION_SUCCESS"
+    ],
+    "V182-13": [
+      "FORMAT_ERROR"
+    ],
+    "V182-14": [
+      "FORMAT_ERROR"
+    ],
+    "V182-15": [
+      "SPEAKER_PHRASE_NOT_IN_CITED_SENTENCE",
+      "PREDICTION_OR_OPINION_LOST",
+      "CATEGORY_WRONG"
+    ],
+    "V182-16": [
+      "FORMAT_ERROR"
+    ]
+  },
+  "same_team_review": true,
+  "limitation": "One claim_evidence_id cannot prove each of several claim_kinds across sentences; semantic gate did not promote any result.",
+  "private_review_sha256": "119d3ed4c2e9c39d81244f1845f79f836b51da43d968e2ca8227021bb9a2938f",
+  "owner_display_updates": 0
+}

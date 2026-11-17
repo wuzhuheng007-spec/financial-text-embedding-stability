@@ -1,0 +1,12 @@
+{
+  "schema": "news_extraction_v182_selection_coverage_redacted_1",
+  "at_utc": "2026-11-17T02:59:16.659053+00:00",
+  "frozen_input_sha256": "82272f3bc462c4043ae4b130fe98d8941675e3418e8745076efad16bff501526",
+  "tasks": 16,
+  "distinct_event_groups": 16,
+  "multi_segment_bulletins": 2,
+  "denial_cue_bulletins": 0,
+  "allegation_cue_bulletins": 1,
+  "numeric_bulletins": 15,
+  "note": "Syntactic cues are not semantic labels; fixed selection was not replaced after results."
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "sentiment_v2_eval_failure_1",
+  "recorded_at_utc": "2026-11-17T02:41:14.880098+00:00",
+  "failure": "TRAINING_PRICE_COVERAGE_GAP:NVDA",
+  "cause": "preflight calendar reader counted WHOLE sessions but compact price array includes three MORNING sessions; first-N parser stopped before the final training bars",
+  "fix_scope": "read all 251 in-window calendar bars, use 248 WHOLE sessions for entry and exit",
+  "labels_scored_before_failure": 0,
+  "fit_calls": 0,
+  "previous_preflight_preserved": "evaluation_preflight_attempt1_redacted.json"
+}

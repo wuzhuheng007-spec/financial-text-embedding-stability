@@ -1,0 +1,20 @@
+{
+  "schema": "sentiment_v2_preflight_redacted_1",
+  "checked_at_utc": "2026-11-17T02:38:13.950099+00:00",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "input_manifest_sha256": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "scorer_code_sha256": "e964d52ca4de948f0d753336214964be912acd49c3b93930ab8db11d232e6854",
+  "lm_csv_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "model_files_sha256": {
+    "config.json": "f6449ddda85eb726207a40be59c0cd3bd4b142ccb27298d5e45f9ae3396b1abe",
+    "pytorch_model.bin": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+    "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+    "tokenizer_config.json": "ffc7913f6084b138dad68de5a0c2f0ee25ac983709260901e01f53be5796b9d9",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "blocks": 163,
+  "max_input_tokens_observed": 129,
+  "over_budget_count": 0,
+  "over_budget_block_ids": [],
+  "ready": true
+}

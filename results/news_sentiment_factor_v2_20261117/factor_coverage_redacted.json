@@ -1,0 +1,22 @@
+{
+  "schema": "sentiment_v2_factor_coverage_redacted_1",
+  "computed_at_utc": "2026-11-17T02:39:30.950948+00:00",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "score_file_sha256": "72e0f70655225778337beff2b20172451277c0bfc7f228c5c57267f47fc0cb0f",
+  "event_factor_private_sha256": "dcf3a8be0330ed8b8df2df915e95fa3aeb182d252bb8ae82edba8470fd4807be",
+  "independent_issuer_event_groups": 8,
+  "issuer_counts": {
+    "NVDA": 4,
+    "MU": 4
+  },
+  "F1_available_events": 8,
+  "F2_available_events": 4,
+  "F2_by_issuer": {
+    "NVDA": 2,
+    "MU": 2
+  },
+  "four_group_fit_gate": "INSUFFICIENT_INDEPENDENT_EVENTS",
+  "fit_calls": 0,
+  "labels_read_at_factor_build": false,
+  "interpretation": "official issuer-disclosure tone development proxy, not a complete news archive"
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "sentiment_v2_postfreeze_integration_fix_1",
+  "checked_at_utc": "2026-11-17T02:37:38.917840+00:00",
+  "reason": "isolated scorer environment lacks bs4; parser import moved inside extraction-only function",
+  "old_selector_code_sha256": "b2e38e99c565c69cf4831d8f0efed3a3688c94b77f88ee0e71bd2c0f6b52e91e",
+  "new_selector_code_sha256": "239f4aa54fb0b3fca1e19da54bb09036f6a988eb988c34337a5b79be7a11cbd2",
+  "frozen_input_manifest_sha256_unchanged": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "event_and_block_ids_equal": true,
+  "model_inference_before_fix": 0
+}

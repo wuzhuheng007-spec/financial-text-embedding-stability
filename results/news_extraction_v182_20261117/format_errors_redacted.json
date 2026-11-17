@@ -1,0 +1,63 @@
+{
+  "schema": "news_extraction_v182_format_errors_redacted_1",
+  "at_utc": "2026-11-17T02:59:05.652844+00:00",
+  "rows": [
+    {
+      "task_id": "V182-01",
+      "raw_sha256": "b34a0e7ef4dbeb9b3dbf5ade53d0c1f7cbefc8b101f238f3c334da3f3d36cc14",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 209
+    },
+    {
+      "task_id": "V182-02",
+      "raw_sha256": "808c081bc6e9d4b5cc7485430cabdb205aa0d1aa309430d840fe7ba248af5fa9",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 329
+    },
+    {
+      "task_id": "V182-05",
+      "raw_sha256": "d97bc54bc68f0c1be64619fb9ee3e5ced98d1c47da0c7c0e56ec05d8dc40700e",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 317
+    },
+    {
+      "task_id": "V182-07",
+      "raw_sha256": "50b49e6c7727354a3d741362a23c7411763b22c8979e1cb1e00f594b6eaeffd0",
+      "reason": "UNQUOTED_PROPERTY_OR_OTHER",
+      "json_error_position": 27
+    },
+    {
+      "task_id": "V182-09",
+      "raw_sha256": "8eb86736c4cabb3c1340c53ebe5929d20f0c616d206b53c563526e02aad9b563",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 206
+    },
+    {
+      "task_id": "V182-11",
+      "raw_sha256": "f9b1be05596f7b8113d7f586d638c6c9dc23b8db84a874af0585a0d5f1f270d7",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 204
+    },
+    {
+      "task_id": "V182-13",
+      "raw_sha256": "fff7e477d1534fe073c40f78d1412d63d8782c6c9ddfc380fa28628a3b9e3a06",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 207
+    },
+    {
+      "task_id": "V182-14",
+      "raw_sha256": "51b6a470b931242fb3ac8b22e570cbafc77ee6464c5db1d493e8d2d2055f4550",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 321
+    },
+    {
+      "task_id": "V182-16",
+      "raw_sha256": "f6483837ebe23772ab7150ba82b545a7f209d4839dfee288fdb76e2680158fb0",
+      "reason": "BARE_ENUM_VALUE",
+      "json_error_position": 209
+    }
+  ],
+  "bare_enum_value": 8,
+  "other": 1,
+  "raw_response_modified": false
+}

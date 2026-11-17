@@ -1,0 +1,120 @@
+{
+  "all_ready": true,
+  "completed_at_utc": "2026-11-17T02:49:30.963112Z",
+  "model_calls": 0,
+  "rows": [
+    {
+      "elapsed_seconds": 11.063000000023749,
+      "error": null,
+      "input_tokens": 459,
+      "task_id": "V182-01",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.90600000001723,
+      "error": null,
+      "input_tokens": 637,
+      "task_id": "V182-02",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.936999999976251,
+      "error": null,
+      "input_tokens": 674,
+      "task_id": "V182-03",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.922000000020489,
+      "error": null,
+      "input_tokens": 669,
+      "task_id": "V182-04",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.952999999979511,
+      "error": null,
+      "input_tokens": 570,
+      "task_id": "V182-05",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.90700000000652,
+      "error": null,
+      "input_tokens": 455,
+      "task_id": "V182-06",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 11.03100000001723,
+      "error": null,
+      "input_tokens": 759,
+      "task_id": "V182-07",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.89100000000326,
+      "error": null,
+      "input_tokens": 439,
+      "task_id": "V182-08",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.969000000040978,
+      "error": null,
+      "input_tokens": 623,
+      "task_id": "V182-09",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 11.046999999962281,
+      "error": null,
+      "input_tokens": 616,
+      "task_id": "V182-10",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.953000000037719,
+      "error": null,
+      "input_tokens": 466,
+      "task_id": "V182-11",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.905999999959022,
+      "error": null,
+      "input_tokens": 439,
+      "task_id": "V182-12",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.938000000023749,
+      "error": null,
+      "input_tokens": 461,
+      "task_id": "V182-13",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.936999999976251,
+      "error": null,
+      "input_tokens": 665,
+      "task_id": "V182-14",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.922000000020489,
+      "error": null,
+      "input_tokens": 728,
+      "task_id": "V182-15",
+      "within_budget": true
+    },
+    {
+      "elapsed_seconds": 10.936999999976251,
+      "error": null,
+      "input_tokens": 449,
+      "task_id": "V182-16",
+      "within_budget": true
+    }
+  ],
+  "schema": "news_extraction_v182_preflight_1"
+}

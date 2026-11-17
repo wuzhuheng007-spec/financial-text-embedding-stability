@@ -1,0 +1,20 @@
+{
+  "schema": "sentiment_v2_source_spot_review_redacted_1",
+  "reviewed_at_utc": "2026-11-17T02:49:26.909641+00:00",
+  "selection": "first two blocks over 90 characters per event in frozen block order",
+  "source_blocks_total": 163,
+  "spot_reviewed_blocks": 16,
+  "spot_reviewed_events": 8,
+  "content_kinds": {
+    "ISSUER_RESULT_OR_INTRO": 13,
+    "COUNTERFACTUAL_ADJUSTED_BASIS": 1,
+    "MIXED_OPERATIONAL_DISCLOSURE": 1,
+    "ATTRIBUTED_MANAGEMENT_OPINION": 1
+  },
+  "review_status": "CODEX_REVIEW_AFTER_OUTCOME",
+  "source_link_check": "eight SEC exhibit URLs opened in current run",
+  "strict_blind_pre_outcome_review": "NOT_DONE",
+  "private_review_sha256": "0654a57cb72dc294f09afe13926ea8799d6f6921a02cd8de45ef591669e78a4c",
+  "input_manifest_sha256": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "promotion": "NONE"
+}

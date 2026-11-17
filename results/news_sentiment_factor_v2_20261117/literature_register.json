@@ -1,0 +1,45 @@
+{
+  "schema": "sentiment_v2_primary_source_register_1",
+  "status": "IDENTITY_AND_RELEVANCE_CHECKED_NO_PAPER_RETURN_BENCHMARK_IMPORTED",
+  "entries": [
+    {
+      "identity": "Kangying Zhou, Professional Investors and Media Topics, author PDF dated 2026-03-16",
+      "url": "https://kangyingzhou.com/files/JMP_KangyingZhou.pdf",
+      "relevant_hypothesis": "Separate topic attention from textual sentiment and avoid using one as a proxy for the other.",
+      "project_boundary": "The pilot has a selected issuer-announcement subset and no complete media-attention denominator."
+    },
+    {
+      "identity": "Zheng Tracy Ke, Bryan Kelly, Dacheng Xiu, Predicting Returns with Text Data, author conference PDF dated 2019-05-14",
+      "url": "https://carey.jhu.edu/sites/default/files/2023-01/finance-conference-june-2019-dacheng-xiu-paper-min.pdf",
+      "relevant_hypothesis": "Text may add information beyond generic sentiment and price controls, requiring an actually paired out-of-time comparison.",
+      "project_boundary": "This run does not borrow supervised term weights or its reported return results."
+    },
+    {
+      "identity": "Steven L. Heston and Nitish R. Sinha, News versus Sentiment: Predicting Stock Returns from News Stories, Federal Reserve FEDS 2016-048",
+      "url": "https://www.federalreserve.gov/econresdata/feds/2016/files/2016048pap.pdf",
+      "relevant_hypothesis": "The outcome horizon and source timestamp are material; distinct horizons must be reported separately.",
+      "project_boundary": "This pilot scores official disclosures and does not claim to replicate a newswire study."
+    },
+    {
+      "identity": "Loughran-McDonald Master Dictionary, Notre Dame SRAF, observed March 2026 edition covering 1993-2025",
+      "url": "https://sraf.nd.edu/loughranmcdonald-master-dictionary/",
+      "relevant_hypothesis": "A fixed finance-specific positive-minus-negative term frequency can serve as a lexical tone baseline.",
+      "project_boundary": "Research-use terms apply; edition is not proven available on every 2025 signal date."
+    },
+    {
+      "identity": "ProsusAI/finbert, official model card and repository",
+      "url": "https://huggingface.co/ProsusAI/finbert",
+      "code_url": "https://github.com/ProsusAI/finBERT",
+      "pinned_older_revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+      "pinned_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+      "label_mapping": {"0": "positive", "1": "negative", "2": "neutral"},
+      "weight_license": "CC-BY-NC-SA-4.0",
+      "relevant_hypothesis": "A fixed English financial-language classifier can provide a separate textual tone measure.",
+      "project_boundary": "Scores are neither source-fact verification nor a probability of future stock returns."
+    }
+  ],
+  "polymarket": {
+    "status": "PLAN_ONLY_NO_DATA",
+    "next_data_checks": ["historical timestamp availability", "market identity", "settlement rules", "permissions", "event-to-company mapping"]
+  }
+}

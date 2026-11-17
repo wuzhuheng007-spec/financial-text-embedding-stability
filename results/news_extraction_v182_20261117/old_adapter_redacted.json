@@ -1,0 +1,24 @@
+{
+  "schema": "news_extraction_v182_adapter_redacted_1",
+  "completed_at_utc": "2026-11-17T02:42:14.933505+00:00",
+  "old_attempts": 16,
+  "raw_mechanical_pass": 0,
+  "adapted_mechanical_pass": 5,
+  "converted_evidence_values": 25,
+  "conversions_by_field": {
+    "category_evidence_id": 11,
+    "uncertainty_evidence_id": 11,
+    "claim_evidence_id": 3
+  },
+  "remaining_error_labels": {
+    "TONE_BAD_EVIDENCE_ID": 5,
+    "UNCERTAINTY_UNEXPECTED_EVIDENCE": 4,
+    "ACTOR_TEXT_NOT_IN_EVIDENCE": 2,
+    "CATEGORY_BAD_EVIDENCE_ID": 1
+  },
+  "old_files_modified": 0,
+  "new_model_calls": 0,
+  "private_adapted_sha256": "65bc39efcb3b25551573b637666766c131680038263de5615982f5afeca17de0",
+  "semantic_acceptance": 0,
+  "note": "Mechanical adaptation does not certify field meaning or supplier report truth."
+}

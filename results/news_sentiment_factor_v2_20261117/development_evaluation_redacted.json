@@ -1,0 +1,107 @@
+{
+  "schema": "sentiment_v2_date_proxy_development_redacted_1",
+  "completed_at_utc": "2026-11-17T02:41:28.831539+00:00",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "factor_file_sha256": "dcf3a8be0330ed8b8df2df915e95fa3aeb182d252bb8ae82edba8470fd4807be",
+  "event_alignment_private_sha256": "b5985f4059e663566e8ee125b09f9bb8c5ce269f25e66de3ae1b30788b1bde1c",
+  "events": 8,
+  "issuer_counts": {
+    "NVDA": 4,
+    "MU": 4
+  },
+  "label_eligible_counts": {
+    "1": 8,
+    "5": 6
+  },
+  "exclusions": {
+    "COMPANY_ACTION_IN_WINDOW": 2
+  },
+  "descriptive_correlations": {
+    "lm_F1": {
+      "1": {
+        "n": 8,
+        "pearson": -0.5545509587157192,
+        "spearman": -0.4523809523809524,
+        "block_bootstrap_95pct": [
+          -0.9703662590412835,
+          -0.0032165173737559805
+        ],
+        "valid_bootstrap_draws": 200,
+        "status": "RETROSPECTIVE_DATE_PROXY_DESCRIPTIVE_ONLY"
+      },
+      "5": {
+        "n": 6,
+        "pearson": -0.036014185890634244,
+        "spearman": -0.14285714285714285,
+        "block_bootstrap_95pct": [
+          -1.0000000000000002,
+          1.0
+        ],
+        "valid_bootstrap_draws": 200,
+        "status": "RETROSPECTIVE_DATE_PROXY_DESCRIPTIVE_ONLY"
+      }
+    },
+    "finbert_F1": {
+      "1": {
+        "n": 8,
+        "pearson": -0.49121189105168744,
+        "spearman": -0.40476190476190477,
+        "block_bootstrap_95pct": [
+          -0.9302552243054113,
+          -0.020371205215486722
+        ],
+        "valid_bootstrap_draws": 200,
+        "status": "RETROSPECTIVE_DATE_PROXY_DESCRIPTIVE_ONLY"
+      },
+      "5": {
+        "n": 6,
+        "pearson": 0.07268667716761656,
+        "spearman": -0.14285714285714285,
+        "block_bootstrap_95pct": [
+          -1.0000000000000002,
+          1.0000000000000002
+        ],
+        "valid_bootstrap_draws": 200,
+        "status": "RETROSPECTIVE_DATE_PROXY_DESCRIPTIVE_ONLY"
+      }
+    },
+    "lm_F2": {
+      "1": {
+        "n": 4,
+        "pearson": null,
+        "spearman": null,
+        "block_bootstrap_95pct": null,
+        "status": "MINIMUM_EVENT_COUNT_NOT_MET"
+      },
+      "5": {
+        "n": 3,
+        "pearson": null,
+        "spearman": null,
+        "block_bootstrap_95pct": null,
+        "status": "MINIMUM_EVENT_COUNT_NOT_MET"
+      }
+    },
+    "finbert_F2": {
+      "1": {
+        "n": 4,
+        "pearson": null,
+        "spearman": null,
+        "block_bootstrap_95pct": null,
+        "status": "MINIMUM_EVENT_COUNT_NOT_MET"
+      },
+      "5": {
+        "n": 3,
+        "pearson": null,
+        "spearman": null,
+        "block_bootstrap_95pct": null,
+        "status": "MINIMUM_EVENT_COUNT_NOT_MET"
+      }
+    }
+  },
+  "four_group_fit_calls": 0,
+  "fit_gate": "INSUFFICIENT_INDEPENDENT_EVENTS",
+  "later_price_bars_parsed": 0,
+  "later_labels_scored": 0,
+  "strict_historical_tradeability": "NOT_ESTABLISHED",
+  "warning": "8 reused training events; weak date-block intervals are descriptive and cannot establish prediction or text increment"
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "news_extraction_v182_old_semantic_rereview_redacted_1",
+  "reviewed_at_utc": "2026-11-17T02:51:35.813157+00:00",
+  "same_team_reviewed_mechanical_pass": 5,
+  "semantic_accepts": 0,
+  "issue_labels": {
+    "OMITTED_SPEAKER": 3,
+    "WRONG_ALLEGATION_FOR_OPINION": 1,
+    "OMITTED_ENERGY_TOPIC": 1,
+    "UNRESOLVED": 4,
+    "WRONG_REPORT_FOR_OPINION": 1,
+    "OMITTED_RATE_TOPIC": 1,
+    "UNRESOLVED_RATING_ACTION": 1,
+    "WRONG_NEUTRAL_FOR_UPGRADE_WORDING": 1,
+    "UNRESOLVED_MIXED_RUMOR_AND_DENIAL": 1,
+    "NOT_EXPLICIT_IN_SENTENCE": 1,
+    "OUTSIDE_TECH_FOCUS": 1
+  },
+  "task_issues": {
+    "V18-01-E03": {
+      "actor": "SUPPORTED",
+      "attribution": "OMITTED_SPEAKER",
+      "claim": "WRONG_ALLEGATION_FOR_OPINION",
+      "category": "OMITTED_ENERGY_TOPIC",
+      "tone": "UNRESOLVED"
+    },
+    "V18-03-E01": {
+      "actor": "SUPPORTED",
+      "attribution": "OMITTED_SPEAKER",
+      "claim": "WRONG_REPORT_FOR_OPINION",
+      "category": "OMITTED_RATE_TOPIC",
+      "tone": "SUPPORTED_OR_NEUTRAL"
+    },
+    "V18-08-E01": {
+      "actor": "SUPPORTED",
+      "attribution": "OMITTED_SPEAKER",
+      "claim": "UNRESOLVED_RATING_ACTION",
+      "category": "UNRESOLVED",
+      "tone": "WRONG_NEUTRAL_FOR_UPGRADE_WORDING"
+    },
+    "V18-08-E02": {
+      "actor": "SUPPORTED",
+      "attribution": "SUPPORTED_DENIAL_SOURCE",
+      "claim": "SUPPORTED_DENIAL",
+      "category": "UNRESOLVED",
+      "tone": "UNRESOLVED_MIXED_RUMOR_AND_DENIAL"
+    },
+    "V18-08-E03": {
+      "actor": "SUPPORTED",
+      "attribution": "NOT_EXPLICIT_IN_SENTENCE",
+      "claim": "SUPPORTED_ANNOUNCED_ACTION",
+      "category": "UNRESOLVED",
+      "tone": "SUPPORTED_OR_NEUTRAL",
+      "scope": "OUTSIDE_TECH_FOCUS"
+    }
+  },
+  "old_source_or_response_modified": false,
+  "private_review_sha256": "586cc23c17c4d6fc7c986179f0d8e01e1f135198967bad33dafe005df5ccbaf4",
+  "claim": "representation-only adapter; no semantic promotion"
+}

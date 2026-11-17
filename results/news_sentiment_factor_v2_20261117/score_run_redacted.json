@@ -1,0 +1,26 @@
+{
+  "schema": "sentiment_v2_score_run_redacted_1",
+  "completed_at_utc": "2026-11-17T02:38:50.406657+00:00",
+  "input_manifest_sha256": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "score_preflight_sha256": "f4b1bd4a3a65e8c77937515f8f07180938e1594c21b5fdfdcce5a766ebff5962",
+  "block_scores_private_sha256": "72e0f70655225778337beff2b20172451277c0bfc7f228c5c57267f47fc0cb0f",
+  "lm_csv_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "lm_dictionary_rows": 86553,
+  "finbert_revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+  "model_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+  "label_mapping": {
+    "0": "positive",
+    "1": "negative",
+    "2": "neutral"
+  },
+  "selected_blocks": 163,
+  "actual_inference_blocks": 163,
+  "batches": 11,
+  "cache_hits": 0,
+  "failure_count": 0,
+  "elapsed_seconds": 1.5630000000237487,
+  "device": "cuda",
+  "peak_cuda_allocated_bytes": 520542208,
+  "interpretation": "source wording only; not fact verification or return probability"
+}

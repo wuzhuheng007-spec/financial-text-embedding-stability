@@ -1,0 +1,137 @@
+{
+  "schema": "sentiment_v2_freeze_redacted_1",
+  "frozen_at_utc": "2026-11-17T02:37:17.411497+00:00",
+  "git_head": "795d582a619d9d8d507eac7153f7fbc8c80a3951",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "corpus_manifest_sha256": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad",
+  "input_manifest_sha256": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "selector_code_sha256": "b2e38e99c565c69cf4831d8f0efed3a3688c94b77f88ee0e71bd2c0f6b52e91e",
+  "events": 8,
+  "blocks": 163,
+  "selection_ledger": [
+    {
+      "event_group_id": "sec:0001045810:0001045810-25-000115",
+      "symbol": "NVDA",
+      "announcement_date": "2025-05-28",
+      "document_id": "sec:0001045810:0001045810-25-000115:EARNINGS_EXHIBIT:75ed627af1c9",
+      "raw_body_sha256": "bd42e9a2896a1cb923bad9d11e9de38cc104169b762e34bdade7f28bee46b6e6",
+      "selected_blocks": 25,
+      "skipped": {
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 17,
+        "FIXED_BLOCK_BUDGET": 27,
+        "LONG_BLOCK_NOT_TRUNCATED": 2,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0000723125:0000723125-25-000019",
+      "symbol": "MU",
+      "announcement_date": "2025-06-25",
+      "document_id": "sec:0000723125:0000723125-25-000019:EARNINGS_EXHIBIT:f1ded0518928",
+      "raw_body_sha256": "ac7dbf754129372cf84346c70eb80ac11ce60bbb03db6056bd6328d7a0a1b909",
+      "selected_blocks": 14,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 41,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0001045810:0001045810-25-000207",
+      "symbol": "NVDA",
+      "announcement_date": "2025-08-27",
+      "document_id": "sec:0001045810:0001045810-25-000207:EARNINGS_EXHIBIT:3a4145a0c124",
+      "raw_body_sha256": "245a4b8ceb5c2f1a8fe354221eac6dd7fb47d77497f014b49a862074040053c3",
+      "selected_blocks": 25,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 18,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "FIXED_BLOCK_BUDGET": 22,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0000723125:0000723125-25-000024",
+      "symbol": "MU",
+      "announcement_date": "2025-09-23",
+      "document_id": "sec:0000723125:0000723125-25-000024:EARNINGS_EXHIBIT:0bb59b34e8d7",
+      "raw_body_sha256": "f56b0855675066ea5c2d1bdc7ca9d0a85827258b30b121b24b026eaec58abc94",
+      "selected_blocks": 19,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 43,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0001045810:0001045810-25-000228",
+      "symbol": "NVDA",
+      "announcement_date": "2025-11-19",
+      "document_id": "sec:0001045810:0001045810-25-000228:EARNINGS_EXHIBIT:1794c943c693",
+      "raw_body_sha256": "1760cf7b3da1d26fec68ba6ec7e6682b07f7b656b6f34444b059fb74ff9c2aa3",
+      "selected_blocks": 25,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 18,
+        "FIXED_BLOCK_BUDGET": 26,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0000723125:0000723125-25-000044",
+      "symbol": "MU",
+      "announcement_date": "2025-12-17",
+      "document_id": "sec:0000723125:0000723125-25-000044:EARNINGS_EXHIBIT:913290429b61",
+      "raw_body_sha256": "5b33bfbd681ceff71fa271f001e6db6167c9f0b206e12418b2f56d495e853126",
+      "selected_blocks": 15,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 41,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0001045810:0001045810-26-000019",
+      "symbol": "NVDA",
+      "announcement_date": "2026-02-25",
+      "document_id": "sec:0001045810:0001045810-26-000019:EARNINGS_EXHIBIT:d2a2f334601f",
+      "raw_body_sha256": "9d154e57af42a5105fe673fcc23c3d31efc95fcf65e121a643d9736a3257dedd",
+      "selected_blocks": 25,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 19,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "FIXED_BLOCK_BUDGET": 25,
+        "LONG_BLOCK_NOT_TRUNCATED": 2,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    },
+    {
+      "event_group_id": "sec:0000723125:0000723125-26-000004",
+      "symbol": "MU",
+      "announcement_date": "2026-03-18",
+      "document_id": "sec:0000723125:0000723125-26-000004:EARNINGS_EXHIBIT:a654b348821e",
+      "raw_body_sha256": "c0cddc9a257f35c65d5fab33296857b9d43d6c56a1985c0124032b528ef0f4a9",
+      "selected_blocks": 15,
+      "skipped": {
+        "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 40,
+        "TABLE_LIKE_NUMERIC_DENSITY": 1,
+        "LONG_BLOCK_NOT_TRUNCATED": 3,
+        "FIXED_BOILERPLATE_PREFIX": 1
+      },
+      "version_status": "SEC_ARCHIVE_HASHED"
+    }
+  ],
+  "later_labels_read": false
+}

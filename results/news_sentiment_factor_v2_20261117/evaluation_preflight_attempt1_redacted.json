@@ -1,0 +1,23 @@
+{
+  "schema": "sentiment_v2_evaluation_preflight_redacted_1",
+  "checked_at_utc": "2026-11-17T02:40:56.129676+00:00",
+  "config_sha256": "b1de4c0e2fb46d9456f15c48f32b5dffccf29b63295e356608906391f3b976a6",
+  "factor_file_sha256": "dcf3a8be0330ed8b8df2df915e95fa3aeb182d252bb8ae82edba8470fd4807be",
+  "evaluation_code_sha256": "68ff024151bc209747d468ad6e973bc9a568ee60d5708ca42546788747fd72f5",
+  "calendar_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+  "raw_price_sha256": {
+    "US.TQQQ": "c6ec74f984c4431fc476b5011d9006197f6793678c13a96f13f4e626c3071e96",
+    "US.NVDA": "703cac8fceaaa0731bbea5bf01b9c4efbb61bce035a54b04597cdee79addf8b3",
+    "US.MU": "9634b743313f04635ae617dda923cd7aad21adb538fc743fc57ccd296ecadfb0"
+  },
+  "company_actions_audit_sha256": "1102d9316358ce03f8a93249f031c5c3639edcd7dca892126cbe5d752e28ae4b",
+  "independent_issuer_events": 8,
+  "events_by_symbol": {
+    "NVDA": 4,
+    "MU": 4
+  },
+  "four_group_fit_ready": false,
+  "fit_calls_before_labels": 0,
+  "post_train_price_bars_parsed": 0,
+  "strict_historical_availability": false
+}

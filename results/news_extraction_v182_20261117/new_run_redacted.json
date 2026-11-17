@@ -1,0 +1,339 @@
+{
+  "abstained": 1,
+  "attempted": 16,
+  "attempts": [
+    {
+      "abstained": null,
+      "elapsed_seconds": 27.48399999999674,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 122,
+        "input_tokens": 459,
+        "peak_cuda_bytes": 6358574592,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "b34a0e7ef4dbeb9b3dbf5ade53d0c1f7cbefc8b101f238f3c334da3f3d36cc14",
+      "started_at_utc": "2026-11-17T02:49:42.535247Z",
+      "task_id": "V182-01"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 28.53100000001723,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 155,
+        "input_tokens": 637,
+        "peak_cuda_bytes": 6387459584,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "808c081bc6e9d4b5cc7485430cabdb205aa0d1aa309430d840fe7ba248af5fa9",
+      "started_at_utc": "2026-11-17T02:50:10.021772Z",
+      "task_id": "V182-02"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 28.42199999996228,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 165,
+        "input_tokens": 674,
+        "peak_cuda_bytes": 6396631552,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "ff04e1676814087c5ceb0a416710fcbc5fb7d680dca082e8e90d09dfccb1c6df",
+      "started_at_utc": "2026-11-17T02:50:38.562574Z",
+      "task_id": "V182-03"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 28.57799999997951,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 172,
+        "input_tokens": 669,
+        "peak_cuda_bytes": 6396308992,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "af72e4bba0150f125ac2c072421e19953aafb5797fc8dbfaf607b330a8378d8c",
+      "started_at_utc": "2026-11-17T02:51:06.998713Z",
+      "task_id": "V182-04"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 26.735000000044238,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 143,
+        "input_tokens": 570,
+        "peak_cuda_bytes": 6374613504,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "d97bc54bc68f0c1be64619fb9ee3e5ced98d1c47da0c7c0e56ec05d8dc40700e",
+      "started_at_utc": "2026-11-17T02:51:35.583903Z",
+      "task_id": "V182-05"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 25.18699999997625,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 120,
+        "input_tokens": 455,
+        "peak_cuda_bytes": 6357258752,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "cf2f5968f8e54cf56f15c6f2cfffb6fa7742ba199ebf30e6e9e320556cbca390",
+      "started_at_utc": "2026-11-17T02:52:02.316409Z",
+      "task_id": "V182-06"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 31.09399999998277,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 213,
+        "input_tokens": 759,
+        "peak_cuda_bytes": 6418921472,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "50b49e6c7727354a3d741362a23c7411763b22c8979e1cb1e00f594b6eaeffd0",
+      "started_at_utc": "2026-11-17T02:52:27.517117Z",
+      "task_id": "V182-07"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 24.98399999999674,
+      "error": null,
+      "mechanical_errors": [
+        "TONE_EVIDENCE_ID"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 119,
+        "input_tokens": 439,
+        "peak_cuda_bytes": 6355100672,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "161828368e5a59aae283d65b9fa9f61b6c370fb6720fadabeac5fb6213d435a5",
+      "started_at_utc": "2026-11-17T02:52:58.612485Z",
+      "task_id": "V182-08"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 25.10899999999674,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 121,
+        "input_tokens": 623,
+        "peak_cuda_bytes": 6385172992,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "8eb86736c4cabb3c1340c53ebe5929d20f0c616d206b53c563526e02aad9b563",
+      "started_at_utc": "2026-11-17T02:53:23.609328Z",
+      "task_id": "V182-09"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 24.65600000001723,
+      "error": null,
+      "mechanical_errors": [
+        "TONE_EVIDENCE_ID"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 117,
+        "input_tokens": 616,
+        "peak_cuda_bytes": 6384366592,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "d4b8ee2e2055d32e15fc305064bf0c3dd8bea6d161861a8ca20e77e926d17463",
+      "started_at_utc": "2026-11-17T02:53:48.727729Z",
+      "task_id": "V182-10"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 24.70299999997951,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 119,
+        "input_tokens": 466,
+        "peak_cuda_bytes": 6358954496,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "f9b1be05596f7b8113d7f586d638c6c9dc23b8db84a874af0585a0d5f1f270d7",
+      "started_at_utc": "2026-11-17T02:54:13.381745Z",
+      "task_id": "V182-11"
+    },
+    {
+      "abstained": true,
+      "elapsed_seconds": 21.5,
+      "error": null,
+      "mechanical_errors": [],
+      "mechanical_valid": true,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 71,
+        "input_tokens": 439,
+        "peak_cuda_bytes": 6355100672,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "585cd9df680bcb20f4fcf8c8f3d286292f1790d463781095262ef9a5d057cec4",
+      "started_at_utc": "2026-11-17T02:54:38.083532Z",
+      "task_id": "V182-12"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 24.64100000000326,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 120,
+        "input_tokens": 461,
+        "peak_cuda_bytes": 6358684160,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "fff7e477d1534fe073c40f78d1412d63d8782c6c9ddfc380fa28628a3b9e3a06",
+      "started_at_utc": "2026-11-17T02:54:59.590580Z",
+      "task_id": "V182-13"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 26.15600000001723,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 145,
+        "input_tokens": 665,
+        "peak_cuda_bytes": 6394993152,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "51b6a470b931242fb3ac8b22e570cbafc77ee6464c5db1d493e8d2d2055f4550",
+      "started_at_utc": "2026-11-17T02:55:24.235183Z",
+      "task_id": "V182-14"
+    },
+    {
+      "abstained": false,
+      "elapsed_seconds": 28.82799999997951,
+      "error": null,
+      "mechanical_errors": [
+        "ROLE_TEXT_NOT_IN_SOURCE"
+      ],
+      "mechanical_valid": false,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 185,
+        "input_tokens": 728,
+        "peak_cuda_bytes": 6409400832,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": "RAW_JSON",
+      "raw_sha256": "9ffd320072834f052c5cc5aad185118f164a0128ac4eb53d6c5b9730f39078be",
+      "started_at_utc": "2026-11-17T02:55:50.391271Z",
+      "task_id": "V182-15"
+    },
+    {
+      "abstained": null,
+      "elapsed_seconds": 24.67200000002049,
+      "error": "PARSE_JSONDecodeError",
+      "mechanical_errors": null,
+      "mechanical_valid": null,
+      "metadata": {
+        "attention": "eager",
+        "device": "cuda",
+        "dtype": "float16",
+        "generated_tokens": 121,
+        "input_tokens": 449,
+        "peak_cuda_bytes": 6356404736,
+        "stop_reason": "EOS_TOKEN"
+      },
+      "parse_mode": null,
+      "raw_sha256": "f6483837ebe23772ab7150ba82b545a7f209d4839dfee288fdb76e2680158fb0",
+      "started_at_utc": "2026-11-17T02:56:19.226065Z",
+      "task_id": "V182-16"
+    }
+  ],
+  "completed_at_utc": "2026-11-17T02:56:44.066839Z",
+  "fence_adapted": 0,
+  "mechanical_valid": 4,
+  "planned": 16,
+  "response_saved": 16,
+  "schema": "news_extraction_v182_retest_redacted_1",
+  "strict_raw_json": 7
+}

@@ -1,0 +1,33 @@
+{
+  "timestamp_utc": "20261117T023402Z",
+  "records": [
+    {
+      "db_kind": "dev.sqlite3",
+      "status": "BACKED_UP",
+      "bytes": 229376,
+      "sha256": "50d8f91afb80be68f8ef34a9c5240e965443b70adfae5d3edb7bf091438844d9",
+      "integrity": "ok"
+    },
+    {
+      "db_kind": "personal_feeds.sqlite3",
+      "status": "BACKED_UP",
+      "bytes": 93437952,
+      "sha256": "791e329c84004dd57bf41575009cc3097d9f199c36259bd0878ca47e7d7c60bc",
+      "integrity": "ok"
+    },
+    {
+      "db_kind": "personal_news_v18.sqlite3",
+      "status": "BACKED_UP",
+      "bytes": 36864,
+      "sha256": "75b30d9edd16a7f5b3e715e0f1ebe0ef68ef684744f3d460c42547736af2db65",
+      "integrity": "ok"
+    },
+    {
+      "db_kind": "personal_analysis_v16.sqlite3",
+      "status": "BACKED_UP",
+      "bytes": 471040,
+      "sha256": "fe072f5cc18fd1266dfdfd9b096c34a33b5ce601aaabac1dcea5c00eea13e8bb",
+      "integrity": "ok"
+    }
+  ]
+}
