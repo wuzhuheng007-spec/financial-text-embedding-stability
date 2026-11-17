@@ -119,4 +119,7 @@ PERSONAL_FEED_DB_PATH = BASE_DIR / "var" / "personal_feeds.sqlite3"
 if TRUSTED_REVERSE_PROXY:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = not DEBUG
+    # Container health probes call the app directly on its private port; only
+    # these two bodyless status endpoints skip the HTTPS redirect.
+    SECURE_REDIRECT_EXEMPT = [r"^healthz/$", r"^readyz/$"]
     SECURE_HSTS_SECONDS = 3600 if not DEBUG else 0

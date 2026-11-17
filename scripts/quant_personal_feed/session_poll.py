@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore, OAuthError
+from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore, OAuthError, token_store as platform_token_store
 
 from .collector import ROOT, TOKEN_FILE, under_root, verified_current_symbols
 from .session_quotes import SESSIONS, parse_stock_quote_row
@@ -76,7 +76,7 @@ def run_moomoo_snapshot(config: dict, owner: int, stop: threading.Event) -> None
         policy.get("snapshot_batch_limit") != 6):
         raise ValueError("Invalid v1.3 snapshot policy")
     store = PersonalFeedStore(under_root(config["cache_db"]), owner)
-    token_store = LocalTokenStore(TOKEN_FILE)
+    token_store = platform_token_store(TOKEN_FILE)
     mapping = verified_current_symbols(config)
     store.provider_metric("moomoo_snapshot", worker_alive=1)
     failures = 0

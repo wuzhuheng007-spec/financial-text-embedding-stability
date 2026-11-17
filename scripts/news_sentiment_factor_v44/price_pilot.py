@@ -13,7 +13,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore
+from scripts.market_observer_v1.moomoo_webapi_oauth import token_store
 from scripts.news_sentiment_factor_v44.preflight import PRIVATE, PUBLIC, ROOT, sha
 
 CONFIG = ROOT / "configs/news_sentiment_factor_v44_20261117.json"
@@ -108,7 +108,7 @@ def run() -> dict:
         raise ValueError("PILOT_MUST_NOT_RETRY")
     # Existing OAuth store may refresh a short-lived token; this is a separate
     # auth operation and is recorded by the store, never printed here.
-    token = LocalTokenStore(TOKEN).access_token()
+    token = token_store(TOKEN).access_token()
     rows = []
     stop = None
     for symbol in config["price_pilot_symbols"]:
@@ -138,7 +138,7 @@ def supplement() -> dict:
         raise RuntimeError("PRICE_PILOT_MUST_RUN_FIRST")
     if (PUBLIC / "price_supplement_redacted.json").exists():
         raise FileExistsError("SUPPLEMENT_ALREADY_RUN")
-    token = LocalTokenStore(TOKEN).access_token()
+    token = token_store(TOKEN).access_token()
     requests = [("basicinfo", None, f"{ENDPOINT}/stock-basicinfo",
                  json.dumps({"code_list": ["US.NVDA", "US.MU"]}).encode("utf-8"))]
     requests.extend((kind, symbol, f"{ENDPOINT}/US.{symbol}/corporate-actions/{kind}", None)

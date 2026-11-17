@@ -1,0 +1,46 @@
+{
+ "schema": "pr4_linux_p2_docker_checks_redacted_1",
+ "checked_at_asia_shanghai": "2026-11-18T06:47+08:00",
+ "first_attempt_before_desktop_start": {
+  "wsl_status": "rc=0 default distro docker-desktop, version 2",
+  "wsl_list": "docker-desktop Stopped VERSION 2",
+  "docker_version": "rc=1 client only; npipe dockerDesktopLinuxEngine not found",
+  "docker_info": "rc=1 no server",
+  "docker_compose_version": "rc=0"
+ },
+ "docker_desktop_started": "per-user install; engine ready after 18 s bounded wait (limit 200 s)",
+ "after_start": {
+  "wsl_status": {
+   "exit": 0,
+   "ms": 212
+  },
+  "wsl_list": {
+   "exit": 0,
+   "ms": 200
+  },
+  "docker_version": {
+   "exit": 0,
+   "ms": 463
+  },
+  "docker_info": {
+   "exit": 0,
+   "ms": 703
+  },
+  "compose_version": {
+   "exit": 0,
+   "ms": 540
+  }
+ },
+ "server": {
+  "engine_version": "29.6.2",
+  "os_type": "linux",
+  "kernel": "6.18.33.2-microsoft-standard-WSL2",
+  "context": "desktop-linux",
+  "desktop": "Docker Desktop 4.83.0 (234302)",
+  "cgroup": "2",
+  "compose": "Docker Compose version v5.3.1"
+ },
+ "linux_containers": true,
+ "admin_actions": "none",
+ "note": "User reboot alone did not start the engine; Docker Desktop had to be launched."
+}

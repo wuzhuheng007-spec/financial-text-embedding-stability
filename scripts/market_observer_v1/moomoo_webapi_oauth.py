@@ -1,7 +1,11 @@
 """Separate moomoo WebAPI OAuth for local read-only quote operations.
 
-Codex MCP credentials are deliberately never accessed here. Token material is
-DPAPI-encrypted for the current Windows user under the ignored artifacts tree.
+Codex MCP credentials are deliberately never accessed here. On Windows, token
+material is DPAPI-encrypted for the current Windows user under the ignored
+artifacts tree. A Linux server cannot decrypt those files, so it uses a
+separate quote:read authorization stored by ``ServerFileTokenStore``: AES-256-GCM
+ciphertext on the private persistent volume, keyed by a secret file that is
+mounted separately (for example a Docker secret). Neither store prints tokens.
 """
 
 from __future__ import annotations
@@ -10,7 +14,9 @@ import base64
 import hashlib
 import hmac
 import json
+import os
 import secrets
+import sys
 import time
 import webbrowser
 from datetime import datetime, timezone
@@ -88,22 +94,34 @@ def _check_scope(token: dict) -> None:
 
 
 class LocalTokenStore:
+    storage = "WINDOWS_DPAPI"
+
     def __init__(self, path: Path):
         self.path = path
+
+    def _seal(self, raw: bytes) -> bytes:
+        return _protect(raw)
+
+    def _open(self, data: bytes) -> bytes:
+        return _unprotect(data)
 
     def save(self, token: dict) -> None:
         _check_scope(token)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         raw = json.dumps(token, ensure_ascii=False, sort_keys=True).encode("utf-8")
         temporary = self.path.with_name(self.path.name + ".tmp")
-        temporary.write_bytes(_protect(raw))
+        sealed = self._seal(raw)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_BINARY", 0)
+        descriptor = os.open(temporary, flags, 0o600)
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(sealed)
         temporary.replace(self.path)
 
     def load(self) -> dict:
         if not self.path.is_file():
             raise OAuthError("separate moomoo WebAPI quote:read authorization is not installed")
         try:
-            token = json.loads(_unprotect(self.path.read_bytes()))
+            token = json.loads(self._open(self.path.read_bytes()))
         except (ValueError, TypeError) as exc:
             raise OAuthError("local OAuth token record is invalid") from None
         _check_scope(token)
@@ -119,7 +137,7 @@ class LocalTokenStore:
                         "accid:<redacted>" if scope.startswith("accid:") else scope
                         for scope in str(token.get("scope", "")).split()),
                     "access_expires_at": token.get("access_expires_at"),
-                    "token_file_encrypted": True}
+                    "token_file_encrypted": True, "storage": self.storage}
         except OAuthError:
             return {"credential_state": "UNREADABLE_OR_SCOPE_REJECTED"}
 
@@ -145,13 +163,103 @@ class LocalTokenStore:
         return str(token["access_token"])
 
 
-def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int = 300) -> dict:
-    """Run one local browser consent with a loopback-only callback.
+_SERVER_MAGIC = b"QTS1"
+_SERVER_AAD = b"moomoo-webapi-quote-read-token-v1"
 
-    The returned receipt is safe to print; the callback code and tokens are not.
+
+class ServerFileTokenStore(LocalTokenStore):
+    """Linux/server token store: AES-256-GCM sealed file plus a separate key file.
+
+    The key file holds 32 random bytes encoded as base64 (or 64 hex digits). It
+    must not be group/world readable and must not live beside the ciphertext in
+    the image. A missing key or token is reported as not installed; there is no
+    plaintext fallback and Windows DPAPI files are not accepted.
+    """
+
+    storage = "SERVER_AES256GCM_KEYFILE"
+
+    def __init__(self, path: Path, key_path: Path):
+        super().__init__(path)
+        self.key_path = key_path
+
+    def _key(self) -> bytes:
+        if not self.key_path.is_file():
+            raise OAuthError("server token key file is not mounted")
+        if os.name != "nt" and self.key_path.stat().st_mode & 0o077:
+            raise OAuthError("server token key file must not be group/world readable")
+        text = self.key_path.read_bytes().strip()
+        try:
+            key = (bytes.fromhex(text.decode("ascii")) if len(text) == 64
+                   else base64.b64decode(text, validate=True))
+        except (ValueError, UnicodeDecodeError):
+            raise OAuthError("server token key file is not valid base64 or hex") from None
+        if len(key) != 32:
+            raise OAuthError("server token key must decode to 32 bytes")
+        return key
+
+    def _seal(self, raw: bytes) -> bytes:
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except ImportError as exc:
+            raise OAuthError("cryptography is unavailable; refuse plaintext token storage") from exc
+        nonce = secrets.token_bytes(12)
+        return _SERVER_MAGIC + nonce + AESGCM(self._key()).encrypt(nonce, raw, _SERVER_AAD)
+
+    def _open(self, data: bytes) -> bytes:
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except ImportError as exc:
+            raise OAuthError("cryptography is unavailable") from exc
+        if not data.startswith(_SERVER_MAGIC) or len(data) < len(_SERVER_MAGIC) + 12 + 16:
+            # Includes copied Windows DPAPI blobs: they are not migrated.
+            raise OAuthError("token file is not a server-sealed record")
+        nonce = data[len(_SERVER_MAGIC):len(_SERVER_MAGIC) + 12]
+        key = self._key()
+        try:
+            return AESGCM(key).decrypt(nonce, data[len(_SERVER_MAGIC) + 12:], _SERVER_AAD)
+        except Exception as exc:
+            raise OAuthError(f"cannot unlock server OAuth token: {type(exc).__name__}") from None
+
+    def status(self) -> dict:
+        result = super().status()
+        result["key_file_present"] = self.key_path.is_file()
+        result["storage"] = self.storage
+        return result
+
+
+def token_store(dpapi_path: Path) -> LocalTokenStore:
+    """Choose the platform token store without migrating credentials.
+
+    ``MOOMOO_TOKEN_STORE=server`` (the default off Windows) selects the server
+    store; its paths come from ``MOOMOO_TOKEN_FILE`` and
+    ``MOOMOO_TOKEN_KEY_FILE``. Otherwise the Windows DPAPI file is used.
+    """
+    mode = os.environ.get("MOOMOO_TOKEN_STORE", "dpapi" if os.name == "nt" else "server")
+    if mode == "dpapi":
+        return LocalTokenStore(dpapi_path)
+    if mode != "server":
+        raise OAuthError("MOOMOO_TOKEN_STORE must be dpapi or server")
+    token_path = os.environ.get("MOOMOO_TOKEN_FILE")
+    key_path = os.environ.get("MOOMOO_TOKEN_KEY_FILE")
+    if not token_path or not key_path:
+        raise OAuthError("server token store needs MOOMOO_TOKEN_FILE and MOOMOO_TOKEN_KEY_FILE")
+    return ServerFileTokenStore(Path(token_path), Path(key_path))
+
+
+def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int = 300,
+                         open_browser: bool = True, callback_port: int = 0) -> dict:
+    """Run one browser consent with a loopback-only callback.
+
+    On a headless server use ``open_browser=False`` and a fixed
+    ``callback_port``: the consent URL is written to stderr and the owner
+    completes it in their own browser through an SSH local port forward to the
+    same loopback port. The returned receipt is safe to print; the callback
+    code and tokens are not.
     """
     if timeout_seconds <= 0 or timeout_seconds > 300:
         raise ValueError("OAuth callback timeout must be 1..300 seconds")
+    if callback_port and not 1024 <= callback_port <= 65535:
+        raise ValueError("OAuth callback port must be 1024..65535")
     callback: dict[str, str] = {}
 
     class Handler(BaseHTTPRequestHandler):
@@ -175,7 +283,7 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
             # The default HTTP handler logs the callback path, including code.
             pass
 
-    with HTTPServer(("127.0.0.1", 0), Handler) as server:
+    with HTTPServer(("127.0.0.1", callback_port), Handler) as server:
         server.timeout = timeout_seconds
         redirect_uri = f"http://127.0.0.1:{server.server_port}/callback"
         registration = _request_json(REGISTER_URL, {
@@ -198,8 +306,15 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
             "redirect_uri": redirect_uri, "code_challenge": challenge,
             "code_challenge_method": "S256", "state": state,
             "scope": "quote:read"})
-        if not webbrowser.open(consent, new=1):
-            raise OAuthError("could not open the browser consent page")
+        if open_browser:
+            if not webbrowser.open(consent, new=1):
+                raise OAuthError("could not open the browser consent page")
+        else:
+            # The consent URL carries a public client id, PKCE challenge and a
+            # one-time state value, not a token. It is shown only on the
+            # operator's interactive terminal, never in service logs.
+            print("Open this moomoo consent URL in your own browser after SSH-forwarding "
+                  f"127.0.0.1:{server.server_port}:\n{consent}", file=sys.stderr, flush=True)
         server.handle_request()
         if not callback.get("code"):
             raise OAuthError("browser consent callback was not received before timeout")
@@ -220,6 +335,6 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
                           "access_expires_at": datetime.fromtimestamp(time.time() + lifetime,
                                                                          timezone.utc).isoformat().replace("+00:00", "Z"),
                           "authorized_at": _utc_now()})
-        return {"authorization": "QUOTE_READ_AUTHORIZED",
+        return {"authorization": "QUOTE_READ_AUTHORIZED", "storage": token_store.storage,
                 "token_file_encrypted": True, "token_printed": False,
                 "callback_host": "127.0.0.1"}

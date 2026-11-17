@@ -44,7 +44,7 @@ def test_identical_pushes_do_not_repeat_quote_writes_but_new_source_time_does():
     with patch.object(collector, "PersonalFeedStore", return_value=store), \
          patch.object(collector, "verified_subscriptions", return_value=(live, [], {})), \
          patch.object(collector, "MoomooWebSocketPush", return_value=adapter), \
-         patch.object(collector, "LocalTokenStore", return_value=Mock()), \
+         patch.object(collector, "token_store", return_value=Mock()), \
          patch.object(collector, "parse_push_children", return_value=[{
              "session": "PREMARKET", "source_at": None}]):
         collector.run_moomoo(config, 1, stop)

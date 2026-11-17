@@ -1,0 +1,16 @@
+# Isolated acceptance overlay. Use with a distinct project name, e.g.
+#   docker compose -p quant-pr4-test -f deploy/linux/compose.yaml \
+#     -f deploy/linux/compose.test.yaml --env-file <scratch test.env> up -d
+# - supplier loops disabled by the test feed config (no subscription, no poll)
+# - daily-price worker is not started (it could call the supplier)
+# - proxy only on a loopback port that differs from 8765 and 443
+# - all volumes belong to the test project; the model volume is a test copy
+services:
+  proxy:
+    ports: !override
+      - "127.0.0.1:${HTTPS_PORT:-18443}:443"
+  feed:
+    environment:
+      QUANT_FEED_CONFIG: configs/quant_portal_personal_feeds_linux_test_v1.json
+  daily-price:
+    profiles: ["supplier"]

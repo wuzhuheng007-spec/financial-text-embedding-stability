@@ -1,0 +1,100 @@
+{
+ "schema": "pr4_linux_container_acceptance_redacted_1",
+ "executed_at_asia_shanghai": "2026-11-18T07:00-07:22+08:00",
+ "isolation": {
+  "compose_projects": [
+   "quant-pr4-test",
+   "quant-pr4-restore"
+  ],
+  "published": [
+   "127.0.0.1:18443",
+   "127.0.0.1:18444"
+  ],
+  "production_port_8765_untouched": true,
+  "production_volumes_or_db_mounted": false,
+  "supplier_loops": "disabled by configs/quant_portal_personal_feeds_linux_test_v1.json; daily-price behind 'supplier' profile, not started",
+  "supplier_requests": 0,
+  "secrets": "random scratch-only test values; not reused production credentials"
+ },
+ "images": {
+  "app": {
+   "build_context_bytes": "2.17MB",
+   "size": "321MB",
+   "user": "uid 10001",
+   "private_file_scan": "no sqlite/db/.env/dpapi/sealed/private/invite/secret files; only Debian CA certificates matched *.pem",
+   "history_secret_scan": "only build-only SECRET_KEY placeholder"
+  },
+  "research": {
+   "size": "1.71GB",
+   "torch": "2.9.1+cpu",
+   "transformers": "4.44.2",
+   "model_weights_in_image": false
+  }
+ },
+ "defects_found_and_fixed_during_run": [
+  "migrate crashed creating private dirs on read-only root -> dirs only for roles with volumes",
+  "web health probe 400: Host 127.0.0.1 not in ALLOWED_HOSTS -> probe sends configured host",
+  "gunicorn 27 control socket wrote to read-only /app -> HOME=/tmp",
+  "nested artifacts/v41 dir root-owned -> chown -R",
+  "/readyz/ would 301 under SECURE_SSL_REDIRECT -> health endpoints exempt"
+ ],
+ "results": {
+  "postgres_init_migrate": "PASS: db healthy, 25 Django migrations applied on PostgreSQL 16",
+  "settings_in_container": {
+   "DEBUG": false,
+   "PERSONAL_MODE": true,
+   "TRUSTED_REVERSE_PROXY": true,
+   "PUBLIC_MARKET_DATA_ENABLED": false,
+   "SECURE_SSL_REDIRECT": true,
+   "cookies_secure": true,
+   "check_deploy": "2 warnings (HSTS include_subdomains/preload) only"
+  },
+  "https_proxy": "PASS via Caddy 'tls internal' local CA (NOT publicly trusted); plain HTTP to TLS port 400; HSTS 3600; X-Frame-Options DENY",
+  "login_and_isolation": {
+   "anon_root": "302 login",
+   "anon_feed_json": "302",
+   "owner_login": "302 /",
+   "owner_pages": {
+    "/": 200,
+    "/settings/": 200,
+    "/personal-feed.json": 200,
+    "/research-sentiment.json": 200
+   },
+   "second_user_feed_json": 404,
+   "second_user_research_json": 404
+  },
+  "static_assets": "6/6 hashed static files 200",
+  "owner_resolver": "PASS: django_orm resolved owner id 1 from PostgreSQL; feed owner_binding=1",
+  "synthetic_cache": {
+   "first_insert": "3 NEW",
+   "duplicate": "DUPLICATE",
+   "changed_content": "REVISION",
+   "same_price_quote_repeat": "not stored",
+   "journal_mode": "wal",
+   "indexes": 19
+  },
+  "single_instance": "PASS: second feed container exits 'Personal feed collector already runs' (fcntl on shared volume)",
+  "feed_health": "healthy, process_lock_held, mode NO_PROVIDER_ENABLED (no supplier business health tested)",
+  "research_real_model_synthetic_input": {
+   "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+   "model_files_hash_checked": 6,
+   "input": "4 marked synthetic Chinese article versions",
+   "jobs_done": 4,
+   "segment_scores_done": 9,
+   "failed": 0,
+   "backlog_cleared_within_s": 12,
+   "memory_after_scoring": "254MiB",
+   "network": "none (DNS lookup fails inside container)",
+   "financial_validity": "NOT TESTED; not a financial or accuracy check"
+  },
+  "scheduled_snapshot_in_fresh_test_queue": "REFUSED fail-closed: no frozen association_revisions table; no synthetic SCHEDULED snapshot created",
+  "v43_synthetic_harness_linux": "13/13 (window boundary, late scoring, revisions, holiday partial, unverified security block, missed entry, interrupted no release, idempotent re-run, late witness hidden, config isolation, partial article)",
+  "restart_persistence": "PASS: compose down/up keeps PG users=2, news versions 4, jobs DONE 4, scores 9; new worker run re-audited 0 jobs",
+  "backup_restore": "PASS: pg_dump/pg_restore + SQLite online backup (quick/integrity ok) restored into project quant-pr4-restore; login and owner feed (news_total 3, quotes 1) work",
+  "visual": "desktop 1440 and 390px of synthetic account: logged in, no horizontal overflow (headless Chrome, temporary profile)",
+  "real_supplier_connectivity": "NOT_RUN/BLOCKED: no Linux moomoo authorization, Jin10 token not used in test",
+  "real_return_labels": "NOT_RUN: none due; no prices generated"
+ },
+ "stopped_after_test": true,
+ "test_volumes_retained": true
+}

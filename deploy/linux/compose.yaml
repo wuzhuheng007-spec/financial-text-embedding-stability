@@ -1,0 +1,211 @@
+# Linux personal deployment: one owner, private pages, no public market output.
+# Run from the repository root:
+#   docker compose -f deploy/linux/compose.yaml --env-file <private .env> up -d
+# The isolated acceptance stack adds compose.test.yaml and a different
+# project name; it never mounts production volumes.
+name: ${COMPOSE_PROJECT_NAME:-quant-personal}
+
+x-db-env: &db-env
+  POSTGRES_HOST: db
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: ${POSTGRES_DB:-quant_portal}
+  POSTGRES_USER: ${POSTGRES_USER:-quant_portal}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in the private .env}
+
+x-app-env: &app-env
+  <<: *db-env
+  SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in the private .env}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS:?set ALLOWED_HOSTS in the private .env}
+  CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:?set CSRF_TRUSTED_ORIGINS in the private .env}
+  # Production values are fixed here, not taken from the shell.
+  DEBUG: "0"
+  PERSONAL_MODE: "1"
+  TRUSTED_REVERSE_PROXY: "1"
+  PUBLIC_MARKET_DATA_ENABLED: "0"
+  QUANT_OWNER_RESOLVER: django_orm
+  QUANT_FEED_CONFIG: ${QUANT_FEED_CONFIG:-configs/quant_portal_personal_feeds_linux_v1.json}
+  TZ: UTC
+
+x-worker-env: &worker-env
+  QUANT_FEED_CONFIG: ${QUANT_FEED_CONFIG:-configs/quant_portal_personal_feeds_linux_v1.json}
+  MOOMOO_TOKEN_STORE: server
+  MOOMOO_TOKEN_FILE: /app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed
+  MOOMOO_TOKEN_KEY_FILE: /run/secrets/moomoo_token_key
+  JIN10_MCP_TOKEN_FILE: /run/secrets/jin10_mcp_token
+  TZ: UTC
+
+x-hardening: &hardening
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  logging:
+    driver: local
+    options:
+      max-size: "10m"
+      max-file: "5"
+
+services:
+  db:
+    image: postgres:16-bookworm@sha256:a49f7438ba03589f9b1ca062f2da82e899b48ea1dc50d2449fa09a70be83ebca
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-quant_portal}
+      POSTGRES_USER: ${POSTGRES_USER:-quant_portal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in the private .env}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks: [backend]
+    # No "ports": PostgreSQL is reachable only on the internal backend network.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: local
+      options: {max-size: "10m", max-file: "5"}
+
+  migrate:
+    <<: *hardening
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    build: {context: ../.., dockerfile: deploy/linux/Dockerfile, target: app}
+    command: ["migrate"]
+    environment: *app-env
+    depends_on: {db: {condition: service_healthy}}
+    networks: [backend]
+    restart: "no"
+
+  web:
+    <<: *hardening
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    command: ["web"]
+    environment: *app-env
+    depends_on: {migrate: {condition: service_completed_successfully}}
+    networks: [backend, edge]
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+      - private_artifacts:/app/artifacts
+      - status_v42:/app/results/news_sentiment_factor_v42_20261117
+      - status_v45:/app/results/news_sentiment_factor_v45_20261117
+    healthcheck:
+      test: ["CMD", "python", "/app/deploy/linux/entrypoint.py", "health", "web"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    stop_grace_period: 30s
+
+  proxy:
+    image: caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?set the DNS name that points to this server}
+      CADDY_TLS: ${CADDY_TLS:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "${PROXY_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:443"
+      - "${PROXY_BIND:-0.0.0.0}:${HTTP_PORT:-80}:80"
+    networks: [edge]
+    depends_on: {web: {condition: service_healthy}}
+    restart: unless-stopped
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: local
+      options: {max-size: "10m", max-file: "5"}
+
+  feed:
+    <<: *hardening
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    command: ["feed"]
+    environment:
+      <<: [*app-env, *worker-env]
+    depends_on: {migrate: {condition: service_completed_successfully}}
+    # backend: owner lookup in PostgreSQL; egress: moomoo and Jin10 endpoints.
+    networks: [backend, egress]
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+      - private_artifacts:/app/artifacts
+    secrets: [moomoo_token_key, jin10_mcp_token]
+    healthcheck:
+      test: ["CMD", "python", "/app/deploy/linux/entrypoint.py", "health", "feed"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    stop_grace_period: 30s
+
+  research:
+    <<: *hardening
+    image: ${RESEARCH_IMAGE:-quant-personal-research:local}
+    build: {context: ../.., dockerfile: deploy/linux/Dockerfile, target: research}
+    command: ["research"]
+    environment:
+      TZ: UTC
+      OMP_NUM_THREADS: ${RESEARCH_THREADS:-2}
+    # Scoring and the daily snapshot read local SQLite only; no network at all.
+    network_mode: none
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+      - private_artifacts:/app/artifacts
+      - model_cache:/app/artifacts/news_sentiment_factor_v41_20261117/model:ro
+      - status_v42:/app/results/news_sentiment_factor_v42_20261117
+    healthcheck:
+      test: ["CMD", "python", "/app/deploy/linux/entrypoint.py", "health", "research"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 180s
+    stop_grace_period: 60s
+
+  daily-price:
+    <<: *hardening
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    command: ["daily-price"]
+    environment: *worker-env
+    networks: [egress]
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+      - private_artifacts:/app/artifacts
+      - status_v45:/app/results/news_sentiment_factor_v45_20261117
+    secrets: [moomoo_token_key]
+    healthcheck:
+      test: ["CMD", "python", "/app/deploy/linux/entrypoint.py", "health", "daily-price"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    stop_grace_period: 30s
+
+networks:
+  backend:
+    internal: true
+  edge: {}
+  egress: {}
+
+secrets:
+  moomoo_token_key:
+    file: ${MOOMOO_TOKEN_KEY_PATH:?path to a 0400 key file owned by uid 10001}
+  jin10_mcp_token:
+    file: ${JIN10_MCP_TOKEN_PATH:?path to a 0400 Jin10 token file owned by uid 10001}
+
+volumes:
+  pg_data:
+  personal_var:
+  private_artifacts:
+  status_v42:
+  status_v45:
+  caddy_data:
+  caddy_config:
+  model_cache:
+    external: true
+    name: ${MODEL_VOLUME:-quant_model_cache_v41}

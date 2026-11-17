@@ -1,0 +1,55 @@
+# Allowlist build context for deploy/linux/Dockerfile (BuildKit reads this
+# file instead of a root .dockerignore). Everything is excluded first.
+**
+
+!apps/quant_portal/manage.py
+!apps/quant_portal/requirements.lock
+!apps/quant_portal/portal/**
+!apps/quant_portal/core/**
+!apps/quant_portal/templates/**
+!apps/quant_portal/static/**
+
+!scripts/__init__.py
+!scripts/jin10_mcp/**
+!scripts/jin10_mcp_http.py
+!scripts/market_observer_v1/**
+!scripts/quant_personal_feed/**
+!scripts/news_sentiment_factor_v41/**
+!scripts/news_sentiment_factor_v42/**
+!scripts/news_sentiment_factor_v43/**
+!scripts/news_sentiment_factor_v44/**
+!scripts/news_sentiment_factor_v45/**
+
+!configs/*.json
+
+# Git-tracked redacted receipts that runtime code verifies or displays.
+!results/watchlist_live_20261115/*_redacted.json
+!results/quant_portal_personal_v16_20261116/security_profiles_redacted.json
+!results/market_observer_financial_text_v2_20261115/fact_cards_v4_redacted.json
+!results/news_sentiment_factor_v41_20261117/*_redacted.json
+!results/news_sentiment_factor_v42_20261117/*_redacted.json
+!results/news_sentiment_factor_v43_20261117/*_redacted.json
+!results/news_sentiment_factor_v44_20261117/*_redacted.json
+!results/news_sentiment_factor_v45_20261117/*_redacted.json
+
+!deploy/linux/entrypoint.py
+!deploy/linux/requirements-worker.txt
+!deploy/linux/requirements-research.txt
+
+# Re-exclude anything private or generated inside allowed trees.
+**/__pycache__
+**/*.py[cod]
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.db
+**/*.log
+**/*private*
+**/*.dpapi
+**/*.sealed
+**/*.pem
+**/*.key
+**/.env
+**/.env.*
+apps/quant_portal/var
+apps/quant_portal/backups
+apps/quant_portal/staticfiles

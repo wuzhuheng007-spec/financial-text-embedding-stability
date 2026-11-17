@@ -17,7 +17,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
-from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore
+from scripts.market_observer_v1.moomoo_webapi_oauth import token_store
 from scripts.news_sentiment_factor_v43.daily import regular_session_close, session_day
 from scripts.news_sentiment_factor_v44.labels import DB, QUEUE, digest, init as init_old, parsed_utc
 from scripts.news_sentiment_factor_v44.price_pilot import ENDPOINT, TOKEN
@@ -157,7 +157,7 @@ def _request(con: sqlite3.Connection, symbol: str, day: str | None,
     error_class = None
     token = None
     try:
-        token = LocalTokenStore(TOKEN).access_token()
+        token = token_store(TOKEN).access_token()
         req = Request(url, headers={"Authorization": "Bearer " + token, "Accept": "application/json"})
         with urlopen(req, timeout=15) as response:
             code = response.status

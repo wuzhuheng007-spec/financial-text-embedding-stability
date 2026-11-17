@@ -14,7 +14,7 @@ from pathlib import Path
 
 from scripts.jin10_mcp.engine import unwrap_mcp_payload
 from scripts.jin10_mcp_http import McpHttpError, McpProtocolError, McpSession
-from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore
+from scripts.market_observer_v1.moomoo_webapi_oauth import token_store
 from scripts.market_observer_v1.moomoo_ws import MoomooWebSocketPush, PROVIDER_NAME, WS_URL, validate_live_config
 from scripts.market_observer_v1.service import AuthorizationError, QuotaError
 
@@ -34,13 +34,11 @@ def under_root(relative: str) -> Path:
 
 
 def owner_id(config: dict) -> int:
-    db = under_root(config["portal_db"])
-    with closing(sqlite3.connect(f"file:{db.as_posix()}?mode=ro", uri=True)) as connection:
-        rows = connection.execute("SELECT id FROM auth_user WHERE username=?",
-                                  (config["owner_username"],)).fetchall()
-    if len(rows) != 1:
-        raise ValueError("Expected one existing personal owner account; registration is not changed")
-    return int(rows[0][0])
+    # Windows keeps the original read-only SQLite lookup; Linux containers set
+    # QUANT_OWNER_RESOLVER=django_orm so the PostgreSQL account table is read
+    # through Django rather than by a raw auth_user query.
+    from .owner import resolve_owner_id
+    return resolve_owner_id(config)
 
 
 def verified_current_symbols(config: dict) -> dict[str, str]:
@@ -116,7 +114,7 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
             for row in live["subscriptions"]:
                 store.symbol_state(user_id,row["requested_symbol"],"CONNECTING")
             adapter = MoomooWebSocketPush(
-                live=live, token_store=LocalTokenStore(TOKEN_FILE),
+                live=live, token_store=token_store(TOKEN_FILE),
                 status_path=under_root(config["moomoo"]["status_path"]))
             try:
                 store.state("moomoo","CONNECTING")
