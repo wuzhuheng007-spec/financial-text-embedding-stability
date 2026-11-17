@@ -1,0 +1,119 @@
+{
+  "schema": "personal_news_v18_1_preflight_redacted_1",
+  "checked_at_utc": "2026-11-17T00:17:33.290010Z",
+  "rows": [
+    {
+      "task_id": "V18-01-E01",
+      "input_tokens": 421,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 16.875
+    },
+    {
+      "task_id": "V18-01-E02",
+      "input_tokens": 430,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.327999999979511
+    },
+    {
+      "task_id": "V18-01-E03",
+      "input_tokens": 415,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.328000000037719
+    },
+    {
+      "task_id": "V18-02-E01",
+      "input_tokens": 597,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.671999999962281
+    },
+    {
+      "task_id": "V18-03-E01",
+      "input_tokens": 434,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.437000000034459
+    },
+    {
+      "task_id": "V18-04-E01",
+      "input_tokens": 553,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.25
+    },
+    {
+      "task_id": "V18-05-E01",
+      "input_tokens": 410,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.296999999962281
+    },
+    {
+      "task_id": "V18-05-E02",
+      "input_tokens": 410,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.297000000020489
+    },
+    {
+      "task_id": "V18-05-E03",
+      "input_tokens": 418,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.327999999979511
+    },
+    {
+      "task_id": "V18-06-E01",
+      "input_tokens": 622,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.5
+    },
+    {
+      "task_id": "V18-07-E01",
+      "input_tokens": 756,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.625
+    },
+    {
+      "task_id": "V18-08-E01",
+      "input_tokens": 429,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 12.062000000034459
+    },
+    {
+      "task_id": "V18-08-E02",
+      "input_tokens": 440,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 8.905999999959022
+    },
+    {
+      "task_id": "V18-08-E03",
+      "input_tokens": 449,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 12.594000000040978
+    },
+    {
+      "task_id": "V18-09-E01",
+      "input_tokens": 647,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.905999999959022
+    },
+    {
+      "task_id": "V18-10-E01",
+      "input_tokens": 688,
+      "within_budget": true,
+      "error": null,
+      "elapsed_seconds": 11.53200000000652
+    }
+  ],
+  "all_ready": true
+}

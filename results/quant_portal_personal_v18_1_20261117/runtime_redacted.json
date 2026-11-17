@@ -1,0 +1,38 @@
+{
+  "schema": "personal_news_v18_1_runtime_redacted_1",
+  "checked_at_utc": "2026-11-17T00:31:53.051729+00:00",
+  "portal_process": "RUNNING",
+  "feed_process": "RUNNING",
+  "portal_http": 200,
+  "providers": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "last_error_class": null,
+      "heartbeat_at": "2026-11-17T00:31:48.331783Z",
+      "last_success_at": "2026-11-17T00:31:23.219179Z",
+      "worker_alive": 1,
+      "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "last_error_class": null,
+      "heartbeat_at": "2026-11-17T00:31:52.854013Z",
+      "last_success_at": "2026-11-17T00:31:52.854013Z",
+      "worker_alive": 1,
+      "coverage_gap": null
+    },
+    {
+      "provider": "moomoo_snapshot",
+      "state": "CONNECTED",
+      "last_error_class": null,
+      "heartbeat_at": "2026-11-17T00:31:16.504568Z",
+      "last_success_at": "2026-11-17T00:31:16.504568Z",
+      "worker_alive": 1,
+      "coverage_gap": null
+    }
+  ],
+  "old_analysis_pause_marker_present": true,
+  "note": "One-time check; a provider heartbeat does not prove source claim truth or gap-free collection."
+}

@@ -1,0 +1,28 @@
+# Personal news v1.8.1: source actor and field-evidence repair
+
+Run date: 17 November 2026 (Asia/Shanghai). This retest reused all 16 v1.8 event segments in their frozen order. They were already-seen development material, not an independent test. The source is supplier-reported Jin10 text; review checks fidelity to that text, not whether the reported events are independently true. No new news or model was downloaded, and no training, return, IC or trading calculation ran.
+
+The [configuration](../configs/quant_portal_personal_v18_1_20261117.json), [pre-run hashes](../results/quant_portal_personal_v18_1_20261117/run_freeze_redacted.json), [token preflight](../results/quant_portal_personal_v18_1_20261117/preflight_redacted.json), [redacted run](../results/quant_portal_personal_v18_1_20261117/run_redacted.json), [same-team field review](../results/quant_portal_personal_v18_1_20261117/review_summary_redacted.json), [paired development receipt](../results/quant_portal_personal_v18_1_20261117/comparison_redacted.json) and [plan–actual ledger](../results/quant_portal_personal_v18_1_20261117/plan_execution.csv) support the counts. Raw source, responses and full review reasons remain local and private.
+
+| Phase | Actual | Status |
+| --- | --- | --- |
+| P0 | Froze the same 16 READY events and input/code/config hashes without replacing difficult items. | Done |
+| P1 | A source actor can be any exact phrase in the cited sentence; deterministic watchlist matches remain mentions, not inferred subjects or impacts. Each asserted field has its own sentence ID. | Implemented |
+| P2 | Nine focused synthetic tests and 16/16 tokenizer checks passed; maximum complete prompt was 756/3072 tokens. | Done |
+| P3 | The pinned Qwen2.5-3B, seed 1729 and 384-token generation cap produced 16/16 responses with no retry. The 7B candidate and conditional interpretation made zero calls. | Done |
+| P4 | All 16 received same-team source review; zero complete mechanical passes and zero complete content accepts. | Content gate failed |
+| P5 | Bilingual reports and redacted handoff prepared; sync/package outcome recorded separately. | Handoff |
+
+On these same inputs, the prior v1.8 saved 15 responses, 11 strict raw JSON objects and zero full mechanical passes; v1.8.1 saved 16 responses, 16 strict raw JSON objects and again zero full mechanical passes. The prompt and schema changed together, so the format difference cannot be attributed to one sentence or generalized. The new actor field is not directly equivalent to the old alias-only entity field. Same-team review found 14/16 actor phrases supported by their cited sentences, two composite or misbound actors, and nine omitted explicit speaker or reporting attributions. Claim-status, category, tone and uncertainty errors remain; no output qualified for display or prospective sentiment.
+
+The most frequent multi-label mechanical errors were UNCERTAINTY_UNEXPECTED_EVIDENCE (15) and CATEGORY_UNEXPECTED_EVIDENCE (11). The model repeatedly put the string UNKNOWN into an evidence field for an UNKNOWN label, whereas the frozen contract requires null. Raw responses were not repaired. There were five invalid tone evidence IDs, three extra claim-kind evidence values, two actor phrases absent from their cited sentences and one invalid category evidence ID. All 16 generations stopped with EOS; total generation was 2,130 tokens, cumulative elapsed time 499.592 seconds, median 30.93 seconds and observed maximum CUDA allocation 6,417,555,456 bytes. These are this machine's run receipts, not capacity or accuracy estimates.
+
+Examples retained privately include a composite actor absent from its cited sentence (V18-04-E01), an attributed allegation with a missed uncertainty cue (V18-06-E01), and a future index forecast labeled as a general report (V18-10-E01). Locating a phrase or sentence is not semantic support or independent supplier-claim verification.
+
+No new extraction was promoted to the owner page or qualified prospective tone layer. The one separately corrected v1.8 machine translation remains as it was; the old v16.4 continuous interpretation queue remains paused. Provider collection and the loopback portal are separate from this bounded local inference. The next proposed revision is to construct null evidence for UNKNOWN fields deterministically while retaining source IDs for asserted fields, then test attribution and claim status on newly frozen development material. It has not yet run. Financial input v2.5 remains REJECTED_CANDIDATE.
+
+The [delivery-time runtime receipt](../results/quant_portal_personal_v18_1_20261117/runtime_redacted.json) shows the loopback portal and collection process running, with Jin10, moomoo push and snapshot workers connected at that instant. It does not erase the earlier possible Jin10 page-overlap gap or prove long-run stability.
+
+The [postrun local model-file hashes](../results/quant_portal_personal_v18_1_20261117/model_files_postrun_redacted.json) cover two weight shards, the index, config and tokenizer. Config and tokenizer were checked before every generation; full weight-shard hashes were computed only after the run. This receipt cannot establish that no file changed mid-run or independently authenticate the local weights against the remote source.
+
+Publication review found source-derived wording in a synthetic test fixture. The [postfreeze correction receipt](../results/quant_portal_personal_v18_1_20261117/postfreeze_fixture_sanitization_redacted.json) records its replacement with wholly fictitious wording and a fresh nine-test pass. The frozen hash of the original test remains recorded; inference code, configuration, inputs and saved model responses were unchanged.

@@ -1,0 +1,23 @@
+{
+  "schema": "personal_news_v18_1_bounded_retest_1",
+  "purpose": "Same-model engineering-combination retest on the same 16 previously seen development event inputs",
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "prompt_version": "personal_news_v18_1_actor_span_1",
+  "schema_version": "personal_news_v18_1_schema_1",
+  "task_order": "all READY events in frozen v1.8 news order and event order",
+  "max_generation_calls": 16,
+  "max_input_tokens": 3072,
+  "max_new_tokens": 384,
+  "model_load_timeout_seconds": 300,
+  "generation_timeout_seconds": 180,
+  "tokenizer_timeout_seconds": 90,
+  "batch_size": 1,
+  "do_sample": false,
+  "num_beams": 1,
+  "seed": 1729,
+  "retries": 0,
+  "candidate_model_calls": 0,
+  "old_automatic_interpretation": "PAUSED",
+  "publish_model_result": false
+}

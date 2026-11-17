@@ -1,0 +1,280 @@
+{
+  "schema": "personal_news_v18_1_review_redacted_1",
+  "reviewed_at_utc": "2026-11-17T00:27:36.019256+00:00",
+  "private_review_sha256": "d4f8717fce3b87f96f5d0fd913ba8798259d5f071e95d0c3bcd0579f03e69efc",
+  "reviewer": "CODEX_REVIEW_DEVELOPMENT",
+  "reviewed_tasks": 16,
+  "content_accepted": 0,
+  "source_truth_status": "UNVERIFIED_SUPPLIER_REPORT",
+  "field_counts": {
+    "actor": {
+      "SUPPORTED": 14,
+      "WRONG": 2
+    },
+    "attribution": {
+      "MISSING": 9,
+      "UNKNOWN_ACCEPTABLE": 5,
+      "SUPPORTED": 2
+    },
+    "claim_kind": {
+      "SUPPORTED": 10,
+      "WRONG": 2,
+      "UNRESOLVED": 1,
+      "MISSING": 3
+    },
+    "category": {
+      "UNKNOWN_ACCEPTABLE": 8,
+      "MISSING": 4,
+      "WRONG": 4
+    },
+    "tone": {
+      "SUPPORTED": 8,
+      "WRONG": 5,
+      "UNRESOLVED": 3
+    },
+    "uncertainty": {
+      "UNKNOWN_ACCEPTABLE": 13,
+      "MISSING": 2,
+      "UNRESOLVED": 1
+    }
+  },
+  "mechanical_error_labels": {
+    "CATEGORY_UNEXPECTED_EVIDENCE": 11,
+    "TONE_BAD_EVIDENCE_ID": 5,
+    "UNCERTAINTY_UNEXPECTED_EVIDENCE": 15,
+    "ACTOR_TEXT_NOT_IN_EVIDENCE": 2,
+    "CLAIM_KIND_UNEXPECTED_EVIDENCE": 3,
+    "CATEGORY_BAD_EVIDENCE_ID": 1
+  },
+  "rows": [
+    {
+      "task_id": "V18-01-E01",
+      "raw_sha256": "aab811119295b95526ef4653eacbdaa533543c3e7bb6b98ecd6fe894c0cf1ed8",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-01-E02",
+      "raw_sha256": "14b3fb373c1b80cdaa303a5b4b39a4f1eb4eadd1cacaf65a411b7e572be87462",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-01-E03",
+      "raw_sha256": "030aade069ffabd54e19681213ade674e0e85f35a4c4363f0a583f46d4e7ed16",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "WRONG",
+        "category": "MISSING",
+        "tone": "WRONG",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-02-E01",
+      "raw_sha256": "f2a1c5dbf3408e7dd023802dec653f8db3b64527b615789cf0e11a45d67b7574",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "UNRESOLVED",
+        "category": "WRONG",
+        "tone": "WRONG",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-03-E01",
+      "raw_sha256": "632ca5c8a25a287b299c6d0c5d628e35d5d332fa688fc1ac4c6e778a7bc72475",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "MISSING",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-04-E01",
+      "raw_sha256": "17d8f5cd928460ad2526e35757c78c0175d79b9d94403093bdbcbf8f955b74ba",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "WRONG",
+        "attribution": "UNKNOWN_ACCEPTABLE",
+        "claim_kind": "SUPPORTED",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "UNRESOLVED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-05-E01",
+      "raw_sha256": "e16144b982cd3a48413dfdbf406f7726c1c4c48b52e75c80218d40a5d422445d",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "UNKNOWN_ACCEPTABLE",
+        "claim_kind": "MISSING",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-05-E02",
+      "raw_sha256": "535f67f9b7991d18b416936450525c4289c2cc700c206e651a6570060f2cf463",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "UNKNOWN_ACCEPTABLE",
+        "claim_kind": "MISSING",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-05-E03",
+      "raw_sha256": "0293b0126ba77a589a6ae169578a2452b3c15d9ff106b13875511c16b1092687",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "UNKNOWN_ACCEPTABLE",
+        "claim_kind": "MISSING",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-06-E01",
+      "raw_sha256": "922486cee534a1d558495f4bc9a9ff88d709d809954f1162e144dca9e2404a7e",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "SUPPORTED",
+        "claim_kind": "SUPPORTED",
+        "category": "WRONG",
+        "tone": "SUPPORTED",
+        "uncertainty": "MISSING"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-07-E01",
+      "raw_sha256": "d35a929f7f271ed1f62581b837a26d06eb30779dda18c45dd3c75ba1f12b71e8",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "WRONG",
+        "tone": "WRONG",
+        "uncertainty": "UNRESOLVED"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-08-E01",
+      "raw_sha256": "c5762829c5788724e9b6abec1abb6c1a8909feea45ff9bcc9f27d404bbc89f72",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "UNRESOLVED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-08-E02",
+      "raw_sha256": "9080a08cce8ba392af2be03fbb208e277e482ecffa0ac645cd98107d7c35d0b0",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "SUPPORTED",
+        "claim_kind": "SUPPORTED",
+        "category": "UNKNOWN_ACCEPTABLE",
+        "tone": "UNRESOLVED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-08-E03",
+      "raw_sha256": "b73f00b3958f4e2d77336daf731263b87c7755308bee42f74a4224665ec4a612",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "UNKNOWN_ACCEPTABLE",
+        "claim_kind": "SUPPORTED",
+        "category": "MISSING",
+        "tone": "SUPPORTED",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-09-E01",
+      "raw_sha256": "7f14b3f225467453216692d4462eb1263b693974e8d5aa15b952ad0d46b039ce",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "WRONG",
+        "attribution": "MISSING",
+        "claim_kind": "SUPPORTED",
+        "category": "MISSING",
+        "tone": "WRONG",
+        "uncertainty": "UNKNOWN_ACCEPTABLE"
+      },
+      "content_accepted": false
+    },
+    {
+      "task_id": "V18-10-E01",
+      "raw_sha256": "bf84c32c868650e029530d64d8ed4c9b0c30125a9275b0b5b2244f7b746bd962",
+      "mechanical_valid": false,
+      "field_review": {
+        "actor": "SUPPORTED",
+        "attribution": "MISSING",
+        "claim_kind": "WRONG",
+        "category": "WRONG",
+        "tone": "WRONG",
+        "uncertainty": "MISSING"
+      },
+      "content_accepted": false
+    }
+  ],
+  "limitations": [
+    "All items were already-seen development material.",
+    "No mechanically valid complete extraction; no owner display or qualified prospective tone promotion.",
+    "Source-local review does not authenticate the underlying supplier report."
+  ]
+}

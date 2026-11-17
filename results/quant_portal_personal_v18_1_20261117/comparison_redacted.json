@@ -1,0 +1,41 @@
+{
+  "schema": "personal_news_v18_1_comparison_redacted_1",
+  "generated_at_utc": "2026-11-17T00:27:52.473094+00:00",
+  "basis": "same 16 previously seen event inputs; model revision and generation budget fixed; prompt and schema jointly revised; no independent test",
+  "old_v18": {
+    "planned": 16,
+    "attempted": 16,
+    "response_saved": 15,
+    "raw_json": 11,
+    "mechanical_valid": 0,
+    "abstained": 0
+  },
+  "new_v18_1": {
+    "planned": 16,
+    "attempted": 16,
+    "response_saved": 16,
+    "strict_raw_json": 16,
+    "fence_adapted": 0,
+    "mechanical_valid": 0,
+    "abstained": 0
+  },
+  "new_semantic_review": {
+    "reviewed": 16,
+    "content_accepted": 0,
+    "actor_exact_source_supported": 14,
+    "attribution_missing": 9,
+    "claim_wrong_or_missing": 5
+  },
+  "new_generation": {
+    "elapsed_seconds_total": 499.592,
+    "elapsed_seconds_median": 30.93,
+    "generated_tokens_total": 2130,
+    "peak_cuda_bytes_max": 6417555456,
+    "stop_reasons": {
+      "EOS_TOKEN": 16
+    }
+  },
+  "interpretation_calls": 0,
+  "prospective_qualified_rows_added": 0,
+  "interpretation": "Raw JSON format improved on the reused batch, but full mechanical and source-semantic acceptance remained zero; changed prompt/schema cannot be isolated causally."
+}

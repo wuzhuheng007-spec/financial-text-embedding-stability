@@ -1,0 +1,14 @@
+{
+  "schema": "personal_news_v18_1_postfreeze_fixture_sanitization_1",
+  "recorded_at_utc": "2026-11-17T00:32:38.715198+00:00",
+  "changed_after_generation": [
+    "tests/test_quant_personal_v18_1_contract.py"
+  ],
+  "frozen_test_sha256": "1ecb389814a0b910975d7ccfb3018bb721acb5fb223552c9c39fdeece7faf1ec",
+  "current_test_sha256": "f4923ec0ced73127b214d0129854ceb91cb8ae93f180fa62f762f0a22a30afc6",
+  "inference_code_config_hashes_unchanged": true,
+  "frozen_input_hash_unchanged": true,
+  "reason": "Replace a source-derived synthetic test fixture with wholly fictitious wording before public sharing; the test module was not imported by inference.",
+  "sanitized_test_result": "9_OF_9_PASS",
+  "effect_on_saved_model_responses": "NONE"
+}
