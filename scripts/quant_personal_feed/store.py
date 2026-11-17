@@ -97,6 +97,8 @@ class PersonalFeedStore:
             source_channel TEXT NOT NULL, raw_sha256 TEXT NOT NULL);
           CREATE INDEX IF NOT EXISTS session_quotes_latest ON session_quotes
             (owner_id,symbol,session,source_at DESC,received_at DESC,id DESC);
+          CREATE INDEX IF NOT EXISTS session_quotes_last_written ON session_quotes
+            (owner_id,symbol,session,source_channel,id DESC);
           CREATE INDEX IF NOT EXISTS session_quotes_source_range ON session_quotes
             (owner_id,symbol,source_at);
           CREATE TABLE IF NOT EXISTS session_capabilities (
