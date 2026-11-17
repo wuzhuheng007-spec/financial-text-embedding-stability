@@ -1,0 +1,126 @@
+{
+  "schema": "personal_cloud_pr4_execution_receipt_1",
+  "checked_at_utc": "2026-11-17T21:43:47.733522+00:00",
+  "checked_at_asia_shanghai": "2026-11-18T05:43:47.733522+08:00",
+  "code_head": "550691858f0fbc69aba97306166b7e5f6e55f62b",
+  "snapshot_0517": {
+    "receipt_sha256": "d9b3627e1651998aa0dae86b6a08618dbba3717632aafdbffde7177b19b51c76",
+    "backup_sha256": "d9b3627e1651998aa0dae86b6a08618dbba3717632aafdbffde7177b19b51c76",
+    "backup_matches": true,
+    "snapshot_batches": 1,
+    "kind": "ON_TIME_SCHEDULED",
+    "scheduled_cutoff_utc": "2026-11-17T21:15:00+00:00",
+    "generation_started_at_utc": "2026-11-17T21:15:05.168054+00:00",
+    "completion": [
+      {
+        "snapshot_id": "fa8cb76334c94f7560aab543c99cf9f9",
+        "completion_recorded_at_utc": "2026-11-17T21:15:05.264736+00:00",
+        "data_manifest_sha256": "1e71e8e5ef429efe872632304680ab5343cb561def45d5ee3fae1a4ab143565d"
+      }
+    ],
+    "release": [
+      {
+        "snapshot_id": "fa8cb76334c94f7560aab543c99cf9f9",
+        "release_started_at_utc": "2026-11-17T21:15:05.265738+00:00",
+        "signal_available_at_utc": "2026-11-17T21:16:05.265738+00:00",
+        "release_rule": "POST_COMMIT_PLUS_60S"
+      }
+    ],
+    "company_rows": 15,
+    "n1_nonmissing_entities": [
+      "AMZN",
+      "NVDA",
+      "SAMSUNG_ELECTRONICS",
+      "SKHYNIX"
+    ],
+    "member_rows": 11,
+    "article_versions": 10,
+    "event_groups": 11,
+    "label_queue_count_at_0517": 30,
+    "coverage": {
+      "cache_ingest_gap": "UNKNOWN",
+      "coverage": "GAP_POSSIBLE",
+      "cross_source_deduplication": "UNVERIFIED",
+      "excluded_version_counts": {
+        "CACHE_REPLAY_NOT_FORWARD": 230
+      },
+      "initial_window": "PARTIAL_INITIAL_WINDOW",
+      "last_success_at_utc": "2026-11-17T20:44:12.686801Z",
+      "n2_scope": "OBSERVED_SOURCE_SCOPED_ALGORITHMIC_GROUPS",
+      "page_cursor_continuity": "POSSIBLE_GAP_NO_PAGE_OVERLAP",
+      "rate_limited": "NO_RECENT_FLAG",
+      "restart_gap": "UNKNOWN",
+      "scope": "latest_page_polling_with_local_relevance_filter",
+      "scoring_backlog": 0,
+      "source": "jin10_personal_cache"
+    }
+  },
+  "private_backups": {
+    "count": 6,
+    "all_quick_check_ok": true,
+    "roles": [
+      "portal",
+      "feed",
+      "analysis",
+      "scores",
+      "queue",
+      "labels"
+    ]
+  },
+  "feed": {
+    "news_versions": 392,
+    "provider_states": [
+      {
+        "provider": "jin10",
+        "state": "CONNECTED",
+        "heartbeat_at": "2026-11-17T21:41:58.140728Z",
+        "last_success_at": "2026-11-17T21:41:17.713393Z",
+        "last_push_at": null,
+        "worker_alive": 0,
+        "business_attempts_today": 620,
+        "business_calls_today": 618,
+        "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
+      },
+      {
+        "provider": "moomoo",
+        "state": "CONNECTED_DELAY_UNKNOWN",
+        "heartbeat_at": "2026-11-17T21:43:47.627762Z",
+        "last_success_at": "2026-11-17T21:43:47.627762Z",
+        "last_push_at": "2026-11-17T21:43:47.531558Z",
+        "worker_alive": 1,
+        "business_attempts_today": 0,
+        "business_calls_today": 0,
+        "coverage_gap": null
+      },
+      {
+        "provider": "moomoo_snapshot",
+        "state": "SECURITY_POLICY_BLOCKED",
+        "heartbeat_at": "2026-11-17T21:36:34.935312Z",
+        "last_success_at": "2026-11-17T21:33:47.449087Z",
+        "last_push_at": null,
+        "worker_alive": 0,
+        "business_attempts_today": 503,
+        "business_calls_today": 500,
+        "coverage_gap": null
+      }
+    ]
+  },
+  "binding_audit": {
+    "jin10_scored_article_versions": 241,
+    "exact_score_source_hash_matches": 241,
+    "reviewed_translations": 1,
+    "exact_translation_source_hash_matches": 1,
+    "reviewed_analysis_cards": 2,
+    "exact_analysis_source_hash_matches": 2
+  },
+  "label_queue_status_now": {
+    "BLOCKED_SECURITY_MAPPING": 4,
+    "WAIT_ENTRY": 26
+  },
+  "limitations": [
+    "Jin10 page cursor overlap remains unproven",
+    "source claims are not independently verified",
+    "old rejected model analyses remain rejected",
+    "no cloud container run"
+  ]
+}

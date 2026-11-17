@@ -1,0 +1,25 @@
+# PR #4 personal portal execution and migration review
+
+Executed on 2026-11-18, 05:28–05:51 Asia/Shanghai. The existing collaboration branch started at `64f16d3c5acf44960903785ea2f4347ddd1f879b`; PR #4 started at `9a244bf7640307c574d4ef3e3e90b2cf5fabcd37`. Changes were developed in an isolated worktree and then applied to the existing local branch without resetting unrelated files.
+
+The 05:17 read-only first-snapshot receipt was backed up before changes. Original and backup SHA-256 both equal `d9b3627e1651998aa0dae86b6a08618dbba3717632aafdbffde7177b19b51c76`. The scheduled cutoff was 05:15 Shanghai time; actual generation began at 05:15:05, and the release witness records **05:16:05.265738** as signal availability. One `ON_TIME_SCHEDULED` batch contains 15 company rows, four nonmissing N1 entities (AMZN, NVDA, Samsung Electronics, SK hynix), 11 company-event membership rows and ten article versions. The initial window remains partial; Jin10 page continuity remains uncertain. The 30 label-queue rows are not mature return labels. See the [redacted source receipt](../results/personal_cloud_pr4_20261118/runtime_redacted.json).
+
+Six affected private SQLite databases were backed up online and passed `quick_check`; the translation cache was separately backed up before one append-only correction. The original owner account, six watchlist records, one preference record and 14 historical fact cards remain present.
+
+| Phase | Planned | Actual | Status |
+|---|---|---|---|
+| P0 | Read PR, receipt and protect data | Completed receipt readback and seven private backups | Done |
+| P1 | Apply in worktree and check owner browser | PR and follow-up fixes applied; Chinese/English desktop and 390px owner session checked; no page-wide overflow; untranslated reports remain explicitly pending | Mostly done |
+| P2 | Restore Jin10 and keep moomoo | Real Jin10 successes and cache additions observed; SQLite locks recurred, so sustained stability is unproven; moomoo push continued; HTTP 439 REST endpoint is paused | Partial |
+| P3 | Bind scores to exact news versions and continue reviewed content | At UTC 21:43:47, 241 scored Jin10 versions matched exact source hashes. Two older reviewed analysis cards and one reviewed translation matched current versions. One more machine translation was source-reviewed and corrected; no new model generations or trusted automatic analyses | Partial |
+| P4 | Finish Linux adaptation and container integration | `fcntl` worker lock added and tested; compose syntax passed. Docker engine timed out; image context, PostgreSQL owner resolution, Linux OAuth secret storage and independent service workers remain incomplete | Blocked |
+| P5 | Validate cloud purchase and deployment | No server purchased or deployed; only a conditional Alibaba Cloud public base price was checked | Not run |
+| P6 | Deliver redacted results and update PR | Code, reports, checks and redacted receipts prepared for selective PR push and remote readback | Finalizing |
+
+The [plan–actual ledger](../results/personal_cloud_pr4_20261118/plan_execution.csv) and [software checks](../results/personal_cloud_pr4_20261118/software_checks.txt) retain separate denominators: 20 Python tests, ten research-worker tests, two JavaScript syntax checks, and a diff check. These do not establish source truth, complete Jin10 coverage, or Linux runtime success.
+
+At the approximately 05:50 Shanghai status readback, the local portal returned 200 for `/readyz/` and CSS. Jin10's last business success was UTC 21:46:23 but its thread was in finite lock backoff at that instant; moomoo push last advanced at UTC 21:50:12 for the six cached symbols. The blocked REST snapshot remained disabled. Research and daily price workers were alive, with zero new qualified return labels. This is a point-in-time observation, not a full-day stability result.
+
+The additional translation remains labeled `CODEX_REVIEW` of a Jin10 supplier report. The prior machine output omitted a disclosed 40-unit limit; the correction passed a 9/9 numeric sequence check and exact news-version hash check. Neither this review nor the two older cards independently verifies the underlying report. Old rejected analyses remain rejected. The [redacted review receipt](../results/personal_cloud_pr4_20261118/translation_review_redacted.json) contains no article text.
+
+The [cloud purchase gate](../docs/deployment/quant_portal/cloud_purchase_gate.zh.md) records the remaining work. Alibaba Cloud's [international public pricing](https://www.alibabacloud.com/en/product/swas/pricing) lists a Singapore Linux 2-vCPU/8-GB/160-GB base package at USD 35 per month. Its [server creation guidance](https://www.alibabacloud.com/help/en/simple-application-server/user-guide/create-a-server) says region availability and checkout price are definitive. The actual all-in total, account site, provider server-use entitlements and container integration are unknown. No payment or cloud deployment occurred.

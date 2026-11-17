@@ -1,0 +1,18 @@
+{
+  "schema": "personal_cloud_pr4_translation_review_redacted_1",
+  "reviewed_at_utc_date": "2026-11-17",
+  "reviewer": "CODEX_REVIEW",
+  "existing_reviewed_translations_before": 1,
+  "new_corrected_machine_translations": 1,
+  "reviewed_translations_after": 2,
+  "new_model_generations": 0,
+  "source_version_hash_matched": true,
+  "old_machine_attempt_preserved": true,
+  "old_rejection_preserved": true,
+  "correction_reason": "The earlier machine translation omitted a disclosed 40-unit limit and altered the supplier name.",
+  "number_sequence_check": "PASS_9_OF_9",
+  "owner_cache_readback": "MACHINE_TRANSLATION_CODEX_CORRECTED",
+  "supplier_claim_status": "UNVERIFIED",
+  "independent_fact_check": "NOT_RUN",
+  "private_evidence": "artifacts/personal_cloud_pr4_20261118/translation_v18_04_pr4_private.json"
+}
