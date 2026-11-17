@@ -1,0 +1,8 @@
+{
+  "schema": "v42_metadata_correction_redacted_1",
+  "corrected_jobs": 5,
+  "recovery_delayed_jobs": 1,
+  "private_sha256": "015ebe90a435e8280f95c8a9670c54e2b751bb7e0eca66aa6f90cf60b9bd5f80",
+  "source_score_rows_changed": 0,
+  "v41_receipts_changed": 0
+}

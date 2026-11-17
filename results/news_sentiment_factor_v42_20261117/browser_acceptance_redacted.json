@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_v42_browser_acceptance_1",
+  "site": "http://127.0.0.1:8765/",
+  "login_state": "EXISTING_OWNER_SESSION",
+  "desktop_chinese": "OBSERVED",
+  "desktop_english": "OBSERVED",
+  "prior_worker_label": "EXPLICITLY_RETIRED_V41",
+  "current_worker_label": "V42_RUNNING_WITH_HEARTBEAT_BACKLOG_DAILY_ATTEMPTS",
+  "company_candidate_and_source_gap": "VISIBLE",
+  "snapshot_replay_warning": "VISIBLE",
+  "compact_layout": "OBSERVED_AT_APPROX_350_CSS_PX_EQUIVALENT_BY_250_PERCENT_ZOOM_IN_875_PX_BROWSER_WINDOW",
+  "exact_390px_viewport_measurement": "OBSERVED_EDGE_DEVTOOLS_RESPONSIVE_390_X_700_CSS_PX_CHINESE_AND_ENGLISH",
+  "horizontal_page_overflow_at_compact_view": "NOT_OBSERVED_VISUALLY_AT_390_CSS_PX",
+  "original_language_restored": "CHINESE",
+  "browser_automation": "EXISTING_LOCAL_EDGE_WINDOW",
+  "private_screenshots_uploaded": false
+}

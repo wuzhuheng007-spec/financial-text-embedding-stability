@@ -1,3 +1,9 @@
+# 2026-11-17 — Chinese news research worker v4.2 recovery and snapshots
+
+Preserved v4.1 scores and source news. Added a durable recovery queue, atomic single-worker lock, dated status, source-grounded Broadcom association revision, and append-only company snapshot storage. At 15:52:38 Asia/Shanghai, 7 newly received article versions had been scored, including 2 delayed recovery jobs. A 40-segment same-team development review moved exact association sets from 32 to 38, with 3 missed links remaining. Three snapshots are development replays, including a retained rejected diagnostic version; no actual NY 16:15 prospective snapshot or return fit was created. The 15-minute local observation and bounded fault drills are documented separately. [中文报告](../../reports/2026-11-17_news_sentiment_factor_v42.zh.md), [English report](../../reports/2026-11-17_news_sentiment_factor_v42.en.md), [plan–actual](../../results/news_sentiment_factor_v42_20261117/plan_execution.csv).
+
+---
+
 # 2026-11-17 — WRDS RavenPack logged-in entitlement follow-up
 
 The Dow Jones and PR Equities query form denied submission and listed `ravenpack_dj` as the required product. No data query, English article or real score was added. The original v4 receipts remain unchanged; other RavenPack editions were not tested. [English addendum](../../reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.en.md), [中文](../../reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.zh.md), [receipt](../../results/news_sentiment_factor_v4_wrds_followup_20261117/access_receipt_redacted.json).

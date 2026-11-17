@@ -1,0 +1,11 @@
+{
+  "schema": "news_sentiment_factor_v42_snapshot_rule_revision_2",
+  "rule_version": "source_article_revision_one_per_cutoff_v42_2",
+  "supersedes": "source_article_revision_one_per_cutoff_v42_1",
+  "reason": "The first development replay selected the latest version only among company-linked segments; a revised article with no explicit company could leave its older company-linked version in the snapshot.",
+  "first_replay_snapshot_retained": "b5708814645ae3b9d2ddb27398a4b38f",
+  "first_replay_status": "REJECTED_DIAGNOSTIC_NOT_PROSPECTIVE",
+  "selection": "Among all scored versions available by as_of, choose the latest version for each source/article ID before company-link filtering; then group available article contributions within provider.",
+  "company_scope": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AMD", "AVGO", "INTC", "CRWV", "MU", "SNDK", "SKHYNIX", "SAMSUNG_ELECTRONICS"],
+  "do_not_rewrite_old_snapshot": true
+}

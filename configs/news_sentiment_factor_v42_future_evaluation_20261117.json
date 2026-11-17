@@ -1,0 +1,29 @@
+{
+  "schema": "news_sentiment_factor_v42_future_evaluation_protocol_1",
+  "status": "FROZEN_PROTOCOL_NO_RETURN_EVALUATION_THIS_RUN",
+  "observation_scope": "Owner-authorized Jin10 personal latest-page polling and existing moomoo news cache, with actual provider continuity and gaps recorded per source",
+  "coverage_states": {
+    "NO_OBSERVED_NEWS": "No article was observed within the defined collection scope while continuity was verified",
+    "COLLECTION_GAP": "Provider polling, cursor, cache ingestion, or restart continuity is unproven; event count is incomplete",
+    "NEUTRAL_TEXT": "A scored event exists and its text classification is neutral; it is not absence of news",
+    "UNRESOLVED_ASSOCIATION": "An article exists but a direct company link is not established"
+  },
+  "company_snapshot": {
+    "time_zone": "America/New_York",
+    "cutoff_local": "16:15:00",
+    "N1": "Equal mean of directly linked source-article text tones within algorithmic event groups, then equal mean of group tones",
+    "N2": "Observed source-scoped distinct company event groups; complete count remains null unless source continuity is verified",
+    "availability": "max(actual score completion, actual snapshot generation); never earlier than received_at",
+    "article_revisions": "Most recent version received and scored by cutoff; prior versions preserved but contribute at most once",
+    "cross_provider_similarity": "No verified merger in v4.2; provider groups remain separate"
+  },
+  "future_labels": {
+    "main_horizon_trading_sessions": 1,
+    "secondary_horizon_trading_sessions": 5,
+    "initial_status": "PENDING",
+    "unqualified_price_status": "MISSING",
+    "target_label_rule": "Use the already frozen v4.1 entry/exit and company-action protocol only after prices and horizons mature; this version does not read or create labels",
+    "historical_2026_apr_jul_labels": "SEALED_NOT_READ"
+  },
+  "research_limit": "No return fit, IC, profitability, or independent forecast claim in v4.2"
+}

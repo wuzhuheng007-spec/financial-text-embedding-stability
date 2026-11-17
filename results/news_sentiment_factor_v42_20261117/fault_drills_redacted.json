@@ -1,0 +1,41 @@
+{
+  "schema": "news_sentiment_v42_synthetic_fault_drills_1",
+  "drills": [
+    {
+      "case": "normal_stop_new_cache_restart",
+      "actual": "PASS"
+    },
+    {
+      "case": "same_timestamp_late_lower_key",
+      "actual": "PASS"
+    },
+    {
+      "case": "started_process_interrupted",
+      "actual": "PASS"
+    },
+    {
+      "case": "score_committed_before_job_update",
+      "actual": "PASS"
+    },
+    {
+      "case": "budget_pause_duplicate_start",
+      "actual": "PASS"
+    },
+    {
+      "case": "two_process_lock_contention",
+      "actual": "PASS"
+    },
+    {
+      "case": "transient_database_busy",
+      "actual": "PASS"
+    },
+    {
+      "case": "same_version_hash_collision",
+      "actual": "PASS"
+    }
+  ],
+  "passed": 8,
+  "total": 8,
+  "isolated_private_database": true,
+  "real_supplier_or_model_calls": 0
+}

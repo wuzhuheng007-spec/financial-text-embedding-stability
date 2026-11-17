@@ -1,0 +1,84 @@
+{
+  "schema": "news_sentiment_factor_v42_final_counts_1",
+  "checked_at_utc": "2026-11-17T08:03:10.443771+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T16:03:10.443771+08:00",
+  "earlier_observations": [
+    {
+      "as_of_utc": "2026-11-17T07:15:44Z",
+      "source": "v41_prospective_score_observation_redacted.json",
+      "distinct_new_versions": 1,
+      "run_id": "v41_observe_20261117T071145Z"
+    },
+    {
+      "as_of_utc": "2026-11-17T07:19:23Z",
+      "source": "v41_final_runtime_readback_local.json",
+      "distinct_new_versions": 2,
+      "run_id": "v41_observe_20261117T071145Z"
+    }
+  ],
+  "current_score_db": {
+    "cohort_article_versions": {
+      "CACHE_REPLAY": 230,
+      "PROSPECTIVE_RECEIPT": 7
+    },
+    "prospective_scored_article_versions": 7,
+    "prospective_scored_units": 31
+  },
+  "v42_queue": {
+    "job_states": {
+      "DONE": 7
+    },
+    "attempt_rows": 5,
+    "completed_delayed_recovery_jobs": 2,
+    "current_status": {
+      "run_id": "v42_20261117T074834343733Z",
+      "state": "RUNNING",
+      "started_at_utc": "2026-11-17T07:48:34.343733+00:00",
+      "heartbeat_at_utc": "2026-11-17T08:02:44.901518+00:00",
+      "last_success_at_utc": "2026-11-17T07:52:13.535098+00:00",
+      "daily_limit": 500,
+      "daily_attempts": 7,
+      "backlog": 0,
+      "snapshot_state": "PENDING_MARKET_CUTOFF",
+      "next_cutoff_utc": "2026-11-17T21:15:00+00:00",
+      "process_alive_identity": true,
+      "quarantined": 0
+    }
+  },
+  "snapshots_by_kind": {
+    "DEVELOPMENT_REPLAY": 3
+  },
+  "future_label_queue_states": {},
+  "observation_15_minutes": {
+    "samples": 32,
+    "first_utc": "2026-11-17T07:31:37.761000+00:00",
+    "last_utc": "2026-11-17T07:47:07.993580+00:00",
+    "duration_seconds": 930.233,
+    "maximum_sample_interval_seconds": 30.018,
+    "states": {
+      "RUNNING": 31,
+      "STOPPED_BY_REQUEST": 1
+    },
+    "last_backlog": 0,
+    "last_daily_attempts": 5
+  },
+  "code_config_sha256": {
+    "configs/news_sentiment_factor_v42_20261117.json": "538046056e577e0945d7204ac1bbf70ed9a6996a5f2a9038e86523b4ced2669f",
+    "configs/news_sentiment_factor_v42_aliases_20261117.json": "6c1a134beac68809944477261e15c4fe97ed2c2e89aafbad4aa7b14fa2f9f0ff",
+    "configs/news_sentiment_factor_v42_snapshot_r2_20261117.json": "e9db41a90b6fa061faa87f29bf98ec5db92f2daa3812aa457ad4fe8988fd6766",
+    "configs/news_sentiment_factor_v42_us_calendar_2026.json": "72c300496d203e81d85167a394e32dd787baa91a062c62bd595752aedc4ad2f3",
+    "configs/news_sentiment_factor_v42_future_evaluation_20261117.json": "935834b2e19ae3bd41830db5662677e22047c8b28b96290829cef6d9e76121ea",
+    "configs/news_sentiment_factor_v41_20261117_r2.json": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+    "scripts/news_sentiment_factor_v42/worker.py": "873da42ed26ae5fdc6010cce667c1681fcd1b3a36a3873084328e738bbbc8148",
+    "scripts/news_sentiment_factor_v42/association.py": "bdb60889bd732e9e046ed5181a05c1d23b778d7bcf4d107ebf895264dea5184f",
+    "scripts/news_sentiment_factor_v42/snapshot.py": "4bed1fbc1629147f06ce69a763202a8e719657257dd7f59628cba8752f43f0d1",
+    "scripts/news_sentiment_factor_v42/verify_snapshot.py": "ae18d08c6f180a44c5c319e3ba4b675d1f0d2626573a665c57fdf46e19d6193e",
+    "scripts/news_sentiment_factor_v42/fault_drills.py": "5d2ae89498d7e42cbd99d5c19276e75d09bb2809f2a57f5b8e82f91e9354c31a",
+    "apps/quant_portal/core/research_chinese_cache.py": "28ff67fb9ed317eaed9f4db92dcbec409435e59716c24401b61edb8c05aa6cf7",
+    "apps/quant_portal/static/core/research_sentiment_v4.js": "7d46aabf9b69c44ec653898563074f10eecccf06c292b7408a061c8e57c14175"
+  },
+  "private_backup_integrity": "THREE_SQLITE_BACKUPS_PRAGMA_OK",
+  "no_return_labels_read": true,
+  "no_return_model_fit": true,
+  "not_a_prospective_snapshot_if_before_true_cutoff": true
+}

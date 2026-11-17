@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_v42_association_review_redacted_2",
+  "v1_preserved": true,
+  "revision_reason": "order-only mismatch in multi-company reference",
+  "units": 40,
+  "old_exact": 32,
+  "new_exact": 38,
+  "new_correct_links": 6,
+  "new_false_links": 0,
+  "new_missed_links": 3,
+  "unresolved_multi_company_units": 4,
+  "unresolved_case_indices": [
+    4,
+    15
+  ],
+  "private_review_sha256": "cffbc635c1ba1bdf6d905148f1b2f1ed8a4c58d9b6be1f8d5434f9446a42da62"
+}

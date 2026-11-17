@@ -1,0 +1,17 @@
+{
+  "schema": "us_equity_regular_session_calendar_2026_v42_1",
+  "timezone": "America/New_York",
+  "timezone_data": "tzdata==2026.6 in isolated research environment",
+  "sources": [
+    "https://www.nyse.com/trade/hours-calendars",
+    "https://www.nasdaq.com/market-activity/stock-market-holiday-schedule"
+  ],
+  "closed_dates": [
+    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03",
+    "2026-05-25", "2026-06-19", "2026-07-03", "2026-09-07",
+    "2026-11-26", "2026-12-25"
+  ],
+  "early_close_dates": ["2026-11-27", "2026-12-24"],
+  "planned_snapshot_local_time": "16:15:00",
+  "note": "The frozen 16:15 cutoff is retained even on early-close sessions; it is not the official exchange close. Calendars beyond 2026 require separate verification."
+}

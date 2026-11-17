@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_v42_association_review_redacted_1",
+  "rule_version": "explicit_segment_alias_v42_1",
+  "rule_effective_at_utc": "2026-11-17T07:34:22.878201+00:00",
+  "units": 40,
+  "held_out_units": 8,
+  "old_exact": 29,
+  "new_exact": 35,
+  "new_correct_links": 6,
+  "new_false_links": 0,
+  "new_missed_links": 3,
+  "unresolved_units": 4,
+  "annotated_segments": 1108,
+  "private_review_sha256": "4c89e7c8012b846c8376e74f593fad224fb3f01449a750f1f550ae7caebf2a9f",
+  "reviewer": "CODEX_REVIEW_NOT_INDEPENDENT_GOLD",
+  "no_model_rerun": true
+}

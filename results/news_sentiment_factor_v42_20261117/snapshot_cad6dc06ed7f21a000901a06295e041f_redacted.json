@@ -1,0 +1,20 @@
+{
+  "schema": "news_sentiment_v42_snapshot_evidence_1",
+  "snapshot_id": "cad6dc06ed7f21a000901a06295e041f",
+  "as_of_utc": "2026-11-17T07:37:30+00:00",
+  "generated_at_utc": "2026-11-17T07:37:52.461641+00:00",
+  "kind": "DEVELOPMENT_REPLAY",
+  "input_manifest_sha256": "70b1801eaece49c20f4363fac27eda5c17e3c0d8b5c5e4a99e02c722dbec19e1",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "scoring_config_sha256": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+  "association_rule_version": "explicit_segment_alias_v42_1",
+  "event_group_rule_version": "source_article_revision_one_per_cutoff_v42_2",
+  "member_count": 77,
+  "company_count": 13,
+  "coverage_state": "GAP_POSSIBLE",
+  "scoring_backlog": 0,
+  "company_rows": 15,
+  "companies_with_event": 13,
+  "future_label_rows": 0,
+  "not_return_prediction": true
+}

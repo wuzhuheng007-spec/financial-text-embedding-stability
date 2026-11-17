@@ -1,0 +1,136 @@
+{
+  "schema": "news_sentiment_factor_v42_evidence_index_1",
+  "generated_at_utc": "2026-11-17T08:04:09.322051+00:00",
+  "private_local_only": [
+    {
+      "logical_name": "chinese_tone_20261117T072840Z.sqlite3",
+      "sha256": "cce01560738c4455250a04abecaadf7993a1c051c5f6f40cd6add1850bd93125",
+      "bytes": 1982464
+    },
+    {
+      "logical_name": "dev_20261117T072842Z.sqlite3",
+      "sha256": "2e12d3a6061d59f2f6ee50c0b558a37eb8062ccc2048aacfb931946571af70dc",
+      "bytes": 229376
+    },
+    {
+      "logical_name": "personal_feeds_20261117T072840Z.sqlite3",
+      "sha256": "ef8603639db506706d6520cb936203599994117e772def02b131e6aa01230ca1",
+      "bytes": 142168064
+    },
+    {
+      "logical_name": "association_review_frozen_private.json",
+      "sha256": "75490d35687d9676e45088bbb913d23a9914c9ecde048b760072f6117a5b48ba",
+      "bytes": 29174
+    },
+    {
+      "logical_name": "association_reference_private.json",
+      "sha256": "bbc39d40d8301ba9815779021cd5044405c4c2f82f4f7bc8de7fab3ca6f24109",
+      "bytes": 10514
+    },
+    {
+      "logical_name": "association_review_result_v2_private.json",
+      "sha256": "cffbc635c1ba1bdf6d905148f1b2f1ed8a4c58d9b6be1f8d5434f9446a42da62",
+      "bytes": 16106
+    },
+    {
+      "logical_name": "metadata_correction_private.json",
+      "sha256": "015ebe90a435e8280f95c8a9670c54e2b751bb7e0eca66aa6f90cf60b9bd5f80",
+      "bytes": 1817
+    },
+    {
+      "logical_name": "observation_15m_private.jsonl",
+      "sha256": "c89f9d6b10ba5918f76b7d9d03b21b17b8eab12e454dd028150d5defab211e28",
+      "bytes": 33074
+    },
+    {
+      "logical_name": "snapshot_06bde74d86ac6b8716d60b8b46fe40ca_private.json",
+      "sha256": "efdcca70a88773eb96bcdc4211c36218450ddc3f7be63a0108e6f1213659a1ff",
+      "bytes": 37552
+    },
+    {
+      "logical_name": "snapshot_b5708814645ae3b9d2ddb27398a4b38f_private.json",
+      "sha256": "a0048d1547744f82ca3f5314eaf0617e3e5ca51cf9d8fbc10a12d5289df1f306",
+      "bytes": 37594
+    },
+    {
+      "logical_name": "snapshot_cad6dc06ed7f21a000901a06295e041f_private.json",
+      "sha256": "a57b655bd00cf0638deeb48a78de0ac03b3ec798add387ace7fbe1ced9867938",
+      "bytes": 40588
+    }
+  ],
+  "redacted_shareable": [
+    {
+      "name": "association_review_v2_redacted.json",
+      "sha256": "af2bdd592deabf2e236d8526b7baf7699774b07c2ffa3fcb73f3100ec63c1da9",
+      "bytes": 491
+    },
+    {
+      "name": "fault_drills_redacted.json",
+      "sha256": "5cb4a3fc6f3ebd9d442bce8fd58b1e65730d0aab2c7c293b43662c2b3a793949",
+      "bytes": 879
+    },
+    {
+      "name": "fault_drill_revision_redacted.json",
+      "sha256": "24fa51d3fde0995c381b0ff1e4c301fc88e507cb063c90edcc28dce051b2a741",
+      "bytes": 610
+    },
+    {
+      "name": "metadata_correction_redacted.json",
+      "sha256": "ce9ffb0baae1bd7c89fd65dcba52ffaa95d93cef228da9e9165fa16fe6d23a1b",
+      "bytes": 265
+    },
+    {
+      "name": "snapshot_checks_redacted.json",
+      "sha256": "dabc2eb937bb644600b1656c9b399adb41ad0184563c8a77ffda88832838c91e",
+      "bytes": 732
+    },
+    {
+      "name": "browser_acceptance_redacted.json",
+      "sha256": "2e0ee7e217ed8c4b4344b21a4b9f4472b29210f1092fad300e04e6f9c4f6f2fa",
+      "bytes": 865
+    },
+    {
+      "name": "single_instance_live_redacted.json",
+      "sha256": "57a8a98f7e5528232c94ed36ed6168e66e58f41fbecfdb68e8eb84149c857c05",
+      "bytes": 517
+    },
+    {
+      "name": "final_counts_redacted.json",
+      "sha256": "9683d33b1afeb4eb314a50932e910401d6c34b3af170823254da244b640df64a",
+      "bytes": 3893
+    },
+    {
+      "name": "final_runtime_redacted.json",
+      "sha256": "1b9144fd38d68da455aa5218cc6fcb2f90d5b71bbf9cf85c3c69699bb8b6fdf9",
+      "bytes": 1672
+    },
+    {
+      "name": "plan_execution.csv",
+      "sha256": "fd730faed995fca58f8971980b552eaf58f932aac863439235b19098c7240b94",
+      "bytes": 2503
+    },
+    {
+      "name": "snapshot_06bde74d86ac6b8716d60b8b46fe40ca_redacted.json",
+      "sha256": "164e092e6cbe46755f873c45e64899fa00fcf76caf859752e29213abe0433ee0",
+      "bytes": 875
+    },
+    {
+      "name": "snapshot_b5708814645ae3b9d2ddb27398a4b38f_redacted.json",
+      "sha256": "3949be79ca777999880e0ad5aa66fdf48e7a69f72b825a9698cd35bcac737c19",
+      "bytes": 821
+    },
+    {
+      "name": "snapshot_cad6dc06ed7f21a000901a06295e041f_redacted.json",
+      "sha256": "bbd6e1e31b6b545f71d681042df0a2665b5b0d73a0041654b7a356a8fed4f11b",
+      "bytes": 874
+    },
+    {
+      "name": "snapshot_checks_redacted.json",
+      "sha256": "dabc2eb937bb644600b1656c9b399adb41ad0184563c8a77ffda88832838c91e",
+      "bytes": 732
+    }
+  ],
+  "live_sqlite_hash_not_used_as_immutable_input": "WAL_FILES_CAN_CHANGE_WHILE_SERVICES_RUN",
+  "backups": 3,
+  "private_source_text_exported": false
+}

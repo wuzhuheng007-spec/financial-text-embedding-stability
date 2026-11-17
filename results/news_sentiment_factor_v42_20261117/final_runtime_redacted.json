@@ -1,0 +1,53 @@
+{
+  "schema": "news_sentiment_v42_runtime_readback_1",
+  "captured_at_utc": "2026-11-17T08:03:17.692621+00:00",
+  "research_worker": {
+    "run_id": "v42_20261117T074834343733Z",
+    "state": "RUNNING",
+    "process_alive_identity": true,
+    "heartbeat_at_utc": "2026-11-17T08:02:44.901518+00:00",
+    "last_success_at_utc": "2026-11-17T07:52:13.535098+00:00",
+    "daily_attempts": 7,
+    "daily_limit": 500,
+    "backlog": 0,
+    "snapshot_state": "PENDING_MARKET_CUTOFF",
+    "next_cutoff_utc": "2026-11-17T21:15:00+00:00",
+    "quarantined": 0
+  },
+  "portal": {
+    "running": true,
+    "http_200": true,
+    "loopback_url": "http://127.0.0.1:8765/"
+  },
+  "personal_feed": {
+    "running": true,
+    "providers": [
+      {
+        "provider": "jin10",
+        "state": "CONNECTED",
+        "worker_alive": 1,
+        "heartbeat_at": "2026-11-17T08:03:15.552015Z",
+        "last_success_at": "2026-11-17T08:02:16.721222Z",
+        "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
+      },
+      {
+        "provider": "moomoo",
+        "state": "CONNECTED_DELAY_UNKNOWN",
+        "worker_alive": 1,
+        "heartbeat_at": "2026-11-17T08:03:15.440537Z",
+        "last_success_at": "2026-11-17T08:03:13.428945Z",
+        "coverage_gap": null
+      },
+      {
+        "provider": "moomoo_snapshot",
+        "state": "CONNECTED",
+        "worker_alive": 1,
+        "heartbeat_at": "2026-11-17T08:02:19.899034Z",
+        "last_success_at": "2026-11-17T08:02:19.899034Z",
+        "coverage_gap": null
+      }
+    ]
+  },
+  "observed_at_one_instant_only": true,
+  "private_news_prices_scores_credentials_included": false
+}

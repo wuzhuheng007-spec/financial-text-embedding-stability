@@ -1,0 +1,11 @@
+{
+  "schema": "news_sentiment_factor_v42_fault_drill_revision_1",
+  "attempts": [
+    {"run": 1, "result": "FAILED", "reason": "Windows byte-range lock holder read the locked byte; revised lock implementation to avoid that read"},
+    {"run": 2, "result": "FAILED", "reason": "Synthetic harness left an SQLite connection open; revised harness and worker read-only connection closure"},
+    {"run": 3, "result": "8_OF_8_PASSED", "receipt": "fault_drills_redacted.json"}
+  ],
+  "isolated_synthetic_databases_only": true,
+  "prior_failures_not_hidden": true,
+  "not_proof_of_all_day_production_stability": true
+}

@@ -5,6 +5,7 @@ import json
 import os
 import sqlite3
 import ctypes
+from datetime import datetime, timezone
 from contextlib import closing
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -42,6 +43,91 @@ def _pid_alive(pid: int | None) -> bool:
     return True
 
 
+def _creation_filetime(pid: int | None) -> int | None:
+    if not isinstance(pid, int) or pid <= 0 or os.name != "nt":
+        return None
+    kernel = ctypes.windll.kernel32
+    kernel.OpenProcess.argtypes = [ctypes.c_ulong, ctypes.c_int, ctypes.c_ulong]
+    kernel.OpenProcess.restype = ctypes.c_void_p
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel.GetExitCodeProcess.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_ulong)]
+    kernel.GetProcessTimes.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,
+                                       ctypes.c_void_p, ctypes.c_void_p]
+    handle = kernel.OpenProcess(0x1000, False, pid)
+    if not handle:
+        return None
+    try:
+        exit_code = ctypes.c_ulong()
+        created = ctypes.c_ulonglong()
+        ended = ctypes.c_ulonglong()
+        cpu_kernel = ctypes.c_ulonglong()
+        cpu_user = ctypes.c_ulonglong()
+        if not kernel.GetExitCodeProcess(handle, ctypes.byref(exit_code)) or exit_code.value != 259:
+            return None
+        if not kernel.GetProcessTimes(handle, ctypes.byref(created), ctypes.byref(ended),
+                                      ctypes.byref(cpu_kernel), ctypes.byref(cpu_user)):
+            return None
+        return created.value
+    finally:
+        kernel.CloseHandle(handle)
+
+
+def v42_research_summary(root: Path) -> dict:
+    private = root / "artifacts/news_sentiment_factor_v42_20261117"
+    public = root / "results/news_sentiment_factor_v42_20261117"
+    result = {"state": "NOT_STARTED", "backlog": None, "coverage_gap": "UNKNOWN",
+              "company_candidate_count": 0, "latest_snapshot": None,
+              "latest_prospective_snapshot": None, "worker": {}}
+    status_path = public / "worker_status_redacted.json"
+    private_state = private / "worker_state_private.json"
+    if status_path.is_file():
+        try:
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+            witness = json.loads(private_state.read_text(encoding="utf-8")) if private_state.is_file() else {}
+            worker = {k: status.get(k) for k in ("state", "heartbeat_at_utc", "last_success_at_utc",
+                      "backlog", "daily_attempts", "daily_limit", "pause_reason", "snapshot_state",
+                      "next_cutoff_utc", "run_id")}
+            if worker["state"] in {"RUNNING", "LOADING_MODEL", "DAILY_BUDGET_PAUSED", "STARTING"}:
+                same = witness.get("run_id") == status.get("run_id") and (
+                    _creation_filetime(witness.get("pid")) == witness.get("process_creation"))
+                if not same:
+                    worker["state"] = "STALE_EXIT"
+                elif worker.get("heartbeat_at_utc"):
+                    stamp = datetime.fromisoformat(worker["heartbeat_at_utc"].replace("Z", "+00:00"))
+                    if (datetime.now(timezone.utc) - stamp).total_seconds() > 120:
+                        worker["state"] = "UNRESPONSIVE_HEARTBEAT"
+            result["worker"] = worker
+            result["state"] = worker["state"] or "STATUS_UNKNOWN"
+            result["backlog"] = worker["backlog"]
+        except (OSError, ValueError, KeyError, TypeError):
+            result["state"] = "STATUS_UNAVAILABLE"
+    queue = private / "queue.sqlite3"
+    if queue.is_file():
+        try:
+            with closing(sqlite3.connect(f"file:{queue.as_posix()}?mode=ro", uri=True, timeout=2)) as con:
+                con.row_factory = sqlite3.Row
+                result["company_candidate_count"] = con.execute("""SELECT COUNT(DISTINCT entity_id)
+                    FROM association_annotations WHERE status='ONE_EXPLICIT_COMPANY'""").fetchone()[0]
+                for key, where in (("latest_snapshot", ""),
+                                   ("latest_prospective_snapshot", "WHERE kind IN ('ON_TIME_SCHEDULED','LATE_SCHEDULED')")):
+                    row = con.execute("SELECT snapshot_id,as_of_utc,generated_at_utc,kind FROM snapshots "
+                                      + where + " ORDER BY generated_at_utc DESC LIMIT 1").fetchone()
+                    result[key] = dict(row) if row else None
+        except (sqlite3.Error, OSError):
+            result["state"] = "CACHE_UNAVAILABLE"
+    feed = root / "apps/quant_portal/var/personal_feeds.sqlite3"
+    if feed.is_file():
+        try:
+            with closing(sqlite3.connect(f"file:{feed.as_posix()}?mode=ro", uri=True, timeout=2)) as con:
+                row = con.execute("SELECT coverage_gap,last_success_at FROM provider_state WHERE provider='jin10'").fetchone()
+                if row:
+                    result["coverage_gap"] = row[0] or "CONTINUITY_NOT_PROVEN"
+                    result["source_last_success_at_utc"] = row[1]
+        except (sqlite3.Error, OSError):
+            pass
+    return result
+
+
 def chinese_research_summary(root: Path, *, debug: bool = False) -> dict:
     path = root / "artifacts/news_sentiment_factor_v41_20261117/chinese_tone.sqlite3"
     worker = root / "results/news_sentiment_factor_v41_20261117/worker_status_redacted.json"
@@ -54,6 +140,7 @@ def chinese_research_summary(root: Path, *, debug: bool = False) -> dict:
               "scope": "observed private cache; incomplete news archive",
               "model_training_cutoff": "NOT_DISCLOSED",
               "no_return_prediction_or_verified_news_claim": True}
+    result["v42"] = v42_research_summary(root)
     if worker.is_file():
         try:
             data = json.loads(worker.read_text(encoding="utf-8"))

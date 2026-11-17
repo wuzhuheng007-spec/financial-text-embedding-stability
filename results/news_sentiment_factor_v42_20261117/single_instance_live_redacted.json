@@ -1,0 +1,12 @@
+{
+  "schema": "news_sentiment_factor_v42_live_single_instance_check_1",
+  "receipt_recorded_no_later_than_utc": "2026-11-17T07:55:50+00:00",
+  "exact_attempt_time_not_captured": true,
+  "second_start_exit_code": 1,
+  "second_start_error_class": "WORKER_ALREADY_RUNNING",
+  "observed_python_processes_for_one_worker": 2,
+  "process_relation": "VENV_LAUNCHER_PARENT_AND_BASE_PYTHON_WORKER_CHILD",
+  "distinct_worker_run_ids_after_attempt": 1,
+  "original_worker_retained": true,
+  "no_second_inference_started": true
+}

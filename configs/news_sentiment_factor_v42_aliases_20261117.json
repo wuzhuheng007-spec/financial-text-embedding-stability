@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_factor_v42_alias_additions_1",
+  "rule_version": "explicit_segment_alias_v42_1",
+  "base_rules": "scripts/quant_personal_feed/event_rules.py:ENTITY_RULES",
+  "additions": [
+    {
+      "entity_id": "AVGO",
+      "company": "Broadcom Inc.",
+      "phrases": ["博通", "Broadcom"],
+      "ticker_pattern": "\\bAVGO\\b",
+      "official_identity_source": "https://investors.broadcom.com/company-information/faqs",
+      "official_chinese_name_source": "https://docs.broadcom.com/doc/supplier-environmental-and-social-responsibility-code-of-conduct-chinese-simplified",
+      "source_checked_at_utc": "2026-11-17T07:36:00Z",
+      "ambiguity": "Do not match arbitrary short substrings; company mention is not a claim of favorable stock impact."
+    }
+  ],
+  "non_additions": ["三星 without 电子", "苹果 without 公司 or ticker", "超威 alone", "person and product names"],
+  "review_reference_private_sha256": "bbc39d40d8301ba9815779021cd5044405c4c2f82f4f7bc8de7fab3ca6f24109"
+}

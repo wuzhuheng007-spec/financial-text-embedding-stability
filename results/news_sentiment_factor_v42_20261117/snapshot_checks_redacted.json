@@ -1,0 +1,25 @@
+{
+  "schema": "news_sentiment_v42_snapshot_checks_1",
+  "checks": {
+    "latest_available_article_revision_only": true,
+    "snapshot_update_rejected": true,
+    "snapshot_delete_rejected": true,
+    "future_as_of_rejected": true,
+    "stored_member_cutoffs": true,
+    "member_count_matches_manifest": true,
+    "one_article_revision_per_snapshot_company": true,
+    "no_labels_matured": true,
+    "replays_not_prospective": true
+  },
+  "passed": 9,
+  "total": 9,
+  "stored_snapshots": 3,
+  "stored_members": 219,
+  "stored_company_rows": 43,
+  "future_label_rows": 0,
+  "snapshot_kinds": {
+    "DEVELOPMENT_REPLAY": 3
+  },
+  "no_return_labels_read": true,
+  "synthetic_and_actual_checks_separate": true
+}

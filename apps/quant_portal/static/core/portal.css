@@ -36,3 +36,4 @@ a{color:var(--blue);overflow-wrap:anywhere}
 .status-card .card-top>*{min-width:0}.status-card .status-pill{max-width:100%;white-space:normal;overflow-wrap:anywhere}.status-card p{overflow-wrap:anywhere}
 .research-score-list { margin: 0.5rem 0; padding-left: 1.25rem; max-width: 100%; overflow-wrap: anywhere; }
 .research-score-list li { margin: 0.35rem 0; }
+#research-sentiment-content p { overflow-wrap: anywhere; }

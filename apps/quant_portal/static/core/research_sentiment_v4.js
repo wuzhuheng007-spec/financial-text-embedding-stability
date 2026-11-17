@@ -34,8 +34,23 @@
         : `已观察版本 ${chinese.article_versions}（${providers}）；评分片段 ${chinese.scored_segments}；新收到版本 ${chinese.prospective_article_versions}；新版本评分片段 ${chinese.prospective_scored_segments}。来源覆盖不完整。`);
       const worker = chinese.worker || {};
       line(en()
-        ? `Scoring worker: ${worker.state || 'unknown'}; last check: ${worker.last_checked_at_utc || 'not available'}; daily limit: ${worker.daily_limit ?? 'unknown'} new versions.`
-        : `评分进程：${worker.state || '未知'}；上次检查：${worker.last_checked_at_utc || '无'}；每日上限：${worker.daily_limit ?? '未知'} 个新版本。`);
+        ? `Previous v4.1 worker (retired): ${worker.state || 'unknown'}; last check: ${worker.last_checked_at_utc || 'not available'}. Current v4.2 state follows.`
+        : `旧 v4.1 队列（已停用）：${worker.state || '未知'}；上次检查：${worker.last_checked_at_utc || '无'}。当前 v4.2 状态见下方。`);
+      const recovery = chinese.v42 || {};
+      const reliable = recovery.worker || {};
+      line(en()
+        ? `v4.2 recovery: ${reliable.state || 'not started'}; heartbeat ${reliable.heartbeat_at_utc || 'none'}; last score ${reliable.last_success_at_utc || 'none'}; backlog ${reliable.backlog ?? 'unknown'}; daily attempts ${reliable.daily_attempts ?? 'unknown'} / ${reliable.daily_limit ?? 500}.`
+        : `v4.2 恢复队列：${reliable.state || '未启动'}；心跳 ${reliable.heartbeat_at_utc || '无'}；最近评分 ${reliable.last_success_at_utc || '无'}；积压 ${reliable.backlog ?? '未知'}；当日尝试 ${reliable.daily_attempts ?? '未知'} / ${reliable.daily_limit ?? 500}。`);
+      line(en()
+        ? `Company candidates ${recovery.company_candidate_count ?? 0}; Jin10 continuity ${recovery.coverage_gap || 'unknown'}; snapshot ${reliable.snapshot_state || 'pending'}; next cutoff ${reliable.next_cutoff_utc || 'not scheduled'}.`
+        : `公司候选 ${recovery.company_candidate_count ?? 0}；金十覆盖 ${recovery.coverage_gap || '未知'}；快照 ${reliable.snapshot_state || '待观察'}；下次截止 ${reliable.next_cutoff_utc || '未安排'}。`);
+      if (reliable.pause_reason) line(en() ? `Pause reason: ${reliable.pause_reason}` : `暂停原因：${reliable.pause_reason}`);
+      if (recovery.latest_snapshot) {
+        const snap = recovery.latest_snapshot;
+        line(en()
+          ? `Latest ${snap.kind} snapshot: cutoff ${snap.as_of_utc}; generated ${snap.generated_at_utc}.${snap.kind === 'DEVELOPMENT_REPLAY' ? ' Replay is not a prospective signal.' : ' Signal is available no earlier than generation.'}`
+          : `最近 ${snap.kind} 快照：截止 ${snap.as_of_utc}；实际生成 ${snap.generated_at_utc}。${snap.kind === 'DEVELOPMENT_REPLAY' ? '开发回放不算前瞻信号。' : '信号不得早于实际生成时间使用。'}`);
+      }
       if (chinese.rows && chinese.rows.length) {
         const list = document.createElement('ul');
         list.className = 'research-score-list';
