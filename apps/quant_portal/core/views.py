@@ -116,7 +116,9 @@ def dashboard(request):
         evidence_state="CODEX_REVIEW_DEVELOPMENT",
         source_review_status="CODEX_REVIEW_SOURCE_SUPPORTED",
     )
-    card_filter = shared_cards | personal_cards if settings.PERSONAL_MODE else shared_cards
+    personal_owner = (settings.PERSONAL_MODE and
+                      request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME)
+    card_filter = shared_cards | personal_cards if personal_owner else shared_cards
     eligible_cards = PublicFactCard.objects.filter(card_filter)
     cards = list(eligible_cards.order_by("-source_date", "issuer", "metric")[:30])
     actual_cards = [card for card in cards if card.fact_kind == PublicFactCard.FactKind.ACTUAL]

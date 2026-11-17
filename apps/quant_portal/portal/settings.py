@@ -109,7 +109,11 @@ SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
 TRUSTED_REVERSE_PROXY = os.getenv("TRUSTED_REVERSE_PROXY", "0") == "1"
 PUBLIC_MARKET_DATA_ENABLED = os.getenv("PUBLIC_MARKET_DATA_ENABLED", "0") == "1"
-PERSONAL_MODE = DEBUG and os.getenv("PERSONAL_MODE", "0") == "1"
+PERSONAL_MODE = os.getenv("PERSONAL_MODE", "0") == "1"
+if PERSONAL_MODE and not DEBUG and not TRUSTED_REVERSE_PROXY:
+    raise ImproperlyConfigured("Production personal mode requires a trusted HTTPS reverse proxy")
+if PERSONAL_MODE and PUBLIC_MARKET_DATA_ENABLED:
+    raise ImproperlyConfigured("Personal mode cannot enable public market-data display")
 PERSONAL_FEED_OWNER_USERNAME = "owner@local.invalid"
 PERSONAL_FEED_DB_PATH = BASE_DIR / "var" / "personal_feeds.sqlite3"
 if TRUSTED_REVERSE_PROXY:

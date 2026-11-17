@@ -23,7 +23,7 @@
     NO_SUBSCRIPTIONS: '未选择行情订阅'
   };
   let current = null;
-  let filter = 'all';
+  let filter = 'interest';
   let inFlight = false;
   let quoteSignature = '';
   let selectionSignature = '';
@@ -100,12 +100,26 @@
   }
   function renderStates() {
     const snapshot = stateOf('moomoo_snapshot');
+    const health=document.getElementById('feed-health-summary');
+    if (health) {
+      const push=stateOf('moomoo'); const news=stateOf('jin10');
+      const recent=(value,seconds) => {const age=Date.now()-Date.parse(value);return Number.isFinite(age)&&age>=0&&age<=seconds*1000;};
+      const receiving=push?.worker_alive===1 && recent(push?.last_push_at,20);
+      const newsOk=news?.worker_alive===1 && recent(news?.heartbeat_at,90) && recent(news?.last_success_at,180);
+      health.replaceChildren(
+        node('span',receiving?'health-ok':'health-warning',bilingual(receiving?['行情：正在接收推送','Quotes: receiving push']:['行情：请检查更新状态','Quotes: check update status'])),
+        node('span',newsOk?'health-ok':'health-warning',bilingual(newsOk?['新闻：采集正常','News: collection active']:['新闻：更新中断或尚无成功记录','News: interrupted or no successful receipt'])),
+        node('span','muted',bilingual(['报价时间见行情卡；新闻主张以原始来源为准。','Quote times appear on each card; news claims remain attributed to their sources.'])));
+    }
     for (const name of ['moomoo', 'jin10']) {
       const state = stateOf(name);
       const pill = document.getElementById(`${name}-state`);
       const times = document.getElementById(`${name}-times`);
       if (!pill || !times) continue;
       pill.textContent = stateLabels[state?.state] || state?.state || '尚未启动';
+      const pushAge=Date.now()-Date.parse(state?.last_push_at);
+      if (name==='moomoo' && state?.worker_alive===1 && Number.isFinite(pushAge) && pushAge>=0 && pushAge<=20000)
+        pill.textContent=bilingual(['正在接收推送','Receiving push']);
       const worker = state?.worker_alive === 0 ? '采集线程已退出' : state?.worker_alive === 1 ? '采集线程运行中' : '线程状态未知';
       times.textContent = name === 'moomoo' ?
         `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最新缓存报价收到时间：${stamp(latestCacheTime('received_at'))} · 最新分时段报价来源时间：${stamp(latestCacheTime('source_at'))} · 重复包（v1.1 计数）：${state?.duplicate_quote_packets ?? '未知'}` +
@@ -333,7 +347,9 @@
         row.scope==='INDUSTRY' ? bilingual(['涉及科技产业链','Technology industry chain']) : bilingual(['相关宏观事件','Relevant macro event']);
       button.append(node('span','top10-rank',`#${index+1} · ${title}`),
         node('span','news-meta',`${why} · ${row.evidence_phrase || bilingual(['匹配依据未知','Match unknown'])} · ${stamp(row.published_at_utc || row.received_at)}`),
-        node('span','analysis-status',`${bilingual(['供应商报道／待核实','Supplier report / unverified'])} · ${row.claim_stage || 'GENERAL'} · ${bilingual(['分析','Analysis'])}: ${bilingual(analysisStates[row.analysis_status]||analysisStates.NOT_QUEUED)} · ${bilingual(['新闻语气','News tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)} · ${bilingual(['规则排序','Rule order'])} ${row.rank?.score ?? ''}`));
+        node('span','analysis-status',bilingual(['供应商报道 · 点击查看来源','Supplier report · open source details']) +
+          (row.tone && row.tone!=='UNKNOWN' ? ` · ${bilingual(['文本语气','Text tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)}` : '')));
+      button.title=title;
       button.onclick=()=>{
         window.quantOpenPanel?.('news');
         // Reading a news item never enqueues the paused v16 interpretation worker.
@@ -369,6 +385,14 @@
   function analysisCard(item) {
     const wrap=node('div','analysis-card');
     const status=item.analysis_status||'NOT_QUEUED';
+    const available=Boolean(item.v18_event_features?.length || item.staged_extraction?.length ||
+      item.staged_interpretation || (item.analysis && ['COMPLETE','DRAFT'].includes(status)));
+    if (!available) {
+      const details=node('details','analysis-unavailable');
+      details.append(node('summary',null,bilingual(['解读暂不可用 · 查看原因','Interpretation unavailable · details'])));
+      details.append(node('p','muted',`${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)} · ${bilingual(['当前没有通过内容检查的解读。可展开原文或查看来源页面。','No interpretation has passed the content checks. Read the report or open its source.'])}`));
+      return details;
+    }
     wrap.append(node('p','analysis-status',`${bilingual(['新闻解读','News interpretation'])}: ${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)}`));
     const categories=(item.event_labels?.categories || []).filter(x=>x.id!=='OTHER');
     const category=categories[0]?.id;
@@ -379,7 +403,7 @@
       MACRO_RATES:['关注发布机构的正式数据和政策声明。','Check the issuing agency’s official data and policy statement.'],
       FINANCE_CREDIT:['关注正式融资条款、到期安排或并购公告。','Check formal financing terms, maturities or merger filings.']};
     const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
-    wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
+
     if (item.v18_event_features?.length) {
       wrap.append(node('p','analysis-status',bilingual(['事件与语气字段 · 同团队开发审阅；报道未独立核实',
         'Event and tone fields · same-team development review; report not independently verified'])));
@@ -476,7 +500,7 @@
     // The old v16 automatic interpretation queue remains paused in v1.8.
     const published = item.published_at_utc ? stamp(item.published_at_utc) :
       (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
-    article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
+    article.append(node('p', 'news-meta', `${bilingual(['来源：金十 · 供应商报道','Source: Jin10 · supplier report'])} · ${published}`));
     const modelTitle=item.analysis?.[`headline_${language}`];
     const sourceTitle=item.display_title || item.title || '原文未提供标题';
     const reviewedTranslation=['MACHINE_TRANSLATION_CODEX_REVIEWED','MACHINE_TRANSLATION_CODEX_CORRECTED'].includes(item.source_translation_status) ? item.source_translation_en : null;
@@ -492,6 +516,7 @@
     original.dataset.sourceOriginal='1';
     original.append(node('summary',null,bilingual(['展开原文','Expand original report'])));
     original.append(node('p','news-body',body));
+    original.append(node('p','news-meta',`${bilingual(['收到时间','Received'])}: ${stamp(item.received_at)} · ${bilingual(['版本','Version'])} ${item.version}`));
     article.append(original);
     if (reviewedTranslation) {
       const translated=node(language==='en' ? 'div' : 'details','news-translation');
@@ -616,6 +641,8 @@
       }
       renderTop10(); renderSentiment(); renderNews();
     } catch (_) {
+      const health=document.getElementById('feed-health-summary');
+      if (health) health.replaceChildren(node('span','health-warning',bilingual(['页面数据连接中断，以下为上次缓存。','Page data connection interrupted; showing the previous cache.'])));
       for (const name of ['moomoo', 'jin10']) {
         const pill = document.getElementById(`${name}-state`);
         if (pill) pill.textContent = '本机缓存接口断开';

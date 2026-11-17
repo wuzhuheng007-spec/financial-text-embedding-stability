@@ -2,6 +2,10 @@
 (() => {
   const language=document.documentElement.dataset.language||'zh';
   const catalog={
+    '关注事件 Top 10':'Top 10 followed events',
+    '关注行情、重要事件与新闻语气。':'Follow quotes, important events and news tone.',
+    '按相关性与时效排序。点击查看报道及来源；排名不是收益预测。':'Ordered by relevance and recency. Open a report for its source; rank is not a return forecast.',
+
     '研究观察台':'RESEARCH OBSERVATORY','科技 · 事件 · 证据':'TECHNOLOGY · EVENTS · EVIDENCE',
     '本机测试 · 只读':'LOCAL TEST · READ ONLY',
     '本机个人测试版 · 显示时区 ':'Local personal test · Display timezone ',

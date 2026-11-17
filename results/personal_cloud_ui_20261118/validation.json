@@ -1,0 +1,37 @@
+{
+  "base_commit": "64f16d3c5acf44960903785ea2f4347ddd1f879b",
+  "environment": "isolated Linux workspace; not Windows localhost or Alibaba Cloud",
+  "python": "Python 3.12.14",
+  "django": "5.2.19",
+  "tests": {
+    "python": 14,
+    "django": 16,
+    "dom_language_scenarios": 2
+  },
+  "browser_visual": "NOT_RUN: Chromium launch rejected by host (socket Operation not permitted)",
+  "live_provider_calls": 0,
+  "model_calls": 0,
+  "cloud_resources_created": 0,
+  "deployment": "NOT_RUN",
+  "source_sha256": {
+    "apps/quant_portal/core/tests.py": "b972df3f68424a0143464e754d3fed25c907b03fa2127362c36a1a9dd2bcfee1",
+    "apps/quant_portal/core/views.py": "2c25bb6173ad7a7cd33fe6b189ed2325b733f827b07776f61d5036045c25146a",
+    "apps/quant_portal/portal/settings.py": "9364786cc1eeade1ed846e088ab412353a75c09c62bce7de298a175686746b97",
+    "apps/quant_portal/static/core/i18n_v15.js": "05031e2a517f1dfdfeb760faff5719b72f8b3293613f8e922a4fa789557f5a74",
+    "apps/quant_portal/static/core/personal_feed.js": "e27b16b0f95a16ebeb4528be838f6e0fdb1b584b78581e3b8a59726feaeabe98",
+    "apps/quant_portal/static/core/portal.css": "300b28f101e9a7bccfb2e5e6b62c27495573c3146aeedadcb8c4afd1a654eb27",
+    "apps/quant_portal/static/core/research_sentiment_v4.js": "0a254b126b865d53c2b4853c4ca72d8e78bdcc7a1c783603c5c25d443f0228f9",
+    "apps/quant_portal/static/core/workspace_v15.js": "3e226060b900ab649210e5ed8e81aea1db3717ddb2ab46f5339d1695041e9494",
+    "apps/quant_portal/templates/core/base.html": "50765d15388e47a4cebcd3c7d3007726c2c612fcac1568d311e9e1c83c053f79",
+    "apps/quant_portal/templates/core/dashboard.html": "7c4baf063ac2d881bf69d702dd5edf7add32f6be3d4170ef4c20938d17e42470",
+    "scripts/quant_personal_feed/cli.py": "8455e2e57c2ee5478222dd884cf1af0182033ac58f603a05228a2fa673140ca4",
+    "scripts/quant_personal_feed/collector.py": "a8996be98a17d17e24faf93309c3e989df013ab21624775674e6743805997ec2",
+    "scripts/quant_personal_feed/store.py": "007b152d20f281ad04b7169fc6e35916844190a622824b433812d346a483d44f",
+    "tests/test_personal_feed_lock_recovery.py": "924680ede7fdb44140279e6714715ed443bc3fa59946c0e84beb97fed0f99bf4",
+    "tests/test_personal_production_settings.py": "0343c8fa92e5eeec0669010bc303c7b0bd8f255fdc462748bf501173c4f0d700",
+    "tests/browser/personal_workspace_fixture.py": "95a108d1a3ffac51711c3cc5168f11cebf3f50afa6faa1287d555ae8ceb9bcd0",
+    "tests/browser/personal_workspace_dom.cjs": "9fe0e4be5cff5edafeba3e42628181d1c07dd9820a2a80b7341bb57dfba4b434"
+  },
+  "node": "v24.22.1",
+  "jsdom": "31.0.1"
+}

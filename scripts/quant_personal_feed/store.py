@@ -50,6 +50,13 @@ class PersonalFeedStore:
         path.parent.mkdir(parents=True, exist_ok=True)
         self.path = path
         self.db = sqlite3.connect(path, timeout=10, isolation_level=None)
+        try:
+            self._initialize(owner_id)
+        except Exception:
+            self.db.close()
+            raise
+
+    def _initialize(self, owner_id: int) -> None:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA busy_timeout=10000")

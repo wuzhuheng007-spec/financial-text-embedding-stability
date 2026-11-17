@@ -1,0 +1,16 @@
+[
+  {
+    "language": "zh",
+    "check": "navigation_top10_missing_analysis_research_chart",
+    "result": "PASS",
+    "fixture": "SYNTHETIC",
+    "visual_layout": "NOT_RUN"
+  },
+  {
+    "language": "en",
+    "check": "navigation_top10_missing_analysis_research_chart",
+    "result": "PASS",
+    "fixture": "SYNTHETIC",
+    "visual_layout": "NOT_RUN"
+  }
+]

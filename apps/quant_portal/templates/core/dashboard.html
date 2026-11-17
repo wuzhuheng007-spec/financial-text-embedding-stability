@@ -6,18 +6,18 @@
   <div>
     <p class="eyebrow">本机测试 · 只读</p>
     <h1>科技股观察台</h1>
-    <p class="muted">管理自己的关注范围，查看本机个人缓存和历史财报事实。</p>
+    <p class="muted">关注行情、重要事件与新闻语气。</p>
   </div>
   <span class="status-pill neutral">本机个人使用 · 无交易</span>
 </div>
 
-<section class="notice" aria-labelledby="availability-title">
-  <div class="notice-symbol" aria-hidden="true">!</div>
-  <div>
-    <h2 id="availability-title">{% if personal_feed_enabled %}本机个人只读数据{% else %}数据来源状态{% endif %}</h2>
-    <p>{% if personal_feed_enabled %}页面每 5 秒读取一次本机缓存；后台采集按独立预算运行。报价时间与收到时间分别显示，金十快讯仍待交叉核实。{% else %}公共行情展示未开启；当前页面仅使用获准共享的缓存。{% endif %}</p>
-  </div>
-</section>
+<nav class="workspace-nav" aria-label="观察台分区" translate="no" hidden>
+  <button type="button" data-view="overview">{% if request.display_language == 'en' %}Overview{% else %}总览{% endif %}</button>
+  <button type="button" data-view="news">{% if request.display_language == 'en' %}News{% else %}新闻{% endif %}</button>
+  <button type="button" data-view="research">{% if request.display_language == 'en' %}Research{% else %}研究{% endif %}</button>
+  <button type="button" data-view="manage">{% if request.display_language == 'en' %}Settings & status{% else %}设置与运行{% endif %}</button>
+</nav>
+<div id="feed-health-summary" class="feed-health-summary" role="status" translate="no"></div>
 
 <details class="workspace-panel" id="panel-diagnostics" data-panel="diagnostics"><summary>连接诊断 <span class="panel-count">moomoo / 金十</span></summary>
 <div class="status-grid" aria-label="数据来源状态">
@@ -29,13 +29,13 @@
     <div class="card-top"><h2>金十新闻</h2><span class="status-pill warning" id="jin10-state">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div>
     <p class="muted" id="jin10-times">最近成功接收：{% if provider_states.jin10.last_success_at %}<time datetime="{{ provider_states.jin10.last_success_at|date:'c' }}">{{ provider_states.jin10.last_success_at|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</p>
   </section>
-  <section class="status-card card"><div class="card-top"><h2>可选扩展</h2><span class="status-pill neutral">未配置</span></div><p class="muted">dot 未配置；本机采集与 dot 无关。</p></section>
+
 </div>
 </details>
 
-{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-top10" data-panel="top10" open><summary>科技股重点Top 10 / Top 10 Tech Market Events <span class="panel-count" id="top10-count">读取中</span></summary><p class="muted">规则排序；供应商报道待核实，不代表市场预测。</p><div id="personal-top10" class="top10-list" aria-live="polite"></div></details>{% endif %}
+{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-top10" data-panel="top10" open><summary>关注事件 Top 10 <span class="panel-count" id="top10-count">读取中</span></summary><p class="muted">按相关性与时效排序。点击查看报道及来源；排名不是收益预测。</p><div id="personal-top10" class="top10-list" aria-live="polite"></div></details>{% endif %}
 
-<div class="main-grid">
+<div class="main-grid workspace-layout">
   <details class="workspace-panel" id="panel-watchlist" data-panel="watchlist"><summary>自选股与订阅管理 <span class="panel-count">{{ watch_rows|length }}</span></summary>
   <section class="card" aria-labelledby="watchlist-title">
     <div class="section-head"><div><p class="eyebrow">YOUR WATCHLIST</p><h2 id="watchlist-title">我的自选股</h2></div><span class="small-tag">仅当前账户</span></div>
@@ -112,7 +112,7 @@
 <section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}" data-analysis-priority-url="{% url 'personal_analysis_priority' %}">
   <div class="section-head"><div><p class="eyebrow">JIN10 PRIVATE FLASH</p><h2 id="news-title">金十快讯</h2></div><span class="small-tag">金十报道／待交叉核实</span></div>
   <p class="muted" id="news-screening-counts">筛选计数正在读取；旧新闻只隐藏，不删除。</p>
-  <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button button-primary" type="button" data-news-filter="all" aria-pressed="true">全部快讯</button><button class="button" type="button" data-news-filter="interest" aria-pressed="false">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
+  <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button" type="button" data-news-filter="all" aria-pressed="false">全部快讯</button><button class="button button-primary" type="button" data-news-filter="interest" aria-pressed="true">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
   <div class="news-interests" id="news-interest-controls" aria-label="独立新闻关注"></div>
   <div id="event-filter-panel" class="event-filter-panel" hidden>
     <p class="muted">按原文短语规则筛选和排序；时间筛选优先用带时区的来源发布时间，缺失时用本机收到时间。不代表新闻核实、价格预测或市场影响。</p>
@@ -126,8 +126,8 @@
 <details class="workspace-panel" id="panel-sentiment" data-panel="sentiment"><summary>新闻情绪观察 <span class="panel-count" id="sentiment-count">待分析</span></summary><p class="muted">仅描述已缓存、已去重的供应商事件；与实际行情变化分列，不作因果判断。</p><div id="personal-sentiment"></div></details>
 <details class="workspace-panel" id="panel-research-sentiment" data-panel="research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no"><summary><span id="research-sentiment-heading">研究情绪</span> <span class="panel-count" id="research-sentiment-count">读取中</span></summary><p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的本机研究候选；文字语气不代表报道属实或预测收益。缓存回放与新收到版本分开。</p><div id="research-sentiment-content" aria-live="polite"></div></details>
 <details class="workspace-panel" id="panel-advanced" data-panel="advanced"><summary>高级设置</summary><p><a href="{% url 'user_settings' %}">时区与语言设置</a></p><p class="muted" id="analysis-worker-state">分析服务状态待读取</p></details>
-<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v18-3"></script>
-<script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-1"></script>
+<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v19-1"></script>
+<script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
 {% endif %}
 

@@ -203,6 +203,11 @@ class PublicCacheTests(TestCase):
         with override_settings(PERSONAL_MODE=False):
             self.assertEqual(len(self.client.get(reverse("dashboard")).context["fact_cards"]), 0)
         with override_settings(PERSONAL_MODE=True):
+            # Personal official material is not shared with another account,
+            # even when the server runs with personal mode enabled.
+            self.assertEqual(len(self.client.get(reverse("dashboard")).context["fact_cards"]), 0)
+            owner = get_user_model().objects.create_user("owner@local.invalid", password=PASSWORD)
+            self.client.force_login(owner)
             response = self.client.get(reverse("dashboard"))
             self.assertEqual(len(response.context["fact_cards"]), 1)
             self.assertContains(response, "GAAP")

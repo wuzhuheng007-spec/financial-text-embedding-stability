@@ -250,7 +250,6 @@ def _retry_after_seconds(value: str | None, minimum: float) -> float:
 
 
 def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
-    store = PersonalFeedStore(under_root(config["cache_db"]), user_id)
     from .relevance_v15 import RULE_VERSION as SCREEN_RULE_VERSION, screen
     v15_config = json.loads((ROOT / "configs/quant_portal_personal_v15_20261116.json").read_text(encoding="utf-8"))
     if v15_config["relevance_rule_version"] != SCREEN_RULE_VERSION:
@@ -259,6 +258,7 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
     failures = 0
     interval = config["jin10"]["poll_interval_seconds"]
     max_calls = config["jin10"]["max_business_calls_per_utc_day"]
+    store = PersonalFeedStore(under_root(config["cache_db"]), user_id)
     try:
         store.provider_metric("jin10",worker_alive=1)
         if interval < 60 or not 1 <= max_calls <= 1440:
@@ -341,6 +341,10 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                         return
                     _wait_heartbeat(store,"jin10","DISCONNECTED",stop,min(60,2**failures*5))
                 session = None
+            except sqlite3.OperationalError:
+                # Reopen through the supervisor rather than trying to record
+                # an error using the same locked connection.
+                raise
             except Exception as exc:
                 if business_attempted:
                     store.provider_metric("jin10",business_failure_total=1)
@@ -352,5 +356,7 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
                 _wait_heartbeat(store,"jin10","DISCONNECTED",stop,min(60,2**failures*5))
         store.state("jin10","DISCONNECTED",error_class="USER_STOP")
     finally:
-        store.provider_metric("jin10",worker_alive=0)
-        store.close()
+        try:
+            store.provider_metric("jin10",worker_alive=0)
+        finally:
+            store.close()
