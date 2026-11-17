@@ -1,0 +1,15 @@
+{
+  "schema": "personal_news_v18_1_sync_stage1_redacted_1",
+  "checked_at_utc": "2026-11-17T00:34:17.623380+00:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "first_commit_sha": "25543cafb5100823982d8011037ad5ed3ab168a4",
+  "first_remote_sha": "25543cafb5100823982d8011037ad5ed3ab168a4",
+  "remote_key_files_read_back": {
+    "reports/2026-11-17_quant_portal_personal_v18_1.zh.md": "778b0484c0ce398ce5455e4e2e7f92a67ee13c7d",
+    "scripts/quant_personal_feed/analysis_contract_v18_1.py": "ad48a25b4323209e01f35379a6f1e3680a941f51",
+    "results/quant_portal_personal_v18_1_20261117/comparison_redacted.json": "4663f9be2cbca239003a9361b4664123bedd1bf6"
+  },
+  "initial_handoff_members": 24,
+  "initial_handoff_crc_hash_utf8": "PASS",
+  "note": "A later small follow-up commit updates the plan ledger; final remote SHA is read back separately."
+}
