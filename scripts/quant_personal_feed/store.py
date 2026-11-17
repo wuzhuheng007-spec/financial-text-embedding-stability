@@ -346,9 +346,13 @@ class PersonalFeedStore:
            str(price),None,quote["provider_time"],quote["received_at"],market_state,
            quote.get("delay_status") or "UNKNOWN",digest))
         inserted = self.db.total_changes > before
-        self.db.execute("""DELETE FROM quotes WHERE id IN (
-          SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY provider_time DESC,received_at DESC,id DESC
-          LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
+        # An unchanged push cannot increase this symbol's history. Running the
+        # ordered pruning query for every duplicate held the shared SQLite
+        # writer slot while Jin10 tried to record its own heartbeat.
+        if inserted:
+            self.db.execute("""DELETE FROM quotes WHERE id IN (
+              SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY provider_time DESC,received_at DESC,id DESC
+              LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
         return inserted
 
     def put_session_quotes(self, owner_id: int, rows: list[dict], *,
