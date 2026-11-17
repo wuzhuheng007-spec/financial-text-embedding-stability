@@ -1,0 +1,37 @@
+{
+  "schema": "sentiment_v3_remote_readback_redacted_1",
+  "checked_at_utc": "2026-11-17T04:41:36.890415+00:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "local_head": "a0102221b4d2f7c3609231397aa71f9ddc90072e",
+  "fetched_remote_head": "a0102221b4d2f7c3609231397aa71f9ddc90072e",
+  "head_matches": true,
+  "key_files": [
+    {
+      "path": "configs/news_sentiment_factor_v3_20261117.json",
+      "sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+      "matches_committed_local_blob": true
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v3/evaluate.py",
+      "sha256": "a32418743d9d8b28a1cb8bf5bb2a0ba54127657e764ea5270d095f4e6bdae148",
+      "matches_committed_local_blob": true
+    },
+    {
+      "path": "results/news_sentiment_factor_v3_20261117/development_evaluation_redacted.json",
+      "sha256": "c0ada6e90f315caf840a8d8f01a9df4b6a40484d1a154aaf506069d26e7c99c6",
+      "matches_committed_local_blob": true
+    },
+    {
+      "path": "reports/2026-11-17_news_sentiment_factor_v3.zh.md",
+      "sha256": "2b887d365a038d5a015bb3c74199623dfb42795fcc41980859dc481a223781b5",
+      "matches_committed_local_blob": true
+    },
+    {
+      "path": "docs/news_research/STATUS.json",
+      "sha256": "a74a735c5882f1763a2240c750db91a627904c5c4d172aa174d5d1da8368ab32",
+      "matches_committed_local_blob": true
+    }
+  ],
+  "all_key_files_match": true,
+  "default_branch_merged": false
+}
