@@ -10,10 +10,10 @@ from pathlib import Path
 
 from scripts.news_sentiment_factor_v41.freeze import ROOT
 
-OUT = Path(r"C:\Users\ROG\Documents\ChatGPT\quant\handoffs")
-NAME = "news_sentiment_factor_v43_20261117"
+OUT = ROOT.parent / "quant" / "handoffs"
+NAME = "news_sentiment_factor_v43_20261117_shareable"
 ALLOW = [
-    "AGENTS.md",
+    "README.md",
     "configs/news_sentiment_factor_v41_20261117_r2.json",
     "configs/news_sentiment_factor_v42_20261117.json",
     "configs/news_sentiment_factor_v42_aliases_20261117.json",
@@ -47,6 +47,7 @@ ALLOW = [
     "results/news_sentiment_factor_v43_20261117/run_lock_redacted.json",
     "results/news_sentiment_factor_v43_20261117/postfreeze_revision_redacted.json",
     "results/news_sentiment_factor_v43_20261117/postfreeze_mapping_revision_redacted.json",
+    "results/news_sentiment_factor_v43_20261117/postfreeze_audit_path_revision_redacted.json",
     "results/news_sentiment_factor_v43_20261117/targeted_checks_redacted.json",
     "results/news_sentiment_factor_v43_20261117/browser_acceptance_redacted.json",
     "results/news_sentiment_factor_v43_20261117/first_cutoff_acceptance_redacted.json",
@@ -69,8 +70,12 @@ def run() -> dict:
             raise ValueError(f"DISALLOWED_PATH:{name}")
     folder = OUT / NAME
     package = OUT / (NAME + ".zip")
-    if folder.exists() or package.exists():
-        raise FileExistsError("HANDOFF_ALREADY_EXISTS")
+    # A repeat build may replace only this round's own generated handoff.
+    # Check both resolved targets before touching any existing output.
+    out_resolved = OUT.resolve()
+    for target in (folder, package):
+        if target.exists() and target.resolve().parent != out_resolved:
+            raise ValueError("HANDOFF_TARGET_OUTSIDE_EXPECTED_DIRECTORY")
     manifest_rows = []
     for name in ALLOW:
         src = ROOT / name
@@ -84,7 +89,7 @@ def run() -> dict:
                 "file_rows": manifest_rows}
     manifest_raw = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     OUT.mkdir(parents=True, exist_ok=True)
-    folder.mkdir()
+    folder.mkdir(exist_ok=True)
     for row in manifest_rows:
         dst = folder / row["path"]
         dst.parent.mkdir(parents=True, exist_ok=True)
@@ -112,7 +117,8 @@ def run() -> dict:
         raise ValueError("CHINESE_REPORT_ENCODING_CHECK_FAILED")
     receipt = {"schema": "news_sentiment_v43_handoff_validation_1",
                "checked_at_utc": datetime.now(timezone.utc).isoformat(),
-               "zip_path": str(package), "zip_sha256": sha(package.read_bytes()),
+               "zip_location": "quant/handoffs/" + package.name,
+               "zip_sha256": sha(package.read_bytes()),
                "zip_total_entries": len(infos),
                "zip_file_entries": sum(not x.is_dir() for x in infos),
                "zip_unique_paths": len(set(names)),

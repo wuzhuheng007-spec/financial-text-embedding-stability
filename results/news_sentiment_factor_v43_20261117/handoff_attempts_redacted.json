@@ -1,0 +1,10 @@
+{
+  "schema": "news_sentiment_v43_handoff_attempts_1",
+  "attempts": [
+    {"attempt": 1, "result": "FAILED_BEFORE_CREATING_FOLDER_OR_ZIP", "error_class": "FileNotFoundError", "missing_path": "AGENTS.md", "correction": "The user supplied AGENTS instructions in chat; no AGENTS.md exists in this checkout or the quant parent. Replaced the absent package member with the repository README.md."},
+    {"attempt": 2, "result": "PASSED_VALIDATION_BUT_SUPERSEDED", "zip_total_entries": 40, "zip_file_entries": 40, "zip_unique_paths": 40, "manifest_unique_paths": 39, "reason": "Allowlisted packaging script and public validation receipt contained an absolute local path."},
+    {"attempt": 3, "result": "PASSED_VALIDATION_BUT_SUPERSEDED", "target": "news_sentiment_factor_v43_20261117_final.zip", "zip_sha256": "0d2e193fb0b0ec83f93943345aba1bbedbed1144779497e99401ddedec0111d6", "reason": "Content scan found an absolute local path in the allowlisted audit script."},
+    {"attempt": 4, "result": "PASSED_BUT_LEDGER_COUNT_REVISION_PENDING", "target": "news_sentiment_factor_v43_20261117_shareable.zip", "zip_sha256": "9b8de790f6f14ce0bbcd30c95225e09ae7affb85a65d1730a3291e0fa23a0768", "content_scan_absolute_local_paths": 0},
+    {"attempt": 5, "result": "PASS_SHAREABLE", "target": "news_sentiment_factor_v43_20261117_shareable.zip", "zip_sha256": "84b8bee7ab896a8e7972a88ccf83243cf70b070beeaade1c6ddbe74dcf87c5fb", "zip_total_entries": 41, "zip_unique_paths": 41, "manifest_unique_paths": 40, "crc": "PASS", "member_hashes": "PASS", "utf8_and_chinese": "PASS", "absolute_local_path_hits": 0}
+  ]
+}

@@ -17,7 +17,7 @@ from scripts.news_sentiment_factor_v42.worker import QUEUE_DB, status, write_jso
 from .daily import _complete_versions, config, rule_effective, window_for, cutoff_for
 
 PUBLIC = ROOT / "results/news_sentiment_factor_v43_20261117"
-OLD_ZIP = Path(r"C:\Users\ROG\Documents\ChatGPT\quant\handoffs\news_sentiment_factor_v42_20261117_final.zip")
+OLD_ZIP = ROOT.parent / "quant" / "handoffs" / "news_sentiment_factor_v42_20261117_final.zip"
 OLD_INDEX = ROOT / "results/news_sentiment_factor_v42_20261117/evidence_index_redacted.json"
 SH = ZoneInfo("Asia/Shanghai")
 

@@ -1,0 +1,10 @@
+{
+  "schema": "news_sentiment_v43_postfreeze_audit_path_revision_1",
+  "recorded_at_utc": "2026-11-17T08:40:09.3783135Z",
+  "reason": "Remove a hard-coded local absolute path from shareable audit code; source count logic unchanged",
+  "path": "scripts/news_sentiment_factor_v43/audit.py",
+  "frozen_sha256": "b9f8c1fa98d5082825edd987c6920522879f89d4aa8f61f035f4ca773711392e",
+  "revised_sha256": "86963ea59e6b9145b3f01875389484a54bf60eee2107d821a2323b70557fd82d",
+  "real_v43_snapshots_before_revision": 0,
+  "old_results_modified": false
+}

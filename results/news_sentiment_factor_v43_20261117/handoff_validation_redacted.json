@@ -1,0 +1,15 @@
+{
+  "schema": "news_sentiment_v43_handoff_validation_1",
+  "checked_at_utc": "2026-11-17T08:40:48.802942+00:00",
+  "zip_location": "quant/handoffs/news_sentiment_factor_v43_20261117_shareable.zip",
+  "zip_sha256": "84b8bee7ab896a8e7972a88ccf83243cf70b070beeaade1c6ddbe74dcf87c5fb",
+  "zip_total_entries": 41,
+  "zip_file_entries": 41,
+  "zip_unique_paths": 41,
+  "manifest_file_rows": 40,
+  "manifest_unique_paths": 40,
+  "crc": "PASS",
+  "member_sha256": "PASS",
+  "utf8_and_chinese": "PASS",
+  "private_inputs_in_allowlist": 0
+}
