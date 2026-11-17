@@ -14,7 +14,7 @@ Six affected private SQLite databases were backed up online and passed `quick_ch
 | P3 | Bind scores to exact news versions and continue reviewed content | At UTC 21:43:47, 241 scored Jin10 versions matched exact source hashes. Two older reviewed analysis cards and one reviewed translation matched current versions. One more machine translation was source-reviewed and corrected; no new model generations or trusted automatic analyses | Partial |
 | P4 | Finish Linux adaptation and container integration | `fcntl` worker lock added and tested; compose syntax passed. Docker engine timed out; image context, PostgreSQL owner resolution, Linux OAuth secret storage and independent service workers remain incomplete | Blocked |
 | P5 | Validate cloud purchase and deployment | No server purchased or deployed; only a conditional Alibaba Cloud public base price was checked | Not run |
-| P6 | Deliver redacted results and update PR | Code, reports, checks and redacted receipts prepared for selective PR push and remote readback | Finalizing |
+| P6 | Deliver redacted results and update PR | Code, reports, checks and redacted receipts pushed to the PR branch; remote SHA and six key blobs read back | Done |
 
 The [plan–actual ledger](../results/personal_cloud_pr4_20261118/plan_execution.csv) and [software checks](../results/personal_cloud_pr4_20261118/software_checks.txt) retain separate denominators: 20 Python tests, ten research-worker tests, two JavaScript syntax checks, and a diff check. These do not establish source truth, complete Jin10 coverage, or Linux runtime success.
 
