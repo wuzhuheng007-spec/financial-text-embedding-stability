@@ -30,6 +30,28 @@ def recover_snapshot_sqlite(config: dict, owner: int, stop: threading.Event) -> 
             stop.wait(2 ** (failure + 1))
 
 
+def recover_jin10_sqlite(config: dict, owner: int, stop: threading.Event) -> None:
+    """Reopen the Jin10 cache connection after a transient SQLite failure."""
+    diagnostic = ROOT / "apps/quant_portal/var/personal_feed_sqlite_errors.log"
+    for failure in range(3):
+        if stop.is_set():
+            return
+        try:
+            run_jin10(config, owner, stop)
+            return
+        except sqlite3.OperationalError as exc:
+            diagnostic.parent.mkdir(parents=True, exist_ok=True)
+            if diagnostic.exists() and diagnostic.stat().st_size > 1_000_000:
+                diagnostic.replace(diagnostic.with_name(
+                    diagnostic.name + "." + utc_now().replace(":", "-")))
+            with diagnostic.open("a", encoding="utf-8") as handle:
+                handle.write(f"{utc_now()} jin10 SQLite OperationalError: "
+                             f"{str(exc).replace(chr(10), ' ')[:160]}\n")
+            if failure == 2:
+                raise
+            stop.wait(2 ** (failure + 1))
+
+
 def load_config(path: Path) -> dict:
     path = path.resolve()
     if not path.is_relative_to(ROOT) or not path.is_file():
@@ -116,7 +138,7 @@ def run(config_path: Path) -> None:
             launch("moomoo",run_moomoo)
             launch("moomoo_snapshot",recover_snapshot_sqlite)
         if config["jin10"]["enabled"]:
-            launch("jin10",run_jin10)
+            launch("jin10",recover_jin10_sqlite)
         while not stop.is_set():
             if stop_path.exists():
                 stop.set()
