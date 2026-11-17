@@ -479,6 +479,18 @@ def run(*, minutes: int | None = None, launch_method: str = "CLI") -> dict:
                 except Exception as exc:
                     item["snapshot_state"]="SNAPSHOT_ERROR"
                     item["snapshot_error_class"]=type(exc).__name__
+                try:
+                    from scripts.news_sentiment_factor_v43.daily import maybe_due_snapshot as maybe_due_daily, refresh_label_states
+                    daily=maybe_due_daily(run_id)
+                    refresh_label_states()
+                    item["daily_snapshot_rule_version"]="news_sentiment_factor_v43_protocol_1"
+                    item["daily_snapshot_state"]=daily.get("state",daily.get("status"))
+                    item["daily_next_cutoff_utc"]=daily.get("next_cutoff_utc")
+                    if daily.get("snapshot_id"):
+                        item["last_daily_snapshot_id"]=daily["snapshot_id"]
+                except Exception as exc:
+                    item["daily_snapshot_state"]="DAILY_SNAPSHOT_ERROR"
+                    item["daily_snapshot_error_class"]=type(exc).__name__
                 update_state(item)
                 if item["state"]=="ERROR_PAUSED":
                     break

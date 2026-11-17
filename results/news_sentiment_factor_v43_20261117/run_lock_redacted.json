@@ -1,0 +1,31 @@
+{
+  "schema": "news_sentiment_v43_run_lock_private_1",
+  "locked_at_utc": "2026-11-17T08:24:48.961530+00:00",
+  "locked_at_asia_shanghai": "2026-11-17T16:24:48.961530+08:00",
+  "head": "5b85882c40b29455eab0f5982344f95411295153",
+  "tracked_diff_sha256": "97f75f71b2962a5cfd161a2efaeceb20a0802bd4116e530641b9125a8c98ce56",
+  "code_config_sha256": {
+    "configs/news_sentiment_factor_v43_20261117.json": "52b9156e42d670bc723bcd08e619269f83b5ed0813d989de0dc3d9bfa2a18bf6",
+    "configs/news_sentiment_factor_v43_security_mapping_20261117.json": "9f5cf4eedbfd1da08d8646ce17c0b924077e0e2216a75a2bc21f06eb34eaa57e",
+    "configs/news_sentiment_factor_v41_20261117_r2.json": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+    "configs/news_sentiment_factor_v42_20261117.json": "538046056e577e0945d7204ac1bbf70ed9a6996a5f2a9038e86523b4ced2669f",
+    "configs/news_sentiment_factor_v42_aliases_20261117.json": "6c1a134beac68809944477261e15c4fe97ed2c2e89aafbad4aa7b14fa2f9f0ff",
+    "configs/news_sentiment_factor_v42_us_calendar_2026.json": "72c300496d203e81d85167a394e32dd787baa91a062c62bd595752aedc4ad2f3",
+    "configs/news_sentiment_factor_v42_snapshot_r2_20261117.json": "e9db41a90b6fa061faa87f29bf98ec5db92f2daa3812aa457ad4fe8988fd6766",
+    "scripts/news_sentiment_factor_v43/daily.py": "63cdcffe67bebb91b1cd3e4eac8ff80fc0ad6183682f6f89ebc57e3b811dba53",
+    "scripts/news_sentiment_factor_v43/verify_daily.py": "ce033e5394a1d94e736f1d9f7ea91a4343897386ae6f02fc7e7d8b8d36b38615",
+    "scripts/news_sentiment_factor_v43/audit.py": "b9f8c1fa98d5082825edd987c6920522879f89d4aa8f61f035f4ca773711392e",
+    "scripts/news_sentiment_factor_v43/freeze.py": "c80848fa4d8daf3cea84b46a0dbbc59dc6be6ea477285d5e9f76c2d261f09671",
+    "scripts/news_sentiment_factor_v42/worker.py": "a8041712a4b9a86508054a9b90849580d4ded52f46f6766649823f6b7a732d0b",
+    "scripts/news_sentiment_factor_v42/snapshot.py": "4bed1fbc1629147f06ce69a763202a8e719657257dd7f59628cba8752f43f0d1",
+    "scripts/news_sentiment_factor_v42/association.py": "bdb60889bd732e9e046ed5181a05c1d23b778d7bcf4d107ebf895264dea5184f",
+    "scripts/news_sentiment_factor_v41/score.py": "b425af30e8be0b3b4173a02a9aaf9507f4071649f3a74e251c63d4b0691219fa",
+    "scripts/news_sentiment_factor_v41/prepare_v2.py": "fb46b00fdb334d289c6ab2fb4a60fced7baa454140e334742b420a2f7cb9095f",
+    "apps/quant_portal/core/research_chinese_cache.py": "a27681c44d5c883b123466327de6d5bed2b10ac8e7af884a7a85c43a5106c46a",
+    "apps/quant_portal/static/core/research_sentiment_v4.js": "c759cbfecd3ed279d4c7a35b382f41b833715687b2b848524ce4d075e92aebb2",
+    "apps/quant_portal/templates/core/dashboard.html": "b5a96e66328328c36c91673d9b6c149a45ab74260a6c5d133a465319ba3a918a"
+  },
+  "private_article_manifest_sha256": "7c4019010af7ea43f6696f5e7ebe473b20a707704fb256c92a98a10d3714ea34",
+  "private_backup_integrity": "THREE_SQLITE_BACKUPS_PRAGMA_OK",
+  "no_new_model_fit_or_supplier_request": true
+}

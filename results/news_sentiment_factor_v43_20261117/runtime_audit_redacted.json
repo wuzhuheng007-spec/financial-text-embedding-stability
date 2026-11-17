@@ -1,0 +1,37 @@
+{
+  "schema": "news_sentiment_v43_runtime_audit_1",
+  "checked_at_utc": "2026-11-17T08:23:35.026874+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T16:23:35.026874+08:00",
+  "head_at_start": "5b85882c40b29455eab0f5982344f95411295153",
+  "scoring_config_sha256": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+  "v43_config_sha256": "52b9156e42d670bc723bcd08e619269f83b5ed0813d989de0dc3d9bfa2a18bf6",
+  "mapping_receipt_sha256": "2847f0d775824273dea7babc838f0a2bad0a4b8128e97490036fd62df1b45bf2",
+  "score_db_snapshot_counts": {
+    "done_segments": 1146,
+    "prospective_article_versions": 12,
+    "complete_version_candidates_at_read": 12,
+    "excluded_version_counts": {
+      "CACHE_REPLAY_NOT_FORWARD": 230
+    }
+  },
+  "v42_snapshots_by_kind": {
+    "DEVELOPMENT_REPLAY": 3
+  },
+  "v43_snapshots_by_kind": {},
+  "v43_released_at_read": 0,
+  "worker": {
+    "state": "RUNNING",
+    "run_id": "v42_20261117T080551230383Z",
+    "heartbeat_at_utc": "2026-11-17T08:23:32.217761+00:00",
+    "daily_attempts": 12,
+    "daily_limit": 500,
+    "backlog": 0,
+    "daily_snapshot_state": null,
+    "daily_snapshot_rule_version": null,
+    "daily_next_cutoff_utc": null
+  },
+  "next_same_day_verified_cutoff_utc": "2026-11-17T21:15:00+00:00",
+  "score_inference_in_this_audit": 0,
+  "return_labels_read": 0,
+  "return_fit": 0
+}

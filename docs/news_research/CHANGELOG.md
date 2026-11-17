@@ -1,3 +1,9 @@
+# 2026-11-17 — Chinese news daily research signal v4.3
+
+Kept v4.2 cumulative replays and the live owner portal. Added a New York 16:15 eligible-session daily window, first complete-score event time, strict scoring-configuration identity, separate append-only completion and guarded publication, and explicit security/label eligibility states. The first real cutoff is still ahead; scheduled daily snapshots and qualified return labels remain zero at the recorded check. Thirteen isolated boundary checks and four existing Django tests passed after a separately recorded publication-witness guard revision. The old v4.2 handoff ZIP has 45 file entries, while its index has 14 rows but 13 unique paths; the old artifact is unchanged. [中文报告](../../reports/2026-11-17_news_sentiment_factor_v43.zh.md), [English report](../../reports/2026-11-17_news_sentiment_factor_v43.en.md), [plan–actual](../../results/news_sentiment_factor_v43_20261117/plan_execution.csv).
+
+---
+
 # 2026-11-17 — Chinese news research worker v4.2 recovery and snapshots
 
 Preserved v4.1 scores and source news. Added a durable recovery queue, atomic single-worker lock, dated status, source-grounded Broadcom association revision, and append-only company snapshot storage. At 15:52:38 Asia/Shanghai, 7 newly received article versions had been scored, including 2 delayed recovery jobs. A 40-segment same-team development review moved exact association sets from 32 to 38, with 3 missed links remaining. Three snapshots are development replays, including a retained rejected diagnostic version; no actual NY 16:15 prospective snapshot or return fit was created. The 15-minute local observation and bounded fault drills are documented separately. [中文报告](../../reports/2026-11-17_news_sentiment_factor_v42.zh.md), [English report](../../reports/2026-11-17_news_sentiment_factor_v42.en.md), [plan–actual](../../results/news_sentiment_factor_v42_20261117/plan_execution.csv).

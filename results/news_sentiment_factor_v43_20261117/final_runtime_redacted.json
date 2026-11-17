@@ -1,0 +1,77 @@
+{
+  "schema": "news_sentiment_v43_final_runtime_redacted_1",
+  "audit_started_at_utc": "2026-11-17T08:35:16.859218+00:00",
+  "audit_completed_at_utc": "2026-11-17T08:35:21.931244+00:00",
+  "audit_completed_at_asia_shanghai": "2026-11-17T16:35:21.931244+08:00",
+  "score_candidate_cutoff_utc": "2026-11-17T08:35:16.859218+00:00",
+  "research_worker": {
+    "state": "RUNNING",
+    "run_id": "v42_20261117T083059222452Z",
+    "heartbeat_at_utc": "2026-11-17T08:35:08.358912+00:00",
+    "process_alive_identity": true,
+    "stage": "DISCOVER",
+    "daily_limit": 500,
+    "daily_attempts": 14,
+    "backlog": 0,
+    "research_origin_utc": "2026-11-17T07:11:45.735104+00:00",
+    "daily_snapshot_rule_version": "news_sentiment_factor_v43_protocol_1",
+    "daily_snapshot_state": "PENDING_MARKET_CUTOFF",
+    "daily_next_cutoff_utc": "2026-11-17T21:15:00+00:00"
+  },
+  "scoring_attempt_failures_since_lock": [
+    {
+      "error_class": "ModuleNotFoundError",
+      "attempts": 1
+    }
+  ],
+  "portal_running": true,
+  "feed_process_running": true,
+  "feed_provider_states": {
+    "jin10": {
+      "state": "CONNECTED",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-17T08:35:17.109142Z",
+      "last_success_at": "2026-11-17T08:34:23.927816Z",
+      "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
+    },
+    "moomoo": {
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "worker_alive": 1,
+      "heartbeat_at": "2026-11-17T08:35:19.494630Z",
+      "last_success_at": "2026-11-17T08:35:19.494630Z",
+      "coverage_gap": null
+    },
+    "moomoo_snapshot": {
+      "state": "DISCONNECTED",
+      "worker_alive": 0,
+      "heartbeat_at": "2026-11-17T08:34:20.626285Z",
+      "last_success_at": "2026-11-17T08:27:20.466062Z",
+      "coverage_gap": null
+    }
+  },
+  "personal_db_counts": {
+    "auth_user": 1,
+    "core_watchlistitem": 6,
+    "core_publicfactcard": 14,
+    "core_userpreferences": 1
+  },
+  "v42_snapshots_by_kind": {
+    "DEVELOPMENT_REPLAY": 3
+  },
+  "v43_snapshots_by_kind": {},
+  "v43_released_at_read": 0,
+  "v43_real_label_queue_rows": 0,
+  "chinese_score_db": {
+    "prospective_article_versions": 13,
+    "complete_prospective_versions_at_read": 13,
+    "done_segment_units_all_cohorts": 1167,
+    "excluded_version_counts": {
+      "CACHE_REPLAY_NOT_FORWARD": 230
+    }
+  },
+  "v43_model_inference": 0,
+  "return_labels_computed": 0,
+  "return_fit": 0,
+  "return_ic": 0,
+  "first_real_daily_cutoff": "2026-11-17T21:15:00+00:00"
+}

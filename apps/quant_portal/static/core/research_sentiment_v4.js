@@ -48,8 +48,36 @@
       if (recovery.latest_snapshot) {
         const snap = recovery.latest_snapshot;
         line(en()
-          ? `Latest ${snap.kind} snapshot: cutoff ${snap.as_of_utc}; generated ${snap.generated_at_utc}.${snap.kind === 'DEVELOPMENT_REPLAY' ? ' Replay is not a prospective signal.' : ' Signal is available no earlier than generation.'}`
-          : `最近 ${snap.kind} 快照：截止 ${snap.as_of_utc}；实际生成 ${snap.generated_at_utc}。${snap.kind === 'DEVELOPMENT_REPLAY' ? '开发回放不算前瞻信号。' : '信号不得早于实际生成时间使用。'}`);
+          ? `Legacy v4.2 cumulative ${snap.kind}: cutoff ${snap.as_of_utc}; generated ${snap.generated_at_utc}. Kept as a separate development definition.`
+          : `旧版 v4.2 累计口径 ${snap.kind}：截止 ${snap.as_of_utc}；生成 ${snap.generated_at_utc}。与日度信号分开保存。`);
+      }
+      const daily = chinese.v43 || {};
+      const dailyHead = document.createElement('h4');
+      dailyHead.textContent = en() ? 'Daily new-event tone · v4.3' : '日度新增事件语气 · v4.3';
+      content.appendChild(dailyHead);
+      line(en()
+        ? `Status: ${daily.state || 'pending'}; worker rule ${reliable.daily_snapshot_rule_version || 'not yet loaded'}; next cutoff ${reliable.daily_next_cutoff_utc || 'not scheduled'}.`
+        : `状态：${daily.state || '待首次快照'}；运行规则 ${reliable.daily_snapshot_rule_version || '尚未加载'}；下次截止 ${reliable.daily_next_cutoff_utc || '未安排'}。`);
+      const signal = daily.daily;
+      if (signal) {
+        const observed = (signal.companies || []).filter(x => x.n2_observed > 0);
+        line(en()
+          ? `Published ${signal.kind}: window (${signal.window_start_utc}, ${signal.scheduled_cutoff_utc}]; completed ${signal.completion_recorded_at_utc}; safely available ${signal.signal_available_at_utc}. ${observed.length} companies have newly observed groups. Coverage: ${signal.coverage?.initial_window || 'unknown'} / ${signal.coverage?.coverage || 'unknown'}. Labels: ${JSON.stringify(signal.label_status_counts || {})}.`
+          : `已发布 ${signal.kind}：窗口（${signal.window_start_utc}，${signal.scheduled_cutoff_utc}]；完成 ${signal.completion_recorded_at_utc}；可安全使用 ${signal.signal_available_at_utc}。${observed.length} 家公司有新增观察事件组。覆盖：${signal.coverage?.initial_window || '未知'} / ${signal.coverage?.coverage || '未知'}。标签：${JSON.stringify(signal.label_status_counts || {})}。`);
+        if (observed.length) {
+          const ul = document.createElement('ul');
+          ul.className = 'research-score-list';
+          observed.forEach(x => {
+            const li = document.createElement('li');
+            const tone = x.n1 === null ? (en() ? 'missing' : '缺失') : Number(x.n1).toFixed(3);
+            li.textContent = `${x.entity_id} · N1 ${tone} · N2 ${x.n2_observed} (${en() ? 'observed only' : '仅观察计数'}) · ${en() ? 'updates' : '修订'} ${x.update_count}`;
+            ul.appendChild(li);
+          });
+          content.appendChild(ul);
+        } else line(en() ? 'No new directly linked company group in this daily window; N1 is missing.' : '本日度窗口没有新增明确公司关联事件组；N1 为缺失。');
+      } else {
+        line(en() ? 'First real daily snapshot awaits the verified 16:15 New York cutoff. No replay is labeled prospective.'
+                  : '首次真实日度快照等待纽约时间 16:15 的已核验截止；开发回放不标为前瞻。');
       }
       if (chinese.rows && chinese.rows.length) {
         const list = document.createElement('ul');

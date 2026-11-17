@@ -1,0 +1,10 @@
+{
+  "schema": "news_sentiment_v43_postfreeze_mapping_revision_1",
+  "recorded_at_utc": "2026-11-17T08:36:10.4233835Z",
+  "reason": "Specify trading calendar separately for verified US security rows; leave unverified non-US entities without an inferred US calendar",
+  "path": "configs/news_sentiment_factor_v43_security_mapping_20261117.json",
+  "frozen_sha256": "9f5cf4eedbfd1da08d8646ce17c0b924077e0e2216a75a2bc21f06eb34eaa57e",
+  "revised_sha256": "6824f09c8608f6b61272e2677b490b7ad2250a897bcc61e63c01589e8c51100a",
+  "real_v43_snapshots_before_revision": 0,
+  "old_results_modified": false
+}

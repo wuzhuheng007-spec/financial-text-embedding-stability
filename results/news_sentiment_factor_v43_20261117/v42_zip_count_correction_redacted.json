@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_v43_v42_zip_count_correction_1",
+  "checked_at_utc": "2026-11-17T08:23:35.026874+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T16:23:35.026874+08:00",
+  "old_zip_sha256": "49512de019f13f8aa762d79200564bf49c74e5e96a2f26a4a54f8e294bcddf8f",
+  "old_index_sha256": "726883bb4644ed87112be008fd7d8269d2f69108cdef17da415991b3cdfd93f5",
+  "zip_total_entries": 45,
+  "zip_file_entries": 45,
+  "zip_unique_file_paths": 45,
+  "index_rows": 14,
+  "index_unique_paths": 13,
+  "duplicated_index_names": [
+    "snapshot_checks_redacted.json"
+  ],
+  "zip_crc_first_bad_member": null,
+  "prior_zip_and_index_unchanged": true
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_v43_owner_browser_acceptance_1",
+  "observed_during_utc": "2026-11-17T08:27:00Z..2026-11-17T08:29:00Z",
+  "url": "http://127.0.0.1:8765/",
+  "session": "EXISTING_LOGGED_IN_OWNER_NO_PASSWORD_ENTERED",
+  "scope": "V43_RESEARCH_PANEL_ONLY",
+  "views": [
+    {"language": "zh", "viewport_css_px": 1024, "page_scroll_width_css_px": 1009,
+     "daily_panel_visible": true, "cumulative_panel_separate": true, "horizontal_page_overflow": false},
+    {"language": "en", "viewport_css_px": 1024, "page_scroll_width_css_px": 1009,
+     "daily_panel_visible": true, "cumulative_panel_separate": true, "horizontal_page_overflow": false},
+    {"language": "zh", "viewport_css_px": 390, "page_scroll_width_css_px": 375,
+     "daily_panel_visible": true, "horizontal_page_overflow": false},
+    {"language": "en", "viewport_css_px": 390, "page_scroll_width_css_px": 375,
+     "daily_panel_visible": true, "horizontal_page_overflow": false}
+  ],
+  "daily_text_state": "PENDING_FIRST_DAILY_SNAPSHOT",
+  "limitations": ["Visual check preceded a backend-only publication-guard revision and final portal restart", "No actual scheduled v4.3 snapshot existed for a populated-state visual check", "Private screenshots are not included"]
+}

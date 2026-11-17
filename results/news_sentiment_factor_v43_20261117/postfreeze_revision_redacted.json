@@ -1,0 +1,25 @@
+{
+  "schema": "news_sentiment_v43_postfreeze_revision_1",
+  "recorded_at_utc": "2026-11-17T08:29:58.6178805Z",
+  "reason": "Prevent a publication witness committed after the promised availability time from being treated as readable; add isolated regression check",
+  "prior_frozen_lock": "results/news_sentiment_factor_v43_20261117/run_lock_redacted.json",
+  "changes": [
+    {
+      "path": "scripts/news_sentiment_factor_v43/daily.py",
+      "frozen_sha256": "63cdcffe67bebb91b1cd3e4eac8ff80fc0ad6183682f6f89ebc57e3b811dba53",
+      "revised_sha256": "546d8348daf6c4339cf6d3a2909f7c0efbb60af8662fca86cce04c6e3b678c90"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v43/verify_daily.py",
+      "frozen_sha256": "ce033e5394a1d94e736f1d9f7ea91a4343897386ae6f02fc7e7d8b8d36b38615",
+      "revised_sha256": "33549a3a151a9442779211380467daa956f93979648a53234407815517030a87"
+    },
+    {
+      "path": "apps/quant_portal/core/research_chinese_cache.py",
+      "frozen_sha256": "a27681c44d5c883b123466327de6d5bed2b10ac8e7af884a7a85c43a5106c46a",
+      "revised_sha256": "a74cedaf03cda78d4258f517be88ad810cfa5e2f47a88a560280c8273f71a265"
+    }
+  ],
+  "targeted_checks": "results/news_sentiment_factor_v43_20261117/targeted_checks_redacted.json",
+  "old_snapshots_modified": false
+}

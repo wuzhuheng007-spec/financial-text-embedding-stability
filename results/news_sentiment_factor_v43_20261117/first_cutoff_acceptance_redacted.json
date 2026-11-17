@@ -1,0 +1,13 @@
+{
+  "schema": "news_sentiment_v43_first_cutoff_acceptance_1",
+  "checked_at_utc": "2026-11-17T08:37:17.272391+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T16:37:17.272391+08:00",
+  "actual_daily_state": "PENDING_MARKET_CUTOFF",
+  "next_verified_cutoff_utc": "2026-11-17T21:15:00+00:00",
+  "worker_state": "RUNNING",
+  "worker_rule_version": "news_sentiment_factor_v43_protocol_1",
+  "worker_origin_utc": "2026-11-17T07:11:45.735104+00:00",
+  "real_scheduled_snapshot_count_at_check": 0,
+  "real_label_count_at_check": 0,
+  "outcome": "PENDING_REAL_CUTOFF_NO_REPLAY_PROMOTION"
+}

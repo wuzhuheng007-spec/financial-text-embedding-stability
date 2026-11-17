@@ -86,7 +86,8 @@ def v42_research_summary(root: Path) -> dict:
             witness = json.loads(private_state.read_text(encoding="utf-8")) if private_state.is_file() else {}
             worker = {k: status.get(k) for k in ("state", "heartbeat_at_utc", "last_success_at_utc",
                       "backlog", "daily_attempts", "daily_limit", "pause_reason", "snapshot_state",
-                      "next_cutoff_utc", "run_id")}
+                      "next_cutoff_utc", "run_id", "daily_snapshot_rule_version",
+                      "daily_snapshot_state", "daily_next_cutoff_utc", "last_daily_snapshot_id")}
             if worker["state"] in {"RUNNING", "LOADING_MODEL", "DAILY_BUDGET_PAUSED", "STARTING"}:
                 same = witness.get("run_id") == status.get("run_id") and (
                     _creation_filetime(witness.get("pid")) == witness.get("process_creation"))
@@ -128,6 +129,51 @@ def v42_research_summary(root: Path) -> dict:
     return result
 
 
+def v43_research_summary(root: Path) -> dict:
+    """Only publication-witnessed snapshots can be shown as available."""
+    result = {"state": "PENDING_FIRST_DAILY_SNAPSHOT", "daily": None,
+              "development_replay": None, "cumulative_v42_is_separate": True,
+              "source_scope": "observed Jin10/moomoo cache; continuity not proven",
+              "not_a_return_prediction": True}
+    queue = root / "artifacts/news_sentiment_factor_v42_20261117/queue.sqlite3"
+    if not queue.is_file():
+        return result
+    try:
+        with closing(sqlite3.connect(f"file:{queue.as_posix()}?mode=ro", uri=True, timeout=2)) as con:
+            con.row_factory = sqlite3.Row
+            if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='daily_snapshot_releases'").fetchone():
+                return result
+            now_utc = datetime.now(timezone.utc).isoformat()
+            for key, where in (("daily", "s.kind IN ('ON_TIME_SCHEDULED','LATE_SCHEDULED')"),
+                               ("development_replay", "s.kind='DEVELOPMENT_REPLAY'")):
+                row = con.execute("""SELECT s.snapshot_id,s.kind,s.window_start_utc,s.scheduled_cutoff_utc,
+                    s.generation_started_at_utc,s.coverage_json,r.signal_available_at_utc,
+                    c.completion_recorded_at_utc,w.release_commit_observed_at_utc
+                    FROM daily_snapshots s JOIN daily_snapshot_completions c USING(snapshot_id)
+                    JOIN daily_snapshot_releases r USING(snapshot_id)
+                    JOIN daily_snapshot_publication_witness w USING(snapshot_id)
+                    WHERE """ + where + " AND r.signal_available_at_utc<=? "
+                    "AND w.release_commit_observed_at_utc<=r.signal_available_at_utc "
+                    "ORDER BY s.scheduled_cutoff_utc DESC LIMIT 1", (now_utc,)).fetchone()
+                if row is None:
+                    continue
+                item = dict(row)
+                item["coverage"] = json.loads(item.pop("coverage_json"))
+                companies = con.execute("""SELECT entity_id,n1,n2_observed,n2_complete,update_count,coverage_state
+                    FROM daily_snapshot_company WHERE snapshot_id=? ORDER BY entity_id""",
+                    (item["snapshot_id"],)).fetchall()
+                item["companies"] = [dict(x) for x in companies]
+                item["label_status_counts"] = {x[0]: x[1] for x in con.execute(
+                    "SELECT status,COUNT(*) FROM daily_label_queue WHERE snapshot_id=? GROUP BY status",
+                    (item["snapshot_id"],))}
+                result[key] = item
+                if key == "daily":
+                    result["state"] = "AVAILABLE_DAILY_RESEARCH_CANDIDATE"
+    except (sqlite3.Error, OSError, ValueError, KeyError):
+        result["state"] = "DAILY_CACHE_UNAVAILABLE"
+    return result
+
+
 def chinese_research_summary(root: Path, *, debug: bool = False) -> dict:
     path = root / "artifacts/news_sentiment_factor_v41_20261117/chinese_tone.sqlite3"
     worker = root / "results/news_sentiment_factor_v41_20261117/worker_status_redacted.json"
@@ -141,6 +187,7 @@ def chinese_research_summary(root: Path, *, debug: bool = False) -> dict:
               "model_training_cutoff": "NOT_DISCLOSED",
               "no_return_prediction_or_verified_news_claim": True}
     result["v42"] = v42_research_summary(root)
+    result["v43"] = v43_research_summary(root)
     if worker.is_file():
         try:
             data = json.loads(worker.read_text(encoding="utf-8"))
