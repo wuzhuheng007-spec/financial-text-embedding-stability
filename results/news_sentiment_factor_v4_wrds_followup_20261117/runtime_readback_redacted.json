@@ -1,0 +1,15 @@
+{
+  "schema": "news_sentiment_factor_v4_wrds_followup_runtime_1",
+  "checked_at_utc": "2026-11-17T06:28:53Z",
+  "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/status_personal.ps1",
+  "portal": "RUNNING_HTTP_200",
+  "personal_feed": "RUNNING",
+  "jin10": "CONNECTED_WITH_POSSIBLE_PAGE_OVERLAP_GAP",
+  "moomoo_push": "CONNECTED_DELAY_UNKNOWN",
+  "moomoo_snapshot": "CONNECTED",
+  "quote_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+  "cached_news_items": 345,
+  "automatic_interpretation": "PAUSED_FOR_V17",
+  "v4_research_observer": "STOPPED_AFTER_BOUNDED_ACCEPTANCE",
+  "note": "Single-time local status readback. Process IDs, account identifiers, article content, quotes, and credentials are omitted; this does not establish that the services will remain available later."
+}

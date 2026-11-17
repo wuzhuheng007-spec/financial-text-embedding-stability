@@ -1,0 +1,47 @@
+{
+  "schema": "news_sentiment_factor_v4_wrds_followup_1",
+  "checked_at_utc": "2026-11-17T06:26:41Z",
+  "checked_at_asia_shanghai": "2026-11-17T14:26:41+08:00",
+  "baseline_commit": "6e197579505d9d763534dae8dff4ed613a9b99ec",
+  "frozen_v4_config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "scope": "Existing logged-in WRDS browser session; one RPA 1.0 Dow Jones and PR Equities query-form permission check. No data query submitted.",
+  "wrds": {
+    "query_form_url": "https://wrds-www.wharton.upenn.edu/pages/get-data/ravenpack-news-analytics-40/rpa-10-equities/rpa_1_0-DJPR-edition-equities/",
+    "observed_message": "Sorry, you do not have access to this Query Form",
+    "observed_explanation": "At present, your institution does not have access to this Query Form. You can view this Query Form, but you will not be able to submit a query.",
+    "required_product_id_shown": "ravenpack_dj",
+    "required_product_url": "https://wrds-www.wharton.upenn.edu/data-dictionary/ravenpack_dj",
+    "status_for_this_form": "NOT_AUTHORIZED",
+    "other_ravenpack_forms": "NOT_TESTED_AFTER_PERMISSION_DENIAL",
+    "data_queries_submitted": 0,
+    "articles_returned": 0,
+    "historical_title_or_body_access": "NOT_ESTABLISHED",
+    "local_private_screenshot_or_account_identifier_exported": false
+  },
+  "request_accounting": {
+    "prior_v4_provider_calls": 9,
+    "wrds_top_level_page_navigations_conservatively_debited": 4,
+    "wrds_query_form_permission_checks": 1,
+    "new_total_budget_debit": 13,
+    "frozen_total_max": 30,
+    "wrds_budget_debit": 4,
+    "frozen_wrds_max": 9,
+    "exact_browser_http_subrequest_count": "NOT_OBSERVABLE",
+    "note": "Four intentional top-level WRDS page navigations (home, catalogue, product page, query form) are conservatively debited. No query was submitted; no retry after the denial."
+  },
+  "owner_portal_readback": {
+    "url": "http://127.0.0.1:8765/#panel-research-sentiment",
+    "existing_owner_session_opened": true,
+    "observed_article_versions": 30,
+    "observed_english_title_candidates": 0,
+    "observed_prospective_versions": 0,
+    "observed_prospective_scores": 0,
+    "provider_calls_or_model_calls_from_readback": "NOT_NETWORK_TRACED; page code is cache-read-only"
+  },
+  "new_english_news_versions": 0,
+  "new_real_lm_scores": 0,
+  "new_real_finbert_scores": 0,
+  "new_qualified_prospective_scores": 0,
+  "return_labels_read": 0,
+  "conclusion": "The inspected WRDS RavenPack Dow Jones and PR Equities form is not authorized. This follow-up establishes neither access to other RavenPack forms nor any English article text. The original v4 receipts remain unchanged."
+}

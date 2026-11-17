@@ -1,3 +1,9 @@
+# 2026-11-17 — WRDS RavenPack logged-in entitlement follow-up
+
+The Dow Jones and PR Equities query form denied submission and listed `ravenpack_dj` as the required product. No data query, English article or real score was added. The original v4 receipts remain unchanged; other RavenPack editions were not tested. [English addendum](../../reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.en.md), [中文](../../reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.zh.md), [receipt](../../results/news_sentiment_factor_v4_wrds_followup_20261117/access_receipt_redacted.json).
+
+---
+
 # 2026-11-17 — English media-news factor v4 bounded source pilot
 
 Preserved v3 issuer-disclosure scores and live owner feeds. Nine moomoo news requests produced eight business successes and 80 returned rows, but only 30 distinct current non-English article versions; none belongs to the frozen 2025 windows. WRDS RavenPack entitlement was unverified and Massive credentials were absent, so no licensed English news archive was qualified. The first two online observations exposed a local DPAPI environment mismatch; a corrected 125-second observation made three successful requests and saw 30 duplicates, zero new English versions. Real LM/FinBERT news inference, prospective qualified scores, N1/N2 company-days, return fits and later-label reads were all zero. Added append-only private article-version storage, a bounded observer and an owner-only folded local research-tone panel; old Qwen interpretation remains paused and financial v2.5 stays `REJECTED_CANDIDATE`. [English report](../../reports/2026-11-17_news_sentiment_factor_v4.en.md), [中文](../../reports/2026-11-17_news_sentiment_factor_v4.zh.md), [ledger](../../results/news_sentiment_factor_v4_20261117/plan_execution.csv).

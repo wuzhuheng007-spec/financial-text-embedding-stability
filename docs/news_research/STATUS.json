@@ -1,10 +1,25 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.45",
+  "version": "1.46",
   "updated_date": "2026-11-17",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/sync-research-progress-20261113",
+  "news_sentiment_factor_v4_wrds_followup": {
+    "nature": "LOGGED_IN_WRDS_RAVENPACK_QUERY_FORM_ENTITLEMENT_CHECK",
+    "report_zh": "reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.zh.md",
+    "report_en": "reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.en.md",
+    "plan_actual": "results/news_sentiment_factor_v4_wrds_followup_20261117/plan_execution.csv",
+    "inspected_form": "RPA_1_0_DOW_JONES_AND_PR_EQUITIES",
+    "required_product_shown": "ravenpack_dj",
+    "form_status": "NOT_AUTHORIZED",
+    "other_ravenpack_forms": "NOT_TESTED",
+    "wrds_data_queries_submitted": 0,
+    "new_english_articles": 0,
+    "new_real_lm_or_finbert_scores": 0,
+    "new_qualified_prospective_scores": 0,
+    "original_v4_receipts": "UNCHANGED"
+  },
   "news_sentiment_factor_v4": {
     "nature": "BOUNDED_ENGLISH_MEDIA_SOURCE_PILOT_AND_PROSPECTIVE_OBSERVATION",
     "report_zh": "reports/2026-11-17_news_sentiment_factor_v4.zh.md",

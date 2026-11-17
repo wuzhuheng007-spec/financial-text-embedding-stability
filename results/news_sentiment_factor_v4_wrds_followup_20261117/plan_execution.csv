@@ -1,0 +1,6 @@
+phase,plan,actual,evidence,status
+P0,Preserve frozen v4 outputs and verify branch,HEAD and remote both 6e197579; original config and outputs unchanged,access_receipt_redacted.json,COMPLETE
+P1,Use the already logged-in WRDS session to verify actual RavenPack entitlement,The RPA 1.0 Dow Jones and PR Equities query form explicitly denied access and listed ravenpack_dj as required; no data query submitted,access_receipt_redacted.json,NOT_AUTHORIZED
+P2,Collect and score only if authorized English text exists,No new articles or English titles; 0 real LM or FinBERT scores and 0 prospective scores,access_receipt_redacted.json,BLOCKED_BY_INPUT
+P3,Read back the already logged-in owner panel and local service status,Observed 30 article versions 0 English title candidates and 0 prospective scores; portal feed Jin10 and moomoo running at one readback,access_receipt_redacted.json;runtime_readback_redacted.json,COMPLETE
+P4,Report and hand off without rewriting prior receipts,Separate addendum and redacted ZIP prepared; original v4 receipt kept intact,report_and_handoff,COMPLETE

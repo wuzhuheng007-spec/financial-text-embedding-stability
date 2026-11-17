@@ -1,5 +1,7 @@
 # 新闻来源接入 / News-source access
 
+2026-11-17 追加 / Follow-up: 用户登录后的 [RavenPack Dow Jones and PR Equities 查询表](https://wrds-www.wharton.upenn.edu/pages/get-data/ravenpack-news-analytics-40/rpa-10-equities/rpa_1_0-DJPR-edition-equities/) 明确拒绝提交查询，并列出所需产品 `ravenpack_dj`。This specific query form denied submission after sign-in and listed `ravenpack_dj` as required. Other editions were not tested. See the [separate redacted receipt](../../results/news_sentiment_factor_v4_wrds_followup_20261117/access_receipt_redacted.json); the initial 2026-11-14 scope statement below remains historical.
+
 Checked / 核对日期：2026-11-14（Asia/Shanghai）。Scope / 范围：公开文档、原作者固定版本，以及一次匿名有界 CSV 小样本读取；没有账户连接、全库下载或正式金融样本准入。Public documentation, pinned original-author releases and one anonymous bounded CSV sample; no account connection, full-corpus download or formal financial admission.
 
 | 候选 / Candidate | 已读事实 / Inspected fact | 下一步 / Next step |
@@ -8,7 +10,7 @@ Checked / 核对日期：2026-11-14（Asia/Shanghai）。Scope / 范围：公开
 | [原作者 FNSPID / Original-author FNSPID](https://huggingface.co/datasets/Zihan1004/FNSPID/tree/bf9189c41527198897d1af3e17b1a0095279fc45) | 已对 `Stock_news/nasdaq_exteral_data.csv` 匿名分段读取并保存本机样本；下文列出来源、许可差异与限额。An anonymous bounded sample of that exact file is retained locally; provenance, license conflict and limits follow. | 检查公司事件字段；核实历史身份及原始发布时间后才能讨论金融准入。Check company-event fields; verify historical identity and original timing before financial admission. |
 | [HF ML-Algo/FNSPID](https://huggingface.co/datasets/ML-Algo/FNSPID) | 公开预览的部分 Article 字段为空；不能推广为全库无正文。Some preview rows have null Article fields; this is not a corpus-wide result. | 核验具体分发版本、原始出处与小样本。Verify distribution identity, upstream source and a bounded sample. |
 | [金十官方 MCP / Official Jin10 MCP](https://mcp.jin10.com/app/doc.html) | 官方说明 Token 接入及快讯/资讯工具；本机配置已写入，后续新进程的有界认证与工具调用成功。Official guide documents token access and flash/news tools; the local config is written and a later bounded fresh-process call authenticated. | 两页快讯仍有下一游标；历史深度、长期稳定、配额和保存/展示条款未确认。Both flash pages still had a next cursor; history depth, stability, quota and storage/display terms remain unconfirmed. |
-| [WRDS RavenPack](https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/) | 官方有产品介绍，不能据此认定账户正文权限。Product listing does not establish account entitlement to text. | 使用实际查询回执核对。Check actual query receipts and fields. |
+| [WRDS RavenPack](https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/) | 产品目录可见；登录后 `ravenpack_dj` 查询表拒绝提交。The catalogue was visible, but the `ravenpack_dj` query form denied submission after sign-in. Other editions were not tested. | 如选择此来源，先核对机构授权，再检查正文、时间和保存条件。If selected, verify institutional entitlement, text fields, time evidence and retention rights. |
 
 ## Hugging Face
 
