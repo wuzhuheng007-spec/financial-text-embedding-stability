@@ -1,0 +1,27 @@
+{
+  "provider": "moomoo_webapi",
+  "method": "GET",
+  "endpoint": "https://webapi.moomoo.com/api/v1.0/news/search",
+  "parameters": {},
+  "started_at_utc": "2026-11-17T05:42:25.799684+00:00",
+  "completed_at_utc": "2026-11-17T05:42:26.091349+00:00",
+  "attempt": 1,
+  "retry": 0,
+  "http_status": 200,
+  "error_class": null,
+  "raw_sha256": "027dfdcfc6bd291364c0c72abbb7dac19a3a88ce2d1574d2e7b2bb4a27f088b6",
+  "bytes": 148,
+  "top_keys": [
+    "error",
+    "ret_code",
+    "ret_msg"
+  ],
+  "ret_code": -3,
+  "data_type": "NoneType",
+  "data_keys": null,
+  "item_array_key": null,
+  "item_count": null,
+  "first_item_keys": null,
+  "provider_requests_used": 1,
+  "historical_date_parameters_verified": false
+}

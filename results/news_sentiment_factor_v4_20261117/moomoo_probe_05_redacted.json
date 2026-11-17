@@ -1,0 +1,44 @@
+{
+  "provider": "moomoo_webapi",
+  "method": "GET",
+  "endpoint": "https://webapi.moomoo.com/api/v1.0/news/search",
+  "parameters": {
+    "keyword": "NVDA"
+  },
+  "started_at_utc": "2026-11-17T05:46:20.992193+00:00",
+  "completed_at_utc": "2026-11-17T05:46:22.678248+00:00",
+  "attempt": 1,
+  "retry": 0,
+  "accept_language": "en-US",
+  "http_status": 200,
+  "error_class": null,
+  "raw_sha256": "b8d762dd278573c16382669ebd2365a950911f2f0a6612c915ace01a36c3418e",
+  "bytes": 42224,
+  "top_keys": [
+    "data",
+    "ret_code",
+    "ret_msg"
+  ],
+  "ret_code": 0,
+  "data_type": "dict",
+  "data_keys": [
+    "items"
+  ],
+  "item_array_key": "items",
+  "item_count": 10,
+  "first_item_keys": [
+    "abstract",
+    "content",
+    "cover_image",
+    "news_id",
+    "news_type",
+    "publish_time",
+    "source",
+    "source_id",
+    "source_url",
+    "title",
+    "url"
+  ],
+  "provider_requests_used": 5,
+  "historical_date_parameters_verified": false
+}

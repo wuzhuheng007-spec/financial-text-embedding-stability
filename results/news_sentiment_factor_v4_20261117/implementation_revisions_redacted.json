@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_factor_v4_implementation_revisions_1",
+  "frozen_protocol_config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "note": "The source windows, provider request cap, pinned model and factor definitions stayed fixed. Implementation was repaired after observed engineering failures; the final code hash must not be backfilled into earlier attempts.",
+  "attempts": [
+    {"sequence": 1, "kind": "online_observation", "seconds": 240, "collector_environment": "research_venv", "provider_requests": 0, "local_auth_failures": 4, "receipt": "online_observation_attempt1_redacted.json"},
+    {"sequence": 2, "kind": "online_observation", "seconds": 0, "collector_environment": "research_venv_fail_fast", "provider_requests": 0, "local_auth_failures": 1, "receipt": "online_observation_attempt2_redacted.json"},
+    {"sequence": 3, "kind": "online_observation", "seconds": 125, "collector_environment": "local_python_DPAPI_plus_isolated_model_subprocess", "provider_requests": 3, "response_rows": 30, "new_versions": 0, "receipt": "online_observation_redacted.json"}
+  ],
+  "other_repairs": [
+    "Windows SQLite connections explicitly closed; synthetic tests first exposed locked temporary files",
+    "New York half-open date windows now convert to UTC and include DST test",
+    "Research venv lacked tzdata; an initial synthetic model smoke failed, then the same installed system IANA New York file was reused without a fixed UTC offset and the smoke passed",
+    "True supplier-response-read completion is added separately from preserved initial ingestion time for 30 versions",
+    "Research scorer uses the isolated fixed model environment only when eligible English text exists"
+  ],
+  "model_smoke": "One explicitly synthetic title exercised pinned LM and FinBERT plumbing; it is excluded from all real-news scoring counts",
+  "real_news_model_score_runs": 0
+}

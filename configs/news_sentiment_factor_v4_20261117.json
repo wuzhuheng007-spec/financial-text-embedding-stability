@@ -1,0 +1,61 @@
+{
+  "schema": "news_sentiment_factor_v4_protocol_1",
+  "frozen_at_stage": "BEFORE_NEW_PROVIDER_CALLS_AND_MODEL_SCORES",
+  "historical_windows_in_provider_market_timezone": [
+    ["2025-05-01", "2025-05-08"],
+    ["2025-08-01", "2025-08-08"],
+    ["2025-11-01", "2025-11-08"]
+  ],
+  "window_boundary": "half_open_start_inclusive_end_exclusive_America_New_York_calendar_dates; translate to UTC for interfaces with UTC timestamps",
+  "symbols": ["NVDA", "MU", "MSFT"],
+  "task_order": "for each window in listed order, rotate NVDA MU MSFT; never select windows by returns or search results",
+  "provider_order": ["moomoo_webapi", "wrds_ravenpack", "massive_benzinga"],
+  "request_budget": {
+    "total_max": 30,
+    "moomoo_webapi_max": 12,
+    "wrds_ravenpack_max": 9,
+    "massive_benzinga_max": 9,
+    "automatic_retries": 0,
+    "stop_provider_on_http": [401, 403, 429],
+    "max_response_bytes": 2000000,
+    "historical_articles_saved_max": 200,
+    "page_limit_if_supported": 25
+  },
+  "historical_time_tiers": ["VERSION_PROVEN_AT_TIME", "PUBLISH_OR_UPDATE_PROXY", "UNKNOWN"],
+  "prospective": {
+    "observe_seconds_max": 1800,
+    "new_versions_score_max": 50,
+    "daily_score_max": 50,
+    "worker_poll_seconds": 30,
+    "automatic_retries_per_version": 0,
+    "signal_available_at": "max(received_at,scored_at)",
+    "never_relabel_historical_replay_as_prospective": true
+  },
+  "scoring": {
+    "headline_first": true,
+    "body_separate_if_available": true,
+    "language": "English only; no Chinese machine translation in main scores",
+    "finbert_revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+    "finbert_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+    "finbert_labels": {"0": "positive", "1": "negative", "2": "neutral"},
+    "lm_dictionary_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+    "finbert_max_input_tokens_with_special": 256,
+    "no_silent_truncation": true,
+    "score": "P_positive_minus_P_negative",
+    "semantic_review_max": 30,
+    "semantic_review_selection": "before model scores or return access: source then symbol then content type then (published_at,article_id,version), take first 30"
+  },
+  "factor_protocol": {
+    "N1": "mean net tone of distinct article event clusters per company at daily signal cutoff; no archive completeness claim",
+    "N2": "number of distinct article event clusters per company at daily signal cutoff; missing coverage remains missing",
+    "paired_models": ["A_price_volume", "B_price_volume_plus_N2", "C_price_volume_plus_N1", "D_price_volume_plus_N2_N1"],
+    "primary_label": "next eligible session open to following session open, after scored_at and frozen cutoff",
+    "secondary_label": "five eligible sessions, purged across time split",
+    "signal_cutoff": "16:00 America/New_York regular-session close; only already scored content eligible",
+    "entry": "first subsequent regular-session open after cutoff with approved price and corporate-action evidence",
+    "transaction_cost": "NOT_ESTIMATED_NO_TRADING_PNL_THIS_RUN",
+    "split": "chronological train validation future test; overlap labels purged",
+    "no_return_read_this_run": true
+  },
+  "boundaries": ["no_Qwen", "no_return_fit_or_search", "no_private_source_publication", "v3_immutable", "financial_v25_REJECTED_CANDIDATE"]
+}

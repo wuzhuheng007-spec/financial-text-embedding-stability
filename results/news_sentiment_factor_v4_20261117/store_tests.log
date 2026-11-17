@@ -1,0 +1,9 @@
+test_duplicate_and_revision_are_append_only (tests.test_news_sentiment_factor_v4.ArticleVersionTests.test_duplicate_and_revision_are_append_only) ... ok
+test_language_gate_does_not_translate_chinese (tests.test_news_sentiment_factor_v4.ArticleVersionTests.test_language_gate_does_not_translate_chinese) ... ok
+test_new_york_window_converts_dst_boundary (tests.test_news_sentiment_factor_v4.ArticleVersionTests.test_new_york_window_converts_dst_boundary) ... ok
+test_old_published_time_cannot_be_prospective (tests.test_news_sentiment_factor_v4.ArticleVersionTests.test_old_published_time_cannot_be_prospective) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.121s
+
+OK

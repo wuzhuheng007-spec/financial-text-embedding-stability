@@ -1,0 +1,44 @@
+{
+  "provider": "moomoo_webapi",
+  "method": "GET",
+  "endpoint": "https://webapi.moomoo.com/api/v1.0/news/search",
+  "parameters": {
+    "keyword": "MSFT"
+  },
+  "started_at_utc": "2026-11-17T05:55:40.884715+00:00",
+  "completed_at_utc": "2026-11-17T05:55:42.370019+00:00",
+  "attempt": 1,
+  "retry": 0,
+  "accept_language": "NOT_SET",
+  "http_status": 200,
+  "error_class": null,
+  "raw_sha256": "398f13e3864058aa3a8faf542d984af8e5681b697a0a0198a91762a036ca28ed",
+  "bytes": 51129,
+  "top_keys": [
+    "data",
+    "ret_code",
+    "ret_msg"
+  ],
+  "ret_code": 0,
+  "data_type": "dict",
+  "data_keys": [
+    "items"
+  ],
+  "item_array_key": "items",
+  "item_count": 10,
+  "first_item_keys": [
+    "abstract",
+    "content",
+    "cover_image",
+    "news_id",
+    "news_type",
+    "publish_time",
+    "source",
+    "source_id",
+    "source_url",
+    "title",
+    "url"
+  ],
+  "provider_requests_used": 9,
+  "historical_date_parameters_verified": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "news_sentiment_factor_v4_visual_acceptance_redacted_1",
+  "checked_at_utc": "2026-11-17T06:13:18Z",
+  "page": "http://127.0.0.1:8765/",
+  "session": "existing_owner_login",
+  "checks": {
+    "english_desktop_panel": "PASS_VISIBLE_ZERO_SCORE_STATE",
+    "chinese_desktop_panel": "PASS_VISIBLE_ZERO_SCORE_STATE",
+    "chinese_390px_responsive_panel": "PASS_VISIBLE_NO_PANEL_OVERFLOW_OBSERVED",
+    "english_390px_responsive_panel": "PASS_VISIBLE_NO_PANEL_OVERFLOW_OBSERVED",
+    "owner_only_api": "PASS_SYNTHETIC_DJANGO_TEST",
+    "supplier_calls_from_page_refresh": "CODE_READ_ONLY_LOCAL_ENDPOINT_NOT_NETWORK_TRACED"
+  },
+  "observed_values": {
+    "article_versions": 30,
+    "english_title_candidates": 0,
+    "completed_scores": 0,
+    "prospective_scores": 0
+  },
+  "notes": "Private browser screenshots were inspected in the local session and are not included in the public handoff. Responsive mode was set to 390 CSS pixels; this is browser emulation, not physical phone testing."
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "news_sentiment_factor_v4_window_coverage_redacted_1",
+  "generated_at_utc": "2026-11-17T06:15:29.638195+00:00",
+  "input_config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "requested_symbol_window_cells": 9,
+  "actually_historical_queried_cells": 0,
+  "rows": [
+    {
+      "symbol": "NVDA",
+      "window_local_start": "2025-05-01",
+      "window_local_end_exclusive": "2025-05-08",
+      "window_start_utc": "2025-05-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-05-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MU",
+      "window_local_start": "2025-05-01",
+      "window_local_end_exclusive": "2025-05-08",
+      "window_start_utc": "2025-05-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-05-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MSFT",
+      "window_local_start": "2025-05-01",
+      "window_local_end_exclusive": "2025-05-08",
+      "window_start_utc": "2025-05-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-05-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "NVDA",
+      "window_local_start": "2025-08-01",
+      "window_local_end_exclusive": "2025-08-08",
+      "window_start_utc": "2025-08-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-08-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MU",
+      "window_local_start": "2025-08-01",
+      "window_local_end_exclusive": "2025-08-08",
+      "window_start_utc": "2025-08-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-08-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MSFT",
+      "window_local_start": "2025-08-01",
+      "window_local_end_exclusive": "2025-08-08",
+      "window_start_utc": "2025-08-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-08-08T04:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "NVDA",
+      "window_local_start": "2025-11-01",
+      "window_local_end_exclusive": "2025-11-08",
+      "window_start_utc": "2025-11-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-11-08T05:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MU",
+      "window_local_start": "2025-11-01",
+      "window_local_end_exclusive": "2025-11-08",
+      "window_start_utc": "2025-11-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-11-08T05:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    },
+    {
+      "symbol": "MSFT",
+      "window_local_start": "2025-11-01",
+      "window_local_end_exclusive": "2025-11-08",
+      "window_start_utc": "2025-11-01T04:00:00+00:00",
+      "window_end_exclusive_utc": "2025-11-08T05:00:00+00:00",
+      "qualified_article_versions": null,
+      "coverage_state": "NOT_QUERIED_HISTORICAL_CAPABILITY_UNVERIFIED",
+      "zero_news_inferred": false
+    }
+  ]
+}

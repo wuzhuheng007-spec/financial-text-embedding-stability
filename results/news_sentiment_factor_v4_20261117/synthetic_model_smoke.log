@@ -1,0 +1,1 @@
+{"schema": "news_v4_synthetic_model_plumbing_only", "synthetic_titles": 1, "finbert_inference": 1, "lm_scores": 1, "real_news_scores": 0, "status": "PASS"}

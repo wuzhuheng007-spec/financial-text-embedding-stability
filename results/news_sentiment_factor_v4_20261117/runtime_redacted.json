@@ -1,0 +1,14 @@
+{
+  "schema": "news_sentiment_factor_v4_runtime_redacted_1",
+  "checked_at_utc": "2026-11-17T06:14:29.321499+00:00",
+  "portal_state": "RUNNING",
+  "personal_feed_state": "RUNNING",
+  "jin10_state": "CONNECTED",
+  "moomoo_state": "CONNECTED_DELAY_UNKNOWN",
+  "moomoo_snapshot_state": "CONNECTED",
+  "quote_symbol_count": 6,
+  "cached_news_items": 344,
+  "old_automatic_qwen_queue": "PAUSED_FOR_V17",
+  "v4_prospective_observer": "STOPPED_AFTER_BOUNDED_ACCEPTANCE",
+  "v4_qualified_scores": 0
+}

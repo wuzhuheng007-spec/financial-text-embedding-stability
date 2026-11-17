@@ -1,0 +1,7 @@
+{
+  "schema": "news_v4_timezone_data_1",
+  "tzdata_version": "2026.2",
+  "iana_zone": "America/New_York",
+  "iana_zone_file_sha256": "d7f2206b3a45989fc9ad63d558922532fa7352280d5f87176bf1db79cb1d1fa9",
+  "research_venv_reuses_system_iana_file": true
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "news_sentiment_v4_coverage_redacted_1",
+  "generated_at_utc": "2026-11-17T06:04:09.555829+00:00",
+  "article_versions": 30,
+  "distinct_provider_articles": 30,
+  "candidate_english_headlines": 0,
+  "historical_window_versions": 0,
+  "prospective_versions": 0,
+  "late_first_receipt_versions": 0,
+  "completed_scores": 0,
+  "failed_scores": 0,
+  "prospective_completed_scores": 0,
+  "verified_distinct_event_clusters": 0,
+  "unresolved_article_id_proxy_groups": 30,
+  "valid_company_days": 0,
+  "independent_historical_dates": 0,
+  "company_day_reason": "NO_ELIGIBLE_HISTORICAL_ENGLISH_NEWS_OR_VERIFIED_COMPANY_ASSOCIATION",
+  "source_concentration": {
+    "moomoo_webapi": 30
+  },
+  "historical_archive_complete": false,
+  "historical_no_news_days_eligible": false
+}

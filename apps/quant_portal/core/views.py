@@ -163,6 +163,45 @@ def personal_feed_json(request):
 
 
 @login_required
+def research_sentiment_json(request):
+    """Owner-only read of the separate local v4 cache; no supplier/model call."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Research sentiment unavailable")
+    import sqlite3
+    from contextlib import closing
+    from pathlib import Path
+    from .personal_feed_cache import REPO_ROOT
+
+    db = REPO_ROOT / "artifacts/news_sentiment_factor_v4_20261117/news_research.sqlite3"
+    data = {"state": "NO_RESEARCH_CACHE", "article_versions": 0, "english_titles": 0,
+            "prospective_versions": 0, "completed_scores": 0, "qualified_prospective_scores": 0, "rows": [],
+            "meaning": "text tone only; not a return forecast or independently verified news"}
+    if db.is_file():
+        try:
+            with closing(sqlite3.connect(f"file:{db.as_posix()}?mode=ro", uri=True, timeout=2)) as con:
+                data.update({
+                    "state": "READY",
+                    "article_versions": con.execute("SELECT COUNT(*) FROM articles").fetchone()[0],
+                    "english_titles": con.execute("SELECT COUNT(*) FROM articles WHERE language='ENGLISH_CANDIDATE'").fetchone()[0],
+                    "prospective_versions": con.execute("SELECT COUNT(*) FROM articles WHERE observation_mode='PROSPECTIVE'").fetchone()[0],
+                    "completed_scores": con.execute("SELECT COUNT(*) FROM scores WHERE status='DONE'").fetchone()[0],
+                    "qualified_prospective_scores": con.execute("SELECT COUNT(*) FROM scores WHERE status='DONE' AND score_origin='PROSPECTIVE_RECEIPT'").fetchone()[0],
+                })
+                data["rows"] = [{"provider": r[0], "publisher": r[1], "score": r[2],
+                                  "scored_at_utc": r[3], "score_origin": r[4]}
+                    for r in con.execute("""SELECT s.provider,a.publisher,s.net_score,s.scored_at_utc,s.score_origin
+                        FROM scores s JOIN articles a ON (a.provider=s.provider AND a.article_id=s.article_id
+                        AND a.version=s.version) WHERE s.status='DONE' AND s.input_kind='TITLE'
+                        ORDER BY s.scored_at_utc DESC LIMIT 10""")]
+        except sqlite3.Error:
+            data["state"] = "CACHE_UNAVAILABLE"
+            data["rows"] = []
+    response = JsonResponse(data)
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
 @require_POST
 def personal_analysis_priority(request):
     if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:

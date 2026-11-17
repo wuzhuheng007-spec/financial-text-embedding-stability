@@ -1,0 +1,44 @@
+{
+  "provider": "moomoo_webapi",
+  "method": "GET",
+  "endpoint": "https://webapi.moomoo.com/api/v1.0/news/search",
+  "parameters": {
+    "keyword": "MU"
+  },
+  "started_at_utc": "2026-11-17T05:54:39.281646+00:00",
+  "completed_at_utc": "2026-11-17T05:54:40.832819+00:00",
+  "attempt": 1,
+  "retry": 0,
+  "accept_language": "NOT_SET",
+  "http_status": 200,
+  "error_class": null,
+  "raw_sha256": "b7251910ace3dd72c916ec91664433a9d893a12b0762e42805ada7460113b4d6",
+  "bytes": 40906,
+  "top_keys": [
+    "data",
+    "ret_code",
+    "ret_msg"
+  ],
+  "ret_code": 0,
+  "data_type": "dict",
+  "data_keys": [
+    "items"
+  ],
+  "item_array_key": "items",
+  "item_count": 10,
+  "first_item_keys": [
+    "abstract",
+    "content",
+    "cover_image",
+    "news_id",
+    "news_type",
+    "publish_time",
+    "source",
+    "source_id",
+    "source_url",
+    "title",
+    "url"
+  ],
+  "provider_requests_used": 8,
+  "historical_date_parameters_verified": false
+}

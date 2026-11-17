@@ -1,0 +1,18 @@
+{
+  "schema": "news_sentiment_v4_score_run_redacted_1",
+  "started_at_utc": "2026-11-17T06:05:58.214108+00:00",
+  "scorer_code_sha256": "73d92413c74d3798d46366b8eea7cb16471c69db42ab8c8f0079cf1706584fe6",
+  "config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "model_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+  "lm_dictionary_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "eligible_title_versions": 0,
+  "actual_finbert_inference_titles": 0,
+  "actual_lm_scores": 0,
+  "batch_calls": 0,
+  "failures": 0,
+  "score_origin": "OWNER_PRIVATE_SOURCE_TEXT_TONE_ONLY",
+  "only_prospective": false,
+  "daily_score_remaining_before": null,
+  "completed_at_utc": "2026-11-17T06:05:58.896855+00:00",
+  "model_load": "NOT_RUN_NO_ENGLISH_CANDIDATES"
+}

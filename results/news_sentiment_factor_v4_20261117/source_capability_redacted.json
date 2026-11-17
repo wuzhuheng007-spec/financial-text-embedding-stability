@@ -1,0 +1,36 @@
+{
+  "schema": "news_sentiment_factor_v4_source_capability_1",
+  "provider_order": ["moomoo_webapi", "wrds_ravenpack", "massive_benzinga"],
+  "moomoo_webapi": {
+    "status": "CURRENT_NEWS_SEARCH_READABLE_HISTORICAL_ENGLISH_NOT_ESTABLISHED",
+    "endpoint": "https://webapi.moomoo.com/api/v1.0/news/search",
+    "credential": "existing local quote:read DPAPI token; no value exported",
+    "provider_requests": 9,
+    "business_success": 8,
+    "business_failure": 1,
+    "returned_rows_including_repeats": 80,
+    "distinct_saved_article_versions": 30,
+    "english_title_versions": 0,
+    "date_range_parameters_verified": false,
+    "pagination_parameters_verified": false,
+    "public_news_schema_available": false,
+    "note": "One empty-parameter request returned a required-keyword error. Keyword requests returned current pages; en-US header did not change the NVDA payload hash. No undocumented history parameters were guessed."
+  },
+  "wrds_ravenpack": {
+    "status": "ENTITLEMENT_NOT_VERIFIED",
+    "provider_requests": 0,
+    "local_programmatic_credential_found": false,
+    "browser_note": "Public WRDS data catalogue was viewable; it does not prove this account has RavenPack access or licensed article text. No RavenPack query or export ran.",
+    "official_product_page": "https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/ravenpack/"
+  },
+  "massive_benzinga": {
+    "status": "NO_CONFIGURED_API_KEY_NO_REQUEST",
+    "provider_requests": 0,
+    "local_programmatic_credential_found": false,
+    "official_ticker_news": "https://massive.com/docs/rest/stocks/news",
+    "official_benzinga_news": "https://massive.com/docs/rest/partners/benzinga/news",
+    "required_next_access": "A licensed personal Stocks News or Benzinga News plan and API key with 2025 historical query rights, if this provider is selected; no purchase made"
+  },
+  "historical_media_news_qualified": false,
+  "private_raw_response_retained_locally": true
+}

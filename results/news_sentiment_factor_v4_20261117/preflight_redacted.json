@@ -1,0 +1,36 @@
+{
+  "schema": "news_sentiment_v4_preflight_private_1",
+  "run_at_utc": "2026-11-17T05:41:49.198597+00:00",
+  "run_at_asia_shanghai": "2026-11-17T13:41:49.198597+08:00",
+  "head": "563b8fc00e221ab7ade1fbe26e9fbdc276dc124f",
+  "config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "model_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+  "lm_dictionary_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "backup_roles": [
+    {
+      "role": "portal",
+      "status": "BACKED_UP",
+      "quick_check": "ok",
+      "bytes": 229376
+    },
+    {
+      "role": "personal_feed",
+      "status": "BACKED_UP",
+      "quick_check": "ok",
+      "bytes": 129011712
+    },
+    {
+      "role": "personal_news",
+      "status": "BACKED_UP",
+      "quick_check": "ok",
+      "bytes": 36864
+    },
+    {
+      "role": "personal_analysis",
+      "status": "BACKED_UP",
+      "quick_check": "ok",
+      "bytes": 471040
+    }
+  ],
+  "private_receipt_sha256": "a28b888a993c583afa20492c9c6ffb615f078256be1f929f6842736ce41ffcb8"
+}

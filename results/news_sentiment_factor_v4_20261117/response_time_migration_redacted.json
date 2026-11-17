@@ -1,0 +1,10 @@
+{
+  "schema": "news_v4_response_time_migration_redacted_1",
+  "migrated_at_utc": "2026-11-17T06:04:09.184006+00:00",
+  "article_versions_checked": 30,
+  "response_completion_found": 30,
+  "previously_present": 0,
+  "missing_response_evidence": 0,
+  "legacy_ingestion_time_preserved": true,
+  "private_audit_sha256": "c66c4dafa68e7826e96787bf5aa2e349a91932717adc71e64d4ae4040e428546"
+}

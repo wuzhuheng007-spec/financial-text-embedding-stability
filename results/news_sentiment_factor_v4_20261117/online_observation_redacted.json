@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_v4_online_observation_redacted_1",
+  "started_at_utc": "2026-11-17T05:53:37.100495+00:00",
+  "seconds_cap": 125,
+  "new_provider_requests": 3,
+  "response_items": 30,
+  "new_article_versions": 0,
+  "duplicate_versions": 30,
+  "new_english_headline_candidates": 0,
+  "prospective_scored_titles": 0,
+  "failures": 0,
+  "source": "moomoo_webapi_current_keyword_pages_not_historical_archive",
+  "stop_reason": "TIME_BOUND",
+  "completed_at_utc": "2026-11-17T05:55:42.417697+00:00",
+  "elapsed_seconds": 125.31300000002375,
+  "total_moomoo_requests_in_v4": 9
+}

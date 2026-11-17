@@ -1,0 +1,10 @@
+{
+  "schema": "news_v4_review_selection_redacted_1",
+  "frozen_at_utc": "2026-11-17T05:58:18.310398+00:00",
+  "config_sha256": "b0c421e8b5ea22eeb130f90f9c838428ece0be65cd27f95430b65b487e83d8e6",
+  "selection_private_sha256": "c41ee34ce99f63da79f7ebc0d309b6c0953028fafa470db833cf297490458ca4",
+  "selected_article_versions": 0,
+  "semantic_source_reviews_completed": 0,
+  "selection_rule": "before model scores or return access: source then symbol then content type then (published_at,article_id,version), take first 30",
+  "status": "NO_ELIGIBLE_ENGLISH_ARTICLES"
+}
