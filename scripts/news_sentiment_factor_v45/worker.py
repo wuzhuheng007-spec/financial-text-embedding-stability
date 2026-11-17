@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import msvcrt
 import os
 import sqlite3
 import subprocess
@@ -27,6 +26,27 @@ PUBLIC_STATE = PUBLIC / "daily_worker_status_redacted.json"
 LOCK = PRIVATE / "daily_worker.lock"
 STOP = PRIVATE / "daily_worker_stop.json"
 LOG = PRIVATE / "daily_worker_private.log"
+
+
+def _lock(handle) -> None:
+    """Guard the one daily writer on both Windows and local Linux filesystems."""
+    handle.seek(0)
+    if os.name == "nt":
+        import msvcrt
+        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def _unlock(handle) -> None:
+    handle.seek(0)
+    if os.name == "nt":
+        import msvcrt
+        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
 def _atomic(path: Path, value: dict) -> None:
@@ -116,9 +136,8 @@ def run() -> dict:
         if lock.tell() == 0:
             lock.write(b"0")
             lock.flush()
-        lock.seek(0)
         try:
-            msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+            _lock(lock)
         except OSError:
             return {"state": "ALREADY_RUNNING_LOCKED"}
         init()
@@ -187,8 +206,7 @@ def run() -> dict:
             state["heartbeat_at_utc"] = datetime.now(timezone.utc).isoformat()
             _atomic(STATE, state)
             _atomic(PUBLIC_STATE, status())
-            lock.seek(0)
-            msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+            _unlock(lock)
     return {"state": state["state"], "run_id": run_id}
 
 
