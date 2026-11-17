@@ -1,0 +1,20 @@
+{
+  "schema": "sentiment_v3_score_run_redacted_1",
+  "completed_at_utc": "2026-11-17T04:31:33.334617+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "input_sha256": "83448023f46028c88dda7fd87167d8a2ebaf8dc12cb07d261555e5d13ad0a8fe",
+  "scorer_sha256": "72fab3db54cf154d3f9e727e872e9c255ceee8e256c9a3871b43758ff144e378",
+  "scores_sha256": "c59389f8e53f567dc6dac83b0abe20fac19f8233f92f0f6a3a61f878d542adbc",
+  "actual_blocks_scored": 1728,
+  "events": 46,
+  "actual_batches": 108,
+  "failed_blocks": 0,
+  "duration_seconds": 236.9529999999795,
+  "device": "cpu",
+  "torch_version": "2.9.1+cpu",
+  "peak_cuda_allocated_bytes": null,
+  "finbert_revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+  "lexicon_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "model_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+  "meaning": "source text tone; not issuer fact certification or return probability"
+}

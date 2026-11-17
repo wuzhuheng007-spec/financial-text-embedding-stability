@@ -1,0 +1,56 @@
+{
+  "schema": "sentiment_v3_english_news_coverage_1",
+  "scope": "2025-04-01_to_2026-03-31_training_window",
+  "purpose": "source access inventory; not an assertion of complete news coverage",
+  "rows": [
+    {
+      "source": "SEC issuer earnings EX-99.1",
+      "source_type": "OFFICIAL_DISCLOSURE_NOT_MEDIA_NEWS",
+      "access_receipt": "results/news_sentiment_factor_v3_20261117/archive_collection_redacted.json",
+      "actual_full_text_events": 46,
+      "dates": "35 distinct SEC acceptance dates in training window",
+      "time_field": "SEC accession acceptance timestamp checked against complete submission header",
+      "version": "accession and exhibit hash saved; historical first-site visibility unproven",
+      "full_text": "YES_FOR_SELECTED_EXHIBITS",
+      "gap": "quarterly issuer disclosures do not constitute a complete English media news archive",
+      "verified_access_condition": "bounded SEC public request with declared user agent"
+    },
+    {
+      "source": "moomoo WebAPI news search",
+      "source_type": "MEDIA_SEARCH_CANDIDATE",
+      "access_receipt": "results/market_observer_historical_20261115/news_official_redacted.json",
+      "actual_first_page_rows": 10,
+      "training_window_rows_on_that_page": 0,
+      "time_field": "publish_time field returned; historical date-filter and pagination semantics unverified",
+      "version": "news_id and source fields returned; complete revision history unverified",
+      "full_text": "CONTENT_FIELD_PRESENT_COMPLETENESS_UNVERIFIED",
+      "gap": "one first page cannot establish historical coverage",
+      "verified_access_condition": "one existing authenticated read-only business response; continuous historical archive access not established"
+    },
+    {
+      "source": "original-author FNSPID sample",
+      "source_type": "THIRD_PARTY_DATASET_CANDIDATE",
+      "access_receipt": "docs/news_research/source_access.md",
+      "actual_sample": "one anonymous first-record sample at pinned source revision",
+      "time_field": "Date present, many observed values at UTC midnight; precise publication instant unverified",
+      "version": "pinned dataset revision, underlying publisher revisions unverified",
+      "full_text": "Article column exists; corpus-wide completeness unverified",
+      "gap": "publisher origin, permissions and full date coverage remain unqualified",
+      "verified_access_condition": "bounded anonymous sample only; no qualified full archive"
+    },
+    {
+      "source": "Jin10 owner feed",
+      "source_type": "CHINESE_PROVIDER_REPORTS_SEPARATE_FROM_ENGLISH_FINBERT",
+      "access_receipt": "results/news_sentiment_factor_v1_20261117/source_probe_redacted.json",
+      "actual_probe": "bounded keyword results and a live owner cache, not an English archive",
+      "time_field": "provider publication time and first local receipt are separate",
+      "version": "owner cache retains news versions; historical completeness unverified",
+      "full_text": "PRIVATE_SOURCE_TEXT_NOT_REPUBLISHED",
+      "gap": "no verified full-period date-query coverage; Chinese text is not input to English FinBERT",
+      "verified_access_condition": "owner-only local connection; no general redistribution conclusion"
+    }
+  ],
+  "complete_english_media_archive": false,
+  "historical_media_attention_or_no_news_days_admitted": false,
+  "prospective_shadow_scoring": "NOT_RUN_THIS_TURN_EXISTING_VERSIONED_ENTRY_PRESERVED"
+}

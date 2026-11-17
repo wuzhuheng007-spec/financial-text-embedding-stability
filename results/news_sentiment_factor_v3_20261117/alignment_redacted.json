@@ -1,0 +1,16 @@
+{
+  "schema": "sentiment_v3_alignment_redacted_1",
+  "completed_at_utc": "2026-11-17T04:31:43.621237+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "align_code_sha256": "04b4743fa6473bbf95a533cecb16207df4464f98b296672ea2cb5cef5ab86549",
+  "price_preflight_sha256": "ef361d43999e785029fe865b40e0acba2af04e80e301e4f455924bb04e0dc646",
+  "event_alignment_sha256": "175b5d1c3d06f850af8609e54d6b70bf2cbc476af79c64864642dc56572401cc",
+  "events": 46,
+  "eligible_1d": 46,
+  "eligible_5d": 39,
+  "exclusions": {
+    "5d:CORPORATE_ACTION_IN_RETURN_WINDOW": 7
+  },
+  "half_session_step_rule": "MORNING counts as one actual session",
+  "strict_first_visibility_proven": false
+}

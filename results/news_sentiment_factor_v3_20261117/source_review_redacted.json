@@ -1,0 +1,50 @@
+{
+  "schema": "sentiment_v3_source_review_redacted_1",
+  "reviewed_at_utc": "2026-11-17T04:19:51.962986+00:00",
+  "source_review_private_sha256": "8eb54b982c122d5854a6bf782d0e0fec8755c89fa0c511a36e86411607a57118",
+  "source_catalog_sha256": "b89e172838cc89f4417472fe9ec93cd025fea1f568f3ece1b389317b6fd758bb",
+  "review_status_counts": {
+    "EXCLUDE_OPERATING_DELIVERIES_NOT_EARNINGS": 2,
+    "ACCEPT_EARNINGS_EX99_1_SOURCE_HEADING": 46
+  },
+  "accepted_events": 46,
+  "accepted_issuer_counts": {
+    "TSLA": 2,
+    "GOOGL": 4,
+    "INTC": 4,
+    "MSFT": 4,
+    "META": 4,
+    "AMZN": 4,
+    "AAPL": 4,
+    "AMD": 4,
+    "SNDK": 4,
+    "NVDA": 4,
+    "AVGO": 4,
+    "MU": 4
+  },
+  "accepted_distinct_dates": 35,
+  "potential_F2_events": 22,
+  "source_only_date_fold_feasibility": [
+    {
+      "cut_fraction": 0.5,
+      "cut_date": "2025-09-23",
+      "events_before": 23,
+      "events_from_cut": 23
+    },
+    {
+      "cut_fraction": 0.65,
+      "cut_date": "2025-11-06",
+      "events_before": 31,
+      "events_from_cut": 15
+    },
+    {
+      "cut_fraction": 0.8,
+      "cut_date": "2026-01-29",
+      "events_before": 38,
+      "events_from_cut": 8
+    }
+  ],
+  "reference_type": "CODEX_REVIEW_PRE_OUTCOME_HEAD_AND_PREFIX_NOT_INDEPENDENT_GOLD",
+  "strict_historical_first_visibility": "NOT_PROVEN",
+  "returns_read": false
+}

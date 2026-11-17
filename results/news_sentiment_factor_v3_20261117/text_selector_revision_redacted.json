@@ -1,0 +1,31 @@
+{
+  "schema": "sentiment_v3_text_selector_revision_redacted_1",
+  "created_at_utc": "2026-11-17T04:36:00.964941+00:00",
+  "versions": [
+    {
+      "version": "candidate_v1",
+      "private_input_sha256": "4b72b49fba039d05ac7459db8ca831719423fcf81ea03b673bac9afdc498a326",
+      "receipt_sha256": "606d26018980857aa3cc1b615062cf092ceb5a35177114c3b1b7298c15d7b164",
+      "blocks": 1962,
+      "source_only_reason": "First source-only draft; dividend text was misclassified as guidance."
+    },
+    {
+      "version": "candidate_v2",
+      "private_input_sha256": "9a569dcf0baf8ecd5eddfe79f7b553826fc6c45fb2e26044b4b9c65215072cd1",
+      "receipt_sha256": "0baceaffec0c0ff269e9e791a261519c8306d25d94b7e313d60cd3363f840f84",
+      "blocks": 1899,
+      "source_only_reason": "Guidance keyword corrected before returns; large Tesla paragraph inherited one section across unrelated chunks."
+    },
+    {
+      "version": "frozen_scored",
+      "private_input_sha256": "83448023f46028c88dda7fd87167d8a2ebaf8dc12cb07d261555e5d13ad0a8fe",
+      "receipt_sha256": "8f155c90d9e95b0ad9531c72a7541e24ba8e39ac37d07512eff783bb99f8734a",
+      "blocks": 1728,
+      "source_only_reason": "Classify each bounded chunk, exclude table-of-contents/dense numeric chunks, preserve location; only this version scored."
+    }
+  ],
+  "changes_made_before_new_return_alignment": true,
+  "candidate_scores_or_returns_used_for_selection": false,
+  "old_v2_inputs_and_scores_untouched": true,
+  "remaining_limit": "keyword section classification and source-language tone are not independent semantic certification"
+}

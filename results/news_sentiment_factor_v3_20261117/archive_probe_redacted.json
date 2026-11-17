@@ -1,0 +1,32 @@
+{
+  "schema": "sentiment_v3_archive_redacted_1",
+  "created_at_utc": "2026-11-17T04:16:46.649564+00:00",
+  "scope": "PROBE",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "metadata_sha256": "dfae7faecdc8f1bd2a648cd09194c7ee934a047da4ae091bb4c19dd31f804852",
+  "private_manifest_sha256": "59cbcc859939cd4a58c8bc1bc7d06c5d5f31b17ed6e360c2d6acbb31439ebb4a",
+  "requests_cumulative": 15,
+  "bytes_cumulative": 2524151,
+  "attempted_events": 1,
+  "status_counts": {
+    "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 1
+  },
+  "issuer_status_counts": {
+    "NVDA": {},
+    "MU": {},
+    "AAPL": {},
+    "MSFT": {},
+    "AMZN": {},
+    "GOOGL": {},
+    "META": {},
+    "TSLA": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 1
+    },
+    "AMD": {},
+    "AVGO": {},
+    "INTC": {},
+    "SNDK": {}
+  },
+  "source_stopped": false,
+  "no_outcome_labels_read": true
+}

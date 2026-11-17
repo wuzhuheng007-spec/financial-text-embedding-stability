@@ -1,0 +1,20 @@
+{
+  "schema": "sentiment_v3_score_preflight_1",
+  "checked_at_utc": "2026-11-17T04:26:22.769710+00:00",
+  "input_sha256": "9a569dcf0baf8ecd5eddfe79f7b553826fc6c45fb2e26044b4b9c65215072cd1",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "scorer_sha256": "72fab3db54cf154d3f9e727e872e9c255ceee8e256c9a3871b43758ff144e378",
+  "lexicon_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+  "weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+  "tokenizer_files_sha256": {
+    "config.json": "f6449ddda85eb726207a40be59c0cd3bd4b142ccb27298d5e45f9ae3396b1abe",
+    "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+    "tokenizer_config.json": "ffc7913f6084b138dad68de5a0c2f0ee25ac983709260901e01f53be5796b9d9",
+    "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+  },
+  "blocks": 1899,
+  "maximum_actual_tokens": 256,
+  "over_budget": 0,
+  "over_budget_ids": [],
+  "ready": true
+}

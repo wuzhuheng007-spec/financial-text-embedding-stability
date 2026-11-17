@@ -1,0 +1,59 @@
+{
+  "schema": "news_sentiment_factor_v3_protocol_revision_1",
+  "frozen_scope": "2025-04-01_to_2026-03-31_training_only",
+  "issuer_order": ["NVDA", "MU", "AAPL", "MSFT", "AMZN", "GOOGL", "META", "TSLA", "AMD", "AVGO", "INTC", "SNDK"],
+  "event_definition": "one SEC 8-K Item 2.02 accession with a source-verified earnings EX-99.1; at most first four chronologically per issuer; main filing and exhibit share one event",
+  "selection_order": ["SEC acceptance time", "accession number"],
+  "source_request_budget": {
+    "sec_total": 115,
+    "sec_ticker_index": 1,
+    "sec_submissions_max": 12,
+    "sec_archive_max": 102,
+    "moomoo_total": 30,
+    "retries": 0,
+    "sec_min_interval_seconds": 0.8,
+    "timeout_seconds": 25,
+    "per_response_max_bytes": 8000000,
+    "aggregate_max_bytes": 200000000,
+    "stop_source_on_http": [401, 403, 429]
+  },
+  "source_time_tiers": ["ACTUAL_PROSPECTIVE_RECEIPT", "SEC_ACCEPTANCE_ANCHOR", "ANNOUNCEMENT_DATE_PROXY"],
+  "text_selection": {
+    "sections": ["FINANCIAL_REVIEW", "OPERATING_DISCUSSION", "GUIDANCE", "RISK_OR_CONDITIONS"],
+    "max_finbert_tokens_including_special": 256,
+    "no_truncation": true,
+    "event_weight": "equal_section_mean_over_present_sections; equal_block_mean_within_section",
+    "no_reference_answers_or_returns": true
+  },
+  "models": {
+    "lm_dictionary_sha256": "e2d1328682bab7d2187684fb9f5420bb730401c9eefc00daf835edd203f4859d",
+    "finbert_revision": "54bddcea2cca580dd1df6a88d33242dcf4c61a71",
+    "finbert_weight_sha256": "e15a7b5738df7f17553399b6d94c6e2ff69c89245d066e8e5d183f5803a554e3",
+    "finbert_label_map": {"0": "positive", "1": "negative", "2": "neutral"},
+    "score_direction": "positive_minus_negative"
+  },
+  "factors": {
+    "F1": "event_section_equal_weight_net_tone",
+    "F2": "F1_minus_mean_of_prior_two_same_issuer_same_type_events",
+    "minimum_prior_for_F2": 2,
+    "count_feature": "number_of_distinct_earnings_accessions_in_current_event; degenerate_if_all_one"
+  },
+  "evaluation": {
+    "price_features": ["prior_session_open_to_close_return", "prior_session_log_volume"],
+    "model": "pooled_ridge_with_intercept",
+    "ridge_alpha": 10.0,
+    "standardize_within_train_fold_only": true,
+    "minimum_pooled_events_for_fit": 24,
+    "minimum_distinct_event_dates_for_fit": 18,
+    "minimum_train_events_per_fold": 16,
+    "minimum_test_events_per_fold": 4,
+    "folds": "expanding_event_date_blocks_at_50_65_80_percent_with_train_purge_for_5_day_label_overlap",
+    "entry": "wait one complete NYSE regular session after SEC acceptance ET date; enter next trading session open",
+    "exit": "open_after_1_or_5_actual_trading_sessions_including_half_days",
+    "company_action": "exclude_unknown_or_window_with_split_or_dividend_effective_date",
+    "resampling": "date_group_moves_together; no_precise_interval_if_fewer_than_8_distinct_test_dates",
+    "candidate_direction": "not_reoriented_after_returns",
+    "seed": 1729
+  },
+  "notices": ["protocol_revision_not_v2_relabel", "purposeful_watchlist_development", "no_2026_April_July_labels", "no_live_demo_changes", "no_Qwen_calls"]
+}

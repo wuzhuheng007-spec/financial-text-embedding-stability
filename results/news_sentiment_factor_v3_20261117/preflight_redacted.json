@@ -1,0 +1,20 @@
+{
+  "schema": "sentiment_v3_pre_network_freeze_1",
+  "frozen_at_utc": "2026-11-17T04:15:11.861215+00:00",
+  "git_head": "90d9f091cf60de23860b3fd03a711b16be1183c3",
+  "sha256": {
+    "configs/news_sentiment_factor_v3_20261117.json": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+    "scripts/news_sentiment_factor_v3/source.py": "81b038207998f1d94d6b4f50d221c98fa68aa505e3a4956c31f27eb7da9edfb1",
+    "scripts/news_sentiment_factor_v2/corpus.py": "239f4aa54fb0b3fca1e19da54bb09036f6a988eb988c34337a5b79be7a11cbd2",
+    "scripts/news_sentiment_factor_v2/score.py": "e964d52ca4de948f0d753336214964be912acd49c3b93930ab8db11d232e6854",
+    "scripts/news_sentiment_factor_v2/evaluate.py": "3eead8ffc4ba9a4a5d2ce587ac5081a975784365bae7134c281bfaa70d1407da",
+    "artifacts/market_observer_official_20261115/corpus_manifest.json": "7b81012cdd41a4e9a5ea9c7c97eb521f03ffd4365127ad681ee113924c6dbbad"
+  },
+  "new_request_budget": {
+    "SEC_total": 115,
+    "moomoo_total": 30,
+    "retries": 0
+  },
+  "outcome_labels_read": false,
+  "old_v2_outputs": "IMMUTABLE"
+}

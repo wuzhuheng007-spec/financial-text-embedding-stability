@@ -1,0 +1,1064 @@
+{
+  "schema": "sentiment_v3_text_freeze_redacted_1",
+  "frozen_at_utc": "2026-11-17T04:27:12.526601+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "source_review_sha256": "8eb54b982c122d5854a6bf782d0e0fec8755c89fa0c511a36e86411607a57118",
+  "selector_sha256": "bef9e4757ea0208c87272723b692cd7ec798574eb184ff76d824e7c803a1fbb6",
+  "input_sha256": "83448023f46028c88dda7fd87167d8a2ebaf8dc12cb07d261555e5d13ad0a8fe",
+  "events": 46,
+  "blocks": 1728,
+  "sections": {
+    "FINANCIAL_REVIEW": 632,
+    "OPERATING_DISCUSSION": 493,
+    "RISK_OR_CONDITIONS": 384,
+    "GUIDANCE": 219
+  },
+  "aggregate_selection_counts": {
+    "all_unique_narrative_nodes": 3303,
+    "excluded_short_or_non_english": 1229,
+    "excluded_table_or_contents_like_chunk": 55,
+    "selected_blocks_FINANCIAL_REVIEW": 632,
+    "selected_blocks_OPERATING_DISCUSSION": 493,
+    "selected_blocks_RISK_OR_CONDITIONS": 384,
+    "selected_nodes_FINANCIAL_REVIEW": 585,
+    "selected_nodes_RISK_OR_CONDITIONS": 261,
+    "selected_nodes_OPERATING_DISCUSSION": 447,
+    "excluded_unclassified_chunk": 793,
+    "selected_blocks_GUIDANCE": 219,
+    "selected_nodes_GUIDANCE": 196
+  },
+  "event_coverage": [
+    {
+      "event_id": "0001628280-25-018851",
+      "symbol": "TSLA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 31,
+        "excluded_short_or_non_english": 5,
+        "excluded_table_or_contents_like_chunk": 27,
+        "selected_blocks_FINANCIAL_REVIEW": 21,
+        "selected_blocks_OPERATING_DISCUSSION": 30,
+        "selected_blocks_RISK_OR_CONDITIONS": 22,
+        "selected_nodes_FINANCIAL_REVIEW": 8,
+        "selected_nodes_RISK_OR_CONDITIONS": 7,
+        "selected_nodes_OPERATING_DISCUSSION": 6,
+        "excluded_unclassified_chunk": 42,
+        "selected_blocks_GUIDANCE": 3,
+        "selected_nodes_GUIDANCE": 2
+      }
+    },
+    {
+      "event_id": "0001652044-25-000040",
+      "symbol": "GOOGL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 76,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 28,
+        "selected_nodes_FINANCIAL_REVIEW": 28,
+        "excluded_unclassified_chunk": 15,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 4
+      }
+    },
+    {
+      "event_id": "0000050863-25-000070",
+      "symbol": "INTC",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 133,
+        "excluded_short_or_non_english": 50,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "selected_blocks_GUIDANCE": 13,
+        "selected_nodes_GUIDANCE": 10,
+        "excluded_unclassified_chunk": 31,
+        "selected_blocks_OPERATING_DISCUSSION": 17,
+        "selected_nodes_OPERATING_DISCUSSION": 17,
+        "selected_blocks_RISK_OR_CONDITIONS": 20,
+        "selected_nodes_RISK_OR_CONDITIONS": 20
+      }
+    },
+    {
+      "event_id": "0000950170-25-061032",
+      "symbol": "MSFT",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 84,
+        "excluded_short_or_non_english": 20,
+        "selected_blocks_OPERATING_DISCUSSION": 19,
+        "selected_nodes_OPERATING_DISCUSSION": 19,
+        "excluded_unclassified_chunk": 14,
+        "selected_blocks_FINANCIAL_REVIEW": 18,
+        "selected_nodes_FINANCIAL_REVIEW": 18,
+        "selected_blocks_RISK_OR_CONDITIONS": 13,
+        "selected_nodes_RISK_OR_CONDITIONS": 13
+      }
+    },
+    {
+      "event_id": "0001326801-25-000050",
+      "symbol": "META",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 58,
+        "excluded_short_or_non_english": 26,
+        "selected_blocks_FINANCIAL_REVIEW": 10,
+        "selected_nodes_FINANCIAL_REVIEW": 10,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1,
+        "excluded_unclassified_chunk": 16,
+        "selected_blocks_GUIDANCE": 4,
+        "selected_nodes_GUIDANCE": 4,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001018724-25-000034",
+      "symbol": "AMZN",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 91,
+        "excluded_short_or_non_english": 29,
+        "selected_blocks_FINANCIAL_REVIEW": 14,
+        "selected_nodes_FINANCIAL_REVIEW": 14,
+        "selected_blocks_OPERATING_DISCUSSION": 27,
+        "selected_nodes_OPERATING_DISCUSSION": 27,
+        "selected_blocks_GUIDANCE": 5,
+        "selected_nodes_GUIDANCE": 5,
+        "excluded_unclassified_chunk": 14,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0000320193-25-000055",
+      "symbol": "AAPL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 30,
+        "excluded_short_or_non_english": 16,
+        "selected_blocks_FINANCIAL_REVIEW": 4,
+        "selected_nodes_FINANCIAL_REVIEW": 4,
+        "selected_blocks_OPERATING_DISCUSSION": 4,
+        "selected_nodes_OPERATING_DISCUSSION": 4,
+        "excluded_unclassified_chunk": 5,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 1
+      }
+    },
+    {
+      "event_id": "0000002488-25-000045",
+      "symbol": "AMD",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 80,
+        "excluded_short_or_non_english": 39,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_RISK_OR_CONDITIONS": 11,
+        "selected_nodes_RISK_OR_CONDITIONS": 6,
+        "selected_blocks_OPERATING_DISCUSSION": 12,
+        "selected_nodes_OPERATING_DISCUSSION": 12,
+        "excluded_unclassified_chunk": 20,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2
+      }
+    },
+    {
+      "event_id": "0002023554-25-000021",
+      "symbol": "SNDK",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 60,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 10,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_GUIDANCE": 12,
+        "selected_nodes_GUIDANCE": 9,
+        "excluded_unclassified_chunk": 12,
+        "selected_blocks_OPERATING_DISCUSSION": 9,
+        "selected_nodes_OPERATING_DISCUSSION": 9,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 2
+      }
+    },
+    {
+      "event_id": "0001045810-25-000115",
+      "symbol": "NVDA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 73,
+        "selected_blocks_FINANCIAL_REVIEW": 17,
+        "selected_nodes_FINANCIAL_REVIEW": 15,
+        "selected_blocks_OPERATING_DISCUSSION": 9,
+        "selected_nodes_OPERATING_DISCUSSION": 7,
+        "excluded_unclassified_chunk": 34,
+        "excluded_short_or_non_english": 17,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001730168-25-000061",
+      "symbol": "AVGO",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 59,
+        "excluded_short_or_non_english": 21,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "excluded_unclassified_chunk": 10,
+        "selected_blocks_GUIDANCE": 11,
+        "selected_nodes_GUIDANCE": 11,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 6
+      }
+    },
+    {
+      "event_id": "0000723125-25-000019",
+      "symbol": "MU",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 52,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "selected_blocks_GUIDANCE": 3,
+        "selected_nodes_GUIDANCE": 3,
+        "excluded_unclassified_chunk": 5,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 4,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1
+      }
+    },
+    {
+      "event_id": "0001652044-25-000056",
+      "symbol": "GOOGL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 70,
+        "excluded_short_or_non_english": 28,
+        "selected_blocks_FINANCIAL_REVIEW": 29,
+        "selected_nodes_FINANCIAL_REVIEW": 29,
+        "excluded_unclassified_chunk": 13,
+        "selected_blocks_RISK_OR_CONDITIONS": 5,
+        "selected_nodes_RISK_OR_CONDITIONS": 3,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1
+      }
+    },
+    {
+      "event_id": "0001628280-25-035738",
+      "symbol": "TSLA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 29,
+        "excluded_short_or_non_english": 5,
+        "excluded_table_or_contents_like_chunk": 28,
+        "selected_blocks_FINANCIAL_REVIEW": 21,
+        "excluded_unclassified_chunk": 49,
+        "selected_blocks_OPERATING_DISCUSSION": 26,
+        "selected_blocks_RISK_OR_CONDITIONS": 16,
+        "selected_nodes_FINANCIAL_REVIEW": 8,
+        "selected_nodes_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_OPERATING_DISCUSSION": 6,
+        "selected_blocks_GUIDANCE": 1,
+        "selected_nodes_GUIDANCE": 1
+      }
+    },
+    {
+      "event_id": "0000050863-25-000107",
+      "symbol": "INTC",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 132,
+        "excluded_short_or_non_english": 45,
+        "selected_blocks_FINANCIAL_REVIEW": 12,
+        "selected_nodes_FINANCIAL_REVIEW": 12,
+        "selected_blocks_GUIDANCE": 15,
+        "selected_nodes_GUIDANCE": 12,
+        "selected_blocks_OPERATING_DISCUSSION": 20,
+        "selected_nodes_OPERATING_DISCUSSION": 20,
+        "excluded_unclassified_chunk": 29,
+        "selected_blocks_RISK_OR_CONDITIONS": 18,
+        "selected_nodes_RISK_OR_CONDITIONS": 18
+      }
+    },
+    {
+      "event_id": "0000950170-25-100226",
+      "symbol": "MSFT",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 83,
+        "excluded_short_or_non_english": 21,
+        "selected_blocks_OPERATING_DISCUSSION": 15,
+        "selected_nodes_OPERATING_DISCUSSION": 15,
+        "excluded_unclassified_chunk": 13,
+        "selected_blocks_FINANCIAL_REVIEW": 21,
+        "selected_nodes_FINANCIAL_REVIEW": 21,
+        "selected_blocks_RISK_OR_CONDITIONS": 13,
+        "selected_nodes_RISK_OR_CONDITIONS": 13
+      }
+    },
+    {
+      "event_id": "0001628280-25-036719",
+      "symbol": "META",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 59,
+        "excluded_short_or_non_english": 26,
+        "selected_blocks_FINANCIAL_REVIEW": 10,
+        "selected_nodes_FINANCIAL_REVIEW": 10,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1,
+        "excluded_unclassified_chunk": 16,
+        "selected_blocks_GUIDANCE": 5,
+        "selected_nodes_GUIDANCE": 5,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001018724-25-000084",
+      "symbol": "AMZN",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 98,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 13,
+        "selected_nodes_FINANCIAL_REVIEW": 13,
+        "selected_blocks_OPERATING_DISCUSSION": 26,
+        "selected_nodes_OPERATING_DISCUSSION": 26,
+        "excluded_unclassified_chunk": 23,
+        "selected_blocks_GUIDANCE": 4,
+        "selected_nodes_GUIDANCE": 4,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0000320193-25-000071",
+      "symbol": "AAPL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 30,
+        "excluded_short_or_non_english": 15,
+        "selected_blocks_FINANCIAL_REVIEW": 6,
+        "selected_nodes_FINANCIAL_REVIEW": 6,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "excluded_unclassified_chunk": 5,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 1
+      }
+    },
+    {
+      "event_id": "0000002488-25-000106",
+      "symbol": "AMD",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 81,
+        "excluded_short_or_non_english": 39,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_RISK_OR_CONDITIONS": 13,
+        "selected_nodes_RISK_OR_CONDITIONS": 8,
+        "excluded_unclassified_chunk": 15,
+        "selected_blocks_OPERATING_DISCUSSION": 17,
+        "selected_nodes_OPERATING_DISCUSSION": 17,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2
+      }
+    },
+    {
+      "event_id": "0001193125-25-180782",
+      "symbol": "SNDK",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 54,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 7,
+        "selected_nodes_FINANCIAL_REVIEW": 6,
+        "selected_blocks_GUIDANCE": 5,
+        "selected_nodes_GUIDANCE": 5,
+        "excluded_unclassified_chunk": 11,
+        "selected_blocks_OPERATING_DISCUSSION": 8,
+        "selected_nodes_OPERATING_DISCUSSION": 8,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 2
+      }
+    },
+    {
+      "event_id": "0001045810-25-000207",
+      "symbol": "NVDA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 70,
+        "selected_blocks_FINANCIAL_REVIEW": 15,
+        "selected_nodes_FINANCIAL_REVIEW": 15,
+        "selected_blocks_OPERATING_DISCUSSION": 12,
+        "selected_nodes_OPERATING_DISCUSSION": 12,
+        "excluded_unclassified_chunk": 22,
+        "excluded_short_or_non_english": 17,
+        "selected_blocks_GUIDANCE": 3,
+        "selected_nodes_GUIDANCE": 3,
+        "selected_blocks_RISK_OR_CONDITIONS": 5,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001730168-25-000094",
+      "symbol": "AVGO",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 58,
+        "excluded_short_or_non_english": 21,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "excluded_unclassified_chunk": 9,
+        "selected_blocks_GUIDANCE": 11,
+        "selected_nodes_GUIDANCE": 11,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 6
+      }
+    },
+    {
+      "event_id": "0000723125-25-000024",
+      "symbol": "MU",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 59,
+        "excluded_short_or_non_english": 32,
+        "selected_blocks_FINANCIAL_REVIEW": 12,
+        "selected_nodes_FINANCIAL_REVIEW": 12,
+        "selected_blocks_GUIDANCE": 3,
+        "selected_nodes_GUIDANCE": 3,
+        "excluded_unclassified_chunk": 6,
+        "selected_blocks_OPERATING_DISCUSSION": 2,
+        "selected_nodes_OPERATING_DISCUSSION": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 4
+      }
+    },
+    {
+      "event_id": "0000050863-25-000169",
+      "symbol": "INTC",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 132,
+        "excluded_short_or_non_english": 47,
+        "selected_blocks_FINANCIAL_REVIEW": 11,
+        "selected_nodes_FINANCIAL_REVIEW": 11,
+        "selected_blocks_GUIDANCE": 13,
+        "selected_nodes_GUIDANCE": 10,
+        "selected_blocks_OPERATING_DISCUSSION": 19,
+        "selected_nodes_OPERATING_DISCUSSION": 19,
+        "excluded_unclassified_chunk": 32,
+        "selected_blocks_RISK_OR_CONDITIONS": 17,
+        "selected_nodes_RISK_OR_CONDITIONS": 17
+      }
+    },
+    {
+      "event_id": "0001652044-25-000087",
+      "symbol": "GOOGL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 87,
+        "excluded_short_or_non_english": 31,
+        "selected_blocks_FINANCIAL_REVIEW": 36,
+        "selected_nodes_FINANCIAL_REVIEW": 36,
+        "selected_blocks_OPERATING_DISCUSSION": 6,
+        "selected_nodes_OPERATING_DISCUSSION": 6,
+        "selected_blocks_GUIDANCE": 1,
+        "selected_nodes_GUIDANCE": 1,
+        "excluded_unclassified_chunk": 14,
+        "selected_blocks_RISK_OR_CONDITIONS": 5,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001193125-25-256310",
+      "symbol": "MSFT",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 83,
+        "excluded_short_or_non_english": 20,
+        "selected_blocks_OPERATING_DISCUSSION": 15,
+        "selected_nodes_OPERATING_DISCUSSION": 15,
+        "excluded_unclassified_chunk": 14,
+        "selected_blocks_FINANCIAL_REVIEW": 21,
+        "selected_nodes_FINANCIAL_REVIEW": 21,
+        "selected_blocks_RISK_OR_CONDITIONS": 13,
+        "selected_nodes_RISK_OR_CONDITIONS": 13
+      }
+    },
+    {
+      "event_id": "0001628280-25-047114",
+      "symbol": "META",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 67,
+        "excluded_short_or_non_english": 26,
+        "selected_blocks_FINANCIAL_REVIEW": 12,
+        "selected_nodes_FINANCIAL_REVIEW": 12,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1,
+        "excluded_unclassified_chunk": 19,
+        "selected_blocks_GUIDANCE": 8,
+        "selected_nodes_GUIDANCE": 8,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001018724-25-000121",
+      "symbol": "AMZN",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 98,
+        "excluded_short_or_non_english": 28,
+        "selected_blocks_FINANCIAL_REVIEW": 15,
+        "selected_nodes_FINANCIAL_REVIEW": 15,
+        "selected_blocks_OPERATING_DISCUSSION": 30,
+        "selected_nodes_OPERATING_DISCUSSION": 30,
+        "selected_blocks_GUIDANCE": 5,
+        "selected_nodes_GUIDANCE": 5,
+        "excluded_unclassified_chunk": 18,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0000320193-25-000077",
+      "symbol": "AAPL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 35,
+        "excluded_short_or_non_english": 15,
+        "selected_blocks_FINANCIAL_REVIEW": 8,
+        "selected_nodes_FINANCIAL_REVIEW": 8,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "excluded_unclassified_chunk": 7,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 1,
+        "selected_blocks_GUIDANCE": 1,
+        "selected_nodes_GUIDANCE": 1
+      }
+    },
+    {
+      "event_id": "0000002488-25-000163",
+      "symbol": "AMD",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 88,
+        "excluded_short_or_non_english": 39,
+        "selected_blocks_FINANCIAL_REVIEW": 11,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "selected_blocks_GUIDANCE": 4,
+        "selected_nodes_GUIDANCE": 4,
+        "selected_blocks_OPERATING_DISCUSSION": 15,
+        "selected_nodes_OPERATING_DISCUSSION": 15,
+        "excluded_unclassified_chunk": 20,
+        "selected_blocks_RISK_OR_CONDITIONS": 12,
+        "selected_nodes_RISK_OR_CONDITIONS": 6
+      }
+    },
+    {
+      "event_id": "0001628280-25-050180",
+      "symbol": "SNDK",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 54,
+        "excluded_short_or_non_english": 27,
+        "selected_blocks_FINANCIAL_REVIEW": 11,
+        "selected_nodes_FINANCIAL_REVIEW": 8,
+        "selected_blocks_GUIDANCE": 11,
+        "selected_nodes_GUIDANCE": 8,
+        "selected_blocks_OPERATING_DISCUSSION": 7,
+        "selected_nodes_OPERATING_DISCUSSION": 7,
+        "excluded_unclassified_chunk": 11,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 2
+      }
+    },
+    {
+      "event_id": "0001045810-25-000228",
+      "symbol": "NVDA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 73,
+        "selected_blocks_FINANCIAL_REVIEW": 16,
+        "selected_nodes_FINANCIAL_REVIEW": 14,
+        "selected_blocks_OPERATING_DISCUSSION": 17,
+        "selected_nodes_OPERATING_DISCUSSION": 17,
+        "excluded_unclassified_chunk": 27,
+        "excluded_short_or_non_english": 17,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001730168-25-000116",
+      "symbol": "AVGO",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 61,
+        "excluded_short_or_non_english": 22,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "excluded_unclassified_chunk": 10,
+        "selected_blocks_GUIDANCE": 12,
+        "selected_nodes_GUIDANCE": 12,
+        "selected_blocks_OPERATING_DISCUSSION": 2,
+        "selected_nodes_OPERATING_DISCUSSION": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 8,
+        "selected_nodes_RISK_OR_CONDITIONS": 7
+      }
+    },
+    {
+      "event_id": "0000723125-25-000044",
+      "symbol": "MU",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 53,
+        "excluded_short_or_non_english": 31,
+        "selected_blocks_OPERATING_DISCUSSION": 2,
+        "selected_nodes_OPERATING_DISCUSSION": 2,
+        "excluded_unclassified_chunk": 6,
+        "selected_blocks_FINANCIAL_REVIEW": 7,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_GUIDANCE": 3,
+        "selected_nodes_GUIDANCE": 3,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 4
+      }
+    },
+    {
+      "event_id": "0000050863-26-000009",
+      "symbol": "INTC",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 122,
+        "excluded_short_or_non_english": 46,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "selected_blocks_GUIDANCE": 13,
+        "selected_nodes_GUIDANCE": 9,
+        "selected_blocks_OPERATING_DISCUSSION": 18,
+        "selected_nodes_OPERATING_DISCUSSION": 18,
+        "excluded_unclassified_chunk": 28,
+        "selected_blocks_RISK_OR_CONDITIONS": 16,
+        "selected_nodes_RISK_OR_CONDITIONS": 16
+      }
+    },
+    {
+      "event_id": "0001628280-26-003832",
+      "symbol": "META",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 65,
+        "excluded_unclassified_chunk": 20,
+        "selected_blocks_FINANCIAL_REVIEW": 10,
+        "selected_nodes_FINANCIAL_REVIEW": 10,
+        "selected_blocks_OPERATING_DISCUSSION": 4,
+        "selected_nodes_OPERATING_DISCUSSION": 4,
+        "excluded_short_or_non_english": 24,
+        "selected_blocks_GUIDANCE": 6,
+        "selected_nodes_GUIDANCE": 6,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001193125-26-027198",
+      "symbol": "MSFT",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 84,
+        "excluded_short_or_non_english": 19,
+        "selected_blocks_OPERATING_DISCUSSION": 15,
+        "selected_nodes_OPERATING_DISCUSSION": 15,
+        "excluded_unclassified_chunk": 15,
+        "selected_blocks_FINANCIAL_REVIEW": 22,
+        "selected_nodes_FINANCIAL_REVIEW": 22,
+        "selected_blocks_RISK_OR_CONDITIONS": 13,
+        "selected_nodes_RISK_OR_CONDITIONS": 13
+      }
+    },
+    {
+      "event_id": "0001628280-26-004121",
+      "symbol": "SNDK",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 53,
+        "excluded_short_or_non_english": 27,
+        "selected_blocks_FINANCIAL_REVIEW": 11,
+        "selected_nodes_FINANCIAL_REVIEW": 8,
+        "selected_blocks_GUIDANCE": 11,
+        "selected_nodes_GUIDANCE": 8,
+        "selected_blocks_OPERATING_DISCUSSION": 6,
+        "selected_nodes_OPERATING_DISCUSSION": 6,
+        "excluded_unclassified_chunk": 11,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 2
+      }
+    },
+    {
+      "event_id": "0000320193-26-000005",
+      "symbol": "AAPL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 30,
+        "excluded_short_or_non_english": 14,
+        "selected_blocks_FINANCIAL_REVIEW": 7,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_OPERATING_DISCUSSION": 3,
+        "selected_nodes_OPERATING_DISCUSSION": 3,
+        "excluded_unclassified_chunk": 5,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 1
+      }
+    },
+    {
+      "event_id": "0000002488-26-000014",
+      "symbol": "AMD",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 79,
+        "excluded_short_or_non_english": 42,
+        "selected_blocks_FINANCIAL_REVIEW": 13,
+        "selected_nodes_FINANCIAL_REVIEW": 13,
+        "selected_blocks_OPERATING_DISCUSSION": 6,
+        "selected_nodes_OPERATING_DISCUSSION": 6,
+        "excluded_unclassified_chunk": 15,
+        "selected_blocks_RISK_OR_CONDITIONS": 9,
+        "selected_nodes_RISK_OR_CONDITIONS": 3,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2
+      }
+    },
+    {
+      "event_id": "0001652044-26-000012",
+      "symbol": "GOOGL",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 84,
+        "excluded_short_or_non_english": 30,
+        "excluded_unclassified_chunk": 21,
+        "selected_blocks_FINANCIAL_REVIEW": 32,
+        "selected_nodes_FINANCIAL_REVIEW": 32,
+        "selected_blocks_RISK_OR_CONDITIONS": 5,
+        "selected_nodes_RISK_OR_CONDITIONS": 3,
+        "selected_blocks_OPERATING_DISCUSSION": 2,
+        "selected_nodes_OPERATING_DISCUSSION": 2
+      }
+    },
+    {
+      "event_id": "0001018724-26-000002",
+      "symbol": "AMZN",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 118,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_FINANCIAL_REVIEW": 18,
+        "selected_nodes_FINANCIAL_REVIEW": 18,
+        "selected_blocks_OPERATING_DISCUSSION": 42,
+        "selected_nodes_OPERATING_DISCUSSION": 42,
+        "selected_blocks_GUIDANCE": 5,
+        "selected_nodes_GUIDANCE": 5,
+        "excluded_unclassified_chunk": 21,
+        "selected_blocks_RISK_OR_CONDITIONS": 6,
+        "selected_nodes_RISK_OR_CONDITIONS": 3
+      }
+    },
+    {
+      "event_id": "0001045810-26-000019",
+      "symbol": "NVDA",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 73,
+        "selected_blocks_FINANCIAL_REVIEW": 15,
+        "selected_nodes_FINANCIAL_REVIEW": 14,
+        "excluded_short_or_non_english": 19,
+        "selected_blocks_OPERATING_DISCUSSION": 8,
+        "selected_nodes_OPERATING_DISCUSSION": 8,
+        "excluded_unclassified_chunk": 34,
+        "selected_blocks_GUIDANCE": 2,
+        "selected_nodes_GUIDANCE": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 2
+      }
+    },
+    {
+      "event_id": "0001730168-26-000011",
+      "symbol": "AVGO",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 62,
+        "excluded_short_or_non_english": 23,
+        "selected_blocks_FINANCIAL_REVIEW": 9,
+        "selected_nodes_FINANCIAL_REVIEW": 9,
+        "excluded_unclassified_chunk": 10,
+        "selected_blocks_GUIDANCE": 12,
+        "selected_nodes_GUIDANCE": 12,
+        "selected_blocks_OPERATING_DISCUSSION": 2,
+        "selected_nodes_OPERATING_DISCUSSION": 2,
+        "selected_blocks_RISK_OR_CONDITIONS": 8,
+        "selected_nodes_RISK_OR_CONDITIONS": 7
+      }
+    },
+    {
+      "event_id": "0000723125-26-000004",
+      "symbol": "MU",
+      "selected_sections": [
+        "FINANCIAL_REVIEW",
+        "GUIDANCE",
+        "OPERATING_DISCUSSION",
+        "RISK_OR_CONDITIONS"
+      ],
+      "counts": {
+        "all_unique_narrative_nodes": 52,
+        "excluded_short_or_non_english": 30,
+        "selected_blocks_GUIDANCE": 4,
+        "selected_nodes_GUIDANCE": 4,
+        "excluded_unclassified_chunk": 6,
+        "selected_blocks_FINANCIAL_REVIEW": 7,
+        "selected_nodes_FINANCIAL_REVIEW": 7,
+        "selected_blocks_RISK_OR_CONDITIONS": 4,
+        "selected_nodes_RISK_OR_CONDITIONS": 4,
+        "selected_blocks_OPERATING_DISCUSSION": 1,
+        "selected_nodes_OPERATING_DISCUSSION": 1
+      }
+    }
+  ],
+  "outcome_labels_opened": false,
+  "same_team_review": "PENDING_SOURCE_SPOT_CHECK"
+}

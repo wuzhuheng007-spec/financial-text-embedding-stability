@@ -1,0 +1,178 @@
+{
+  "schema": "sentiment_v3_price_preflight_redacted_1",
+  "checked_at_utc": "2026-11-17T04:31:40.319080+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "align_code_sha256": "04b4743fa6473bbf95a533cecb16207df4464f98b296672ea2cb5cef5ab86549",
+  "factors_sha256": "cc954a17e310e12e7e940aa25c96e94d0b390849b600adceebd07ad383d5dc56",
+  "calendar_sha256": "82e51355f7f10e0874b1bfbb02065e509579506415ff9e9b0ddd4f12d42f48ba",
+  "source_raw_hashes": {
+    "NVDA": {
+      "US_NVDA_unadjusted_page1.raw.json": "703cac8fceaaa0731bbea5bf01b9c4efbb61bce035a54b04597cdee79addf8b3",
+      "US_NVDA_rehab.raw.json": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c",
+      "US_NVDA_dividends.raw.json": "d99dc6301c31510dd816a551a9bd3b396b9082960070c4a396e853115ac79670"
+    },
+    "MU": {
+      "US_MU_unadjusted_page1.raw.json": "9634b743313f04635ae617dda923cd7aad21adb538fc743fc57ccd296ecadfb0",
+      "US_MU_rehab.raw.json": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a",
+      "US_MU_dividends.raw.json": "f25bf865a0b051d0071a436e86981aaf2cb174dc7d8c0ea17ede10725a8eee74"
+    },
+    "AAPL": {
+      "AAPL_history_kline.json": "73ac96ca5a099c1bd9c45dd0e81a5d880d917ab559a809198dc71c1d5baa754d",
+      "AAPL_corporate_actions_rehab.json": "c40ac2acb985212013a24a48f6eadf5abbc7ae2fbbf7ea74d96a6f95b6014a68",
+      "AAPL_corporate_actions_dividends.json": "b52eaf2ddb7ab80fa37d841dff849e0da28d5401240e63cf716255866f6d3bf6"
+    },
+    "MSFT": {
+      "MSFT_history_kline.json": "26873a223068a3a5df43e3a04ffa598ae26a5608d4971f20da095c70d6fe4113",
+      "MSFT_corporate_actions_rehab.json": "5167671cc1bf547b7f1c2b27d9c3db4783c62d2506b0d9335b6124741ba2e37c",
+      "MSFT_corporate_actions_dividends.json": "406752166b6c622131ec89d5e15197762cf9246911d108d704778642c960242a"
+    },
+    "AMZN": {
+      "AMZN_history_kline.json": "695b374879f69d331bc7be2f0ae34ee5468ef9e449289f3c8d5681b1a1f43e7e",
+      "AMZN_corporate_actions_rehab.json": "9b5a9a0512c5be82d2e304ab1916b901884344628f869f6fe40bf2a298074b61",
+      "AMZN_corporate_actions_dividends.json": "00abcc85970bc5af30d25bb6a4b837d685f4e4f20cffec9665182ae6b649ac10"
+    },
+    "GOOGL": {
+      "GOOGL_history_kline.json": "07a62a18f9cb3b78f50ecdad809a98fbd5ab6ebee6bbe088ac926ced29b84ba2",
+      "GOOGL_corporate_actions_rehab.json": "2416f6f24b500809f8b851b361bcf6b95ce512e3f9502989cdb04851cf709861",
+      "GOOGL_corporate_actions_dividends.json": "2c1f161e47778b47e34239e5058eb09845d4fe5debdf00a6795fc666d9654917"
+    },
+    "META": {
+      "META_history_kline.json": "64a81daef34f7e9a78b969dbbae520a0b09d75b4d3e642cdff3f2718f97584d0",
+      "META_corporate_actions_rehab.json": "f3dd77a5d3c14fb5e6a8dd4d1e020ed408188783dc3cbba1277d871b90d125f5",
+      "META_corporate_actions_dividends.json": "74163c3a3c12879f2589f2178ebf5a82eee4e0a87f0f53337bcbb6af8bbf3dbe"
+    },
+    "TSLA": {
+      "TSLA_history_kline.json": "d7edf9962641033f18064bbf1356370d7ab9be2539af10ffdea1aeceb1a6b2af",
+      "TSLA_corporate_actions_rehab.json": "6e2adbe208b16c718ad861ddf721e5d42f40608b78ef0626cef3eef990afaaf9",
+      "TSLA_corporate_actions_dividends.json": "00abcc85970bc5af30d25bb6a4b837d685f4e4f20cffec9665182ae6b649ac10"
+    },
+    "AMD": {
+      "AMD_history_kline.json": "8cc8716bfa869a2efcb851ec45146581535b606f2e4c7774f8fde4a61c8c4178",
+      "AMD_corporate_actions_rehab.json": "a153451f89dea4ef35c1f079b482e286035008cbd51834ff8a1f7f48b7682a0c",
+      "AMD_corporate_actions_dividends.json": "00abcc85970bc5af30d25bb6a4b837d685f4e4f20cffec9665182ae6b649ac10"
+    },
+    "AVGO": {
+      "AVGO_history_kline.json": "e4b47963b0b994ca15a2ca0bc0e2841a8523d614f6de464cf4408e98de9c75e7",
+      "AVGO_corporate_actions_rehab.json": "73b52898df741e4e28a3a1f89f7957ab6db5e1a3977d7feb6770375c54f11794",
+      "AVGO_corporate_actions_dividends.json": "20745638d13b6058e0d3f596182f2faeaf46a79eb9b6a03f024fcb46ba1a47b7"
+    },
+    "INTC": {
+      "INTC_history_kline.json": "cb1cfcbcf2680da442c90710eb37a75c78d740fa1e72e77e8edf1a518b6305d1",
+      "INTC_corporate_actions_rehab.json": "e8e9f7348e9caa2a1e1daa6042167cad2de5c26f1ec190ecf0b3b18e9866de9c",
+      "INTC_corporate_actions_dividends.json": "e64ac6e9b0584f16bd830203a0481d0ce30f6947d6e9a7469ac57c7f39b7f8e0"
+    },
+    "SNDK": {
+      "SNDK_history_kline.json": "df7e5dff742b7d86231c73059eea0e5dcbb29e44615b606519b51860bb04c8f6",
+      "SNDK_corporate_actions_rehab.json": "66156e534b497fae8db5240ea8dc56a1c21f075c18018bcc9982bad43355cf54",
+      "SNDK_corporate_actions_dividends.json": "00abcc85970bc5af30d25bb6a4b837d685f4e4f20cffec9665182ae6b649ac10"
+    }
+  },
+  "price_coverage": {
+    "NVDA": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "MU": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "AAPL": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "MSFT": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "AMZN": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "GOOGL": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "META": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "TSLA": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "AMD": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "AVGO": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "INTC": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    },
+    "SNDK": {
+      "bars_in_training_window": 251,
+      "missing_calendar_dates": 0
+    }
+  },
+  "action_status": {
+    "NVDA": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "MU": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "AAPL": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "MSFT": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "AMZN": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 0
+    },
+    "GOOGL": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "META": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "TSLA": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 0
+    },
+    "AMD": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 0
+    },
+    "AVGO": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 4
+    },
+    "INTC": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 0
+    },
+    "SNDK": {
+      "status": "SOURCE_RESPONSE_PARSED",
+      "action_dates_in_window": 0
+    }
+  },
+  "trading_sessions": 251,
+  "half_sessions": [
+    "2025-07-03",
+    "2025-11-28",
+    "2025-12-24"
+  ],
+  "labels_computed": false,
+  "no_post_training_price_objects_parsed_for_NVDA_MU": true
+}

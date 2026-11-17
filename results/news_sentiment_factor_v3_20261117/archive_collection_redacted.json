@@ -1,0 +1,55 @@
+{
+  "schema": "sentiment_v3_archive_redacted_1",
+  "created_at_utc": "2026-11-17T04:18:07.496941+00:00",
+  "scope": "FULL_FROZEN_SELECTION",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "metadata_sha256": "dfae7faecdc8f1bd2a648cd09194c7ee934a047da4ae091bb4c19dd31f804852",
+  "private_manifest_sha256": "c96511b23f63d48a7f0f72a6d2ce2919b773ed45120f918c1c2b58936d54522e",
+  "requests_cumulative": 109,
+  "bytes_cumulative": 57791775,
+  "attempted_events": 48,
+  "status_counts": {
+    "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 40,
+    "EARNINGS_EXHIBIT_UNRESOLVED": 8
+  },
+  "issuer_status_counts": {
+    "NVDA": {
+      "EARNINGS_EXHIBIT_UNRESOLVED": 4
+    },
+    "MU": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "AAPL": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "MSFT": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "AMZN": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "GOOGL": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "META": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "TSLA": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "AMD": {
+      "EARNINGS_EXHIBIT_UNRESOLVED": 4
+    },
+    "AVGO": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "INTC": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    },
+    "SNDK": {
+      "INDEX_HEADER_AND_EXHIBIT_MATCHED_SOURCE_REVIEW_PENDING": 4
+    }
+  },
+  "source_stopped": false,
+  "no_outcome_labels_read": true
+}

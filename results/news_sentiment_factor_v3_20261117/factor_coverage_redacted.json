@@ -1,0 +1,31 @@
+{
+  "schema": "sentiment_v3_factor_coverage_redacted_1",
+  "computed_at_utc": "2026-11-17T04:31:39.942423+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "builder_sha256": "9001de567a39d3f78fc8f3fc303fc27c110262f496483bedf09c49125ef1c499",
+  "score_file_sha256": "c59389f8e53f567dc6dac83b0abe20fac19f8233f92f0f6a3a61f878d542adbc",
+  "event_factor_private_sha256": "cc954a17e310e12e7e940aa25c96e94d0b390849b600adceebd07ad383d5dc56",
+  "events_F1": 46,
+  "events_F2": 22,
+  "events_by_symbol": {
+    "TSLA": 2,
+    "GOOGL": 4,
+    "INTC": 4,
+    "MSFT": 4,
+    "META": 4,
+    "AMZN": 4,
+    "AAPL": 4,
+    "AMD": 4,
+    "SNDK": 4,
+    "NVDA": 4,
+    "AVGO": 4,
+    "MU": 4
+  },
+  "block_count": 1728,
+  "document_count_unique_values": [
+    1
+  ],
+  "count_feature_degenerate": true,
+  "labels_opened": false,
+  "meaning": "official disclosure language development proxy"
+}

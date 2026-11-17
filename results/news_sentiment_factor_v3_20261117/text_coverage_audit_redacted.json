@@ -1,0 +1,108 @@
+{
+  "schema": "sentiment_v3_text_coverage_audit_redacted_1",
+  "checked_at_utc": "2026-11-17T04:34:22.897442+00:00",
+  "new_input_sha256": "83448023f46028c88dda7fd87167d8a2ebaf8dc12cb07d261555e5d13ad0a8fe",
+  "old_input_sha256": "adff7dcca534b0b8751ca4375bf0efbd488989205f3fb4bed22b92e0087de124",
+  "new_model_visible_blocks": 1728,
+  "exact_normalized_source_spans": 1728,
+  "locator_or_hash_mismatches": 0,
+  "mismatch_ids": [],
+  "old_eight_events_selected_blocks": 163,
+  "old_eight_skip_reasons": {
+    "TABLE_LIKE_NUMERIC_DENSITY": 7,
+    "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 237,
+    "FIXED_BLOCK_BUDGET": 100,
+    "LONG_BLOCK_NOT_TRUNCATED": 22,
+    "FIXED_BOILERPLATE_PREFIX": 8
+  },
+  "old_skip_reasons_by_issuer": {
+    "NVDA": {
+      "TABLE_LIKE_NUMERIC_DENSITY": 3,
+      "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 72,
+      "FIXED_BLOCK_BUDGET": 100,
+      "LONG_BLOCK_NOT_TRUNCATED": 10,
+      "FIXED_BOILERPLATE_PREFIX": 4
+    },
+    "MU": {
+      "TOO_SHORT_OR_NOT_ENGLISH_NARRATIVE": 165,
+      "TABLE_LIKE_NUMERIC_DENSITY": 4,
+      "LONG_BLOCK_NOT_TRUNCATED": 12,
+      "FIXED_BOILERPLATE_PREFIX": 4
+    }
+  },
+  "new_sections_by_issuer": {
+    "TSLA": {
+      "FINANCIAL_REVIEW": 42,
+      "OPERATING_DISCUSSION": 56,
+      "RISK_OR_CONDITIONS": 38,
+      "GUIDANCE": 4
+    },
+    "GOOGL": {
+      "FINANCIAL_REVIEW": 125,
+      "OPERATING_DISCUSSION": 12,
+      "RISK_OR_CONDITIONS": 21,
+      "GUIDANCE": 1
+    },
+    "INTC": {
+      "FINANCIAL_REVIEW": 41,
+      "GUIDANCE": 54,
+      "OPERATING_DISCUSSION": 74,
+      "RISK_OR_CONDITIONS": 71
+    },
+    "MSFT": {
+      "OPERATING_DISCUSSION": 64,
+      "FINANCIAL_REVIEW": 82,
+      "RISK_OR_CONDITIONS": 52
+    },
+    "META": {
+      "FINANCIAL_REVIEW": 42,
+      "OPERATING_DISCUSSION": 7,
+      "GUIDANCE": 23,
+      "RISK_OR_CONDITIONS": 24
+    },
+    "AMZN": {
+      "FINANCIAL_REVIEW": 60,
+      "OPERATING_DISCUSSION": 125,
+      "GUIDANCE": 19,
+      "RISK_OR_CONDITIONS": 24
+    },
+    "AAPL": {
+      "FINANCIAL_REVIEW": 25,
+      "OPERATING_DISCUSSION": 13,
+      "RISK_OR_CONDITIONS": 24,
+      "GUIDANCE": 1
+    },
+    "AMD": {
+      "FINANCIAL_REVIEW": 42,
+      "RISK_OR_CONDITIONS": 45,
+      "OPERATING_DISCUSSION": 50,
+      "GUIDANCE": 10
+    },
+    "SNDK": {
+      "FINANCIAL_REVIEW": 39,
+      "GUIDANCE": 39,
+      "OPERATING_DISCUSSION": 30,
+      "RISK_OR_CONDITIONS": 24
+    },
+    "NVDA": {
+      "FINANCIAL_REVIEW": 63,
+      "OPERATING_DISCUSSION": 46,
+      "GUIDANCE": 9,
+      "RISK_OR_CONDITIONS": 17
+    },
+    "AVGO": {
+      "FINANCIAL_REVIEW": 36,
+      "GUIDANCE": 46,
+      "OPERATING_DISCUSSION": 10,
+      "RISK_OR_CONDITIONS": 28
+    },
+    "MU": {
+      "FINANCIAL_REVIEW": 35,
+      "GUIDANCE": 13,
+      "RISK_OR_CONDITIONS": 16,
+      "OPERATING_DISCUSSION": 6
+    }
+  },
+  "comparison_limit": "old and new SEC raw bytes have different hashes; selection counts are not a proof of equivalent narrative or semantics",
+  "semantic_review": "source headings and fixed pre-outcome spot check only; full content and tone not independently certified"
+}

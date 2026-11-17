@@ -1,0 +1,100 @@
+{
+  "schema": "sentiment_v3_calendar_comparison_redacted_1",
+  "checked_at_utc": "2026-11-17T04:35:27.570783+00:00",
+  "old_alignment_sha256": "b5985f4059e663566e8ee125b09f9bb8c5ce269f25e66de3ae1b30788b1bde1c",
+  "new_alignment_sha256": "175b5d1c3d06f850af8609e54d6b70bf2cbc476af79c64864642dc56572401cc",
+  "old_eight_matched": 8,
+  "five_day_exit_changes": 3,
+  "rows": [
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-05-28",
+      "old_entry_date": "2025-05-30",
+      "new_entry_date": "2025-05-30",
+      "old_exit_1d": "2025-06-02",
+      "new_exit_1d": "2025-06-02",
+      "old_exit_5d": "2025-06-06",
+      "new_exit_5d": "2025-06-06",
+      "five_day_exit_changed": false
+    },
+    {
+      "symbol": "MU",
+      "filing_date": "2025-06-25",
+      "old_entry_date": "2025-06-27",
+      "new_entry_date": "2025-06-27",
+      "old_exit_1d": "2025-06-30",
+      "new_exit_1d": "2025-06-30",
+      "old_exit_5d": "2025-07-08",
+      "new_exit_5d": "2025-07-07",
+      "five_day_exit_changed": true
+    },
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-08-27",
+      "old_entry_date": "2025-08-29",
+      "new_entry_date": "2025-08-29",
+      "old_exit_1d": "2025-09-02",
+      "new_exit_1d": "2025-09-02",
+      "old_exit_5d": "2025-09-08",
+      "new_exit_5d": "2025-09-08",
+      "five_day_exit_changed": false
+    },
+    {
+      "symbol": "MU",
+      "filing_date": "2025-09-23",
+      "old_entry_date": "2025-09-25",
+      "new_entry_date": "2025-09-25",
+      "old_exit_1d": "2025-09-26",
+      "new_exit_1d": "2025-09-26",
+      "old_exit_5d": "2025-10-02",
+      "new_exit_5d": "2025-10-02",
+      "five_day_exit_changed": false
+    },
+    {
+      "symbol": "NVDA",
+      "filing_date": "2025-11-19",
+      "old_entry_date": "2025-11-21",
+      "new_entry_date": "2025-11-21",
+      "old_exit_1d": "2025-11-24",
+      "new_exit_1d": "2025-11-24",
+      "old_exit_5d": "2025-12-02",
+      "new_exit_5d": "2025-12-01",
+      "five_day_exit_changed": true
+    },
+    {
+      "symbol": "MU",
+      "filing_date": "2025-12-17",
+      "old_entry_date": "2025-12-19",
+      "new_entry_date": "2025-12-19",
+      "old_exit_1d": "2025-12-22",
+      "new_exit_1d": "2025-12-22",
+      "old_exit_5d": "2025-12-30",
+      "new_exit_5d": "2025-12-29",
+      "five_day_exit_changed": true
+    },
+    {
+      "symbol": "NVDA",
+      "filing_date": "2026-02-25",
+      "old_entry_date": "2026-02-27",
+      "new_entry_date": "2026-02-27",
+      "old_exit_1d": "2026-03-02",
+      "new_exit_1d": "2026-03-02",
+      "old_exit_5d": "2026-03-06",
+      "new_exit_5d": "2026-03-06",
+      "five_day_exit_changed": false
+    },
+    {
+      "symbol": "MU",
+      "filing_date": "2026-03-18",
+      "old_entry_date": "2026-03-20",
+      "new_entry_date": "2026-03-20",
+      "old_exit_1d": "2026-03-23",
+      "new_exit_1d": "2026-03-23",
+      "old_exit_5d": "2026-03-27",
+      "new_exit_5d": "2026-03-27",
+      "five_day_exit_changed": false
+    }
+  ],
+  "reason": "v2 stepped only WHOLE dates; v3 counts MORNING half sessions as trading sessions",
+  "old_results_overwritten": false
+}

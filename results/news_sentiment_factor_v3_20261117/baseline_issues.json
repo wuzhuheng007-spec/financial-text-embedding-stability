@@ -1,0 +1,14 @@
+{
+  "schema": "sentiment_v3_preoutcome_issue_register_1",
+  "base_commit": "90d9f091cf60de23860b3fd03a711b16be1183c3",
+  "status": "PROTOCOL_REVISION_NOT_V2_RELABELLING",
+  "issues": [
+    "v2 source selector fixed exactly eight issuer events while fit gate required at least thirty",
+    "v2 minimum ten events per issuer cannot be met in one year of quarterly earnings for each issuer",
+    "v2 evaluate.py did not implement A/B/C/D fit or predict",
+    "per-event document count may be constant by one-exhibit-per-event design",
+    "v2 treated WHOLE trading sessions differently from half days and block resampling did not keep common dates together"
+  ],
+  "old_results": "IMMUTABLE",
+  "new_labels_accessed_at_registration": false
+}

@@ -1,0 +1,10 @@
+test_actual_fit_and_pairing_are_executed (tests.test_news_sentiment_factor_v3.SentimentV3Checks.test_actual_fit_and_pairing_are_executed) ... ok
+test_date_blocks_never_split_an_event (tests.test_news_sentiment_factor_v3.SentimentV3Checks.test_date_blocks_never_split_an_event) ... ok
+test_gate_rejects_twenty_two_events (tests.test_news_sentiment_factor_v3.SentimentV3Checks.test_gate_rejects_twenty_two_events) ... ok
+test_overlap_purge_uses_exit_before_first_test_entry (tests.test_news_sentiment_factor_v3.SentimentV3Checks.test_overlap_purge_uses_exit_before_first_test_entry) ... ok
+test_too_few_date_blocks_has_no_interval (tests.test_news_sentiment_factor_v3.SentimentV3Checks.test_too_few_date_blocks_has_no_interval) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.017s
+
+OK

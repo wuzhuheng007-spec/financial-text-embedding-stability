@@ -1,0 +1,138 @@
+{
+  "schema": "sentiment_v3_feasibility_redacted_1",
+  "checked_at_utc": "2026-11-17T04:15:22.057504+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "ticker_index_sha256": "d5232e162521cf623dcf7c607355e930adce5a6a885b48c3ae06a0441ff27314",
+  "metadata_private_sha256": "dfae7faecdc8f1bd2a648cd09194c7ee934a047da4ae091bb4c19dd31f804852",
+  "sec_request_ledger_sha256": "9db65119f78b78ee91787352f8be115678033055ccf591725d44c8fb8e22928b",
+  "source_status": "METADATA_ONLY",
+  "requests": 13,
+  "downloaded_bytes": 2355804,
+  "independent_metadata_events": 48,
+  "distinct_acceptance_dates": 37,
+  "potential_F2_after_two_prior_per_issuer": 24,
+  "issuer_rows": [
+    {
+      "symbol": "NVDA",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2020-09-18"
+    },
+    {
+      "symbol": "MU",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2017-10-19"
+    },
+    {
+      "symbol": "AAPL",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2015-10-07"
+    },
+    {
+      "symbol": "MSFT",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2020-09-09"
+    },
+    {
+      "symbol": "AMZN",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2020-11-04"
+    },
+    {
+      "symbol": "GOOGL",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2023-09-05"
+    },
+    {
+      "symbol": "META",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2024-07-03"
+    },
+    {
+      "symbol": "TSLA",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 8,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2018-06-18"
+    },
+    {
+      "symbol": "AMD",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2017-12-28"
+    },
+    {
+      "symbol": "AVGO",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2018-02-06"
+    },
+    {
+      "symbol": "INTC",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2019-03-25"
+    },
+    {
+      "symbol": "SNDK",
+      "status": "SUBMISSIONS_READ",
+      "all_item_2_02_count": 4,
+      "selected_max_four": 4,
+      "independent_acceptance_dates": 4,
+      "submissions_http_status": 200,
+      "historical_symbol_validity": "NOT_PROVEN_BY_CURRENT_TICKER_INDEX",
+      "submissions_recent_min_filing_date": "2024-06-13"
+    }
+  ],
+  "events_not_yet_source_verified": 48,
+  "no_returns_read": true
+}

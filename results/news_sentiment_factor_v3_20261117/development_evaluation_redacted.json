@@ -1,0 +1,652 @@
+{
+  "schema": "sentiment_v3_development_evaluation_redacted_1",
+  "completed_at_utc": "2026-11-17T04:33:15.833793+00:00",
+  "config_sha256": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+  "evaluation_code_sha256": "a32418743d9d8b28a1cb8bf5bb2a0ba54127657e764ea5270d095f4e6bdae148",
+  "alignment_sha256": "175b5d1c3d06f850af8609e54d6b70bf2cbc476af79c64864642dc56572401cc",
+  "predictions_sha256": "788777094ca04feb8540eb9be74085bb501b0c0c45201f0c7851b491d3fbccad",
+  "fit_calls_actual": 24,
+  "candidate_results": {
+    "lm_F1_1d": {
+      "descriptive": {
+        "events": 46,
+        "distinct_acceptance_dates": 35,
+        "pearson": 0.002581561175329731,
+        "spearman": 0.014862781375269812,
+        "pearson_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 35,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 17,
+          "valid_draws": 500,
+          "interval": [
+            -0.23902943665426257,
+            0.21423540806247524
+          ]
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "DEVELOPMENT_FIT_COMPLETED",
+        "fit_calls": 6,
+        "folds": [
+          {
+            "fold": 1,
+            "cut_date": "2025-09-23",
+            "first_test_entry": "2025-09-25",
+            "purged": 0,
+            "train_events": 23,
+            "test_events": 8,
+            "train_dates": 17,
+            "test_dates": 5,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 2,
+            "cut_date": "2025-11-06",
+            "first_test_entry": "2025-11-10",
+            "purged": 0,
+            "train_events": 31,
+            "test_events": 7,
+            "train_dates": 22,
+            "test_dates": 6,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 3,
+            "cut_date": "2026-01-29",
+            "first_test_entry": "2026-02-02",
+            "purged": 2,
+            "train_events": 36,
+            "test_events": 8,
+            "train_dates": 27,
+            "test_dates": 7,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          }
+        ],
+        "paired_predictions": 23,
+        "independent_event_ids": 23,
+        "distinct_acceptance_dates": 18,
+        "mse_A": 0.0031555253425729728,
+        "mse_C": 0.0032282785033189774,
+        "mse_delta_C_minus_A": 7.275316074600381e-05,
+        "mae_A": 0.03757220788836406,
+        "mae_C": 0.038028472442116164,
+        "paired_mse_delta_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 18,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 9,
+          "valid_draws": 500,
+          "interval": [
+            1.6478533936721104e-05,
+            0.0001379378090502262
+          ]
+        },
+        "company_results": {
+          "AAPL": {
+            "events": 2,
+            "mse_A": 0.0005748512641447903,
+            "mse_C": 0.0005436608811250391
+          },
+          "AMD": {
+            "events": 2,
+            "mse_A": 0.006287853060090793,
+            "mse_C": 0.006287680659435855
+          },
+          "AMZN": {
+            "events": 2,
+            "mse_A": 0.00011815772896138423,
+            "mse_C": 0.00012329347069486068
+          },
+          "AVGO": {
+            "events": 2,
+            "mse_A": 0.0029743071073817487,
+            "mse_C": 0.003054912231401087
+          },
+          "GOOGL": {
+            "events": 2,
+            "mse_A": 0.00032596664621689034,
+            "mse_C": 0.00034148515791322345
+          },
+          "INTC": {
+            "events": 2,
+            "mse_A": 0.0009674899969235319,
+            "mse_C": 0.0009678503077868322
+          },
+          "META": {
+            "events": 2,
+            "mse_A": 0.0007471830363395718,
+            "mse_C": 0.0007423259937408297
+          },
+          "MSFT": {
+            "events": 2,
+            "mse_A": 0.0005651227563584227,
+            "mse_C": 0.0005921533793117
+          },
+          "MU": {
+            "events": 3,
+            "mse_A": 0.0037532523753333207,
+            "mse_C": 0.004017271896332049
+          },
+          "NVDA": {
+            "events": 2,
+            "mse_A": 0.0001718672246389313,
+            "mse_C": 0.00018563105369074078
+          },
+          "SNDK": {
+            "events": 2,
+            "mse_A": 0.017925864055533154,
+            "mse_C": 0.018260301808570002
+          }
+        },
+        "B_equals_A": true,
+        "D_equals_C": true,
+        "no_general_effect_claim": true
+      }
+    },
+    "finbert_F1_1d": {
+      "descriptive": {
+        "events": 46,
+        "distinct_acceptance_dates": 35,
+        "pearson": -0.23593968408467442,
+        "spearman": -0.17742830712303423,
+        "pearson_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 35,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 17,
+          "valid_draws": 500,
+          "interval": [
+            -0.4700555320756823,
+            0.04989082136486675
+          ]
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "DEVELOPMENT_FIT_COMPLETED",
+        "fit_calls": 6,
+        "folds": [
+          {
+            "fold": 1,
+            "cut_date": "2025-09-23",
+            "first_test_entry": "2025-09-25",
+            "purged": 0,
+            "train_events": 23,
+            "test_events": 8,
+            "train_dates": 17,
+            "test_dates": 5,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 2,
+            "cut_date": "2025-11-06",
+            "first_test_entry": "2025-11-10",
+            "purged": 0,
+            "train_events": 31,
+            "test_events": 7,
+            "train_dates": 22,
+            "test_dates": 6,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 3,
+            "cut_date": "2026-01-29",
+            "first_test_entry": "2026-02-02",
+            "purged": 2,
+            "train_events": 36,
+            "test_events": 8,
+            "train_dates": 27,
+            "test_dates": 7,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          }
+        ],
+        "paired_predictions": 23,
+        "independent_event_ids": 23,
+        "distinct_acceptance_dates": 18,
+        "mse_A": 0.0031555253425729728,
+        "mse_C": 0.003101818352260876,
+        "mse_delta_C_minus_A": -5.370699031209844e-05,
+        "mae_A": 0.03757220788836406,
+        "mae_C": 0.037721463636310994,
+        "paired_mse_delta_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 18,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 9,
+          "valid_draws": 500,
+          "interval": [
+            -0.0001887970693141815,
+            7.087014806827886e-05
+          ]
+        },
+        "company_results": {
+          "AAPL": {
+            "events": 2,
+            "mse_A": 0.0005748512641447903,
+            "mse_C": 0.0006062668569048695
+          },
+          "AMD": {
+            "events": 2,
+            "mse_A": 0.006287853060090793,
+            "mse_C": 0.006124021091990455
+          },
+          "AMZN": {
+            "events": 2,
+            "mse_A": 0.00011815772896138423,
+            "mse_C": 0.00013253930683228564
+          },
+          "AVGO": {
+            "events": 2,
+            "mse_A": 0.0029743071073817487,
+            "mse_C": 0.0031820964615970207
+          },
+          "GOOGL": {
+            "events": 2,
+            "mse_A": 0.00032596664621689034,
+            "mse_C": 0.0003314436215198715
+          },
+          "INTC": {
+            "events": 2,
+            "mse_A": 0.0009674899969235319,
+            "mse_C": 0.0008409031363626354
+          },
+          "META": {
+            "events": 2,
+            "mse_A": 0.0007471830363395718,
+            "mse_C": 0.0005841202823377819
+          },
+          "MSFT": {
+            "events": 2,
+            "mse_A": 0.0005651227563584227,
+            "mse_C": 0.0007400873890011491
+          },
+          "MU": {
+            "events": 3,
+            "mse_A": 0.0037532523753333207,
+            "mse_C": 0.003854241714664428
+          },
+          "NVDA": {
+            "events": 2,
+            "mse_A": 0.0001718672246389313,
+            "mse_C": 0.00016342055661998275
+          },
+          "SNDK": {
+            "events": 2,
+            "mse_A": 0.017925864055533154,
+            "mse_C": 0.017184649775837373
+          }
+        },
+        "B_equals_A": true,
+        "D_equals_C": true,
+        "no_general_effect_claim": true
+      }
+    },
+    "lm_F2_1d": {
+      "descriptive": {
+        "events": 22,
+        "distinct_acceptance_dates": 17,
+        "pearson": 0.10335266443137964,
+        "spearman": 0.06832298136645965,
+        "pearson_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 17,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 8,
+          "valid_draws": 500,
+          "interval": [
+            -0.34508804721493125,
+            0.4608619726058111
+          ]
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "OVERALL_FIT_GATE_NOT_MET",
+        "fit_calls": 0,
+        "folds": []
+      }
+    },
+    "finbert_F2_1d": {
+      "descriptive": {
+        "events": 22,
+        "distinct_acceptance_dates": 17,
+        "pearson": 0.34133614614847574,
+        "spearman": 0.5042348955392434,
+        "pearson_block_interval": {
+          "status": "DATE_CLUSTER_MOVING_BLOCK_DESCRIPTIVE",
+          "distinct_dates": 17,
+          "block_length_event_dates": 2,
+          "effective_blocks_floor": 8,
+          "valid_draws": 500,
+          "interval": [
+            0.1520192747491927,
+            0.5694198994285038
+          ]
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "OVERALL_FIT_GATE_NOT_MET",
+        "fit_calls": 0,
+        "folds": []
+      }
+    },
+    "lm_F1_5d": {
+      "descriptive": {
+        "events": 39,
+        "distinct_acceptance_dates": 32,
+        "pearson": -0.0501831140400543,
+        "spearman": -0.03461538461538462,
+        "pearson_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 32,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 5,
+          "interval": null
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "DEVELOPMENT_FIT_COMPLETED",
+        "fit_calls": 6,
+        "folds": [
+          {
+            "fold": 1,
+            "cut_date": "2025-09-23",
+            "first_test_entry": "2025-09-25",
+            "purged": 0,
+            "train_events": 20,
+            "test_events": 6,
+            "train_dates": 16,
+            "test_dates": 4,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 2,
+            "cut_date": "2025-11-04",
+            "first_test_entry": "2025-11-06",
+            "purged": 4,
+            "train_events": 22,
+            "test_events": 6,
+            "train_dates": 18,
+            "test_dates": 5,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 3,
+            "cut_date": "2026-01-29",
+            "first_test_entry": "2026-02-02",
+            "purged": 3,
+            "train_events": 29,
+            "test_events": 7,
+            "train_dates": 23,
+            "test_dates": 7,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          }
+        ],
+        "paired_predictions": 19,
+        "independent_event_ids": 19,
+        "distinct_acceptance_dates": 16,
+        "mse_A": 0.007472056711345645,
+        "mse_C": 0.0075820659614453416,
+        "mse_delta_C_minus_A": 0.00011000925009969675,
+        "mae_A": 0.0673344496174601,
+        "mae_C": 0.0678377840134764,
+        "paired_mse_delta_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 16,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 2,
+          "interval": null
+        },
+        "company_results": {
+          "AMD": {
+            "events": 2,
+            "mse_A": 0.001970402671231823,
+            "mse_C": 0.001958691942253105
+          },
+          "AMZN": {
+            "events": 2,
+            "mse_A": 0.0033467086176453293,
+            "mse_C": 0.0031831952773954736
+          },
+          "AVGO": {
+            "events": 1,
+            "mse_A": 1.4892494124939437e-05,
+            "mse_C": 3.024104963613361e-05
+          },
+          "GOOGL": {
+            "events": 2,
+            "mse_A": 0.0034316808874341326,
+            "mse_C": 0.003487223238695442
+          },
+          "INTC": {
+            "events": 2,
+            "mse_A": 0.00042707194003960774,
+            "mse_C": 0.00045735079124836433
+          },
+          "META": {
+            "events": 2,
+            "mse_A": 0.014430075027556106,
+            "mse_C": 0.014638170356216076
+          },
+          "MSFT": {
+            "events": 2,
+            "mse_A": 0.012323272282329841,
+            "mse_C": 0.011470860995580772
+          },
+          "MU": {
+            "events": 2,
+            "mse_A": 0.032333743022326944,
+            "mse_C": 0.03410756408784918
+          },
+          "NVDA": {
+            "events": 2,
+            "mse_A": 0.00227111399229937,
+            "mse_C": 0.0023109116400805165
+          },
+          "SNDK": {
+            "events": 2,
+            "mse_A": 0.00044302406985800266,
+            "mse_C": 0.0004005377795937462
+          }
+        },
+        "B_equals_A": true,
+        "D_equals_C": true,
+        "no_general_effect_claim": true
+      }
+    },
+    "finbert_F1_5d": {
+      "descriptive": {
+        "events": 39,
+        "distinct_acceptance_dates": 32,
+        "pearson": -0.032854811590991934,
+        "spearman": -0.11437246963562754,
+        "pearson_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 32,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 5,
+          "interval": null
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "DEVELOPMENT_FIT_COMPLETED",
+        "fit_calls": 6,
+        "folds": [
+          {
+            "fold": 1,
+            "cut_date": "2025-09-23",
+            "first_test_entry": "2025-09-25",
+            "purged": 0,
+            "train_events": 20,
+            "test_events": 6,
+            "train_dates": 16,
+            "test_dates": 4,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 2,
+            "cut_date": "2025-11-04",
+            "first_test_entry": "2025-11-06",
+            "purged": 4,
+            "train_events": 22,
+            "test_events": 6,
+            "train_dates": 18,
+            "test_dates": 5,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          },
+          {
+            "fold": 3,
+            "cut_date": "2026-01-29",
+            "first_test_entry": "2026-02-02",
+            "purged": 3,
+            "train_events": 29,
+            "test_events": 7,
+            "train_dates": 23,
+            "test_dates": 7,
+            "status": "FITTED_PAIRED",
+            "fit_calls": 2
+          }
+        ],
+        "paired_predictions": 19,
+        "independent_event_ids": 19,
+        "distinct_acceptance_dates": 16,
+        "mse_A": 0.007472056711345645,
+        "mse_C": 0.0074867720811801226,
+        "mse_delta_C_minus_A": 1.471536983447723e-05,
+        "mae_A": 0.0673344496174601,
+        "mae_C": 0.06807892238401131,
+        "paired_mse_delta_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 16,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 2,
+          "interval": null
+        },
+        "company_results": {
+          "AMD": {
+            "events": 2,
+            "mse_A": 0.001970402671231823,
+            "mse_C": 0.00204939884163739
+          },
+          "AMZN": {
+            "events": 2,
+            "mse_A": 0.0033467086176453293,
+            "mse_C": 0.0032862003555416885
+          },
+          "AVGO": {
+            "events": 1,
+            "mse_A": 1.4892494124939437e-05,
+            "mse_C": 1.4753471175429198e-05
+          },
+          "GOOGL": {
+            "events": 2,
+            "mse_A": 0.0034316808874341326,
+            "mse_C": 0.003474620330936566
+          },
+          "INTC": {
+            "events": 2,
+            "mse_A": 0.00042707194003960774,
+            "mse_C": 0.0005268809121165386
+          },
+          "META": {
+            "events": 2,
+            "mse_A": 0.014430075027556106,
+            "mse_C": 0.015011175808901673
+          },
+          "MSFT": {
+            "events": 2,
+            "mse_A": 0.012323272282329841,
+            "mse_C": 0.01171363115521417
+          },
+          "MU": {
+            "events": 2,
+            "mse_A": 0.032333743022326944,
+            "mse_C": 0.03215747425644176
+          },
+          "NVDA": {
+            "events": 2,
+            "mse_A": 0.00227111399229937,
+            "mse_C": 0.002383168912829844
+          },
+          "SNDK": {
+            "events": 2,
+            "mse_A": 0.00044302406985800266,
+            "mse_C": 0.000514407462003814
+          }
+        },
+        "B_equals_A": true,
+        "D_equals_C": true,
+        "no_general_effect_claim": true
+      }
+    },
+    "lm_F2_5d": {
+      "descriptive": {
+        "events": 18,
+        "distinct_acceptance_dates": 15,
+        "pearson": 0.05442759522548536,
+        "spearman": 0.21568627450980388,
+        "pearson_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 15,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 2,
+          "interval": null
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "OVERALL_FIT_GATE_NOT_MET",
+        "fit_calls": 0,
+        "folds": []
+      }
+    },
+    "finbert_F2_5d": {
+      "descriptive": {
+        "events": 18,
+        "distinct_acceptance_dates": 15,
+        "pearson": 0.4001858420754401,
+        "spearman": 0.3787409700722394,
+        "pearson_block_interval": {
+          "status": "TOO_FEW_NONOVERLAPPING_DATE_BLOCKS",
+          "distinct_dates": 15,
+          "block_length_event_dates": 6,
+          "effective_blocks_floor": 2,
+          "interval": null
+        },
+        "undefined_reason": null
+      },
+      "paired_fit": {
+        "status": "OVERALL_FIT_GATE_NOT_MET",
+        "fit_calls": 0,
+        "folds": []
+      }
+    }
+  },
+  "count_feature": "one SEC accession per event; constant 1; B=A and D=C without redundant fits",
+  "old_eight_influence": {
+    "old_events": 8,
+    "diagnostic_cases": 28,
+    "maximum_abs_pearson_change_after_omission": 1.0368007055725545,
+    "private_diagnostic_sha256": "ee8f482d32457d6022767233bb8980c66a43353c5bbc4d9e2450b69e314ffac4"
+  },
+  "strict_historical_executability": "NOT_PROVEN_SEC_ACCEPTANCE_ANCHOR_PROXY",
+  "population": "purposeful_watchlist_official_earnings_development_only",
+  "test_April_to_July_2026_labels_opened": false,
+  "not_a_live_signal_or_alpha_claim": true
+}

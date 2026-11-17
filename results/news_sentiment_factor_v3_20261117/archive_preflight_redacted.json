@@ -1,0 +1,14 @@
+{
+  "schema": "sentiment_v3_archive_preflight_1",
+  "at_utc": "2026-11-17T04:16:45.101882+00:00",
+  "sha256": {
+    "configs/news_sentiment_factor_v3_20261117.json": "76041642ddbbf7ec6fc5b424977280cc20dfc45d5ce5d713ea0605f389170e4e",
+    "scripts/news_sentiment_factor_v3/source.py": "81b038207998f1d94d6b4f50d221c98fa68aa505e3a4956c31f27eb7da9edfb1",
+    "scripts/news_sentiment_factor_v3/archive.py": "c503df7458245aa2a899aac1a14476ebb74a3179b13e890c1497d1f0d68a7441",
+    "artifacts/news_sentiment_factor_v3_20261117/metadata_private.json": "dfae7faecdc8f1bd2a648cd09194c7ee934a047da4ae091bb4c19dd31f804852"
+  },
+  "max_total_sec_requests": 115,
+  "prior_requests": 13,
+  "retries": 0,
+  "returns_read": false
+}
