@@ -224,7 +224,7 @@
   function translateNode(node) {
     if (node.parentElement?.closest('[data-source-original],.news-original,[translate="no"]')) return;
     const raw=node.nodeValue;
-    if (!raw || !/[\u3400-\u9fff]/.test(raw) || raw.startsWith('Translation pending — ')) return;
+    if (!raw || !/[\u3400-\u9fff]/.test(raw) || raw.includes('Translation pending — ')) return;
     if (seen.get(node)===raw) return;
     const trim=raw.trim();
     let english=catalog[trim];

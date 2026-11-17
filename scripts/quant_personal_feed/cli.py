@@ -76,6 +76,8 @@ def load_config(path: Path) -> dict:
         under_root(config[key])
     if not str(under_root(config["cache_db"])).startswith(str((ROOT / "apps/quant_portal/var").resolve())):
         raise ValueError("Private feed cache must stay under ignored personal var")
+    if not isinstance(config["moomoo"].get("snapshot_enabled", True), bool):
+        raise ValueError("moomoo.snapshot_enabled must be a boolean")
     return config
 
 
@@ -149,7 +151,18 @@ def run(config_path: Path) -> None:
     try:
         if config["moomoo"]["enabled"]:
             launch("moomoo",run_moomoo)
-            launch("moomoo_snapshot",recover_snapshot_sqlite)
+            if config["moomoo"].get("snapshot_enabled", True):
+                launch("moomoo_snapshot",recover_snapshot_sqlite)
+            else:
+                # A previous HTTP 439 is a policy block. Keep this decision in
+                # configuration so an unrelated SQLite error cannot erase it.
+                db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
+                try:
+                    db.state("moomoo_snapshot","SECURITY_POLICY_BLOCKED",
+                             error_class="WEBAPI_SECURITY_POLICY_BLOCKED")
+                    db.provider_metric("moomoo_snapshot",worker_alive=0)
+                finally:
+                    db.close()
         if config["jin10"]["enabled"]:
             launch("jin10",recover_jin10_sqlite)
         while not stop.is_set():
