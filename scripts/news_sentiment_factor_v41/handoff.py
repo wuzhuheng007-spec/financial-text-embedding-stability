@@ -102,8 +102,9 @@ def evidence_index() -> dict:
     return result
 
 
-def package() -> dict:
-    destination = ROOT.parent / "quant" / "handoffs" / "news_sentiment_factor_v41_20261117.zip"
+def package(final: bool = False) -> dict:
+    name = "news_sentiment_factor_v41_20261117_final.zip" if final else "news_sentiment_factor_v41_20261117.zip"
+    destination = ROOT.parent / "quant" / "handoffs" / name
     if destination.exists():
         raise FileExistsError(destination)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -148,5 +149,6 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=("index", "package"))
+    parser.add_argument("--final", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(evidence_index() if args.action == "index" else package(), ensure_ascii=False))
+    print(json.dumps(evidence_index() if args.action == "index" else package(args.final), ensure_ascii=False))
