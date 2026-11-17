@@ -1,0 +1,42 @@
+{
+  "schema": "news_sentiment_factor_v41_future_eval_protocol_1",
+  "status": "FROZEN_PROTOCOL_ONLY_NO_RETURN_LABELS_READ_OR_MODEL_FIT",
+  "scope": "new owner-received Chinese news versions after the actual research-worker start; observed cache coverage must be audited before a no-news value is defined",
+  "signal_snapshot": {
+    "timezone": "America/New_York",
+    "time": "16:15:00",
+    "calendar": "verified US equity regular-session calendar, including half days as sessions",
+    "eligible_inputs": "version received and score completed no later than snapshot; candidate signal availability is max(received_at_utc,scored_at_utc)",
+    "no_future_article_versions": true,
+    "no_news": "MISSING_COVERAGE_UNTIL_SOURCE_COMPLETENESS_VERIFIED"
+  },
+  "features": {
+    "N1": "equal-weight mean text tone of explicitly company-linked algorithmic event groups available by snapshot",
+    "N2": "number of distinct available algorithmic event groups with explicit company linkage",
+    "duplicates": "same article revision contributes once; suspected reprints grouped as an algorithmic proxy, not independent confirmation",
+    "ambiguous_company_and_macro": "retain text score without assigning a company direction",
+    "price_recap": "flag and separately exclude from a prespecified sensitivity view; never use price recap as evidence that news caused a move"
+  },
+  "target": {
+    "primary": "next eligible regular session open to that session close, adjusted for verified corporate actions",
+    "secondary": "next eligible regular session open to fifth eligible session close, adjusted for verified corporate actions",
+    "entry": "licensed next-regular-session open price with verified source timestamp; exclude when unavailable, never substitute a quote point or minute bar",
+    "price_data_gate": "source, timestamps, trading calendar, split/dividend adjustment and gap coverage verified before scoring",
+    "cost": "not set in this no-return run; freeze a separate cost scenario before any later return evaluation; no execution or profit claim"
+  },
+  "paired_models": {
+    "A": "lagged price and volume",
+    "B": "A plus N2",
+    "C": "A plus N1",
+    "D": "A plus N1 and N2",
+    "sample_rule": "same eligible company-snapshot rows, labels and chronological folds for all four groups; training-only transforms and hyperparameters; purge labels crossing fold boundaries",
+    "source_coverage_gate": "complete licensed news and matching price coverage required for the paired test",
+    "evaluation_status": "NOT_RUN"
+  },
+  "boundaries": [
+    "Chinese text tone is not a stock return probability or verified news fact",
+    "cache-replay scores cannot be relabeled as prospective",
+    "April-July 2026 viewed labels remain outside this run",
+    "no return model, IC, backtest, or trading in v4.1"
+  ]
+}

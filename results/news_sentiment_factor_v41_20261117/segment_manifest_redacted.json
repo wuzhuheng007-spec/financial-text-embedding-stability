@@ -1,0 +1,40 @@
+{
+  "schema": "news_sentiment_v41_segment_manifest_redacted_1",
+  "source_manifest_sha256": "6a9f6996a62c006bb3c4ad04b282ae7a654b409e31759c72ea0271afac7c4203",
+  "segment_rule_version": "zh_punctuation_numbered_v1",
+  "entity_rule_version": "technology_event_rules_v1_2_20261116",
+  "segment_count": 1240,
+  "segments_by_provider": {
+    "moomoo_webapi": 659,
+    "jin10": 581
+  },
+  "segments_by_kind": {
+    "TITLE": 31,
+    "BODY_SEGMENT": 1209
+  },
+  "association_status": {
+    "NO_EXPLICIT_COMPANY": 1034,
+    "ONE_EXPLICIT_COMPANY": 168,
+    "MULTI_COMPANY_UNRESOLVED": 38
+  },
+  "long_split_pieces": 10,
+  "scoring_budget_status": "WITHIN_INFERENCE_CAP",
+  "review_units": 12,
+  "review_by_provider": {
+    "moomoo_webapi": 6,
+    "jin10": 6
+  },
+  "review_by_stratum": {
+    "ONE_EXPLICIT_COMPANY/REPORT_CANDIDATE": 2,
+    "ONE_EXPLICIT_COMPANY/PREDICTION_CANDIDATE": 2,
+    "ONE_EXPLICIT_COMPANY/DENIAL_CANDIDATE": 1,
+    "ONE_EXPLICIT_COMPANY/RETROSPECTIVE_CANDIDATE": 2,
+    "MULTI_COMPANY_UNRESOLVED/REPORT_CANDIDATE": 2,
+    "MULTI_COMPANY_UNRESOLVED/PREDICTION_CANDIDATE": 1,
+    "NO_EXPLICIT_COMPANY/REPORT_CANDIDATE": 1,
+    "NO_EXPLICIT_COMPANY/PREDICTION_CANDIDATE": 1
+  },
+  "segments_sha256": "cfbdcf6196154dbe37f1aa431f44c96c738b10a6a5ab0b15c2446aa1d850d5a2",
+  "review_units_sha256": "912fb2b589f0507cdd8ed4b2df67ab0917bb3327fa0d6042d80f1fe1201a7a7d",
+  "no_model_scores_read": true
+}

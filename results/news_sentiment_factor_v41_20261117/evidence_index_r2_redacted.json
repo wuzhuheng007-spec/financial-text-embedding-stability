@@ -1,0 +1,90 @@
+{
+  "schema": "news_sentiment_factor_v41_evidence_index_redacted_2",
+  "created_at_utc": "2026-11-17T07:16:45.729564+00:00",
+  "scope": "PUBLIC_REDACTED_RECEIPTS_ONLY",
+  "immutable_replay_reference": "run_lock_real_replay_redacted.json",
+  "historical_english_v4": "SEPARATE_UNCHANGED",
+  "private_inputs_scores_weights_credentials_and_news_text": "EXCLUDED",
+  "rows": [
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/implementation_revisions_redacted.json",
+      "sha256": "cc31ae51a9f283a74ed19e6bfc585d2f55b1f481b7df5d5293a8831c8d73e3d5",
+      "bytes": 756
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/input_manifest_redacted.json",
+      "sha256": "e4f1780fcc8691ca0a046a19476937316899b81885411e3c25a80ff5f43279a1",
+      "bytes": 2288
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/segment_manifest_redacted.json",
+      "sha256": "b9b8b4e1f39a29ed1784cfd9eab5f91c628e99da999a125c72cf5f8be1d4e73f",
+      "bytes": 1408
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/segment_manifest_r2_redacted.json",
+      "sha256": "758b93c9ecf2b059cfdc5c4e4082ad20d3bdf892d74bff2440415f85dbc88f28",
+      "bytes": 1135
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/source_review_frozen_redacted.json",
+      "sha256": "f2e66120e3c7d7e101cf6739d600e6bc0b04be231bb510cc27686bac55870a0c",
+      "bytes": 1117
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/synthetic_smoke_redacted.json",
+      "sha256": "4eaeaaefea835715c260c77f660ea44914a95e2983697a785e2d580ac71b9291",
+      "bytes": 1430
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/run_lock_synthetic_smoke_redacted.json",
+      "sha256": "6390d56ffdb9d38bfce3dc3d28a483c7e98f939dc9498eb66b54343114042f46",
+      "bytes": 1580
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/run_lock_real_replay_redacted.json",
+      "sha256": "fea7691e30e020fc60b83824dc7548aada8ff146c6cd9528abd1abdb426f69b8",
+      "bytes": 1576
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/real_score_run_redacted.json",
+      "sha256": "b6a227a35f704d68be7bf39caa50effa28a400787dd47fac786bf7335c111d28",
+      "bytes": 752
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/source_review_comparison_redacted.json",
+      "sha256": "4a4d1a8359b4acd6f1d610e784a4be806e2c10916804e192e35cae305f25f45b",
+      "bytes": 1462
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/association_audit_redacted.json",
+      "sha256": "698ac157fe7bf07f8882bd046437759ca3edf4dcd5861e8c08944bb970960876",
+      "bytes": 1094
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/candidate_coverage_redacted.json",
+      "sha256": "3ee3b0878d3d831d25b1a35c9a5653a0bca1fbc6e7182a61afb6b0887db59d43",
+      "bytes": 1526
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/worker_observation_redacted.json",
+      "sha256": "9a640e39e485c6d61302951b73b41bf8ea8e7afdeb4577c36436d8ed9fcf35dd",
+      "bytes": 2074
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/browser_acceptance_redacted.json",
+      "sha256": "15de2c0c6037d4c28471b2a29bba59e2178c78f0d96327d001507799acbf31c8",
+      "bytes": 1794
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/evidence_index_redacted.json",
+      "sha256": "9e9ca56dc4f604ce32e9aadbbe4df1a82be7522fd8344b8da7926d78ad86c38a",
+      "bytes": 3405
+    },
+    {
+      "path": "results/news_sentiment_factor_v41_20261117/prospective_score_observation_redacted.json",
+      "sha256": "0e35ee37f9dd1566d2cf605475b74011dcf76eb49087ebf3ce4f31124073f628",
+      "bytes": 880
+    }
+  ]
+}

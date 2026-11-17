@@ -1,0 +1,33 @@
+{
+  "schema": "news_sentiment_v41_segment_manifest_r2_redacted_1",
+  "config_sha256": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+  "input_manifest_sha256": "6a9f6996a62c006bb3c4ad04b282ae7a654b409e31759c72ea0271afac7c4203",
+  "segment_rule_version": "zh_html_source_map_punctuation_numbered_v2",
+  "segment_count": 1101,
+  "segments_by_provider": {
+    "moomoo_webapi": 520,
+    "jin10": 581
+  },
+  "segments_by_kind": {
+    "TITLE": 31,
+    "BODY_SEGMENT": 1070
+  },
+  "association_status": {
+    "NO_EXPLICIT_COMPANY": 894,
+    "ONE_EXPLICIT_COMPANY": 168,
+    "MULTI_COMPANY_UNRESOLVED": 39
+  },
+  "html_source_articles": 15,
+  "max_token_count": 178,
+  "score_cap": 2500,
+  "score_cap_status": "WITHIN_CAP",
+  "review_units": 12,
+  "review_by_provider": {
+    "moomoo_webapi": 6,
+    "jin10": 6
+  },
+  "segments_sha256": "3e132ac7829eace0e5af5bcc9816e1f24e79d91d3375a56e057555ac89500476",
+  "source_map_sha256": "86b46b446de7730ef011d3a6903203d975f2a899cce271de083bbee2aa769d00",
+  "review_units_sha256": "bad4377d3628382e8dffb44f84a44ba584f6d413b92839ff054cf35cf9c199be",
+  "no_model_scores_read": true
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "news_sentiment_factor_v41_candidate_coverage_redacted_1",
+  "created_at_utc": "2026-11-17T07:05:18.025655+00:00",
+  "as_of_utc": "2026-11-17T07:05:18.025655+00:00",
+  "scope": "OBSERVED_PRIVATE_CACHE_ONLY_NOT_COMPLETE_NEWS_ARCHIVE",
+  "total_scored_segments": 1101,
+  "segment_association_status": {
+    "NO_EXPLICIT_COMPANY": 894,
+    "ONE_EXPLICIT_COMPANY": 168,
+    "MULTI_COMPANY_UNRESOLVED": 39
+  },
+  "segment_kinds": {
+    "BODY_SEGMENT": 1070,
+    "TITLE": 31
+  },
+  "article_company_inputs": 71,
+  "algorithmic_company_event_groups": 70,
+  "observed_company_day_rows": 16,
+  "companies_in_panel": 13,
+  "receipt_days_in_panel": 2,
+  "cohorts": {
+    "CACHE_REPLAY": 16
+  },
+  "event_grouping_is_not_independent_confirmation": true,
+  "N1": "mean of company-explicit body segments per article, or title fallback; equal mean by algorithmic event group",
+  "N2": "number of distinct observed algorithmic event groups for the company and China receipt date",
+  "no_news_versus_missing_coverage": "cannot distinguish from current incomplete source cache",
+  "trading_day_mapping": "NOT_PERFORMED_RECEIPT_CIVIL_DAY_ONLY",
+  "model_training_cutoff": "NOT_DISCLOSED",
+  "private_event_inputs_sha256": "2ee290c5902e1e224bc3ba4b5c5ce72a2a7d98e940e3dc11b0acf76a248b6e0b",
+  "private_event_groups_sha256": "20a9ab39926045254fb332b7bf84e182d7ea4ac3357ef5ec1dc84dbb7ba4a8f6",
+  "private_company_day_sha256": "7f0696703dc8a0ff9e3f3d2c616f7b46b3f01f312c1850d1377cc7872ceb5c8e",
+  "no_returns_or_models_fitted": true
+}

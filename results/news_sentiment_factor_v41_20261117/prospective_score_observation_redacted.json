@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_factor_v41_prospective_observation_redacted_1",
+  "as_of_utc": "2026-11-17T07:15:44Z",
+  "run_id": "v41_observe_20261117T071145Z",
+  "worker_state": "RUNNING_PROCESS_ALIVE",
+  "provider": "jin10",
+  "new_article_versions_since_actual_worker_start": 1,
+  "new_scored_units": 1,
+  "failed_units": 0,
+  "source_published_at_utc": "2026-11-17T07:04:53Z",
+  "new_version_received_at_utc": "2026-11-17T07:15:01.726626Z",
+  "actual_scored_at_utc": "2026-11-17T07:15:23.272405+00:00",
+  "signal_available_at_utc": "2026-11-17T07:15:23.272405+00:00",
+  "company_association": "NO_EXPLICIT_COMPANY",
+  "research_state": "UNREVIEWED_TEXT_TONE_CANDIDATE_NOT_COMPANY_FACTOR",
+  "bounded_prior_five_minute_observation_new_versions": 0,
+  "source_text_score_and_article_identity": "PRIVATE_SQLITE_ONLY",
+  "not_return_prediction_or_news_truth_verification": true
+}

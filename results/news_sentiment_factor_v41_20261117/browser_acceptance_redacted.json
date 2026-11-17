@@ -1,0 +1,37 @@
+{
+  "schema": "news_sentiment_factor_v41_browser_acceptance_redacted_1",
+  "checked_at_utc_approx": "2026-11-17T07:04:00Z",
+  "url": "http://127.0.0.1:8765/",
+  "session": "EXISTING_OWNER_LOGIN_NO_CREDENTIALS_ENTERED",
+  "view": "folded owner-only research news tone panel, English v4 and Chinese v4.1 separate",
+  "actual_cache_replay_units_visible": 1101,
+  "actual_chinese_article_versions_visible": 230,
+  "actual_prospective_versions_visible": 0,
+  "source_links_visible": true,
+  "research_candidate_warning_visible": true,
+  "translation_pending_prefix_on_chinese_research_rows_after_fix": false,
+  "language_checks": {
+    "english": "PASS_RESEARCH_LABELS_AND_COUNTS_VISIBLE",
+    "chinese": "PASS_RESEARCH_LABELS_AND_COUNTS_VISIBLE",
+    "original_preference_restored": "English"
+  },
+  "viewport_checks": [
+    {"width_px": 390, "document_scroll_width_px": 375, "horizontal_overflow": false, "panel_visible": true},
+    {"width_px": 1280, "document_scroll_width_px": 1265, "horizontal_overflow": false, "panel_visible": true}
+  ],
+  "refresh": "panel remained expanded; after asynchronous page settlement, scroll returned to the same near-bottom position",
+  "failure_state_real_visual_check": "NOT_OBSERVED_NO_FAILED_SCORE_IN_FROZEN_REPLAY",
+  "final_owner_page_reload": {
+    "url_confirmed": true,
+    "owner_session_confirmed": true,
+    "chinese_total_score_count_visible": 1102,
+    "chinese_cached_replay_score_count": 1101,
+    "new_receipt_score_count_visible": 1,
+    "worker_state_visible": "RUNNING",
+    "duplicate_alias_for_same_company_on_a_display_row": false,
+    "research_panel_still_expanded": true
+  },
+  "private_screenshots_published": false,
+  "supplier_request_or_model_call_from_page": false,
+  "scope": "THIS_PANEL_ONLY_NOT_A_FULL_PERSONAL_PORTAL_RETEST"
+}

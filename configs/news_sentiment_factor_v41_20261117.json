@@ -1,0 +1,63 @@
+{
+  "schema": "news_sentiment_factor_v41_protocol_1",
+  "research_question": "Can an authorized Chinese news cache support traceable local text-tone scores and new-version availability records without claiming a return factor?",
+  "lineage": "NEW_CHINESE_BRANCH_SEPARATE_FROM_FROZEN_ENGLISH_V4",
+  "known_baseline_commit": "78343fd60d4b709b6e819748fd5925b6b9612d70",
+  "freeze_cutoff_utc": "2026-11-17T06:42:36Z",
+  "sources": ["moomoo_webapi_v4_private_cache", "jin10_personal_news_versions"],
+  "sample_selection": {
+    "v4_article_versions_first": "all existing 30, stable provider/article_id/version order",
+    "jin10_max_new_versions": 200,
+    "jin10_order": "received_at ascending, item_key ascending, version ascending",
+    "jin10_cutoff": "received_at <= freeze_cutoff_utc",
+    "exclude_duplicate": "exact normalized original text SHA-256 across the selected sets; preserve excluded IDs and reason",
+    "no_provider_requests": true,
+    "source_rotation": "preserve all v4 moomoo versions then earliest eligible Jin10 versions; alternate sources in fixed semantic review selection"
+  },
+  "model": {
+    "repo": "yiyanghkust/finbert-tone-chinese",
+    "revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "license": "apache-2.0 per publisher model card",
+    "files": ["config.json", "model.safetensors", "special_tokens_map.json", "tokenizer_config.json", "vocab.txt", "README.md"],
+    "trust_remote_code": false,
+    "id2label": {"0": "Neutral", "1": "Positive", "2": "Negative"},
+    "training_cutoff": "NOT_DISCLOSED_IN_MODEL_CARD"
+  },
+  "scoring": {
+    "main_score": "softmax_label_1_minus_softmax_label_2",
+    "probability_meaning": "uncalibrated text-classification outputs, not equity-return probabilities",
+    "input_kinds": ["TITLE", "BODY_SEGMENT"],
+    "segment_rule_version": "zh_punctuation_numbered_v1",
+    "max_tokens_including_special": 256,
+    "long_segment_rule": "split on tokenizer-safe character boundaries with complete coverage; never silently truncate",
+    "batch_size": 8,
+    "max_real_inference_units": 2500,
+    "body_aggregate": "arithmetic mean of scored original-text segments; title separate and never double-counted with body",
+    "company_association": "only a segment with one explicit verified company alias; multi-company segments retain text tone without company assignment",
+    "event_grouping": "exact normalized source title or full text plus source day and claim stage; algorithmic proxy only",
+    "semantic_review_max": 12,
+    "semantic_review_selection": "alternate provider then single/multiple/no company and reported/predicted/denied/retrospective, then received_at/article_id; freeze source judgments before model-output read"
+  },
+  "prospective": {
+    "start": "record actual worker start as separate frozen run receipt before first scoring",
+    "observe_minutes_max": 15,
+    "new_article_versions_max": 50,
+    "daily_new_article_versions_max": 500,
+    "poll_seconds": 30,
+    "automatic_retries_per_identity": 0,
+    "identity": "source, article ID, article version, segment rule version, model revision, config SHA-256",
+    "signal_available_at": "max(actual_received_at, scored_at)",
+    "no_replay_as_prospective": true
+  },
+  "factor_candidate": {
+    "N1": "equal-weight mean of direct-company segment tone across distinct algorithmic event groups at frozen company-day snapshot",
+    "N2": "count of distinct algorithmic event groups with direct-company evidence",
+    "coverage": "observed cache only; no-news cannot be inferred without complete source coverage",
+    "provisional_current_day": true,
+    "future_primary": "one eligible trading session after signal cutoff and actual score availability",
+    "future_secondary": "five eligible trading sessions",
+    "future_paired_models": ["price_volume", "price_volume_attention", "price_volume_tone", "price_volume_attention_tone"],
+    "return_labels_or_fits_this_run": false
+  },
+  "boundaries": ["no_new_supplier_polling", "no_Qwen", "no_return_read", "no_trading", "old_v4_immutable", "financial_v25_REJECTED_CANDIDATE"]
+}

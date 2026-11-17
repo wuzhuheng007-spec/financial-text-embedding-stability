@@ -164,13 +164,14 @@ def personal_feed_json(request):
 
 @login_required
 def research_sentiment_json(request):
-    """Owner-only read of the separate local v4 cache; no supplier/model call."""
+    """Owner-only reads of separate local English v4 and Chinese v4.1 caches."""
     if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
         raise Http404("Research sentiment unavailable")
     import sqlite3
     from contextlib import closing
     from pathlib import Path
     from .personal_feed_cache import REPO_ROOT
+    from .research_chinese_cache import chinese_research_summary
 
     db = REPO_ROOT / "artifacts/news_sentiment_factor_v4_20261117/news_research.sqlite3"
     data = {"state": "NO_RESEARCH_CACHE", "article_versions": 0, "english_titles": 0,
@@ -196,6 +197,7 @@ def research_sentiment_json(request):
         except sqlite3.Error:
             data["state"] = "CACHE_UNAVAILABLE"
             data["rows"] = []
+    data["chinese"] = chinese_research_summary(REPO_ROOT)
     response = JsonResponse(data)
     response["Cache-Control"] = "private, no-store"
     return response

@@ -1,0 +1,75 @@
+{
+  "schema": "news_sentiment_v41_input_manifest_redacted_1",
+  "frozen_at_utc": "2026-11-17T06:45:06.600000+00:00",
+  "frozen_at_asia_shanghai": "2026-11-17T14:45:06.648744+08:00",
+  "head": "78343fd60d4b709b6e819748fd5925b6b9612d70",
+  "config_sha256": "45e0caa30dc1f61e702498cda0043a7a196a1a744d092dc0ded1b48c96127800",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "model_files": {
+    "config.json": {
+      "sha256": "4b9eb1fc46e979f0177934b4ce798591a86fb5817459854a83e0ba0517f12ec2",
+      "bytes": 1041
+    },
+    "model.safetensors": {
+      "sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+      "bytes": 409103316
+    },
+    "special_tokens_map.json": {
+      "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+      "bytes": 125
+    },
+    "tokenizer_config.json": {
+      "sha256": "cfcc4a4dd9757a0ebb06c5ec8056d7dd4cb1eda36ca3609e4cfa7922c3b9f003",
+      "bytes": 1243
+    },
+    "vocab.txt": {
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
+      "bytes": 109540
+    },
+    "README.md": {
+      "sha256": "24acec05c89a61bd1afa360d9913b0b043be61e5602c24eff832d14fd96d5ea6",
+      "bytes": 1333
+    }
+  },
+  "backup_roles": [
+    {
+      "role": "portal",
+      "status": "BACKED_UP",
+      "bytes": 229376,
+      "quick_check": "ok"
+    },
+    {
+      "role": "personal_feed",
+      "status": "BACKED_UP",
+      "bytes": 137719808,
+      "quick_check": "ok"
+    },
+    {
+      "role": "personal_news",
+      "status": "BACKED_UP",
+      "bytes": 36864,
+      "quick_check": "ok"
+    },
+    {
+      "role": "personal_analysis",
+      "status": "BACKED_UP",
+      "bytes": 471040,
+      "quick_check": "ok"
+    },
+    {
+      "role": "english_v4_research",
+      "status": "BACKED_UP",
+      "bytes": 192512,
+      "quick_check": "ok"
+    }
+  ],
+  "v4_replay_article_versions": 30,
+  "jin10_replay_article_versions": 200,
+  "excluded_before_cap": {
+    "EXACT_NORMALIZED_TEXT_DUPLICATE": 1
+  },
+  "ordered_identity_sha256": "c5f28ff59720c896a0d8d963053614b54a34a37ea055c32be2c1f65268e05603",
+  "private_manifest_sha256": "6a9f6996a62c006bb3c4ad04b282ae7a654b409e31759c72ea0271afac7c4203",
+  "no_supplier_requests": true,
+  "no_model_scores_before_freeze": true
+}

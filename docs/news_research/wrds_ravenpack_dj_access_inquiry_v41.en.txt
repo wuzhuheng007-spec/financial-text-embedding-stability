@@ -1,0 +1,10 @@
+﻿Subject: Research access question: RavenPack DJ/PR Equities on WRDS
+
+Dear Professor or Data Administrator,
+
+I can sign in to WRDS, but the RavenPack Dow Jones and PR Edition Equities query form does not permit me to submit a query. The form identifies the required product as `ravenpack_dj`:
+https://wrds-www.wharton.upenn.edu/pages/get-data/ravenpack-news-analytics-40/rpa-10-equities/rpa_1_0-DJPR-edition-equities/
+
+Does our institution already subscribe to this product, or can I request research access? If access is available, does it include English article titles and full text, historical article revisions and their timestamps? Please also clarify whether local storage of article text and derived research scores is allowed, and under what retention and sharing conditions.
+
+I have not submitted a data query or obtained RavenPack records through this form. Thank you.

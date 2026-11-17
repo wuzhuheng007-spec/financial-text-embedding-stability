@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_v41_real_score_run_redacted_1",
+  "run_id": "v41_replay_20261117T065132Z",
+  "started_lock_at_utc": "2026-11-17T06:51:31.168755+00:00",
+  "completed_at_utc": "2026-11-17T06:52:23.593233+00:00",
+  "config_sha256": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+  "segments_sha256": "3e132ac7829eace0e5af5bcc9816e1f24e79d91d3375a56e057555ac89500476",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "device": "cpu",
+  "article_versions": 230,
+  "eligible_scoring_units": 1101,
+  "actual_inference_units": 1101,
+  "batch_calls": 138,
+  "failed_units": 0,
+  "cache_replay_scores": 1101,
+  "qualified_prospective_scores": 0,
+  "elapsed_seconds": 51.375,
+  "no_return_labels_read": true
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "news_sentiment_v41_run_lock_1",
+  "stage": "SYNTHETIC_SMOKE",
+  "locked_at_utc": "2026-11-17T06:51:17.421159+00:00",
+  "head": "78343fd60d4b709b6e819748fd5925b6b9612d70",
+  "config_sha256": "43a662fad27a1da1b84a07f353f2d5c546af2b82cae4ba177e46549cf1053195",
+  "input_manifest_sha256": "6a9f6996a62c006bb3c4ad04b282ae7a654b409e31759c72ea0271afac7c4203",
+  "segments_sha256": "3e132ac7829eace0e5af5bcc9816e1f24e79d91d3375a56e057555ac89500476",
+  "source_review_reference_sha256": "6bf996848fe87d059176a54810da856fbf603de679f0c8845c88a52137419d94",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "model_weight_sha256": "0c25b105902f90d1e039d511944af4f49d1490f6698e701f2704a714ca74e66b",
+  "model_config_sha256": "4b9eb1fc46e979f0177934b4ce798591a86fb5817459854a83e0ba0517f12ec2",
+  "code_sha256": {
+    "scripts/news_sentiment_factor_v41/score.py": "bb5981917cc611b23088c5766140ea3e379d3b16011463dd6db30c8070232ab5",
+    "scripts/news_sentiment_factor_v41/prepare_v2.py": "fb46b00fdb334d289c6ab2fb4a60fced7baa454140e334742b420a2f7cb9095f",
+    "scripts/news_sentiment_factor_v41/prepare.py": "32e2ee8cf5fa5153b74a697ba128e7cbd75c1e0cc9fe255fbaf0e0033a039278",
+    "scripts/news_sentiment_factor_v41/freeze.py": "7ec23e9653fdca74266f69af9aaf5deafdebb9573aaf8fe9ed5c974dc20883a7",
+    "scripts/quant_personal_feed/event_rules.py": "34f9c4d75540035b33be5cbf9f3b0e3f2b276080a9354aef3cbb8bd668f3b81b"
+  },
+  "torch_version": "2.9.1+cpu",
+  "transformers_version": "4.44.2",
+  "seed": 1729,
+  "device_capability": "CPU_ONLY_IN_ISOLATED_V3_RESEARCH_ENV"
+}

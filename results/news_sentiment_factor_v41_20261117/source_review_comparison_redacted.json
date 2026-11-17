@@ -1,0 +1,53 @@
+{
+  "schema": "news_sentiment_v41_source_review_comparison_redacted_1",
+  "created_at_utc": "2026-11-17T06:52:54.692931+00:00",
+  "reviewer": "CODEX_REVIEW_NOT_INDEPENDENT_GOLD",
+  "reference_frozen_before_model_scores": true,
+  "reference_sha256": "6bf996848fe87d059176a54810da856fbf603de679f0c8845c88a52137419d94",
+  "private_comparison_sha256": "c4085ba876a6d72e3397c2698d84eb2bb2bf2f31cc06814f29826e3302496170",
+  "reviewed_units": 12,
+  "three_class_comparable_units": 8,
+  "reference_unresolved_or_mixed": 4,
+  "matrix_rows_reference_columns_model": {
+    "NEUTRAL": {
+      "NEUTRAL": 2,
+      "POSITIVE": 0,
+      "NEGATIVE": 0
+    },
+    "POSITIVE": {
+      "NEUTRAL": 1,
+      "POSITIVE": 3,
+      "NEGATIVE": 0
+    },
+    "NEGATIVE": {
+      "NEUTRAL": 0,
+      "POSITIVE": 0,
+      "NEGATIVE": 2
+    }
+  },
+  "label_agreements_on_comparable": 7,
+  "label_disagreements_on_comparable": 1,
+  "source_reference_distribution": {
+    "NEUTRAL": 2,
+    "POSITIVE": 4,
+    "UNRESOLVED": 3,
+    "NEGATIVE": 2,
+    "MIXED": 1
+  },
+  "model_distribution_on_review": {
+    "NEUTRAL": 7,
+    "POSITIVE": 3,
+    "NEGATIVE": 2
+  },
+  "disagreements_redacted": [
+    {
+      "case_hash": "f645159609d549d5",
+      "provider": "jin10",
+      "source_reference": "POSITIVE",
+      "model_label": "NEUTRAL",
+      "claim_nature": "COMPANY_CLAIM",
+      "review_note_code": "FUTURE_FACILITY_CLAIM"
+    }
+  ],
+  "not_general_accuracy_or_news_truth_verification": true
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "news_sentiment_v41_synthetic_smoke_redacted_1",
+  "checked_at_utc": "2026-11-17T06:51:21.747009+00:00",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+  "synthetic_inputs": 5,
+  "probabilities_by_case": {
+    "positive": {
+      "neutral": 0.00048332460573874414,
+      "positive": 0.9991390705108643,
+      "negative": 0.00037753419019281864,
+      "net": 0.9987615363206714
+    },
+    "negative": {
+      "neutral": 0.0006397606339305639,
+      "positive": 0.0008189177606254816,
+      "negative": 0.9985413551330566,
+      "net": -0.9977224373724312
+    },
+    "negation": {
+      "neutral": 0.9670983552932739,
+      "positive": 0.006590686738491058,
+      "negative": 0.02631097286939621,
+      "net": -0.01972028613090515
+    },
+    "number": {
+      "neutral": 0.00046370498603209853,
+      "positive": 0.9991514682769775,
+      "negative": 0.0003848808992188424,
+      "net": 0.9987665873777587
+    },
+    "prediction": {
+      "neutral": 0.0006003888556733727,
+      "positive": 0.0006876885308884084,
+      "negative": 0.9987119436264038,
+      "net": -0.9980242550955154
+    }
+  },
+  "empty_input_rejected": true,
+  "long_text_characters": 1920,
+  "long_text_pieces": 8,
+  "long_text_complete_coverage": true,
+  "batch_single_max_abs_difference": 1.7881393432617188e-07,
+  "batch_single_tolerance": 1e-05,
+  "elapsed_seconds": 3.2660000000032596,
+  "synthetic_not_real_accuracy": true
+}

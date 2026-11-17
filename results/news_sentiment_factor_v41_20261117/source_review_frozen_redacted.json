@@ -1,0 +1,36 @@
+{
+  "schema": "news_sentiment_v41_source_review_frozen_redacted_1",
+  "reviewed_at_utc": "2026-11-17T06:48:42.774721+00:00",
+  "reviewer": "CODEX_REVIEW_NOT_INDEPENDENT_GOLD",
+  "review_units_sha256": "bad4377d3628382e8dffb44f84a44ba584f6d413b92839ff054cf35cf9c199be",
+  "reference_sha256": "6bf996848fe87d059176a54810da856fbf603de679f0c8845c88a52137419d94",
+  "units": 12,
+  "by_provider": {
+    "moomoo_webapi": 6,
+    "jin10": 6
+  },
+  "source_tone_distribution": {
+    "NEUTRAL": 2,
+    "POSITIVE": 4,
+    "UNRESOLVED": 3,
+    "NEGATIVE": 2,
+    "MIXED": 1
+  },
+  "claim_nature_distribution": {
+    "DISCLOSURE_MARKER": 1,
+    "ANALYST_OPINION": 1,
+    "CONTEXTUAL_NEGATION": 1,
+    "RETROSPECTIVE_COMPANY_REPORT": 1,
+    "PORTFOLIO_ACTION_REPORT": 1,
+    "PREDICTION_OR_SPECULATION": 1,
+    "COMPANY_CLAIM": 1,
+    "ANALYST_PREDICTION": 1,
+    "PRICE_RECAP_WITH_MEDIA_REPORT": 1,
+    "PRICE_RECAP": 1,
+    "ACQUISITION_REPORT": 1,
+    "ATTRIBUTED_PEACE_EFFORT": 1
+  },
+  "price_recap_units": 2,
+  "source_review_before_model_output": true,
+  "independent_truth_verified": 0
+}

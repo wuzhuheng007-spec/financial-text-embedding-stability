@@ -1,0 +1,18 @@
+{
+  "schema": "news_sentiment_v41_implementation_revisions_1",
+  "r1": {
+    "stage": "BEFORE_ANY_MODEL_INFERENCE",
+    "input_manifest_frozen": true,
+    "segment_count": 1240,
+    "review_units_selected": 12,
+    "problem": "HTML markup from 15 moomoo bodies appeared in model-bound segment text; source judgments were not yet recorded",
+    "disposition": "PRESERVED_AS_FAILED_PREFLIGHT_NOT_SCORED"
+  },
+  "r2": {
+    "change": "HTMLParser text nodes and per-character raw-source location map; punctuation and numbered segmentation retained",
+    "same_frozen_articles": true,
+    "new_config": "configs/news_sentiment_factor_v41_20261117_r2.json",
+    "model_inference_before_r2": 0,
+    "score_selection_based_on_returns_or_model_output": false
+  }
+}
