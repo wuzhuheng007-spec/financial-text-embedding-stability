@@ -67,3 +67,4 @@ a{color:var(--blue);overflow-wrap:anywhere}
 .research-audit summary{cursor:pointer}.research-summary{padding:0 16px 12px;line-height:1.7}
 @media(max-width:1100px){#personal-quotes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){#personal-quotes,.status-grid{grid-template-columns:1fr}.content{padding:16px 12px}.workspace-nav{gap:6px}.workspace-nav button{padding:8px 12px}.page-heading>.status-pill,.page-heading .eyebrow{display:none}.news-item{padding:12px}.top10-rank{font-size:14px}.workspace-panel>summary{font-size:15px}}
+@media(max-width:600px){#personal-quotes>.snapshot-item{grid-template-columns:minmax(0,1fr)}#personal-quotes .snapshot-value{text-align:left;flex-direction:row;flex-wrap:wrap;gap:6px;align-items:baseline}#personal-quotes .session-picker{max-width:240px}}

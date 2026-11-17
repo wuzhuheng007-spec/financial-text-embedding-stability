@@ -52,6 +52,8 @@
     MIXED:['混合','Mixed'],UNKNOWN:['未知','Unknown']};
   const bilingual=(pair) => language === 'en' ? pair[1] : pair[0];
   const sessionLabels = {PREMARKET:'盘前', REGULAR:'常规', AFTERHOURS:'盘后', OVERNIGHT:'夜盘'};
+  const sessionEnglish = {PREMARKET:'Pre-market', REGULAR:'Regular', AFTERHOURS:'After-hours', OVERNIGHT:'Overnight'};
+  const sessionName = key => (language === 'en' ? sessionEnglish[key] : sessionLabels[key]) || bilingual(['时段未核实','Session unverified']);
 
   function csrfToken() {
     return document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
@@ -66,7 +68,7 @@
   }
 
   function stamp(value) {
-    if (!value) return '未知';
+    if (!value) return bilingual(['未知','Unknown']);
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
     try { return new Intl.DateTimeFormat('zh-CN', {
@@ -89,14 +91,14 @@
     return values.length ? values.reduce((best, value) => Date.parse(value) > Date.parse(best) ? value : best) : null;
   }
   function quoteLabel(quote, provider, selected=true) {
-    if (!quote) return '暂无报价';
-    if (!selected) return '未订阅 · 保留历史缓存';
+    if (!quote) return bilingual(['暂无报价','No quote available']);
+    if (!selected) return bilingual(['未订阅 · 保留历史缓存','Not subscribed · historical cache retained']);
     const sourceAt = Date.parse(quote.source_at);
     const stale = Number.isFinite(sourceAt) && Date.now() - sourceAt > 10 * 60 * 1000;
-    if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return '采集已断开 · 保留最后报价';
-    if (stale) return '报价来源时间较旧';
-    if (provider?.state === 'CONNECTED_MARKET_CLOSED') return '连接活跃 · 当前常规市场休市';
-    return '最新缓存报价 · 实时性未核实';
+    if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return bilingual(['采集已断开 · 保留最后报价','Collection disconnected · last quote retained']);
+    if (stale) return bilingual(['报价来源时间较旧','Quote source time is old']);
+    if (provider?.state === 'CONNECTED_MARKET_CLOSED') return bilingual(['连接活跃 · 当前常规市场休市','Connection active · regular market closed']);
+    return bilingual(['最新缓存报价 · 实时性未核实','Latest cached quote · real-time status unverified']);
   }
   function renderStates() {
     const snapshot = stateOf('moomoo_snapshot');
@@ -132,11 +134,11 @@
     const article = node('article', 'snapshot-item');
     const head = node('div');
     head.append(node('strong', null, symbol));
-    head.append(node('p', 'muted', profile?.name || quote?.display_name || '名称待核实'));
+    head.append(node('p', 'muted', profile?.name || quote?.display_name || bilingual(['名称待核实','Name unverified'])));
     const selectedSession = sessionChoice.get(symbol) || 'AUTO';
     const picker = node('select', 'session-picker');
-    picker.setAttribute('aria-label', `${symbol} 报价时段`);
-    for (const [key, label] of [['AUTO','最近有来源时间'],...Object.entries(sessionLabels)]) {
+    picker.setAttribute('aria-label', `${symbol} ${bilingual(['报价时段','quote session'])}`);
+    for (const [key, label] of [['AUTO',bilingual(['最近有来源时间','Latest with source time'])],...Object.keys(sessionLabels).map(key=>[key,sessionName(key)])]) {
       const option = node('option', null, label); option.value = key; picker.append(option);
     }
     picker.value = selectedSession;
@@ -144,7 +146,7 @@
     head.append(picker);
     const openChart = () => document.dispatchEvent(new CustomEvent('personal-chart-open', {
       detail: {symbol, session: sessionChoice.get(symbol) || 'AUTO'}}));
-    const chartButton = node('button', 'button button-outline chart-open-button', '查看曲线');
+    const chartButton = node('button', 'button button-outline chart-open-button', bilingual(['查看曲线','View chart']));
     chartButton.type = 'button';
     chartButton.addEventListener('click', openChart);
     head.append(chartButton);
@@ -156,8 +158,8 @@
     const shown = selectedSession === 'AUTO' ? latest || null : bySession.get(selectedSession) || null;
     const capability = selectedSession === 'AUTO' ? null : byCapability.get(selectedSession);
     const value = node('div', 'snapshot-value');
-    value.append(node('strong', null, shown?.price_text ?? '暂无报价'));
-    value.append(node('span', null, shown?.currency || profile?.currency || '供应商未标注币种'));
+    value.append(node('strong', null, shown?.price_text ?? bilingual(['暂无报价','No quote available'])));
+    value.append(node('span', null, shown?.currency || profile?.currency || bilingual(['供应商未标注币种','Currency not labeled by supplier'])));
     const meta = node('div', 'snapshot-meta');
     let details = null;
     const reason = symbolState?.reason ? ` · ${symbolState.reason}` : '';
@@ -171,9 +173,9 @@
       const marketCode = quote?.market_state || '供应商未提供';
       const dateText = shown.trade_date ? `${shown.trade_date}（供应商日期与来源时间的纽约日期一致；非独立交易日确认）` : '供应商未提供可确认的交易日';
       const delayText = shown.delay_status && shown.delay_status !== 'UNKNOWN' ? shown.delay_status : '供应商未标注延迟';
-      const channelLabel = shown.source_channel === 'REST_STOCK_QUOTE' ? '定时快照' : shown.source_channel === 'WS_QUOTE' ? '推送缓存' : '历史缓存';
-      meta.textContent = `${sessionLabels[shown.session] || '时段未核实'}报价 · ${channelLabel}${closed}${reason}` +
-        `\n来源时间：${timeText} · ${quoteLabel(shown, activeFeed, selected)}`;
+      const channelLabel = shown.source_channel === 'REST_STOCK_QUOTE' ? bilingual(['定时快照','Scheduled snapshot']) : shown.source_channel === 'WS_QUOTE' ? bilingual(['推送缓存','Push cache']) : bilingual(['历史缓存','Historical cache']);
+      meta.textContent = `${sessionName(shown.session)} ${bilingual(['报价','quote'])} · ${channelLabel}${closed}${reason}` +
+        `\n${bilingual(['来源时间：','Source time: '])}${timeText} · ${quoteLabel(shown, activeFeed, selected)}`;
       details=node('details','quote-details');
       details.append(node('summary',null,'数据详情'));
       details.append(node('p',null,`本机获取：${stamp(shown.received_at)}\n交易日：${dateText}${dateHint}\n采集：${feedState} · 常规市场状态：${marketCode}\n延迟：${delayText}\n币种依据：${shown.currency ? '供应商报价字段' : profile?.currency ? '证券资料字段' : '供应商未提供'}\n价格字段：${shown.provider_field_path || '未记录'} · 时间字段：${shown.source_time_field_path || '未记录'}`));
@@ -184,7 +186,7 @@
     }
     const regular = bySession.get('REGULAR');
     if (regular && selectedSession !== 'REGULAR') {
-      meta.textContent += `\n常规报价参考：${regular.price_text} · 来源 ${stamp(regular.source_at)}（独立保留）`;
+      meta.textContent += `\n${bilingual(['常规报价参考：','Regular-session reference: '])}${regular.price_text} · ${bilingual(['来源','Source'])} ${stamp(regular.source_at)} ${bilingual(['（独立保留）','(retained separately)'])}`;
     }
     article.append(head, value, meta);
     if (details) article.append(details);
@@ -211,7 +213,7 @@
       const symbol = el.dataset.watchSymbol;
       const quote = latest[symbol];
       const reason = states.get(symbol)?.reason;
-      el.textContent = quote ? `${quote.price_text} ${quote.currency || profiles[symbol]?.currency || '（供应商未标注币种）'} · ${sessionLabels[quote.session] || '时段未核实'} · ${quoteLabel(quote, quote.source_channel === 'REST_STOCK_QUOTE' ? snapshot : moomoo, selected.has(symbol))} · 来源 ${stamp(quote.source_at)}` :
+      el.textContent = quote ? `${quote.price_text} ${quote.currency || profiles[symbol]?.currency || bilingual(['（供应商未标注币种）','(currency unlabeled)'])} · ${sessionName(quote.session)} · ${quoteLabel(quote, quote.source_channel === 'REST_STOCK_QUOTE' ? snapshot : moomoo, selected.has(symbol))} · ${bilingual(['来源','Source'])} ${stamp(quote.source_at)}` :
         `暂无个人报价${reason ? ' · ' + reason : ' · 未订阅或尚未收到推送'}`;
     });
   }
@@ -345,8 +347,10 @@
       const title=language==='en' ? (row.headline_en || `Translation pending — ${row.title}`) : (row.headline_zh || row.title);
       const why=row.scope==='DIRECT_SUBJECT' ? bilingual(['直接涉及关注对象','Directly concerns a followed entity']) :
         row.scope==='INDUSTRY' ? bilingual(['涉及科技产业链','Technology industry chain']) : bilingual(['相关宏观事件','Relevant macro event']);
+      const phrase=row.evidence_phrase || bilingual(['匹配依据未知','Match unknown']);
+      const evidence=language==='en' && /[\u3400-\u9fff]/.test(phrase) ? `Translation pending — ${phrase}` : phrase;
       button.append(node('span','top10-rank',`#${index+1} · ${title}`),
-        node('span','news-meta',`${why} · ${row.evidence_phrase || bilingual(['匹配依据未知','Match unknown'])} · ${stamp(row.published_at_utc || row.received_at)}`),
+        node('span','news-meta',`${why} · ${evidence} · ${stamp(row.published_at_utc || row.received_at)}`),
         node('span','analysis-status',bilingual(['供应商报道 · 点击查看来源','Supplier report · open source details']) +
           (row.tone && row.tone!=='UNKNOWN' ? ` · ${bilingual(['文本语气','Text tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)}` : '')));
       button.title=title;
