@@ -2,6 +2,8 @@
 
 **当前结论：暂不下单。** PR #4 页面已在 Windows 本机运行；Linux 容器没有完成构建和联调，供应商账户对云端采集与私人展示的授权条件也没有核实。阿里云服务器尚未购买、尚未部署。
 
+本机实测 `docker info` 两次在 8 秒内无响应，`wsl --status` 报 WSL2 无法运行。处理器的固件虚拟化与 SLAT 均返回 `True`；读取 Windows `VirtualMachinePlatform`、`Microsoft-Windows-Subsystem-Linux` 可选功能状态时系统要求提升权限，因此具体缺项仍未核实。需要用户或管理员在**提升权限的 PowerShell** 只读运行 `Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform` 和 `Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux`，并核对 `bcdedit /enum` 中的 `hypervisorlaunchtype`。若需启用功能或重启，应由用户在保留当前服务及备份后安排；本轮没有自动修改系统。见[微软 WSL 故障排查](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting)。
+
 ## 条件性配置与价格
 
 按单人试点列一项候选：阿里云国际站轻量应用服务器，Singapore，Linux，2 vCPU、8 GB RAM、160 GB SSD、20 Mbit/s 峰值带宽、5 TB 月流量，**公开基础标价 USD 35/月**。该标价来自[官方定价页](https://www.alibabacloud.com/en/product/swas/pricing)，不是订单总价；税费、备份、域名、流量超额、所在账户站点及当前地域库存尚未核实。新加坡超额流量公开标价 USD 0.081/GB。选择新加坡只是候选，不表示已验证从上海访问的延迟或上游接口的地域许可；[官方地域说明](https://www.alibabacloud.com/help/en/simple-application-server/product-overview/regions-and-network-connectivity)指出地域购买后不可更改，跨境网络可能有延迟和丢包。实际可买套餐及总价以控制台结账页为准。

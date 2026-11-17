@@ -1,6 +1,6 @@
 # PR #4 个人页面执行与迁移验收
 
-执行时间：2026-11-18 05:28–05:51 Asia/Shanghai。仓库起点 `64f16d3c5acf44960903785ea2f4347ddd1f879b`，PR #4 原头 `9a244bf7640307c574d4ef3e3e90b2cf5fabcd37`。改动在独立 worktree `codex/pr4-execution-20261118` 上完成，随后应用到本机原有协作分支；旧研究结果和无关未跟踪文件未回退。PR 来源：[PR #4](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/pull/4)、[页面交接](../docs/quant_portal/personal_cloud_ui_20261118.zh.md)。
+执行起于 2026-11-18 05:28 Asia/Shanghai；最后运行回读的精确时间见追加回执。仓库起点 `64f16d3c5acf44960903785ea2f4347ddd1f879b`，PR #4 原头 `9a244bf7640307c574d4ef3e3e90b2cf5fabcd37`。改动在独立 worktree `codex/pr4-execution-20261118` 上完成，随后应用到本机原有协作分支；旧研究结果和无关未跟踪文件未回退。PR 来源：[PR #4](https://github.com/wuzhuheng007-spec/financial-text-embedding-stability/pull/4)、[页面交接](../docs/quant_portal/personal_cloud_ui_20261118.zh.md)。
 
 ## 先备份并回读的首快照
 
@@ -22,11 +22,21 @@
 
 逐项机器台账见[CSV](../results/personal_cloud_pr4_20261118/plan_execution.csv)。软件检查为 20 项 Python 测试、10 项研究 worker 测试、2 个 JavaScript 语法检查和 diff 检查；这些只支持软件行为，不证明金十完整覆盖或新闻事实正确。[软件回执](../results/personal_cloud_pr4_20261118/software_checks.txt)。
 
+## 06:00 后续运行核对
+
+为缩短 SQLite 写锁占用，先将重复报价包跳过有序历史清理（`57abc4e`）；真实运行仍记录锁错误，因此该修订单独未解决金十问题。随后将原始推送留存扫描移出长写事务、把删除限制为每批 400 条（`71709e2`），只重启采集进程。第二次切换后金十在 UTC 21:58:28 与 22:00:43 有真实业务成功，缓存增加到 393 条；UTC 21:58:55 仍出现一次 SQLite 锁。原始持锁者仍未确定，短时成功不能写成持续稳定。修订后另跑 22 项定向 Python 测试，结果全过；两轮测试有重叠，不相加为独立检查数。[追加脱敏状态](../results/personal_cloud_pr4_20261118/runtime_postfix_redacted.json)与旧回执并存。
+
+Docker 引擎第二次 8 秒检查仍超时；`wsl --status` 报 WSL2 无法启动。CPU 固件虚拟化与 SLAT 均为 `True`，但查询 `VirtualMachinePlatform` 和 WSL Windows 可选功能返回“请求的操作需要提升”，所以不能断言具体哪项功能未启用。[微软故障排查](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting)给出管理员检查路径；本轮未修改系统设置或重启电脑。Linux 容器联调仍为 `NOT_RUN`。
+
+第三次切换合并了完全重复推送的连接活跃时间和计数写入，但 UTC 22:05:05 前后仍观测到一次锁，因而没有把它记为修复完成。随后在修改前备份的 135351 条时段报价上定位到写事务内的无合适索引查询：NVDA 与 TQQQ 夜盘各 100 次“最后写入”查询分别耗时 8.265 秒、4.422 秒，并需临时排序。新增按 owner、证券、时段、渠道及写入 ID 排列的索引后，同一备份副本查询分别为 0.015 秒和小于 0.001 秒。升级前再次在线备份并通过 `quick_check`，采集进程单独重启，实库索引及查询计划已回读。该慢查询是**有证据的锁竞争来源**，但尚需真实轮询观察才能确认最终稳定性。[诊断回执](../results/personal_cloud_pr4_20261118/sqlite_lock_diagnosis_redacted.json)不含报价或正文。最新一轮 30 项软件检查通过，与早先检查有重叠。
+
+新增索引后金十在 UTC 22:07:17、22:08:18、22:09 和 22:10:18 至少四轮连续业务成功，期间未再记录 SQLite 锁；moomoo 推送继续到达并于 UTC 22:10:22 保存新报价。观察只有数分钟，分页衔接缺口仍保留。中文研究评分 worker 原进程在 UTC 21:56:57 停止，日志末尾为运行库的窗口关闭中止信息，触发者未查明。我曾误用系统 Python 启动，因缺少 `torch` 留下一次 `ModuleNotFoundError` 失败回执；随后改用项目既有隔离环境，UTC 22:10:11 再次完成真实评分。旧可信 AI 解读队列继续暂停，未提升任何旧驳回输出。
+
 ## 当前页面与限制
 
 本机地址为 <http://127.0.0.1:8765/>。原账户登录后可用四入口和行情卡；连接健康摘要把 moomoo 推送与金十中断分开，REST 439 不再被后续 SQLite 错误覆盖，也不会随页面刷新重试。新闻默认以金十报道为来源并保留原文入口；未审阅或旧驳回模型草稿继续不可当作可信解释。新增译文是 `CODEX_REVIEW`，数字顺序 9/9 符合原文，旧机器译文漏掉的 40 只已恢复；它没有完成独立来源核实。公开[脱敏译文回执](../results/personal_cloud_pr4_20261118/translation_review_redacted.json)不包含正文。
 
-最后一次状态检查在 05:50 左右：门户 `/readyz/` 与 CSS 200；金十最近业务成功 UTC 21:46:23，但线程当时处于锁冲突退避、`worker_alive=0`；moomoo 推送最近收到 UTC 21:50:12，六只证券仍在缓存；定时 REST 停用。中文研究 worker 和日线 worker 的进程身份存活，后者下一条件采集窗口 UTC 2026-11-18 21:45；真实标签新增 0。**这是单时点观察，不是全天稳定性证明。**
+05:50 的早先状态检查：门户 `/readyz/` 与 CSS 200；金十最近业务成功 UTC 21:46:23，但线程当时处于锁冲突退避、`worker_alive=0`；moomoo 推送最近收到 UTC 21:50:12，六只证券仍在缓存；定时 REST 停用。后续短时观察见上节和追加状态回执。中文研究 worker 和日线 worker 的进程身份存活，后者下一条件采集窗口 UTC 2026-11-18 21:45；真实标签新增 0。**这些是有限时点观察，不是全天稳定性证明。**
 
 ## Linux 与采购闸门
 

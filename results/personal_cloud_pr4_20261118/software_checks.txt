@@ -10,3 +10,15 @@ All three checks exited 0.
 docker compose config --quiet with synthetic, non-secret settings: PASS.
 docker info bounded engine check: TIMEOUT after 8 seconds; no image build or container integration run.
 Software checks do not prove source truth, Jin10 continuity, or Linux runtime operation.
+
+Post-run SQLite contention investigation, 2026-11-18 Asia/Shanghai:
+python -m pytest tests/test_quant_personal_sessions_v13.py tests/test_quant_personal_timeline_v14.py tests/test_personal_feed_quote_prune.py tests/test_personal_feed_lock_recovery.py -q
+22 passed in 1.08s. This includes a duplicate-quote pruning regression check and existing raw-response retention checks.
+git diff --check: PASS.
+The first duplicate-quote change alone did not remove the observed Jin10 lock. A subsequent bounded raw-response retention change was deployed for short live observation; neither test outcome establishes sustained source collection.
+
+After per-push write batching and the last-written lookup index:
+python -m pytest tests/test_personal_feed_query_index.py tests/test_personal_feed_push_batching.py tests/test_quant_personal_feed.py tests/test_personal_feed_quote_prune.py tests/test_personal_feed_lock_recovery.py tests/test_quant_personal_sessions_v13.py tests/test_quant_personal_timeline_v14.py -q
+30 passed in 1.70s. The regression check asserts that the hot lookup uses the new index without a temporary sort; it also checks that a changed source time with the same price is retained. These 30 overlap the earlier runs and must not be summed as independent tests.
+
+On a private, isolated backup copy containing 135351 session-quote rows, the pre-index last-written query took 8.265 s per 100 calls for NVDA overnight and 4.422 s for TQQQ overnight. The indexed copy took 0.015 s and less than 0.001 s respectively, with quick_check=ok. The live index and query plan were read back after deployment. This timing is a source of contention evidence, not proof of sustained live recovery.

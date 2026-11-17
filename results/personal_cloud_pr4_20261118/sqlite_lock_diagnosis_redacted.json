@@ -1,0 +1,25 @@
+{
+  "schema": "personal_feed_sqlite_lock_diagnosis_1",
+  "observation_date_asia_shanghai": "2026-11-18",
+  "source": "read-only copy of pre-change owner cache; no provider requests",
+  "pre_index_history_rows": {
+    "session_quotes": 135351,
+    "session_raw_responses": 128332
+  },
+  "query": "last-written row per owner, symbol, session, channel ordered by id descending",
+  "pre_index_plan": "session_quotes_latest plus TEMP B-TREE FOR ORDER BY",
+  "pre_index_100_call_seconds": {
+    "NVDA_OVERNIGHT": 8.265,
+    "TQQQ_OVERNIGHT": 4.422
+  },
+  "after_index_plan": "session_quotes_last_written, no TEMP B-TREE",
+  "after_index_100_call_seconds": {
+    "NVDA_OVERNIGHT": 0.015,
+    "TQQQ_OVERNIGHT": "<0.001"
+  },
+  "isolated_index_build_seconds": 0.391,
+  "isolated_copy_quick_check": "ok",
+  "live_pre_migration_backup_sha256": "eb554b3dbb0fa1e335097c9d2e79cb4e3db03413fe6f6c1dbca88ab133e7a56a",
+  "live_index_verified": true,
+  "interpretation": "The unindexed query was an evidenced long operation inside the quote write transaction and a plausible source of Jin10 lock contention; a short benchmark cannot prove all live lock causes are removed."
+}
