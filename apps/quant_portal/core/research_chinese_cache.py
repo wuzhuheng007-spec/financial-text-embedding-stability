@@ -140,14 +140,42 @@ def v43_research_summary(root: Path) -> dict:
               "source_scope": "observed Jin10/moomoo cache; continuity not proven",
               "not_a_return_prediction": True,
               "daily_bar_label_count": 0, "daily_bar_factor_return_pair_count": 0,
-              "pilot_regular_daily_bars": 0, "v43_auction_qualified_price_bars": 0}
+              "pilot_regular_daily_bars": 0, "v43_auction_qualified_price_bars": 0,
+              "v45_currency_linked_daily_bars": 0, "v45_daily_worker": {"state": "NOT_STARTED"}}
+    v45_status = root / "results/news_sentiment_factor_v45_20261117/daily_worker_status_redacted.json"
+    if v45_status.is_file():
+        try:
+            worker = json.loads(v45_status.read_text(encoding="utf-8"))
+            result["v45_daily_worker"] = {k: worker.get(k) for k in (
+                "state", "heartbeat_at_utc", "last_supplier_success_at_utc",
+                "last_supplier_error_class", "last_price_import_at_utc", "last_action_import_at_utc",
+                "next_conditional_collection_window_utc", "pause_reason", "budget_used_today", "daily_budget")}
+            heartbeat = worker.get("heartbeat_at_utc")
+            if heartbeat and (datetime.now(timezone.utc) - datetime.fromisoformat(heartbeat)).total_seconds() > 180:
+                result["v45_daily_worker"]["state"] = "HEARTBEAT_STALE"
+        except (OSError, ValueError, TypeError):
+            result["v45_daily_worker"] = {"state": "STATUS_UNAVAILABLE"}
     label_db = root / "artifacts/news_sentiment_factor_v44_20261117/price_labels.sqlite3"
     if label_db.is_file():
         try:
             with closing(sqlite3.connect(f"file:{label_db.as_posix()}?mode=ro", uri=True, timeout=2)) as labels:
-                result["daily_bar_label_count"] = labels.execute(
-                    "SELECT COUNT(*) FROM (SELECT 1 FROM label_versions GROUP BY snapshot_id,entity_id,horizon_sessions,contract)"
-                ).fetchone()[0]
+                has_v45 = labels.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v45_label_decisions'").fetchone()
+                if has_v45:
+                    result["daily_bar_label_count"] = labels.execute("""SELECT COUNT(*) FROM (
+                        SELECT state,ROW_NUMBER() OVER (PARTITION BY snapshot_id,entity_id,horizon_sessions
+                          ORDER BY decision_at_utc DESC,decision_id DESC) AS rn FROM v45_label_decisions)
+                        WHERE rn=1 AND state='CURRENT_QUALIFIED'""").fetchone()[0]
+                    result["v45_currency_linked_daily_bars"] = labels.execute("""SELECT COUNT(DISTINCT p.security_id || ':' || p.trade_date)
+                        FROM price_evidence p JOIN v45_price_currency_links l ON l.price_evidence_id=p.evidence_id
+                        JOIN v45_security_metadata m ON m.metadata_id=l.metadata_id
+                        LEFT JOIN v45_metadata_scope_corrections c ON c.metadata_id=m.metadata_id
+                        WHERE p.field='OPEN' AND p.trade_date BETWEEN m.valid_from
+                          AND COALESCE(c.effective_valid_to,m.valid_to)
+                          AND p.security_id=m.security_id AND p.provider_code=m.provider_code""").fetchone()[0]
+                else:
+                    result["daily_bar_label_count"] = labels.execute(
+                        "SELECT COUNT(*) FROM (SELECT 1 FROM label_versions GROUP BY snapshot_id,entity_id,horizon_sessions,contract)"
+                    ).fetchone()[0]
                 result["pilot_regular_daily_bars"] = labels.execute(
                     "SELECT COUNT(*) FROM price_evidence WHERE field='OPEN' AND price_semantics='UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION'").fetchone()[0]
         except (sqlite3.Error, OSError):
@@ -189,9 +217,17 @@ def v43_research_summary(root: Path) -> dict:
                     try:
                         eligible = {x["entity_id"] for x in companies if x["n1"] is not None}
                         with closing(sqlite3.connect(f"file:{label_db.as_posix()}?mode=ro", uri=True, timeout=2)) as labels:
-                            label_targets = [x[0] for x in labels.execute(
-                                "SELECT entity_id FROM label_versions WHERE snapshot_id=? "
-                                "GROUP BY entity_id,horizon_sessions,contract", (item["snapshot_id"],))]
+                            if labels.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='v45_label_decisions'").fetchone():
+                                label_targets = [x[0] for x in labels.execute("""SELECT entity_id FROM (
+                                    SELECT entity_id,state,ROW_NUMBER() OVER (
+                                      PARTITION BY snapshot_id,entity_id,horizon_sessions
+                                      ORDER BY decision_at_utc DESC,decision_id DESC) AS rn
+                                    FROM v45_label_decisions WHERE snapshot_id=?)
+                                    WHERE rn=1 AND state='CURRENT_QUALIFIED'""", (item["snapshot_id"],))]
+                            else:
+                                label_targets = [x[0] for x in labels.execute(
+                                    "SELECT entity_id FROM label_versions WHERE snapshot_id=? "
+                                    "GROUP BY entity_id,horizon_sessions,contract", (item["snapshot_id"],))]
                             item["label_progress_status_counts"] = {state: count for state, count in labels.execute(
                                 """SELECT state,COUNT(*) FROM (
                                      SELECT state,ROW_NUMBER() OVER (

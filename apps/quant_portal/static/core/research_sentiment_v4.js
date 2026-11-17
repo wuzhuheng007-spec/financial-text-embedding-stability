@@ -67,6 +67,10 @@
       line(en()
         ? `Price pilot: ${daily.pilot_regular_daily_bars || 0} regular daily bars, ${daily.v43_auction_qualified_price_bars || 0} verified opening-auction bars. Separate daily-bar return labels ${daily.daily_bar_label_count || 0}; factor–return pairs ${daily.daily_bar_factor_return_pair_count || 0}. Daily-bar open is not an official auction print.`
         : `价格试点：常规日 K ${daily.pilot_regular_daily_bars || 0} 条，已核实开盘竞价价格 ${daily.v43_auction_qualified_price_bars || 0} 条。另版日 K 价格收益标签 ${daily.daily_bar_label_count || 0} 条，因子—收益配对 ${daily.daily_bar_factor_return_pair_count || 0} 条。日 K 开盘价不等于已核实的官方竞价价格。`);
+      const priceWorker = daily.v45_daily_worker || {};
+      line(en()
+        ? `Daily-bar collector: ${priceWorker.state || 'not started'}; linked quote-currency evidence for ${daily.v45_currency_linked_daily_bars || 0} existing security-days (external source chain, not a moomoo currency field). Next possible close-buffer ${priceWorker.next_conditional_collection_window_utc || 'not scheduled'}; requests need a released nonmissing N1 signal. Local request budget ${priceWorker.budget_used_today ?? 0}/${priceWorker.daily_budget ?? 8}.`
+        : `日 K 采集：${priceWorker.state || '未启动'}；已有 ${daily.v45_currency_linked_daily_bars || 0} 个证券交易日关联报价币种证据（外部来源链，并非 moomoo 原字段）。下一个可能的收盘缓冲时点 ${priceWorker.next_conditional_collection_window_utc || '未安排'}；实际请求还需已发布且 N1 非缺失的信号。今日本机请求预算 ${priceWorker.budget_used_today ?? 0}/${priceWorker.daily_budget ?? 8}。`);
       const signal = daily.daily;
       if (signal) {
         const observed = (signal.companies || []).filter(x => x.n2_observed > 0);

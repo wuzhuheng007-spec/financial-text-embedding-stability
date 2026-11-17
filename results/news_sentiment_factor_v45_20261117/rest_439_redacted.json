@@ -1,0 +1,23 @@
+{
+  "schema": "news_sentiment_factor_v45_rest_439_redacted_1",
+  "checked_at_utc": "2026-11-17T09:52:53.916613+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:52:53.916613+08:00",
+  "route": "POST /api/v1.0/quote/stock-quote",
+  "route_state": "SECURITY_POLICY_BLOCKED",
+  "last_business_success_at_utc": "2026-11-17T08:27:20.466062Z",
+  "last_error_class": "WEBAPI_SECURITY_POLICY_BLOCKED",
+  "thread_alive": true,
+  "provider_error_category": "HTTP_439_SECURITY_POLICY_BLOCKED",
+  "provider_numeric_code_from_private_response": "-12009_IF_RESPONSE_MATCHES_DOCUMENTATION; NOT_REEXPOSED_HERE",
+  "scope_classes": [
+    "accid:<redacted>",
+    "quote:read"
+  ],
+  "credential_state": "QUOTE_READ_AUTHORIZED",
+  "access_expires_at_utc": "2026-11-17T11:21:20.278908Z",
+  "official_error_guide": "https://open.moomoo.com/api/overview/getting-started",
+  "official_route_guide": "https://open.moomoo.com/api/quote/realtime/stock-quote",
+  "root_cause": "NOT_DETERMINED_BY_HTTP_STATUS_ALONE",
+  "new_blocked_route_requests_in_this_turn": 0,
+  "support_draft": "reports/2026-11-17_moomoo_rest_439_support_draft.zh.md"
+}

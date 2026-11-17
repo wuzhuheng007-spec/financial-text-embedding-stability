@@ -1,0 +1,27 @@
+{
+  "schema": "news_sentiment_factor_v45_browser_acceptance_redacted_1",
+  "check_date_asia_shanghai": "2026-11-17",
+  "method": "CUA_SIGNED_IN_OWNER_BROWSER_VISUAL_AND_DOM_READBACK",
+  "url_confirmed": "http://127.0.0.1:8765/",
+  "owner_session": "SIGNED_IN_EXISTING_OWNER_SESSION",
+  "desktop": {
+    "viewport_css_pixels": [1200, 800],
+    "document_scroll_width_css_pixels": 1185,
+    "chinese_research_panel": "OBSERVED",
+    "english_research_panel": "DOM_READBACK_NOT_SCREENSHOT",
+    "daily_collector_state_visible": true,
+    "currency_evidence_wording_visible": true,
+    "first_snapshot_pending_wording_visible": true
+  },
+  "mobile": {
+    "viewport_css_pixels": [390, 760],
+    "document_scroll_width_css_pixels": 375,
+    "chinese_research_panel": "OBSERVED",
+    "english_research_panel": "OBSERVED",
+    "whole_document_horizontal_overflow": false
+  },
+  "language_restored_to_initial": "中文",
+  "viewport_override_reset": true,
+  "private_screenshots_uploaded_or_packaged": false,
+  "limitations": "This is a same-team visual review of the changed research area, not a full application regression. The next conditional window timestamp was revised after the screenshot; it was verified by the running worker status and automated DOM cache path, not a second screenshot."
+}

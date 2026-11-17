@@ -1,0 +1,27 @@
+{
+  "schema": "news_sentiment_factor_v45_price_qualification_redacted_1",
+  "as_of_utc": "2026-11-17T10:08:31.037242+00:00",
+  "pilot_source_matched_field_count": 8,
+  "pilot_currency_linked_field_count": 8,
+  "by_symbol": {
+    "NVDA": {
+      "completed_regular_daily_bars": 2,
+      "open_close_fields_source_matched": 4,
+      "open_close_fields_currency_linked": 4,
+      "verified_auction_open_bars": 0
+    },
+    "MU": {
+      "completed_regular_daily_bars": 2,
+      "open_close_fields_source_matched": 4,
+      "open_close_fields_currency_linked": 4,
+      "verified_auction_open_bars": 0
+    }
+  },
+  "v45_new_collected_daily_bars": 0,
+  "pilot_price_dates_are_not_forward_signal_labels": true,
+  "current_qualified_labels": 0,
+  "current_qualified_pairs": 0,
+  "currency_method": "external cross-source USD inference; original moomoo currency field remains UNKNOWN",
+  "effective_initial_metadata_end": "2026-11-17",
+  "future_days": "require per-day archived bar and exact security-name match"
+}

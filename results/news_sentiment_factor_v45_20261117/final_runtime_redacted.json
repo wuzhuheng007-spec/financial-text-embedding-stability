@@ -1,0 +1,61 @@
+{
+  "schema": "news_sentiment_factor_v45_final_runtime_redacted_1",
+  "checked_at_utc": "2026-11-17T10:08:32.160005+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T18:08:32.160005+08:00",
+  "portal_loopback_listener_count": 1,
+  "portal_http_status_unauthenticated_readback": 200,
+  "feed_states": [
+    {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "last_success_at": "2026-11-17T10:07:43.070596Z",
+      "last_error_class": null,
+      "worker_alive": 1
+    },
+    {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "last_success_at": "2026-11-17T10:08:31.861495Z",
+      "last_error_class": null,
+      "worker_alive": 1
+    },
+    {
+      "provider": "moomoo_snapshot",
+      "state": "SECURITY_POLICY_BLOCKED",
+      "last_success_at": "2026-11-17T08:27:20.466062Z",
+      "last_error_class": "WEBAPI_SECURITY_POLICY_BLOCKED",
+      "worker_alive": 1
+    }
+  ],
+  "research_worker": {
+    "state": "RUNNING",
+    "heartbeat_at_utc": "2026-11-17T10:08:26.860022+00:00",
+    "last_success_at_utc": "2026-11-17T10:03:56.235193+00:00",
+    "daily_snapshot_state": "PENDING_MARKET_CUTOFF",
+    "daily_next_cutoff_utc": "2026-11-17T21:15:00+00:00",
+    "daily_snapshot_rule_version": "news_sentiment_factor_v43_protocol_1",
+    "pause_reason": null
+  },
+  "daily_price_worker": {
+    "run_id": "v45_a7950171a19540aeb7a376c66532f5a9",
+    "pid": 294080,
+    "started_at_utc": "2026-11-17T10:06:32.270608+00:00",
+    "heartbeat_at_utc": "2026-11-17T10:07:32.409340+00:00",
+    "state": "RUNNING",
+    "process_alive_identity": true,
+    "last_supplier_success_at_utc": null,
+    "last_supplier_error_class": null,
+    "last_request_count": 0,
+    "last_queue_rows": 0,
+    "pause_reason": "WAIT_RELEASED_NONMISSING_N1_QUEUE",
+    "budget_used_today": 0,
+    "daily_budget": 8,
+    "next_conditional_collection_window_utc": "2026-11-18T21:45:00+00:00"
+  },
+  "snapshot_batches": 0,
+  "n1_nonmissing_company_rows": 0,
+  "current_qualified_labels": 0,
+  "current_qualified_pairs": 0,
+  "supplier_request_count": 0,
+  "source_audit_receipt": "snapshot_acceptance_redacted.json"
+}

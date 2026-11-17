@@ -1,0 +1,41 @@
+{
+  "schema": "news_sentiment_factor_v45_protocol_1",
+  "frozen_before_new_supplier_requests": true,
+  "baseline_commit": "237e697700d8fccc88b357b364f6942e1da7cf2a",
+  "branch": "codex/sync-research-progress-20261113",
+  "research_rule_unchanged": "v43 16:15 America/New_York daily N1/N2, fixed research origin, Chinese model and segmentation unchanged",
+  "securities": ["NVDA", "MU"],
+  "provider_codes": {"NVDA": "US.NVDA", "MU": "US.MU"},
+  "separate_daily_bar_contract": "v44_REGULAR_DAILY_BAR_OPEN_TO_CLOSE_PRICE_RETURN_1",
+  "history_kline": {"ktype": 2, "autype": 0, "extended_time": 0, "num": 1},
+  "price_request_schedule": {
+    "timezone": "America/New_York",
+    "after_regular_close_minutes": [45, 180],
+    "maximum_attempts_per_security_trade_date": 2,
+    "worker_scan_seconds": 60,
+    "provider_completion_flag": "NOT_DOCUMENTED_IN_CHECKED_HISTORY_KLINE_RESPONSE",
+    "calendar": "configs/news_sentiment_factor_v42_us_calendar_2026.json"
+  },
+  "budgets": {
+    "new_diagnostic_metadata_pilot_supplier_requests": 12,
+    "ongoing_supplier_requests_per_utc_day": 8,
+    "include_price_action_pagination_failures_and_retries": true,
+    "known_lower_supplier_limit_takes_precedence": true
+  },
+  "company_actions": {
+    "rehab_mode": "include_divi",
+    "rehab_source": "https://open.moomoo.com/api/quote/basic-data/rehab",
+    "dividend_source": "https://open.moomoo.com/api/quote/corporate-actions/dividends",
+    "split_endpoint_us_supported": false,
+    "unresolved_action_blocks_label": true,
+    "price_return_excludes_cash_dividend": true
+  },
+  "metadata_policy": {
+    "source_linkage": "MOOMOO_US_CODE_AND_CURRENT_BASICINFO_PLUS_SEC_LISTING_PLUS_NASDAQ_UTP_CURRENCY_SPEC",
+    "do_not_rewrite_original_price_currency": true,
+    "first_eligible_date_is_evidence_observation_date": true,
+    "no_automatic_historical_backfill": true,
+    "conflict_blocks_qualification": true
+  },
+  "excluded": ["2026-04 through 2026-07 polluted return labels", "model change", "IC", "fit", "backtest", "trading", "trusted Qwen interpretation queue", "expanded real-time subscriptions"]
+}

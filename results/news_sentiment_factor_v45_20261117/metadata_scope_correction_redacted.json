@@ -1,0 +1,24 @@
+{
+  "schema": "news_sentiment_factor_v45_metadata_scope_correction_1",
+  "recorded_at_utc": "2026-11-17T09:56:30.217251+00:00",
+  "reason": "earlier valid_to was an unproven future policy horizon",
+  "pilot_source_dates_preserved": [
+    "2026-11-13",
+    "2026-11-16"
+  ],
+  "future_dates_require_new_day_specific_evidence": true,
+  "changes": [
+    {
+      "security_id": "SEC:MU:US",
+      "old_recorded_valid_to": "2026-12-31",
+      "effective_valid_to": "2026-11-17",
+      "new_correction": true
+    },
+    {
+      "security_id": "SEC:NVDA:US",
+      "old_recorded_valid_to": "2026-12-31",
+      "effective_valid_to": "2026-11-17",
+      "new_correction": true
+    }
+  ]
+}

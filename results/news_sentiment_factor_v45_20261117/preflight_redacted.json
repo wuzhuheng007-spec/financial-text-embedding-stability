@@ -1,0 +1,17 @@
+{
+  "schema": "news_sentiment_factor_v45_preflight_redacted_1",
+  "checked_at_utc": "2026-11-17T09:37:19.182656+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:37:19.182656+08:00",
+  "git_head": "237e697700d8fccc88b357b364f6942e1da7cf2a",
+  "backup_integrity": {
+    "portal": "ok",
+    "feed": "ok",
+    "research_queue": "ok",
+    "chinese_scores": "ok",
+    "price_labels": "ok"
+  },
+  "backup_count_ok": 5,
+  "input_count": 9,
+  "input_manifest_sha256": "fd17eb490663629950d2c9c8b81229d7127bd9db5132f675ad16beb1feb267ac",
+  "private_receipt_sha256": "86620aea2611f137966d8118a80bfc62279ddf330a8ec45c5c1ee77f3eeaeb1a"
+}

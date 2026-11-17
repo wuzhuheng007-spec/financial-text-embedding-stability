@@ -1,0 +1,13 @@
+{
+  "schema": "news_sentiment_factor_v45_label_gate_redacted_1",
+  "as_of_utc": "2026-11-17T10:08:31.037242+00:00",
+  "snapshot_batches": 0,
+  "released_batches": 0,
+  "label_queue_rows": 0,
+  "current_qualified_labels": 0,
+  "current_factor_return_pairs": 0,
+  "new_v45_action_intervals": 0,
+  "supplier_requests": 0,
+  "old_pilot_action_lists_not_upgraded_to_future_holdings": true,
+  "no_fit_ic_backtest_or_trade": true
+}

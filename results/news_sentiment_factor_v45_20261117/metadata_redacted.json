@@ -1,0 +1,32 @@
+{
+  "schema": "news_sentiment_v45_metadata_redacted_1",
+  "generated_at_utc": "2026-11-17T09:41:48.952990+00:00",
+  "new_metadata_rows": 2,
+  "new_currency_links": 8,
+  "currency_evidence": "EXTERNAL_CROSS_SOURCE_INFERENCE_NOT_MOOMOO_RESPONSE_FIELD",
+  "no_historical_dates_before": "2026-11-13",
+  "rows": [
+    {
+      "symbol": "NVDA",
+      "security_id": "SEC:NVDA:US",
+      "provider_code": "US.NVDA",
+      "venue": "NASDAQ_GLOBAL_SELECT_MARKET",
+      "quote_currency": "USD",
+      "valid_from": "2026-11-13",
+      "valid_to": "2026-12-31",
+      "metadata_id": "fccd41ee2296639e21b83913321ccf3f828561d73e5bb09ddbd78ada24cf4725",
+      "source_hashes": "{\"NVDA\": \"f23e90758ce1ebc2613470919557d25d8b4b7fd03915d7af58e8f7317a84b89b\", \"moomoo_basicinfo\": \"17cc5b60275819fb6748b5352e2055f76360853b9d90030df9a8bb2282ae713e\", \"moomoo_market\": \"206b11a45aea233b4e6b7bc4a994f2e6d236e5c550f9987534a3e8f24ce6d397\", \"moomoo_pilot_history\": \"192c928d5712a7536d3c078129a2a726615b0362329ea34f5019f76e13cc389f\", \"nasdaq_utp\": \"3ed450896ea03e31eb323f5998bbd433fcc42983d49f7d0f3d0929674f36a4ae\"}"
+    },
+    {
+      "symbol": "MU",
+      "security_id": "SEC:MU:US",
+      "provider_code": "US.MU",
+      "venue": "NASDAQ_GLOBAL_SELECT_MARKET",
+      "quote_currency": "USD",
+      "valid_from": "2026-11-13",
+      "valid_to": "2026-12-31",
+      "metadata_id": "73bff8d3544a94b25434b1de834b99ac68c119d3c87cefa5712171ce7781a757",
+      "source_hashes": "{\"MU\": \"3cd20a881bdcfac681594cfe2cf18721c9d06cbc04b10eb920c4b497475c589a\", \"moomoo_basicinfo\": \"17cc5b60275819fb6748b5352e2055f76360853b9d90030df9a8bb2282ae713e\", \"moomoo_market\": \"206b11a45aea233b4e6b7bc4a994f2e6d236e5c550f9987534a3e8f24ce6d397\", \"moomoo_pilot_history\": \"f9b2f57e0a9e6a8f9e6817fa88d661a76533e083244bf1dc2dabe6b965ca90b9\", \"nasdaq_utp\": \"3ed450896ea03e31eb323f5998bbd433fcc42983d49f7d0f3d0929674f36a4ae\"}"
+    }
+  ]
+}

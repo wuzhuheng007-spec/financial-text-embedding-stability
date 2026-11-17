@@ -1,0 +1,15 @@
+{
+  "schema": "news_sentiment_factor_v45_protocol_amendment_1",
+  "amended_at_utc": "2026-11-17T10:04:42Z",
+  "amended_at_asia_shanghai": "2026-11-17T18:04:42+08:00",
+  "original_config_sha256": "0e6d7b8e500253499a182450f20117a127227d1eae11d28d8a417b411e0544b7",
+  "superseded_frozen_config_key": "metadata_policy.first_eligible_date_is_evidence_observation_date",
+  "reason": "The frozen key conflates retrospective price-date scope with evidence availability time. It was not used to date a prospective signal.",
+  "retrospective_pilot_trade_dates": ["2026-11-13", "2026-11-16"],
+  "quote_currency_evidence_observed_date": "2026-11-17",
+  "pilot_use": "RETROSPECTIVE_SOURCE_READBACK_ONLY; NOT_HISTORICAL_SIGNAL_AVAILABILITY",
+  "initial_metadata_effective_last_trade_date": "2026-11-17",
+  "future_trade_dates": "REQUIRE_DAY_SPECIFIC_SOURCE_AND_NAME_MATCH_WITH_SEPARATE_ACTUAL_QUALIFICATION_TIME",
+  "original_config_and_initial_metadata_rows_preserved": true,
+  "linked_receipt": "metadata_scope_correction_redacted.json"
+}

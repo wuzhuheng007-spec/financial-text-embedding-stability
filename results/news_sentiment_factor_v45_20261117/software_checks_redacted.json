@@ -1,0 +1,63 @@
+{
+  "schema": "news_sentiment_factor_v45_software_checks_redacted_1",
+  "checked_at_utc": "2026-11-17T10:08:21.341508+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T18:08:21.341508+08:00",
+  "checks": [
+    {
+      "name": "v45_synthetic",
+      "exit_code": 0,
+      "command_label": [
+        "-m",
+        "unittest",
+        "scripts.news_sentiment_factor_v45.test_v45"
+      ],
+      "no_provider_or_model_calls": true
+    },
+    {
+      "name": "django_owner_cache",
+      "exit_code": 0,
+      "command_label": [
+        "manage.py",
+        "test",
+        "targeted"
+      ],
+      "no_provider_or_model_calls": true
+    },
+    {
+      "name": "javascript_syntax",
+      "exit_code": 0,
+      "command_label": [
+        "--check",
+        "apps/quant_portal/static/core/research_sentiment_v4.js"
+      ],
+      "no_provider_or_model_calls": true
+    },
+    {
+      "name": "python_compile",
+      "exit_code": 0,
+      "command_label": [
+        "-m",
+        "compileall",
+        "-q"
+      ],
+      "no_provider_or_model_calls": true
+    },
+    {
+      "name": "diff_whitespace",
+      "exit_code": 0,
+      "command_label": [
+        "diff",
+        "--check"
+      ],
+      "no_provider_or_model_calls": true
+    }
+  ],
+  "all_exit_zero": true,
+  "targeted_synthetic_unittest_cases": 10,
+  "targeted_django_tests": 4,
+  "real_source_price_fields_read_back": 8,
+  "actual_new_supplier_requests": 0,
+  "previous_failed_runs_kept_in_report": true,
+  "text_log_utf8_bom": true,
+  "text_log_sha256": "cdca30974f92c5a9879df36d8c1a16fc13bfbf9b2da33c92e813e281a4d24515"
+}
