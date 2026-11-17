@@ -1,11 +1,11 @@
 {
   "schema": "news_sentiment_v42_runtime_readback_1",
-  "captured_at_utc": "2026-11-17T08:03:17.692621+00:00",
+  "captured_at_utc": "2026-11-17T08:06:09.548564+00:00",
   "research_worker": {
-    "run_id": "v42_20261117T074834343733Z",
+    "run_id": "v42_20261117T080551230383Z",
     "state": "RUNNING",
     "process_alive_identity": true,
-    "heartbeat_at_utc": "2026-11-17T08:02:44.901518+00:00",
+    "heartbeat_at_utc": "2026-11-17T08:05:51.308942+00:00",
     "last_success_at_utc": "2026-11-17T07:52:13.535098+00:00",
     "daily_attempts": 7,
     "daily_limit": 500,
@@ -26,24 +26,24 @@
         "provider": "jin10",
         "state": "CONNECTED",
         "worker_alive": 1,
-        "heartbeat_at": "2026-11-17T08:03:15.552015Z",
-        "last_success_at": "2026-11-17T08:02:16.721222Z",
+        "heartbeat_at": "2026-11-17T08:06:07.393073Z",
+        "last_success_at": "2026-11-17T08:05:17.309103Z",
         "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
       },
       {
         "provider": "moomoo",
         "state": "CONNECTED_DELAY_UNKNOWN",
         "worker_alive": 1,
-        "heartbeat_at": "2026-11-17T08:03:15.440537Z",
-        "last_success_at": "2026-11-17T08:03:13.428945Z",
+        "heartbeat_at": "2026-11-17T08:06:08.079551Z",
+        "last_success_at": "2026-11-17T08:06:08.079551Z",
         "coverage_gap": null
       },
       {
         "provider": "moomoo_snapshot",
         "state": "CONNECTED",
         "worker_alive": 1,
-        "heartbeat_at": "2026-11-17T08:02:19.899034Z",
-        "last_success_at": "2026-11-17T08:02:19.899034Z",
+        "heartbeat_at": "2026-11-17T08:05:20.032398Z",
+        "last_success_at": "2026-11-17T08:05:20.032398Z",
         "coverage_gap": null
       }
     ]

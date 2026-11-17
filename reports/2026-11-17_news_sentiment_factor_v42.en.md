@@ -23,6 +23,8 @@ Stored members satisfy `received_at<=as_of` and `scored_at<=as_of`; 9 targeted s
 
 The scheduled cutoff remains 16:15 America/New_York, next due at 2026-11-17 21:15 UTC. The 2026 session calendar was checked against [NYSE](https://www.nyse.com/trade/hours-calendars) and [Nasdaq](https://www.nasdaq.com/market-activity/stock-market-holiday-schedule). The frozen 16:15 rule also applies on half-days as a research cutoff; it is **not** the exchange's early closing time. No genuine scheduled snapshot or matured future label was created in this run. The research environment has pinned [tzdata 2026.6](https://pypi.org/project/tzdata/2026.6/) for Windows time-zone conversion.
 
+After the final future-label queue change was committed, the research worker stopped normally at 08:05:45 UTC and restarted at 08:05:51 UTC as run `v42_20261117T080551230383Z`. The 08:06:09 UTC single-instant readback found the worker alive with zero backlog, the portal returning HTTP 200, and Jin10 and moomoo collection alive; see `final_runtime_redacted.json`. This does not establish all-day stability.
+
 From the repository root, use:
 
 ```powershell

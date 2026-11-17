@@ -1,6 +1,6 @@
 {
   "schema": "news_sentiment_factor_v42_evidence_index_1",
-  "generated_at_utc": "2026-11-17T08:04:09.322051+00:00",
+  "generated_at_utc": "2026-11-17T08:06:52.034979+00:00",
   "private_local_only": [
     {
       "logical_name": "chinese_tone_20261117T072840Z.sqlite3",
@@ -101,13 +101,13 @@
     },
     {
       "name": "final_runtime_redacted.json",
-      "sha256": "1b9144fd38d68da455aa5218cc6fcb2f90d5b71bbf9cf85c3c69699bb8b6fdf9",
+      "sha256": "cac455fc5c34d72436d9513dca72c76b162c62238ae362b4eaf2e6498e543e34",
       "bytes": 1672
     },
     {
       "name": "plan_execution.csv",
-      "sha256": "fd730faed995fca58f8971980b552eaf58f932aac863439235b19098c7240b94",
-      "bytes": 2503
+      "sha256": "813bbeb5a6c65ef7941cb36388be790c86b9d956abe85d0c6311f22465ddbef6",
+      "bytes": 2572
     },
     {
       "name": "snapshot_06bde74d86ac6b8716d60b8b46fe40ca_redacted.json",

@@ -20,6 +20,7 @@
     "development_replay_snapshots": 3,
     "actual_prospective_company_snapshots": 0,
     "owner_browser_visual": "CHINESE_AND_ENGLISH_DESKTOP_AND_EDGE_RESPONSIVE_390X700_CSS_PX_OBSERVED",
+    "final_runtime_receipt": "results/news_sentiment_factor_v42_20261117/final_runtime_redacted.json",
     "return_fit_calls": 0,
     "return_ic_calls": 0,
     "source_continuity": "POSSIBLE_GAP_NO_PAGE_OVERLAP",

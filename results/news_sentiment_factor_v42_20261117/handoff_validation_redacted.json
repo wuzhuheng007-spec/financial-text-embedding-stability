@@ -1,9 +1,9 @@
 {
   "schema": "news_sentiment_v42_handoff_validation_1",
-  "created_at_utc": "2026-11-17T08:04:30.120150+00:00",
-  "zip_name": "news_sentiment_factor_v42_20261117.zip",
+  "created_at_utc": "2026-11-17T08:06:57.381314+00:00",
+  "zip_name": "news_sentiment_factor_v42_20261117_final.zip",
   "member_count": 46,
-  "zip_sha256": "37344f019b88a8a77d6dcfa3c726bbcf6cf5f77f48cb8fea0a02f52a1bc4f3c4",
+  "zip_sha256": "49512de019f13f8aa762d79200564bf49c74e5e96a2f26a4a54f8e294bcddf8f",
   "crc": "PASS",
   "member_sha256": "PASS",
   "utf8": "PASS",
