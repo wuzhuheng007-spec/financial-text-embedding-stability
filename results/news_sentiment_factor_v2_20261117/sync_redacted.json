@@ -1,0 +1,48 @@
+{
+  "schema": "news_v2_first_push_readback_redacted_1",
+  "checked_at_utc": "2026-11-17T03:04:25.550769+00:00",
+  "branch": "codex/sync-research-progress-20261113",
+  "published_commit_sha": "6a5f1cf5f59cefcec40d6a46712ef0433a6f179a",
+  "remote_readback_sha": "6a5f1cf5f59cefcec40d6a46712ef0433a6f179a",
+  "sha_match": true,
+  "files": [
+    {
+      "path": "reports/2026-11-17_news_sentiment_factor_v2.zh.md",
+      "local_blob": "967a48fda37c512d8ebfecd895694d86e317dfbb",
+      "remote_blob": "967a48fda37c512d8ebfecd895694d86e317dfbb",
+      "match": true
+    },
+    {
+      "path": "reports/2026-11-17_news_extraction_v182.zh.md",
+      "local_blob": "c43e1abe2fc166d87eed0dac70fd972e9ee41cfe",
+      "remote_blob": "c43e1abe2fc166d87eed0dac70fd972e9ee41cfe",
+      "match": true
+    },
+    {
+      "path": "results/news_sentiment_factor_v2_20261117/score_run_redacted.json",
+      "local_blob": "833979377c06f4741005dd8db8e1d906ba925954",
+      "remote_blob": "833979377c06f4741005dd8db8e1d906ba925954",
+      "match": true
+    },
+    {
+      "path": "results/news_extraction_v182_20261117/new_run_redacted.json",
+      "local_blob": "3e19e9544b4d314f4db0f882cd8b8e5dcb8f8dc4",
+      "remote_blob": "3e19e9544b4d314f4db0f882cd8b8e5dcb8f8dc4",
+      "match": true
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v2/score.py",
+      "local_blob": "06ffd9b4c7688cab15e42053aeb0dce63f3be969",
+      "remote_blob": "06ffd9b4c7688cab15e42053aeb0dce63f3be969",
+      "match": true
+    },
+    {
+      "path": "scripts/quant_personal_feed/analysis_contract_v182.py",
+      "local_blob": "81d375217ebb15c26929ec451e6791d0364cee7b",
+      "remote_blob": "81d375217ebb15c26929ec451e6791d0364cee7b",
+      "match": true
+    }
+  ],
+  "all_key_blobs_match": true,
+  "private_content_in_receipt": false
+}
