@@ -357,7 +357,7 @@ def run(*, minutes: int | None = None, launch_method: str = "CLI") -> dict:
                 "heartbeat_at_utc":started,"stage":"QUEUE_RECONCILE","last_success_at_utc":None,
                 "daily_limit":config()["queue"]["daily_attempt_budget"],"research_origin_utc":config()["research_origin_utc"],
                 "model_revision":MODEL_ID,"segment_rule_version":SEGMENT_RULE,"launch_method":launch_method,
-                "no_provider_requests":True,"no_return_labels":True}
+                "no_provider_requests":True,"return_labels_maturity_gated":True}
         con.execute("""INSERT INTO worker_runs(run_id,pid,process_creation,started_at,state,last_heartbeat,stage,launch_method)
             VALUES(?,?,?,?,?,?,?,?)""",(run_id,item["pid"],item["process_creation"],started,"STARTING",started,item["stage"],launch_method))
         con.commit()
@@ -375,6 +375,7 @@ def run(*, minutes: int | None = None, launch_method: str = "CLI") -> dict:
                 AND received_at<?""",(started.replace("+00:00","Z"),))
             con.commit()
             item["state"]="RUNNING"
+            last_label_tick = -60.0
             while not STOP.exists() and (minutes is None or time.monotonic()-start_mono<minutes*60):
                 item["stage"]="DISCOVER"
                 discovered=discover(con)
@@ -491,6 +492,18 @@ def run(*, minutes: int | None = None, launch_method: str = "CLI") -> dict:
                 except Exception as exc:
                     item["daily_snapshot_state"]="DAILY_SNAPSHOT_ERROR"
                     item["daily_snapshot_error_class"]=type(exc).__name__
+                if time.monotonic() - last_label_tick >= 60:
+                    last_label_tick = time.monotonic()
+                    try:
+                        from scripts.news_sentiment_factor_v44.labels import advance
+                        label_progress = advance()
+                        item["price_label_engine_state"] = "CHECKED"
+                        item["price_label_states"] = label_progress["states"]
+                        item["price_label_versions_added"] = label_progress["new_label_versions"]
+                    except Exception as exc:
+                        # Price-label readiness is independent of news scoring.
+                        item["price_label_engine_state"] = "ERROR"
+                        item["price_label_error_class"] = type(exc).__name__
                 update_state(item)
                 if item["state"]=="ERROR_PAUSED":
                     break

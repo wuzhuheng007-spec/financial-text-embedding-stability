@@ -1,0 +1,14 @@
+{
+  "schema": "news_sentiment_factor_v44_preflight_1",
+  "utc": "2026-11-17T08:58:02.180749+00:00",
+  "asia_shanghai": "2026-11-17T16:58:02.180749+08:00",
+  "backup_integrity": {
+    "portal": "ok",
+    "feed": "ok",
+    "research_queue": "ok",
+    "chinese_scores": "ok"
+  },
+  "input_manifest_sha256": "acfd425261326e2f73c300fd77cd0649bb237f422941e927438daf6b46b22562",
+  "input_count": 9,
+  "private_receipt_sha256": "acfd425261326e2f73c300fd77cd0649bb237f422941e927438daf6b46b22562"
+}

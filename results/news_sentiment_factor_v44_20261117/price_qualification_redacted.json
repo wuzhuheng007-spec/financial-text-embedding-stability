@@ -1,0 +1,122 @@
+{
+  "schema": "news_sentiment_v44_price_qualification_redacted_1",
+  "checked_at_utc": "2026-11-17T09:21:34.158903+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:21:34.158903+08:00",
+  "scope": "2026-11-13 and 2026-11-16 completed regular sessions only; no forward signal yet",
+  "supplier_request_count": 7,
+  "supplier_request_budget": 12,
+  "securities": {
+    "NVDA": {
+      "provider_identity": {
+        "code": "US.NVDA",
+        "stock_type": "STOCK",
+        "exchange": "US"
+      },
+      "identity_response_sha256": "17cc5b60275819fb6748b5352e2055f76360853b9d90030df9a8bb2282ae713e",
+      "regular_daily_bars": 2,
+      "dates_and_hashes": [
+        {
+          "trade_date": "2026-11-13",
+          "field_rows": 2,
+          "open_rows": 1,
+          "close_rows": 1,
+          "currency": "UNKNOWN",
+          "price_semantics": "UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION",
+          "adjustment": "UNADJUSTED_AUTYPE_0",
+          "response_sha256": "192c928d5712a7536d3c078129a2a726615b0362329ea34f5019f76e13cc389f"
+        },
+        {
+          "trade_date": "2026-11-16",
+          "field_rows": 2,
+          "open_rows": 1,
+          "close_rows": 1,
+          "currency": "UNKNOWN",
+          "price_semantics": "UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION",
+          "adjustment": "UNADJUSTED_AUTYPE_0",
+          "response_sha256": "192c928d5712a7536d3c078129a2a726615b0362329ea34f5019f76e13cc389f"
+        }
+      ],
+      "action_interval_count": 1,
+      "action_intervals": [
+        {
+          "observed_from_date": "2026-11-13",
+          "observed_through_date": "2026-11-16",
+          "rehab_factor_rows": 0,
+          "dividend_events": 0,
+          "evidence_status": "PROVIDER_LISTS_NO_ACTION_IN_PILOT_INTERVAL",
+          "rehab_sha256": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c",
+          "dividends_sha256": "d99dc6301c31510dd816a551a9bd3b396b9082960070c4a396e853115ac79670"
+        }
+      ],
+      "v43_verified_auction_open_bars": 0,
+      "v44_currency_qualified_daily_bars": 0,
+      "blocking_reasons": [
+        "DAILY_BAR_OPEN_NOT_VERIFIED_OFFICIAL_AUCTION",
+        "QUOTE_CURRENCY_NOT_IN_CHECKED_WEBAPI_RESPONSE"
+      ]
+    },
+    "MU": {
+      "provider_identity": {
+        "code": "US.MU",
+        "stock_type": "STOCK",
+        "exchange": "US"
+      },
+      "identity_response_sha256": "17cc5b60275819fb6748b5352e2055f76360853b9d90030df9a8bb2282ae713e",
+      "regular_daily_bars": 2,
+      "dates_and_hashes": [
+        {
+          "trade_date": "2026-11-13",
+          "field_rows": 2,
+          "open_rows": 1,
+          "close_rows": 1,
+          "currency": "UNKNOWN",
+          "price_semantics": "UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION",
+          "adjustment": "UNADJUSTED_AUTYPE_0",
+          "response_sha256": "f9b2f57e0a9e6a8f9e6817fa88d661a76533e083244bf1dc2dabe6b965ca90b9"
+        },
+        {
+          "trade_date": "2026-11-16",
+          "field_rows": 2,
+          "open_rows": 1,
+          "close_rows": 1,
+          "currency": "UNKNOWN",
+          "price_semantics": "UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION",
+          "adjustment": "UNADJUSTED_AUTYPE_0",
+          "response_sha256": "f9b2f57e0a9e6a8f9e6817fa88d661a76533e083244bf1dc2dabe6b965ca90b9"
+        }
+      ],
+      "action_interval_count": 1,
+      "action_intervals": [
+        {
+          "observed_from_date": "2026-11-13",
+          "observed_through_date": "2026-11-16",
+          "rehab_factor_rows": 0,
+          "dividend_events": 0,
+          "evidence_status": "PROVIDER_LISTS_NO_ACTION_IN_PILOT_INTERVAL",
+          "rehab_sha256": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a",
+          "dividends_sha256": "f25bf865a0b051d0071a436e86981aaf2cb174dc7d8c0ea17ede10725a8eee74"
+        }
+      ],
+      "v43_verified_auction_open_bars": 0,
+      "v44_currency_qualified_daily_bars": 0,
+      "blocking_reasons": [
+        "DAILY_BAR_OPEN_NOT_VERIFIED_OFFICIAL_AUCTION",
+        "QUOTE_CURRENCY_NOT_IN_CHECKED_WEBAPI_RESPONSE"
+      ]
+    }
+  },
+  "real_label_versions": 0,
+  "price_contracts": {
+    "v43": "VERIFIED_REGULAR_OPEN_AUCTION_AND_CLOSE_NOT_MET",
+    "v44": "SEPARATE_UNADJUSTED_DAILY_BAR_OPEN_TO_CLOSE_PRICE_RETURN_PENDING_CURRENCY_AND_FUTURE_SIGNAL"
+  },
+  "source_docs": [
+    "https://open.moomoo.com/zh-cn/api/quote/basic-data/history-kline",
+    "https://open.moomoo.com/api/overview/getting-started",
+    "https://www.nyse.com/trade/hours-calendars"
+  ],
+  "config_sha256": "b42243f2aeb777dec001865244c62f93d87256a383ba7a355eeca394c09d0a20",
+  "parser_sha256": "25b79ee6aa3396f1e9f74e636a190580c983609872f3c37e4313c260d478d08a",
+  "pilot_receipt_sha256": "4682f426c81e2f0e62c9a09af4d7be07c38afbfae7b843f7be21f32885c4b748",
+  "supplement_receipt_sha256": "a59c0399374a27e6615900a1c52e51ebea6a73a43e9b70ebe281cf4d210b1291"
+}

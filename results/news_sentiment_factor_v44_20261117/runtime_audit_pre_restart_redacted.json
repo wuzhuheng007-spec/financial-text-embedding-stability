@@ -1,0 +1,75 @@
+{
+  "schema": "news_sentiment_v44_runtime_audit_1",
+  "checked_at_utc": "2026-11-17T09:06:04.837742+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:06:04.837742+08:00",
+  "first_scheduled_cutoff_utc": "2026-11-17T21:15:00+00:00",
+  "first_cutoff_due_at_check": false,
+  "v42_cumulative_development_snapshots": 3,
+  "v43_real_snapshot_batches": 0,
+  "v43_released_batches": 0,
+  "v43_company_rows": 0,
+  "v43_nonmissing_n1_company_rows": 0,
+  "v43_observed_group_contributions": 0,
+  "v43_label_queue_statuses": {},
+  "complete_prospective_article_versions_at_read": 16,
+  "excluded_version_counts": {
+    "CACHE_REPLAY_NOT_FORWARD": 230
+  },
+  "research_worker": {
+    "state": "RUNNING",
+    "run_id": "v42_20261117T083059222452Z",
+    "heartbeat_at_utc": "2026-11-17T09:05:43.466054+00:00",
+    "process_alive_identity": true,
+    "daily_limit": 500,
+    "daily_attempts": 17,
+    "backlog": 0,
+    "daily_snapshot_rule_version": "news_sentiment_factor_v43_protocol_1",
+    "daily_snapshot_state": "PENDING_MARKET_CUTOFF",
+    "daily_next_cutoff_utc": "2026-11-17T21:15:00+00:00"
+  },
+  "feed": {
+    "jin10": {
+      "provider": "jin10",
+      "state": "DISCONNECTED",
+      "heartbeat_at": "2026-11-17T09:02:06.653470Z",
+      "last_success_at": "2026-11-17T09:01:03.180224Z",
+      "last_error_class": "OperationalError",
+      "worker_alive": 0,
+      "business_attempts_today": 528,
+      "business_success_total": 1015,
+      "business_failure_total": 14
+    },
+    "moomoo": {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "heartbeat_at": "2026-11-17T09:06:04.859642Z",
+      "last_success_at": "2026-11-17T09:06:04.859642Z",
+      "last_error_class": null,
+      "worker_alive": 1,
+      "business_attempts_today": 0,
+      "business_success_total": 0,
+      "business_failure_total": 0
+    },
+    "moomoo_snapshot": {
+      "provider": "moomoo_snapshot",
+      "state": "DISCONNECTED",
+      "heartbeat_at": "2026-11-17T08:34:20.626285Z",
+      "last_success_at": "2026-11-17T08:27:20.466062Z",
+      "last_error_class": "HTTP_439",
+      "worker_alive": 0,
+      "business_attempts_today": 501,
+      "business_success_total": 930,
+      "business_failure_total": 6
+    }
+  },
+  "price_private_table_counts": {
+    "price_evidence": 8,
+    "action_evidence": 2,
+    "label_versions": 0
+  },
+  "real_qualified_labels": 0,
+  "real_factor_return_pairs": 0,
+  "inference": 0,
+  "fit": 0,
+  "ic": 0
+}

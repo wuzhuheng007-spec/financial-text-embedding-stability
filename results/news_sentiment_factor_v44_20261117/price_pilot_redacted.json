@@ -1,0 +1,37 @@
+{
+  "schema": "v44_price_probe_redacted_1",
+  "completed_at_utc": "2026-11-17T09:00:02.535266+00:00",
+  "calls_reserved": 2,
+  "maximum_calls": 12,
+  "stop_reason": null,
+  "rows": [
+    {
+      "symbol": "NVDA",
+      "endpoint": "history-kline",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "192c928d5712a7536d3c078129a2a726615b0362329ea34f5019f76e13cc389f",
+      "returned_rows": 2,
+      "target_session_rows": 2,
+      "target_sessions": [
+        "20261113",
+        "20261116"
+      ]
+    },
+    {
+      "symbol": "MU",
+      "endpoint": "history-kline",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "f9b2f57e0a9e6a8f9e6817fa88d661a76533e083244bf1dc2dabe6b965ca90b9",
+      "returned_rows": 2,
+      "target_session_rows": 2,
+      "target_sessions": [
+        "20261113",
+        "20261116"
+      ]
+    }
+  ]
+}

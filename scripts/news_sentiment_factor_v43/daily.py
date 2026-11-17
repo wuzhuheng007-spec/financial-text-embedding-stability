@@ -16,6 +16,7 @@ from scripts.news_sentiment_factor_v41.score import DB as SCORE_DB
 from scripts.news_sentiment_factor_v41.worker import utc
 from scripts.news_sentiment_factor_v42.association import RULES, VERSION, associate
 from scripts.news_sentiment_factor_v42.snapshot import cutoff_for, session_day, source_coverage
+from scripts.news_sentiment_factor_v42.snapshot import calendar as verified_calendar
 from scripts.news_sentiment_factor_v42.worker import QUEUE_DB, open_queue
 
 CFG_PATH = ROOT / "configs/news_sentiment_factor_v43_20261117.json"
@@ -50,6 +51,21 @@ def eligible_next(day: date) -> date:
             return candidate
         candidate += timedelta(days=1)
     raise ValueError("NEXT_VERIFIED_SESSION_UNAVAILABLE")
+
+
+def regular_session_open(day: date) -> datetime:
+    """Verified 2026 regular-session entry time, never an observed auction print."""
+    if not session_day(day):
+        raise ValueError("NOT_VERIFIED_2026_US_REGULAR_SESSION")
+    return datetime.combine(day, time(9, 30), NY).astimezone(UTC)
+
+
+def regular_session_close(day: date) -> datetime:
+    """Exchange schedule close; daily K-line prices still need separate qualification."""
+    if not session_day(day):
+        raise ValueError("NOT_VERIFIED_2026_US_REGULAR_SESSION")
+    early = day.isoformat() in verified_calendar()["early_close_dates"]
+    return datetime.combine(day, time(13 if early else 16, 0), NY).astimezone(UTC)
 
 
 def window_for(cutoff: datetime) -> tuple[datetime, datetime, str]:
@@ -249,19 +265,32 @@ def _members(versions: list[dict], start: datetime, end: datetime) -> tuple[list
 def _label_rows(entities: list[str], cutoff: datetime, available: datetime,
                 mapping: dict, observed_at: datetime | None = None) -> list[dict]:
     observed_at = observed_at or datetime.now(UTC)
-    entry_day = eligible_next(cutoff.astimezone(NY).date())
-    entry_at = datetime.combine(entry_day, time(9, 30), NY).astimezone(UTC)
+    try:
+        entry_day = eligible_next(cutoff.astimezone(NY).date())
+        entry_at = regular_session_open(entry_day)
+    except ValueError:
+        entry_day = None
+        entry_at = None
     rows = []
     for entity in entities:
         item = mapping.get(entity, {})
         verified = item.get("verification") == "CURRENT_US_PROVIDER_CODE_VERIFIED" and item.get("security_id")
         for horizon in (1, 5):
             exit_day = entry_day
-            for _ in range(horizon - 1):
-                exit_day = eligible_next(exit_day)
-            exit_at = datetime.combine(exit_day, time(16, 0), NY).astimezone(UTC)
+            try:
+                if exit_day is not None:
+                    for _ in range(horizon - 1):
+                        exit_day = eligible_next(exit_day)
+                    exit_at = regular_session_close(exit_day)
+                else:
+                    exit_at = None
+            except ValueError:
+                exit_day = None
+                exit_at = None
             if not verified:
                 status, reason = "BLOCKED_SECURITY_MAPPING", "NO_VERIFIED_US_SECURITY_ID"
+            elif entry_day is None or exit_day is None:
+                status, reason = "BLOCKED_CALENDAR_RANGE", "VERIFIED_2026_SESSION_CALENDAR_EXHAUSTED"
             elif available > entry_at:
                 status, reason = "MISSED_ENTRY", "SIGNAL_AVAILABLE_AFTER_PLANNED_OPEN"
             elif observed_at < entry_at:
@@ -272,11 +301,11 @@ def _label_rows(entities: list[str], cutoff: datetime, available: datetime,
                 status, reason = "WAIT_QUALIFIED_PRICE", "VERIFIED_OPEN_CLOSE_AND_ACTIONS_NOT_AVAILABLE"
             rows.append({"entity_id": entity, "horizon": horizon, "status": status, "reason": reason,
                          "security_id": item.get("security_id") if verified else None,
-                         "entry_session": entry_day.isoformat() if verified else None,
-                         "entry_at": entry_at.isoformat() if verified else None,
-                         "exit_session": exit_day.isoformat() if verified else None,
-                         "exit_at": exit_at.isoformat() if verified else None,
-                         "maturity_at": exit_at.isoformat() if verified else None,
+                         "entry_session": entry_day.isoformat() if verified and entry_day else None,
+                         "entry_at": entry_at.isoformat() if verified and entry_at else None,
+                         "exit_session": exit_day.isoformat() if verified and exit_day else None,
+                         "exit_at": exit_at.isoformat() if verified and exit_at else None,
+                         "maturity_at": exit_at.isoformat() if verified and exit_at else None,
                          "price_requirements": ["VERIFIED_REGULAR_OPEN", "VERIFIED_REGULAR_CLOSE",
                                                 "CORPORATE_ACTIONS", "SOURCE_PROVENANCE"]})
     return rows

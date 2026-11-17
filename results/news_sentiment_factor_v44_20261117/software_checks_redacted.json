@@ -1,0 +1,26 @@
+{
+  "schema": "news_sentiment_v44_software_checks_redacted_1",
+  "checked_at_utc": "2026-11-17T09:22:11.037085+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:22:11.037085+08:00",
+  "v43_isolated_checks": 13,
+  "v44_isolated_checks": 12,
+  "django_targeted_checks": 4,
+  "python_compile": "PASS",
+  "js_syntax": "PASS",
+  "git_diff_check": "PASS",
+  "real_price_probe_requests": 7,
+  "real_return_labels": 0,
+  "browser_visual": "NOT_RUN_COMPUTER_USE_URL_CONFIDENCE_STOP",
+  "recorded_prior_failed_attempts": [
+    "v44 temporary SQLite handle on Windows",
+    "audit cross-database join",
+    "Django isolated SECRET_KEY not set",
+    "initial service receipt parse failed on UTF-8 BOM PID file; read as utf-8-sig and rechecked"
+  ],
+  "checks_are_not_financial_validation": true,
+  "source_receipt_sha256": {
+    "v43_regression_checks_redacted.json": "2846103a6898c89e5c6c8b1d869e2b6e6b8ff1082cc83c3f61a7ff8cf1bc0fb4",
+    "v44_targeted_checks_redacted.json": "654a73f00ffc9ee70403ec6409c62de0f9f8d6e2fb018f56ce395c6ce9f61a35",
+    "django_checks_redacted.log": "b0c6fd78d1340ee9a91f32c385fb617a575c33e206721afbf101032908c60a44"
+  }
+}

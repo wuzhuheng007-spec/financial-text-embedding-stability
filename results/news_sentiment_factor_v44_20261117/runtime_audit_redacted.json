@@ -1,0 +1,77 @@
+{
+  "schema": "news_sentiment_v44_runtime_audit_1",
+  "checked_at_utc": "2026-11-17T09:18:28.383536+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:18:28.383536+08:00",
+  "first_scheduled_cutoff_utc": "2026-11-17T21:15:00+00:00",
+  "first_cutoff_due_at_check": false,
+  "v42_cumulative_development_snapshots": 3,
+  "v43_real_snapshot_batches": 0,
+  "v43_released_batches": 0,
+  "v43_company_rows": 0,
+  "v43_nonmissing_n1_company_rows": 0,
+  "v43_observed_group_contributions": 0,
+  "v43_label_queue_statuses": {},
+  "complete_prospective_article_versions_at_read": 22,
+  "excluded_version_counts": {
+    "CACHE_REPLAY_NOT_FORWARD": 230
+  },
+  "research_worker": {
+    "state": "RUNNING",
+    "run_id": "v42_20261117T091809401149Z",
+    "heartbeat_at_utc": "2026-11-17T09:18:09.484473+00:00",
+    "process_alive_identity": true,
+    "daily_limit": 500,
+    "daily_attempts": 23,
+    "backlog": 0,
+    "daily_snapshot_rule_version": "news_sentiment_factor_v43_protocol_1",
+    "daily_snapshot_state": "PENDING_MARKET_CUTOFF",
+    "daily_next_cutoff_utc": "2026-11-17T21:15:00+00:00"
+  },
+  "feed": {
+    "jin10": {
+      "provider": "jin10",
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-17T09:18:26.491630Z",
+      "last_success_at": "2026-11-17T09:17:45.844725Z",
+      "last_error_class": null,
+      "worker_alive": 1,
+      "business_attempts_today": 540,
+      "business_success_total": 1026,
+      "business_failure_total": 15
+    },
+    "moomoo": {
+      "provider": "moomoo",
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "heartbeat_at": "2026-11-17T09:18:28.444474Z",
+      "last_success_at": "2026-11-17T09:18:28.444474Z",
+      "last_error_class": null,
+      "worker_alive": 1,
+      "business_attempts_today": 0,
+      "business_success_total": 0,
+      "business_failure_total": 0
+    },
+    "moomoo_snapshot": {
+      "provider": "moomoo_snapshot",
+      "state": "SECURITY_POLICY_BLOCKED",
+      "heartbeat_at": "2026-11-17T09:18:24.944812Z",
+      "last_success_at": "2026-11-17T08:27:20.466062Z",
+      "last_error_class": "WEBAPI_SECURITY_POLICY_BLOCKED",
+      "worker_alive": 1,
+      "business_attempts_today": 501,
+      "business_success_total": 930,
+      "business_failure_total": 6
+    }
+  },
+  "price_private_table_counts": {
+    "price_evidence": 8,
+    "action_evidence": 2,
+    "label_versions": 0
+  },
+  "daily_bar_label_targets": 0,
+  "daily_bar_label_versions": 0,
+  "daily_bar_factor_return_pairs": 0,
+  "v44_new_model_inference_calls": 0,
+  "return_fit_calls": 0,
+  "return_ic_calls": 0,
+  "existing_chinese_scoring_worker_is_separate": true
+}

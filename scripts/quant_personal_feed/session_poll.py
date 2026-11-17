@@ -82,6 +82,17 @@ def run_moomoo_snapshot(config: dict, owner: int, stop: threading.Event) -> None
     failures = 0
     interval = policy["snapshot_poll_seconds"]
     try:
+        # A prior HTTP 439 is an explicit WebAPI security-policy block, not a
+        # transient transport error. A process restart must not evade it.
+        prior = store.db.execute("SELECT last_error_class FROM provider_state WHERE provider=?",
+                                 ("moomoo_snapshot",)).fetchone()
+        if prior and prior[0] in {"HTTP_439", "WEBAPI_SECURITY_POLICY_BLOCKED"}:
+            store.state("moomoo_snapshot", "SECURITY_POLICY_BLOCKED",
+                        error_class="WEBAPI_SECURITY_POLICY_BLOCKED")
+            while not stop.wait(60):
+                store.state("moomoo_snapshot", "SECURITY_POLICY_BLOCKED",
+                            error_class="WEBAPI_SECURITY_POLICY_BLOCKED")
+            return
         while not stop.is_set():
             started = time.monotonic()
             store.state("moomoo_snapshot", "CONNECTING")
@@ -116,12 +127,19 @@ def run_moomoo_snapshot(config: dict, owner: int, stop: threading.Event) -> None
                 failures += 1
                 status = exc.code if isinstance(exc, HTTPError) else None
                 forbidden = status in (401,403) or isinstance(exc, OAuthError)
+                security_blocked = status == 439
                 limited = status == 429 or str(exc) == "BUSINESS_RATE_LIMITED"
-                state = "AUTH_EXPIRED" if forbidden else "RATE_LIMITED" if limited else "DISCONNECTED"
+                state = ("SECURITY_POLICY_BLOCKED" if security_blocked else
+                         "AUTH_EXPIRED" if forbidden else
+                         "RATE_LIMITED" if limited else "DISCONNECTED")
                 error = f"HTTP_{status}" if status else str(exc) if isinstance(exc, RuntimeError) else type(exc).__name__
                 store.state("moomoo_snapshot",state,error_class=error)
                 store.provider_metric("moomoo_snapshot",business_failure_total=1)
-                if forbidden:
+                if security_blocked or forbidden:
+                    # Remain alive for an honest health state, but issue no
+                    # further supplier requests until an explicit recovery.
+                    while not stop.wait(60):
+                        store.state("moomoo_snapshot", state, error_class=error)
                     return
                 if limited:
                     after = exc.headers.get("Retry-After") if isinstance(exc,HTTPError) else None
@@ -129,10 +147,19 @@ def run_moomoo_snapshot(config: dict, owner: int, stop: threading.Event) -> None
                         delay = max(interval, float(after)) if after else max(interval,300)
                     except ValueError:
                         delay = max(interval,300)
-                    stop.wait(delay)
+                    if failures >= 3:
+                        # A finite consecutive limit ceiling prevents a
+                        # permanently blocked endpoint from being hammered.
+                        while not stop.wait(60):
+                            store.state("moomoo_snapshot", "RATE_LIMITED_PAUSED",
+                                        error_class=error)
+                        return
+                    stop.wait(min(900, delay))
                     continue
                 if failures >= 3:
-                    return
+                    store.state("moomoo_snapshot", "RETRY_BACKOFF", error_class=error)
+                    stop.wait(900)
+                    continue
                 stop.wait(min(300, interval * 2 ** failures))
                 continue
             elapsed = time.monotonic() - started

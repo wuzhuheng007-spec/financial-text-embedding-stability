@@ -1,0 +1,19 @@
+{
+  "schema": "news_sentiment_factor_v44_protocol_1",
+  "status": "FROZEN_BEFORE_PRICE_REQUESTS_AND_LABEL_IMPLEMENTATION",
+  "baseline_commit": "f1346f6b856d78b74f32d4a658b0ce7fbd6579c7",
+  "research_rule": "retain v43 16:15 America/New_York source-scoped daily N1/N2, model, segmentation and association unchanged",
+  "first_scheduled_cutoff_utc": "2026-11-17T21:15:00+00:00",
+  "price_pilot_symbols": ["NVDA", "MU"],
+  "price_pilot_sessions": ["2026-11-13", "2026-11-16"],
+  "new_supplier_request_budget": 12,
+  "automatic_price_retry_budget": 0,
+  "initial_price_source": "existing local cache, then read-only moomoo WebAPI history-kline if documented and available",
+  "price_semantics": "daily regular-session OHLC is a separate daily-bar-open-to-close price-return candidate unless provider proves auction open; no quote point substitution",
+  "company_actions": "require explicit split/dividend evidence and frozen treatment before qualifying a return; unknown stays blocked",
+  "calendar": "configs/news_sentiment_factor_v42_us_calendar_2026.json",
+  "regular_session_open_local": "09:30:00",
+  "regular_session_close_local": "16:00:00, or 13:00:00 on listed early-close sessions",
+  "snapshot_cutoff_local": "16:15:00 unchanged",
+  "excluded": ["2026-04 through 2026-07 polluted return labels", "model fitting", "IC", "backtest", "old trusted explanation queue", "expanded subscriptions"]
+}

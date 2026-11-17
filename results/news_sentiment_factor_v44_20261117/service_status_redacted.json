@@ -1,0 +1,56 @@
+{
+  "schema": "news_sentiment_v44_services_redacted_1",
+  "checked_at_utc": "2026-11-17T09:23:12.218102+00:00",
+  "checked_at_asia_shanghai": "2026-11-17T17:23:12.218102+08:00",
+  "portal": {
+    "state": "RUNNING",
+    "pid": 294616,
+    "ready_http": 200,
+    "url": "http://127.0.0.1:8765/"
+  },
+  "feed": {
+    "pid": 291940,
+    "quote_symbols": [
+      "MU",
+      "NVDA",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "TQQQ"
+    ],
+    "states": {
+      "jin10": {
+        "state": "CONNECTED",
+        "last_success_at": "2026-11-17T09:22:26.503987Z",
+        "worker_alive": 1,
+        "business_attempts_today": 545
+      },
+      "moomoo": {
+        "state": "CONNECTED_DELAY_UNKNOWN",
+        "last_success_at": "2026-11-17T09:23:11.595466Z",
+        "worker_alive": 1,
+        "business_attempts_today": 0
+      },
+      "moomoo_snapshot": {
+        "state": "SECURITY_POLICY_BLOCKED",
+        "last_success_at": "2026-11-17T08:27:20.466062Z",
+        "worker_alive": 1,
+        "business_attempts_today": 501
+      }
+    }
+  },
+  "research_worker": {
+    "state": "RUNNING",
+    "worker_pid": 289148,
+    "run_id": "v42_20261117T091809401149Z",
+    "daily_snapshot_rule_version": "news_sentiment_factor_v43_protocol_1",
+    "daily_snapshot_state": "PENDING_MARKET_CUTOFF",
+    "daily_next_cutoff_utc": "2026-11-17T21:15:00+00:00",
+    "daily_attempts": 23,
+    "daily_limit": 500,
+    "backlog": 0,
+    "price_label_engine_state": "CHECKED"
+  },
+  "trusted_qwen_interpretation": "PAUSED",
+  "browser_visual": "NOT_RUN_COMPUTER_USE_URL_CONFIDENCE_STOP"
+}

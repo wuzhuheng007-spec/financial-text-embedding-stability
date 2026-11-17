@@ -44,6 +44,12 @@
       line(en()
         ? `Company candidates ${recovery.company_candidate_count ?? 0}; Jin10 continuity ${recovery.coverage_gap || 'unknown'}; snapshot ${reliable.snapshot_state || 'pending'}; next cutoff ${reliable.next_cutoff_utc || 'not scheduled'}.`
         : `公司候选 ${recovery.company_candidate_count ?? 0}；金十覆盖 ${recovery.coverage_gap || '未知'}；快照 ${reliable.snapshot_state || '待观察'}；下次截止 ${reliable.next_cutoff_utc || '未安排'}。`);
+      const providersState = recovery.feed_providers || {};
+      const pushed = providersState.moomoo || {};
+      const polled = providersState.moomoo_snapshot || {};
+      line(en()
+        ? `Moomoo push: ${pushed.state || 'unknown'} (last success ${pushed.last_success_at || 'none'}). Timed snapshot: ${polled.state || 'unknown'} (last success ${polled.last_success_at || 'none'}); these are separate connections.`
+        : `moomoo 推送：${pushed.state || '未知'}（最近成功 ${pushed.last_success_at || '无'}）。定时快照：${polled.state || '未知'}（最近成功 ${polled.last_success_at || '无'}）；两者独立。`);
       if (reliable.pause_reason) line(en() ? `Pause reason: ${reliable.pause_reason}` : `暂停原因：${reliable.pause_reason}`);
       if (recovery.latest_snapshot) {
         const snap = recovery.latest_snapshot;
@@ -58,12 +64,17 @@
       line(en()
         ? `Status: ${daily.state || 'pending'}; worker rule ${reliable.daily_snapshot_rule_version || 'not yet loaded'}; next cutoff ${reliable.daily_next_cutoff_utc || 'not scheduled'}.`
         : `状态：${daily.state || '待首次快照'}；运行规则 ${reliable.daily_snapshot_rule_version || '尚未加载'}；下次截止 ${reliable.daily_next_cutoff_utc || '未安排'}。`);
+      line(en()
+        ? `Price pilot: ${daily.pilot_regular_daily_bars || 0} regular daily bars, ${daily.v43_auction_qualified_price_bars || 0} verified opening-auction bars. Separate daily-bar return labels ${daily.daily_bar_label_count || 0}; factor–return pairs ${daily.daily_bar_factor_return_pair_count || 0}. Daily-bar open is not an official auction print.`
+        : `价格试点：常规日 K ${daily.pilot_regular_daily_bars || 0} 条，已核实开盘竞价价格 ${daily.v43_auction_qualified_price_bars || 0} 条。另版日 K 价格收益标签 ${daily.daily_bar_label_count || 0} 条，因子—收益配对 ${daily.daily_bar_factor_return_pair_count || 0} 条。日 K 开盘价不等于已核实的官方竞价价格。`);
       const signal = daily.daily;
       if (signal) {
         const observed = (signal.companies || []).filter(x => x.n2_observed > 0);
+        const labelStates = Object.keys(signal.label_progress_status_counts || {}).length
+          ? signal.label_progress_status_counts : (signal.label_status_counts || {});
         line(en()
-          ? `Published ${signal.kind}: window (${signal.window_start_utc}, ${signal.scheduled_cutoff_utc}]; completed ${signal.completion_recorded_at_utc}; safely available ${signal.signal_available_at_utc}. ${observed.length} companies have newly observed groups. Coverage: ${signal.coverage?.initial_window || 'unknown'} / ${signal.coverage?.coverage || 'unknown'}. Labels: ${JSON.stringify(signal.label_status_counts || {})}.`
-          : `已发布 ${signal.kind}：窗口（${signal.window_start_utc}，${signal.scheduled_cutoff_utc}]；完成 ${signal.completion_recorded_at_utc}；可安全使用 ${signal.signal_available_at_utc}。${observed.length} 家公司有新增观察事件组。覆盖：${signal.coverage?.initial_window || '未知'} / ${signal.coverage?.coverage || '未知'}。标签：${JSON.stringify(signal.label_status_counts || {})}。`);
+          ? `Published ${signal.kind}: window (${signal.window_start_utc}, ${signal.scheduled_cutoff_utc}]; completed ${signal.completion_recorded_at_utc}; safely available ${signal.signal_available_at_utc}. N1 available for ${signal.n1_valid_company_count || 0} companies; ${signal.observed_event_group_count || 0} observed group contributions. Coverage: ${signal.coverage?.initial_window || 'unknown'} / ${signal.coverage?.coverage || 'unknown'}. Label states: ${JSON.stringify(labelStates)}.`
+          : `已发布 ${signal.kind}：窗口（${signal.window_start_utc}，${signal.scheduled_cutoff_utc}]；完成 ${signal.completion_recorded_at_utc}；可安全使用 ${signal.signal_available_at_utc}。N1 非缺失公司 ${signal.n1_valid_company_count || 0} 家，观察事件组贡献 ${signal.observed_event_group_count || 0} 个。覆盖：${signal.coverage?.initial_window || '未知'} / ${signal.coverage?.coverage || '未知'}。标签状态：${JSON.stringify(labelStates)}。`);
         if (observed.length) {
           const ul = document.createElement('ul');
           ul.className = 'research-score-list';

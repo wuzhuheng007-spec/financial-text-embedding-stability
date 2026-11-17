@@ -1,10 +1,39 @@
 {
   "schema": "news_research_roadmap_status_v1",
-  "version": "1.49",
+  "version": "1.50",
   "updated_date": "2026-11-17",
   "timezone": "Asia/Shanghai",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/sync-research-progress-20261113",
+  "news_sentiment_factor_v44_price_label": {
+    "nature": "PROSPECTIVE_DAILY_SNAPSHOT_PENDING_AND_SEPARATE_DAILY_BAR_PRICE_LABEL_CANDIDATE",
+    "report_zh": "reports/2026-11-17_news_sentiment_factor_v44.zh.md",
+    "report_en": "reports/2026-11-17_news_sentiment_factor_v44.en.md",
+    "plan_actual": "results/news_sentiment_factor_v44_20261117/plan_execution.csv",
+    "as_of_utc": "2026-11-17T09:18:28.383536+00:00",
+    "first_cutoff_utc": "2026-11-17T21:15:00+00:00",
+    "first_cutoff_due_at_check": false,
+    "real_daily_snapshot_batches": 0,
+    "real_daily_company_rows": 0,
+    "real_daily_n1_nonmissing_rows": 0,
+    "real_daily_observed_group_contributions": 0,
+    "nvda_regular_daily_bar_pilot": 2,
+    "mu_regular_daily_bar_pilot": 2,
+    "nvda_v43_auction_qualified_bars": 0,
+    "mu_v43_auction_qualified_bars": 0,
+    "new_supplier_requests": 7,
+    "supplier_request_budget": 12,
+    "moomoo_push": "CONNECTED_DELAY_UNKNOWN",
+    "moomoo_rest_snapshot": "SECURITY_POLICY_BLOCKED_HTTP_439_NO_NEW_SUCCESS",
+    "real_daily_bar_return_label_targets": 0,
+    "real_factor_return_pairs": 0,
+    "browser_visual": "NOT_RUN_COMPUTER_USE_URL_CONFIDENCE_STOP",
+    "isolated_v44_checks": 12,
+    "django_targeted_checks": 4,
+    "return_fit_calls": 0,
+    "return_ic_calls": 0,
+    "financial_input_v25": "REJECTED_CANDIDATE"
+  },
   "news_sentiment_factor_v43_daily": {
     "nature": "CHINESE_NEWS_DAILY_WINDOW_CANDIDATE_WITH_APPEND_ONLY_PUBLICATION",
     "report_zh": "reports/2026-11-17_news_sentiment_factor_v43.zh.md",
@@ -229,7 +258,10 @@
     "report_zh": "reports/2026-11-17_news_sentiment_factor_v1.zh.md",
     "report_en": "reports/2026-11-17_news_sentiment_factor_v1.en.md",
     "plan_actual": "results/news_sentiment_factor_v1_20261117/plan_execution.csv",
-    "window": ["2025-04-01", "2026-07-31"],
+    "window": [
+      "2025-04-01",
+      "2026-07-31"
+    ],
     "saved_official_trading_days": 335,
     "saved_unadjusted_price_symbols": 6,
     "saved_official_documents": 60,
@@ -330,7 +362,10 @@
     "native_calendar_rows_saved_to_private_store": 0,
     "visual_receipt": "results/news_jin10_desktop_20261115/visual_acceptance_redacted.json",
     "visual_status": "PASS_WITH_DESKTOP_MACRO_TABLE_COSMETIC_LIMITATION",
-    "visual_viewports": ["1440x900", "390x844"],
+    "visual_viewports": [
+      "1440x900",
+      "390x844"
+    ],
     "visual_provider_calls": 0,
     "static_receipt": "results/news_jin10_desktop_20261115/dashboard_static_validation_final.json",
     "public_template": "results/news_jin10_desktop_20261115/dashboard_template_final.html",
@@ -355,7 +390,10 @@
     "source_bound_facts": 44,
     "code_derived_calculations": 10,
     "transmission_edges": 9,
-    "browser_viewports": ["1440x900", "390x844"],
+    "browser_viewports": [
+      "1440x900",
+      "390x844"
+    ],
     "private_page_and_provider_feed_published": false,
     "same_executor_self_review": true,
     "independent_content_evaluation": "NOT_RUN",
@@ -831,7 +869,10 @@
     "date": "2026-11-15",
     "timezone": "Asia/Shanghai",
     "status": "REAL_BOUNDED_PRICE_AND_SOURCE_PROBES_WITH_RETROSPECTIVE_PRICE_BASELINE",
-    "requested_window": ["2025-04-01", "2026-07-31"],
+    "requested_window": [
+      "2025-04-01",
+      "2026-07-31"
+    ],
     "report_en": "reports/2026-11-15_market_observer_historical_v1.en.md",
     "report_zh": "reports/2026-11-15_market_observer_historical_v1.zh.md",
     "plan_execution": "results/market_observer_historical_20261115/plan_execution.csv",
@@ -844,8 +885,16 @@
     "price_baseline_receipt": "results/market_observer_historical_20261115/price_direction_v3_redacted.json",
     "test_contamination_receipt": "results/market_observer_historical_20261115/test_contamination_redacted.json",
     "dot_handoff": "results/market_observer_historical_20261115/dot_progress_redacted.json",
-    "pilot_securities": ["TQQQ", "NVDA", "MU"],
-    "expansion_securities": ["QQQ", "SOXX", "SPY"],
+    "pilot_securities": [
+      "TQQQ",
+      "NVDA",
+      "MU"
+    ],
+    "expansion_securities": [
+      "QQQ",
+      "SOXX",
+      "SPY"
+    ],
     "official_us_trading_days": 335,
     "pilot_daily_bars_per_symbol_per_adjustment": 335,
     "expansion_unadjusted_daily_bars_per_symbol": 335,
@@ -859,7 +908,11 @@
     "A_majority": "RUN_RETROSPECTIVE_DEVELOPMENT",
     "B_price_volume": "RUN_RETROSPECTIVE_DEVELOPMENT",
     "C_price_volume_news": "NOT_RUN_NO_QUALIFIED_HISTORICAL_NEWS",
-    "train_validation_test_per_pilot_security": [229, 41, 43],
+    "train_validation_test_per_pilot_security": [
+      229,
+      41,
+      43
+    ],
     "independent_test": false,
     "formal_m5_admission": false,
     "formal_m5_financial_experiment": "NOT_RUN",
@@ -870,7 +923,10 @@
     "date": "2026-11-15",
     "timezone": "Asia/Shanghai",
     "status": "OFFICIAL_CORPUS_BUILT_AND_RETROSPECTIVE_SEC_DATE_PROXY_ABC_VALIDATION_DEVELOPMENT",
-    "requested_window": ["2025-04-01", "2026-07-31"],
+    "requested_window": [
+      "2025-04-01",
+      "2026-07-31"
+    ],
     "report_en": "reports/2026-11-15_market_observer_official_v1.en.md",
     "report_zh": "reports/2026-11-15_market_observer_official_v1.zh.md",
     "plan_execution": "results/market_observer_official_20261115/plan_execution.csv",
@@ -887,7 +943,16 @@
     "fomc_statement_bodies": 11,
     "strict_historical_first_availability_verified": 0,
     "C_scope": "SEC_ACCESSION_TEXT_ONLY_RETROSPECTIVE_DATE_PROXY",
-    "ABC_common_train_validation": {"NVDA": [229, 36], "MU": [229, 23]},
+    "ABC_common_train_validation": {
+      "NVDA": [
+        229,
+        36
+      ],
+      "MU": [
+        229,
+        23
+      ]
+    },
     "validation_reused": true,
     "contaminated_june_july_rescored": false,
     "formal_m5_financial_experiment": "NOT_RUN",
@@ -917,7 +982,16 @@
     "reproduction_logistic_fits": 12,
     "incremental_pipeline_runs": 1,
     "incremental_logistic_fits": 24,
-    "common_train_validation": {"NVDA": [229, 36], "MU": [229, 23]},
+    "common_train_validation": {
+      "NVDA": [
+        229,
+        36
+      ],
+      "MU": [
+        229,
+        23
+      ]
+    },
     "participating_sec_event_groups": 33,
     "participating_documents": 42,
     "clipped_participating_documents": 18,
@@ -971,8 +1045,7 @@
     "dot_connection": "NOT_CONNECTED",
     "live_quote_connection_changed": false,
     "formal_m5_financial_experiment": "NOT_RUN"
-  }
-,
+  },
   "quant_portal_personal_v1": {
     "date": "2026-11-16",
     "timezone": "Asia/Shanghai",
@@ -1058,7 +1131,11 @@
     "fact_candidates": 71,
     "same_team_source_supported": 60,
     "same_team_source_ambiguous": 11,
-    "strict_fragment_complete_old_v21_v22": [34, 18, 8],
+    "strict_fragment_complete_old_v21_v22": [
+      34,
+      18,
+      8
+    ],
     "v22_strict_complete_single_bound_group": 0,
     "selected_groups": 147,
     "candidate_value_anchor_selected_group": 27,
@@ -1118,7 +1195,12 @@
       "non_topic_numeric": 20,
       "whole_group_budget": 24
     },
-    "strict_literal_fragment_complete_old_v21_v22_v23_of_71": [34, 18, 8, 0],
+    "strict_literal_fragment_complete_old_v21_v22_v23_of_71": [
+      34,
+      18,
+      8,
+      0
+    ],
     "v23_literal_zero_interpretation": "ID_SPLIT_SERIALIZATION_DOES_NOT_PROVE_ALL_NUMERIC_EVIDENCE_ABSENT",
     "source_supported_candidate_structure": {
       "unique_cell_group_omitted_conflict": 16,
@@ -1205,7 +1287,14 @@
     "report_zh": "reports/2026-11-16_quant_portal_personal_feed.zh.md",
     "plan_execution": "results/quant_portal_personal_feed_20261116/plan_execution.csv",
     "runtime_redacted": "results/quant_portal_personal_feed_20261116/runtime_redacted.json",
-    "moomoo_priority_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+    "moomoo_priority_symbols": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
     "moomoo_market_open_push_verified": false,
     "jin10_latest_page_poll_seconds": 60,
     "portal_private_cache_poll_seconds": 5,
@@ -1227,9 +1316,20 @@
     "runtime_redacted": "results/quant_portal_personal_feed_v11_20261116/runtime_redacted.json",
     "git_sync_redacted": "results/quant_portal_personal_feed_v11_20261116/git_sync_redacted.json",
     "browser_visual": "results/quant_portal_personal_feed_v11_20261116/browser_visual_isolated_redacted.json",
-    "selected_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+    "selected_symbols": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
     "subscription_budget_scope": "LOCAL_SIX_KEY_NOT_ACCOUNT_QUOTA",
-    "news_interests_independent_of_quotes": ["SNDK", "SKHYNIX", "SPACEX"],
+    "news_interests_independent_of_quotes": [
+      "SNDK",
+      "SKHYNIX",
+      "SPACEX"
+    ],
     "live_owner_browser_visual": "NOT_OBSERVED",
     "isolated_same_code_browser_visual": "DESKTOP_AND_390PX_PASS",
     "market_open_push_verified": false,
@@ -1259,7 +1359,14 @@
     "owner_live_browser": "ENTRY_OBSERVED_INTERACTIONS_NOT_TESTED",
     "moomoo_status_at_receipt": "CONNECTED_MARKET_CLOSED",
     "jin10_status_at_receipt": "CONNECTED",
-    "existing_subscriptions_unchanged": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+    "existing_subscriptions_unchanged": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
     "public_market_data_enabled": false,
     "financial_input_v25": "REJECTED_CANDIDATE",
     "model_fit_calls": 0,
@@ -1330,8 +1437,20 @@
     "report_en": "reports/2026-11-16_quant_portal_personal_sessions_v13.en.md",
     "report_zh": "reports/2026-11-16_quant_portal_personal_sessions_v13.zh.md",
     "plan_execution": "results/quant_portal_personal_sessions_v13_20261116/plan_execution.csv",
-    "symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
-    "sessions": ["PREMARKET", "REGULAR", "AFTERHOURS", "OVERNIGHT"],
+    "symbols": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
+    "sessions": [
+      "PREMARKET",
+      "REGULAR",
+      "AFTERHOURS",
+      "OVERNIGHT"
+    ],
     "existing_quote_subscriptions_added": 0,
     "extended_session_source": "EXISTING_WS_QUOTE_CHILD_DATA_TIME_MS",
     "rest_child_source_time": "UNKNOWN",
@@ -1366,7 +1485,14 @@
     "spy_window_reconciliation": "results/quant_portal_personal_timeline_v14_20261116/spy_window_reconciliation_redacted.json",
     "browser_visual": "results/quant_portal_personal_timeline_v14_20261116/browser_visual_redacted.json",
     "runtime_receipt": "results/quant_portal_personal_timeline_v14_20261116/runtime_redacted.json",
-    "symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
+    "symbols": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
     "quote_subscriptions_added": 0,
     "supplier_requests_added_by_chart": 0,
     "private_cache_poll_seconds": 5,

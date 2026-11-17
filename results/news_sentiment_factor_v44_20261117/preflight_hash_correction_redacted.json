@@ -1,0 +1,8 @@
+{
+  "schema": "v44_preflight_manifest_correction_1",
+  "original_receipt_sha256": "963914ae67c8e058a9675f101fbc5f4442b1e97c814e5daab25eed3a09e70a9f",
+  "old_input_manifest_field_was_private_receipt_hash": true,
+  "correct_input_manifest_sha256": "0ed2a204a7b204c64cf9389519f49c8f0edd14503df4c26a237adda11ed4379c",
+  "input_count": 9,
+  "note": "Old receipt preserved; correction appends the hash of the canonical input list."
+}

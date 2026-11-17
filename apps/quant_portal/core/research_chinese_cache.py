@@ -120,10 +120,14 @@ def v42_research_summary(root: Path) -> dict:
     if feed.is_file():
         try:
             with closing(sqlite3.connect(f"file:{feed.as_posix()}?mode=ro", uri=True, timeout=2)) as con:
+                con.row_factory = sqlite3.Row
                 row = con.execute("SELECT coverage_gap,last_success_at FROM provider_state WHERE provider='jin10'").fetchone()
                 if row:
                     result["coverage_gap"] = row[0] or "CONTINUITY_NOT_PROVEN"
                     result["source_last_success_at_utc"] = row[1]
+                result["feed_providers"] = {x["provider"]: dict(x) for x in con.execute(
+                    "SELECT provider,state,last_success_at,worker_alive,last_error_class FROM provider_state "
+                    "WHERE provider IN ('moomoo','moomoo_snapshot','jin10')")}
         except (sqlite3.Error, OSError):
             pass
     return result
@@ -134,7 +138,20 @@ def v43_research_summary(root: Path) -> dict:
     result = {"state": "PENDING_FIRST_DAILY_SNAPSHOT", "daily": None,
               "development_replay": None, "cumulative_v42_is_separate": True,
               "source_scope": "observed Jin10/moomoo cache; continuity not proven",
-              "not_a_return_prediction": True}
+              "not_a_return_prediction": True,
+              "daily_bar_label_count": 0, "daily_bar_factor_return_pair_count": 0,
+              "pilot_regular_daily_bars": 0, "v43_auction_qualified_price_bars": 0}
+    label_db = root / "artifacts/news_sentiment_factor_v44_20261117/price_labels.sqlite3"
+    if label_db.is_file():
+        try:
+            with closing(sqlite3.connect(f"file:{label_db.as_posix()}?mode=ro", uri=True, timeout=2)) as labels:
+                result["daily_bar_label_count"] = labels.execute(
+                    "SELECT COUNT(*) FROM (SELECT 1 FROM label_versions GROUP BY snapshot_id,entity_id,horizon_sessions,contract)"
+                ).fetchone()[0]
+                result["pilot_regular_daily_bars"] = labels.execute(
+                    "SELECT COUNT(*) FROM price_evidence WHERE field='OPEN' AND price_semantics='UNADJUSTED_DAILY_BAR_NOT_OFFICIAL_AUCTION'").fetchone()[0]
+        except (sqlite3.Error, OSError):
+            result["label_count_status"] = "UNAVAILABLE"
     queue = root / "artifacts/news_sentiment_factor_v42_20261117/queue.sqlite3"
     if not queue.is_file():
         return result
@@ -163,12 +180,34 @@ def v43_research_summary(root: Path) -> dict:
                     FROM daily_snapshot_company WHERE snapshot_id=? ORDER BY entity_id""",
                     (item["snapshot_id"],)).fetchall()
                 item["companies"] = [dict(x) for x in companies]
+                item["n1_valid_company_count"] = sum(x["n1"] is not None for x in companies)
+                item["observed_event_group_count"] = sum(x["n2_observed"] for x in companies)
                 item["label_status_counts"] = {x[0]: x[1] for x in con.execute(
                     "SELECT status,COUNT(*) FROM daily_label_queue WHERE snapshot_id=? GROUP BY status",
                     (item["snapshot_id"],))}
+                if label_db.is_file():
+                    try:
+                        eligible = {x["entity_id"] for x in companies if x["n1"] is not None}
+                        with closing(sqlite3.connect(f"file:{label_db.as_posix()}?mode=ro", uri=True, timeout=2)) as labels:
+                            label_targets = [x[0] for x in labels.execute(
+                                "SELECT entity_id FROM label_versions WHERE snapshot_id=? "
+                                "GROUP BY entity_id,horizon_sessions,contract", (item["snapshot_id"],))]
+                            item["label_progress_status_counts"] = {state: count for state, count in labels.execute(
+                                """SELECT state,COUNT(*) FROM (
+                                     SELECT state,ROW_NUMBER() OVER (
+                                       PARTITION BY snapshot_id,entity_id,horizon_sessions
+                                       ORDER BY checked_at_utc DESC,attempt_id DESC) AS rank
+                                     FROM label_attempts WHERE snapshot_id=?)
+                                   WHERE rank=1 GROUP BY state""", (item["snapshot_id"],))}
+                        item["daily_bar_label_count"] = len(label_targets)
+                        item["daily_bar_factor_return_pair_count"] = sum(entity in eligible for entity in label_targets)
+                    except (sqlite3.Error, OSError):
+                        item["daily_bar_label_count"] = None
+                        item["daily_bar_factor_return_pair_count"] = None
                 result[key] = item
                 if key == "daily":
                     result["state"] = "AVAILABLE_DAILY_RESEARCH_CANDIDATE"
+                    result["daily_bar_factor_return_pair_count"] = item.get("daily_bar_factor_return_pair_count") or 0
     except (sqlite3.Error, OSError, ValueError, KeyError):
         result["state"] = "DAILY_CACHE_UNAVAILABLE"
     return result

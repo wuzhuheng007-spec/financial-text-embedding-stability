@@ -1,0 +1,54 @@
+{
+  "schema": "v44_price_supplement_redacted_1",
+  "completed_at_utc": "2026-11-17T09:01:26.323479+00:00",
+  "total_calls_reserved": 7,
+  "maximum_calls": 12,
+  "stop_reason": null,
+  "rows": [
+    {
+      "symbol": null,
+      "endpoint": "basicinfo",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "17cc5b60275819fb6748b5352e2055f76360853b9d90030df9a8bb2282ae713e",
+      "item_count": 2
+    },
+    {
+      "symbol": "NVDA",
+      "endpoint": "rehab",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "37937605f7bfdf60280461631adfe6e54f66770c10e62e6546d88b7c076d462c",
+      "item_count": 62
+    },
+    {
+      "symbol": "NVDA",
+      "endpoint": "dividends",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "d99dc6301c31510dd816a551a9bd3b396b9082960070c4a396e853115ac79670",
+      "item_count": 56
+    },
+    {
+      "symbol": "MU",
+      "endpoint": "rehab",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "417096560a16364ad3bba36b80c4769c1e64f0787d2e5561c04cc981fc016e7a",
+      "item_count": 22
+    },
+    {
+      "symbol": "MU",
+      "endpoint": "dividends",
+      "http_status": 200,
+      "ret_code": 0,
+      "provider_error_code": null,
+      "response_sha256": "f25bf865a0b051d0071a436e86981aaf2cb174dc7d8c0ea17ede10725a8eee74",
+      "item_count": 21
+    }
+  ]
+}

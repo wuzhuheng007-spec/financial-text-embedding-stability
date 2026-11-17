@@ -1,0 +1,127 @@
+{
+  "schema": "news_sentiment_v44_postrun_hashes_redacted_1",
+  "generated_utc": "2026-11-17T09:25:43.622259+00:00",
+  "code_and_config": [
+    {
+      "path": "configs/news_sentiment_factor_v44_20261117.json",
+      "sha256": "b42243f2aeb777dec001865244c62f93d87256a383ba7a355eeca394c09d0a20"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v43_20261117.json",
+      "sha256": "52b9156e42d670bc723bcd08e619269f83b5ed0813d989de0dc3d9bfa2a18bf6"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v42_us_calendar_2026.json",
+      "sha256": "72c300496d203e81d85167a394e32dd787baa91a062c62bd595752aedc4ad2f3"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v43_security_mapping_20261117.json",
+      "sha256": "6824f09c8608f6b61272e2677b490b7ad2250a897bcc61e63c01589e8c51100a"
+    },
+    {
+      "path": "configs/quant_portal_personal_sessions_v13_20261116.json",
+      "sha256": "e5e79a92931e75c94ed196d716055f4558003e94ff0f01b6a27ad02cbafcb690"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v42/worker.py",
+      "sha256": "2bb9439587cbd898718059222c724bda3b6e0e7279c6f856e55edc5938fe8852"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v43/daily.py",
+      "sha256": "134b80b756a1686a327888a72174a5964519dea434af49398b2ee4ef6c100786"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/__init__.py",
+      "sha256": "a80b3ca4a397738729ae4c01dc9c788b7676c5491d469af2a0e43cc20c269a18"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/preflight.py",
+      "sha256": "8b16207e4076763abb6ab46e56b42236643dcb263cd5cf883194040c064cc7a2"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/price_pilot.py",
+      "sha256": "e9e2c692deed2fdccff7e597b75f2538350093c96dc66e5ad61c633a2611bc42"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/labels.py",
+      "sha256": "25b79ee6aa3396f1e9f74e636a190580c983609872f3c37e4313c260d478d08a"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/verify.py",
+      "sha256": "d6e96bbb0dded3f10908f69b58310ef5d470812b56aa41eb3ee2d357b8c18021"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/audit.py",
+      "sha256": "03d281e90e4db5e2d1f595bd336e2be4aab394c159e4daa1c40a50a02111d0a0"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/qualification.py",
+      "sha256": "92782d09fd6c1452dea9996c1d4e352cc2febd0e14ad98caff841e774f4ad26b"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/finalize.py",
+      "sha256": "595a8627c9cc2efafd1faac814efcad2457af3eb1647cb13ab3ad0dd56963eef"
+    },
+    {
+      "path": "scripts/quant_personal_feed/session_poll.py",
+      "sha256": "8db9d68e2e4a26fab5bdae7e15e1e34e6018a36bb4017f72e61731b46b1559dc"
+    },
+    {
+      "path": "apps/quant_portal/core/research_chinese_cache.py",
+      "sha256": "46ac8be39a5c14e4c7ed39bf6c8f9253a879981a1c3c84961d87f04f3ec36578"
+    },
+    {
+      "path": "apps/quant_portal/static/core/research_sentiment_v4.js",
+      "sha256": "8647d3b9cb2c638d55f4881f39cf43f11b93c87b4a3aef1340f395293684c359"
+    },
+    {
+      "path": "apps/quant_portal/templates/core/dashboard.html",
+      "sha256": "094391e5aa4bbac9c13f195fe635306df31a3bf9eb289ccd0e7aa8dda77e7802"
+    }
+  ],
+  "online_backup_sha256": {
+    "portal": "674a7f87938c80b2ff860dfe5090dfffbd6c5f4a4c6ee9991f09424a5ff0576d",
+    "feed": "384921ac0a5111c9b3ce1d273f23c94ee841ddbb5dd2643f0c4b395dc68135e5",
+    "research_queue": "f2ad866c428978872cf975e84e1a14d5347605fd12400ea335a10b2caca0554c",
+    "chinese_scores": "61239746c39c96f7ce96bd8ac4bd2f2b315f9ba792d727c2398bc5c82ac5af04"
+  },
+  "frozen_pre_edit_input_list": [
+    {
+      "path": "configs/news_sentiment_factor_v44_20261117.json",
+      "sha256": "b42243f2aeb777dec001865244c62f93d87256a383ba7a355eeca394c09d0a20"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v43_20261117.json",
+      "sha256": "52b9156e42d670bc723bcd08e619269f83b5ed0813d989de0dc3d9bfa2a18bf6"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v42_us_calendar_2026.json",
+      "sha256": "72c300496d203e81d85167a394e32dd787baa91a062c62bd595752aedc4ad2f3"
+    },
+    {
+      "path": "configs/news_sentiment_factor_v43_security_mapping_20261117.json",
+      "sha256": "6824f09c8608f6b61272e2677b490b7ad2250a897bcc61e63c01589e8c51100a"
+    },
+    {
+      "path": "configs/quant_portal_personal_sessions_v13_20261116.json",
+      "sha256": "e5e79a92931e75c94ed196d716055f4558003e94ff0f01b6a27ad02cbafcb690"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v43/daily.py",
+      "sha256": "546d8348daf6c4339cf6d3a2909f7c0efbb60af8662fca86cce04c6e3b678c90"
+    },
+    {
+      "path": "scripts/quant_personal_feed/session_poll.py",
+      "sha256": "b4cb163711596857d10d0ea59436234d55d099fd9b5f3742f02180d235d050af"
+    },
+    {
+      "path": "scripts/quant_personal_feed/cli.py",
+      "sha256": "977865d66f70d830f426f92c61aa9b85fa281cccc2681adee62930aab5ebfdcf"
+    },
+    {
+      "path": "scripts/news_sentiment_factor_v44/preflight.py",
+      "sha256": "947eef735ffa3110a0d062ad977f4b412cdf98b02b351eae4d885c11843cd6f5"
+    }
+  ],
+  "private_raw_news_and_price_not_included": true
+}
