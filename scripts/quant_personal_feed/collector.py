@@ -133,6 +133,15 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                 state = adapter.connection_state
                 store.state("moomoo",state,success=True)
                 attempt = 0
+                # Closed-market pushes often repeat an identical quote. Keep
+                # changed source-time/price values, and batch liveness writes.
+                last_parent: dict[str, tuple[str, str]] = {}
+                last_raw: dict[str, tuple[str, str]] = {}
+                pending_duplicates = 0
+                pending_received: str | None = None
+                pending_source: str | None = None
+                last_activity_write = time.monotonic()
+                last_written_state = state
                 while not stop.is_set():
                     new_generation, new_desired = store.selection()
                     if new_generation != generation:
@@ -150,32 +159,64 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                         if symbol:
                             market_code = adapter._market_state.get("US")
                             market_state = (f"US_{market_code}" if market_code is not None else "UNKNOWN")
-                            saved = store.put_quote(user_id,quote,symbol=symbol,
-                                display_name=names.get(symbol,symbol),market_state=market_state,
-                                limit=config["retention"]["quotes_per_symbol"])
+                            parent_key = (str(quote.get("payload", {}).get("price")),
+                                          quote["provider_time"])
+                            if last_parent.get(symbol) == parent_key:
+                                saved = False
+                            else:
+                                saved = store.put_quote(user_id,quote,symbol=symbol,
+                                    display_name=names.get(symbol,symbol),market_state=market_state,
+                                    limit=config["retention"]["quotes_per_symbol"])
+                                last_parent[symbol] = parent_key
                             provider_data = quote.get("payload", {}).get("provider_data")
                             if isinstance(provider_data, dict):
                                 raw_push = json.dumps(provider_data,ensure_ascii=False,sort_keys=True)
                                 digest = hashlib.sha256(raw_push.encode("utf-8")).hexdigest()
-                                children = parse_push_children(quote,raw_sha256=digest)
-                                if children:
-                                    store.put_session_quotes(user_id,children,
-                                        states={symbol:{row["session"]:("HAS_SOURCE_TIME" if row["source_at"]
-                                                         else "SNAPSHOT_TIME_UNKNOWN") for row in children}},
-                                        checked_at=quote["received_at"],raw_json=raw_push,
-                                        raw_sha256=digest,source_channel="WS_QUOTE")
-                            store.state("moomoo",state,success=True,
-                                source_at=quote["provider_time"],received_at=quote["received_at"])
-                            store.provider_metric("moomoo",last_push_at=quote["received_at"])
+                                raw_key = (digest, quote["provider_time"])
+                                if last_raw.get(symbol) != raw_key:
+                                    children = parse_push_children(quote,raw_sha256=digest)
+                                    if children:
+                                        store.put_session_quotes(user_id,children,
+                                            states={symbol:{row["session"]:("HAS_SOURCE_TIME" if row["source_at"]
+                                                             else "SNAPSHOT_TIME_UNKNOWN") for row in children}},
+                                            checked_at=quote["received_at"],raw_json=raw_push,
+                                            raw_sha256=digest,source_channel="WS_QUOTE")
+                                    last_raw[symbol] = raw_key
+                            pending_received = quote["received_at"]
+                            pending_source = quote["provider_time"]
                             if saved:
                                 store.symbol_state(user_id,symbol,"RECEIVED")
                                 store.provider_metric("moomoo",last_quote_saved_at=quote["received_at"])
                             else:
-                                store.provider_metric("moomoo",duplicate_quote_packets=1)
+                                pending_duplicates += 1
+                            if (saved or state != last_written_state or
+                                time.monotonic() - last_activity_write >= 5):
+                                store.state("moomoo",state,success=True,
+                                    source_at=pending_source,received_at=pending_received)
+                                store.provider_metric("moomoo",last_push_at=pending_received,
+                                                      duplicate_quote_packets=pending_duplicates)
+                                pending_duplicates = 0
+                                pending_received = pending_source = None
+                                last_activity_write = time.monotonic()
+                                last_written_state = state
                     elif event and event.get("kind") == "GAP":
+                        if pending_received:
+                            store.provider_metric("moomoo",last_push_at=pending_received,
+                                                  duplicate_quote_packets=pending_duplicates)
+                            pending_duplicates = 0
+                            pending_received = pending_source = None
                         store.state("moomoo","PARTIAL_SYMBOL_UNAVAILABLE",error_class=event["gap"].get("reason"))
                     else:
-                        store.state("moomoo",state)
+                        if pending_received or state != last_written_state or time.monotonic() - last_activity_write >= 5:
+                            store.state("moomoo",state,success=bool(pending_received),
+                                source_at=pending_source,received_at=pending_received)
+                            if pending_received:
+                                store.provider_metric("moomoo",last_push_at=pending_received,
+                                                      duplicate_quote_packets=pending_duplicates)
+                                pending_duplicates = 0
+                                pending_received = pending_source = None
+                            last_activity_write = time.monotonic()
+                            last_written_state = state
             except AuthorizationError:
                 store.state("moomoo","AUTH_EXPIRED",error_class="AUTHORIZATION")
                 return
