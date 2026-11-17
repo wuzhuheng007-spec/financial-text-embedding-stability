@@ -24,6 +24,6 @@ LM 将每块的词典正负词数差除以英文词数；FinBERT 保存三个类
 
 来源原件与下载哈希核对；8 个 SEC 附件 URL 本轮重新打开，确认分别是对应公司的财报附件。事先要求的“不看收益先做语义核对”**没有完成**：实际先查看了描述性相关性，随后才对固定顺序每事件前两个较长段落做 16/163 块同团队来源抽查。[事后抽查](../results/news_sentiment_factor_v2_20261117/source_spot_review_redacted.json)标为 `CODEX_REVIEW_AFTER_OUTCOME`，发现管理层意见、反事实调整口径和同段混合正负信息；没有用该抽查修改输入、分数或方向，也不能补称盲审。余下 147 块尚无逐块语义审阅，严格研究准入仍未通过。
 
-运行中还发生一次实际软件错误：隔离推理环境缺 `bs4`，在零模型调用前将导入移入来源提取函数；重新生成的输入 ID/文本哈希与冻结版完全一致，见[修订回执](../results/news_sentiment_factor_v2_20261117/postfreeze_import_fix_redacted.json)。首次价格预检误将半日交易从原始条数中排除，保留[失败回执](../results/news_sentiment_factor_v2_20261117/evaluation_attempt1_failure_redacted.json)后改为读取训练期全部 251 个日线对象，其中 248 个完整交易日参与对齐；没有读取后期价格对象。原失败不是额外模型实验。评分回执中的 1.563 秒只覆盖模型加载后的推理循环，不代表含加载的进程总耗时。
+运行中还发生一次实际软件错误：隔离推理环境缺 `bs4`，在零模型调用前将导入移入来源提取函数；重新生成的输入 ID/文本哈希与冻结版完全一致，见[修订回执](../results/news_sentiment_factor_v2_20261117/postfreeze_import_fix_redacted.json)。首次价格预检误将半日交易从原始条数中排除，保留[失败回执](../results/news_sentiment_factor_v2_20261117/evaluation_attempt1_failure_redacted.json)后改为读取训练期全部 251 个日线对象，其中 248 个完整交易日参与对齐；没有读取后期价格对象。原失败不是额外模型实验。评分回执中的 1.563 秒只覆盖模型加载后的推理循环，不代表含加载的进程总耗时。两条线对照用户指令 P0–P6 的逐项总台账见[这里](../results/news_sentiment_factor_v2_20261117/instruction_plan_execution.csv)。
 
 [未来影子评分入口](../scripts/news_sentiment_factor_v2/shadow.py)为本机英文原文版本准备独立记录：首次本机收到时间、实际评分完成时间、权重与规则版本、输入哈希和待成熟结果。它没有启动持续任务；中文金十原文不会直接送入英文 FinBERT，没有合格的新影子收益标签。门户、采集与既有已拒绝财务输入保持原状态。软件测试、真实来源抽查、真实模型推理和价格描述性检验分别列在[计划—实际台账](../results/news_sentiment_factor_v2_20261117/plan_execution.csv)。
