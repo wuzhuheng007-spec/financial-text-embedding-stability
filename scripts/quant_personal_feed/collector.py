@@ -358,5 +358,10 @@ def run_jin10(config: dict, user_id: int, stop: threading.Event) -> None:
     finally:
         try:
             store.provider_metric("jin10",worker_alive=0)
+        except sqlite3.OperationalError:
+            # Cleanup is best-effort: do not replace the original exception
+            # or turn an authentication stop into a SQLite-driven restart.
+            # The reader also checks heartbeat freshness independently.
+            pass
         finally:
             store.close()

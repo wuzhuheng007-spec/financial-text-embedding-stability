@@ -4,7 +4,7 @@
   "python": "Python 3.12.14",
   "django": "5.2.19",
   "tests": {
-    "python": 14,
+    "python": 15,
     "django": 16,
     "dom_language_scenarios": 2
   },
@@ -25,9 +25,9 @@
     "apps/quant_portal/templates/core/base.html": "50765d15388e47a4cebcd3c7d3007726c2c612fcac1568d311e9e1c83c053f79",
     "apps/quant_portal/templates/core/dashboard.html": "7c4baf063ac2d881bf69d702dd5edf7add32f6be3d4170ef4c20938d17e42470",
     "scripts/quant_personal_feed/cli.py": "8455e2e57c2ee5478222dd884cf1af0182033ac58f603a05228a2fa673140ca4",
-    "scripts/quant_personal_feed/collector.py": "a8996be98a17d17e24faf93309c3e989df013ab21624775674e6743805997ec2",
+    "scripts/quant_personal_feed/collector.py": "acdbb325b68e34efafd20eb32b062729d07f4a4c474d1c97cb36fa608e0bec56",
     "scripts/quant_personal_feed/store.py": "007b152d20f281ad04b7169fc6e35916844190a622824b433812d346a483d44f",
-    "tests/test_personal_feed_lock_recovery.py": "924680ede7fdb44140279e6714715ed443bc3fa59946c0e84beb97fed0f99bf4",
+    "tests/test_personal_feed_lock_recovery.py": "9321143a7aac313d85abcf29ada7767ce7de3070350120ed1dceb5ddcc933cbe",
     "tests/test_personal_production_settings.py": "0343c8fa92e5eeec0669010bc303c7b0bd8f255fdc462748bf501173c4f0d700",
     "tests/browser/personal_workspace_fixture.py": "95a108d1a3ffac51711c3cc5168f11cebf3f50afa6faa1287d555ae8ceb9bcd0",
     "tests/browser/personal_workspace_dom.cjs": "9fe0e4be5cff5edafeba3e42628181d1c07dd9820a2a80b7341bb57dfba4b434"

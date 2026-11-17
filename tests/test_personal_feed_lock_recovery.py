@@ -53,5 +53,16 @@ class LockRecoveryTests(unittest.TestCase):
             db.close.assert_called_once()
             supplier.assert_not_called()
 
+    def test_cleanup_lock_does_not_mask_non_lock_failure(self):
+        db=Mock()
+        db.provider_metric.side_effect=[sqlite3.OperationalError('no such table: test'),
+                                      sqlite3.OperationalError('database is locked')]
+        config={'cache_db':'apps/quant_portal/var/test.sqlite3',
+                'jin10':{'poll_interval_seconds':60,'max_business_calls_per_utc_day':10}}
+        with patch.object(collector,'PersonalFeedStore',return_value=db):
+            with self.assertRaisesRegex(sqlite3.OperationalError, 'no such table'):
+                collector.run_jin10(config,1,Mock())
+            db.close.assert_called_once()
+
 if __name__=='__main__':
     unittest.main()

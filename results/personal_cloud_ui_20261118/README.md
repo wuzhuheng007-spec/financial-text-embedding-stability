@@ -2,7 +2,7 @@
 
 Base: `64f16d3c5acf44960903785ea2f4347ddd1f879b`. Synthetic fixtures only. No production Windows database or Alibaba Cloud host was accessible.
 
-- `python-tests.log`: 14 checks, including existing cache tests and new lock recovery / production-settings checks.
+- `python-tests.log`: 15 checks, including existing cache tests and new lock recovery / production-settings checks.
 - `django-tests.log`: 16 interface and owner-isolation checks. This supersedes the earlier overlapping 11-check run; do not add them together.
 - `dom_results.json`: Chinese and English synthetic navigation scenarios. This is DOM behavior, not visual acceptance.
 - Chromium visual attempt failed at launch: host denied socket creation (`Operation not permitted`). Desktop and 390px visual acceptance remain NOT_RUN.

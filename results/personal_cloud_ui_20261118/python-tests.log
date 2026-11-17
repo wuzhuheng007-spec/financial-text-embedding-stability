@@ -1,3 +1,4 @@
+test_cleanup_lock_does_not_mask_non_lock_failure (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_cleanup_lock_does_not_mask_non_lock_failure) ... ok
 test_failed_schema_initialization_closes_connection (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_failed_schema_initialization_closes_connection) ... ok
 test_jin10_closes_connection_even_if_exit_metric_is_locked (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_jin10_closes_connection_even_if_exit_metric_is_locked) ... ok
 test_non_lock_error_is_not_retried (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_non_lock_error_is_not_retried) ... ok
@@ -14,6 +15,6 @@ test_private_mode_works_without_debug_and_keeps_secure_cookies (tests.test_perso
 test_private_production_mode_requires_proxy (tests.test_personal_production_settings.PersonalProductionSettingsTests.test_private_production_mode_requires_proxy) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 0.408s
+Ran 15 tests in 0.237s
 
 OK
