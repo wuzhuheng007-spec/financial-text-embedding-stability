@@ -411,40 +411,49 @@ class PersonalFeedStore:
                    row["trade_date"],row["date_basis"],
                    row["parent_date_hint"],row.get("parent_source_at_hint"),row["delay_status"],source_channel,row["raw_sha256"]))
                 inserted += 1
-            # Keep current visible cells and every response supporting a quote
-            # received in the configured recent chart window. The pre-v1.4
-            # policy already pruned some older originals; it cannot recreate
-            # those missing responses. Older unreferenced extras stay bounded.
-            cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
-                      ).isoformat().replace("+00:00","Z")
-            # Compute the latest visible cell once per owner/symbol/session.
-            # The former correlated subquery sorted the quote history once for
-            # every row while holding a write lock, starving the news worker.
-            if time.monotonic() >= self._next_raw_retention_monotonic:
-                self.db.execute("""WITH latest AS (
-              SELECT raw_sha256, ROW_NUMBER() OVER (
-                PARTITION BY owner_id,symbol,session
-                ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
-                  parent_source_at_hint DESC,received_at DESC,id DESC
-              ) AS rank_in_cell FROM session_quotes
-            ), referenced AS (
-              SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
-              UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
-            )
-            DELETE FROM session_raw_responses WHERE sha256 IN (
-              SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
-                SELECT raw_sha256 FROM referenced
-              ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET ?
-            )""", (cutoff,self.raw_response_extra_count))
-                # A live push can arrive every second. Repeating the full
-                # retention walk per push needlessly holds SQLite's writer
-                # lock and can starve the independent Jin10 collector.
-                self._next_raw_retention_monotonic = time.monotonic() + 300
             self.db.commit()
         except BaseException:
             self.db.rollback()
             raise
+        if time.monotonic() >= self._next_raw_retention_monotonic:
+            self._prune_raw_responses()
+            self._next_raw_retention_monotonic = time.monotonic() + 300
         return {"inserted": inserted, "duplicate": duplicate}
+
+    def _prune_raw_responses(self) -> None:
+        """Select stale hashes without a writer lock; delete in short batches.
+
+        The WS collector is the only session-quote writer while the separate
+        REST snapshot endpoint is disabled. This preserves the v1.4 retention
+        rule but avoids holding SQLite's writer slot for the full window scan.
+        """
+        cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
+                  ).isoformat().replace("+00:00", "Z")
+        rows = self.db.execute("""WITH latest AS (
+          SELECT raw_sha256, ROW_NUMBER() OVER (
+            PARTITION BY owner_id,symbol,session
+            ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
+              parent_source_at_hint DESC,received_at DESC,id DESC
+          ) AS rank_in_cell FROM session_quotes
+        ), referenced AS (
+          SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
+          UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
+        )
+        SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
+          SELECT raw_sha256 FROM referenced
+        ) ORDER BY received_at DESC,sha256 DESC LIMIT 10000 OFFSET ?""",
+            (cutoff, self.raw_response_extra_count)).fetchall()
+        hashes = [row[0] for row in rows]
+        for offset in range(0, len(hashes), 400):
+            batch = hashes[offset:offset + 400]
+            placeholders = ",".join("?" for _ in batch)
+            self.db.execute("BEGIN IMMEDIATE")
+            try:
+                self.db.execute(f"DELETE FROM session_raw_responses WHERE sha256 IN ({placeholders})", batch)
+                self.db.commit()
+            except BaseException:
+                self.db.rollback()
+                raise
 
     def put_news(self, owner_id: int, item: dict, *, received_at: str,
                  max_items: int, max_versions: int) -> str:
