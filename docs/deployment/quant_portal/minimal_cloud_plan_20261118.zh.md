@@ -26,7 +26,10 @@ docker compose -f deploy/linux/compose.yaml --env-file /srv/quant/private.env --
 
 - 云端页面：显示 moomoo 行情、自选、设置、历史事实卡；**新闻列表、Top 10、新闻语气、日度快照在云端为空或停止更新**，页面需把“云端无新闻源”显示为状态，而不是“今天没有新闻”。
 - 前瞻研究（v42/v43/v45）继续在本机运行，单一写入者不变；首个快照 `fa8cb76334c94f7560aab543c99cf9f9` 和后续截止仍由本机 v42 调度。
-- 行情单写入者：云端 feed 启动前，本机 feed 的 moomoo 部分必须停止。当前本机 feed 一个进程同时跑金十与 moomoo；要“本机只留金十、云端只跑 moomoo”，需要本机用一份关闭 moomoo 的配置重启 feed（本轮未做，属于切换步骤，需用户确认时间窗口）。
+- 行情单写入者：云端 feed 启动前，本机 feed 的 moomoo 部分必须停止。当前本机 feed 一个进程同时跑金十与 moomoo；要“本机只留金十、云端只跑 moomoo”，需要本机用一份关闭 moomoo 的配置重启 feed。第四轮已提供入口：`configs/quant_portal_personal_feeds_jin10_only_v12_20261118.json`，与 v11 相比只把 `moomoo.enabled` 改为 false。`feed_personal.ps1` 增加了 `-FeedProfile full|jin10_only`（默认 full，原有调用不变）。`stop`、`status` 能识别正在运行的任一已知配置；如果已有其他配置的采集在运行，`start` 返回 3 并拒绝启动，避免出现第二个写入方。
+  - 切换：先 `feed_personal.ps1 stop`，再 `feed_personal.ps1 start -FeedProfile jin10_only`，然后在云端启动 feed。
+  - 回退：停止云端 feed，然后 `feed_personal.ps1 stop`，再 `feed_personal.ps1 start`。
+  - 切换执行仍需用户确认时间窗口；本入口未在生产运行过。
 - 本机研究的价格标签依赖 v45（本机，moomoo REST 日线，额度 8/天）；云端 moomoo 推送与本机 v45 使用同一账户的不同接口，是否同时允许、是否共享额度需在账户内确认。
 
 ## 3. 采购前需要用户确认的输入（不含任何历史报价）
