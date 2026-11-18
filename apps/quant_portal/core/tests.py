@@ -273,8 +273,14 @@ class HistoricalGuidanceImportTests(TestCase):
                          ("ACTUAL", "FQ2-26", "UNKNOWN"))
         self.assertIn("Adjusted", fcf.basis_note)
         self.assertEqual(fcf.source_review_status, "CODEX_REVIEW_SOURCE_SUPPORTED")
-        user = get_user_model().objects.create_user(username="qa@example.org", password=PASSWORD)
-        self.client.force_login(user)
+        # Since bcfc9dc personal LOCAL_ONLY cards render only for the portal owner;
+        # another account on the same server must see none of them.
+        other = get_user_model().objects.create_user(username="qa@example.org", password=PASSWORD)
+        self.client.force_login(other)
+        other_response = self.client.get(reverse("dashboard"))
+        self.assertEqual(len(other_response.context["fact_cards"]), 0)
+        owner = get_user_model().objects.create_user(username="owner@local.invalid", password=PASSWORD)
+        self.client.force_login(owner)
         response = self.client.get(reverse("dashboard"))
         self.assertEqual(len(response.context["actual_fact_cards"]), 12)
         self.assertEqual(len(response.context["guidance_fact_cards"]), 2)

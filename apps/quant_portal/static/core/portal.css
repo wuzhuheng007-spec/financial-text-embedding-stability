@@ -78,3 +78,6 @@ a{color:var(--blue);overflow-wrap:anywhere}
 .official-item { padding: .5rem 0; border-bottom: 1px solid rgba(127,127,127,.2); overflow-wrap: anywhere; }
 .official-top { display: flex; gap: .4rem; align-items: baseline; flex-wrap: wrap; }
 
+
+.scope-badge { display: inline-block; padding: .1rem .45rem; border-radius: .4rem; font-size: .8rem; font-weight: 600; background: rgba(214,138,0,.16); color: #8a5a00; border: 1px solid rgba(214,138,0,.45); }
+@media (prefers-color-scheme: dark) { .scope-badge { color: #f0c068; } }

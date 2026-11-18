@@ -21,13 +21,18 @@ docker exec "$NAME" psql -U postgres -d restore_check -AtF, -c "
   from information_schema.tables where table_schema = 'public' and table_type = 'BASE TABLE' order by 1" > "$B/postgres.rowcounts.restored.csv"
 OWNER=$(docker exec "$NAME" psql -U postgres -d restore_check -Atc "select id||':'||username||':'||is_active from auth_user where username='owner@local.invalid'")
 
+# SQLite: restore every backed-up file into an isolated scratch directory and verify it with
+# the app image's own reader (no network, uid 10001); the backup directory itself is read-only.
 SQLITE_OK=true
-if [ -d "$B/sqlite" ]; then
-  while IFS= read -r -d '' f; do
-    r=$(python3 -c 'import sqlite3,sys; print(sqlite3.connect(f"file:{sys.argv[1]}?mode=ro", uri=True).execute("pragma quick_check").fetchone()[0])' "$f")
-    [ "$r" = ok ] || SQLITE_OK=false
-  done < <(find "$B/sqlite" -type f -name '*.sqlite3' -print0)
-fi
+APP_IMAGE=$(sed -n 's/^APP_IMAGE=//p' /srv/quant/private.env)
+: > "$B/sqlite_restore_check.jsonl"
+for man in $(find "$B/sqlite" -name MANIFEST.json 2>/dev/null | sort); do
+  vdir=$(dirname "$man"); vol=$(basename "$vdir")
+  scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX); chown 10001:10001 "$scratch"
+  if docker run --rm --network none --user 10001:10001 --entrypoint python        -v "$vdir:/b:ro" -v "$scratch:/r" -v /srv/quant/app/deploy/linux/host/quant_sqlite_backup.py:/x/q.py:ro        "$APP_IMAGE" /x/q.py verify /b /r </dev/null > "$scratch.out"; then :; else SQLITE_OK=false; fi
+  python3 -c 'import json,sys; print(json.dumps({"volume": sys.argv[1], **json.load(open(sys.argv[2]))}))' "$vol" "$scratch.out" >> "$B/sqlite_restore_check.jsonl" || SQLITE_OK=false
+  rm -rf "$scratch" "$scratch.out"
+done
 
 python3 - "$B" "$OWNER" "$SQLITE_OK" <<'PY'
 import csv, json, sys, pathlib, datetime
@@ -41,6 +46,8 @@ result = {"checked_at_utc": datetime.datetime.now(datetime.timezone.utc).isoform
           "backup": b.name, "tables": len(rest), "rows_restored": sum(int(v) for v in rest.values()),
           "count_differences": diff, "owner_row": owner, "sqlite_quick_check_ok": sqlite_ok,
           "key_tables": {t: rest.get(t) for t in ("auth_user", "core_userpreferences", "core_watchlistitem", "core_publicfactcard", "django_migrations")}}
+sq = b / "sqlite_restore_check.jsonl"
+result["sqlite"] = [json.loads(l) for l in sq.read_text().splitlines() if l.strip()] if sq.exists() else []
 result["ok"] = not hard and owner.startswith("1:owner@local.invalid:t") and sqlite_ok and len(rest) > 0
 (b / "RESTORE_CHECK.json").write_text(json.dumps(result, indent=1))
 print(json.dumps(result))

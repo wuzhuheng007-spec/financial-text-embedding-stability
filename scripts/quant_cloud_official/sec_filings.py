@@ -399,8 +399,20 @@ def read_for_portal(db_path: Path, symbols: set[str], limit: int = 200) -> dict:
             FROM filings f JOIN filing_symbols s ON s.accession_number=f.accession_number
             WHERE s.symbol IN ({marks}) AND f.in_scope=1 GROUP BY f.accession_number
             ORDER BY f.filing_date DESC, f.accession_number DESC LIMIT ?""", [*sorted(symbols), limit])]
+    window = None
+    if last_success:
+        batch_row = None
+        with closing(sqlite3.connect(f"file:{db_path.as_posix()}?mode=ro", uri=True, timeout=5)) as con:
+            batch_row = con.execute("SELECT started_at_utc, window_days FROM batches WHERE batch_id=?",
+                                    (last_success["batch_id"],)).fetchone()
+        if batch_row:
+            day = datetime.fromisoformat(batch_row[0].replace("Z", "+00:00")).date()
+            window = {"days": batch_row[1], "start_filing_date": (day - timedelta(days=batch_row[1])).isoformat(),
+                      "basis": "filingDate >= start_filing_date, computed by the last successful batch (UTC date)",
+                      "supplementary": "latest periodic report per form (10-K, 10-Q, 20-F, N-CSR, N-CSRS) "
+                                       "filed before the window, kept as context"}
     return {"state": (state["last_attempt_status"] if state else "NO_DATA"), "source": SOURCE,
-            "source_state": dict(state) if state else None,
+            "source_state": dict(state) if state else None, "window": window,
             "last_success_batch": dict(last_success) if last_success else None,
             "instruments": inst, "filings": filings}
 

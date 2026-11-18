@@ -188,3 +188,16 @@ def test_old_schema_is_migrated(tmp_path):
     sec.connect(db).close()
     cols = {r[1] for r in rows(db, "pragma table_info(filings)")}
     assert "in_scope" in cols and "retired" in {r[1] for r in rows(db, "pragma table_info(batches)")}
+
+
+def test_portal_view_reports_window_and_separates_supplementary(tmp_path):
+    db = tmp_path / "f.sqlite3"
+    run(db)
+    view = sec.read_for_portal(db, {"NVDA", "TQQQ"})
+    assert view["window"]["days"] == 30 and len(view["window"]["start_filing_date"]) == 10
+    recent = [f for f in view["filings"] if f["in_window"]]
+    supplementary = [f for f in view["filings"] if not f["in_window"]]
+    assert all(f["filing_date"] >= view["window"]["start_filing_date"] for f in recent)
+    assert [f["form"] for f in supplementary] == ["10-Q"]  # only the latest periodic report, outside the window
+    trust = [f for f in view["filings"] if "TQQQ" in f["symbols"]]
+    assert trust and all(f["association_scope"] == "ISSUER_TRUST_ALL_SERIES" for f in trust)

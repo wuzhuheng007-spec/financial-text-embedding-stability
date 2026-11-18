@@ -10,7 +10,11 @@ umask 077
 ROOT=/srv/quant/backup/daily
 KEEP_DAYS=${KEEP_DAYS:-14}
 MIN_KEEP=${MIN_KEEP:-3}
-APP_IMAGE=${APP_IMAGE:-quant-personal-app:64632d8}
+APP_IMAGE=$(sed -n 's/^APP_IMAGE=//p' /srv/quant/private.env)
+HOST_TOOLS=/srv/quant/app/deploy/linux/host
+# One data lock shared with quant-sec-refresh: a backup never overlaps an import.
+exec 9>/run/lock/quant-data.lock
+flock -w 1800 9 || { echo "data lock busy for 30 min; backup skipped" >&2; exit 75; }
 STAMP=$(date -u +%Y%m%dT%H%M%SZ)
 DIR="$ROOT/$STAMP.partial"
 cd /srv/quant/app/deploy/linux
@@ -26,23 +30,12 @@ select table_name, (xpath('/row/c/text()', query_to_xml(format('select count(*) 
 from information_schema.tables where table_schema = 'public' and table_type = 'BASE TABLE' order by 1;
 SQL
 
-# 2. SQLite files in the private volumes (none until collection starts)
+# 2. SQLite files in the private volumes: online backup, single-file copies, manifest
 mkdir -p "$DIR/sqlite"; chown 10001:10001 "$DIR/sqlite"
 for vol in personal_var private_artifacts; do
   docker volume inspect "quant-personal_$vol" >/dev/null 2>&1 || continue
-  docker run --rm --network none --user 10001:10001 --entrypoint python \
-    -v "quant-personal_$vol:/src" -v "$DIR/sqlite:/out" "$APP_IMAGE" -c '
-import pathlib, sqlite3, sys
-src, out = pathlib.Path("/src"), pathlib.Path("/out") / sys.argv[1]
-for db in sorted(src.rglob("*.sqlite3")):
-    target = out / db.relative_to(src)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(db, timeout=30) as s, sqlite3.connect(target) as d:
-        s.backup(d)
-    with sqlite3.connect(target) as d:
-        ok = d.execute("pragma quick_check").fetchone()[0]
-    print(f"{db.relative_to(src)} quick_check={ok}")
-' "$vol" >> "$DIR/sqlite.log"
+  mkdir -p "$DIR/sqlite/$vol"; chown 10001:10001 "$DIR/sqlite/$vol"
+  docker run --rm --network none --user 10001:10001 --entrypoint python     -v "quant-personal_$vol:/src" -v "$DIR/sqlite/$vol:/out" -v "$HOST_TOOLS/quant_sqlite_backup.py:/x/quant_sqlite_backup.py:ro"     "$APP_IMAGE" /x/quant_sqlite_backup.py backup /src /out </dev/null | sed "s/^/$vol: /" >> "$DIR/sqlite.log"
 done
 chown -R root:root "$DIR/sqlite"
 

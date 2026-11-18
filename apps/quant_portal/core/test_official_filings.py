@@ -84,3 +84,15 @@ class DeploymentLabelEverywhereTests(TestCase):
             self.assertNotIn("本机个人测试", html)
             self.assertNotIn("LOCAL PERSONAL TEST", html)
         self.assertIn("云端私人部署 · 显示时区", pages[0])
+
+
+class SourceStatusStripTests(TestCase):
+    def test_strip_and_research_url_present_for_owner(self):
+        with override_settings(PERSONAL_MODE=True, DEPLOYMENT_KIND="cloud_private",
+                               PROVIDER_GATES={"moomoo": "PENDING_SUPPORT_REPLY", "jin10": "PENDING_WRITTEN_PERMISSION"}):
+            user = get_user_model().objects.create_user("owner@local.invalid", password="test-password-long")
+            self.client.force_login(user)
+            html = self.client.get(reverse("dashboard")).content.decode()
+        self.assertIn('id="source-status-strip"', html)
+        self.assertIn('data-research-url="/research-sentiment.json"', html)
+        self.assertIn("信托层级 · 非本 ETF 专属", html)
