@@ -62,3 +62,21 @@
 | 金十云端许可 | 用户联系金十 | 书面询问：个人账户的 MCP Token 能否在本人租用的云服务器上调用并保存快讯供本人私有查看；保存答复 |
 | 金十令牌放到服务器 | 用户（获许可后） | 在 mcp.jin10.com 登录→激活→复制令牌；在服务器执行 `sudo sh -c 'umask 077; cat > /srv/quant/secrets/jin10_mcp_token'`，粘贴后 Ctrl-D，再 `sudo chown 10001:10001 /srv/quant/secrets/jin10_mcp_token && sudo chmod 0400 /srv/quant/secrets/jin10_mcp_token`；不经聊天或 Git |
 | 单写入者切换 | 用户确认后执行 | 见 [运行手册](../../../deploy/linux/README.zh.md)“迁移与单写入者切换”；本机与云端不得同时运行真实采集 |
+
+## C. SEC EDGAR（2026-11-19 补充；北京时间 05:00 查询）
+
+- 官方页面：<https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data>（2026-11-19 05:00:37 北京时间读取，HTTP 200）。
+  - "Please declare your user agent in request headers"，示例形式为 "Sample Company Name AdminContact@<sample company domain>"。
+  - "Fair access Current max request rate: 10 requests/second."
+- 本部署的做法：
+  - 只读取公开元数据接口 `company_tickers_exchange.json`、`company_tickers_mf.json`、`data.sec.gov/submissions`，不下载申报正文。
+  - 每批 8 个请求，间隔不小于 0.25 s（不超过 4 次/秒），每 6 小时一次。
+  - User-Agent 来自用户本人已配置的 `SEC_USER_AGENT`，只保存在服务器 `/srv/quant/secrets/sec.env`（0600），不写入数据库、日志或报告。
+- 不确定性：
+  - 上述页面规定的是访问方式和频率，没有单独说明再展示的条件。
+  - 本部署只在所有者私有页面展示申报元数据并链接回 SEC 原文，没有对外公开。
+
+## 判断依据的时效
+
+- A（moomoo）和 B（金十）的原文是 2026-11-18 查询的，页面可能已经更新。云端启用前必须重新核对。
+- 判断"金十书面许可才可云端缓存"、"moomoo 云端使用待账户方确认"属于对条款的解释，不是法律意见。在得到供应商的书面答复之前，按更严格的解释处理：两者都不在云端启用。
