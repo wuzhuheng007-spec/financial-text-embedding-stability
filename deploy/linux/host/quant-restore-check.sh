@@ -28,8 +28,10 @@ APP_IMAGE=$(sed -n 's/^APP_IMAGE=//p' /srv/quant/private.env)
 : > "$B/sqlite_restore_check.jsonl"
 for man in $(find "$B/sqlite" -name MANIFEST.json 2>/dev/null | sort); do
   vdir=$(dirname "$man"); vol=$(basename "$vdir")
-  scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX); chown 10001:10001 "$scratch"
-  if docker run --rm --network none --user 10001:10001 --entrypoint python        -v "$vdir:/b:ro" -v "$scratch:/r" -v /srv/quant/app/deploy/linux/host/quant_sqlite_backup.py:/x/q.py:ro        "$APP_IMAGE" /x/q.py verify /b /r </dev/null > "$scratch.out"; then :; else SQLITE_OK=false; fi
+  # The backup stays root-only (0600); verification works on a scratch copy owned by the app uid.
+  scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX)
+  cp -a "$vdir" "$scratch/b"; mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
+  if docker run --rm --network none --user 10001:10001 --entrypoint python        -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_sqlite_backup.py:/x/q.py:ro        "$APP_IMAGE" /x/q.py verify /b /r </dev/null > "$scratch.out"; then :; else SQLITE_OK=false; fi
   python3 -c 'import json,sys; print(json.dumps({"volume": sys.argv[1], **json.load(open(sys.argv[2]))}))' "$vol" "$scratch.out" >> "$B/sqlite_restore_check.jsonl" || SQLITE_OK=false
   rm -rf "$scratch" "$scratch.out"
 done
