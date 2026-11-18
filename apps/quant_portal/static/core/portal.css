@@ -71,9 +71,10 @@ a{color:var(--blue);overflow-wrap:anywhere}
 
 /* Official filings (SEC EDGAR) panel and deployment gate notice */
 .gate-notice ul { margin: .25rem 0 0 1.1rem; padding: 0; }
-.official-table { width: 100%; border-collapse: collapse; font-size: .9rem; margin-bottom: .75rem; }
-.official-table th, .official-table td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid rgba(127,127,127,.25); vertical-align: top; }
+.official-instruments { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: .75rem; }
+.official-table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .9rem; }
+.official-table th, .official-table td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid rgba(127,127,127,.25); vertical-align: top; overflow-wrap: normal; word-break: normal; }
 .official-list { list-style: none; margin: 0; padding: 0; }
 .official-item { padding: .5rem 0; border-bottom: 1px solid rgba(127,127,127,.2); overflow-wrap: anywhere; }
 .official-top { display: flex; gap: .4rem; align-items: baseline; flex-wrap: wrap; }
-@media (max-width: 640px) { .official-table { display: block; overflow-x: auto; } }
+
