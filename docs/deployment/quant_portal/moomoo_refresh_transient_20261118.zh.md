@@ -38,11 +38,16 @@
 - 新增 `tests/test_collector_refresh_transient.py`，用真实采集器循环和真实缓存库（合成数据，无网络），覆盖重试次数、耗尽后的状态、监督器判定，以及 moomoo 故障时金十仍成功轮询。
 - 日志放在私人交付目录，不入库，路径见 PR 说明。
 
-## 另行发现，本次未改
+## 另行发现（已在 64632d8 修复）
 
-`PersonalFeedStore._initialize` 先检查列是否存在，再 `ALTER TABLE ADD COLUMN`。如果两个线程同时打开一个**全新**缓存库，可能报 `duplicate column name`。新测试里约 4/15 次复现。
+当时记录为：`PersonalFeedStore._initialize` 先检查后 `ALTER TABLE`，两个线程同时打开全新库时可能报 `duplicate column name`。
 
-生产库早已迁移完成，不会遇到。云端新卷第一次启动时可能导致某一线程退出，由监督器在 180 s 后重启。建议单独修：启动线程前先初始化一次，或者忽略重复列错误。
+后续核查更正如下：
+- 正常 `cli.run` 入口下，两个采集线程不会互相竞争，因为主线程已先完成迁移。
+- 真实的并发打开方是 web 的 POST 视图、feed 主线程和一次性命令。
+- 除重复列外，还有 owner 绑定冲突和 WAL 切换锁两种失败。
+
+基线、修复和验收见 `first_start_store_migration_20261118.zh.md`。
 
 ## 上线步骤（维护窗口内，需另行授权）
 
