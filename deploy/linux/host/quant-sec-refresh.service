@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh SEC EDGAR filing metadata for the quant-personal watchlist
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/srv/quant/secrets/sec.env
+ExecStart=/usr/local/sbin/quant-sec-refresh.sh
+TimeoutStartSec=15min
+Nice=10

@@ -1,0 +1,10 @@
+[Unit]
+Description=SEC EDGAR filing metadata refresh every 6 hours (server time Asia/Shanghai)
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:20:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

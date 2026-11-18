@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily quant-personal backup with independent restore check
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/quant-backup.sh
+Environment=KEEP_DAYS=14 MIN_KEEP=3
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

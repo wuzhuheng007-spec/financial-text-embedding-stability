@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.dashboard, name="dashboard"),
     path("personal-feed.json", views.personal_feed_json, name="personal_feed_json"),
     path("research-sentiment.json", views.research_sentiment_json, name="research_sentiment_json"),
+    path("official-filings.json", views.official_filings_json, name="official_filings_json"),
     path("personal-feed/timeline.json", views.personal_timeline_json, name="personal_timeline_json"),
     path("personal-feed/quote-selection/", views.personal_quote_selection, name="personal_quote_selection"),
     path("personal-feed/news-interest/", views.personal_news_interest, name="personal_news_interest"),

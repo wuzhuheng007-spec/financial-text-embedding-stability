@@ -150,6 +150,8 @@ def dashboard(request):
         "personal_mode": settings.PERSONAL_MODE,
         "personal_feed_enabled": (settings.PERSONAL_MODE and
                                   request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME),
+        "deployment_kind": settings.DEPLOYMENT_KIND,
+        "provider_gates": settings.PROVIDER_GATES,
     })
 
 
@@ -159,6 +161,29 @@ def personal_feed_json(request):
         raise Http404("Personal feed unavailable")
     symbols = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
     data = for_owner(request.user, symbols)
+    data["provider_gates"] = {k: v for k, v in settings.PROVIDER_GATES.items() if v}
+    data["deployment_kind"] = settings.DEPLOYMENT_KIND
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+def official_filings_json(request):
+    """Owner-only, read-only SEC EDGAR filing metadata for the watchlist; never calls SEC."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Official filings unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_cloud_official.sec_filings import read_for_portal
+    symbols = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    try:
+        data = read_for_portal(settings.OFFICIAL_FILINGS_DB_PATH, symbols)
+    except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "instruments": [], "filings": []}
+    data["watchlist"] = sorted(symbols)
     response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
     response["Cache-Control"] = "private, no-store"
     return response

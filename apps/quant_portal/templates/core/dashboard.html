@@ -4,12 +4,21 @@
 {% block content %}
 <div class="page-heading">
   <div>
-    <p class="eyebrow">本机测试 · 只读</p>
+    <p class="eyebrow">{% if deployment_kind == 'cloud_private' %}云端私人部署 · 只读{% else %}本机测试 · 只读{% endif %}</p>
     <h1>科技股观察台</h1>
     <p class="muted">关注行情、重要事件与新闻语气。</p>
   </div>
-  <span class="status-pill neutral">本机个人使用 · 无交易</span>
+  <span class="status-pill neutral">{% if deployment_kind == 'cloud_private' %}个人使用 · 仅 SSH 隧道访问 · 无交易{% else %}本机个人使用 · 无交易{% endif %}</span>
 </div>
+{% if personal_feed_enabled and provider_gates.moomoo or personal_feed_enabled and provider_gates.jin10 %}
+<div class="card gate-notice" role="note">
+  <p class="muted"><strong>此部署尚未启用的数据源</strong>（未接通，不是故障；页面不显示替代或演示数据）：</p>
+  <ul class="muted">
+    {% if provider_gates.moomoo %}<li>moomoo 行情：{% if provider_gates.moomoo == 'PENDING_SUPPORT_REPLY' %}等待 moomoo 对云服务器使用的答复{% else %}需 moomoo 书面许可{% endif %}，行情卡、报价曲线为空。</li>{% endif %}
+    {% if provider_gates.jin10 %}<li>金十新闻：{% if provider_gates.jin10 == 'PENDING_WRITTEN_PERMISSION' %}金十用户协议要求书面授权后才能在非金十服务器保存内容{% else %}等待金十答复{% endif %}，新闻流与“关注事件 Top 10”为空。</li>{% endif %}
+  </ul>
+</div>
+{% endif %}
 
 <nav class="workspace-nav" aria-label="观察台分区" translate="no" hidden>
   <button type="button" data-view="overview">{% if request.display_language == 'en' %}Overview{% else %}总览{% endif %}</button>
@@ -34,6 +43,14 @@
 </details>
 
 {% if personal_feed_enabled %}<details class="workspace-panel" id="panel-top10" data-panel="top10" open><summary>关注事件 Top 10 <span class="panel-count" id="top10-count">读取中</span></summary><p class="muted">按相关性与时效排序。点击查看报道及来源；排名不是收益预测。</p><div id="personal-top10" class="top10-list" aria-live="polite"></div></details>{% endif %}
+{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-official" data-panel="official" open><summary>官方公告（SEC EDGAR） <span class="panel-count" id="official-count">读取中</span></summary>
+<section class="card" id="official-filings-root" data-url="{% url 'official_filings_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="official-title">
+  <div class="section-head"><div><p class="eyebrow">SEC EDGAR · OFFICIAL</p><h2 id="official-title">自选标的官方申报</h2></div><span class="small-tag">仅元数据与原文链接 · 非行情</span></div>
+  <p class="muted" id="official-source-state" role="status">正在读取…</p>
+  <div id="official-instruments" class="official-instruments"></div>
+  <div id="official-filings" class="official-filings" aria-live="polite"></div>
+  <p class="muted">申报日期为 SEC filingDate；受理时间按 SEC 原字段保留，不改写时区。基金类（TQQQ、SOXX、QQQ）在 SEC 只能定位到发行信托，申报可能涉及同信托下其他基金。</p>
+</section></details>{% endif %}
 
 <div class="main-grid workspace-layout">
   <details class="workspace-panel" id="panel-watchlist" data-panel="watchlist"><summary>自选股与订阅管理 <span class="panel-count">{{ watch_rows|length }}</span></summary>
@@ -129,6 +146,7 @@
 <script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v19-1"></script>
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
+<script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v1"></script>
 {% endif %}
 
 <details class="workspace-panel" id="panel-facts" data-panel="facts"><summary>历史财报事实卡 <span class="panel-count">{{ fact_cards|length }}</span></summary>

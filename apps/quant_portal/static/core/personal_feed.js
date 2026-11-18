@@ -108,9 +108,18 @@
       const recent=(value,seconds) => {const age=Date.now()-Date.parse(value);return Number.isFinite(age)&&age>=0&&age<=seconds*1000;};
       const receiving=push?.worker_alive===1 && recent(push?.last_push_at,20);
       const newsOk=news?.worker_alive===1 && recent(news?.heartbeat_at,90) && recent(news?.last_success_at,180);
-      health.replaceChildren(
-        node('span',receiving?'health-ok':'health-warning',bilingual(receiving?['行情：正在接收推送','Quotes: receiving push']:['行情：请检查更新状态','Quotes: check update status'])),
-        node('span',newsOk?'health-ok':'health-warning',bilingual(newsOk?['新闻：采集正常','News: collection active']:['新闻：更新中断或尚无成功记录','News: interrupted or no successful receipt'])),
+      // A provider deliberately not started on this deployment is a gate, not a failure.
+      const gates=current?.provider_gates||{};
+      const gateText={
+        PENDING_SUPPORT_REPLY:['未在此部署启用：等待供应商对云端使用的答复','Not enabled here: awaiting the provider\'s reply on cloud use'],
+        PENDING_WRITTEN_PERMISSION:['未在此部署启用：需供应商书面许可','Not enabled here: provider written permission required']};
+      const quoteSpan=gates.moomoo
+        ? node('span','health-warning',bilingual(['行情（moomoo）：'+gateText[gates.moomoo][0],'Quotes (moomoo): '+gateText[gates.moomoo][1]]))
+        : node('span',receiving?'health-ok':'health-warning',bilingual(receiving?['行情：正在接收推送','Quotes: receiving push']:['行情：请检查更新状态','Quotes: check update status']));
+      const newsSpan=gates.jin10
+        ? node('span','health-warning',bilingual(['新闻（金十）：'+gateText[gates.jin10][0],'News (Jin10): '+gateText[gates.jin10][1]]))
+        : node('span',newsOk?'health-ok':'health-warning',bilingual(newsOk?['新闻：采集正常','News: collection active']:['新闻：更新中断或尚无成功记录','News: interrupted or no successful receipt']));
+      health.replaceChildren(quoteSpan, newsSpan,
         node('span','muted',bilingual(['报价时间见行情卡；新闻主张以原始来源为准。','Quote times appear on each card; news claims remain attributed to their sources.'])));
     }
     for (const name of ['moomoo', 'jin10']) {

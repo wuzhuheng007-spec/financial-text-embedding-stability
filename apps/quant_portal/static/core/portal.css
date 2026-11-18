@@ -68,3 +68,12 @@ a{color:var(--blue);overflow-wrap:anywhere}
 @media(max-width:1100px){#personal-quotes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){#personal-quotes,.status-grid{grid-template-columns:1fr}.content{padding:16px 12px}.workspace-nav{gap:6px}.workspace-nav button{padding:8px 12px}.page-heading>.status-pill,.page-heading .eyebrow{display:none}.news-item{padding:12px}.top10-rank{font-size:14px}.workspace-panel>summary{font-size:15px}}
 @media(max-width:600px){#personal-quotes>.snapshot-item{grid-template-columns:minmax(0,1fr)}#personal-quotes .snapshot-value{text-align:left;flex-direction:row;flex-wrap:wrap;gap:6px;align-items:baseline}#personal-quotes .session-picker{max-width:240px}}
+
+/* Official filings (SEC EDGAR) panel and deployment gate notice */
+.gate-notice ul { margin: .25rem 0 0 1.1rem; padding: 0; }
+.official-table { width: 100%; border-collapse: collapse; font-size: .9rem; margin-bottom: .75rem; }
+.official-table th, .official-table td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid rgba(127,127,127,.25); vertical-align: top; }
+.official-list { list-style: none; margin: 0; padding: 0; }
+.official-item { padding: .5rem 0; border-bottom: 1px solid rgba(127,127,127,.2); overflow-wrap: anywhere; }
+.official-top { display: flex; gap: .4rem; align-items: baseline; flex-wrap: wrap; }
+@media (max-width: 640px) { .official-table { display: block; overflow-x: auto; } }
