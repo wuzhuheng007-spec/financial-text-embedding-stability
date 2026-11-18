@@ -81,16 +81,40 @@ while ((Test-Path -LiteralPath (Join-Path $LogDir "$Stem.stderr.log")) -or (Test
 }
 $OutLog = Join-Path $LogDir "$Stem.stdout.log"
 $ErrLog = Join-Path $LogDir "$Stem.stderr.log"
-$Proc = Start-Process -FilePath $Python -ArgumentList @('-m','scripts.quant_personal_feed.cli','run','--config',$Config) -WorkingDirectory $RepoRoot -PassThru -WindowStyle Hidden -RedirectStandardOutput $OutLog -RedirectStandardError $ErrLog
-# Written before the start is verified, so a failed start's log is also findable.
-[pscustomobject]@{ started_at_utc = $StartedUtc.ToString('o'); pid = $Proc.Id; profile = $FeedProfile;
-    stdout = "feed_logs/$Stem.stdout.log"; stderr = "feed_logs/$Stem.stderr.log" } |
-    ConvertTo-Json | Set-Content -LiteralPath $LatestLogs -Encoding ascii
-for ($i=0; $i -lt 20; $i++) {
+# Launch through WMI (Win32_Process.Create) instead of Start-Process: the collector
+# then inherits no handle from this script or its caller (Start-Process with
+# redirection let the collector hold the caller's stdout pipe, so callers that
+# capture output never returned), and it does not depend on the launching
+# terminal. cmd.exe only redirects the collector's output to the log files.
+# The collector's environment is the user's environment; JIN10_MCP_TOKEN is a
+# user-scope variable, as before.
+$CmdLine = 'cmd.exe /d /s /c ""{0}" -m scripts.quant_personal_feed.cli run --config "{1}" 1> "{2}" 2> "{3}""' -f $Python, $Config, $OutLog, $ErrLog
+$Startup = New-CimInstance -ClassName Win32_ProcessStartup -ClientOnly -Property @{ ShowWindow = [uint16]0 }
+$Created = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{
+    CommandLine = $CmdLine; CurrentDirectory = $RepoRoot; ProcessStartupInformation = $Startup }
+$LauncherPid = [int]$Created.ProcessId
+function Write-LatestLogs($CollectorPid) {
+    # Written before the start is verified, so a failed start's log is also findable.
+    [pscustomobject]@{ started_at_utc = $StartedUtc.ToString('o'); pid = $CollectorPid; launcher_pid = $LauncherPid;
+        profile = $FeedProfile; stdout = "feed_logs/$Stem.stdout.log"; stderr = "feed_logs/$Stem.stderr.log" } |
+        ConvertTo-Json | Set-Content -LiteralPath $LatestLogs -Encoding ascii
+}
+Write-LatestLogs $null
+if ($Created.ReturnValue -ne 0) {
+    Write-Output "FEED_START_FAILED; Win32_Process.Create returned $($Created.ReturnValue)"
+    exit 2
+}
+for ($i=0; $i -lt 40; $i++) {
     Start-Sleep -Milliseconds 500
     $Running = Get-VerifiedFeed
-    if ($Running -and [int]$Running.pid -eq $Proc.Id) { Write-Output "FEED_STARTED pid=$($Proc.Id) profile=$FeedProfile"; exit 0 }
-    if ($Proc.HasExited) { break }
+    if ($Running) {
+        $Collector = Get-CimInstance Win32_Process -Filter "ProcessId=$($Running.pid)" -ErrorAction SilentlyContinue
+        if ($Collector -and [int]$Collector.ParentProcessId -eq $LauncherPid) {
+            Write-LatestLogs ([int]$Running.pid)
+            Write-Output "FEED_STARTED pid=$($Running.pid) profile=$FeedProfile"; exit 0
+        }
+    }
+    if (-not (Get-Process -Id $LauncherPid -ErrorAction SilentlyContinue)) { break }
 }
 Write-Output "FEED_START_FAILED; inspect private stderr log feed_logs/$Stem.stderr.log (do not share raw log)"
 exit 2

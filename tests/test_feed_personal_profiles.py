@@ -262,3 +262,33 @@ def test_cli_lock_refuses_second_instance_whatever_its_config(tmp_path: Path) ->
         holder.kill(); holder.wait(30)
     handle = cli.lock_file(lock)  # released once the holder is gone
     handle.close()
+
+
+def test_start_returns_when_caller_captures_output_and_collector_outlives_it(fake_repo):
+    """Start-Process with redirection let the collector hold the caller's stdout pipe,
+    so a caller capturing output (CI, a tool, a pipeline) never returned."""
+    repo, ps = fake_repo
+    env = {**os.environ, "PATH": str(Path(sys.executable).parent) + os.pathsep + os.environ["PATH"]}
+    script = str(repo / "apps/quant_portal/ops/feed_personal.ps1")
+    started = time.monotonic()
+    p = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script, "start"],
+                       capture_output=True, text=True, timeout=90, env=env)  # pipes, like the hanging case
+    assert time.monotonic() - started < 60
+    assert p.returncode == 0 and "FEED_STARTED" in p.stdout, p.stdout + p.stderr
+    pid = _pid(p.stdout)
+    # The launching PowerShell has exited; the collector is still alive and is not its descendant.
+    code, out = ps("status")
+    assert f"pid={pid}" in out
+    chain, cur = [], pid
+    for _ in range(6):
+        parent = subprocess.run(["powershell", "-NoProfile", "-Command",
+                                 f"(Get-CimInstance Win32_Process -Filter 'ProcessId={cur}').ParentProcessId"],
+                                capture_output=True, text=True, timeout=60).stdout.strip()
+        if not parent.isdigit() or parent == "0":
+            break
+        cur = int(parent); chain.append(cur)
+    assert p.args and all(isinstance(x, int) for x in chain)
+    names = subprocess.run(["powershell", "-NoProfile", "-Command",
+                            "(" + ",".join(str(x) for x in chain or [0]) + ") | ForEach-Object { (Get-CimInstance Win32_Process -Filter \"ProcessId=$_\").Name }"],
+                           capture_output=True, text=True, timeout=60).stdout.split()
+    assert "pytest" not in " ".join(names).lower() and str(os.getpid()) not in [str(x) for x in chain]
