@@ -1,0 +1,42 @@
+{
+  "schema": "quant_portal_personal_feeds_v11",
+  "owner_username": "owner@local.invalid",
+  "portal_db": "apps/quant_portal/var/dev.sqlite3",
+  "cache_db": "apps/quant_portal/var/personal_feeds.sqlite3",
+  "mapping_receipt_path": "results/watchlist_live_20261115/security_mapping_combined_redacted.json",
+  "mapping_receipt_sha256": "2847f0d775824273dea7babc838f0a2bad0a4b8128e97490036fd62df1b45bf2",
+  "moomoo": {
+    "enabled": true,
+    "snapshot_enabled": false,
+    "priority_symbols": [
+      "TQQQ",
+      "QQQ",
+      "SOXX",
+      "SPY",
+      "NVDA",
+      "MU"
+    ],
+    "local_subscription_key_budget": 6,
+    "status_path": "apps/quant_portal/var/moomoo_personal_status.json",
+    "max_reconnect_attempts": 3,
+    "reconnect_initial_seconds": 5,
+    "reconnect_max_seconds": 60
+  },
+  "jin10": {
+    "enabled": true,
+    "endpoint": "https://mcp.jin10.com/mcp",
+    "tool": "list_flash",
+    "poll_interval_seconds": 120,
+    "max_business_calls_per_utc_day": 720,
+    "max_response_bytes": 2097152,
+    "timeout_seconds": 20,
+    "max_reconnect_attempts": 3
+  },
+  "retention": {
+    "quotes_per_symbol": 1000,
+    "news_items": 500,
+    "news_versions_per_item": 5
+  },
+  "owner_resolver": "django_orm",
+  "_comment": "Cloud feed with moomoo push and Jin10 enabled at the owner's explicit instruction (2026-11-19). Jin10 polls every 120 s (720/day) because the Windows PC still polls the same account every 60 s. Jin10's user agreement requires written authorization to mirror content on non-Jin10 servers; the owner accepted that risk. Requires compose.jin10.yaml and a 0400 token file owned by uid 10001."
+}
