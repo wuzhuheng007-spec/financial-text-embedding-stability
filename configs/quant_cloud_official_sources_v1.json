@@ -14,18 +14,55 @@
   },
   "window_days": 30,
   "keep_latest_periodic_outside_window": true,
-  "periodic_forms": ["10-K", "10-Q", "20-F", "N-CSR", "N-CSRS"],
+  "periodic_forms": [
+    "10-K",
+    "10-Q",
+    "20-F",
+    "N-CSR",
+    "N-CSRS"
+  ],
   "forms": {
-    "operating": ["8-K", "8-K/A", "10-K", "10-K/A", "10-Q", "10-Q/A", "6-K", "20-F", "DEF 14A", "S-3", "S-3ASR", "S-8", "SC 13D", "SC 13D/A", "SC 13G", "SC 13G/A"],
-    "fund": ["8-K", "10-K", "10-Q", "N-CSR", "N-CSRS", "N-30D", "NPORT-P"]
+    "operating": [
+      "8-K",
+      "8-K/A",
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "6-K",
+      "20-F",
+      "DEF 14A",
+      "S-3",
+      "S-3ASR",
+      "S-8",
+      "SC 13D",
+      "SC 13D/A",
+      "SC 13G",
+      "SC 13G/A"
+    ],
+    "fund": [
+      "8-K",
+      "10-K",
+      "10-Q",
+      "N-CSR",
+      "N-CSRS",
+      "N-30D"
+    ]
   },
   "request": {
     "timeout_seconds": 20,
     "min_interval_seconds": 0.25,
     "max_attempts": 3,
-    "backoff_seconds": [5, 20],
+    "backoff_seconds": [
+      5,
+      20
+    ],
     "max_response_bytes": 33554432,
-    "stop_on_http": [401, 403]
+    "stop_on_http": [
+      401,
+      403
+    ]
   },
-  "_comment": "Official SEC EDGAR metadata only (no filing bodies stored). SEC_USER_AGENT with a contact address comes from the private environment, never from this file."
+  "_comment": "Official SEC EDGAR metadata only (no filing bodies stored). SEC_USER_AGENT with a contact address comes from the private environment, never from this file.",
+  "_comment_fund_forms": "NPORT-P excluded: multi-series trusts (iShares, ProShares) file one per fund, so a trust-level NPORT-P cannot be attributed to the watched ETF."
 }

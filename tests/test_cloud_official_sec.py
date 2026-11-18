@@ -161,3 +161,30 @@ def test_user_agent_contact_required(monkeypatch):
 
 def test_portal_read_without_database(tmp_path):
     assert sec.read_for_portal(tmp_path / "missing.sqlite3", {"NVDA"})["state"] == "NO_DATA"
+
+
+def test_config_change_retires_rows_without_deleting(tmp_path):
+    db = tmp_path / "f.sqlite3"
+    run(db)
+    narrower = json.loads(json.dumps(CONFIG))
+    narrower["forms"]["fund"] = ["8-K"]  # drop N-CSRS for the trust
+    client = sec.SecClient(narrower, opener=opener_for(ROUTES), sleep=lambda s: None)
+    r = sec.refresh(narrower, db, symbols=["NVDA", "TQQQ"], client=client, today=TODAY)
+    assert r["retired"] == 1
+    assert rows(db, "select count(*), sum(in_scope) from filings") == [(3, 2)]  # kept, hidden
+    shown = {f["accession_number"] for f in sec.read_for_portal(db, {"NVDA", "TQQQ"})["filings"]}
+    assert "0001174610-26-000500" not in shown and len(shown) == 2
+    again = sec.refresh(CONFIG, db, symbols=["NVDA", "TQQQ"], client=sec.SecClient(
+        CONFIG, opener=opener_for(ROUTES), sleep=lambda s: None), today=TODAY)
+    assert again["updated"] == 1 and rows(db, "select sum(in_scope) from filings") == [(3,)]  # restored
+
+
+def test_old_schema_is_migrated(tmp_path):
+    db = tmp_path / "old.sqlite3"
+    old_schema = sec.SCHEMA.replace("  in_scope INTEGER NOT NULL DEFAULT 1,\n", "").replace(
+        " retired INTEGER NOT NULL DEFAULT 0,", "")
+    with sqlite3.connect(db) as c:
+        c.executescript(old_schema)
+    sec.connect(db).close()
+    cols = {r[1] for r in rows(db, "pragma table_info(filings)")}
+    assert "in_scope" in cols and "retired" in {r[1] for r in rows(db, "pragma table_info(batches)")}

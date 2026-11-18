@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS batches (
   symbols_json TEXT NOT NULL, inputs_json TEXT NOT NULL DEFAULT '[]',
   read_count INTEGER NOT NULL DEFAULT 0, inserted INTEGER NOT NULL DEFAULT 0,
   updated INTEGER NOT NULL DEFAULT 0, unchanged INTEGER NOT NULL DEFAULT 0,
-  rejected INTEGER NOT NULL DEFAULT 0, error_class TEXT, error_detail TEXT);
+  rejected INTEGER NOT NULL DEFAULT 0, retired INTEGER NOT NULL DEFAULT 0, error_class TEXT, error_detail TEXT);
 CREATE TABLE IF NOT EXISTS instruments (
   symbol TEXT PRIMARY KEY, cik INTEGER, sec_name TEXT, exchange TEXT, entity_type TEXT,
   sic TEXT, sic_description TEXT, fiscal_year_end TEXT, series_id TEXT, class_id TEXT,
@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS filings (
   filing_date TEXT NOT NULL, report_date TEXT, acceptance_datetime_raw TEXT,
   acceptance_tz_marker TEXT, primary_document TEXT, primary_doc_description TEXT, items TEXT,
   document_url TEXT, index_url TEXT NOT NULL, size_bytes INTEGER, in_window INTEGER NOT NULL,
+  in_scope INTEGER NOT NULL DEFAULT 1,
   content_sha256 TEXT NOT NULL, first_seen_batch TEXT NOT NULL, last_seen_batch TEXT NOT NULL,
   first_seen_at_utc TEXT NOT NULL, last_seen_at_utc TEXT NOT NULL, source_url TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS filing_symbols (
@@ -179,6 +180,11 @@ def connect(path: Path) -> sqlite3.Connection:
     con.execute("PRAGMA busy_timeout=30000")
     con.execute("PRAGMA journal_mode=WAL")
     con.executescript(SCHEMA)
+    # Additive, idempotent migration for databases created by the first version.
+    for table, column, ddl in (("filings", "in_scope", "INTEGER NOT NULL DEFAULT 1"),
+                               ("batches", "retired", "INTEGER NOT NULL DEFAULT 0")):
+        if column not in {r[1] for r in con.execute(f"PRAGMA table_info({table})")}:
+            con.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}")
     return con
 
 
@@ -220,7 +226,7 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
                     " ON CONFLICT(source) DO UPDATE SET last_attempt_at_utc=excluded.last_attempt_at_utc,"
                     " last_attempt_status=excluded.last_attempt_status, last_batch_id=excluded.last_batch_id",
                     (SOURCE, started, "RUNNING", batch_id))
-        counts = dict(read_count=0, inserted=0, updated=0, unchanged=0, rejected=0)
+        counts = dict(read_count=0, inserted=0, updated=0, unchanged=0, rejected=0, retired=0)
         rejects: list[tuple] = []
         client = client
         try:
@@ -310,16 +316,17 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
                       retrieved_at_utc=excluded.retrieved_at_utc,batch_id=excluded.batch_id""",
                                 {**inst, "now": now, "batch": batch_id})
                 for rec, links in planned:
-                    old = con.execute("SELECT content_sha256,in_window FROM filings WHERE accession_number=?",
+                    old = con.execute("SELECT content_sha256,in_window,in_scope FROM filings WHERE accession_number=?",
                                       (rec["accession_number"],)).fetchone()
                     if old is None:
                         cols = list(rec) + ["first_seen_batch", "last_seen_batch", "first_seen_at_utc", "last_seen_at_utc"]
                         con.execute(f"INSERT INTO filings({','.join(cols)}) VALUES({','.join('?' * len(cols))})",
                                     [rec[k] for k in rec] + [batch_id, batch_id, now, now])
                         counts["inserted"] += 1
-                    elif old["content_sha256"] != rec["content_sha256"] or old["in_window"] != rec["in_window"]:
+                    elif (old["content_sha256"] != rec["content_sha256"] or old["in_window"] != rec["in_window"]
+                          or not old["in_scope"]):
                         sets = ",".join(f"{k}=?" for k in rec if k != "accession_number")
-                        con.execute(f"UPDATE filings SET {sets},last_seen_batch=?,last_seen_at_utc=? WHERE accession_number=?",
+                        con.execute(f"UPDATE filings SET {sets},in_scope=1,last_seen_batch=?,last_seen_at_utc=? WHERE accession_number=?",
                                     [rec[k] for k in rec if k != "accession_number"] + [batch_id, now, rec["accession_number"]])
                         counts["updated"] += 1
                     else:
@@ -329,16 +336,30 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
                     for sym, scope in links:
                         con.execute("INSERT OR IGNORE INTO filing_symbols VALUES(?,?,?)",
                                     (rec["accession_number"], sym, scope))
+                # Rows of the issuers fetched in this batch that the current config / window no longer
+                # selects (form dropped, aged out, superseded periodic report) stay for traceability
+                # but leave the page. Issuers whose fetch failed are untouched.
+                kept: dict[int, set] = {}
+                for rec, _ in planned:
+                    kept.setdefault(rec["cik"], set()).add(rec["accession_number"])
+                for cik in subs:
+                    keep = kept.get(cik, set())
+                    marks = ",".join("?" * len(keep)) or "''"
+                    cur = con.execute(f"UPDATE filings SET in_scope=0,in_window=0,last_seen_batch=?,last_seen_at_utc=?"
+                                      f" WHERE cik=? AND in_scope=1 AND accession_number NOT IN ({marks})",
+                                      [batch_id, now, cik, *sorted(keep)])
+                    counts["retired"] += cur.rowcount
                 counts["rejected"] = len(rejects)
                 con.executemany("INSERT INTO rejects VALUES(?,?,?,?)", rejects)
                 status = "SUCCESS" if not rejects else "PARTIAL"
                 data_as_of = max((r["filing_date"] for r, _ in planned), default=None)
                 con.execute("""UPDATE batches SET finished_at_utc=?,status=?,symbols_json=?,inputs_json=?,read_count=?,
-                    inserted=?,updated=?,unchanged=?,rejected=? WHERE batch_id=?""",
+                    inserted=?,updated=?,unchanged=?,rejected=?,retired=? WHERE batch_id=?""",
                             (utc_now(), status, json.dumps(symbols), json.dumps(client.inputs), counts["read_count"],
-                             counts["inserted"], counts["updated"], counts["unchanged"], counts["rejected"], batch_id))
+                             counts["inserted"], counts["updated"], counts["unchanged"], counts["rejected"],
+                             counts["retired"], batch_id))
                 con.execute("""UPDATE source_state SET last_attempt_status=?,last_success_at_utc=?,
-                    data_as_of=COALESCE((SELECT max(filing_date) FROM filings),?),last_success_batch_id=?,
+                    data_as_of=COALESCE((SELECT max(filing_date) FROM filings WHERE in_scope=1),?),last_success_batch_id=?,
                     last_error_class=CASE WHEN ?='PARTIAL' THEN 'PARTIAL_REJECTS' ELSE last_error_class END
                     WHERE source=?""", (status, utc_now(), data_as_of, batch_id, status, SOURCE))
                 con.execute("COMMIT")
@@ -365,7 +386,7 @@ def read_for_portal(db_path: Path, symbols: set[str], limit: int = 200) -> dict:
         con.row_factory = sqlite3.Row
         state = con.execute("SELECT * FROM source_state WHERE source=?", (SOURCE,)).fetchone()
         last_success = con.execute("SELECT batch_id,finished_at_utc,code_version,config_sha256,read_count,inserted,"
-                                   "updated,unchanged,rejected FROM batches WHERE batch_id=?",
+                                   "updated,unchanged,rejected,retired FROM batches WHERE batch_id=?",
                                    (state["last_success_batch_id"] if state else None,)).fetchone()
         marks = ",".join("?" * len(symbols)) or "''"
         inst = [dict(r) for r in con.execute(f"SELECT * FROM instruments WHERE symbol IN ({marks}) ORDER BY symbol",
@@ -376,7 +397,7 @@ def read_for_portal(db_path: Path, symbols: set[str], limit: int = 200) -> dict:
                    f.first_seen_at_utc,f.last_seen_at_utc,
                    group_concat(s.symbol) AS symbols, min(s.association_scope) AS association_scope
             FROM filings f JOIN filing_symbols s ON s.accession_number=f.accession_number
-            WHERE s.symbol IN ({marks}) GROUP BY f.accession_number
+            WHERE s.symbol IN ({marks}) AND f.in_scope=1 GROUP BY f.accession_number
             ORDER BY f.filing_date DESC, f.accession_number DESC LIMIT ?""", [*sorted(symbols), limit])]
     return {"state": (state["last_attempt_status"] if state else "NO_DATA"), "source": SOURCE,
             "source_state": dict(state) if state else None,
