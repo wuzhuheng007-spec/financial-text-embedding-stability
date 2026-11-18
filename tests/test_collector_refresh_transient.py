@@ -122,10 +122,7 @@ class FakeSession:
 def test_jin10_keeps_polling_while_moomoo_fails(tmp_path: Path) -> None:
     stop = threading.Event()
     config = _config(tmp_path)
-    # Production opens an already-migrated cache. Two threads migrating a brand
-    # new file at once race on ALTER TABLE (separate pre-existing issue), so
-    # migrate once here and test only the provider isolation.
-    collector.PersonalFeedStore(tmp_path / "feed.sqlite3", 1).close()
+    assert not (tmp_path / "feed.sqlite3").exists()  # both threads race the first migration
     jin10_ok = threading.Event()
     real_state = collector.PersonalFeedStore.state
 

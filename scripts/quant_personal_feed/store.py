@@ -58,8 +58,20 @@ class PersonalFeedStore:
 
     def _initialize(self, owner_id: int) -> None:
         self.db.row_factory = sqlite3.Row
-        self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA busy_timeout=10000")
+        # Switching a new file to WAL needs an exclusive lock, and SQLite
+        # returns "locked" at once instead of using the busy handler when
+        # another first opener holds the file. Retry only that, for up to the
+        # same 10 s; any other error, or the deadline, propagates.
+        deadline = time.monotonic() + 10
+        while True:
+            try:
+                self.db.execute("PRAGMA journal_mode=WAL")
+                break
+            except sqlite3.OperationalError as exc:
+                if "locked" not in str(exc) or time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.05)
         timeline_config = Path(__file__).resolve().parents[2] / "configs/quant_portal_personal_timeline_v14_20261116.json"
         retention = json.loads(timeline_config.read_text(encoding="utf-8")) if timeline_config.is_file() else {}
         self.raw_response_recent_hours = int(retention.get("raw_response_recent_hours", 48))
@@ -67,7 +79,23 @@ class PersonalFeedStore:
         self._next_raw_retention_monotonic = 0.0
         if not 1 <= self.raw_response_recent_hours <= 168 or not 0 <= self.raw_response_extra_count <= 1000:
             raise ValueError("Invalid personal raw-response retention limits")
-        self.db.executescript("""
+        # The web workers, the feed process and one-off commands can all open
+        # a brand-new cache at the same moment on a cloud first start. Run the
+        # whole check-then-migrate sequence under one write lock: later openers
+        # wait (busy_timeout), then see the finished schema. Real errors roll
+        # back and propagate unchanged.
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            self._migrate(owner_id)
+        except BaseException:
+            if self.db.in_transaction:
+                self.db.execute("ROLLBACK")
+            raise
+        self.db.execute("COMMIT")
+        self.owner_id = owner_id
+
+    def _migrate(self, owner_id: int) -> None:
+        schema = """
           CREATE TABLE IF NOT EXISTS owner_binding (
             singleton INTEGER PRIMARY KEY CHECK(singleton=1), owner_id INTEGER NOT NULL);
           CREATE TABLE IF NOT EXISTS provider_state (
@@ -150,14 +178,17 @@ class PersonalFeedStore:
           CREATE TABLE IF NOT EXISTS event_preferences (
             owner_id INTEGER PRIMARY KEY, entities_json TEXT NOT NULL,
             categories_json TEXT NOT NULL, updated_at TEXT NOT NULL);
-        """)
+        """
+        # One statement at a time: executescript() would COMMIT the
+        # surrounding transaction first.
+        for statement in schema.split(";"):
+            if statement.strip():
+                self.db.execute(statement)
         row = self.db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
         if row is None:
             self.db.execute("INSERT INTO owner_binding(singleton,owner_id) VALUES(1,?)", (owner_id,))
         elif row["owner_id"] != owner_id:
-            self.db.close()
             raise ValueError("Personal feed cache is bound to a different owner; refuse access")
-        self.owner_id = owner_id
         additions = {
             "last_push_at": "TEXT", "last_quote_saved_at": "TEXT",
             "duplicate_quote_packets": "INTEGER NOT NULL DEFAULT 0",
