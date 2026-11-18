@@ -201,3 +201,11 @@ def test_portal_view_reports_window_and_separates_supplementary(tmp_path):
     assert [f["form"] for f in supplementary] == ["10-Q"]  # only the latest periodic report, outside the window
     trust = [f for f in view["filings"] if "TQQQ" in f["symbols"]]
     assert trust and all(f["association_scope"] == "ISSUER_TRUST_ALL_SERIES" for f in trust)
+
+
+def test_blank_sec_fields_are_stored_as_null(tmp_path):
+    db = tmp_path / "f.sqlite3"
+    fund = json.loads(json.dumps(FUND)); fund["sic"] = ""; fund["sicDescription"] = ""
+    routes = {**ROUTES, "CIK0001174610": fund}
+    run(db, routes=routes, symbols=["TQQQ"])
+    assert rows(db, "select sic, sic_description from instruments where symbol='TQQQ'") == [(None, None)]

@@ -272,8 +272,11 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
                 sub, sub_url = subs[cik]
                 fund = sub.get("entityType") != "operating"
                 for inst in insts:
-                    inst.update(sec_name=sub.get("name"), entity_type=sub.get("entityType"), sic=sub.get("sic"),
-                                sic_description=sub.get("sicDescription"), fiscal_year_end=sub.get("fiscalYearEnd"),
+                    # SEC returns "" for fields that do not apply (e.g. funds have no SIC): store NULL, not "".
+                    blank = lambda v: v if v not in ("", None) else None
+                    inst.update(sec_name=blank(sub.get("name")), entity_type=blank(sub.get("entityType")),
+                                sic=blank(sub.get("sic")), sic_description=blank(sub.get("sicDescription")),
+                                fiscal_year_end=blank(sub.get("fiscalYearEnd")),
                                 exchange=inst["exchange"] or ",".join(sub.get("exchanges") or []) or None,
                                 association_scope="ISSUER_TRUST_ALL_SERIES" if inst["series_id"] else
                                 ("FUND_TRUST" if fund else "ISSUER"))
