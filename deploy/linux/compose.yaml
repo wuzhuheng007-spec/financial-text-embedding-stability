@@ -31,7 +31,6 @@ x-worker-env: &worker-env
   MOOMOO_TOKEN_STORE: server
   MOOMOO_TOKEN_FILE: /app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed
   MOOMOO_TOKEN_KEY_FILE: /run/secrets/moomoo_token_key
-  JIN10_MCP_TOKEN_FILE: /run/secrets/jin10_mcp_token
   TZ: UTC
 
 x-hardening: &hardening
@@ -135,7 +134,8 @@ services:
     volumes:
       - personal_var:/app/apps/quant_portal/var
       - private_artifacts:/app/artifacts
-    secrets: [moomoo_token_key, jin10_mcp_token]
+    # Jin10 is opt-in (compose.jin10.yaml); a moomoo-only deployment holds no Jin10 secret.
+    secrets: [moomoo_token_key]
     healthcheck:
       test: ["CMD", "python", "/app/deploy/linux/entrypoint.py", "health", "feed"]
       interval: 60s
@@ -167,6 +167,23 @@ services:
       start_period: 180s
     stop_grace_period: 60s
 
+  # One-off owner authorization (profile "auth"). The callback listens on the
+  # container interface and is published ONLY on the host loopback; the owner
+  # reaches it through `ssh -L 8790:127.0.0.1:8790`. Exits after one callback.
+  moomoo-auth:
+    <<: *hardening
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    profiles: ["auth"]
+    command: ["moomoo-auth", "authorize", "--callback-port", "8790", "--bind", "0.0.0.0"]
+    environment: *worker-env
+    networks: [egress]
+    ports:
+      - "127.0.0.1:${OAUTH_CALLBACK_PORT:-8790}:8790"
+    volumes:
+      - private_artifacts:/app/artifacts
+    secrets: [moomoo_token_key]
+    restart: "no"
+
   daily-price:
     <<: *hardening
     image: ${APP_IMAGE:-quant-personal-app:local}
@@ -195,8 +212,6 @@ networks:
 secrets:
   moomoo_token_key:
     file: ${MOOMOO_TOKEN_KEY_PATH:?path to a 0400 key file owned by uid 10001}
-  jin10_mcp_token:
-    file: ${JIN10_MCP_TOKEN_PATH:?path to a 0400 Jin10 token file owned by uid 10001}
 
 volumes:
   pg_data:

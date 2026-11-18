@@ -79,6 +79,8 @@
 
 ## 7. 候选服务器容量（只读估算）
 
+> **第三轮更正（2026-11-18）**：本节“前约 5 个月足够”和“CPU/内存足够”的结论已撤回，见 [第三轮报告](2026-11-18_personal_cloud_pr4_round3.zh.md) 与 `disk_sizing_r3_redacted.json`。本节保留为第二轮原始记录。
+
 候选：阿里云轻量应用服务器，新加坡，4 vCPU、8 GiB、70 GiB 系统盘、Ubuntu 22.04，用户页面报价 ¥156/月（未核实结账价，未购买）。计算依据见 [disk_sizing_redacted.json](../results/personal_cloud_pr4_linux_20261118/disk_sizing_redacted.json)。
 
 - **CPU/内存：足够。** 实测各容器合计 <1 GiB（research 评分后 254 MiB，其余均 <130 MiB）。

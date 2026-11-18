@@ -23,7 +23,7 @@
 
 ## 候选配置容量核对（只读）
 
-用户提供的候选：阿里云轻量应用服务器，新加坡，4 vCPU / 8 GiB / 70 GiB 系统盘 / Ubuntu 22.04，页面报价 ¥156/月（结账价、税费、流量包、自动续费未核实）。CPU 与内存足够；磁盘约 5 个月内足够，长期需要为 `session_quotes` 加保留策略、压缩并外移备份、避免在服务器上构建。计算见 [disk_sizing_redacted.json](../../../results/personal_cloud_pr4_linux_20261118/disk_sizing_redacted.json)。金十云端采集另受条款阻塞，见 [供应商条款](supplier_cloud_terms_20261118.zh.md)。
+用户提供的候选：阿里云轻量应用服务器，新加坡，4 vCPU / 8 GiB / 70 GiB 系统盘 / Ubuntu 22.04，页面报价 ¥156/月（结账价、税费、流量包、自动续费未核实）。**第三轮更正**：第二轮“磁盘约 5 个月内足够”“CPU 与内存足够”的结论已撤回。按 [disk_sizing_r3_redacted.json](../../../results/personal_cloud_pr4_linux_20261118/disk_sizing_r3_redacted.json) 的情景估算，启用行情保留（14–30 天）后总占用约 16–30 GiB；不启用时中/高情景第 180 天约 56/98 GiB。CPU/内存只有一次本机负载测试（200 条合成文本评分 + 326 MiB 备份：研究容器 CPU 峰值 178%、内存峰值 277 MiB），不能证明 4 vCPU 足够。最小部署方案见 [minimal_cloud_plan_20261118.zh.md](minimal_cloud_plan_20261118.zh.md)；金十云端采集另受条款阻塞，见 [供应商条款](supplier_cloud_terms_20261118.zh.md)。
 
 ## 购买时需选择的配置
 

@@ -1,0 +1,13 @@
+# Opt-in Jin10 overlay. Use ONLY after Jin10 has confirmed in writing that the
+# account may call the MCP service from this server and store results there
+# (user agreement section 6). Also set jin10.enabled=true in a feed config.
+#   docker compose -f deploy/linux/compose.yaml -f deploy/linux/compose.jin10.yaml ...
+services:
+  feed:
+    environment:
+      JIN10_MCP_TOKEN_FILE: /run/secrets/jin10_mcp_token
+    secrets: [moomoo_token_key, jin10_mcp_token]
+
+secrets:
+  jin10_mcp_token:
+    file: ${JIN10_MCP_TOKEN_PATH:?path to a 0400 Jin10 token file owned by uid 10001}

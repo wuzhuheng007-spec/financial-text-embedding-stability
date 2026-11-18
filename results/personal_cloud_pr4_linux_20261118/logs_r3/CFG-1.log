@@ -1,0 +1,694 @@
+$ docker compose -f deploy/linux/compose.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env --profile auth config --format json
+# exit=0 expected=0 seconds=0.31
+# assertion=PASS
+{
+ "feed_secrets": [
+  {
+   "source": "moomoo_token_key",
+   "target": "/run/secrets/moomoo_token_key"
+  }
+ ],
+ "auth_ports": [
+  {
+   "mode": "ingress",
+   "host_ip": "127.0.0.1",
+   "target": 8790,
+   "published": "8790",
+   "protocol": "tcp"
+  }
+ ],
+ "top_level_secrets": [
+  "moomoo_token_key"
+ ]
+}
+{
+  "name": "quant-pr4-test",
+  "networks": {
+    "backend": {
+      "name": "quant-pr4-test_backend",
+      "ipam": {},
+      "internal": true
+    },
+    "edge": {
+      "name": "quant-pr4-test_edge",
+      "ipam": {}
+    },
+    "egress": {
+      "name": "quant-pr4-test_egress",
+      "ipam": {}
+    }
+  },
+  "secrets": {
+    "moomoo_token_key": {
+      "name": "quant-pr4-test_moomoo_token_key",
+      "file": "C:/Users/ROG/AppData/Local/Temp/claude/2e3b692b00f2c257/56a273db-320e-46ff-9eb6-5ba8952f42cf/scratchpad/pr4test/secrets/moomoo_token_key"
+    }
+  },
+  "services": {
+    "daily-price": {
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "daily-price"
+      ],
+      "entrypoint": null,
+      "environment": {
+        "MOOMOO_TOKEN_FILE": "/app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed",
+        "MOOMOO_TOKEN_KEY_FILE": "/run/secrets/moomoo_token_key",
+        "MOOMOO_TOKEN_STORE": "server",
+        "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+        "TZ": "UTC"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "/app/deploy/linux/entrypoint.py",
+          "health",
+          "daily-price"
+        ],
+        "timeout": "15s",
+        "interval": "1m0s",
+        "retries": 3,
+        "start_period": "1m0s"
+      },
+      "image": "quant-personal-app:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "egress": null
+      },
+      "read_only": true,
+      "restart": "unless-stopped",
+      "secrets": [
+        {
+          "source": "moomoo_token_key",
+          "target": "/run/secrets/moomoo_token_key"
+        }
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "stop_grace_period": "30s",
+      "tmpfs": [
+        "/tmp:size=64m"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "personal_var",
+          "target": "/app/apps/quant_portal/var",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "private_artifacts",
+          "target": "/app/artifacts",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "status_v45",
+          "target": "/app/results/news_sentiment_factor_v45_20261117",
+          "volume": {}
+        }
+      ]
+    },
+    "db": {
+      "command": null,
+      "entrypoint": null,
+      "environment": {
+        "POSTGRES_DB": "quant_test",
+        "POSTGRES_PASSWORD": "<redacted>",
+        "POSTGRES_USER": "quant_test"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD-SHELL",
+          "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+        ],
+        "timeout": "5s",
+        "interval": "10s",
+        "retries": 10
+      },
+      "image": "postgres:16-bookworm@sha256:a49f7438ba03589f9b1ca062f2da82e899b48ea1dc50d2449fa09a70be83ebca",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "backend": null
+      },
+      "restart": "unless-stopped",
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "pg_data",
+          "target": "/var/lib/postgresql/data",
+          "volume": {}
+        }
+      ]
+    },
+    "feed": {
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "feed"
+      ],
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_HOSTS": "localhost",
+        "CSRF_TRUSTED_ORIGINS": "https://localhost:18443",
+        "DEBUG": "0",
+        "MOOMOO_TOKEN_FILE": "/app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed",
+        "MOOMOO_TOKEN_KEY_FILE": "/run/secrets/moomoo_token_key",
+        "MOOMOO_TOKEN_STORE": "server",
+        "PERSONAL_MODE": "1",
+        "POSTGRES_DB": "quant_test",
+        "POSTGRES_HOST": "db",
+        "POSTGRES_PASSWORD": "<redacted>",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_USER": "quant_test",
+        "PUBLIC_MARKET_DATA_ENABLED": "0",
+        "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+        "QUANT_OWNER_RESOLVER": "django_orm",
+        "SECRET_KEY": "<redacted>",
+        "TRUSTED_REVERSE_PROXY": "1",
+        "TZ": "UTC"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "/app/deploy/linux/entrypoint.py",
+          "health",
+          "feed"
+        ],
+        "timeout": "15s",
+        "interval": "1m0s",
+        "retries": 3,
+        "start_period": "2m0s"
+      },
+      "image": "quant-personal-app:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "backend": null,
+        "egress": null
+      },
+      "read_only": true,
+      "restart": "unless-stopped",
+      "secrets": [
+        {
+          "source": "moomoo_token_key",
+          "target": "/run/secrets/moomoo_token_key"
+        }
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "stop_grace_period": "30s",
+      "tmpfs": [
+        "/tmp:size=64m"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "personal_var",
+          "target": "/app/apps/quant_portal/var",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "private_artifacts",
+          "target": "/app/artifacts",
+          "volume": {}
+        }
+      ]
+    },
+    "migrate": {
+      "build": {
+        "context": "C:\\Users\\ROG\\Documents\\ChatGPT\\quant\\worktrees\\personal_cloud_pr4_20261118",
+        "dockerfile": "deploy/linux/Dockerfile",
+        "target": "app"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "migrate"
+      ],
+      "depends_on": {
+        "db": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_HOSTS": "localhost",
+        "CSRF_TRUSTED_ORIGINS": "https://localhost:18443",
+        "DEBUG": "0",
+        "PERSONAL_MODE": "1",
+        "POSTGRES_DB": "quant_test",
+        "POSTGRES_HOST": "db",
+        "POSTGRES_PASSWORD": "<redacted>",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_USER": "quant_test",
+        "PUBLIC_MARKET_DATA_ENABLED": "0",
+        "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+        "QUANT_OWNER_RESOLVER": "django_orm",
+        "SECRET_KEY": "<redacted>",
+        "TRUSTED_REVERSE_PROXY": "1",
+        "TZ": "UTC"
+      },
+      "image": "quant-personal-app:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "backend": null
+      },
+      "read_only": true,
+      "restart": "no",
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "tmpfs": [
+        "/tmp:size=64m"
+      ]
+    },
+    "moomoo-auth": {
+      "profiles": [
+        "auth"
+      ],
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "moomoo-auth",
+        "authorize",
+        "--callback-port",
+        "8790",
+        "--bind",
+        "0.0.0.0"
+      ],
+      "entrypoint": null,
+      "environment": {
+        "MOOMOO_TOKEN_FILE": "/app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed",
+        "MOOMOO_TOKEN_KEY_FILE": "/run/secrets/moomoo_token_key",
+        "MOOMOO_TOKEN_STORE": "server",
+        "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+        "TZ": "UTC"
+      },
+      "image": "quant-personal-app:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "egress": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8790,
+          "published": "8790",
+          "protocol": "tcp"
+        }
+      ],
+      "read_only": true,
+      "restart": "no",
+      "secrets": [
+        {
+          "source": "moomoo_token_key",
+          "target": "/run/secrets/moomoo_token_key"
+        }
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "tmpfs": [
+        "/tmp:size=64m"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "private_artifacts",
+          "target": "/app/artifacts",
+          "volume": {}
+        }
+      ]
+    },
+    "proxy": {
+      "cap_add": [
+        "NET_BIND_SERVICE"
+      ],
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": null,
+      "depends_on": {
+        "web": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "CADDY_TLS": "tls internal",
+        "SITE_DOMAIN": "localhost"
+      },
+      "image": "caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "edge": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "0.0.0.0",
+          "target": 443,
+          "published": "18443",
+          "protocol": "tcp"
+        },
+        {
+          "mode": "ingress",
+          "host_ip": "0.0.0.0",
+          "target": 80,
+          "published": "80",
+          "protocol": "tcp"
+        }
+      ],
+      "restart": "unless-stopped",
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "C:\\Users\\ROG\\Documents\\ChatGPT\\quant\\worktrees\\personal_cloud_pr4_20261118\\deploy\\linux\\Caddyfile",
+          "target": "/etc/caddy/Caddyfile",
+          "read_only": true,
+          "bind": {}
+        },
+        {
+          "type": "volume",
+          "source": "caddy_data",
+          "target": "/data",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "caddy_config",
+          "target": "/config",
+          "volume": {}
+        }
+      ]
+    },
+    "research": {
+      "build": {
+        "context": "C:\\Users\\ROG\\Documents\\ChatGPT\\quant\\worktrees\\personal_cloud_pr4_20261118",
+        "dockerfile": "deploy/linux/Dockerfile",
+        "target": "research"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "research"
+      ],
+      "entrypoint": null,
+      "environment": {
+        "OMP_NUM_THREADS": "2",
+        "TZ": "UTC"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "/app/deploy/linux/entrypoint.py",
+          "health",
+          "research"
+        ],
+        "timeout": "30s",
+        "interval": "1m0s",
+        "retries": 3,
+        "start_period": "3m0s"
+      },
+      "image": "quant-personal-research:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "network_mode": "none",
+      "read_only": true,
+      "restart": "unless-stopped",
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "stop_grace_period": "1m0s",
+      "tmpfs": [
+        "/tmp:size=64m"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "personal_var",
+          "target": "/app/apps/quant_portal/var",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "private_artifacts",
+          "target": "/app/artifacts",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "model_cache",
+          "target": "/app/artifacts/news_sentiment_factor_v41_20261117/model",
+          "read_only": true,
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "status_v42",
+          "target": "/app/results/news_sentiment_factor_v42_20261117",
+          "volume": {}
+        }
+      ]
+    },
+    "web": {
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "web"
+      ],
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_HOSTS": "localhost",
+        "CSRF_TRUSTED_ORIGINS": "https://localhost:18443",
+        "DEBUG": "0",
+        "PERSONAL_MODE": "1",
+        "POSTGRES_DB": "quant_test",
+        "POSTGRES_HOST": "db",
+        "POSTGRES_PASSWORD": "<redacted>",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_USER": "quant_test",
+        "PUBLIC_MARKET_DATA_ENABLED": "0",
+        "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+        "QUANT_OWNER_RESOLVER": "django_orm",
+        "SECRET_KEY": "<redacted>",
+        "TRUSTED_REVERSE_PROXY": "1",
+        "TZ": "UTC"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "/app/deploy/linux/entrypoint.py",
+          "health",
+          "web"
+        ],
+        "timeout": "10s",
+        "interval": "30s",
+        "retries": 3,
+        "start_period": "20s"
+      },
+      "image": "quant-personal-app:pr4test",
+      "logging": {
+        "driver": "local",
+        "options": {
+          "max-file": "5",
+          "max-size": "10m"
+        }
+      },
+      "networks": {
+        "backend": null,
+        "edge": null
+      },
+      "read_only": true,
+      "restart": "unless-stopped",
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "stop_grace_period": "30s",
+      "tmpfs": [
+        "/tmp:size=64m"
+      ],
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "personal_var",
+          "target": "/app/apps/quant_portal/var",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "private_artifacts",
+          "target": "/app/artifacts",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "status_v42",
+          "target": "/app/results/news_sentiment_factor_v42_20261117",
+          "volume": {}
+        },
+        {
+          "type": "volume",
+          "source": "status_v45",
+          "target": "/app/results/news_sentiment_factor_v45_20261117",
+          "volume": {}
+        }
+      ]
+    }
+  },
+  "volumes": {
+    "caddy_config": {
+      "name": "quant-pr4-test_caddy_config"
+    },
+    "caddy_data": {
+      "name": "quant-pr4-test_caddy_data"
+    },
+    "model_cache": {
+      "name": "quant_pr4test_model_v41",
+      "external": true
+    },
+    "personal_var": {
+      "name": "quant-pr4-test_personal_var"
+    },
+    "pg_data": {
+      "name": "quant-pr4-test_pg_data"
+    },
+    "private_artifacts": {
+      "name": "quant-pr4-test_private_artifacts"
+    },
+    "status_v42": {
+      "name": "quant-pr4-test_status_v42"
+    },
+    "status_v45": {
+      "name": "quant-pr4-test_status_v45"
+    }
+  },
+  "x-app-env": {
+    "ALLOWED_HOSTS": "localhost",
+    "CSRF_TRUSTED_ORIGINS": "https://localhost:18443",
+    "DEBUG": "0",
+    "PERSONAL_MODE": "1",
+    "POSTGRES_DB": "quant_test",
+    "POSTGRES_HOST": "db",
+    "POSTGRES_PASSWORD": "<redacted>",
+    "POSTGRES_PORT": "5432",
+    "POSTGRES_USER": "quant_test",
+    "PUBLIC_MARKET_DATA_ENABLED": "0",
+    "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+    "QUANT_OWNER_RESOLVER": "django_orm",
+    "SECRET_KEY": "<redacted>",
+    "TRUSTED_REVERSE_PROXY": "1",
+    "TZ": "UTC"
+  },
+  "x-db-env": {
+    "POSTGRES_DB": "quant_test",
+    "POSTGRES_HOST": "db",
+    "POSTGRES_PASSWORD": "<redacted>",
+    "POSTGRES_PORT": "5432",
+    "POSTGRES_USER": "quant_test"
+  },
+  "x-hardening": {
+    "cap_drop": [
+      "ALL"
+    ],
+    "logging": {
+      "driver": "local",
+      "options": {
+        "max-file": "5",
+        "max-size": "10m"
+      }
+    },
+    "read_only": true,
+    "restart": "unless-stopped",
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "tmpfs": [
+      "/tmp:size=64m"
+    ]
+  },
+  "x-worker-env": {
+    "MOOMOO_TOKEN_FILE": "/app/artifacts/market_observer_live/moomoo_webapi_oauth.sealed",
+    "MOOMOO_TOKEN_KEY_FILE": "/run/secrets/moomoo_token_key",
+    "MOOMOO_TOKEN_STORE": "server",
+    "QUANT_FEED_CONFIG": "configs/quant_portal_personal_feeds_linux_v1.json",
+    "TZ": "UTC"
+  }
+}

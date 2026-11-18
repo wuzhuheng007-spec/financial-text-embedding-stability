@@ -1,0 +1,12 @@
+$
+# exit=None expected=0 seconds=None
+# assertion=PASS
+{
+ "image_ids": {
+  "quant-personal-app:pr4test": "sha256:9039b37631abd4decb9b3731b7413f5d51c19c2808958c8a5cf697b902530bea",
+  "quant-personal-research:pr4test": "sha256:3b4d0b54c780ab03b8e5aba04965278d347441c3a083cb97b77185fb19a0d6bb"
+ },
+ "code": "working tree bind-mounted via compose.devmount.yaml",
+ "git_head": "d710addf970f850530b9d859e413263c1f8764ac",
+ "git_dirty": true
+}

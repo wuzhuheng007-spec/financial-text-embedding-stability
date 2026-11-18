@@ -1,0 +1,62 @@
+{
+ "schema": "pr4_docker_disk_inventory_redacted_1",
+ "measured_at_utc": "2026-11-18T01:20Z",
+ "method": "read-only: docker system df -v, docker buildx du --verbose, file sizes, df",
+ "host_drives_gib": {
+  "C": {
+   "size": 338,
+   "free": 24,
+   "used_pct": 94,
+   "note": "free varies 12-24 GiB during this session"
+  },
+  "D": {
+   "free": 429
+  },
+  "E": {
+   "free": 268
+  }
+ },
+ "docker_desktop_vhdx_bytes": {
+  "docker_data.vhdx": 90588577792,
+  "ext4.vhdx": 100663296
+ },
+ "images": {
+  "total_reported": "38.85GB (12 images)",
+  "quant_pr4": {
+   "quant-personal-app:pr4test": "321MB",
+   "quant-personal-research:pr4test": "1.71GB (320.9MB shared)",
+   "postgres:16 base": "648MB",
+   "caddy:2-alpine": "92MB"
+  },
+  "other_projects": {
+   "bimq gpu-cu130 (2 tags)": "15.1GB each, 5.006GB shared",
+   "bimq cpu-py311": "3.25GB",
+   "nvidia/cuda devel": "12.2GB",
+   "nvidia/cuda runtime": "5.01GB"
+  }
+ },
+ "build_cache": {
+  "total": "59.98GB",
+  "shared_with_images": "45.59GB",
+  "private": "14.39GB",
+  "entries": 121,
+  "largest": "bimq venv layers 9.3GB/6.2GB, last used 3 months ago",
+  "quant_pr4_private_unshared": "~4.3GB (3 x 1.387GB CPU-torch pip layers from repeated research builds + small layers)"
+ },
+ "volumes": {
+  "quant_pr4test_model_v41": "409.2MB",
+  "quant-pr4-test_pg_data": "48.9MB",
+  "others": "< 0.6MB each"
+ },
+ "container_logs": "json/local driver capped at 10MB x 5 per service in compose",
+ "not_done": [
+  "no prune executed",
+  "no image or volume deleted",
+  "no relocation performed"
+ ],
+ "options_for_user": [
+  "prune only quant private cache entries by ID (~4.3GB, no effect on other projects; vhdx may not shrink automatically)",
+  "relocate Docker Desktop disk image to D: (frees ~90GB on C:, Docker stops during move)",
+  "clean other project caches/images only with that project's owner decision"
+ ]
+}

@@ -1,0 +1,9 @@
+$ docker exec web kill -TERM 1; poll RestartCount and Health.Status
+# exit=None expected=0 seconds=7.2
+# assertion=PASS
+{
+ "signal_to_restart_s": 1.3,
+ "signal_to_docker_healthy_s": 7.2,
+ "note": "healthy needs the next healthcheck (interval 30 s)",
+ "correction": "round-2 S9 reported 3.2 s measured from 5 s after the signal and excluded that fixed wait; it is kept as the original observation and superseded by this row"
+}

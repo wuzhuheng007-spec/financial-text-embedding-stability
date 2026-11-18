@@ -1,0 +1,184 @@
+{
+ "schema": "pr4_linux_disk_sizing_r3_redacted_1",
+ "supersedes": "disk_sizing_redacted.json (kept unchanged as the round-2 record)",
+ "units": "binary: MiB = 2^20 bytes, GiB = 2^30 bytes",
+ "retractions": [
+  "round 2 'disk sufficient for about 5 months' is withdrawn: it used a 24 h row count that contained ~10 h of collector downtime and mixed raw responses (bounded) with session quotes (unbounded)",
+  "round 2 'CPU and memory sufficient' is withdrawn: idle container memory does not show capacity; see LOAD-1 (single test on a 32-CPU host)"
+ ],
+ "measured_live_files_bytes": {
+  "main": 340279296,
+  "wal": 5772152,
+  "shm": 32768,
+  "at_utc": "2026-11-18T00:54Z"
+ },
+ "measured_dbstat_copy_mib": {
+  "session_raw_responses_table": 184.5,
+  "session_raw_responses_pk_index": 17.4,
+  "session_quotes_table": 65.5,
+  "session_quotes_latest_index": 34.8,
+  "session_quotes_source_range_index": 9.9,
+  "session_quotes_last_written_index": 9.2,
+  "all_other_tables_and_indexes": "about 5",
+  "freelist_mib": 0.0,
+  "page_size_bytes": 4096
+ },
+ "measured_rows": {
+  "session_quotes": 225057,
+  "session_raw_responses": 218120,
+  "bytes_per_row_incl_indexes": {
+   "session_quotes": 556,
+   "session_raw_responses": 971
+  },
+  "archive_gzip_bytes_per_row": 56
+ },
+ "why_35_6_mb_per_hour_differs_from_0_10_gb_per_day": [
+  "35.6 MB/h was a 4-hour window in US post-market/overnight with 24-31k session-quote rows/h, and both tables were still filling (raw responses are kept 48 h; the database was only ~45 h old, so no raw row had aged out yet)",
+  "0.10 GB/day used 175,616 rows in a 24 h window that contained the 2026-11-17 10:00-20:59 UTC collector outage, and only session quotes",
+  "neither is a stable rate: there is no full trading day of uninterrupted observation yet"
+ ],
+ "isolated_copy_experiment": {
+  "as_of": "2026-11-28T00:00Z",
+  "keep_days": 8,
+  "raw_prune_simulation": {
+   "rows_before": 218120,
+   "rows_after": 19,
+   "seconds": 14.3
+  },
+  "space_after_raw_prune_mib": {
+   "file": 326.4,
+   "reusable_free": 201.9
+  },
+  "retention_dry_run": {
+   "rows_total": 225057,
+   "protected": {
+    "recent_window": 0,
+    "latest_cell": 24,
+    "raw_evidence_present": 18
+   },
+   "selected_rows": 225015,
+   "selected_payload_bytes": 61168970,
+   "seconds": 2.0
+  },
+  "retention_apply": {
+   "deleted": 225015,
+   "seconds": 41.7,
+   "archive_mib": 12.1,
+   "verification": {
+    "file_sha256_ok": true,
+    "reread_digest_ok": true,
+    "restore_digest_ok": true,
+    "ok": true
+   },
+   "delete": {
+    "batches": 113,
+    "max_write_hold_ms": 43.0,
+    "mean_write_hold_ms": 19.6
+   }
+  },
+  "concurrent_writer": {
+   "writes": 731,
+   "errors": 0,
+   "p50_ms": 3.7,
+   "max_ms": 174.96
+  },
+  "space_before_vacuum_mib": {
+   "file": 326.4,
+   "reusable_free": 321.2
+  },
+  "vacuum_on_copy_only_mib": 4.3,
+  "meaning": "DELETE turns pages into reusable free pages; the file only shrinks with VACUUM, which is not run on the live file"
+ },
+ "scenario_assumptions": {
+  "rows_per_trading_day": {
+   "low": 150000,
+   "mid": 300000,
+   "high": 600000
+  },
+  "trading_days_per_week": 5,
+  "basis": "observed 4k-31k rows/hour in collected hours; low/mid/high cover 6k-25k rows/hour averaged over 24 h",
+  "backups": "7 daily gzip copies at the measured 6.6x ratio",
+  "os_and_journald": "assumed 6 + 2 GiB"
+ },
+ "projection": {
+  "low": {
+   "rows_per_trading_day": 150000,
+   "no_retention": {
+    "session_quotes_growth_gib_per_calendar_day": 0.06,
+    "raw_48h_high_water_gib": 0.27,
+    "feed_db_day_90_gib": 5.26,
+    "feed_db_day_180_gib": 10.26
+   },
+   "retention_keep_30d": {
+    "feed_db_steady_gib": 1.94
+   },
+   "retention_keep_14d": {
+    "feed_db_steady_gib": 1.05
+   },
+   "archive_gzip_gib_per_180d": 1.01
+  },
+  "mid": {
+   "rows_per_trading_day": 300000,
+   "no_retention": {
+    "session_quotes_growth_gib_per_calendar_day": 0.11,
+    "raw_48h_high_water_gib": 0.54,
+    "feed_db_day_90_gib": 10.53,
+    "feed_db_day_180_gib": 20.52
+   },
+   "retention_keep_30d": {
+    "feed_db_steady_gib": 3.87
+   },
+   "retention_keep_14d": {
+    "feed_db_steady_gib": 2.1
+   },
+   "archive_gzip_gib_per_180d": 2.01
+  },
+  "high": {
+   "rows_per_trading_day": 600000,
+   "no_retention": {
+    "session_quotes_growth_gib_per_calendar_day": 0.22,
+    "raw_48h_high_water_gib": 1.09,
+    "feed_db_day_90_gib": 21.06,
+    "feed_db_day_180_gib": 41.03
+   },
+   "retention_keep_30d": {
+    "feed_db_steady_gib": 7.74
+   },
+   "retention_keep_14d": {
+    "feed_db_steady_gib": 4.19
+   },
+   "archive_gzip_gib_per_180d": 4.02
+  }
+ },
+ "fixed": {
+  "measured": {
+   "images_gib": 2.58,
+   "images_during_upgrade_old_plus_new_gib": 5.16,
+   "model_gib": 0.38,
+   "container_log_cap_gib": 0.33
+  },
+  "assumed_not_measured": {
+   "ubuntu_22_04_with_agents_gib": "3-6",
+   "journald_cap_gib": "1-4",
+   "server_side_build_temp_gib": "0 if images are loaded; about 4-6 if built on the server"
+  }
+ },
+ "total_gib_on_70_gib_disk": {
+  "low": {
+   "retention_keep_30d": 17.9,
+   "retention_keep_14d": 16.0,
+   "no_retention_day_180": 35.0
+  },
+  "mid": {
+   "retention_keep_30d": 21.8,
+   "retention_keep_14d": 18.2,
+   "no_retention_day_180": 56.2
+  },
+  "high": {
+   "retention_keep_30d": 29.8,
+   "retention_keep_14d": 22.5,
+   "no_retention_day_180": 98.4
+  }
+ },
+ "conclusion": "With session-quote retention (14-30 days) the projected total is about 16-30 GiB across the low/mid/high scenarios, leaving margin on a 70 GiB disk. Without retention the mid scenario reaches about 56 GiB and the high scenario about 98 GiB by day 180. These are scenario estimates under stated assumptions, not observations; re-measure after one full uninterrupted trading week."
+}

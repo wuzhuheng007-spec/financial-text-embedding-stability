@@ -1,0 +1,16 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env run --rm --no-deps -e TEST_OWNER_PASSWORD -e TEST_OTHER_PASSWORD -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/acceptance_synthetic.py:/accept/a.py:ro --entrypoint python web /accept/a.py create-users
+# exit=0 expected=0 seconds=2.67
+# assertion=PASS
+{
+ "owner@local.invalid": {
+  "id": 1,
+  "created": false
+ },
+ "other@local.invalid": {
+  "id": 2,
+  "created": false
+ }
+}
+{"owner@local.invalid": {"id": 1, "created": false}, "other@local.invalid": {"id": 2, "created": false}}
+ Container quant-pr4-test-web-run-3650b587280f Creating
+ Container quant-pr4-test-web-run-3650b587280f Created

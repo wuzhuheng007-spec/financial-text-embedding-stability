@@ -1,0 +1,34 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case redirect_mismatch --port 8790 --bind 0.0.0.0
+# exit=0 expected=0 seconds=5.2
+# assertion=PASS
+{
+ "consent": {
+  "event": "consent",
+  "redirect_uri": "http://127.0.0.1:8790/callback",
+  "callback_query": "code=-RrW6-FS2ruwSqTdfGxJsw&state=Mue9T1pNW0IvgNIerkUgQ6lsEzG0Bfch",
+  "registered_matches": true,
+  "scope": "quote:read",
+  "pkce_method": "S256"
+ },
+ "browser": {
+  "http": 200
+ },
+ "result": {
+  "event": "result",
+  "case": "redirect_mismatch",
+  "ok": true,
+  "client_error": "OAuthError: OAuth endpoint returned HTTP 400",
+  "stored_state": "NOT_INSTALLED",
+  "storage": null,
+  "token_requests": [
+   {
+    "grant_type": "authorization_code",
+    "redirect_uri": "http://127.0.0.1:8790/callback"
+   }
+  ],
+  "mock_only": true
+ },
+ "port_released": true,
+ "container_left": false,
+ "meaning": "plumbing only; moomoo authorization itself NOT tested"
+}

@@ -1,0 +1,21 @@
+$ docker exec research kill -9 <v42 child>; poll health research
+# exit=137 expected=0 seconds=8.7
+# assertion=PASS
+{
+ "total_seconds_signal_to_healthy": 8.7,
+ "includes": "poll 2 s + backoff 5 s + model reload",
+ "container_restart_count_before_after": [
+  "0",
+  "0"
+ ],
+ "supervisor": {
+  "role": "research",
+  "state": "RUNNING",
+  "reason": "child started",
+  "updated_at_utc": "2026-11-18T01:13:32.777270Z",
+  "child_pid": 44,
+  "restarts_last_hour": 1,
+  "next_backoff_s": 5.0
+ }
+}
+killed 7

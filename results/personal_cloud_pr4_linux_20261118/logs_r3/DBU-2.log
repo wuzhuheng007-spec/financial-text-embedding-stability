@@ -1,0 +1,22 @@
+$ seed-bulk 5; BEGIN EXCLUSIVE on queue for 25 s; poll health research
+# exit=None expected=0 seconds=35.4
+# assertion=PASS
+{
+ "locker": [
+  "locked",
+  "released"
+ ],
+ "after": {
+  "state": "RUNNING",
+  "backlog": 0,
+  "supervisor": {
+   "role": "research",
+   "state": "RUNNING",
+   "reason": "running",
+   "updated_at_utc": "2026-11-18T01:15:13.937207Z",
+   "child_pid": 7,
+   "restarts_last_hour": 0,
+   "next_backoff_s": 0.0
+  }
+ }
+}

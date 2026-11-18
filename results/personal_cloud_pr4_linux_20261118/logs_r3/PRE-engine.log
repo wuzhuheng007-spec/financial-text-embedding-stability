@@ -1,0 +1,6 @@
+$ docker info
+# exit=0 expected=0 seconds=0.86
+# assertion=PASS
+{
+ "engine": "linux 29.6.2"
+}

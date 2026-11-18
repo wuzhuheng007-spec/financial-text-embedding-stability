@@ -247,7 +247,8 @@ def token_store(dpapi_path: Path) -> LocalTokenStore:
 
 
 def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int = 300,
-                         open_browser: bool = True, callback_port: int = 0) -> dict:
+                         open_browser: bool = True, callback_port: int = 0,
+                         bind_host: str = "127.0.0.1") -> dict:
     """Run one browser consent with a loopback-only callback.
 
     On a headless server use ``open_browser=False`` and a fixed
@@ -260,6 +261,14 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
         raise ValueError("OAuth callback timeout must be 1..300 seconds")
     if callback_port and not 1024 <= callback_port <= 65535:
         raise ValueError("OAuth callback port must be 1024..65535")
+    # The redirect URI always names the loopback address the owner's browser
+    # reaches (directly or through an SSH local forward). In a container the
+    # listener must bind the container interface so a host port published only
+    # on 127.0.0.1 can reach it; that needs a fixed port.
+    if bind_host not in ("127.0.0.1", "0.0.0.0"):
+        raise ValueError("bind_host must be 127.0.0.1 or 0.0.0.0")
+    if bind_host == "0.0.0.0" and not callback_port:
+        raise ValueError("binding all container interfaces requires a fixed callback port")
     callback: dict[str, str] = {}
 
     class Handler(BaseHTTPRequestHandler):
@@ -271,6 +280,11 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
                 callback["state"] = params["state"][0]
                 body = b"Authorization received. You may return to the local program."
                 self.send_response(200)
+            elif parsed.path == "/callback" and params.get("error"):
+                # Provider-reported refusal; keep only the short error code.
+                callback["error"] = str(params["error"][0])[:64]
+                body = b"Authorization was not granted."
+                self.send_response(400)
             else:
                 body = b"Invalid callback."
                 self.send_response(400)
@@ -283,7 +297,7 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
             # The default HTTP handler logs the callback path, including code.
             pass
 
-    with HTTPServer(("127.0.0.1", callback_port), Handler) as server:
+    with HTTPServer((bind_host, callback_port), Handler) as server:
         server.timeout = timeout_seconds
         redirect_uri = f"http://127.0.0.1:{server.server_port}/callback"
         registration = _request_json(REGISTER_URL, {
@@ -316,6 +330,8 @@ def authorize_quote_read(token_store: LocalTokenStore, *, timeout_seconds: int =
             print("Open this moomoo consent URL in your own browser after SSH-forwarding "
                   f"127.0.0.1:{server.server_port}:\n{consent}", file=sys.stderr, flush=True)
         server.handle_request()
+        if callback.get("error"):
+            raise OAuthError(f"authorization refused by provider: {callback['error']}")
         if not callback.get("code"):
             raise OAuthError("browser consent callback was not received before timeout")
         if not hmac.compare_digest(callback.get("state", ""), state):

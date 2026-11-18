@@ -1,0 +1,132 @@
+{
+ "source": "online backup copy of the live feed cache, 2026-11-18T00:54Z",
+ "sqlite": "sqlite 3.40.1",
+ "objects": [
+  {
+   "name": "session_raw_responses",
+   "type": "table",
+   "table": "session_raw_responses",
+   "bytes": 193499136,
+   "payload": 182184780,
+   "unused": 9021396,
+   "pages": 47241
+  },
+  {
+   "name": "session_quotes",
+   "type": "table",
+   "table": "session_quotes",
+   "bytes": 68677632,
+   "payload": 64216614,
+   "unused": 2618485,
+   "pages": 16767
+  },
+  {
+   "name": "session_quotes_latest",
+   "type": "index",
+   "table": "session_quotes",
+   "bytes": 36466688,
+   "payload": 18059828,
+   "unused": 17624857,
+   "pages": 8903
+  },
+  {
+   "name": "sqlite_autoindex_session_raw_responses_1",
+   "type": "index",
+   "table": "session_raw_responses",
+   "bytes": 18235392,
+   "payload": 15456543,
+   "unused": 2071069,
+   "pages": 4452
+  },
+  {
+   "name": "session_quotes_source_range",
+   "type": "index",
+   "table": "session_quotes",
+   "bytes": 10375168,
+   "payload": 8521539,
+   "unused": 1148066,
+   "pages": 2533
+  },
+  {
+   "name": "session_quotes_last_written",
+   "type": "index",
+   "table": "session_quotes",
+   "bytes": 9678848,
+   "payload": 7648911,
+   "unused": 1326414,
+   "pages": 2363
+  },
+  {
+   "name": "quotes",
+   "type": "table",
+   "table": "quotes",
+   "bytes": 1511424,
+   "payload": 1124476,
+   "unused": 338689,
+   "pages": 369
+  },
+  {
+   "name": "sqlite_autoindex_quotes_1",
+   "type": "index",
+   "table": "quotes",
+   "bytes": 958464,
+   "payload": 727986,
+   "unused": 209674,
+   "pages": 234
+  },
+  {
+   "name": "news_versions",
+   "type": "table",
+   "table": "news_versions",
+   "bytes": 696320,
+   "payload": 545645,
+   "unused": 145607,
+   "pages": 170
+  },
+  {
+   "name": "quotes_source_latest",
+   "type": "index",
+   "table": "quotes",
+   "bytes": 667648,
+   "payload": 421986,
+   "unused": 225710,
+   "pages": 163
+  },
+  {
+   "name": "quotes_latest",
+   "type": "index",
+   "table": "quotes",
+   "bytes": 405504,
+   "payload": 254000,
+   "unused": 132320,
+   "pages": 99
+  },
+  {
+   "name": "news_screening",
+   "type": "table",
+   "table": "news_screening",
+   "bytes": 294912,
+   "payload": 272078,
+   "unused": 13877,
+   "pages": 72
+  },
+  {
+   "name": "provider_state_events",
+   "type": "table",
+   "table": "provider_state_events",
+   "bytes": 155648,
+   "payload": 134749,
+   "unused": 8206,
+   "pages": 38
+  },
+  {
+   "name": "provider_state_events_time",
+   "type": "index",
+   "table": "provider_state_events",
+   "bytes": 143360,
+   "payload": 111557,
+   "unused": 24052,
+   "pages": 35
+  }
+ ]
+}

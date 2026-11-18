@@ -6,7 +6,7 @@
 # the git-tracked redacted receipts listed there enter the build context. No
 # private database, raw news, quotes, backups, tokens, .env or model weights.
 
-FROM python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 AS app
+FROM python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -22,13 +22,22 @@ RUN python -m pip install --no-cache-dir -r /tmp/req/requirements.lock -r /tmp/r
 RUN groupadd --system --gid 10001 quant \
     && useradd --system --uid 10001 --gid 10001 --home-dir /app --shell /usr/sbin/nologin quant
 
+# Heavy CPU research dependencies come before any source, so a code change does
+# not re-download torch or rewrite the large layer (smaller rebuilds on disk).
+FROM base AS research-deps
+COPY deploy/linux/requirements-research.txt /tmp/req/requirements-research.txt
+RUN python -m pip install --no-cache-dir \
+        --extra-index-url https://download.pytorch.org/whl/cpu \
+        -r /tmp/req/requirements-research.txt
+
+FROM base AS app
 WORKDIR /app
 # Source stays root-owned and read-only for the service user.
 COPY apps/quant_portal /app/apps/quant_portal
 COPY scripts /app/scripts
 COPY configs /app/configs
 COPY results /app/results
-COPY deploy/linux/entrypoint.py /app/deploy/linux/entrypoint.py
+COPY deploy/linux/entrypoint.py deploy/linux/supervisor.py /app/deploy/linux/
 
 # Mount points for persistent named volumes. Docker copies this ownership into
 # a new empty volume, so the non-root service user can write its private state.
@@ -47,11 +56,9 @@ USER 10001:10001
 ENTRYPOINT ["python", "/app/deploy/linux/entrypoint.py"]
 CMD ["web"]
 
-FROM app AS research
-USER root
-COPY deploy/linux/requirements-research.txt /tmp/req/requirements-research.txt
-RUN python -m pip install --no-cache-dir \
-        --extra-index-url https://download.pytorch.org/whl/cpu \
-        -r /tmp/req/requirements-research.txt
+FROM research-deps AS research
+WORKDIR /app
+COPY --from=app /app /app
 USER 10001:10001
+ENTRYPOINT ["python", "/app/deploy/linux/entrypoint.py"]
 CMD ["research"]

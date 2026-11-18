@@ -1,0 +1,19 @@
+phase,plan,actual,status,evidence
+P0,"Verify five services by process identity and business fields; keep 439 and AI queue paused; no second collector","v42 found stopped (~75 min) while round-2 status exit was 0; cause mechanism confirmed (visible console from DETACHED_PROCESS); restarted without window; final check all five pass; 439 and AI queue paused; second collectors 0; Jin10 failures 22->24",DONE,runtime_r3_redacted.json
+P1.1,"Separate command success, assertion, BLOCKED, NOT_RUN","verify_matrix.py rows carry command_status, assertion, required; S8 now BLOCKED",DONE,verification_matrix_r3.csv
+P1.2,"B1/B7 with arguments, duration, exit code, logs","B1 pg_dump and B7 pg_restore + user count recorded with logs",DONE,logs_r3/B1.log; logs_r3/B7.log
+P1.3,"Recovery timing from before signal to health; keep old 3.2 s with correction","REC-1 8.8 s, REC-2 7.3 s; correction appended, round-2 receipt unchanged",DONE,verification_matrix_r3b.csv; verification_corrections_r3.json
+P1.4,"Non-zero exit on required failure","first r3 run exited 1 on HOLD-ERROR; r3b exited 0",DONE,verification_summary_r3.json; verification_summary_r3b.json
+P1.5,"try/finally cleanup and incremental save","Z-stop row in both runs; rows saved after each check",DONE,verification_matrix_r3.json
+P1.6,"Assertions for config checks; rebuildable preconditions","S2 asserts 8 flags; PRE recreates env/passwords/accounts/seed and hash-checks the model volume",DONE,logs_r3/PRE-*.log
+P1.7,"Rerun only affected checks; record code and image identity","groups PRE,CFG,S2,S8,REC,HOLD,DBU,BKP,OAUTH,LOAD; image IDs and git head in PRE-images; code via devmount",DONE,logs_r3/PRE-images.log
+P2.1-3,"Units; separate measurements; explain growth; scenario range; retract strong claims","dbstat per table/index, live main/WAL/SHM, free pages; growth discrepancy explained; 16-30 GiB with retention, 56/98 GiB mid/high at day 180 without; claims withdrawn",DONE,disk_sizing_r3_redacted.json; feed_dbstat_redacted.json
+P2.4-5,"Configurable retention/archive on isolated copy; no production delete or VACUUM","retention.py dry-run default, protections, archive verify+restore before delete, 2000-row batches (max hold 43 ms); copy only",DONE,retention_copy_experiment_redacted.json
+P2.6,"Parallel scoring + backup load","LOAD-1: 199 backlog in ~54 s, CPU peak 178%, mem peak 277 MiB, backup 1.2 s; single host, not a capacity proof",DONE_LIMITED,verification_matrix_r3b.csv
+P3.1-3,"Verify callback path; fix port mapping and bind; mock provider cases","moomoo-auth service with 127.0.0.1:8790 publish and 0.0.0.0 bind; 5 mock cases PASS incl. loopback-only negative and port release; SSH hop NOT_RUN",DONE_MOCK,verification_matrix_r3.csv OAUTH-*
+P3.4,"Use official flow if callback unsupported","documented fallback to API Key method; not exercised",NOT_RUN,minimal_cloud_plan_20261118.zh.md
+P3.5,"moomoo-only without Jin10 secret","Jin10 secret moved to compose.jin10.yaml; CFG-1/CFG-2 PASS",DONE,verification_matrix_r3.csv
+P3.6,"User authorization steps","steps in minimal_cloud_plan and supplier terms; no token handled",DONE,docs
+P4,"Process exit, thread stopped while alive, DB unavailable; no restart storm","supervisor added; REC-1/REC-2, HOLD-1 (0 restarts), DBU-1/DBU-2 PASS; recoverable thread-stop only in unit test; docker kill observation scoped; host reboot NOT_RUN",DONE_PARTIAL,verification_matrix_r3b.csv; tests/test_round3_linux.py
+P5,"C: drive inventory and minimal plan; no prune; no purchase","read-only inventory; options listed for user; no image rebuild; minimal moomoo-only plan; Jin10 off; purchase inputs listed",DONE,docker_disk_inventory_redacted.json; minimal_cloud_plan_20261118.zh.md
+P6,"Report, PR description, commit, push, ZIP","see report and final message",DONE,reports/2026-11-18_personal_cloud_pr4_round3.zh.md

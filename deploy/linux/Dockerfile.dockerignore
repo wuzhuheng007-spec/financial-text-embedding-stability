@@ -33,6 +33,7 @@
 !results/news_sentiment_factor_v45_20261117/*_redacted.json
 
 !deploy/linux/entrypoint.py
+!deploy/linux/supervisor.py
 !deploy/linux/requirements-worker.txt
 !deploy/linux/requirements-research.txt
 

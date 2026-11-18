@@ -142,6 +142,9 @@ def health_feed() -> dict:
         result["providers"][provider] = item
     if not any(enabled.values()):
         result["mode"] = "NO_PROVIDER_ENABLED"
+    result["supervisor"] = _supervisor_state("feed")
+    if result["supervisor"].get("state") in ("HOLD", "BACKOFF", "RUNNING_HOLD", "RUNNING_DEGRADED"):
+        healthy = False
     result["healthy"] = healthy
     return result
 
@@ -154,7 +157,9 @@ def health_research() -> dict:
     backlog = item.get("backlog") or 0
     business_ok = backlog == 0 or (business_age is not None and business_age <= RESEARCH_BACKLOG_STALE_SECONDS)
     alive = bool(item.get("process_alive_identity")) and (item.get("heartbeat_age_seconds") or 1e9) <= HEARTBEAT_STALE_SECONDS
-    return {"role": "research", "healthy": alive and business_ok, "state": item.get("state"),
+    sup = _supervisor_state("research")
+    return {"role": "research", "healthy": alive and business_ok and sup.get("state") in (None, "RUNNING"),
+            "supervisor": sup, "state": item.get("state"),
             "process_alive_identity": item.get("process_alive_identity"),
             "heartbeat_age_seconds": item.get("heartbeat_age_seconds"), "backlog": backlog,
             "last_success_age_seconds": business_age,
@@ -166,11 +171,43 @@ def health_daily_price() -> dict:
     from scripts.news_sentiment_factor_v45.worker import status
     item = status()
     alive = bool(item.get("process_alive_identity")) and (item.get("heartbeat_age_seconds") or 1e9) <= HEARTBEAT_STALE_SECONDS
-    return {"role": "daily-price", "healthy": alive and item.get("state") == "RUNNING",
+    sup = _supervisor_state("daily-price")
+    return {"role": "daily-price", "healthy": alive and item.get("state") == "RUNNING" and sup.get("state") in (None, "RUNNING"),
+            "supervisor": sup,
             "state": item.get("state"), "heartbeat_age_seconds": item.get("heartbeat_age_seconds"),
             "pause_reason": item.get("pause_reason"), "last_error_class": item.get("last_error_class"),
             "last_supplier_http_status": item.get("last_supplier_http_status"),
             "next_due_utc": item.get("next_due_utc"), "budget_used_today": item.get("budget_used_today")}
+
+
+def _supervise(role: str) -> int:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from supervisor import Supervisor, classify_daily, classify_feed, classify_research, policy_from_env
+    policy = policy_from_env()
+    if role == "feed":
+        config = _feed_config()
+        enabled = {"jin10": config["jin10"]["enabled"], "moomoo": config["moomoo"]["enabled"]}
+        argv = [sys.executable, "-m", "scripts.quant_personal_feed.cli", "run", "--config", FEED_CONFIG]
+        classify = lambda alive: classify_feed(ROOT / config["cache_db"], enabled, alive)  # noqa: E731
+    elif role == "research":
+        private = ROOT / "artifacts/news_sentiment_factor_v42_20261117"
+        argv = [sys.executable, "-m", "scripts.news_sentiment_factor_v42.worker", "run"]
+        classify = lambda alive: classify_research(private / "worker_state_private.json",  # noqa: E731
+                                                   private / "worker_stop.flag", alive, policy.stale_heartbeat)
+    else:
+        private = ROOT / "artifacts/news_sentiment_factor_v45_20261117"
+        argv = [sys.executable, "-m", "scripts.news_sentiment_factor_v45.worker", "run"]
+        classify = lambda alive: classify_daily(private / "daily_worker_state_private.json",  # noqa: E731
+                                                alive, policy.stale_heartbeat)
+    return Supervisor(role, argv, classify, VAR / f"supervisor_{role}.json", policy).run()
+
+
+def _supervisor_state(role: str) -> dict:
+    path = VAR / f"supervisor_{role}.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
 
 
 def moomoo_auth(args: list[str]) -> int:
@@ -181,9 +218,10 @@ def moomoo_auth(args: list[str]) -> int:
         return 0
     if args[:1] == ["authorize"]:
         port = int(args[args.index("--callback-port") + 1]) if "--callback-port" in args else 8790
-        print(json.dumps(authorize_quote_read(store, open_browser=False, callback_port=port)))
+        bind = args[args.index("--bind") + 1] if "--bind" in args else "0.0.0.0"
+        print(json.dumps(authorize_quote_read(store, open_browser=False, callback_port=port, bind_host=bind)))
         return 0
-    print("usage: moomoo-auth status | authorize --callback-port N", file=sys.stderr)
+    print("usage: moomoo-auth status | authorize [--callback-port N] [--bind 0.0.0.0|127.0.0.1]", file=sys.stderr)
     return 2
 
 
@@ -205,13 +243,13 @@ def main(argv: list[str]) -> int:
         _prepare(require_postgres=True)
         if os.environ.get("QUANT_OWNER_RESOLVER") != "django_orm":
             raise SystemExit("Linux feed requires QUANT_OWNER_RESOLVER=django_orm")
-        _exec(["python", "-m", "scripts.quant_personal_feed.cli", "run", "--config", FEED_CONFIG])
+        return _supervise("feed")
     if role == "research":
         _prepare(require_postgres=False)
-        _exec(["python", "-m", "scripts.news_sentiment_factor_v42.worker", "run"])
+        return _supervise("research")
     if role == "daily-price":
         _prepare(require_postgres=False)
-        _exec(["python", "-m", "scripts.news_sentiment_factor_v45.worker", "run"])
+        return _supervise("daily-price")
     if role == "moomoo-auth":
         _prepare(require_postgres=False, private_dirs=False)
         return moomoo_auth(argv[1:])

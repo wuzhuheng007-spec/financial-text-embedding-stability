@@ -82,6 +82,31 @@ def seed_feed() -> dict:
             "counts": counts, "kind": "SYNTHETIC_TEST_VOLUME"}
 
 
+def seed_bulk(n: int) -> dict:
+    """N marked synthetic Chinese items naming tracked companies: scoring load only."""
+    from scripts.quant_personal_feed.owner import resolve_owner_id
+    from scripts.quant_personal_feed.store import PersonalFeedStore
+    config = json.loads(CONFIG.read_text(encoding="utf-8"))
+    owner = resolve_owner_id(config)
+    store = PersonalFeedStore(ROOT / config["cache_db"], owner)
+    names = ["英伟达公司", "美光公司", "亚马逊公司", "三星电子", "SK海力士"]
+    verbs = ["订单增长，利润改善", "亏损扩大，需求减少", "维持指引不变", "宣布新产品", "否认相关传闻"]
+    now = datetime.now(timezone.utc)
+    results = {}
+    for i in range(n):
+        item = {"id": f"synthetic-bulk-{now:%H%M%S}-{i:04d}",
+                "title": MARK + names[i % 5] + verbs[(i // 5) % 5],
+                "content": MARK + f"{names[i % 5]}第{i}号合成消息：{verbs[(i // 5) % 5]}。该文本仅用于负载测试。",
+                "time": now.strftime("%Y-%m-%d %H:%M:%S")}
+        stamp = (now + timedelta(milliseconds=i)).isoformat().replace("+00:00", "Z")
+        status = store.put_news(owner, item, received_at=stamp, max_items=max(config["retention"]["news_items"], n + 10),
+                                max_versions=config["retention"]["news_versions_per_item"])
+        results[status] = results.get(status, 0) + 1
+    store.db.commit()
+    store.close()
+    return {"inserted": results, "kind": "SYNTHETIC_LOAD"}
+
+
 def _count(db: Path, sql: str):
     if not db.is_file():
         return None
@@ -122,6 +147,8 @@ if __name__ == "__main__":
         result = create_users()
     elif command == "seed-feed":
         result = seed_feed()
+    elif command == "seed-bulk":
+        result = seed_bulk(int(sys.argv[2]))
     elif command == "inspect":
         result = inspect()
     elif command == "sqlite-backup":

@@ -57,7 +57,7 @@
 | 缺项 | 谁来做 | 可执行步骤 |
 |---|---|---|
 | moomoo 账户适用条款与行情权限 | 用户 | 登录 moomoo，在“我的—设置/协议”或开发者平台查看已签协议、OpenAPI 问卷状态与美股行情级别；截图留存于本机私人目录 |
-| moomoo Linux 授权 | 用户在服务器上（服务器存在后） | ① `install -o 10001 -g 10001 -m 0400` 放置 `moomoo_token_key`；② `ssh -L 8790:127.0.0.1:8790 <server>`；③ `docker compose -f deploy/linux/compose.yaml --env-file /srv/quant/private.env run --rm feed moomoo-auth authorize --callback-port 8790`；④ 在自己浏览器打开终端里的链接，只勾选行情读取；⑤ `... run --rm feed moomoo-auth status` 应显示 `QUOTE_READ_AUTHORIZED` 与 `SERVER_AES256GCM_KEYFILE` |
+| moomoo Linux 授权 | 用户在服务器上（服务器存在后） | ① `install -o 10001 -g 10001 -m 0400` 放置 `moomoo_token_key`；② `ssh -L 8790:127.0.0.1:8790 <server>`；③ `docker compose -f deploy/linux/compose.yaml --env-file /srv/quant/private.env --profile auth run --rm --service-ports moomoo-auth`（第三轮更正：旧命令没有端口映射）；④ 在自己浏览器打开终端里的链接，只勾选行情读取；⑤ `docker compose -f deploy/linux/compose.yaml --env-file /srv/quant/private.env run --rm feed moomoo-auth status` 应显示 `QUOTE_READ_AUTHORIZED` 与 `SERVER_AES256GCM_KEYFILE` |
 | 439 端点 | 用户联系 moomoo | 询问 `POST /api/v1.0/quote/stock-quote` 返回 439 所需的授权；收到明确答复前不重新启用 |
 | 金十云端许可 | 用户联系金十 | 书面询问：个人账户的 MCP Token 能否在本人租用的云服务器上调用并保存快讯供本人私有查看；保存答复 |
 | 金十令牌放到服务器 | 用户（获许可后） | 在 mcp.jin10.com 登录→激活→复制令牌；在服务器执行 `sudo sh -c 'umask 077; cat > /srv/quant/secrets/jin10_mcp_token'`，粘贴后 Ctrl-D，再 `sudo chown 10001:10001 /srv/quant/secrets/jin10_mcp_token && sudo chmod 0400 /srv/quant/secrets/jin10_mcp_token`；不经聊天或 Git |

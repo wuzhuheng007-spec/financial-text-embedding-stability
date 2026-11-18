@@ -1,0 +1,129 @@
+$ seed-bulk 200; docker run backup; sample docker stats
+# exit=None expected=0 seconds=58.3
+# assertion=PASS
+{
+ "load": "200 marked synthetic Chinese items + one online backup of a 326.4 MiB feed copy",
+ "scoring_drain_seconds": 6.1,
+ "backlog_series": [
+  [
+   2.0,
+   0
+  ],
+  [
+   4.1,
+   0
+  ],
+  [
+   6.1,
+   0
+  ],
+  [
+   8.2,
+   196
+  ],
+  [
+   10.3,
+   188
+  ],
+  [
+   12.4,
+   179
+  ],
+  [
+   15.5,
+   167
+  ],
+  [
+   17.6,
+   159
+  ],
+  [
+   19.6,
+   150
+  ],
+  [
+   21.7,
+   142
+  ],
+  [
+   24.8,
+   130
+  ],
+  [
+   26.9,
+   122
+  ],
+  [
+   28.9,
+   115
+  ],
+  [
+   31.0,
+   106
+  ],
+  [
+   34.1,
+   94
+  ],
+  [
+   36.1,
+   86
+  ],
+  [
+   38.4,
+   78
+  ],
+  [
+   40.5,
+   69
+  ],
+  [
+   42.6,
+   60
+  ],
+  [
+   46.0,
+   46
+  ],
+  [
+   48.2,
+   38
+  ],
+  [
+   50.2,
+   29
+  ],
+  [
+   52.2,
+   21
+  ],
+  [
+   54.3,
+   12
+  ],
+  [
+   56.3,
+   4
+  ],
+  [
+   58.3,
+   0
+  ]
+ ],
+ "research": {
+  "cpu_pct_peak": null,
+  "mem_mib_peak": 0,
+  "samples": 0
+ },
+ "backup": {
+  "cpu_pct_peak": null,
+  "mem_mib_peak": 0,
+  "samples": 0
+ },
+ "backup_output": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nsqlite3.OperationalError: unable to open database file",
+ "host": {
+  "cpus": 32
+ },
+ "sampling": "docker stats ~1-2 s; peak values are sampled, not exact",
+ "limit": "one test on Docker Desktop (WSL2, 32 logical CPUs, 15.2 GiB VM); not a capacity proof for a 4 vCPU server"
+}

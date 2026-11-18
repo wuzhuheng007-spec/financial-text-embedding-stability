@@ -1,8 +1,9 @@
 # Isolated acceptance overlay. Use with a distinct project name, e.g.
-#   docker compose -p quant-pr4-test -f deploy/linux/compose.yaml \
-#     -f deploy/linux/compose.test.yaml --env-file <scratch test.env> up -d
-# - supplier loops disabled by the test feed config (no subscription, no poll)
-# - daily-price worker is not started (it could call the supplier)
+#   docker compose -p quant-pr4-test -f deploy/linux/compose.yaml
+#     -f deploy/linux/compose.test.yaml --env-file <test.env> up -d
+# - supplier loops disabled by the test feed config, and feed has NO egress
+#   network here, so a test collector cannot reach any supplier
+# - daily-price is not started (it could call the supplier)
 # - proxy only on a loopback port that differs from 8765 and 443
 # - all volumes belong to the test project; the model volume is a test copy
 services:
@@ -11,6 +12,22 @@ services:
       - "127.0.0.1:${HTTPS_PORT:-18443}:443"
   feed:
     environment:
-      QUANT_FEED_CONFIG: configs/quant_portal_personal_feeds_linux_test_v1.json
+      QUANT_FEED_CONFIG: ${TEST_FEED_CONFIG:-configs/quant_portal_personal_feeds_linux_test_v1.json}
+      SUPERVISOR_POLL: ${SUPERVISOR_POLL:-15}
+      SUPERVISOR_THREAD_DEAD_GRACE: ${SUPERVISOR_THREAD_DEAD_GRACE:-180}
+      SUPERVISOR_INITIAL_BACKOFF: ${SUPERVISOR_INITIAL_BACKOFF:-60}
+    networks: !override [backend]
+  research:
+    environment:
+      SUPERVISOR_POLL: ${SUPERVISOR_POLL:-15}
+      SUPERVISOR_INITIAL_BACKOFF: ${SUPERVISOR_INITIAL_BACKOFF:-60}
+      SUPERVISOR_STALE_HEARTBEAT: ${SUPERVISOR_STALE_HEARTBEAT:-300}
+  # Port publishing needs a non-internal network. The acceptance harness runs a
+  # mock OAuth server inside this container and asserts the provider URLs point
+  # to it before any request, so no real moomoo endpoint is contacted.
+  moomoo-auth:
+    networks: !override [edge]
+    ports: !override
+      - "127.0.0.1:${OAUTH_CALLBACK_PORT:-18790}:8790"
   daily-price:
     profiles: ["supplier"]
