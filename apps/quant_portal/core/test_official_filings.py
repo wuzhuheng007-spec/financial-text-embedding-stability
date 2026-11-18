@@ -79,11 +79,13 @@ class DeploymentLabelEverywhereTests(TestCase):
             user = get_user_model().objects.create_user("owner@local.invalid", password="test-password-long")
             self.client.force_login(user)
             pages = [self.client.get(reverse(n)).content.decode() for n in ("dashboard", "user_settings")]
-        self.assertIn("PRIVATE CLOUD DEPLOYMENT", login_html)
+        # v20: deployment details live only in Settings -> Data sources; never a false local label.
         for html in pages + [login_html]:
             self.assertNotIn("本机个人测试", html)
             self.assertNotIn("LOCAL PERSONAL TEST", html)
-        self.assertIn("云端私人部署 · 显示时区", pages[0])
+            self.assertNotIn("本机测试 · 只读", html)
+            self.assertNotIn("SSH 隧道", html)
+        self.assertIn("云端私人部署 · 只读", pages[0])
 
 
 class SourceStatusStripTests(TestCase):

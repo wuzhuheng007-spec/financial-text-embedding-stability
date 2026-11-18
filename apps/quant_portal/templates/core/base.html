@@ -1,49 +1,78 @@
 {% load static %}
 <!doctype html>
-<html lang="{% if request.display_language == 'en' %}en{% else %}zh-CN{% endif %}" data-language="{{ request.display_language|default:'zh' }}" data-user-id="{{ user.pk|default:'0' }}">
+<html lang="{% if request.display_language == 'en' %}en{% else %}zh-CN{% endif %}" data-language="{{ request.display_language|default:'zh' }}" data-user-id="{{ user.pk|default:'0' }}" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102c40">
-  <title>{% block title %}Quant · 科技股观察台{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'core/portal.css' %}?v=personal-v19-3">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080d16">
+  <title>{% block title %}Quant{% endblock %}</title>
+  <script>
+    /* Apply saved display preferences before first paint (no flash). */
+    (function(){try{var d=document.documentElement,t=localStorage.getItem('quant.theme'),s=localStorage.getItem('quant.side'),u=localStorage.getItem('quant.updown');
+      if(t==='light'||t==='dark')d.dataset.theme=t;if(s==='collapsed')d.dataset.side='collapsed';if(u==='us')d.dataset.updown='us';}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="{% static 'core/terminal_v20.css' %}?v=20-1">
 </head>
 <body>
   <a class="skip-link" href="#main">跳转到主要内容</a>
-  <div class="shell">
+  {% if user.is_authenticated %}
+  {% url 'dashboard' as home %}
+  {% with on_home=request.resolver_match.url_name|default:'' %}
+  <div class="app">
     <aside class="sidebar" aria-label="主要导航">
-      <div class="brand">QUANT<span class="brand-dot">.</span></div>
-      <p class="brand-sub">研究观察台</p>
-      <nav class="side-nav">
-        <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>市场观察</a>
-        {% if user.is_authenticated %}<a href="{% url 'user_settings' %}" {% if request.resolver_match.url_name == 'user_settings' %}aria-current="page"{% endif %}>个人设置</a>{% endif %}
+      <div class="brand"><span class="brand-mark" aria-hidden="true">Q</span><span class="brand-text">QUANT</span></div>
+      <nav class="side-nav" id="side-nav">
+        <a class="nav-link" href="{{ home }}#overview" data-nav="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span class="nav-label">总览</span></a>
+        <a class="nav-link" href="{{ home }}#markets" data-nav="markets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17l5-6 4 3 7-9"/><path d="M3 21h18"/></svg><span class="nav-label">行情</span></a>
+        <a class="nav-link" href="{{ home }}#news" data-nav="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg><span class="nav-label">新闻</span></a>
+        <a class="nav-link" href="{{ home }}#research" data-nav="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><span class="nav-label">研究</span></a>
+        <a class="nav-link" href="{{ home }}#settings" data-nav="settings" {% if on_home == 'user_settings' %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="nav-label">设置</span></a>
       </nav>
-      <div class="sidebar-foot">只读研究 · 无交易执行<br>数据与模型权限单独核验</div>
+      <div class="side-spacer"></div>
+      <button class="nav-link" type="button" id="side-toggle" aria-label="折叠侧边栏" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg><span class="nav-label">折叠</span></button>
     </aside>
-    <div class="page-shell">
+    <div class="main">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">科技 · 事件 · 证据</p>
-          <p class="topbar-title">{% if is_cloud_deployment %}云端私人部署 · 显示时区 {% else %}本机个人测试版 · 显示时区 {% endif %}{{ display_timezone|default:'Asia/Shanghai' }}</p>
+        <h1 class="page-title" id="page-title">{% block page_title %}总览{% endblock %}</h1>
+        <div class="top-spacer"></div>
+        <div class="search" role="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>
+          <input id="symbol-search" type="search" placeholder="搜索标的" aria-label="搜索标的" list="symbol-options" autocomplete="off" spellcheck="false" data-home="{{ home }}">
+          <datalist id="symbol-options"></datalist>
         </div>
-        <div class="account-actions">
-          {% if user.is_authenticated %}<form method="post" action="{% url 'change_language' %}" class="language-switch" translate="no">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language == 'zh' %}aria-current="true"{% endif %}>中文</button><span aria-hidden="true">/</span><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>{% endif %}
-          {% if user.is_authenticated %}
-          <span class="account-name">{{ user.get_username }}</span>
-          <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="text-button" type="submit">退出</button></form>
-          {% else %}
-          <a class="button button-outline" href="{% url 'login' %}">登录</a>
-          {% endif %}
+        <span class="conn" id="conn" data-state="idle" role="status" aria-live="polite"><span class="dot"></span><span class="conn-text"></span></span>
+        <button class="icon-btn" type="button" id="theme-toggle" aria-label="切换明暗主题"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+        <div class="account">
+          <button class="icon-btn" type="button" id="account-toggle" aria-haspopup="true" aria-expanded="false" aria-label="账户"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+          <div class="account-menu" id="account-menu" hidden>
+            <div class="who">{{ user.get_username }}</div>
+            <a class="menu-item" href="{% url 'user_settings' %}">时区设置</a>
+            <form method="post" action="{% url 'change_language' %}" class="lang-row language-switch" translate="no">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language != 'en' %}aria-current="true"{% endif %}>中文</button><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>
+            <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="menu-item" type="submit">退出登录</button></form>
+          </div>
         </div>
       </header>
       <main id="main" class="content">
         {% if messages %}<div class="messages" aria-live="polite">{% for message in messages %}<p class="message {{ message.tags|default:'' }}">{{ message }}</p>{% endfor %}</div>{% endif %}
         {% block content %}{% endblock %}
       </main>
-      <footer class="footer">开发测试页面。财报事实为历史材料；无行情时明确显示未接入。预测和交易功能未启用。</footer>
     </div>
+    <nav class="tabbar" aria-label="主要导航（紧凑）">
+      <a href="{{ home }}#overview" data-nav="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>总览</a>
+      <a href="{{ home }}#markets" data-nav="markets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17l5-6 4 3 7-9"/><path d="M3 21h18"/></svg>行情</a>
+      <a href="{{ home }}#news" data-nav="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg>新闻</a>
+      <a href="{{ home }}#research" data-nav="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>研究</a>
+      <a href="{{ home }}#settings" data-nav="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>设置</a>
+    </nav>
   </div>
+  {% endwith %}
+  {% else %}
+  <main id="main" class="content">
+    {% if messages %}<div class="messages" aria-live="polite">{% for message in messages %}<p class="message {{ message.tags|default:'' }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+    {% block anon_content %}{% endblock %}
+  </main>
+  {% endif %}
   <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v19-1"></script>
-  <script defer charset="utf-8" src="{% static 'core/workspace_v15.js' %}?v=personal-v19-2"></script>
+  <script defer charset="utf-8" src="{% static 'core/shell_v20.js' %}?v=20-1"></script>
 </body>
 </html>

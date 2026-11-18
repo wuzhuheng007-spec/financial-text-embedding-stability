@@ -1,9 +1,8 @@
 {% extends 'core/base.html' %}
-{% block title %}个人设置 · Quant 观察台{% endblock %}
+{% block title %}Quant · 设置{% endblock %}{% block page_title %}设置{% endblock %}
 {% block content %}
 <div class="page-heading">
-  <div><p class="eyebrow">ACCOUNT</p><h1>个人设置</h1><p class="muted">这些设置只影响当前账户。</p></div>
-  <span class="status-pill neutral">{% if is_cloud_deployment %}云端私人部署{% else %}本机个人测试{% endif %}</span>
+  <div><h1>时区设置</h1><p class="muted">页面所有时间按此时区显示，只影响当前账户。</p></div>
 </div>
 <section class="card narrow-card">
   {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}

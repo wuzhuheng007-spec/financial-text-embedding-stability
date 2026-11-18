@@ -1,177 +1,191 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}市场观察 · Quant 观察台{% endblock %}
+{% block title %}Quant · 总览{% endblock %}
 {% block content %}
-<div class="page-heading">
-  <div>
-    <p class="eyebrow">{% if deployment_kind == 'cloud_private' %}云端私人部署 · 只读{% else %}本机测试 · 只读{% endif %}</p>
-    <h1>科技股观察台</h1>
-    <p class="muted">关注行情、重要事件与新闻语气。</p>
+<div id="terminal-root" data-time-zone="{{ display_timezone }}"
+     {% if personal_feed_enabled %}data-timeline-url="{% url 'personal_timeline_json' %}" data-official-url="{% url 'official_filings_json' %}"{% endif %}
+     data-feed-enabled="{{ personal_feed_enabled|yesno:'1,0' }}"
+     data-watchlist="{% for row in watch_rows %}{{ row.item.symbol }}{% if not forloop.last %},{% endif %}{% endfor %}"></div>
+
+{# ===================== 总览 ===================== #}
+<section class="view" data-view="overview" aria-labelledby="ov-quotes-title">
+  <div class="section-head"><h2 id="ov-quotes-title">自选行情</h2><span class="count" id="quote-count">{{ watch_rows|length }}</span></div>
+  {% if personal_feed_enabled %}
+  <div class="quote-grid" id="quote-grid" aria-live="off">
+    {% for row in watch_rows %}<div class="qcard skeleton-card skeleton" aria-hidden="true"></div>{% endfor %}
   </div>
-  <span class="status-pill neutral">{% if deployment_kind == 'cloud_private' %}个人使用 · 仅 SSH 隧道访问 · 无交易{% else %}本机个人使用 · 无交易{% endif %}</span>
-</div>
-{% if personal_feed_enabled and provider_gates.moomoo or personal_feed_enabled and provider_gates.jin10 %}
-<div class="card gate-notice" role="note">
-  <p class="muted"><strong>此部署尚未启用的数据源</strong>（未接通，不是故障；页面不显示替代或演示数据）：</p>
-  <ul class="muted">
-    {% if provider_gates.moomoo %}<li>moomoo 行情：{% if provider_gates.moomoo == 'PENDING_SUPPORT_REPLY' %}等待 moomoo 对云服务器使用的答复{% else %}需 moomoo 书面许可{% endif %}，行情卡、报价曲线为空。</li>{% endif %}
-    {% if provider_gates.jin10 %}<li>金十新闻：{% if provider_gates.jin10 == 'UNREACHABLE_FROM_DEPLOYMENT' %}此服务器（美国）无法连接金十 MCP 服务（连接超时），金十快讯仍由本机采集{% elif provider_gates.jin10 == 'PENDING_WRITTEN_PERMISSION' %}金十用户协议要求书面授权后才能在非金十服务器保存内容{% else %}等待金十答复{% endif %}，新闻流与“关注事件 Top 10”为空。</li>{% endif %}
-  </ul>
-</div>
-{% endif %}
+  {% else %}
+  <div class="empty-state"><strong>暂无行情</strong>行情尚未对此账户开放。</div>
+  {% endif %}
+  <div class="ov-grid">
+    <section class="card" aria-labelledby="ov-news-title">
+      <div class="section-head"><h2 id="ov-news-title">新闻与事件</h2><a class="text-button" href="#news">全部</a></div>
+      <div id="ov-news" class="list"><div class="compact-empty"><span>暂无新闻</span><a class="button button-outline" href="#settings/sources">查看设置</a></div></div>
+    </section>
+    <section class="card" aria-labelledby="ov-sec-title">
+      <div class="section-head"><h2 id="ov-sec-title">官方公告</h2><a class="text-button" href="#research/sec">全部</a></div>
+      <div id="ov-sec" class="list"><div class="list-row"><span class="t skeleton">&nbsp;</span><span class="m skeleton">&nbsp;</span></div></div>
+    </section>
+  </div>
+</section>
 
-<nav class="workspace-nav" aria-label="观察台分区" translate="no" hidden>
-  <button type="button" data-view="overview">{% if request.display_language == 'en' %}Overview{% else %}总览{% endif %}</button>
-  <button type="button" data-view="news">{% if request.display_language == 'en' %}News{% else %}新闻{% endif %}</button>
-  <button type="button" data-view="research">{% if request.display_language == 'en' %}Research{% else %}研究{% endif %}</button>
-  <button type="button" data-view="manage">{% if request.display_language == 'en' %}Settings & status{% else %}设置与运行{% endif %}</button>
-</nav>
-<div id="feed-health-summary" class="feed-health-summary" role="status" translate="no"></div>
-{% if personal_feed_enabled %}<div id="source-status-strip" class="feed-health-summary" role="status" translate="no" aria-label="其他数据源状态"></div>{% endif %}
+{# ===================== 行情 ===================== #}
+<section class="view" data-view="markets" aria-label="行情">
+  {% if personal_feed_enabled %}
+  <div class="mk">
+    <div class="card mk-list" id="mk-list" role="listbox" aria-label="标的"></div>
+    <div class="card detail" id="detail">
+      <div class="d-head">
+        <div>
+          <div class="d-sym"><strong id="d-sym">—</strong><span id="d-name"></span></div>
+          <div class="d-price num" id="d-price" title="">—</div>
+        </div>
+        <div class="d-change num" id="d-change"></div>
+      </div>
+      <div class="d-sub"><span class="sess" id="d-sess" hidden></span><span id="d-basis"></span><span class="num" id="d-time"></span><span class="stale-tag" id="d-stale" hidden>连接中断 · 显示最后报价</span></div>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="时间范围" id="range-seg">
+          <button type="button" data-range="30m">30分</button><button type="button" data-range="2h" aria-pressed="true">2小时</button><button type="button" data-range="24h">24小时</button><button type="button" data-range="all">全部</button>
+        </div>
+        <div class="legend" role="group" aria-label="交易时段" id="session-legend">
+          <button type="button" data-session="PREMARKET" aria-pressed="true" style="--c:var(--s-pre)">盘前</button>
+          <button type="button" data-session="REGULAR" aria-pressed="true" style="--c:var(--s-reg)">常规</button>
+          <button type="button" data-session="AFTERHOURS" aria-pressed="true" style="--c:var(--s-after)">盘后</button>
+          <button type="button" data-session="OVERNIGHT" aria-pressed="true" style="--c:var(--s-night)">夜盘</button>
+        </div>
+        <div class="seg" role="group" aria-label="缩放">
+          <button type="button" id="zoom-in" aria-label="放大">＋</button><button type="button" id="zoom-out" aria-label="缩小">－</button><button type="button" id="zoom-reset">最新</button>
+        </div>
+      </div>
+      <div class="chart-wrap" id="chart"><svg id="chart-svg" role="img" aria-label="报价走势"></svg><div class="chart-tip" id="chart-tip" hidden></div><div class="chart-state" id="chart-state">加载中…</div></div>
+      <div class="chart-foot"><span id="chart-coverage"></span><span>曲线在时段切换或数据间断处断开，不做插值</span></div>
+    </div>
+  </div>
+  {% else %}
+  <div class="empty-state"><strong>暂无行情</strong>行情尚未对此账户开放。</div>
+  {% endif %}
+</section>
 
-<details class="workspace-panel" id="panel-diagnostics" data-panel="diagnostics"><summary>连接诊断 <span class="panel-count">moomoo / 金十</span></summary>
-<div class="status-grid" aria-label="数据来源状态">
-  <section class="status-card card">
-    <div class="card-top"><h2>moomoo 行情</h2><span class="status-pill warning" id="moomoo-state">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div>
-    <p class="muted" id="moomoo-times">最近成功接收：{% if provider_states.moomoo.last_success_at %}<time datetime="{{ provider_states.moomoo.last_success_at|date:'c' }}">{{ provider_states.moomoo.last_success_at|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</p>
+{# ===================== 新闻 ===================== #}
+<section class="view" data-view="news" aria-label="新闻">
+  {% if personal_feed_enabled %}
+  <div class="section-head"><h2>重点事件</h2><span class="count" id="top10-count">0</span></div>
+  <div id="personal-top10" class="top10-list" aria-live="polite"></div>
+  <section class="section news-section" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}" data-analysis-priority-url="{% url 'personal_analysis_priority' %}" aria-labelledby="news-title">
+    <div class="section-head"><h2 id="news-title">快讯</h2><span class="count" id="news-count">0</span></div>
+    <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button" type="button" data-news-filter="all" aria-pressed="false">全部</button><button class="button" type="button" data-news-filter="interest" aria-pressed="true">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
+    <div class="news-interests" id="news-interest-controls" aria-label="新闻关注"></div>
+    <div id="event-filter-panel" class="event-filter-panel" hidden>
+      <div class="event-filter-row"><label>公司或 ETF <select id="event-company-filter" aria-label="筛选公司或ETF"><option value="">全部</option></select></label><label>类别 <select id="event-category-filter" aria-label="筛选事件类别"><option value="">全部</option></select></label><label>时间 <select id="event-time-filter" aria-label="筛选时间范围"><option value="all">全部</option><option value="24h">24小时</option><option value="7d">7天</option></select></label></div>
+      <details class="disclosure"><summary>编辑关注范围</summary><div class="disclosure-body"><div id="event-preference-controls"></div><div class="event-preset-actions"><button class="button button-outline" type="button" id="event-apply-preset">填入科技股预设</button> <button class="button button-primary" type="button" id="event-save-prefs">保存</button> <span id="event-prefs-status" role="status"></span></div></div></details>
+    </div>
+    <button class="button button-outline new-news-banner" type="button" id="new-news-banner" hidden></button>
+    <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">暂无新闻</div></div>
   </section>
-  <section class="status-card card">
-    <div class="card-top"><h2>金十新闻</h2><span class="status-pill warning" id="jin10-state">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div>
-    <p class="muted" id="jin10-times">最近成功接收：{% if provider_states.jin10.last_success_at %}<time datetime="{{ provider_states.jin10.last_success_at|date:'c' }}">{{ provider_states.jin10.last_success_at|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}</p>
+  <section class="section" aria-labelledby="sentiment-title">
+    <div class="section-head"><h2 id="sentiment-title">新闻情绪</h2><span class="count" id="sentiment-count"></span></div>
+    <div id="personal-sentiment"></div>
   </section>
+  {% else %}
+  <div class="empty-state"><strong>暂无新闻</strong></div>
+  {% endif %}
+</section>
 
-</div>
-</details>
+{# ===================== 研究 ===================== #}
+<section class="view" data-view="research" aria-label="研究">
+  {% if personal_feed_enabled %}
+  <section id="panel-research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no" aria-labelledby="research-sentiment-heading">
+    <div class="section-head"><h2 id="research-sentiment-heading">研究情绪</h2><span class="count" id="research-sentiment-count"></span></div>
+    <p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的研究候选；文字语气不代表报道属实或预测收益。</p>
+    <div id="research-sentiment-content" aria-live="polite"></div>
+  </section>
+  <section class="section card" id="official-filings-root" data-anchor="sec" data-url="{% url 'official_filings_json' %}" data-research-url="{% url 'research_sentiment_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="official-title">
+    <div class="section-head"><h2 id="official-title">官方公告 · SEC EDGAR</h2><span class="count" id="official-count"></span></div>
+    <p class="muted" id="official-source-state" role="status">读取中…</p>
+    <div id="official-instruments" class="table-scroll"></div>
+    <div id="official-filings" aria-live="polite"></div>
+    <p class="fine-print">基金类（TQQQ、SOXX、QQQ）在 SEC 只能定位到发行信托，标“信托层级 · 非本 ETF 专属”的申报可能只涉及同信托下的其他基金；SPY 标为基金信托层级，未逐只核对基金归属。</p>
+  </section>
+  {% endif %}
+  <section class="section" aria-labelledby="facts-title">
+    <div class="section-head"><h2 id="facts-title">历史财报事实卡</h2><span class="count">{{ fact_cards|length }}</span></div>
+    {% if fact_cards %}
+      <p class="fine-print">历史训练期材料 · 非最新财报。{% if personal_mode %}历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验。{% endif %}</p>
+      <h3 class="fact-group-title">历史实际业绩与现金流</h3>
+      {% if actual_fact_cards %}<div class="fact-grid">{% for card in actual_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}</div>
+      {% else %}<div class="empty-state">尚无已核对数据</div>{% endif %}
+      {% if missing_free_cash_flow %}<p class="fine-print">自由现金流：{% for issuer in missing_free_cash_flow %}{{ issuer }}{% if not forloop.last %}、{% endif %}{% endfor %}尚无已核对数据；不能据此推断原公司未披露。</p>{% endif %}
+      <h3 class="fact-group-title">历史公告中的未来指引</h3>
+      {% if guidance_fact_cards %}<p class="fine-print">范围上下界由公司披露的中心值与容差计算，不是公司直接公布的上下界；本页未生成中点。</p><div class="fact-grid">{% for card in guidance_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}</div>
+      {% else %}<div class="empty-state">尚无已核对指引数据</div>{% endif %}
+    {% else %}
+      <div class="empty-state">暂无事实卡</div>
+    {% endif %}
+  </section>
+</section>
 
-{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-top10" data-panel="top10" open><summary>关注事件 Top 10 <span class="panel-count" id="top10-count">读取中</span></summary><p class="muted">按相关性与时效排序。点击查看报道及来源；排名不是收益预测。</p><div id="personal-top10" class="top10-list" aria-live="polite"></div></details>{% endif %}
-{% if personal_feed_enabled %}<details class="workspace-panel" id="panel-official" data-panel="official" open><summary>官方公告（SEC EDGAR） <span class="panel-count" id="official-count">读取中</span></summary>
-<section class="card" id="official-filings-root" data-url="{% url 'official_filings_json' %}" data-research-url="{% url 'research_sentiment_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="official-title">
-  <div class="section-head"><div><p class="eyebrow">SEC EDGAR · OFFICIAL</p><h2 id="official-title">自选标的官方申报</h2></div><span class="small-tag">仅元数据与原文链接 · 非行情</span></div>
-  <p class="muted" id="official-source-state" role="status">正在读取…</p>
-  <div id="official-instruments" class="official-instruments"></div>
-  <div id="official-filings" class="official-filings" aria-live="polite"></div>
-  <p class="muted">申报日期为 SEC filingDate；受理时间按 SEC 原字段保留，不改写时区。基金类（TQQQ、SOXX、QQQ）在 SEC 只能定位到发行信托，标“信托层级 · 非本 ETF 专属”的申报可能只涉及同信托下的其他基金；SPY 标为基金信托层级，未逐只核对基金归属。</p>
-</section></details>{% endif %}
+{# ===================== 设置 ===================== #}
+<section class="view" data-view="settings" aria-label="设置">
+  <div class="settings-grid">
+    <section class="card" aria-labelledby="set-display">
+      <div class="section-head"><h2 id="set-display">显示</h2></div>
+      <div class="setting-row"><div><div class="label">主题</div><div class="hint">记住在本浏览器</div></div><div class="seg" role="group" aria-label="主题"><button type="button" data-set-theme="dark">深色</button><button type="button" data-set-theme="light">浅色</button></div></div>
+      <div class="setting-row"><div><div class="label">涨跌颜色</div></div><div class="seg" role="group" aria-label="涨跌颜色"><button type="button" data-set-updown="cn">红涨绿跌</button><button type="button" data-set-updown="us">绿涨红跌</button></div></div>
+      <div class="setting-row"><div><div class="label">时区</div><div class="hint num">{{ display_timezone }}</div></div><a class="button button-outline" href="{% url 'user_settings' %}">更改</a></div>
+    </section>
 
-<div class="main-grid workspace-layout">
-  <details class="workspace-panel" id="panel-watchlist" data-panel="watchlist"><summary>自选股与订阅管理 <span class="panel-count">{{ watch_rows|length }}</span></summary>
-  <section class="card" aria-labelledby="watchlist-title">
-    <div class="section-head"><div><p class="eyebrow">YOUR WATCHLIST</p><h2 id="watchlist-title">我的自选股</h2></div><span class="small-tag">仅当前账户</span></div>
-    <form method="post" action="{% url 'watchlist_add' %}" class="watch-form">
-      {% csrf_token %}
-      {% for field in watchlist_form %}
-        <div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>
-      {% endfor %}
-      <button class="button button-primary" type="submit">加入自选</button>
-    </form>
-    {% if watchlist_form.non_field_errors %}<div class="form-errors" role="alert">{{ watchlist_form.non_field_errors }}</div>{% endif %}
-    {% if watch_rows %}
+    <section class="card" aria-labelledby="watchlist-title">
+      <div class="section-head"><h2 id="watchlist-title">自选管理</h2><span class="count">{{ watch_rows|length }}</span></div>
+      <form method="post" action="{% url 'watchlist_add' %}" class="watch-form">
+        {% csrf_token %}
+        {% for field in watchlist_form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+        <button class="button button-primary" type="submit">加入自选</button>
+      </form>
+      {% if watchlist_form.non_field_errors %}<div class="form-errors" role="alert">{{ watchlist_form.non_field_errors }}</div>{% endif %}
+      {% if watch_rows %}
       <div class="watch-items">
         {% for row in watch_rows %}
         <article class="watch-item">
-          <div class="watch-symbol"><strong>{{ row.item.symbol }}</strong><span>{{ row.item.display_name|default:'名称待核实' }}</span></div>
+          <div class="watch-symbol"><strong>{{ row.item.symbol }}</strong><span>{{ row.item.display_name|default:'' }}</span></div>
           <span class="asset-tag">{{ row.item.get_asset_type_display|default:row.item.asset_type }}</span>
           <form method="post" action="{% url 'watchlist_remove' row.item.pk %}">{% csrf_token %}<button class="text-button destructive" type="submit" aria-label="移除 {{ row.item.symbol }}">移除</button></form>
-          <div class="watch-data" data-watch-symbol="{{ row.item.symbol }}">{% if row.snapshot and not personal_feed_enabled %}<strong>{{ row.snapshot.price_text|default:'价格未知' }}{% if row.snapshot.currency %} {{ row.snapshot.currency }}{% endif %}</strong> · 数据时间：{% if row.snapshot.provider_time %}<time datetime="{{ row.snapshot.provider_time|date:'c' }}">{{ row.snapshot.provider_time|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %} · 延迟：{{ row.snapshot.delay_status|default:'未知' }} · 市场：{{ row.snapshot.market_state|default:'未知' }}{% else %}<span class="muted">{% if personal_feed_enabled %}正在读取个人缓存；暂无报价时会显示原因。{% else %}行情未接入，暂无获准展示的缓存数据。{% endif %}</span>{% endif %}</div>
           {% if personal_feed_enabled %}<div class="watch-controls" data-subscription-control="{{ row.item.symbol }}"></div>{% endif %}
         </article>
         {% endfor %}
       </div>
-    {% else %}
-      <div class="empty-state"><strong>还没有自选股</strong><p>从上方添加关注对象。添加证券不会自动启动行情采集。</p></div>
-    {% endif %}
-  </section>
-  </details>
+      {% else %}<div class="empty-state">还没有自选标的</div>{% endif %}
+    </section>
 
-  <details class="workspace-panel" id="panel-quotes" data-panel="quotes" open><summary>行情摘要 <span class="panel-count" id="quote-count">{{ watch_rows|length }}</span></summary>
-  <section class="card" aria-labelledby="snapshot-title">
-    <div class="section-head"><div><p class="eyebrow">{% if personal_feed_enabled %}PRIVATE CACHE{% else %}APPROVED CACHE{% endif %}</p><h2 id="snapshot-title">行情快照</h2></div><span class="small-tag">缓存只读</span></div>
-    {% if personal_feed_enabled %}<div id="personal-quotes" class="snapshot-list" aria-live="polite"><div class="empty-state">正在读取个人行情缓存…</div></div>
-    {% elif snapshots %}
-      <div class="snapshot-list">
-        {% for symbol, snapshot in snapshots.items %}
-        <article class="snapshot-item">
-          <div><strong>{{ symbol }}</strong><p class="muted">{{ snapshot.provider|default:'来源未知' }} · {{ snapshot.market_state|default:'市场状态未知' }}</p></div>
-          <div class="snapshot-value"><strong>{% if snapshot.price_text %}{{ snapshot.price_text }}{% else %}未接入{% endif %}</strong><span>{{ snapshot.currency|default:'币种未知' }}</span></div>
-          <div class="snapshot-meta">数据时间：{% if snapshot.provider_time %}<time datetime="{{ snapshot.provider_time|date:'c' }}">{{ snapshot.provider_time|date:'Y-m-d H:i T' }}</time>{% else %}未知{% endif %}<br>延迟状态：{{ snapshot.delay_status|default:'未知' }}</div>
-        </article>
-        {% endfor %}
+    <details class="disclosure" id="sources" data-anchor="sources">
+      <summary>数据源</summary>
+      <div class="disclosure-body">
+        <p class="fine-print">部署：{% if deployment_kind == 'cloud_private' %}云端私人部署 · 只读{% else %}本机测试 · 只读{% endif %} · 无交易功能</p>
+        {% if personal_feed_enabled and provider_gates.moomoo or personal_feed_enabled and provider_gates.jin10 %}
+        <p class="muted">此部署尚未启用的数据源：</p>
+        <ul class="diag-list">
+          {% if provider_gates.moomoo %}<li>moomoo 行情：{% if provider_gates.moomoo == 'PENDING_SUPPORT_REPLY' %}等待 moomoo 对云服务器使用的答复{% else %}需 moomoo 书面许可{% endif %}</li>{% endif %}
+          {% if provider_gates.jin10 %}<li>金十新闻：{% if provider_gates.jin10 == 'UNREACHABLE_FROM_DEPLOYMENT' %}此服务器无法连接金十 MCP 服务（连接超时）；金十快讯由本机采集{% elif provider_gates.jin10 == 'PENDING_WRITTEN_PERMISSION' %}金十用户协议要求书面授权后才能在非金十服务器保存内容{% else %}等待金十答复{% endif %}</li>{% endif %}
+        </ul>
+        {% endif %}
+        {% if personal_feed_enabled %}
+        <div id="source-status-strip" class="feed-health-summary" role="status" translate="no" aria-label="其他数据源状态"></div>
+        <div class="status-grid" aria-label="数据来源状态">
+          <section class="status-card card"><div class="card-top"><h2>moomoo 行情</h2><span class="tag" id="moomoo-state">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="moomoo-times"></p></section>
+          <section class="status-card card"><div class="card-top"><h2>金十新闻</h2><span class="tag" id="jin10-state">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="jin10-times"></p></section>
+        </div>
+        <p class="fine-print">行情价格保留供应商原始精度；页面主价格按两位小数显示，悬停可见精确值。供应商未提供延迟属性，页面不作实时性声明。报价时间为供应商数据时间，不是成交时间。</p>
+        <p class="fine-print" id="news-screening-counts"></p>
+        <p class="fine-print" id="analysis-worker-state"></p>
+        {% endif %}
       </div>
-    {% else %}
-      <div class="empty-state"><strong>暂无获准展示的行情</strong><p>行情供应商状态见上方。本站不会生成模拟价格，也不会在刷新时直接向供应商请求。</p></div>
-    {% endif %}
-  </section>
-  </details>
-</div>
+    </details>
+  </div>
+</section>
 
 {% if personal_feed_enabled %}
-<details class="workspace-panel" id="panel-chart" data-panel="chart"><summary>已采集报价曲线 <span class="panel-count">按证券查看</span></summary>
-<section class="card timeline-section" id="personal-timeline" data-timeline-url="{% url 'personal_timeline_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="timeline-title">
-  <div class="section-head"><div><p class="eyebrow">SAVED QUOTE TIMELINE</p><h2 id="timeline-title">已采集报价曲线</h2></div><span class="small-tag">本机个人缓存 · 非逐笔成交或完整K线</span></div>
-  <div class="timeline-controls">
-    <label>证券 <select id="timeline-symbol" aria-label="图表证券"></select></label>
-    <label>时段 <select id="timeline-session" aria-label="图表时段"><option value="ALL">全部时段</option><option value="PREMARKET">盘前</option><option value="REGULAR">常规</option><option value="AFTERHOURS">盘后</option><option value="OVERNIGHT">夜盘</option></select></label>
-    <label>范围 <select id="timeline-range" aria-label="图表范围"><option value="30m">最近30分钟</option><option value="2h" selected>最近2小时</option><option value="24h">最近24小时</option><option value="all">全部已采集（最多7天）</option></select></label>
-    <button class="button button-outline" id="timeline-zoom-in" type="button">放大</button>
-    <button class="button button-outline" id="timeline-zoom-out" type="button">缩小</button>
-    <button class="button button-primary" id="timeline-latest" type="button">回到最新</button>
-  </div>
-  <p class="muted timeline-summary" id="timeline-summary" role="status">点击上方行情卡查看曲线。</p>
-  <p class="muted timeline-coverage" id="timeline-coverage"></p>
-  <div class="timeline-plot"><svg id="timeline-svg" viewBox="0 0 900 320" role="img" aria-label="已采集报价曲线"></svg></div>
-  <div class="timeline-hover" id="timeline-hover" aria-live="polite">点选报价点查看价格、时段和来源时间。</div>
-  <div class="timeline-legend"><span class="pre">盘前</span><span class="regular">常规</span><span class="after">盘后</span><span class="overnight">夜盘</span><span>曲线在时段切换或观测间隔处断开</span></div>
-  <h3>相关新闻时间轴</h3>
-  <p class="muted">标记使用金十提供的新闻发布时间；本机首次收到时间另列。关联来自文字规则，报道仍待交叉核实；并不说明新闻造成价格变化。</p>
-  <div id="timeline-news" class="timeline-news"><div class="empty-state">选择证券后显示相关报道。</div></div>
-</section>
-</details>
-<details class="workspace-panel" id="panel-news" data-panel="news"><summary>完整新闻流 <span class="panel-count" id="news-count">读取中</span></summary>
-<section class="card news-section" aria-labelledby="news-title" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}" data-analysis-priority-url="{% url 'personal_analysis_priority' %}">
-  <div class="section-head"><div><p class="eyebrow">JIN10 PRIVATE FLASH</p><h2 id="news-title">金十快讯</h2></div><span class="small-tag">金十报道／待交叉核实</span></div>
-  <p class="muted" id="news-screening-counts">筛选计数正在读取；旧新闻只隐藏，不删除。</p>
-  <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button" type="button" data-news-filter="all" aria-pressed="false">全部快讯</button><button class="button button-primary" type="button" data-news-filter="interest" aria-pressed="true">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
-  <div class="news-interests" id="news-interest-controls" aria-label="独立新闻关注"></div>
-  <div id="event-filter-panel" class="event-filter-panel" hidden>
-    <p class="muted">按原文短语规则筛选和排序；时间筛选优先用带时区的来源发布时间，缺失时用本机收到时间。不代表新闻核实、价格预测或市场影响。</p>
-    <div class="event-filter-row"><label>公司或 ETF <select id="event-company-filter" aria-label="筛选公司或ETF"><option value="">全部</option></select></label><label>类别 <select id="event-category-filter" aria-label="筛选事件类别"><option value="">全部</option></select></label><label>时间范围 <select id="event-time-filter" aria-label="筛选时间范围"><option value="all">全部缓存</option><option value="24h">最近24小时</option><option value="7d">最近7天</option></select></label></div>
-    <details class="event-preset"><summary>编辑科技股关注预设</summary><p class="muted">当前默认沿用自选股、独立新闻关注和宏观主题。点击预设只修改表单，保存后才生效。</p><div id="event-preference-controls"></div><div class="event-preset-actions"><button class="button button-outline" type="button" id="event-apply-preset">填入科技股预设</button><button class="button button-primary" type="button" id="event-save-prefs">保存关注范围</button><span id="event-prefs-status" role="status"></span></div></details>
-  </div>
-  <button class="button button-outline new-news-banner" type="button" id="new-news-banner" hidden></button>
-  <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">正在读取个人新闻缓存…</div></div>
-</section>
-</details>
-<details class="workspace-panel" id="panel-sentiment" data-panel="sentiment"><summary>新闻情绪观察 <span class="panel-count" id="sentiment-count">待分析</span></summary><p class="muted">仅描述已缓存、已去重的供应商事件；与实际行情变化分列，不作因果判断。</p><div id="personal-sentiment"></div></details>
-<details class="workspace-panel" id="panel-research-sentiment" data-panel="research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no"><summary><span id="research-sentiment-heading">研究情绪</span> <span class="panel-count" id="research-sentiment-count">读取中</span></summary><p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的本机研究候选；文字语气不代表报道属实或预测收益。缓存回放与新收到版本分开。</p><div id="research-sentiment-content" aria-live="polite"></div></details>
-<details class="workspace-panel" id="panel-advanced" data-panel="advanced"><summary>高级设置</summary><p><a href="{% url 'user_settings' %}">时区与语言设置</a></p><p class="muted" id="analysis-worker-state">分析服务状态待读取</p></details>
-<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v19-2"></script>
+<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=20-1"></script>
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
-<script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v4"></script>
 {% endif %}
-
-<details class="workspace-panel" id="panel-facts" data-panel="facts"><summary>历史财报事实卡 <span class="panel-count">{{ fact_cards|length }}</span></summary>
-<section class="card facts-section" aria-labelledby="facts-title">
-  <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史训练期材料 · 非最新财报</span></div>
-  {% if personal_mode %}<p class="muted">{% if is_cloud_deployment %}个人开发视图（云端私人部署）。{% else %}本机个人开发视图。{% endif %}以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
-  {% if fact_cards %}
-    <h3 class="fact-group-title">历史实际业绩与现金流</h3>
-    {% if actual_fact_cards %}
-    <div class="fact-grid">
-      {% for card in actual_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}
-    </div>
-    {% else %}<div class="empty-state"><strong>尚无已核对数据</strong><p>没有符合当前来源及展示条件的实际业绩记录。</p></div>{% endif %}
-    {% if missing_free_cash_flow %}<p class="muted fact-coverage-note">自由现金流：{% for issuer in missing_free_cash_flow %}{{ issuer }}{% if not forloop.last %}、{% endif %}{% endfor %}尚无已核对数据；不能据此推断原公司未披露。</p>{% endif %}
-    <h3 class="fact-group-title">历史公告中的未来指引</h3>
-    {% if guidance_fact_cards %}
-    <p class="muted">范围上下界由公司披露的中心值与容差计算，不是公司直接公布的上下界；本页未生成中点。</p>
-    <div class="fact-grid">
-      {% for card in guidance_fact_cards %}{% include 'core/_fact_card.html' with card=card %}{% endfor %}
-    </div>
-    {% else %}<div class="empty-state"><strong>尚无已核对指引数据</strong><p>未找到符合当前来源及展示条件的历史指引记录。</p></div>{% endif %}
-  {% else %}
-    <div class="empty-state"><strong>暂无可公开展示的事实卡</strong><p>研究线的私人原件、事实草稿和授权资料不会自动转入多人页面。</p></div>
-  {% endif %}
-</section>
-</details>
+<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=20-1"></script>
 {% endblock %}

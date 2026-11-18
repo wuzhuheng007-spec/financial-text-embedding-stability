@@ -203,6 +203,8 @@
     return article;
   }
   function renderQuotes() {
+    // v20: quote cards are rendered by terminal_v20.js from the broadcast below.
+    if (!quoteBox) return;
     const signature = JSON.stringify([current?.quotes,current?.latest_quotes,current?.security_profiles,current?.session_quotes,current?.session_capabilities,
       current?.symbols,current?.selection,stateOf('moomoo')?.state,[...sessionChoice]]);
     if (signature === quoteSignature) return;
@@ -280,7 +282,7 @@
     const signature=JSON.stringify(current?.news_interests || []);
     if (signature === interestSignature) return;
     interestSignature=signature;
-    interestBox.replaceChildren(node('span','subscription-status','独立新闻关注：'));
+    interestBox.replaceChildren(node('span','subscription-status','关注：'));
     const names={SNDK:'闪迪',SKHYNIX:'SK 海力士',SPACEX:'SpaceX'};
     (current?.news_interests || []).forEach(row => {
       const button=node('button',`button ${row.enabled ? 'button-primary' : 'button-outline'}`,names[row.interest_key] || row.interest_key);
@@ -338,8 +340,8 @@
   function renderTop10() {
     if (!topBox) return;
     const rows=current?.top10 || [];
-    document.getElementById('top10-count').textContent=String(rows.length);
-    document.getElementById('news-count').textContent=String(current?.news?.length || 0);
+    const topCount=document.getElementById('top10-count'); if (topCount) topCount.textContent=String(rows.length);
+    const newsCount=document.getElementById('news-count'); if (newsCount) newsCount.textContent=String(current?.news?.length || 0);
     const signature=JSON.stringify(rows.map(x=>[x.item_key,x.version,x.rank?.score,x.analysis_status,x.headline_en]));
     if (signature===topSignature) return;
     if (topSignature && topBox.getBoundingClientRect().top < -30) {
@@ -351,7 +353,7 @@
       return;
     }
     topSignature=signature;
-    if (!rows.length) { topBox.replaceChildren(node('div','empty-state','当前没有符合科技股及相关宏观范围的已缓存事件。')); return; }
+    if (!rows.length) { topBox.replaceChildren(node('div','empty-state','暂无重点事件')); return; }
     topBox.replaceChildren(...rows.map((row,index)=>{
       const button=node('button','top10-row'); button.type='button';
       const title=language==='en' ? (row.headline_en || `Translation pending — ${row.title}`) : (row.headline_zh || row.title);
@@ -377,7 +379,7 @@
   function renderSentiment() {
     if (!sentimentBox) return;
     const rows=current?.sentiment_observation || [];
-    document.getElementById('sentiment-count').textContent=rows.length ? `${rows[0].event_count} ${bilingual(['事件','events'])}` : bilingual(['待分析','Pending']);
+    const sentimentCount=document.getElementById('sentiment-count'); if (sentimentCount) sentimentCount.textContent=rows.length ? `${rows[0].event_count} ${bilingual(['事件','events'])}` : bilingual(['待分析','Pending']);
     const grid=node('div','sentiment-grid');
     rows.forEach(row=>{
       const cell=node('div','sentiment-cell');
@@ -580,7 +582,7 @@
     }
     newsSignature=signature; renderedNews=rows; newsBanner.hidden=true;
     if (!rows.length) {
-      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无已缓存快讯；请查看上方连接状态。' : '当前缓存和筛选条件中没有匹配快讯；可切换“全部快讯”或调整关注范围。'));
+      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无新闻' : '没有匹配的快讯，可切换到“全部”'));
       return;
     }
     if (filter !== 'focus') { newsBox.replaceChildren(...rows.map(newsArticle)); restoreReading(); return; }
@@ -642,6 +644,7 @@
       const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
+      document.dispatchEvent(new CustomEvent('quant-feed', {detail: current}));
       renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls();
       if (!readingRestored) {
         try {
@@ -655,6 +658,7 @@
       }
       renderTop10(); renderSentiment(); renderNews();
     } catch (_) {
+      document.dispatchEvent(new CustomEvent('quant-feed-error'));
       const health=document.getElementById('feed-health-summary');
       if (health) health.replaceChildren(node('span','health-warning',bilingual(['页面数据连接中断，以下为上次缓存。','Page data connection interrupted; showing the previous cache.'])));
       for (const name of ['moomoo', 'jin10']) {
