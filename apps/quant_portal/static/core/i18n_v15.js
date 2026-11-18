@@ -8,6 +8,8 @@
 
     '研究观察台':'RESEARCH OBSERVATORY','科技 · 事件 · 证据':'TECHNOLOGY · EVENTS · EVIDENCE',
     '本机测试 · 只读':'LOCAL TEST · READ ONLY',
+    '云端私人部署 · 只读':'PRIVATE CLOUD · READ ONLY','云端私人部署 · 显示时区 ':'Private cloud · Display timezone ',
+    '云端私人部署':'Private cloud deployment','个人使用 · 仅 SSH 隧道访问 · 无交易':'Personal use · SSH tunnel only · No trading',
     '本机个人测试版 · 显示时区 ':'Local personal test · Display timezone ',
     '市场观察':'Market overview','个人设置':'Personal settings','退出':'Sign out','登录':'Sign in',
     '跳转到主要内容':'Skip to main content','只读研究 · 无交易执行':'Read-only research · No trading',

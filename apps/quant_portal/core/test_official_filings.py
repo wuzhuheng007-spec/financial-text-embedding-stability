@@ -70,3 +70,17 @@ class OfficialFilingsAndDeploymentTests(TestCase):
             html = self.client.get(reverse("dashboard")).content.decode()
         self.assertIn("本机测试 · 只读", html)
         self.assertNotIn("此部署尚未启用的数据源", html)
+
+
+class DeploymentLabelEverywhereTests(TestCase):
+    def test_cloud_labels_on_base_settings_and_login(self):
+        with override_settings(PERSONAL_MODE=True, DEPLOYMENT_KIND="cloud_private"):
+            login_html = self.client.get(reverse("login")).content.decode()
+            user = get_user_model().objects.create_user("owner@local.invalid", password="test-password-long")
+            self.client.force_login(user)
+            pages = [self.client.get(reverse(n)).content.decode() for n in ("dashboard", "user_settings")]
+        self.assertIn("PRIVATE CLOUD DEPLOYMENT", login_html)
+        for html in pages + [login_html]:
+            self.assertNotIn("本机个人测试", html)
+            self.assertNotIn("LOCAL PERSONAL TEST", html)
+        self.assertIn("云端私人部署 · 显示时区", pages[0])

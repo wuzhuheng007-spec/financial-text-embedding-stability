@@ -24,7 +24,7 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">科技 · 事件 · 证据</p>
-          <p class="topbar-title">本机个人测试版 · 显示时区 {{ display_timezone|default:'Asia/Shanghai' }}</p>
+          <p class="topbar-title">{% if is_cloud_deployment %}云端私人部署 · 显示时区 {% else %}本机个人测试版 · 显示时区 {% endif %}{{ display_timezone|default:'Asia/Shanghai' }}</p>
         </div>
         <div class="account-actions">
           {% if user.is_authenticated %}<form method="post" action="{% url 'change_language' %}" class="language-switch" translate="no">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button type="submit" name="language" value="zh" {% if request.display_language == 'zh' %}aria-current="true"{% endif %}>中文</button><span aria-hidden="true">/</span><button type="submit" name="language" value="en" {% if request.display_language == 'en' %}aria-current="true"{% endif %}>English</button></form>{% endif %}

@@ -152,7 +152,7 @@
 <details class="workspace-panel" id="panel-facts" data-panel="facts"><summary>历史财报事实卡 <span class="panel-count">{{ fact_cards|length }}</span></summary>
 <section class="card facts-section" aria-labelledby="facts-title">
   <div class="section-head"><div><p class="eyebrow">SOURCE-BOUND EARNINGS</p><h2 id="facts-title">财报事实卡</h2></div><span class="small-tag">历史训练期材料 · 非最新财报</span></div>
-  {% if personal_mode %}<p class="muted">本机个人开发视图。以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
+  {% if personal_mode %}<p class="muted">{% if is_cloud_deployment %}个人开发视图（云端私人部署）。{% else %}本机个人开发视图。{% endif %}以下历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验；不代表最新财报或可公开再分发的资料。</p>{% else %}<p class="muted">仅展示经过权限核对且允许对受邀用户展示的事实摘要。候选模型输出不会自动进入这里。</p>{% endif %}
   {% if fact_cards %}
     <h3 class="fact-group-title">历史实际业绩与现金流</h3>
     {% if actual_fact_cards %}
