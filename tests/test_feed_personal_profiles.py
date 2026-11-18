@@ -78,6 +78,7 @@ p = argparse.ArgumentParser(); p.add_argument("action"); p.add_argument("--confi
 a = p.parse_args()
 var.mkdir(parents=True, exist_ok=True)
 if a.action == "run":
+    sys.stderr.write(f"STDERR_MARKER pid={os.getpid()}\n"); sys.stderr.flush()
     (var / "personal_feed.stop").unlink(missing_ok=True)
     (var / "personal_feed.pid.json").write_text(json.dumps({"pid": os.getpid()}))
     while not (var / "personal_feed.stop").exists():
@@ -96,7 +97,9 @@ def fake_repo(tmp_path: Path):
         pytest.skip("feed_personal.ps1 is the Windows entry point")
     repo = tmp_path / "repo"
     (repo / "apps/quant_portal/ops").mkdir(parents=True)
-    shutil.copy(ROOT / "apps/quant_portal/ops/feed_personal.ps1", repo / "apps/quant_portal/ops/feed_personal.ps1")
+    # FEED_PS1_UNDER_TEST lets the same tests run against an older script as a baseline.
+    script = Path(os.environ.get("FEED_PS1_UNDER_TEST", ROOT / "apps/quant_portal/ops/feed_personal.ps1"))
+    shutil.copy(script, repo / "apps/quant_portal/ops/feed_personal.ps1")
     for rel in (FULL, JIN10_ONLY, LEGACY):
         (repo / rel).parent.mkdir(parents=True, exist_ok=True)
         (repo / rel).write_text("{}")
@@ -199,3 +202,63 @@ def test_unknown_config_process_is_untracked(fake_repo) -> None:
         assert out.splitlines()[0] == "FEED_STOPPED_OR_UNTRACKED"
     finally:
         (var / "personal_feed.stop").write_text("stop"); proc.wait(30)
+
+
+def test_each_start_keeps_its_own_stderr_log(fake_repo) -> None:
+    """Start-Process truncates its targets; two starts must leave two stderr logs."""
+    repo, ps = fake_repo
+    var = repo / "apps/quant_portal/var"
+    pids = []
+    for profile in ("full", "jin10_only"):
+        code, out = ps("start", "-FeedProfile", profile)
+        assert code == 0, out
+        pids.append(_pid(out))
+        code, out = ps("stop")
+        assert code == 0, out
+    logs = sorted((var / "feed_logs").glob("personal_feed.*.stderr.log"))
+    texts = [p.read_text(encoding="utf-8", errors="replace") for p in logs]
+    assert len(logs) == 2
+    for pid in pids:
+        assert sum(f"STDERR_MARKER pid={pid}" in t for t in texts) == 1
+    latest = json.loads((var / "personal_feed.latest_logs.json").read_text(encoding="utf-8-sig"))
+    assert latest["pid"] == pids[-1] and latest["profile"] == "jin10_only"
+    assert f"STDERR_MARKER pid={pids[-1]}" in (var / latest["stderr"]).read_text(encoding="utf-8", errors="replace")
+    assert not (var / "personal_feed.stderr.log").exists()  # the old fixed name is no longer written
+
+
+HOLD_LOCK = r'''
+import sys, time
+from pathlib import Path
+sys.path.insert(0, sys.argv[1])
+from scripts.quant_personal_feed.cli import lock_file
+handle = lock_file(Path(sys.argv[2]))
+print("LOCKED", flush=True)
+time.sleep(float(sys.argv[3]))
+'''
+
+
+def test_cli_lock_refuses_second_instance_whatever_its_config(tmp_path: Path) -> None:
+    """A stand-in collector started with an unknown config holds the real lock;
+    the real cli.run (Jin10-only config) must refuse before touching any store."""
+    from scripts.quant_personal_feed import cli
+    var = tmp_path / "apps/quant_portal/var"
+    lock = var / "personal_feed.lock"
+    holder = subprocess.Popen([sys.executable, "-c", HOLD_LOCK, str(ROOT), str(lock), "60",
+                               "--config", str(tmp_path / "configs/unknown_profile.json")],
+                              stdout=subprocess.PIPE, text=True)
+    try:
+        assert holder.stdout.readline().strip() == "LOCKED"
+        touched = []
+        config = cli.load_config(ROOT / JIN10_ONLY)
+        with patch.object(cli, "ROOT", tmp_path),              patch.object(cli, "load_config", lambda p: config),              patch.object(cli, "owner_id", lambda cfg: touched.append("owner") or 1),              patch.object(cli, "PersonalFeedStore", lambda *a, **k: touched.append("store")):
+            # Windows: msvcrt locks byte 0, so the second opener already fails on
+            # lock_file's initial read (PermissionError, cli.py before the try).
+            # POSIX: flock refuses and lock_file raises "already runs".
+            expected = PermissionError if os.name == "nt" else RuntimeError
+            with pytest.raises(expected):
+                cli.run(ROOT / JIN10_ONLY)
+        assert touched == []  # refused before owner lookup or any cache write
+    finally:
+        holder.kill(); holder.wait(30)
+    handle = cli.lock_file(lock)  # released once the holder is gone
+    handle.close()

@@ -11,8 +11,10 @@ $ErrorActionPreference = 'Stop'
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 $Var = Join-Path $RepoRoot 'apps/quant_portal/var'
 $PidFile = Join-Path $Var 'personal_feed.pid.json'
-$OutLog = Join-Path $Var 'personal_feed.stdout.log'
-$ErrLog = Join-Path $Var 'personal_feed.stderr.log'
+# Start-Process truncates its redirect targets, so each start gets its own
+# timestamped log pair; personal_feed.latest_logs.json points at the newest.
+$LogDir = Join-Path $Var 'feed_logs'
+$LatestLogs = Join-Path $Var 'personal_feed.latest_logs.json'
 # Only these repository configs are ever started or recognised. legacy_v1 is
 # recognised (status/stop) but cannot be started.
 $Profiles = [ordered]@{
@@ -70,18 +72,25 @@ if ($Running) {
 New-Item -ItemType Directory -Force -Path $Var | Out-Null
 $EnvToken = [Environment]::GetEnvironmentVariable('JIN10_MCP_TOKEN','User')
 if (-not $env:JIN10_MCP_TOKEN -and $EnvToken) { $env:JIN10_MCP_TOKEN = $EnvToken }
-foreach ($Log in @($OutLog,$ErrLog)) {
-    if ((Test-Path -LiteralPath $Log) -and (Get-Item -LiteralPath $Log).Length -gt 5242880) {
-        $Rotated = $Log + '.' + (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
-        Move-Item -LiteralPath $Log -Destination $Rotated
-    }
+New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
+$StartedUtc = (Get-Date).ToUniversalTime()
+$Stem = 'personal_feed.' + $StartedUtc.ToString('yyyyMMddTHHmmssfffZ')
+$Suffix = 0
+while ((Test-Path -LiteralPath (Join-Path $LogDir "$Stem.stderr.log")) -or (Test-Path -LiteralPath (Join-Path $LogDir "$Stem.stdout.log"))) {
+    $Suffix++; $Stem = 'personal_feed.' + $StartedUtc.ToString('yyyyMMddTHHmmssfffZ') + ".$Suffix"
 }
+$OutLog = Join-Path $LogDir "$Stem.stdout.log"
+$ErrLog = Join-Path $LogDir "$Stem.stderr.log"
 $Proc = Start-Process -FilePath $Python -ArgumentList @('-m','scripts.quant_personal_feed.cli','run','--config',$Config) -WorkingDirectory $RepoRoot -PassThru -WindowStyle Hidden -RedirectStandardOutput $OutLog -RedirectStandardError $ErrLog
+# Written before the start is verified, so a failed start's log is also findable.
+[pscustomobject]@{ started_at_utc = $StartedUtc.ToString('o'); pid = $Proc.Id; profile = $FeedProfile;
+    stdout = "feed_logs/$Stem.stdout.log"; stderr = "feed_logs/$Stem.stderr.log" } |
+    ConvertTo-Json | Set-Content -LiteralPath $LatestLogs -Encoding ascii
 for ($i=0; $i -lt 20; $i++) {
     Start-Sleep -Milliseconds 500
     $Running = Get-VerifiedFeed
     if ($Running -and [int]$Running.pid -eq $Proc.Id) { Write-Output "FEED_STARTED pid=$($Proc.Id) profile=$FeedProfile"; exit 0 }
     if ($Proc.HasExited) { break }
 }
-Write-Output 'FEED_START_FAILED; inspect private stderr log (do not share raw log)'
+Write-Output "FEED_START_FAILED; inspect private stderr log feed_logs/$Stem.stderr.log (do not share raw log)"
 exit 2
