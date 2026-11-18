@@ -4,7 +4,7 @@
   if (!user || user==='0') return;
   const key=`quant-personal-panels-v19-user-${user}`;
   const nav=document.querySelector('.workspace-nav');
-  const groups={overview:['top10','quotes','chart'],news:['news','sentiment'],
+  const groups={overview:['top10','quotes','chart'],news:['official','news','sentiment'],
     research:['research-sentiment','facts'],manage:['watchlist','advanced','diagnostics']};
   let saved={};
   try { saved=JSON.parse(localStorage.getItem(key)||'{}')||{}; } catch (_) { saved={}; }
@@ -18,7 +18,7 @@
   };
   panels.forEach(panel => {
     if (Object.hasOwn(saved,panel.dataset.panel)) panel.open=Boolean(saved[panel.dataset.panel]);
-    else panel.open=['top10','quotes','news','research-sentiment','watchlist'].includes(panel.dataset.panel);
+    else panel.open=['top10','quotes','official','news','research-sentiment','watchlist'].includes(panel.dataset.panel);
     const summary=panel.querySelector(':scope > summary');
     if (summary) summary.setAttribute('aria-expanded',String(panel.open));
     panel.addEventListener('toggle',() => {
