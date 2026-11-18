@@ -36,6 +36,10 @@ class OAuthError(RuntimeError):
     """Safe errors contain no authorization code or token body."""
 
 
+class OAuthTransientError(OAuthError):
+    """Network failure, timeout, HTTP 429 or 5xx: the grant may still be valid; retry."""
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
@@ -51,8 +55,12 @@ def _request_json(url: str, data: dict, *, form: bool = False) -> dict:
                 raise OAuthError(f"OAuth endpoint returned HTTP {response.status}")
             answer = json.loads(response.read(65536).decode("utf-8"))
     except HTTPError as exc:
-        raise OAuthError(f"OAuth endpoint returned HTTP {exc.code}") from None
-    except (URLError, TimeoutError, ValueError) as exc:
+        # 400/401/403 (e.g. invalid_grant) stay terminal; 429/5xx are retryable.
+        error = OAuthTransientError if exc.code == 429 or exc.code >= 500 else OAuthError
+        raise error(f"OAuth endpoint returned HTTP {exc.code}") from None
+    except (URLError, TimeoutError, OSError) as exc:
+        raise OAuthTransientError(f"OAuth endpoint failed: {type(exc).__name__}") from None
+    except ValueError as exc:
         raise OAuthError(f"OAuth endpoint failed: {type(exc).__name__}") from None
     if not isinstance(answer, dict):
         raise OAuthError("OAuth endpoint returned a non-object response")
