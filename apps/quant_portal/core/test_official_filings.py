@@ -96,3 +96,14 @@ class SourceStatusStripTests(TestCase):
         self.assertIn('id="source-status-strip"', html)
         self.assertIn('data-research-url="/research-sentiment.json"', html)
         self.assertIn("信托层级 · 非本 ETF 专属", html)
+
+
+class UnreachableGateTests(TestCase):
+    def test_unreachable_gate_text_and_no_moomoo_gate(self):
+        with override_settings(PERSONAL_MODE=True, DEPLOYMENT_KIND="cloud_private",
+                               PROVIDER_GATES={"moomoo": "", "jin10": "UNREACHABLE_FROM_DEPLOYMENT"}):
+            user = get_user_model().objects.create_user("owner@local.invalid", password="test-password-long")
+            self.client.force_login(user)
+            html = self.client.get(reverse("dashboard")).content.decode()
+        self.assertIn("无法连接金十 MCP 服务", html)
+        self.assertNotIn("等待 moomoo 对云服务器使用的答复", html)

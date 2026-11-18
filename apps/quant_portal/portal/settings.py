@@ -125,7 +125,7 @@ if DEPLOYMENT_KIND not in {"local", "cloud_private"}:
     raise ImproperlyConfigured("DEPLOYMENT_KIND must be local or cloud_private")
 # A provider whose collection is deliberately not started on this deployment
 # (an authorization or permission condition is still open). Empty = no gate.
-PROVIDER_GATE_CODES = {"PENDING_SUPPORT_REPLY", "PENDING_WRITTEN_PERMISSION"}
+PROVIDER_GATE_CODES = {"PENDING_SUPPORT_REPLY", "PENDING_WRITTEN_PERMISSION", "UNREACHABLE_FROM_DEPLOYMENT"}
 PROVIDER_GATES = {name: os.getenv(f"PROVIDER_GATE_{name.upper()}", "") for name in ("moomoo", "jin10")}
 if any(code and code not in PROVIDER_GATE_CODES for code in PROVIDER_GATES.values()):
     raise ImproperlyConfigured("Unknown PROVIDER_GATE_* code")

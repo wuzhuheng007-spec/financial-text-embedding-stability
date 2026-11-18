@@ -112,7 +112,8 @@
       const gates=current?.provider_gates||{};
       const gateText={
         PENDING_SUPPORT_REPLY:['未在此部署启用：等待供应商对云端使用的答复','Not enabled here: awaiting the provider\'s reply on cloud use'],
-        PENDING_WRITTEN_PERMISSION:['未在此部署启用：需供应商书面许可','Not enabled here: provider written permission required']};
+        PENDING_WRITTEN_PERMISSION:['未在此部署启用：需供应商书面许可','Not enabled here: provider written permission required'],
+        UNREACHABLE_FROM_DEPLOYMENT:['未在此部署启用：服务器无法连接供应商服务','Not enabled here: this server cannot reach the provider']};
       const quoteSpan=gates.moomoo
         ? node('span','health-warning',bilingual(['行情（moomoo）：'+gateText[gates.moomoo][0],'Quotes (moomoo): '+gateText[gates.moomoo][1]]))
         : node('span',receiving?'health-ok':'health-warning',bilingual(receiving?['行情：正在接收推送','Quotes: receiving push']:['行情：请检查更新状态','Quotes: check update status']));

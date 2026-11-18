@@ -15,7 +15,7 @@
   <p class="muted"><strong>此部署尚未启用的数据源</strong>（未接通，不是故障；页面不显示替代或演示数据）：</p>
   <ul class="muted">
     {% if provider_gates.moomoo %}<li>moomoo 行情：{% if provider_gates.moomoo == 'PENDING_SUPPORT_REPLY' %}等待 moomoo 对云服务器使用的答复{% else %}需 moomoo 书面许可{% endif %}，行情卡、报价曲线为空。</li>{% endif %}
-    {% if provider_gates.jin10 %}<li>金十新闻：{% if provider_gates.jin10 == 'PENDING_WRITTEN_PERMISSION' %}金十用户协议要求书面授权后才能在非金十服务器保存内容{% else %}等待金十答复{% endif %}，新闻流与“关注事件 Top 10”为空。</li>{% endif %}
+    {% if provider_gates.jin10 %}<li>金十新闻：{% if provider_gates.jin10 == 'UNREACHABLE_FROM_DEPLOYMENT' %}此服务器（美国）无法连接金十 MCP 服务（连接超时），金十快讯仍由本机采集{% elif provider_gates.jin10 == 'PENDING_WRITTEN_PERMISSION' %}金十用户协议要求书面授权后才能在非金十服务器保存内容{% else %}等待金十答复{% endif %}，新闻流与“关注事件 Top 10”为空。</li>{% endif %}
   </ul>
 </div>
 {% endif %}
@@ -144,7 +144,7 @@
 <details class="workspace-panel" id="panel-sentiment" data-panel="sentiment"><summary>新闻情绪观察 <span class="panel-count" id="sentiment-count">待分析</span></summary><p class="muted">仅描述已缓存、已去重的供应商事件；与实际行情变化分列，不作因果判断。</p><div id="personal-sentiment"></div></details>
 <details class="workspace-panel" id="panel-research-sentiment" data-panel="research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no"><summary><span id="research-sentiment-heading">研究情绪</span> <span class="panel-count" id="research-sentiment-count">读取中</span></summary><p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的本机研究候选；文字语气不代表报道属实或预测收益。缓存回放与新收到版本分开。</p><div id="research-sentiment-content" aria-live="polite"></div></details>
 <details class="workspace-panel" id="panel-advanced" data-panel="advanced"><summary>高级设置</summary><p><a href="{% url 'user_settings' %}">时区与语言设置</a></p><p class="muted" id="analysis-worker-state">分析服务状态待读取</p></details>
-<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v19-1"></script>
+<script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=personal-v19-2"></script>
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/personal_timeline.js' %}"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v3"></script>
