@@ -70,12 +70,15 @@ def classify_feed(cache_db: Path, enabled: dict[str, bool], alive: bool) -> tupl
         if not on or provider not in rows:
             continue
         row = rows[provider]
-        if row["state"] in TERMINAL_STATES or (row.get("error_class") or "") in TERMINAL_ERRORS:
-            return HOLD, f"{provider}:{row['state']}:{row.get('error_class')}"
+        # The feed store names the column last_error_class; older synthetic
+        # fixtures used error_class. Read either so quota/USER_STOP are seen.
+        error = row.get("last_error_class") or row.get("error_class") or ""
+        if row["state"] in TERMINAL_STATES or error in TERMINAL_ERRORS:
+            return HOLD, f"{provider}:{row['state']}:{error}"
         if row["state"] == "REQUEST_BUDGET_PAUSED":
             continue  # local daily cap: the thread waits by itself
-        if not row.get("worker_alive") and row.get("error_class") != "USER_STOP":
-            dead.append(f"{provider}:{row['state']}:{row.get('error_class')}")
+        if not row.get("worker_alive") and error != "USER_STOP":
+            dead.append(f"{provider}:{row['state']}:{error}")
     if dead:
         return RESTART, "business thread stopped: " + ",".join(dead)
     return (OK, "providers running") if alive else (RESTART, "process exited")
