@@ -37,7 +37,7 @@ for vol in personal_var private_artifacts; do
   mkdir -p "$DIR/sqlite/$vol"; chown 10001:10001 "$DIR/sqlite/$vol"
   docker run --rm --network none --user 10001:10001 --entrypoint python     -v "quant-personal_$vol:/src" -v "$DIR/sqlite/$vol:/out" -v "$HOST_TOOLS/quant_sqlite_backup.py:/x/quant_sqlite_backup.py:ro"     "$APP_IMAGE" /x/quant_sqlite_backup.py backup /src /out </dev/null | sed "s/^/$vol: /" >> "$DIR/sqlite.log"
 done
-chown -R root:root "$DIR/sqlite"
+chown -R root:root "$DIR/sqlite"; chmod -R go-rwx "$DIR/sqlite"
 
 # 3. Manifest, then publish atomically
 ( cd "$DIR" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS )
