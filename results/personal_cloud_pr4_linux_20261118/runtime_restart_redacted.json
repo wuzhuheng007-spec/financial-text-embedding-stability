@@ -2,8 +2,10 @@
  "schema": "pr4_restart_recovery_redacted_1",
  "boot_time_local": "2026-11-18T06:21:54+08:00",
  "code": {
-  "pr_head_remote": "61b5f44f2cd67ba353c4d494ba1aeffcbf972fe0",
-  "production_dir_head": "61b5f44 (financial-text-embedding-stability-sync-20261113, branch codex/sync-research-progress-20261113)",
+  "pr_head_remote_before_round": "61b5f44f2cd67ba353c4d494ba1aeffcbf972fe0",
+  "production_dir": "financial-text-embedding-stability-sync-20261113",
+  "production_dir_branch": "codex/sync-research-progress-20261113",
+  "production_dir_head": "61b5f44f2cd67ba353c4d494ba1aeffcbf972fe0",
   "production_code_changed_this_round": false
  },
  "pre_restart_state": "all five services stopped after reboot; stale DB/PID state still claimed feed worker_alive=1 and v42/v45 RUNNING",
@@ -14,42 +16,50 @@
    "portal": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "ff4588fa34910e18"
+    "sha256": "ff4588fa34910e1857a121b810fcaf40e1355b491a26ae1a1533451dd04d90ed",
+    "bytes": 229376
    },
    "feed": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "8fc0c42f4c84cc7c"
+    "sha256": "8fc0c42f4c84cc7c16f9182cee7b6527c2b4f4b0afd645db30ff69d023e180e1",
+    "bytes": 242896896
    },
    "translation": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "be48bf5a3a09ee61"
+    "sha256": "be48bf5a3a09ee61f691caf02d2c760ccc27282df0335d101d734168ecfdf8a5",
+    "bytes": 36864
    },
    "analysis_v16": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "fe072f5cc18fd126"
+    "sha256": "fe072f5cc18fd1266dfdfd9b096c34a33b5ce601aaabac1dcea5c00eea13e8bb",
+    "bytes": 471040
    },
    "scores_v41": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "eabe8183875be24f"
+    "sha256": "eabe8183875be24f394caa08fc37f044cb1f35fc28579ae175e338aaa6f3f4fd",
+    "bytes": 2375680
    },
    "queue_v42": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "7c446e4495347752"
+    "sha256": "7c446e4495347752a201a771c62f9c6c957320dc7f67e70157db1fd9d70e8f18",
+    "bytes": 753664
    },
    "labels_v44": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "05adeee9968e4ec4"
+    "sha256": "05adeee9968e4ec47327d7488c4b3506f31044c19031a46cd6304299641414ac",
+    "bytes": 139264
    },
    "research_v4": {
     "quick_check": "ok",
     "integrity_check": "ok",
-    "sha256_prefix": "a5e503fa3b862408"
+    "sha256": "a5e503fa3b86240859add1281ca948079d310cefac43602f439975a0600c9e1a",
+    "bytes": 192512
    }
   },
   "location": "private artifacts/, not in Git"
@@ -64,7 +74,7 @@
  },
  "services_started_utc": {
   "portal": "22:43 via local.ps1 start (portal venv)",
-  "feed": "22:43 via feed_personal.ps1 start",
+  "feed": "22:43 via feed_personal.ps1 start (one process carries Jin10 and moomoo push)",
   "v42_research": "22:43:59 via isolated v3 venv (torch 2.9.1+cpu)",
   "v45_daily": "22:44:02",
   "analysis_v16": "not started; ANALYSIS_PAUSED_FOR_V17 kept"
@@ -108,7 +118,6 @@
  "jin10_coverage": "POSSIBLE_GAP_NO_PAGE_OVERLAP retained; reboot gap 22:21-22:43Z not backfilled",
  "forward_research": {
   "snapshots": 1,
-  "snapshot_id_prefix": "fa8cb763",
   "kind": "ON_TIME_SCHEDULED",
   "cutoff_utc": "2026-11-17T21:15:00Z",
   "signal_available_at_utc": "2026-11-17T21:16:05.265738Z",
@@ -128,6 +137,25 @@
   "qualified_return_labels": 0,
   "missed_cutoffs_during_downtime": 0,
   "next_cutoff": "2026-11-19 05:15 Asia/Shanghai",
-  "changes_this_round": "none; read only"
+  "changes_this_round": "none; read only",
+  "snapshot_id": "fa8cb76334c94f7560aab543c99cf9f9",
+  "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d"
+ },
+ "service_count_definition": {
+  "business_functions": 5,
+  "processes": 4,
+  "mapping": {
+   "portal": "process 1 (runserver, 127.0.0.1:8765)",
+   "jin10": "process 2 (scripts.quant_personal_feed.cli run, thread)",
+   "moomoo_push": "process 2 (same feed process, thread)",
+   "v42_research": "process 3",
+   "v45_daily": "process 4"
+  },
+  "stopped_after_reboot": "5 of 5 functions / 4 of 4 processes",
+  "restored": "5 of 5 functions / 4 of 4 processes",
+  "not_started_by_design": [
+   "v16 AI analysis worker (PAUSED_FOR_V17)",
+   "moomoo REST snapshot thread (HTTP 439, SECURITY_POLICY_BLOCKED)"
+  ]
  }
 }

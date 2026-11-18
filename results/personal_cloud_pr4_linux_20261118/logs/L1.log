@@ -1,0 +1,2 @@
+$ docker run --rm --network none --entrypoint sh quant-personal-app:pr4test -c find /app -xdev \( -name '*.sqlite3*' -o -name '*.db' -o -name '.env' -o -name '*.dpapi' -o -name '*.sealed' -o -name '*private*' -o -name '*.key' -o -name 'personal_invite.txt' -o -name 'local_secret.txt' \) -print | tee /dev/stderr | wc -l | grep -qx 0
+# exit=0 expected=0 seconds=0.6

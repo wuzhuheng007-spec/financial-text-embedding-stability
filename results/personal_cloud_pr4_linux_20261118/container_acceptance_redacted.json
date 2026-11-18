@@ -39,7 +39,7 @@
   "/readyz/ would 301 under SECURE_SSL_REDIRECT -> health endpoints exempt"
  ],
  "results": {
-  "postgres_init_migrate": "PASS: db healthy, 25 Django migrations applied on PostgreSQL 16",
+  "postgres_init_migrate": "PASS: db healthy; migrate exited 0; first-run log ended with core.0005-0007 and sessions.0001 'OK' (total migration count not recorded)",
   "settings_in_container": {
    "DEBUG": false,
    "PERSONAL_MODE": true,
@@ -96,5 +96,6 @@
   "real_return_labels": "NOT_RUN: none due; no prices generated"
  },
  "stopped_after_test": true,
- "test_volumes_retained": true
+ "test_volumes_retained": true,
+ "superseded_by": "verification_matrix.csv (re-run with exit codes, 2026-11-18 00:13-00:22 UTC)"
 }

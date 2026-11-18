@@ -1,0 +1,4 @@
+$ powershell.exe -NoProfile -ExecutionPolicy Bypass -File apps/quant_portal/ops/analysis_personal.ps1 status
+# exit=0 expected=0 seconds=1.6
+ANALYSIS_PAUSED_FOR_V17
+{"worker": {"owner_id": 1, "pid": 269616, "heartbeat_at": "2026-11-16T08:33:04.152773Z", "state": "RUNNING", "model_revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1", "prompt_version": "personal_news_conditional_v16_4", "schema_version": "personal_news_conditional_schema_v16_2", "last_error_class": null}, "effective_state": "PAUSED_FOR_V17", "counts": {"DRAFT": 13, "FALLBACK": 33, "PENDING": 10, "RUNNING": 1}}

@@ -1,0 +1,9 @@
+$ docker run --rm -e HOME=/tmp -v C:\Users\ROG\Documents\ChatGPT\quant\worktrees\personal_cloud_pr4_20261118:/src:ro --entrypoint sh quant-personal-app:pr4test -c mkdir -p /tmp/s && cd /src && tar --exclude=.git --exclude=__pycache__ --exclude=.pytest_cache -cf - apps/quant_portal scripts configs results tests deploy pyproject.toml | tar -xf - -C /tmp/s && cd /tmp/s && pip install --user -q pytest==9.1.1 >/dev/null 2>&1 && python -m pytest -q -p no:cacheprovider tests/test_server_token_store.py tests/test_quant_personal_feed.py tests/test_personal_feed_push_batching.py tests/test_personal_feed_lock_recovery.py tests/test_personal_feed_query_index.py tests/test_personal_feed_quote_prune.py tests/test_personal_production_settings.py tests/test_quant_personal_sessions_v13.py tests/test_quant_personal_timeline_v14.py && python -m unittest scripts.news_sentiment_factor_v45.test_v45
+# exit=0 expected=0 seconds=19.5
+........................................                                 [100%]
+40 passed in 4.06s
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 2.134s
+
+OK

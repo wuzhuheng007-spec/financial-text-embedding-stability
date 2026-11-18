@@ -10,13 +10,21 @@
 | migrate | `migrate` | backend | 迁移后退出 |
 | web | `web`（gunicorn） | backend + edge | 不发布端口，只经 proxy 访问 |
 | proxy | Caddy | edge | 唯一对外端口；HTTPS 在此终止 |
-| feed | `feed` | backend + egress | moomoo 推送 + 金十；单实例 fcntl 锁 |
+| feed | `feed` | backend + egress | moomoo 推送 + 金十（云端配置默认关闭金十，待书面许可）；单实例 fcntl 锁 |
 | research | `research`（v42） | **none** | 中文评分；也是 v43 日度快照与标签状态的**唯一**调度者 |
 | daily-price | `daily-price`（v45） | egress | 有上限的日线/标签任务 |
 
 `manage.py run_worker` 只清理会话，不作为采集或研究 worker 使用。私人 SQLite（采集缓存、评分、队列、标签）保留 SQLite + WAL，放在本机持久化命名卷 `personal_var`、`private_artifacts`；**不要放 NFS/共享网络盘**。所有应用进程以 uid 10001 运行，根文件系统只读；Caddy 使用官方镜像（容器内 root，仅保留 NET_BIND_SERVICE）。日志 `local` 驱动 10 MB×5 轮转；`restart: unless-stopped`。
 
 健康检查区分业务：`health feed` 要求采集锁被持有且每个启用的供应商心跳 ≤180 s、金十最近成功 ≤15 min、moomoo 最近推送 ≤5 min；`health research` 要求进程身份存活且有积压时最近成功 ≤30 min；`health daily-price` 要求进程存活且状态 RUNNING。`health web` 只代表页面，不代表采集。
+
+## 开机与异常恢复
+
+服务器上 `systemctl enable docker` 后，`unless-stopped` 容器随 Docker 启动。隔离测试中进程自行退出（SIGTERM/SIGINT）后 3.2 秒内被自动重启；`docker kill` 被 Docker 视为手动停止，**不会**自动重启，需要 `docker compose up -d <service>`。宿主重启未在本机测试。
+
+## 容量
+
+镜像合计约 2.8 GB，模型 0.41 GB。采集缓存中 `session_quotes` 没有保留上限，实测约 0.10 GB/天；70 GiB 系统盘约 5 个月内够用，长期需加保留策略。详见 [disk_sizing_redacted.json](../../results/personal_cloud_pr4_linux_20261118/disk_sizing_redacted.json)。
 
 ## 构建
 
@@ -50,7 +58,7 @@ docker compose -f deploy/linux/compose.yaml --env-file /srv/quant/private.env ru
 
 1. 本机：停止 feed、v42、v45（门户可继续只读），用 SQLite 在线备份接口备份全部私人库，`quick_check` 通过后记录哈希。
 2. 账户迁移：在本机 `manage.py dumpdata auth.user core --indent 1 > accounts.json`（不含会话），服务器 `migrate` 后 `loaddata`。**主键必须保留**：采集缓存的 `owner_binding` 绑定的是 owner ID，ID 不一致时 feed 会拒绝启动（失败即停）。
-3. 把 SQLite 备份拷入 `personal_var` / `private_artifacts` 卷（包含 v42 队列中的 `association_revisions`；缺此表时日度快照会拒绝生成）。核对行数、源哈希、14 张历史事实卡、6 条自选、首个快照 `fa8cb763…` 的截止和可用时间不变。
+3. 把 SQLite 备份拷入 `personal_var` / `private_artifacts` 卷（包含 v42 队列中的 `association_revisions`；缺此表时日度快照会拒绝生成）。核对行数、源哈希、14 张历史事实卡、6 条自选、首个快照 `fa8cb76334c94f7560aab543c99cf9f9` 的截止和可用时间不变。
 4. 依次启动 db → migrate → web/proxy → research → feed → daily-price；用 `health <role>` 和真实业务时间判断，不以 HTTP 200 代替。
 5. 本机与云端**不得同时**运行 feed / research / daily-price。漏过的截止按协议标记 LATE，不倒填 `signal_available_at`。
 

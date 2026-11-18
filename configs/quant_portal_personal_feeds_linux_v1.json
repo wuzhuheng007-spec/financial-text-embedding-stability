@@ -23,7 +23,7 @@
     "reconnect_max_seconds": 60
   },
   "jin10": {
-    "enabled": true,
+    "enabled": false,
     "endpoint": "https://mcp.jin10.com/mcp",
     "tool": "list_flash",
     "poll_interval_seconds": 60,
@@ -38,5 +38,5 @@
     "news_versions_per_item": 5
   },
   "owner_resolver": "django_orm",
-  "_comment": "Linux container copy of v11: same symbols, limits and mapping receipt; owner resolved through Django/PostgreSQL. REST snapshot stays disabled (HTTP 439)."
+  "_comment": "Linux container copy of v11: same symbols, limits and mapping receipt; owner resolved through Django/PostgreSQL. REST snapshot stays disabled (HTTP 439). Jin10 stays disabled in the cloud until Jin10 confirms in writing that server-side storage is allowed (user agreement section 6); see docs/deployment/quant_portal/supplier_cloud_terms_20261118.zh.md."
 }

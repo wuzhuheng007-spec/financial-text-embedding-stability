@@ -1,0 +1,3 @@
+$ docker run --rm --network none --read-only --tmpfs /tmp:size=64m -w /app --entrypoint python quant-personal-research:pr4test -m scripts.news_sentiment_factor_v43.verify_daily
+# exit=0 expected=0 seconds=1.0
+{"schema": "news_sentiment_v43_targeted_checks_1", "checks": {"old_news_excluded": true, "exclusive_boundary": true, "late_scoring": true, "revision_no_double_first": true, "weekend_holiday_partial": true, "unverified_security_block": true, "late_signal_missed_entry": true, "no_news_vs_neutral": true, "interrupted_no_release": true, "duplicate_keeps_kind_time": true, "late_witness_hidden": true, "scoring_config_isolation": true, "partial_article_excluded": true}, "passed": 13, "total": 13, "kind": "SYNTHETIC_ISOLATED_NO_REAL_SCORE_OR_RETURN_LABEL"}
