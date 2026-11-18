@@ -195,6 +195,7 @@ def _filing_rows(sub: dict, cik: int, forms: set[str], config: dict, today) -> l
     n = len(recent.get("accessionNumber", []))
     cols = {k: recent.get(k, [None] * n) for k in keys}
     cutoff = (today - timedelta(days=config["window_days"])).isoformat()
+    periodic_floor = (today - timedelta(days=config.get("periodic_max_age_days", 400))).isoformat()
     rows, latest_periodic = [], {}
     for i in range(n):
         r = {k: cols[k][i] if i < len(cols[k]) else None for k in keys}
@@ -203,7 +204,8 @@ def _filing_rows(sub: dict, cik: int, forms: set[str], config: dict, today) -> l
         r["in_window"] = r["filingDate"] >= cutoff
         if r["in_window"]:
             rows.append(r)
-        elif config["keep_latest_periodic_outside_window"] and r["form"] in config["periodic_forms"]:
+        elif (config["keep_latest_periodic_outside_window"] and r["form"] in config["periodic_forms"]
+              and r["filingDate"] >= periodic_floor):
             best = latest_periodic.get(r["form"])
             if best is None or r["filingDate"] > best["filingDate"]:
                 latest_periodic[r["form"]] = r
@@ -412,8 +414,8 @@ def read_for_portal(db_path: Path, symbols: set[str], limit: int = 200) -> dict:
             day = datetime.fromisoformat(batch_row[0].replace("Z", "+00:00")).date()
             window = {"days": batch_row[1], "start_filing_date": (day - timedelta(days=batch_row[1])).isoformat(),
                       "basis": "filingDate >= start_filing_date, computed by the last successful batch (UTC date)",
-                      "supplementary": "latest periodic report per form (10-K, 10-Q, 20-F, N-CSR, N-CSRS) "
-                                       "filed before the window, kept as context"}
+                      "supplementary": "latest periodic report per form (10-K, 10-Q, 20-F, N-CSR, N-CSRS, N-30D) "
+                                       "filed before the window and within the configured maximum age, kept as context"}
     return {"state": (state["last_attempt_status"] if state else "NO_DATA"), "source": SOURCE,
             "source_state": dict(state) if state else None, "window": window,
             "last_success_batch": dict(last_success) if last_success else None,

@@ -209,3 +209,14 @@ def test_blank_sec_fields_are_stored_as_null(tmp_path):
     routes = {**ROUTES, "CIK0001174610": fund}
     run(db, routes=routes, symbols=["TQQQ"])
     assert rows(db, "select sic, sic_description from instruments where symbol='TQQQ'") == [(None, None)]
+
+
+def test_supplementary_periodic_reports_have_a_maximum_age(tmp_path):
+    db = tmp_path / "f.sqlite3"
+    old_fund = _sub("SPDR S&P 500 ETF TRUST", "other", [
+        ("0000884394-04-000001", "N-CSR", "2004-12-03", "2004-09-30", "2004-12-03T10:00:00.000Z", "o.htm", "N-CSR", "", 5),
+        ("0000884394-26-000002", "N-30D", "2026-05-29", "2026-03-31", "2026-05-29T17:25:34.000Z", "s.htm", "N-30D", "", 5)])
+    routes = {**ROUTES, "company_tickers_exchange": {"fields": EXCHANGE["fields"],
+              "data": EXCHANGE["data"] + [[884394, "SPDR S&P 500 ETF TRUST", "SPY", "NYSE"]]}, "CIK0000884394": old_fund}
+    run(db, routes=routes, symbols=["SPY"])
+    assert rows(db, "select form, filing_date, in_window from filings") == [("N-30D", "2026-05-29", 0)]

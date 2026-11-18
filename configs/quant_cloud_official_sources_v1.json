@@ -19,7 +19,8 @@
     "10-Q",
     "20-F",
     "N-CSR",
-    "N-CSRS"
+    "N-CSRS",
+    "N-30D"
   ],
   "forms": {
     "operating": [
@@ -64,5 +65,7 @@
     ]
   },
   "_comment": "Official SEC EDGAR metadata only (no filing bodies stored). SEC_USER_AGENT with a contact address comes from the private environment, never from this file.",
-  "_comment_fund_forms": "NPORT-P excluded: multi-series trusts (iShares, ProShares) file one per fund, so a trust-level NPORT-P cannot be attributed to the watched ETF."
+  "_comment_fund_forms": "NPORT-P excluded: multi-series trusts (iShares, ProShares) file one per fund, so a trust-level NPORT-P cannot be attributed to the watched ETF.",
+  "periodic_max_age_days": 400,
+  "_comment_periodic": "Supplementary context only: the latest periodic report per form filed before the window, and only if filed within periodic_max_age_days (a 2004 N-CSR is not a current report). N-30D is the semiannual report of unit investment trusts such as SPY."
 }
