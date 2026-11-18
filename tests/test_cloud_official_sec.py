@@ -117,7 +117,7 @@ def test_rerun_is_idempotent(tmp_path):
 
 def test_failed_refresh_keeps_last_success(tmp_path):
     db = tmp_path / "f.sqlite3"
-    run(db)
+    run(db, symbols=("NVDA", "TQQQ"))  # a complete (non-PARTIAL) success
     before = rows(db, "select * from filings order by accession_number")
     with pytest.raises(sec.SourceError):
         run(db, fail={CONFIG["endpoints"]["ticker_exchange_index"]: URLError("down")})
@@ -220,3 +220,18 @@ def test_supplementary_periodic_reports_have_a_maximum_age(tmp_path):
               "data": EXCHANGE["data"] + [[884394, "SPDR S&P 500 ETF TRUST", "SPY", "NYSE"]]}, "CIK0000884394": old_fund}
     run(db, routes=routes, symbols=["SPY"])
     assert rows(db, "select form, filing_date, in_window from filings") == [("N-30D", "2026-05-29", 0)]
+
+
+def test_partial_never_overwrites_last_complete_success_and_reports_failure_scope(tmp_path):
+    db = tmp_path / "f.sqlite3"
+    ok = run(db, symbols=("NVDA", "TQQQ"))
+    first = rows(db, "select last_success_at_utc, last_success_batch_id from source_state")[0]
+    assert ok["status"] == "SUCCESS" and first[1] == ok["batch_id"]
+    part = run(db)  # includes ZZZZ, which SEC does not know
+    state = rows(db, "select last_attempt_status, last_success_at_utc, last_success_batch_id, last_partial_batch_id from source_state")[0]
+    assert part["status"] == "PARTIAL"
+    assert state == ("PARTIAL", first[0], first[1], part["batch_id"])
+    view = sec.read_for_portal(db, {"NVDA", "TQQQ", "ZZZZ"})
+    assert view["latest_data_batch_rejects"] == [{"source_key": "ZZZZ", "reason": "SYMBOL_NOT_IN_SEC_TICKER_INDEXES", "retryable": 0}]
+    assert view["window"]["batch_status"] == "PARTIAL"
+    assert view["window"]["reference_date_utc"] == "2026-11-19" and view["window"]["start_filing_date"] == "2026-10-20"

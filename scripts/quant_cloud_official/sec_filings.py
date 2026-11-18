@@ -182,7 +182,11 @@ def connect(path: Path) -> sqlite3.Connection:
     con.executescript(SCHEMA)
     # Additive, idempotent migration for databases created by the first version.
     for table, column, ddl in (("filings", "in_scope", "INTEGER NOT NULL DEFAULT 1"),
-                               ("batches", "retired", "INTEGER NOT NULL DEFAULT 0")):
+                               ("batches", "retired", "INTEGER NOT NULL DEFAULT 0"),
+                               ("batches", "window_reference_date", "TEXT"),
+                               ("batches", "window_start_filing_date", "TEXT"),
+                               ("source_state", "last_partial_at_utc", "TEXT"),
+                               ("source_state", "last_partial_batch_id", "TEXT")):
         if column not in {r[1] for r in con.execute(f"PRAGMA table_info({table})")}:
             con.execute(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}")
     return con
@@ -221,9 +225,12 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
     today = today or datetime.now(timezone.utc).date()
     started = utc_now()
     with closing(connect(db_path)) as con:
-        con.execute("INSERT INTO batches(batch_id,started_at_utc,status,code_version,config_sha256,window_days,symbols_json)"
-                    " VALUES(?,?,?,?,?,?,?)", (batch_id, started, "RUNNING", code_version(), cfg_sha,
-                                               config["window_days"], "[]"))
+        # The window is anchored on the batch's UTC date (SEC filing dates are US dates; the
+        # Beijing calendar date can already be one day later). Both values are stored.
+        con.execute("INSERT INTO batches(batch_id,started_at_utc,status,code_version,config_sha256,window_days,symbols_json,"
+                    "window_reference_date,window_start_filing_date) VALUES(?,?,?,?,?,?,?,?,?)",
+                    (batch_id, started, "RUNNING", code_version(), cfg_sha, config["window_days"], "[]",
+                     today.isoformat(), (today - timedelta(days=config["window_days"])).isoformat()))
         con.execute("INSERT INTO source_state(source,last_attempt_at_utc,last_attempt_status,last_batch_id) VALUES(?,?,?,?)"
                     " ON CONFLICT(source) DO UPDATE SET last_attempt_at_utc=excluded.last_attempt_at_utc,"
                     " last_attempt_status=excluded.last_attempt_status, last_batch_id=excluded.last_batch_id",
@@ -363,10 +370,17 @@ def refresh(config: dict, db_path: Path, *, symbols: list[str] | None = None,
                             (utc_now(), status, json.dumps(symbols), json.dumps(client.inputs), counts["read_count"],
                              counts["inserted"], counts["updated"], counts["unchanged"], counts["rejected"],
                              counts["retired"], batch_id))
-                con.execute("""UPDATE source_state SET last_attempt_status=?,last_success_at_utc=?,
-                    data_as_of=COALESCE((SELECT max(filing_date) FROM filings WHERE in_scope=1),?),last_success_batch_id=?,
-                    last_error_class=CASE WHEN ?='PARTIAL' THEN 'PARTIAL_REJECTS' ELSE last_error_class END
-                    WHERE source=?""", (status, utc_now(), data_as_of, batch_id, status, SOURCE))
+                # Only a complete batch moves the "last success"; a PARTIAL batch is recorded on its own
+                # fields so it can never overwrite the time of the last complete success.
+                if status == "SUCCESS":
+                    con.execute("""UPDATE source_state SET last_attempt_status=?,last_success_at_utc=?,
+                        data_as_of=COALESCE((SELECT max(filing_date) FROM filings WHERE in_scope=1),?),
+                        last_success_batch_id=? WHERE source=?""", (status, utc_now(), data_as_of, batch_id, SOURCE))
+                else:
+                    con.execute("""UPDATE source_state SET last_attempt_status=?,last_partial_at_utc=?,
+                        data_as_of=COALESCE((SELECT max(filing_date) FROM filings WHERE in_scope=1),?),
+                        last_partial_batch_id=?,last_error_class='PARTIAL_REJECTS',last_error_at_utc=?
+                        WHERE source=?""", (status, utc_now(), data_as_of, batch_id, utc_now(), SOURCE))
                 con.execute("COMMIT")
             except BaseException:
                 con.execute("ROLLBACK")
@@ -404,21 +418,34 @@ def read_for_portal(db_path: Path, symbols: set[str], limit: int = 200) -> dict:
             FROM filings f JOIN filing_symbols s ON s.accession_number=f.accession_number
             WHERE s.symbol IN ({marks}) AND f.in_scope=1 GROUP BY f.accession_number
             ORDER BY f.filing_date DESC, f.accession_number DESC LIMIT ?""", [*sorted(symbols), limit])]
-    window = None
-    if last_success:
-        batch_row = None
-        with closing(sqlite3.connect(f"file:{db_path.as_posix()}?mode=ro", uri=True, timeout=5)) as con:
-            batch_row = con.execute("SELECT started_at_utc, window_days FROM batches WHERE batch_id=?",
-                                    (last_success["batch_id"],)).fetchone()
-        if batch_row:
-            day = datetime.fromisoformat(batch_row[0].replace("Z", "+00:00")).date()
-            window = {"days": batch_row[1], "start_filing_date": (day - timedelta(days=batch_row[1])).isoformat(),
-                      "basis": "filingDate >= start_filing_date, computed by the last successful batch (UTC date)",
+    window, data_batch, rejects = None, None, []
+    with closing(sqlite3.connect(f"file:{db_path.as_posix()}?mode=ro", uri=True, timeout=5)) as con:
+        con.row_factory = sqlite3.Row
+        cols = {r[1] for r in con.execute("PRAGMA table_info(batches)")}
+        ids = [i for i in ((state["last_success_batch_id"] if state else None),
+                           (state["last_partial_batch_id"] if state and "last_partial_batch_id" in state.keys() else None)) if i]
+        rows = [con.execute("SELECT rowid AS seq, * FROM batches WHERE batch_id=?", (i,)).fetchone() for i in ids]
+        rows = [r for r in rows if r]
+        if rows:
+            # Insertion order, not started_at_utc: two batches can start within the same second.
+            data_batch = dict(max(rows, key=lambda r: r["seq"]))
+            data_batch.pop("inputs_json", None)
+            rejects = [dict(r) for r in con.execute("SELECT source_key, reason, retryable FROM rejects WHERE batch_id=?",
+                                                    (data_batch["batch_id"],))]
+    if data_batch:
+        day = datetime.fromisoformat(data_batch["started_at_utc"].replace("Z", "+00:00")).date()
+        ref = data_batch.get("window_reference_date") or day.isoformat()
+        start = data_batch.get("window_start_filing_date") or (day - timedelta(days=data_batch["window_days"])).isoformat()
+        if data_batch:
+            window = {"days": data_batch["window_days"], "reference_date_utc": ref, "start_filing_date": start,
+                      "batch_id": data_batch["batch_id"], "batch_status": data_batch["status"],
+                      "basis": "filingDate >= start_filing_date = (batch UTC date - window days); SEC filing dates are US dates",
                       "supplementary": "latest periodic report per form (10-K, 10-Q, 20-F, N-CSR, N-CSRS, N-30D) "
                                        "filed before the window and within the configured maximum age, kept as context"}
     return {"state": (state["last_attempt_status"] if state else "NO_DATA"), "source": SOURCE,
             "source_state": dict(state) if state else None, "window": window,
             "last_success_batch": dict(last_success) if last_success else None,
+            "latest_data_batch_rejects": rejects,
             "instruments": inst, "filings": filings}
 
 

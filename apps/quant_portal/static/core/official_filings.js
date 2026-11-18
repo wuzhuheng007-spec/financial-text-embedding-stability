@@ -66,6 +66,10 @@
       parts.push(`最近尝试 ${fmt(ss.last_attempt_at_utc)}`, `最近成功 ${fmt(ss.last_success_at_utc)}`,
         `数据截至（最新申报日）${ss.data_as_of || '无'}`);
       if (ss.last_attempt_status === 'FAILED') parts.push(`最近错误 ${ss.last_error_class}（${fmt(ss.last_error_at_utc)}）· 下列为上次成功的数据`);
+      if (ss.last_attempt_status === 'PARTIAL') {
+        const failed = (data.latest_data_batch_rejects || []).map(r => `${r.source_key}（${r.reason}${r.retryable ? '，可重试' : ''}）`).join('、');
+        parts.push(`最近一次为部分成功（${fmt(ss.last_partial_at_utc)}）· 失败范围：${failed || '见批次记录'} · 最近完整成功仍为 ${fmt(ss.last_success_at_utc)}`);
+      }
     } else parts.push('尚未运行过采集');
     if (b) parts.push(`批次 ${b.batch_id} · 代码 ${String(b.code_version || '').slice(0, 7)}`);
     state.textContent = parts.join(' · ');
@@ -106,6 +110,7 @@
     }
     const blocks = [];
     blocks.push(el('h3', 'fact-group-title', `近 ${w?.days || 30} 天公告（申报日 ≥ ${w?.start_filing_date || '窗口起点'}）· ${recent.length} 条`));
+    if (w) blocks.push(el('p', 'muted', `窗口按批次运行时的 UTC 日期 ${w.reference_date_utc} 往前 ${w.days} 天计算（SEC 申报日为美国日期；北京时间可能已是次日）。`));
     if (recent.length) { const ul = el('ul', 'official-list'); recent.forEach(f => ul.append(filingItem(f))); blocks.push(ul); }
     else blocks.push(el('div', 'empty-state', '窗口内没有符合配置表单的申报。'));
     blocks.push(el('h3', 'fact-group-title', `补充历史报告（窗口外，每类定期报告只保留最近一期）· ${supplementary.length} 条`));
