@@ -68,7 +68,8 @@ def to_utc(value) -> str | None:
             dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
         if dt.tzinfo is None:
             return None
-        return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        dt = dt.astimezone(timezone.utc)  # milliseconds kept when the provider sends them (updates can share a second)
+        return dt.strftime("%Y-%m-%dT%H:%M:%S") + (f".{dt.microsecond // 1000:03d}Z" if dt.microsecond else "Z")
     except (TypeError, ValueError):
         return None
 
@@ -112,7 +113,7 @@ def _names(lst) -> list[str]:
     """Benzinga lists come as [{"name": ...}] or as plain strings; accept both."""
     out = []
     for x in lst or []:
-        v = x.get("name") if isinstance(x, dict) else x if isinstance(x, str) else None
+        v = (x.get("name") or x.get("symbol")) if isinstance(x, dict) else x if isinstance(x, str) else None
         if v:
             out.append(str(v))
     return out
@@ -135,23 +136,30 @@ def normalize_benzinga(msg: dict) -> dict:
     if not isinstance(c, dict):
         raise ValueError(f"unexpected content type {type(c).__name__}")
     action = str(data.get("action", "")).lower()
-    return {"upstream": "benzinga", "upstream_id": str(data.get("id") or c.get("id")), "message_id": msg.get("id"),
+    # Observed live (2026-11-19, websocket/v1, kind News/v1): data.id is a per-EVENT id, content.id is the
+    # ARTICLE id (same as REST id and the benzinga.com URL), content.revision_id the revision; times are
+    # content.created_at/updated_at (ISO, ms, Z); symbols are content.securities[{symbol, exchange, primary}];
+    # authors/channels/tags are string lists. The documented created/updated/stocks/author are accepted too.
+    authors = c.get("author") or c.get("authors")
+    return {"upstream": "benzinga", "upstream_id": str(c.get("id") or data.get("id")), "message_id": msg.get("id") or data.get("id"),
+            "revision_id": c.get("revision_id"),
             "action": {"created": "created", "updated": "updated", "deleted": "deleted", "removed": "deleted"}.get(action, action or "created"),
             "title": c.get("title"), "teaser": c.get("teaser") or None, "body": c.get("body") or None, "url": c.get("url"),
-            "source": "Benzinga", "authors": c.get("author"),
-            "symbols": sorted(set(_names(c.get("stocks")))),
+            "source": "Benzinga", "authors": ", ".join(authors) if isinstance(authors, list) else authors,
+            "symbols": sorted(set(_names(c.get("stocks")) + _names(c.get("securities")))),
             "channels": _names(c.get("channels")),
-            "provider_created_at": to_utc(c.get("created")),
+            "provider_created_at": to_utc(c.get("created_at") or c.get("created")),
             # a deletion's own time is the event timestamp; content.updated is the article's last edit
-            "provider_updated_at": (to_utc(data.get("timestamp")) or to_utc(c.get("updated"))) if action in ("deleted", "removed")
-                                   else (to_utc(c.get("updated")) or to_utc(data.get("timestamp"))),
+            "provider_updated_at": (to_utc(data.get("timestamp")) or to_utc(c.get("updated_at") or c.get("updated"))) if action in ("deleted", "removed")
+                                   else (to_utc(c.get("updated_at") or c.get("updated")) or to_utc(data.get("timestamp"))),
             "event_at": to_utc(data.get("timestamp")),  # when the provider emitted this stream event
             "raw": msg}
 
 
 def normalize_benzinga_rest(r: dict) -> dict:
     """REST items have the same shape as the stream's data.content; the article id is the same id space."""
-    return normalize_benzinga({"id": None, "data": {"action": "created", "id": r.get("id"), "content": r}}) | {"raw": r}
+    # no message id: a REST re-read of an updated article must reach the store's content comparison
+    return normalize_benzinga({"id": None, "data": {"action": "created", "id": r.get("id"), "content": r}}) | {"raw": r, "message_id": None}
 
 
 def normalize_massive(r: dict) -> dict:

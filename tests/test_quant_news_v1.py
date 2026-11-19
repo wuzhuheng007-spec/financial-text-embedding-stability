@@ -337,8 +337,8 @@ class LiveVsLateTests(Base):
         from scripts.quant_news_v1 import collector
         iso = lambda d: d.strftime("%Y-%m-%dT%H:%M:%SZ")
         now = datetime.now(timezone.utc)
-        old = bz("Created", "old-1"); old["data"]["timestamp"] = iso(now - timedelta(hours=2)); old["data"]["id"] = 501
-        fresh = bz("Created", "new-1"); fresh["data"]["timestamp"] = iso(now + timedelta(seconds=1)); fresh["data"]["id"] = 502
+        old = bz("Created", "old-1"); old["data"]["timestamp"] = iso(now - timedelta(hours=2)); old["data"]["id"] = 501; old["data"]["content"]["id"] = 501
+        fresh = bz("Created", "new-1"); fresh["data"]["timestamp"] = iso(now + timedelta(seconds=1)); fresh["data"]["id"] = 502; fresh["data"]["content"]["id"] = 502
         class WS:
             def __init__(self, frames): self.frames, self.sent = list(frames), []
             def settimeout(self, t): pass
@@ -406,6 +406,68 @@ class HeartbeatTests(Base):
                 collector._stream_loop(self.db, p, "benzinga_stream", {}, None, reconnect=False)
         self.assertIn("code 4003", c.exception.detail)          # server close code recorded
         self.assertGreaterEqual(p.ws.sent.count("ping"), 2)     # heartbeat ran although no read timed out
+
+
+# Shape observed on the live stream 2026-11-19 (values synthetic): event id in data.id, article id in content.id.
+def live(action, event_id, rev, updated_at, title="t"):
+    return {"api_version": "websocket/v1", "kind": "News/v1",
+            "data": {"action": action, "id": event_id, "timestamp": updated_at,
+                     "content": {"id": 63418209, "revision_id": rev, "type": "story", "title": title, "body": "b", "authors": ["A", "B"],
+                                 "teaser": "", "url": "https://www.benzinga.com/content/63418209/x", "tags": ["T"],
+                                 "securities": [{"symbol": "NVDA", "exchange": "NASDAQ", "primary": False}, {"symbol": "MSFT", "exchange": "NASDAQ", "primary": False}],
+                                 "channels": ["News"], "image": [], "created_at": "2026-11-19T06:40:12.000Z", "updated_at": updated_at}}}
+
+
+class LiveShapeTests(Base):
+    def test_one_article_three_events_is_one_item_three_versions(self):
+        from scripts.quant_news_v1 import collector
+        evs = [live("Created", 111471500, 73600320, "2026-11-19T06:40:22.043Z", "v1"),
+               live("Updated", 111471501, 73600321, "2026-11-19T06:40:41.680Z", "v2"),
+               live("Updated", 111471502, 73600322, "2026-11-19T06:41:06.214Z", "v3")]
+        n = adapters.normalize_benzinga(evs[0])
+        self.assertEqual((n["upstream_id"], n["message_id"], n["revision_id"], n["symbols"], n["authors"], n["provider_created_at"], n["provider_updated_at"]),
+                         ("63418209", 111471500, 73600320, ["MSFT", "NVDA"], "A, B", "2026-11-19T06:40:12Z", "2026-11-19T06:40:22.043Z"))
+        c = collector._apply_all(self.db, "benzinga_stream", [adapters.normalize_benzinga(e) for e in evs], via="stream")
+        self.assertEqual((c["news_new"], c["news_versions"]), (1, 2))
+        self.assertEqual(self.db.execute("select count(*), max(versions_n) from items").fetchone()[:], (1, 3))
+        self.assertEqual(store.read_for_portal()["items"][0]["title"], "v3")
+        # replayed event (same event id) is a message-level duplicate
+        c = collector._apply_all(self.db, "benzinga_stream", [adapters.normalize_benzinga(evs[1])], via="replay")
+        self.assertEqual(c["duplicates"], 1)
+        # the same article via REST (article id) joins the same item; no message id, so content decides
+        r = adapters.normalize_benzinga_rest({"id": 63418209, "title": "v3", "created": "Thu, 19 Nov 2026 02:40:12 -0400",
+                                              "updated": "Thu, 19 Nov 2026 02:41:06 -0400", "stocks": [{"name": "NVDA"}]})
+        self.assertIsNone(r["message_id"]); self.assertEqual(r["upstream_id"], "63418209")
+        self.assertIn(store.apply(self.db, r, provider="benzinga_rest", via="gap_fill_rest", received_at="2026-11-19T06:50:00Z", online=False),
+                      ("HISTORY_VERSION", "CONFLICT_KEPT"))  # REST time has whole seconds: not newer than 06:41:06.214
+        self.assertEqual(store.read_for_portal()["items"][0]["title"], "v3")
+
+
+class RebuildTests(Base):
+    def test_rebuild_merges_events_by_article_id_and_keeps_original(self):
+        import sqlite3
+        from pathlib import Path
+        from scripts.quant_news_v1 import rebuild
+        # simulate the pre-fix cache: three live events stored as three items keyed by event id
+        for ev in (live("Created", 111471500, 1, "2026-11-19T06:40:22.043Z", "v1"), live("Updated", 111471501, 2, "2026-11-19T06:40:41.680Z", "v2")):
+            n = adapters.normalize_benzinga(ev); n["upstream_id"] = str(ev["data"]["id"])
+            store.apply(self.db, n, provider="benzinga_stream", via="stream", received_at=ev["data"]["timestamp"])
+        store.apply(self.db, adapters.normalize_benzinga_rest({"id": 5, "title": "r", "updated": "Thu, 19 Nov 2026 02:10:52 -0400"}),
+                    provider="benzinga_stream", via="backfill", received_at="2026-11-19T06:36:15Z", online=False)
+        store.set_state(self.db, "benzinga_stream", "RECEIVING", detail="x")
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 3)
+        self.db.close()
+        src = Path(os.environ["QUANT_NEWS_DB"])
+        out = rebuild.rebuild(src, "pre_idfix_test")
+        self.assertTrue((src.parent / "n.pre_idfix_test.sqlite3").exists())
+        self.db = store.connect()
+        self.assertEqual((out["items"], out["versions"]), (2, 3))
+        rows = dict(self.db.execute("select upstream_id, versions_n from items").fetchall())
+        self.assertEqual(rows, {"63418209": 2, "5": 1})
+        self.assertEqual(self.db.execute("select first_online_seen_at from items where upstream_id='63418209'").fetchone()[0], "2026-11-19T06:40:22.043Z")
+        self.assertIsNone(self.db.execute("select first_online_seen_at from items where upstream_id='5'").fetchone()[0])
+        self.assertEqual(self.db.execute("select state from provider_state").fetchone()[0], "RECEIVING")
+        old = sqlite3.connect(src.parent / "n.pre_idfix_test.sqlite3"); self.assertEqual(old.execute("select count(*) from items").fetchone()[0], 3); old.close()
 
 
 if __name__ == "__main__":
