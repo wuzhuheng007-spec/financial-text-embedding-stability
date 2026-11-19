@@ -227,6 +227,31 @@ services:
     mem_limit: 1g
     pids_limit: 128
 
+  # Numeric research job runner (profile "jobs"): phase5_o2o_v1 runs in the separate numeric image
+  # (deploy/linux/Dockerfile.numeric; pandas/numpy/scipy hash-locked). Started by the SAME timer/flock as
+  # research-runner (one scheduler). No network, no secrets, read-only root fs; the research volume is mounted
+  # read-write for its run directory and a second time READ-ONLY for the input snapshots.
+  # Limits from the isolated measurement 2026-11-19 (1 CPU: run.py 91.6 s + check.py 11.5 s; peak 215 MiB,
+  # 96 pids): cpus 1, 1 GiB (4.6x), 192 pids (2x), 900 s (8.7x).
+  research-numeric-runner:
+    <<: *hardening
+    restart: "no"
+    profiles: ["jobs"]
+    image: ${NUMERIC_IMAGE:-quant-research-numeric:local}
+    entrypoint: ["python", "-m", "scripts.quant_research_v1.worker"]
+    command: ["worker", "--once", "--max-seconds", "900"]
+    environment:
+      TZ: UTC
+      QUANT_WORKER_ENGINES: phase5_o2o_v1@1
+      QUANT_RESEARCH_INPUT_ROOT: /inputs/research
+    network_mode: none
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+      - personal_var:/inputs:ro
+    cpus: 1.0
+    mem_limit: 1g
+    pids_limit: 192
+
   # Real-time news collector (profile "news"): ONE process for ONE provider, started only after the owner
   # writes /srv/quant/secrets/news.env (NEWS_PROVIDER + that provider's key). Egress only; no database
   # access; it writes its own SQLite cache under personal_var/news/, which the web app reads.

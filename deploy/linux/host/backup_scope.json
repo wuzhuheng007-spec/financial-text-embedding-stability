@@ -21,8 +21,19 @@
         "verify.json",
         "run.log",
         "ledger_cost<bps>bps.csv for every cost in the run's config"
-      ]
-    }
+      ],
+      "per_succeeded_run_v2": "every artifact registered for the run in the artifacts table (size and SHA-256 must match the registry)",
+      "registry_v2_tables": [
+        "dataset_meta",
+        "factor_specs",
+        "artifacts",
+        "result_grades",
+        "external_runs",
+        "worker_capabilities"
+      ],
+      "per_registered_dataset_note": "bundle datasets: files listed in their manifest (market_research.sqlite, manifest.json)"
+    },
+    "restore_check": "verify --run RUN_ID re-executes exactly that run (new id, attempt_of) in an image that supports its engine; v2 deterministic artifacts compared byte-for-byte; other runs hash-checked; no other QUEUED run is claimed"
   },
   "news": {
     "requirement": "COVERED_BY_SQLITE_BACKUP",

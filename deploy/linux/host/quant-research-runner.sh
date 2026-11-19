@@ -12,6 +12,18 @@ flock -n 9 || { echo "a research job is already running"; exit 0; }
 IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
 # Research job containers already running (normally none, since this lock is held): lets the worker
 # confirm that a RUNNING row whose lease expired really has no live worker before marking it lost.
-LIVE=$(docker ps --filter label=com.docker.compose.service=research-runner --format '{{.ID}}' | paste -sd, -)
-exec docker compose -f compose.yaml --env-file "$ENV" --profile jobs run --rm --no-deps -T \
-  -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG" -e QUANT_LIVE_WORKERS="$LIVE" research-runner
+# (docker ANDs repeated label filters, so each job service is listed separately.)
+LIVE=$( { docker ps --filter label=com.docker.compose.service=research-runner --format '{{.ID}}';
+          docker ps --filter label=com.docker.compose.service=research-numeric-runner --format '{{.ID}}'; } | paste -sd, -)
+# 1) legacy engine in the app image (claims only legacy_mom20_v1 runs)
+docker compose -f compose.yaml --env-file "$ENV" --profile jobs run --rm --no-deps -T \
+  -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG" -e QUANT_LIVE_WORKERS="$LIVE" research-runner || echo "legacy job exit $?"
+# 2) numeric engines in the separate numeric image, under the SAME lock (one scheduler). It claims only the
+#    engines whose capability self-test passes in that image. Skipped when NUMERIC_IMAGE is not configured.
+NUMERIC_IMAGE=$(sed -n 's/^NUMERIC_IMAGE=//p' "$ENV")
+if [ -n "$NUMERIC_IMAGE" ]; then
+  NREV=$(docker image inspect "$NUMERIC_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
+  NIMG=$(docker image inspect "$NUMERIC_IMAGE" --format '{{.Id}}')
+  docker compose -f compose.yaml --env-file "$ENV" --profile jobs run --rm --no-deps -T \
+    -e QUANT_CODE_VERSION="$NREV" -e QUANT_IMAGE_ID="$NIMG" -e QUANT_LIVE_WORKERS="$LIVE" research-numeric-runner || echo "numeric job exit $?"
+fi
