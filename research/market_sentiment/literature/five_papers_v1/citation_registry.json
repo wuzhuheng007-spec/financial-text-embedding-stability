@@ -1,0 +1,253 @@
+{
+  "checked_at_utc": "2026-11-19T04:18:23.432332+00:00",
+  "provider": "Crossref API",
+  "records": [
+    {
+      "id": "BW2007",
+      "doi": "10.1257/jep.21.2.129",
+      "status": "PRIMARY_REGISTRY_METADATA_READ",
+      "title": [
+        "Investor Sentiment in the Stock Market"
+      ],
+      "authors": [
+        {
+          "given": "Malcolm",
+          "family": "Baker"
+        },
+        {
+          "given": "Jeffrey",
+          "family": "Wurgler"
+        }
+      ],
+      "journal": [
+        "Journal of Economic Perspectives"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2007,
+            4,
+            1
+          ]
+        ]
+      },
+      "published_print": {
+        "date-parts": [
+          [
+            2007,
+            4,
+            1
+          ]
+        ]
+      },
+      "published_online": null,
+      "volume": "21",
+      "issue": "2",
+      "page": "129-151",
+      "url": "https://doi.org/10.1257/jep.21.2.129"
+    },
+    {
+      "id": "T2007",
+      "doi": "10.1111/j.1540-6261.2007.01232.x",
+      "status": "PRIMARY_REGISTRY_METADATA_READ",
+      "title": [
+        "Giving Content to Investor Sentiment: The Role of Media in the Stock Market"
+      ],
+      "authors": [
+        {
+          "given": "PAUL C.",
+          "family": "TETLOCK"
+        }
+      ],
+      "journal": [
+        "The Journal of Finance"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2007,
+            5,
+            8
+          ]
+        ]
+      },
+      "published_print": {
+        "date-parts": [
+          [
+            2007,
+            6
+          ]
+        ]
+      },
+      "published_online": {
+        "date-parts": [
+          [
+            2007,
+            5,
+            8
+          ]
+        ]
+      },
+      "volume": "62",
+      "issue": "3",
+      "page": "1139-1168",
+      "url": "https://doi.org/10.1111/j.1540-6261.2007.01232.x"
+    },
+    {
+      "id": "HS2017",
+      "doi": "10.2469/faj.v73.n3.3",
+      "status": "PRIMARY_REGISTRY_METADATA_READ",
+      "title": [
+        "News vs. Sentiment: Predicting Stock Returns from News           Stories"
+      ],
+      "authors": [
+        {
+          "given": "Steven L.",
+          "family": "Heston"
+        },
+        {
+          "given": "Nitish Ranjan",
+          "family": "Sinha"
+        }
+      ],
+      "journal": [
+        "Financial Analysts Journal"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2017,
+            7
+          ]
+        ]
+      },
+      "published_print": {
+        "date-parts": [
+          [
+            2017,
+            7
+          ]
+        ]
+      },
+      "published_online": {
+        "date-parts": [
+          [
+            2018,
+            12,
+            26
+          ]
+        ]
+      },
+      "volume": "73",
+      "issue": "3",
+      "page": "67-83",
+      "url": "https://doi.org/10.2469/faj.v73.n3.3"
+    },
+    {
+      "id": "DEG2015",
+      "doi": "10.1093/rfs/hhu072",
+      "status": "PRIMARY_REGISTRY_METADATA_READ",
+      "title": [
+        "The Sum of All FEARS Investor Sentiment and Asset Prices"
+      ],
+      "authors": [
+        {
+          "given": "Zhi",
+          "family": "Da"
+        },
+        {
+          "given": "Joseph",
+          "family": "Engelberg"
+        },
+        {
+          "given": "Pengjie",
+          "family": "Gao"
+        }
+      ],
+      "journal": [
+        "Review of Financial Studies"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2014,
+            10,
+            17
+          ]
+        ]
+      },
+      "published_print": {
+        "date-parts": [
+          [
+            2015,
+            1
+          ]
+        ]
+      },
+      "published_online": {
+        "date-parts": [
+          [
+            2014,
+            10,
+            17
+          ]
+        ]
+      },
+      "volume": "28",
+      "issue": "1",
+      "page": "1-32",
+      "url": "https://doi.org/10.1093/rfs/hhu072"
+    },
+    {
+      "id": "LL2025",
+      "doi": "10.1007/s11142-025-09897-1",
+      "status": "PRIMARY_REGISTRY_METADATA_READ",
+      "title": [
+        "News-based investor disagreement and stock returns"
+      ],
+      "authors": [
+        {
+          "given": "Sophia Zhengzi",
+          "family": "Li"
+        },
+        {
+          "given": "Zeyao",
+          "family": "Luan"
+        }
+      ],
+      "journal": [
+        "Review of Accounting Studies"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            7,
+            22
+          ]
+        ]
+      },
+      "published_print": {
+        "date-parts": [
+          [
+            2025,
+            9
+          ]
+        ]
+      },
+      "published_online": {
+        "date-parts": [
+          [
+            2025,
+            7,
+            22
+          ]
+        ]
+      },
+      "volume": "30",
+      "issue": "3",
+      "page": "2312-2375",
+      "url": "https://doi.org/10.1007/s11142-025-09897-1"
+    }
+  ]
+}

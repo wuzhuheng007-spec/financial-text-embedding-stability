@@ -309,3 +309,17 @@
 **限制：** 截图经验数字全部USER_REPORTED_NOT_VERIFIED；原研究身份与原始结果未定位；没有新真实市场回测、PIT新闻验收、净收益或独立验证。
 
 证据：[image_review/news_mean_vol_v1/AUDIT_FINAL.json](image_review/news_mean_vol_v1/AUDIT_FINAL.json)、[image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md](image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md)、[image_review/news_mean_vol_v1/PLAN_zh.md](image_review/news_mean_vol_v1/PLAN_zh.md)、[image_review/news_mean_vol_v1/REVIEW_zh.md](image_review/news_mean_vol_v1/REVIEW_zh.md)、[image_review/news_mean_vol_v1/evidence_ledger.json](image_review/news_mean_vol_v1/evidence_ledger.json)、[image_review/news_mean_vol_v1/formula_audit.py](image_review/news_mean_vol_v1/formula_audit.py)、[image_review/news_mean_vol_v1/formula_results.json](image_review/news_mean_vol_v1/formula_results.json)、[image_review/news_mean_vol_v1/formula_run_manifest.json](image_review/news_mean_vol_v1/formula_run_manifest.json)、[image_review/news_mean_vol_v1/input_manifest.json](image_review/news_mean_vol_v1/input_manifest.json)、[image_review/news_mean_vol_v1/source_audit.json](image_review/news_mean_vol_v1/source_audit.json)、[image_review/news_mean_vol_v1/toy_config.json](image_review/news_mean_vol_v1/toy_config.json)
+
+## R022 · 五篇投资者情绪、新闻收益期限及分歧论文的正文学习
+
+**状态：** FIVE_PAPER_FOCUSED_BODY_REVIEW_COMPLETE_NOT_EMPIRICAL_REPLICATION；记录UTC：2026-11-19T04:21:20.358777+00:00
+
+**计划：** 定向网络检索并选择五篇，核对一手论文身份，阅读关键构造/结果/限制，记录来源版本及对市场中期转向研究的启发。
+
+**实际：** 取得并提取五份公开PDF；核对作者/机构/出版商来源及五条Crossref元数据；阅读主要方法、结果和限制，保存实际PDF哈希与页码。Heston/Sinha明确阅读2016工作论文正文，另核对2017期刊身份；FEARS区分2014 Advance Access稿与2015卷期。执行来源身份同作者核对并通过；有限访问失败与页码/版本差异保留。未重新拟合任何金融模型或复算盈利。
+
+**结论：** 所读文献的测量、预测对象和期限不同；区分短期恐慌反转、个股中期信息延续与市场共同风险状态。具体新增候选为后续研究提议，不是已验证因子。
+
+**限制：** 主要为美国历史证据，非系统综述；原始市场结果未独立复制；未认证PIT或A股迁移；五篇不验证截图均值乘波动的IC，也不证明本项目市场顶底或净收益可预测。
+
+证据：[literature/five_papers_v1/AUDIT_FINAL.json](literature/five_papers_v1/AUDIT_FINAL.json)、[literature/five_papers_v1/PLAN_zh.md](literature/five_papers_v1/PLAN_zh.md)、[literature/five_papers_v1/REVIEW_zh.md](literature/five_papers_v1/REVIEW_zh.md)、[literature/five_papers_v1/acquire.py](literature/five_papers_v1/acquire.py)、[literature/five_papers_v1/acquisition_manifest.json](literature/five_papers_v1/acquisition_manifest.json)、[literature/five_papers_v1/citation_registry.json](literature/five_papers_v1/citation_registry.json)、[literature/five_papers_v1/reading_ledger.json](literature/five_papers_v1/reading_ledger.json)、[literature/five_papers_v1/self_check.json](literature/five_papers_v1/self_check.json)、[literature/five_papers_v1/source_audit.json](literature/five_papers_v1/source_audit.json)

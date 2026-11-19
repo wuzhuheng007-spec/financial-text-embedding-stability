@@ -512,5 +512,37 @@
       "image_review/news_mean_vol_v1/toy_config.json": "6e4a41e14a11b549b00808dcee201f9cba6d819e058c027c28a44898f6d3addb"
     },
     "recorded_at_utc": "2026-11-19T04:08:59.746955+00:00"
+  },
+  {
+    "id": "R022",
+    "title": "五篇投资者情绪、新闻收益期限及分歧论文的正文学习",
+    "plan": "定向网络检索并选择五篇，核对一手论文身份，阅读关键构造/结果/限制，记录来源版本及对市场中期转向研究的启发。",
+    "actual": "取得并提取五份公开PDF；核对作者/机构/出版商来源及五条Crossref元数据；阅读主要方法、结果和限制，保存实际PDF哈希与页码。Heston/Sinha明确阅读2016工作论文正文，另核对2017期刊身份；FEARS区分2014 Advance Access稿与2015卷期。执行来源身份同作者核对并通过；有限访问失败与页码/版本差异保留。未重新拟合任何金融模型或复算盈利。",
+    "status": "FIVE_PAPER_FOCUSED_BODY_REVIEW_COMPLETE_NOT_EMPIRICAL_REPLICATION",
+    "evidence": [
+      "literature/five_papers_v1/AUDIT_FINAL.json",
+      "literature/five_papers_v1/PLAN_zh.md",
+      "literature/five_papers_v1/REVIEW_zh.md",
+      "literature/five_papers_v1/acquire.py",
+      "literature/five_papers_v1/acquisition_manifest.json",
+      "literature/five_papers_v1/citation_registry.json",
+      "literature/five_papers_v1/reading_ledger.json",
+      "literature/five_papers_v1/self_check.json",
+      "literature/five_papers_v1/source_audit.json"
+    ],
+    "claims": "所读文献的测量、预测对象和期限不同；区分短期恐慌反转、个股中期信息延续与市场共同风险状态。具体新增候选为后续研究提议，不是已验证因子。",
+    "limits": "主要为美国历史证据，非系统综述；原始市场结果未独立复制；未认证PIT或A股迁移；五篇不验证截图均值乘波动的IC，也不证明本项目市场顶底或净收益可预测。",
+    "evidence_sha256": {
+      "literature/five_papers_v1/AUDIT_FINAL.json": "c8e685a3800a88e1255324721a96eadef82641d54de3e854539c0e063ded4db7",
+      "literature/five_papers_v1/PLAN_zh.md": "da84d1441eec89f880ca00f3ce1ccf821c0d1f70ece32c085a249b21421b4204",
+      "literature/five_papers_v1/REVIEW_zh.md": "7c561619806e08cec2d5c9b8de746e4664d782888bbfc93d43df738ee8410d96",
+      "literature/five_papers_v1/acquire.py": "bb87bda26835f3ab092ad7adf42814f1239eb6313de710fd90a6c8302a1f3bab",
+      "literature/five_papers_v1/acquisition_manifest.json": "94cfea40c3185f4d6633b4a33e3497eb6b6ebc424f6593b7bc6c9e0379fc3a3b",
+      "literature/five_papers_v1/citation_registry.json": "11d4254dc4af02205bb235a1ec92666e1133d9ec962c6743cf8d3e5567d60163",
+      "literature/five_papers_v1/reading_ledger.json": "8039153f386e309b64aca93de278b12f5af218ddeacb6fe7ae45067e28583e35",
+      "literature/five_papers_v1/self_check.json": "bb7ccc9fd98597ac311142ee7e1d3c9689c2e45041f7a860292c25f9d7b6c9bb",
+      "literature/five_papers_v1/source_audit.json": "8345b1e26661a71a24964dac043f6d31d62a173f2331aff1f9e476bb9f6e0bf7"
+    },
+    "recorded_at_utc": "2026-11-19T04:21:20.358777+00:00"
   }
 ]

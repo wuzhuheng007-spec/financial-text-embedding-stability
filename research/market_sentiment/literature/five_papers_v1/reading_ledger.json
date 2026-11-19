@@ -1,0 +1,138 @@
+{
+  "read_type": "Focused main-body reading, not line-by-line derivation of every appendix",
+  "paper_records": [
+    {
+      "id": "BW2007",
+      "input_id": "acquisition_manifest.json papers[id=BW2007]",
+      "locations": {
+        "construction": "PDF pages 11–12 (printed 139–140), levels and changes PCA",
+        "results": "PDF pages 18–21, especially page 20 (printed 148) aggregate prediction caveat"
+      },
+      "numeric_provenance": {
+        "index_illustration": "1966-01 to 2005-12, Figure 2, PDF page 12"
+      },
+      "allowed_claim": "Levels and changes need separate construction; speculative stocks are more sentiment sensitive; aggregate crash timing remains difficult.",
+      "empirical_replication": false
+    },
+    {
+      "id": "T2007",
+      "input_id": "acquisition_manifest.json papers[id=T2007]",
+      "locations": {
+        "construction": "PDF page 6, section II",
+        "results": "PDF pages 11–13 and 21; trading and cost caveat pages 25–26"
+      },
+      "numeric_provenance": {
+        "sample": "1984–1999, PDF page 2 and Table II PDF page 11"
+      },
+      "allowed_claim": "Media pessimism predicts short-run price pressure and subsequent reversal; gross hypothetical trading results require a separate cost assessment.",
+      "empirical_replication": false
+    },
+    {
+      "id": "HS2016",
+      "input_id": "acquisition_manifest.json papers[id=HS2016]",
+      "locations": {
+        "construction": "PDF pages 7–10; training dates page 9",
+        "results": "PDF pages 12–18, Table 4; earnings and conclusion pages 19–21"
+      },
+      "numeric_provenance": {
+        "sample": "2003–2010 and 900,754 articles, PDF page 7",
+        "daily_horizon": "1–2 days; PDF page 2 and Table 3 page 28",
+        "weekly_horizon": "Up to 13 weeks, Table 4 and PDF pages 12–14",
+        "training_period": "2004-12 through 2006-01, PDF page 9"
+      },
+      "allowed_claim": "Aggregation frequency changes return horizon; positive, negative and no-news effects need separation.",
+      "empirical_replication": false
+    },
+    {
+      "id": "DEG2015",
+      "input_id": "acquisition_manifest.json papers[id=DEG2015]",
+      "locations": {
+        "construction": "PDF pages 6–9, section 1.1",
+        "results": "PDF page 13 Table 2 discussion; timing footnote 14; robustness page 20; conclusion page 29"
+      },
+      "numeric_provenance": {
+        "raw_search_sample": "2004-01 through 2011-12, PDF page 7",
+        "constructed_index_start": "2004-07, PDF page 9",
+        "reversal_horizon": "Following two days, PDF page 13",
+        "selection": "Backward-looking term selection, PDF page 9"
+      },
+      "allowed_claim": "Search-based fear coincides with falling equity markets and predicts a short-lived reversal; search and return clocks need alignment.",
+      "empirical_replication": false
+    },
+    {
+      "id": "LL2025",
+      "input_id": "acquisition_manifest.json papers[id=LL2025]",
+      "locations": {
+        "construction": "Section 2 and 3.2; PDF pages 6–14",
+        "results": "Sections 4.3–4.5, PDF pages 16–25; conclusion page 42"
+      },
+      "numeric_provenance": {
+        "raw_data_sample": "2000-01 through 2022-10; section 2",
+        "portfolio_sample": "2001-01 onward, Table 4 PDF page 23",
+        "horizons": "1–12 months, section 4.3",
+        "estimation": "Trailing 12 months with at least 10 news observations; section 3.2.2"
+      },
+      "allowed_claim": "Higher volume-volatility elasticity means lower inferred disagreement; return relation is state dependent and estimation is coverage limited.",
+      "empirical_replication": false
+    }
+  ],
+  "project_claims": [
+    {
+      "id": "L001",
+      "claim": "Five selected papers differ in measurement, unit of analysis and forecast horizon",
+      "status": "VERIFIED_SELECTED_LITERATURE_ONLY",
+      "evidence": [
+        "source_audit.json",
+        "reading_ledger.json"
+      ]
+    },
+    {
+      "id": "L002",
+      "claim": "No selected paper constitutes validation of this project's four-market turning-point model",
+      "status": "SCOPE_LIMITATION",
+      "evidence": [
+        "PLAN_zh.md",
+        "REVIEW_zh.md"
+      ]
+    },
+    {
+      "id": "L003",
+      "claim": "Test persistent news, directional change, disagreement and price-response interactions separately from short-run fear",
+      "status": "PROPOSED_NOT_EXECUTED",
+      "evidence": [
+        "REVIEW_zh.md"
+      ]
+    },
+    {
+      "id": "L004",
+      "claim": "Screenshot mean-times-volatility IC numbers are now verified by these papers",
+      "status": "NOT_ESTABLISHED",
+      "evidence": [
+        "REVIEW_zh.md"
+      ],
+      "reason": "No identity match to screenshot original study; different constructions and targets"
+    }
+  ],
+  "plan_actual": [
+    {
+      "id": "P1",
+      "actual": "Five identities matched to primary sources and DOI registry",
+      "status": "PASS"
+    },
+    {
+      "id": "P2",
+      "actual": "Five public PDFs retrieved; main methods/results/limitations inspected; version and PDF page locations recorded",
+      "status": "PASS_FOCUSED_BODY_READING"
+    },
+    {
+      "id": "P3",
+      "actual": "Original synthesis and target-specific proposals written; no financial estimator or portfolio rerun",
+      "status": "PASS_REVIEW_ONLY"
+    },
+    {
+      "id": "P4",
+      "actual": "Append-only log and publication verification prepared; remote confirmation tracked by actual sync operations",
+      "status": "LOCAL_PREPARATION"
+    }
+  ]
+}

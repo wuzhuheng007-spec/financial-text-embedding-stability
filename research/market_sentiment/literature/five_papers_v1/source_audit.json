@@ -1,0 +1,215 @@
+{
+  "scope": "Five selected papers, not exhaustive literature search; identity and published claims verified, underlying market results not independently replicated",
+  "papers": [
+    {
+      "id": "BW2007",
+      "title": "Investor Sentiment in the Stock Market",
+      "authors": [
+        "Malcolm Baker",
+        "Jeffrey Wurgler"
+      ],
+      "journal": "Journal of Economic Perspectives",
+      "year": 2007,
+      "doi": "10.1257/jep.21.2.129",
+      "fulltext_url": "https://pages.stern.nyu.edu/~jwurgler/papers/wurgler_baker_investor_sentiment.pdf",
+      "metadata_url": "https://www.aeaweb.org/articles?id=10.1257/jep.21.2.129",
+      "web_refs": [
+        "turn913463812view0",
+        "turn594763374view2",
+        "turn947338547view0"
+      ],
+      "version": "Author-hosted journal PDF",
+      "type": "Review/framework plus empirical illustrations",
+      "locations": {
+        "construction": "PDF pages 11–12 (printed 139–140), levels and changes PCA",
+        "results": "PDF pages 18–21, especially page 20 (printed 148) aggregate prediction caveat"
+      },
+      "supports": "Levels and changes need separate construction; speculative stocks are more sentiment sensitive; aggregate crash timing remains difficult.",
+      "numeric_scope": {
+        "index_illustration": "1966-01 to 2005-12, Figure 2, PDF page 12"
+      },
+      "version_note": "AEA page range says 129–152, PDF/Crossref says 129–151. Page range omitted from final citation; identity unaffected.",
+      "status": "IDENTITY_VERIFIED_BODY_SECTIONS_READ",
+      "fulltext_opened": true,
+      "underlying_raw_data_reproduced": false
+    },
+    {
+      "id": "T2007",
+      "title": "Giving Content to Investor Sentiment: The Role of Media in the Stock Market",
+      "authors": [
+        "Paul C. Tetlock"
+      ],
+      "journal": "Journal of Finance",
+      "year": 2007,
+      "doi": "10.1111/j.1540-6261.2007.01232.x",
+      "fulltext_url": "https://www.uts.edu.au/globalassets/sites/default/files/adg_cons2015_tetlock-journal-of-finance-2007.pdf",
+      "metadata_url": "https://business.columbia.edu/faculty/research/giving-content-investor-sentiment-role-media-stock-market",
+      "web_refs": [
+        "turn594763374view3",
+        "turn913463812view1",
+        "turn112033338view2"
+      ],
+      "version": "University-hosted journal PDF; author institutional identity verified",
+      "type": "Media-text and aggregate-market empirical study",
+      "locations": {
+        "construction": "PDF page 6, section II",
+        "results": "PDF pages 11–13 and 21; trading and cost caveat pages 25–26"
+      },
+      "supports": "Media pessimism predicts short-run price pressure and subsequent reversal; gross hypothetical trading results require a separate cost assessment.",
+      "numeric_scope": {
+        "sample": "1984–1999, PDF page 2 and Table II PDF page 11"
+      },
+      "version_note": "Publication year verified against author institutional page and Crossref; no profitability number reproduced.",
+      "status": "IDENTITY_VERIFIED_BODY_SECTIONS_READ",
+      "fulltext_opened": true,
+      "underlying_raw_data_reproduced": false
+    },
+    {
+      "id": "HS2016",
+      "publication_id": "HS2017",
+      "title": "News vs. Sentiment: Predicting Stock Returns from News Stories",
+      "authors": [
+        "Steven L. Heston",
+        "Nitish Ranjan Sinha"
+      ],
+      "journal": "Financial Analysts Journal",
+      "year": 2017,
+      "doi": "10.2469/faj.v73.n3.3",
+      "fulltext_url": "https://www.federalreserve.gov/econresdata/feds/2016/files/2016048pap.pdf",
+      "metadata_url": "https://rpc.cfainstitute.org/research/financial-analysts-journal/2017/news-vs-sentiment-predicting-stock-returns-from-news-stories",
+      "web_refs": [
+        "turn913463812view2",
+        "turn629220992view0",
+        "turn947338547view1",
+        "turn762762245view1"
+      ],
+      "version": "FULL BODY READ: FEDS 2016-048 dated 2016-06-06, DOI 10.17016/FEDS.2016.048. Journal 2017 identity and abstract checked; final body not claimed identical.",
+      "type": "Firm-level return forecasting",
+      "locations": {
+        "construction": "PDF pages 7–10; training dates page 9",
+        "results": "PDF pages 12–18, Table 4; earnings and conclusion pages 19–21"
+      },
+      "supports": "Aggregation frequency changes return horizon; positive, negative and no-news effects need separation.",
+      "numeric_scope": {
+        "sample": "2003–2010 and 900,754 articles, PDF page 7",
+        "daily_horizon": "1–2 days; PDF page 2 and Table 3 page 28",
+        "weekly_horizon": "Up to 13 weeks, Table 4 and PDF pages 12–14",
+        "training_period": "2004-12 through 2006-01, PDF page 9"
+      },
+      "version_note": "2017 journal metadata verified; 2018 online entry in registry is not substituted for print year. Authors' post-news out-of-sample wording is not reclassified as a fully unseen modern forecasting holdout.",
+      "status": "IDENTITY_VERIFIED_BODY_SECTIONS_READ",
+      "fulltext_opened": true,
+      "underlying_raw_data_reproduced": false
+    },
+    {
+      "id": "DEG2015",
+      "title": "The Sum of All FEARS Investor Sentiment and Asset Prices",
+      "authors": [
+        "Zhi Da",
+        "Joseph Engelberg",
+        "Pengjie Gao"
+      ],
+      "journal": "Review of Financial Studies",
+      "year": 2015,
+      "doi": "10.1093/rfs/hhu072",
+      "fulltext_url": "https://academicweb.nd.edu/~zda/FEARS.pdf",
+      "metadata_url": "https://academicweb.nd.edu/~zda/",
+      "web_refs": [
+        "turn641326615view0",
+        "turn629220992view2",
+        "turn112033338view0"
+      ],
+      "version": "Author-hosted 2014 Advance Access PDF of work in 2015 print issue",
+      "type": "Search-based aggregate-market sentiment",
+      "locations": {
+        "construction": "PDF pages 6–9, section 1.1",
+        "results": "PDF page 13 Table 2 discussion; timing footnote 14; robustness page 20; conclusion page 29"
+      },
+      "supports": "Search-based fear coincides with falling equity markets and predicts a short-lived reversal; search and return clocks need alignment.",
+      "numeric_scope": {
+        "raw_search_sample": "2004-01 through 2011-12, PDF page 7",
+        "constructed_index_start": "2004-07, PDF page 9",
+        "reversal_horizon": "Following two days, PDF page 13",
+        "selection": "Backward-looking term selection, PDF page 9"
+      },
+      "version_note": "2014 advance date and 2015 journal year kept separate; first-day time overlap and robustness acknowledged, not erased.",
+      "status": "IDENTITY_VERIFIED_BODY_SECTIONS_READ",
+      "fulltext_opened": true,
+      "underlying_raw_data_reproduced": false
+    },
+    {
+      "id": "LL2025",
+      "title": "News-based investor disagreement and stock returns",
+      "authors": [
+        "Sophia Zhengzi Li",
+        "Zeyao Luan"
+      ],
+      "journal": "Review of Accounting Studies",
+      "year": 2025,
+      "doi": "10.1007/s11142-025-09897-1",
+      "fulltext_url": "https://link.springer.com/content/pdf/10.1007/s11142-025-09897-1.pdf",
+      "metadata_url": "https://link.springer.com/article/10.1007/s11142-025-09897-1",
+      "web_refs": [
+        "turn913463812view4",
+        "turn112033338view1",
+        "turn201423797view1",
+        "turn629220992view1"
+      ],
+      "version": "Publisher open-access article/PDF",
+      "type": "Firm-level news-response disagreement and cross-sectional returns",
+      "locations": {
+        "construction": "Section 2 and 3.2; PDF pages 6–14",
+        "results": "Sections 4.3–4.5, PDF pages 16–25; conclusion page 42"
+      },
+      "supports": "Higher volume-volatility elasticity means lower inferred disagreement; return relation is state dependent and estimation is coverage limited.",
+      "numeric_scope": {
+        "raw_data_sample": "2000-01 through 2022-10; section 2",
+        "portfolio_sample": "2001-01 onward, Table 4 PDF page 23",
+        "horizons": "1–12 months, section 4.3",
+        "estimation": "Trailing 12 months with at least 10 news observations; section 3.2.2"
+      },
+      "version_note": "Section 4.3 includes mixed quintile/decile wording; no silent grouping choice or portfolio replication performed.",
+      "status": "IDENTITY_VERIFIED_BODY_SECTIONS_READ",
+      "fulltext_opened": true,
+      "underlying_raw_data_reproduced": false
+    }
+  ],
+  "metadata_registry": "citation_registry.json",
+  "failures_preserved": [
+    {
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4966869",
+      "status": "403_NOT_SELECTED",
+      "note": "Candidate News, Sentiment and Trading not counted among five read papers"
+    },
+    {
+      "url": "https://academic.oup.com/rfs/article/28/1/1/1682440",
+      "status": "WEB_OPEN_FAILED",
+      "note": "FEARS read from author-hosted full text and metadata checked in primary registry"
+    },
+    {
+      "operation": "Optional BeautifulSoup HTML helper",
+      "status": "MODULE_NOT_AVAILABLE",
+      "resolution": "Used standard-library HTML link extraction; no content substituted"
+    }
+  ],
+  "search": {
+    "exhaustive": false,
+    "engines": [
+      "system2",
+      "system1"
+    ],
+    "queries": [
+      "investor sentiment stock market predictability Baker Wurgler 2007 sentiment stock market pdf",
+      "Heston Sinha 2017 News versus Sentiment Predicting Stock Returns pdf",
+      "Tetlock 2007 Giving Content Investor Sentiment Role Media Stock Market pdf",
+      "news sentiment predict stock market returns medium term sentiment change disagreement 2024 2025 paper",
+      "Da Engelberg Gao 2015 Sum of All FEARS investor sentiment asset prices pdf",
+      "\"News-based investor disagreement and stock returns\" authors China",
+      "site.rady.ucsd.edu \"FEARS\" pdf",
+      "site3.nd.edu \"The Sum of All\" pdf",
+      "site3.nd.edu \"FEARS\" \"2015\"",
+      "site:business.columbia.edu \"Tetlock\" \"Giving\" pdf"
+    ],
+    "selection": "Complementary measurement and horizon coverage, verified accessible body; US evidence predominates. Four classics and a 2025 paper; no claim of latest exhaustive coverage."
+  }
+}

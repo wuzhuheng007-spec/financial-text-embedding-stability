@@ -3,7 +3,7 @@
   "project": "medium_term_market_sentiment",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/personal-cloud-ui-20261118",
-  "latest_step_id": "R021",
+  "latest_step_id": "R022",
   "price_baseline": "EXECUTED_DESCRIPTIVE_SELF_CHECKED",
   "bw_availability_audit": "SOURCE_AND_CONSTRUCTION_AUDIT_EXECUTED_PIT_NOT_QUALIFIED",
   "news_increment_evaluation": "NOT_RUN_IN_THIS_STUDY",
@@ -14,7 +14,7 @@
   "bw_raw_pc1_comparison": "EXECUTED_CURRENT_VINTAGE_ONLY",
   "official_news_field_pilot": "THREE_EVENTS_METADATA_ONLY",
   "last_confirmed_remote_checkpoint": "3a68e0b32211fe3ce40ac3a2d930276c66ae8585",
-  "next": "Qualify historical first-availability news and scoring versions; preserve market-timing and stock-selection objectives separately before freezing new factor tests",
+  "next": "Qualify time-stamped historical news; separate short-term reversal, stock-selection drift and market-risk-state targets before freezing new incremental tests",
   "phase3": "EVENT_ATLAS_AND_FIXED_PROXY_DIAGNOSTICS_EXECUTED_SELF_CHECKED_CURRENT_VINTAGE",
   "all_events_claim": "Only fixed-rule census within accepted coverage; not complete causal news explanations",
   "market_sentiment_predictive_factor": "NOT_ESTABLISHED",
@@ -26,5 +26,6 @@
   "phase4_publication": "REMOTE_READBACK_VERIFIED",
   "factor_acceptance_review": "READ_ONLY_EVIDENCE_REVIEW_CANDIDATES_NOT_QUALIFIED",
   "news_mean_vol_review": "MATH_CHECKED_METHOD_CANDIDATE_ORIGINAL_NUMBERS_NOT_VERIFIED",
-  "news_mean_vol_factor": "DRAFT_PENDING_REAL_NEWS_INPUTS_NO_NEW_FINANCIAL_FITS"
+  "news_mean_vol_factor": "DRAFT_PENDING_REAL_NEWS_INPUTS_NO_NEW_FINANCIAL_FITS",
+  "literature_five_papers": "FIVE_PRIMARY_TEXTS_FOCUSED_READING_IDENTITY_CHECKED_NO_EMPIRICAL_REPLICATION"
 }
