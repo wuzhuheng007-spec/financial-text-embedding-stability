@@ -295,3 +295,17 @@
 **限制：** 非独立验证；旧自查未在本轮重跑；没有新增净收益、容量、真正未见留出或PIT证据；其他平台基线按自身勘误处理。
 
 证据：[image_review/factor_acceptance_v1/PLAN_zh.md](image_review/factor_acceptance_v1/PLAN_zh.md)、[image_review/factor_acceptance_v1/REVIEW_zh.md](image_review/factor_acceptance_v1/REVIEW_zh.md)、[image_review/factor_acceptance_v1/input_manifest.json](image_review/factor_acceptance_v1/input_manifest.json)、[image_review/factor_acceptance_v1/citation_audit.json](image_review/factor_acceptance_v1/citation_audit.json)、[image_review/factor_acceptance_v1/review_existing.py](image_review/factor_acceptance_v1/review_existing.py)、[image_review/factor_acceptance_v1/snapshot.json](image_review/factor_acceptance_v1/snapshot.json)、[image_review/factor_acceptance_v1/readiness.json](image_review/factor_acceptance_v1/readiness.json)、[image_review/factor_acceptance_v1/AUDIT_FINAL.json](image_review/factor_acceptance_v1/AUDIT_FINAL.json)
+
+## R021 · 新闻情绪均值、时间波动与乘积候选的学习及数学辨识检查
+
+**状态：** PARTIALLY_SUPPORTED_METHOD_REVIEW_REAL_NEWS_FACTOR_PENDING_INPUTS；记录UTC：2026-11-19T04:08:59.746955+00:00
+
+**计划：** 阅读十张截图，有限检索原研究并核对API定义，使用明确人造数组检查测量含义，形成市场择时与横截面分开的候选合同，追加研究记录。
+
+**实际：** 十图输入哈希已保存；三条官方方法文档已直接打开；有限检索未定位到能逐项核对数值的原研究。实际运行formula_audit.py，通过五项同作者确定性数学诊断并保存输入、代码与输出身份。形成候选合同和证据台账；未训练金融模型、未采集真实新闻面板、未复制截图IC。原有发布与证据哈希核对通过；完整发布校验及远端读回另在同步操作核对。
+
+**结论：** 均值×标准差不保留窗口内时间先后顺序，时间波动不等于同日文章分歧；这些数学限制已用人工数组检查。可将其登记为待验收候选，不能宣称已发现市场情绪拐点预测能力。
+
+**限制：** 截图经验数字全部USER_REPORTED_NOT_VERIFIED；原研究身份与原始结果未定位；没有新真实市场回测、PIT新闻验收、净收益或独立验证。
+
+证据：[image_review/news_mean_vol_v1/AUDIT_FINAL.json](image_review/news_mean_vol_v1/AUDIT_FINAL.json)、[image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md](image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md)、[image_review/news_mean_vol_v1/PLAN_zh.md](image_review/news_mean_vol_v1/PLAN_zh.md)、[image_review/news_mean_vol_v1/REVIEW_zh.md](image_review/news_mean_vol_v1/REVIEW_zh.md)、[image_review/news_mean_vol_v1/evidence_ledger.json](image_review/news_mean_vol_v1/evidence_ledger.json)、[image_review/news_mean_vol_v1/formula_audit.py](image_review/news_mean_vol_v1/formula_audit.py)、[image_review/news_mean_vol_v1/formula_results.json](image_review/news_mean_vol_v1/formula_results.json)、[image_review/news_mean_vol_v1/formula_run_manifest.json](image_review/news_mean_vol_v1/formula_run_manifest.json)、[image_review/news_mean_vol_v1/input_manifest.json](image_review/news_mean_vol_v1/input_manifest.json)、[image_review/news_mean_vol_v1/source_audit.json](image_review/news_mean_vol_v1/source_audit.json)、[image_review/news_mean_vol_v1/toy_config.json](image_review/news_mean_vol_v1/toy_config.json)

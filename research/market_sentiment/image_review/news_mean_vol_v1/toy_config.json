@@ -1,0 +1,15 @@
+{
+  "purpose": "DETERMINISTIC_MATHEMATICAL_COUNTEREXAMPLES_ONLY_NOT_MARKET_DATA",
+  "model": null,
+  "seed": null,
+  "seed_reason": "No random sampling or fitted estimator",
+  "dtype": "float64",
+  "std_ddof": 0,
+  "chronological_series": [-0.8, -0.4, 0.2, 0.6],
+  "calibration_stock_a": [-1.0, 1.0],
+  "calibration_stock_b": [0.4, 0.6],
+  "score_transform": {"a": 0.5, "b": 0.5},
+  "sparse_series": [null, null, 0.4],
+  "daily_article_scores": [[-1.0, 1.0], [-1.0, 1.0], [-1.0, 1.0]],
+  "claim_scope": "Algebra and measurement semantics only; no stock returns, factor efficacy or strategy profitability"
+}

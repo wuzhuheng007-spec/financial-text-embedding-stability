@@ -1,0 +1,79 @@
+{
+  "status": "PASS_SAME_AUTHOR_MATH_CHECK_ONLY",
+  "cases": {
+    "order_invariance": {
+      "forward": {
+        "valid_n": 4,
+        "mean": -0.10000000000000006,
+        "std": 0.5385164807134505,
+        "product": -0.053851648071345085
+      },
+      "reverse": {
+        "valid_n": 4,
+        "mean": -0.1,
+        "std": 0.5385164807134505,
+        "product": -0.05385164807134505
+      },
+      "endpoint_change_forward": 1.4,
+      "endpoint_change_reverse": -1.4,
+      "meaning": "Same mean/std/product despite opposite temporal direction"
+    },
+    "origin_sensitive_rank": {
+      "original_a": {
+        "valid_n": 2,
+        "mean": 0.0,
+        "std": 1.0,
+        "product": 0.0
+      },
+      "original_b": {
+        "valid_n": 2,
+        "mean": 0.5,
+        "std": 0.09999999999999998,
+        "product": 0.04999999999999999
+      },
+      "transformed_a": {
+        "valid_n": 2,
+        "mean": 0.5,
+        "std": 0.5,
+        "product": 0.25
+      },
+      "transformed_b": {
+        "valid_n": 2,
+        "mean": 0.75,
+        "std": 0.050000000000000044,
+        "product": 0.03750000000000003
+      },
+      "meaning": "Uncentered mean*std ranking changes after neutral-origin shift"
+    },
+    "missing_day_false_calm": {
+      "computed": {
+        "valid_n": 1,
+        "mean": 0.4,
+        "std": 0.0,
+        "product": 0.0
+      },
+      "meaning": "One observed day produces zero std; cannot infer calmness"
+    },
+    "all_missing": {
+      "mean_is_nan": true,
+      "std_is_nan": true,
+      "runtime_warning_observed": true
+    },
+    "cross_article_vs_time": {
+      "daily_means": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "temporal_std_of_daily_mean": 0.0,
+      "within_day_article_std": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "meaning": "Daily means hide simultaneous article-level disagreement"
+    }
+  },
+  "data_origin": "DETERMINISTIC_MATHEMATICAL_COUNTEREXAMPLES_ONLY_NOT_MARKET_DATA",
+  "financial_claims_authorized": false
+}

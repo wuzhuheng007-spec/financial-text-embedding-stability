@@ -476,5 +476,41 @@
       "image_review/factor_acceptance_v1/AUDIT_FINAL.json": "6151f95ea78cc362151544d87209b1352ea73e6fe030fd17dba5fc7a35f01a31"
     },
     "recorded_at_utc": "2026-11-19T03:52:59.267599+00:00"
+  },
+  {
+    "id": "R021",
+    "title": "新闻情绪均值、时间波动与乘积候选的学习及数学辨识检查",
+    "plan": "阅读十张截图，有限检索原研究并核对API定义，使用明确人造数组检查测量含义，形成市场择时与横截面分开的候选合同，追加研究记录。",
+    "actual": "十图输入哈希已保存；三条官方方法文档已直接打开；有限检索未定位到能逐项核对数值的原研究。实际运行formula_audit.py，通过五项同作者确定性数学诊断并保存输入、代码与输出身份。形成候选合同和证据台账；未训练金融模型、未采集真实新闻面板、未复制截图IC。原有发布与证据哈希核对通过；完整发布校验及远端读回另在同步操作核对。",
+    "status": "PARTIALLY_SUPPORTED_METHOD_REVIEW_REAL_NEWS_FACTOR_PENDING_INPUTS",
+    "evidence": [
+      "image_review/news_mean_vol_v1/AUDIT_FINAL.json",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md",
+      "image_review/news_mean_vol_v1/PLAN_zh.md",
+      "image_review/news_mean_vol_v1/REVIEW_zh.md",
+      "image_review/news_mean_vol_v1/evidence_ledger.json",
+      "image_review/news_mean_vol_v1/formula_audit.py",
+      "image_review/news_mean_vol_v1/formula_results.json",
+      "image_review/news_mean_vol_v1/formula_run_manifest.json",
+      "image_review/news_mean_vol_v1/input_manifest.json",
+      "image_review/news_mean_vol_v1/source_audit.json",
+      "image_review/news_mean_vol_v1/toy_config.json"
+    ],
+    "claims": "均值×标准差不保留窗口内时间先后顺序，时间波动不等于同日文章分歧；这些数学限制已用人工数组检查。可将其登记为待验收候选，不能宣称已发现市场情绪拐点预测能力。",
+    "limits": "截图经验数字全部USER_REPORTED_NOT_VERIFIED；原研究身份与原始结果未定位；没有新真实市场回测、PIT新闻验收、净收益或独立验证。",
+    "evidence_sha256": {
+      "image_review/news_mean_vol_v1/AUDIT_FINAL.json": "62bd6592d8047fd2efbacf0b58b4d39f27c960be186500bfca1a8c854d480289",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md": "058fe2a0796b80055df0f71f6c6a3d6ef95951a90ae47610a86093bdc912e29e",
+      "image_review/news_mean_vol_v1/PLAN_zh.md": "5bb220c0e0b9872a78b32c492d1453d9c57a76bfc2b7dabdc875f694793b63ea",
+      "image_review/news_mean_vol_v1/REVIEW_zh.md": "39720141a005a6bc1aa74a8513c6bfe643a72fe7fcd597387ee4a8eaa290959a",
+      "image_review/news_mean_vol_v1/evidence_ledger.json": "b0f255035903944b23c7aafb6903bb7c0ad18d2ef558c0d8d70e7fa88d4112ac",
+      "image_review/news_mean_vol_v1/formula_audit.py": "aef10471f868c52700535778dabe63e84a9b91160692ebc71b67de4784f2226a",
+      "image_review/news_mean_vol_v1/formula_results.json": "16408a399e43e1c6ed548b00dad7d00d43ab130d0c33dd5596cf9777ccdfac27",
+      "image_review/news_mean_vol_v1/formula_run_manifest.json": "e3dfea3453f56886f2ea4adf1427e12b33175bf89e3b675c9ecbd1a63dfca5ad",
+      "image_review/news_mean_vol_v1/input_manifest.json": "bfe91c5469d82ee1431b1a5e532fa270f8fce972e24e3c8ef10e98aaab1c59a1",
+      "image_review/news_mean_vol_v1/source_audit.json": "9e5bc46cbde68e1bdddb89dcef1f4e187aba9e2d5a48db35ccb34d08b7f22e2c",
+      "image_review/news_mean_vol_v1/toy_config.json": "6e4a41e14a11b549b00808dcee201f9cba6d819e058c027c28a44898f6d3addb"
+    },
+    "recorded_at_utc": "2026-11-19T04:08:59.746955+00:00"
   }
 ]

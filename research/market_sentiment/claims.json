@@ -173,5 +173,16 @@
       "image_review/factor_acceptance_v1/REVIEW_zh.md",
       "image_review/factor_acceptance_v1/readiness.json"
     ]
+  },
+  {
+    "id": "C020",
+    "claim": "新闻情绪均值、时间标准差、同日文章离散度、关注度和方向变化应分别定义；乘积是待输入的候选，截图IC及市场择时功效尚未验证",
+    "status": "MATH_CHECKED_MEASUREMENT_LIMITS_EMPIRICAL_EFFICACY_NOT_VERIFIED",
+    "evidence": [
+      "image_review/news_mean_vol_v1/REVIEW_zh.md",
+      "image_review/news_mean_vol_v1/formula_results.json",
+      "image_review/news_mean_vol_v1/source_audit.json",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md"
+    ]
   }
 ]
