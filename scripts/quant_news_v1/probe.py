@@ -129,7 +129,7 @@ def probe(provider_name: str, listen_seconds: float, replay: bool = False) -> di
         else:
             ws = p.connect()
             connected_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-            out.update(result="AUTH_OK_CONNECTED", connected_at_utc=connected_at)
+            out.update(result="HANDSHAKE_OK_AUTH_UNPROVEN", connected_at_utc=connected_at)
             # Phase 1: listen WITHOUT replay - only genuinely new pushes can arrive here.
             new, older, other, frames = _listen(ws, p, listen_seconds, connected_at)
             t = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
