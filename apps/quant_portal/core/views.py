@@ -552,11 +552,14 @@ def research_registry_json(request):
     from scripts.quant_research_v1 import catalog
     for p in protocols:
         p["engine"] = "legacy_mom20_v1@1"
-    p5 = _phase5_protocol(repo)
-    protocols.append({"protocol_id": p5["protocol_id"], "protocol_version": p5["protocol_version"], "factor": p5["factor"], "engine": "phase5_o2o_v1@1",
+    try:
+        p5 = _phase5_protocol(repo)
+    except (OSError, ValueError) as exc:  # frozen files missing from this image: protocol unavailable, page still works
+        p5 = None; data["protocol_errors"] = [f"phase5_strategy_v1 unavailable: {type(exc).__name__}"]
+    if p5: protocols.append({"protocol_id": p5["protocol_id"], "protocol_version": p5["protocol_version"], "factor": p5["factor"], "engine": "phase5_o2o_v1@1",
                       "costs_bps": json.loads((repo / RESEARCH_PROTOCOLS_V2["phase5_strategy_v1"]).read_text(encoding="utf-8"))["cost_bps_one_way"],
                       "periods": p5["sample_mask"]["periods"], "series": p5["sample_mask"]["series"], "frozen_config_sha256": p5["frozen_config_sha256"],
-                      "benchmark_id": p5["benchmark_id"], "evaluation_mode": p5["evaluation_mode"]})
+                      "benchmark_id": p5["benchmark_id"], "evaluation_mode": p5["evaluation_mode"]})  # noqa: E701
     data["protocols"] = protocols
     data["engines"] = {f"{k[0]}@{k[1]}": v for k, v in catalog.ENGINES.items()}
     for r in data.get("runs", []):
@@ -621,7 +624,10 @@ def research_run_create(request):
     try:
         if pid in RESEARCH_PROTOCOLS_V2:
             from scripts.quant_research_v1 import catalog
-            protocol = _phase5_protocol(repo)
+            try:
+                protocol = _phase5_protocol(repo)
+            except (OSError, ValueError):
+                return JsonResponse({"result": "REJECTED", "reason": "PROTOCOL_UNAVAILABLE: frozen phase5 files missing from this image"}, status=400)
             if tuple(fv) != (protocol["factor"]["factor_id"], protocol["factor"]["factor_version"]):
                 return JsonResponse({"result": "REJECTED", "reason": "protocol is frozen for a different strategy"}, status=400)
             run_id = catalog.create_run_v2(db, tuple(ds), tuple(fv), protocol, ("phase5_o2o_v1", "1"), requested_by=request.user.username)

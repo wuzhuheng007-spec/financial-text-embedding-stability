@@ -25,6 +25,18 @@
 
 !configs/*.json
 
+# Frozen phase5 study (program, config, protocol, public summaries, validation record; never ledgers or data).
+!research/market_sentiment/phase5_strategy_v1/run.py
+!research/market_sentiment/phase5_strategy_v1/check.py
+!research/market_sentiment/phase5_strategy_v1/config.json
+!research/market_sentiment/phase5_strategy_v1/PROTOCOL_zh.md
+!research/market_sentiment/phase5_strategy_v1/environment.json
+!research/market_sentiment/phase5_strategy_v1/requirements.txt
+!research/market_sentiment/phase5_strategy_v1/AUDIT_FINAL.json
+!research/market_sentiment/phase5_strategy_v1/results/*.csv
+!research/market_sentiment/phase5_strategy_v1/results/*.json
+!research/market_sentiment/phase5_strategy_v1/claude_validation_record/*
+
 # Git-tracked redacted receipts that runtime code verifies or displays.
 !results/watchlist_live_20261115/*_redacted.json
 !results/quant_portal_personal_v16_20261116/security_profiles_redacted.json

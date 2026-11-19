@@ -37,6 +37,9 @@ COPY apps/quant_portal /app/apps/quant_portal
 COPY scripts /app/scripts
 COPY configs /app/configs
 COPY results /app/results
+# Frozen phase5 program + first-round summaries + validation record: the web reads its frozen config/hashes and
+# register-defaults imports the historical result (no ledgers or market data are in the build context).
+COPY research/market_sentiment/phase5_strategy_v1 /app/research/market_sentiment/phase5_strategy_v1
 COPY deploy/linux/entrypoint.py deploy/linux/supervisor.py /app/deploy/linux/
 
 # Mount points for persistent named volumes. Docker copies this ownership into
