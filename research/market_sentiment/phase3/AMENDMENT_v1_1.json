@@ -1,0 +1,22 @@
+{
+  "revision_run_id": "phase3_20261119_v1_1",
+  "recorded_utc": "2026-11-19T01:47:50.118535+00:00",
+  "classification": "POST_RESULT_IMPLEMENTATION_CORRECTION_NOT_PARAMETER_SEARCH",
+  "parent_manifest_sha256": "845fc030f07d25e54ce4053d8cef6d71434d8e96b183dec8c44c04de6eeabf86",
+  "parent_code_sha256": "f4a4805dc0abe43efddb176ac247204ee71cea0149d0b3926623bf8710a1bb3f",
+  "initial_self_check_status": "FAIL_FOR_SIGNAL_ONSET_AND_EVENT_ANNOTATION_BOUNDARIES",
+  "observed_faults": {
+    "event_annotation_entries_across_price_segments": 6,
+    "unique_alerts_with_undefined_prior_state": 8
+  },
+  "corrections": [
+    "Require explicitly observed false state on prior eligible quote session before a true onset; unknown/warmup or missing resets prior to unknown",
+    "Constrain event-adjacent annotation onsets to the same accepted price segment"
+  ],
+  "unchanged": [
+    "All frozen thresholds, horizons, periods, proxies, model hyperparameters, minimum training count, source inputs and uncertainty choices"
+  ],
+  "old_results": "results and private retained immutable",
+  "new_results": "results_v1_1 and private_v1_1",
+  "interpretation": "No efficacy conclusion accepted from affected v1 alert/annotation output; rerun all for full reconciliation"
+}

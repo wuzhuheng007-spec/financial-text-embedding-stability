@@ -1,0 +1,16 @@
+{
+  "requested_indexes": 26,
+  "successful_indexes": 26,
+  "failed_indexes": 0,
+  "anchor_rows": 238,
+  "unique_statement_urls": 238,
+  "unknown_url_dates": 0,
+  "limitations": [
+    "No first-release timestamp reconstruction",
+    "Historical archive Statements and current-calendar HTML links only; unscheduled releases outside those indexes may be absent",
+    "1990s no-change meetings did not all publish statements; counts do not measure event frequency",
+    "No China-wide news universe; no causal labels or sentiment/surprise scoring",
+    "Current archive snapshot, not historical information-set certification"
+  ],
+  "code_sha256": "882eb5b221a6cbde1aa90d18812a2a4f86560381fa3065f3753db4c1cf741565"
+}

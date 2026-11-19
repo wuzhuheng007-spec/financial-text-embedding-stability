@@ -4,6 +4,10 @@
 
 ## 当前入口
 
+- [第三阶段完整报告](phase3/Phase3_Event_Atlas_Report_zh.md)：全样本20%/10%行情、候选信号误报、风险代理与价格增量比较。
+- [全部139条主要事件卡](phase3/ALL_EVENTS_20pct_zh.md)及[656条双阈值事件CSV](phase3/results_v1_1/events_all_thresholds.csv)。
+- [第三阶段冻结口径](phase3/PROTOCOL_zh.md)、[边界修正](phase3/AMENDMENT_v1_1.json)与[同作者自查](phase3/results_v1_1/self_check.json)。
+
 - [逐步研究日志](JOURNAL.md)和[结构化日志](steps.json)：每一步的计划、输入身份、实际执行、结果、限制和证据。
 - [当前状态](STATUS.json)和[结论登记表](claims.json)：区分已核验的窄结论、假设、负面结果和未通过的数据条件。
 - [第一阶段完整报告](phase1/Phase1_Research_Report_zh.md)：四条价格代理的基线和历史拐点对照。
@@ -29,3 +33,5 @@
 本目录与UCLA嵌入稳定性实验、现有个人平台运行和短期新闻评分分别记录。本次同步不改变服务器或平台参数，也不重新认定其他实验的执行状态。
 
 公开副本的图表链接与价格行级字段适配见[PUBLICATION_ADAPTATIONS.json](PUBLICATION_ADAPTATIONS.json)。原先完整文件保持不动。当前公开载荷校验清单为PUBLICATION_MANIFEST.json；旧阶段回执中所列私有输入不因此变成公开文件。
+
+第三阶段已在固定规则与可用历史内完成139个20%方向腿及517个10%方向腿的枚举；不是所有可能行情定义的全集。VIX/融资变量的当前版本诊断没有建立统一中期预测因子，完整中国本土情绪/新闻归因仍待补齐。全部结果和负面证据保留。

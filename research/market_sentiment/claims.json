@@ -89,5 +89,52 @@
       "phase2/results/news_field_pilot/summary.json",
       "phase2/results/news_field_pilot/source_readback_check.json"
     ]
+  },
+  {
+    "id": "C011",
+    "claim": "已验收四条历史在固定20%规则下139个方向确认腿、10%规则下517个；并非所有可能行情定义",
+    "status": "VERIFIED_WITHIN_RULE_AND_COVERAGE",
+    "evidence": [
+      "phase3/results_v1_1/events_all_thresholds.csv",
+      "phase3/results_v1_1/self_check.json"
+    ]
+  },
+  {
+    "id": "C012",
+    "claim": "当前版本风险代理对未来中期收益的稳定预测，以及超过固定价格模型的可靠改善，尚未确立",
+    "status": "INCONCLUSIVE",
+    "evidence": [
+      "phase3/results_v1_1/associations.csv",
+      "phase3/results_v1_1/model_contrasts.csv",
+      "phase3/results_v1_1/model_fit_coverage.csv"
+    ]
+  },
+  {
+    "id": "C013",
+    "claim": "候选联合信号存在反向先触及和未触及案例，不能认定统一可靠反转标准",
+    "status": "VERIFIED_FOR_FROZEN_CANDIDATES_ONLY",
+    "evidence": [
+      "phase3/results_v1_1/alert_summary.csv",
+      "phase3/results_v1_1/report_reconciliation.json"
+    ]
+  },
+  {
+    "id": "C014",
+    "claim": "美联储26个官方索引提取238个唯一声明URL；未认证正文/历史首次时间与因果",
+    "status": "VERIFIED_LINK_METADATA_ONLY",
+    "evidence": [
+      "phase3/results/official_calendar/summary.json",
+      "phase3/results/official_calendar/statement_links.csv"
+    ]
+  },
+  {
+    "id": "C015",
+    "claim": "边界修正已登记并重跑；最终数字经同作者原始输入和汇总核对，尚无独立复制",
+    "status": "VERIFIED_SAME_AUTHOR_ONLY",
+    "evidence": [
+      "phase3/AMENDMENT_v1_1.json",
+      "phase3/results_v1_1/self_check.json",
+      "phase3/results_v1_1/report_reconciliation.json"
+    ]
   }
 ]

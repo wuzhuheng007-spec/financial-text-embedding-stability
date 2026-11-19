@@ -1,0 +1,55 @@
+{
+  "final_status": "PARTIALLY_SUPPORTED",
+  "plan_execution_gate": "PASS_AFTER_DISCLOSED_IMPLEMENTATION_FIX",
+  "experimental_sufficiency_gate": "LIMITED",
+  "result_provenance_gate": "PASS_SAME_AUTHOR",
+  "citation_verification_gate": "PASS_FOR_7_STATED_SOURCE_CLAIMS",
+  "commands_actually_run_count": 8,
+  "command_count_scope": "listed top-level scientific commands, excluding read-only inspections, editing, publication and packaging",
+  "commands_actually_run": [
+    "python sentiment_phase3_20261119/freeze_plan.py",
+    "python sentiment_phase3_20261119/analyze.py [original v1]",
+    "python sentiment_phase3_20261119/collect_official_calendar.py",
+    "python sentiment_phase3_20261119/analyze.py [boundary correction v1_1]",
+    "python sentiment_phase3_20261119/self_check.py",
+    "python sentiment_phase3_20261119/make_report.py [initial report]",
+    "python sentiment_phase3_20261119/make_report.py [full-precision display JSON and preview output]",
+    "python sentiment_phase3_20261119/verify_report.py"
+  ],
+  "authoritative_artifacts_inspected": [
+    "config.json",
+    "freeze_receipt.json",
+    "AMENDMENT_v1_1.json",
+    "raw/input_manifest.json",
+    "results/run_manifest.json",
+    "results_v1_1/run_manifest.json",
+    "results_v1_1/self_check.json",
+    "results_v1_1/report_reconciliation.json",
+    "results_v1_1/display_cells.json",
+    "results/official_calendar/summary.json",
+    "citation_audit.json"
+  ],
+  "authoritative_artifacts_inspected_count": 11,
+  "unresolved_blockers": [
+    "Original historical publication vintages/timestamps unavailable",
+    "China-local long-history sentiment, leverage and flows incomplete",
+    "Complete news corpus with expectations/surprise and historical constituent breadth missing",
+    "Independent replication unavailable"
+  ],
+  "unresolved_blockers_count": 4,
+  "claims_authorized": [
+    "Exhaustive fixed-rule 20/10% directional-change census in accepted four series; current-vintage descriptive statistics",
+    "No robust incremental prediction established by fixed model comparison under stated primary multiplicity adjustment",
+    "Official calendar URL metadata captured within stated archive universe"
+  ],
+  "claims_not_authorized": [
+    "All historical turning points under every market definition covered",
+    "Universal reversal standard or pure sentiment identification",
+    "Causal explanation of each rise/fall or proven profitable strategy",
+    "Independent validation or PIT backtest"
+  ],
+  "worktree_user_data_preserved": "YES",
+  "publication_scope": "Only own code, aggregate/date-only event outputs, source URLs/hashes; no raw private market panels",
+  "publication_gate": "Remote acknowledgment recorded after non-force update and readback",
+  "finished_utc": "2026-11-19T01:55:45.612039+00:00"
+}

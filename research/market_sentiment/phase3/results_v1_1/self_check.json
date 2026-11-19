@@ -1,0 +1,29 @@
+{
+  "status": "PASS_SAME_AUTHOR_SELF_CHECK",
+  "independent_validation": false,
+  "checks": {
+    "run_input_and_result_hashes": 16,
+    "price_rows_from_original_sqlite": 23749,
+    "direct_price_feature_cells": 118745,
+    "source_date_alignments": 71247,
+    "forward_returns_from_original_sqlite": 68993,
+    "trailing_vix_rank_direct_checks": 34,
+    "event_threshold_first_crossing_and_extreme_checks": 656,
+    "event_annotation_same_segment_entries": 1756,
+    "alerts_known_false_to_true_and_cooldown": 1391,
+    "alert_barrier_cells": 12519,
+    "models_train_only_and_augmented_system_refit": 600,
+    "future_price_mutation_and_alignment_prefix_markets": 4,
+    "implementation_fix_did_not_change_models_or_associations": true
+  },
+  "known_v1_failures": "AMENDMENT_v1_1.json",
+  "scientific_limits": [
+    "current-vintage inputs, no historical information-set certification",
+    "event extrema are retrospective",
+    "sparse independent episodes and correlated market proxies",
+    "China local investor sentiment/news expectation data unavailable"
+  ],
+  "code_sha256": "59a918d3800d23cfbbf601aa0fd4c8625dd0619bc18fb1b2960cbbae8c043be5",
+  "checked_run_manifest_sha256": "859b4f265efa671386031abaf63305f02df10d07fafc798378910ee4389da1bd",
+  "finished_utc": "2026-11-19T01:49:57.058177+00:00"
+}

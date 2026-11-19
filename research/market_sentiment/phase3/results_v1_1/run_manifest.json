@@ -1,0 +1,43 @@
+{
+  "run_id": "phase3_20261119_v1_1",
+  "started_utc": "2026-11-19T01:47:51.882618+00:00",
+  "finished_utc": "2026-11-19T01:49:07.347391+00:00",
+  "duration_seconds": 75.46476674400037,
+  "code_sha256": "5c33817895d49f6e3b86d991f1956a7d8dbbfada2bdf6b604ccbc844c0ce65db",
+  "amendment_sha256": "7ce8f7b58f2179ea1c3504acf9ed63310efeec5cf42cde42f2b4c2047db7dcb9",
+  "config_sha256": "25e61a04814e95ae19d63b35fe2dbfdc24341c0636741d03f5f453c9f4de9a40",
+  "input_manifest_sha256": "91a882ddb99aa57b85d1ea4509c85efd54736117adbfbbea9f8731acc8bbaad3",
+  "price_database_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3"
+  },
+  "commands_actually_run": [
+    "python sentiment_phase3_20261119/analyze.py"
+  ],
+  "events": 656,
+  "confirmed_event_legs_including_right_censored": 656,
+  "alert_outcome_cells": 12519,
+  "fit_count": 600,
+  "prediction_rows": 35575,
+  "raw_and_result_hashes": {
+    "results_v1_1/alert_summary.csv": "d8166e446a77b653183827c44d287110c2a288fadfee40cba8451863bb372ee5",
+    "results_v1_1/associations.csv": "9da6950e39cedb7b61e18786f09bd6261c9be0dd775f8df612d28904c8b59472",
+    "results_v1_1/coverage.json": "85ba904bf7ed7a55d45ae89dbca05ff7ae03fb3768701c01c4cb2a9a412983b6",
+    "results_v1_1/event_counts.csv": "d812290c49034d2909d5b9f4f9ebfcb798d65b649e31e31544f9444926d93c0c",
+    "results_v1_1/events_all_thresholds.csv": "a8b6459143e43728cd0879514a28b8231b89269a9846200435818baf1375b863",
+    "results_v1_1/model_contrasts.csv": "0284c7ca16be8ee6045870e454e2c743d3b22a1dee069789555bf9de1acecc6c",
+    "results_v1_1/model_fit_coverage.csv": "3b2b18fbb5523fa43f45c0919c5cc29455f22534b960b793320e233dcd6883a1",
+    "results_v1_1/model_summary.csv": "e5fdc6dd08827581458b5a8f7f520a0af651200852fa18e8dcc2e406cb5d0a9f",
+    "results_v1_1/open_segments.csv": "6eae97f4fdee1905ee5811b087e52dd11e169c6e23e7bcab75904b6d68926c59",
+    "private_v1_1/SH_000001_panel.csv": "b3b05d2755018edcec0aa23037db0c5d0047a51f5f194c32262836b834783d2f",
+    "private_v1_1/SH_000688_panel.csv": "27a596ced6404880de90e81034a5500c7078e4b5c7d6dbc69e23f27018e8245c",
+    "private_v1_1/US_QQQ_panel.csv": "5c3f2d1de5c87c6db45f0fe7abf8a12a6e4d871b06edbe5a5f9efaa649d2aa94",
+    "private_v1_1/US__SOX_panel.csv": "ed08c824ea2fc79376748db35b1c1a44b6943c95b7a66a23f6c05bf30eeea6d4",
+    "private_v1_1/alert_outcomes.csv": "fc29d43c0daf59df5b2bf3638743836d539ec8dbedc79753b57b319b1450ebad",
+    "private_v1_1/model_fit_parameters.json": "c7fd642a077e547f4f5918c370a4056196a8260fc5cbcc022d7f83859c4cf403",
+    "private_v1_1/model_predictions.csv": "5dcc3beebe2ce6afff7d942052e2a1942a94fd1ebea7f537b2a0a9e5e34ddab7"
+  },
+  "independent_validation": false
+}

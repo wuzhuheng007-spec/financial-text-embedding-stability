@@ -99,3 +99,59 @@
 **限制：** QQQ/STAR历史长度不足30年；当前版本非PIT；缺中国本土长历史情绪/完整新闻首次发布与预期数据。
 
 证据：[phase3/config.json](phase3/config.json)、[phase3/freeze_receipt.json](phase3/freeze_receipt.json)、[phase3/input_manifest.json](phase3/input_manifest.json)、[phase3/PROTOCOL_zh.md](phase3/PROTOCOL_zh.md)
+
+## R007 · 全样本首轮计算与边界问题登记
+
+**状态：** INITIAL_OUTPUT_RETAINED_BOUNDARY_CHECK_FAILED；记录UTC：2026-11-19T01:56:43.821780+00:00
+
+**计划：** 按R006冻结合同枚举完整行情与候选信号并训练固定时序基线。
+
+**实际：** 实际完成v1：656个双阈值行情腿、600个Ridge拟合；边界检查发现6处跨SOX片段注释与8个前态未知信号。登记修正，保留原始结果、代码和回执。
+
+**结论：** 首轮已执行；受影响的信号/注释不能作最终效力证据。
+
+**限制：** 发现问题后没有调整阈值或筛选最好参数；保留失败记录。
+
+证据：[phase3/audit/analyze_v1.py](phase3/audit/analyze_v1.py)、[phase3/results/run_manifest.json](phase3/results/run_manifest.json)、[phase3/results/events_all_thresholds.csv](phase3/results/events_all_thresholds.csv)、[phase3/results/alert_summary.csv](phase3/results/alert_summary.csv)、[phase3/AMENDMENT_v1_1.json](phase3/AMENDMENT_v1_1.json)
+
+## R008 · 修正边界后全量重跑与原始输入自查
+
+**状态：** EXECUTED_SAME_AUTHOR_CHECKED_CURRENT_VINTAGE；记录UTC：2026-11-19T01:56:43.823140+00:00
+
+**计划：** 只修正前态未知和跨片段注释，保留冻结科学口径，全量重跑并核对原始证据。
+
+**实际：** v1_1输出139个20%腿、517个10%腿、1391个唯一候选信号及12519个信号期限障碍单元、600个拟合和35575行逐期预测；从原SQLite核对23749个价格与68993个前向标签；检查信号和重新拟合600个模型。关联/模型比较与v1相同。
+
+**结论：** 固定规则内全事件已枚举；主关联/主增量比较没有确立多重比较调整后稳定预测；确认滞后与误报保留。
+
+**限制：** 当前版本、四条相关市场代理、一个固定模型族；STAR短样本；不是独立复制、完整情绪识别或可交易收益回测。
+
+证据：[phase3/analyze.py](phase3/analyze.py)、[phase3/results_v1_1/run_manifest.json](phase3/results_v1_1/run_manifest.json)、[phase3/results_v1_1/self_check.json](phase3/results_v1_1/self_check.json)、[phase3/results_v1_1/event_counts.csv](phase3/results_v1_1/event_counts.csv)、[phase3/results_v1_1/associations.csv](phase3/results_v1_1/associations.csv)、[phase3/results_v1_1/model_contrasts.csv](phase3/results_v1_1/model_contrasts.csv)、[phase3/results_v1_1/alert_summary.csv](phase3/results_v1_1/alert_summary.csv)、[phase3/results_v1_1/model_fit_coverage.csv](phase3/results_v1_1/model_fit_coverage.csv)
+
+## R009 · 美联储30年官方声明链接索引
+
+**状态：** OFFICIAL_ARCHIVE_LINK_METADATA_ONLY；记录UTC：2026-11-19T01:56:43.824176+00:00
+
+**计划：** 遍历1996-2020年度档案和2021-2026日历，只登记真实声明链接与失败覆盖。
+
+**实际：** 26个官方索引页面获取成功，提取238条唯一声明URL；保存年份覆盖、原网页哈希及未获得字段。按事后行情起点前后20自然日匹配政策线索。
+
+**结论：** 该公开档案范围内的声明链接清单已提取，不是正文/首次发布时刻或完整新闻因果数据库。
+
+**限制：** 90年代不变息会议未必发声明；档案外非例会新闻可能缺失；中国本土政策资料与预期数据待补齐。
+
+证据：[phase3/collect_official_calendar.py](phase3/collect_official_calendar.py)、[phase3/results/official_calendar/index_fetch_inventory.csv](phase3/results/official_calendar/index_fetch_inventory.csv)、[phase3/results/official_calendar/statement_links.csv](phase3/results/official_calendar/statement_links.csv)、[phase3/results/official_calendar/year_coverage.csv](phase3/results/official_calendar/year_coverage.csv)、[phase3/results/official_calendar/summary.json](phase3/results/official_calendar/summary.json)、[phase3/results_v1_1/event_policy_date_links.csv](phase3/results_v1_1/event_policy_date_links.csv)
+
+## R010 · 逐次事件卡、情绪轨迹与全部结果核对
+
+**状态：** PARTIALLY_SUPPORTED_RESEARCH_ATLAS_COMPLETE_WITHIN_SCOPE；记录UTC：2026-11-19T01:56:43.825427+00:00
+
+**计划：** 生成全部20%事件卡和原始结果可追溯报告，核验全部主展示单元与引用，发布结论边界。
+
+**实际：** 139条事件卡逐条对应；生成聚合轨迹及4/8/12周全结果。核对225行模型汇总、159行对照、756行信号汇总、968行轨迹及60行重叠窗口关联；核验7条一手来源的对应论述。
+
+**结论：** 价格与风险代理的重叠窗口关联不等于中期预测；当前有限诊断没有建立统一可靠反转因子。
+
+**限制：** 仍缺完整中国本土情绪、历史可得版本、新闻首次时间/预期与独立复制；不为每次涨跌编造单一原因。
+
+证据：[phase3/Phase3_Event_Atlas_Report_zh.md](phase3/Phase3_Event_Atlas_Report_zh.md)、[phase3/ALL_EVENTS_20pct_zh.md](phase3/ALL_EVENTS_20pct_zh.md)、[phase3/results_v1_1/display_cells.json](phase3/results_v1_1/display_cells.json)、[phase3/results_v1_1/overlapping_window_associations.csv](phase3/results_v1_1/overlapping_window_associations.csv)、[phase3/results_v1_1/event_aligned_medians.csv](phase3/results_v1_1/event_aligned_medians.csv)、[phase3/results_v1_1/report_reconciliation.json](phase3/results_v1_1/report_reconciliation.json)、[phase3/citation_audit.json](phase3/citation_audit.json)、[phase3/evidence_ledger.json](phase3/evidence_ledger.json)、[phase3/AUDIT_FINAL.json](phase3/AUDIT_FINAL.json)

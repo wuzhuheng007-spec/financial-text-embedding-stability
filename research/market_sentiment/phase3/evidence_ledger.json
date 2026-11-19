@@ -1,0 +1,101 @@
+{
+  "run_id": "phase3_20261119_v1_1",
+  "claims": [
+    {
+      "id": "P3-EVENTS",
+      "claim": "All fixed-rule events in accepted histories enumerated",
+      "status": "VERIFIED_WITHIN_STATED_RULE_AND_COVERAGE",
+      "evidence": [
+        "results_v1_1/events_all_thresholds.csv",
+        "results_v1_1/open_segments.csv",
+        "results_v1_1/self_check.json"
+      ]
+    },
+    {
+      "id": "P3-PREDICT",
+      "claim": "Universal reversal or robust incremental predictive efficacy",
+      "status": "INCONCLUSIVE",
+      "evidence": [
+        "results_v1_1/associations.csv",
+        "results_v1_1/model_contrasts.csv",
+        "results_v1_1/alert_summary.csv"
+      ]
+    },
+    {
+      "id": "P3-NEWS",
+      "claim": "Complete causal news explanation for all historical turns",
+      "status": "NOT_VERIFIED",
+      "evidence": [
+        "results/official_calendar/summary.json"
+      ]
+    }
+  ],
+  "plan_execution": [
+    {
+      "id": "P30",
+      "status": "PASS",
+      "evidence": [
+        "config.json",
+        "freeze_receipt.json",
+        "input_manifest.json"
+      ]
+    },
+    {
+      "id": "P31",
+      "status": "PASS_AFTER_DISCLOSED_IMPLEMENTATION_FIX",
+      "evidence": [
+        "results_v1_1/events_all_thresholds.csv",
+        "results_v1_1/alert_summary.csv",
+        "AMENDMENT_v1_1.json"
+      ]
+    },
+    {
+      "id": "P32",
+      "status": "PASS_EXPLORATORY_CURRENT_VINTAGE",
+      "evidence": [
+        "results_v1_1/model_summary.csv",
+        "results_v1_1/model_contrasts.csv"
+      ]
+    },
+    {
+      "id": "P33",
+      "status": "PASS_FOR_METADATA_UNIVERSE_ONLY",
+      "evidence": [
+        "results/official_calendar/index_fetch_inventory.csv",
+        "results/official_calendar/statement_links.csv"
+      ]
+    },
+    {
+      "id": "P34",
+      "status": "PASS_SAME_AUTHOR",
+      "evidence": [
+        "results_v1_1/self_check.json",
+        "Phase3_Event_Atlas_Report_zh.md",
+        "results_v1_1/report_reconciliation.json"
+      ]
+    },
+    {
+      "id": "P35",
+      "status": "LOCAL_PUBLICATION_READY_REMOTE_ACK_REQUIRED",
+      "evidence": [
+        "results_v1_1/report_reconciliation.json"
+      ]
+    }
+  ],
+  "numerical_chain": "display_cells -> result CSV -> raw/prediction hashes in run_manifest -> config/input hashes -> source files",
+  "limitations": [
+    "PIT unavailable",
+    "complete China/news expectations unavailable",
+    "not independently replicated",
+    "finite correlated market/one-model-family diagnostic"
+  ],
+  "artifact_hashes": {
+    "config.json": "25e61a04814e95ae19d63b35fe2dbfdc24341c0636741d03f5f453c9f4de9a40",
+    "freeze_receipt.json": "8b305badc173fd3ed018a787317ee0fe11a49b1c4e282f16a3a694c182780268",
+    "AMENDMENT_v1_1.json": "7ce8f7b58f2179ea1c3504acf9ed63310efeec5cf42cde42f2b4c2047db7dcb9",
+    "results_v1_1/run_manifest.json": "859b4f265efa671386031abaf63305f02df10d07fafc798378910ee4389da1bd",
+    "results_v1_1/display_cells.json": "a4d9223a4724f0c7dd7d807d1dbc855d73294df1cd5a3d47cc80d0430bbcf7aa",
+    "results_v1_1/self_check.json": "7fd7b72548e8c5793bb37ba4f11765b1c0518afaa9d042df5a008dd382e70966",
+    "Phase3_Event_Atlas_Report_zh.md": "08e5980e3ae8f90690429d574b63243527ae71b280e751f8e837dc3dff562518"
+  }
+}

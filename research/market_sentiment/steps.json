@@ -158,5 +158,117 @@
       "phase3/PROTOCOL_zh.md": "e04133ab949f3c051677a2a5e748f0153b45db04e85bcb0b0073ce1ec22c037b"
     },
     "recorded_at_utc": "2026-11-19T01:42:18.123617+00:00"
+  },
+  {
+    "id": "R007",
+    "title": "全样本首轮计算与边界问题登记",
+    "plan": "按R006冻结合同枚举完整行情与候选信号并训练固定时序基线。",
+    "actual": "实际完成v1：656个双阈值行情腿、600个Ridge拟合；边界检查发现6处跨SOX片段注释与8个前态未知信号。登记修正，保留原始结果、代码和回执。",
+    "status": "INITIAL_OUTPUT_RETAINED_BOUNDARY_CHECK_FAILED",
+    "evidence": [
+      "phase3/audit/analyze_v1.py",
+      "phase3/results/run_manifest.json",
+      "phase3/results/events_all_thresholds.csv",
+      "phase3/results/alert_summary.csv",
+      "phase3/AMENDMENT_v1_1.json"
+    ],
+    "claims": "首轮已执行；受影响的信号/注释不能作最终效力证据。",
+    "limits": "发现问题后没有调整阈值或筛选最好参数；保留失败记录。",
+    "evidence_sha256": {
+      "phase3/audit/analyze_v1.py": "f4a4805dc0abe43efddb176ac247204ee71cea0149d0b3926623bf8710a1bb3f",
+      "phase3/results/run_manifest.json": "845fc030f07d25e54ce4053d8cef6d71434d8e96b183dec8c44c04de6eeabf86",
+      "phase3/results/events_all_thresholds.csv": "9833e2d2b73c1161880c41b2010cf194210f374cc50c2d134ef4c361deaf22c2",
+      "phase3/results/alert_summary.csv": "4e774a16ceb23c4171cdc1669b3583483f04df5be02b118dc352f45590574f23",
+      "phase3/AMENDMENT_v1_1.json": "7ce8f7b58f2179ea1c3504acf9ed63310efeec5cf42cde42f2b4c2047db7dcb9"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.821780+00:00"
+  },
+  {
+    "id": "R008",
+    "title": "修正边界后全量重跑与原始输入自查",
+    "plan": "只修正前态未知和跨片段注释，保留冻结科学口径，全量重跑并核对原始证据。",
+    "actual": "v1_1输出139个20%腿、517个10%腿、1391个唯一候选信号及12519个信号期限障碍单元、600个拟合和35575行逐期预测；从原SQLite核对23749个价格与68993个前向标签；检查信号和重新拟合600个模型。关联/模型比较与v1相同。",
+    "status": "EXECUTED_SAME_AUTHOR_CHECKED_CURRENT_VINTAGE",
+    "evidence": [
+      "phase3/analyze.py",
+      "phase3/results_v1_1/run_manifest.json",
+      "phase3/results_v1_1/self_check.json",
+      "phase3/results_v1_1/event_counts.csv",
+      "phase3/results_v1_1/associations.csv",
+      "phase3/results_v1_1/model_contrasts.csv",
+      "phase3/results_v1_1/alert_summary.csv",
+      "phase3/results_v1_1/model_fit_coverage.csv"
+    ],
+    "claims": "固定规则内全事件已枚举；主关联/主增量比较没有确立多重比较调整后稳定预测；确认滞后与误报保留。",
+    "limits": "当前版本、四条相关市场代理、一个固定模型族；STAR短样本；不是独立复制、完整情绪识别或可交易收益回测。",
+    "evidence_sha256": {
+      "phase3/analyze.py": "5c33817895d49f6e3b86d991f1956a7d8dbbfada2bdf6b604ccbc844c0ce65db",
+      "phase3/results_v1_1/run_manifest.json": "859b4f265efa671386031abaf63305f02df10d07fafc798378910ee4389da1bd",
+      "phase3/results_v1_1/self_check.json": "7fd7b72548e8c5793bb37ba4f11765b1c0518afaa9d042df5a008dd382e70966",
+      "phase3/results_v1_1/event_counts.csv": "d812290c49034d2909d5b9f4f9ebfcb798d65b649e31e31544f9444926d93c0c",
+      "phase3/results_v1_1/associations.csv": "9da6950e39cedb7b61e18786f09bd6261c9be0dd775f8df612d28904c8b59472",
+      "phase3/results_v1_1/model_contrasts.csv": "0284c7ca16be8ee6045870e454e2c743d3b22a1dee069789555bf9de1acecc6c",
+      "phase3/results_v1_1/alert_summary.csv": "d8166e446a77b653183827c44d287110c2a288fadfee40cba8451863bb372ee5",
+      "phase3/results_v1_1/model_fit_coverage.csv": "3b2b18fbb5523fa43f45c0919c5cc29455f22534b960b793320e233dcd6883a1"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.823140+00:00"
+  },
+  {
+    "id": "R009",
+    "title": "美联储30年官方声明链接索引",
+    "plan": "遍历1996-2020年度档案和2021-2026日历，只登记真实声明链接与失败覆盖。",
+    "actual": "26个官方索引页面获取成功，提取238条唯一声明URL；保存年份覆盖、原网页哈希及未获得字段。按事后行情起点前后20自然日匹配政策线索。",
+    "status": "OFFICIAL_ARCHIVE_LINK_METADATA_ONLY",
+    "evidence": [
+      "phase3/collect_official_calendar.py",
+      "phase3/results/official_calendar/index_fetch_inventory.csv",
+      "phase3/results/official_calendar/statement_links.csv",
+      "phase3/results/official_calendar/year_coverage.csv",
+      "phase3/results/official_calendar/summary.json",
+      "phase3/results_v1_1/event_policy_date_links.csv"
+    ],
+    "claims": "该公开档案范围内的声明链接清单已提取，不是正文/首次发布时刻或完整新闻因果数据库。",
+    "limits": "90年代不变息会议未必发声明；档案外非例会新闻可能缺失；中国本土政策资料与预期数据待补齐。",
+    "evidence_sha256": {
+      "phase3/collect_official_calendar.py": "882eb5b221a6cbde1aa90d18812a2a4f86560381fa3065f3753db4c1cf741565",
+      "phase3/results/official_calendar/index_fetch_inventory.csv": "ef7abb57be5bc0c81b5b9bb9f94febbe10cdc8ecb918211a0eafcd78bf16b96c",
+      "phase3/results/official_calendar/statement_links.csv": "187f3e584c3bdfd6372e41b325246c5e9f60be5319a24a346f5412429ecc8a44",
+      "phase3/results/official_calendar/year_coverage.csv": "cb777b32df5fe844bdd9640cbcbea421a15132edddbeedecc30a0fbb8ec31bb1",
+      "phase3/results/official_calendar/summary.json": "cad1676abe28ae467f5be7b5414d31662fa91173a2877c23b1af4599c7be523a",
+      "phase3/results_v1_1/event_policy_date_links.csv": "9d91c666e754b6b5ea101dab6b0ab97507770eeea0751d4437b71509b9cfcb75"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.824176+00:00"
+  },
+  {
+    "id": "R010",
+    "title": "逐次事件卡、情绪轨迹与全部结果核对",
+    "plan": "生成全部20%事件卡和原始结果可追溯报告，核验全部主展示单元与引用，发布结论边界。",
+    "actual": "139条事件卡逐条对应；生成聚合轨迹及4/8/12周全结果。核对225行模型汇总、159行对照、756行信号汇总、968行轨迹及60行重叠窗口关联；核验7条一手来源的对应论述。",
+    "status": "PARTIALLY_SUPPORTED_RESEARCH_ATLAS_COMPLETE_WITHIN_SCOPE",
+    "evidence": [
+      "phase3/Phase3_Event_Atlas_Report_zh.md",
+      "phase3/ALL_EVENTS_20pct_zh.md",
+      "phase3/results_v1_1/display_cells.json",
+      "phase3/results_v1_1/overlapping_window_associations.csv",
+      "phase3/results_v1_1/event_aligned_medians.csv",
+      "phase3/results_v1_1/report_reconciliation.json",
+      "phase3/citation_audit.json",
+      "phase3/evidence_ledger.json",
+      "phase3/AUDIT_FINAL.json"
+    ],
+    "claims": "价格与风险代理的重叠窗口关联不等于中期预测；当前有限诊断没有建立统一可靠反转因子。",
+    "limits": "仍缺完整中国本土情绪、历史可得版本、新闻首次时间/预期与独立复制；不为每次涨跌编造单一原因。",
+    "evidence_sha256": {
+      "phase3/Phase3_Event_Atlas_Report_zh.md": "08e5980e3ae8f90690429d574b63243527ae71b280e751f8e837dc3dff562518",
+      "phase3/ALL_EVENTS_20pct_zh.md": "ce024abf7eea5f5c076765a5257d487c441b0e9397bce4d598fc9586e6953043",
+      "phase3/results_v1_1/display_cells.json": "a4d9223a4724f0c7dd7d807d1dbc855d73294df1cd5a3d47cc80d0430bbcf7aa",
+      "phase3/results_v1_1/overlapping_window_associations.csv": "de9fb97770cfda59927d181b2db3d6c1fea8af87bedfd100dfe4ec146bf583b9",
+      "phase3/results_v1_1/event_aligned_medians.csv": "7da98324cad7b04e0e167426c7add7406856ed9140545bb1f7d1b0eb46e7604f",
+      "phase3/results_v1_1/report_reconciliation.json": "7c5d6cd425748d5552d7ec94704ad199a74ac08271610e5b5827026aece00944",
+      "phase3/citation_audit.json": "3211b334512d98b877f7000a05f3735e6857137108de5e0ddac3865eb7349145",
+      "phase3/evidence_ledger.json": "bc16a635a5b9dab193e62cffcaf70faa53d9fd19f117b48ecbfa345cfa2b0384",
+      "phase3/AUDIT_FINAL.json": "887e81753535f2fd0bd9c3e61def6b151acf0a2d76378574a1a06490a3828b96"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.825427+00:00"
   }
 ]
