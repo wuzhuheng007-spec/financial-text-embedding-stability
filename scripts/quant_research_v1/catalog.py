@@ -367,6 +367,24 @@ def resolved_conditions(db, row) -> dict:
     return c
 
 
+def _reasons_zh(diffs: dict, unknown: dict) -> list:
+    """Short readable reasons: engine accounting labels grouped in one line, then the resolved conditions, then unknowns."""
+    out = []
+    contracts = [k for k in diffs if k.endswith("_contract")]
+    if contracts:
+        out.append("引擎会计口径不同（" + "、".join(CONDITION_LABELS_ZH[k].replace("契约", "") for k in contracts) + "）")
+    resolved = [k for k in RESOLVED_CONDITIONS if k in diffs]
+    if resolved:
+        out.append("实际条件不同：" + "、".join(CONDITION_LABELS_ZH[k] for k in resolved))
+    other = [k for k in ("evaluation_mode", "benchmark_id", "dataset_mask_hash") if k in diffs
+             and not (k == "benchmark_id" and "benchmark" in diffs) and not (k == "dataset_mask_hash" and "sample_mask" in diffs)]
+    if other:
+        out.append("另有不同：" + "、".join(CONDITION_LABELS_ZH[k] for k in other))
+    if unknown:
+        out.append("条件未知（不会自动视为相同）：" + "、".join(f"{CONDITION_LABELS_ZH.get(k, k)}（{'、'.join(v)}）" for k, v in unknown.items()))
+    return out
+
+
 def compare(db, run_a: str, run_b: str) -> dict:
     """Comparison eligibility of two runs. COMPARABLE (ranking allowed) only when every engine contract AND every
     resolved economic/evaluation condition is known on both sides and equal. Different known conditions ->
@@ -381,7 +399,7 @@ def compare(db, run_a: str, run_b: str) -> dict:
     unknown = {k: [side for side, c in (("a", ca), ("b", cb)) if c.get(k) in (None, UNKNOWN)] for k in fields}
     unknown = {k: v for k, v in unknown.items() if v}
     diffs = {k: {"a": ca.get(k), "b": cb.get(k)} for k in fields if k not in unknown and ca.get(k) != cb.get(k)}
-    reasons = [f"{CONDITION_LABELS_ZH.get(k, k)}不同" for k in diffs] + [f"{CONDITION_LABELS_ZH.get(k, k)}未知（{'、'.join(v)}）" for k, v in unknown.items()]
+    reasons = _reasons_zh(diffs, unknown)
     same_factor = (ra["factor_id"], ra["factor_version"]) == (rb["factor_id"], rb["factor_version"])
     base = {"differences": diffs, "unknown_conditions": unknown, "conditions": {"a": ca, "b": cb}, "same_factor": same_factor,
             "side_by_side_allowed": True, "checked_fields": list(fields)}

@@ -250,7 +250,7 @@
       const c = h('article', 'rw-mcard'); c.append(h('h4', null, STRAT_ZH[st]));
       if (!m) { c.append(h('p', 'fine-print', '无已执行区间')); wrap.append(c); continue; }
       const dl = h('dl');
-      for (const [k, v] of [['年化（自然时间）', pct(m.cagr, 2)], ['最大回撤', pct(m.max_drawdown)], ['平均暴露', pct(m.mean_exposure)], ['累计费用', pct(m.cost_fraction_sum, 2)], ['Sharpe（描述）', num(m.descriptive_sharpe_sqrt252)]]) {
+      for (const [k, v] of [['年化', pct(m.cagr, 2)], ['最大回撤', pct(m.max_drawdown)], ['平均暴露', pct(m.mean_exposure)], ['累计费用', pct(m.cost_fraction_sum, 2)], ['Sharpe（描述）', num(m.descriptive_sharpe_sqrt252)]]) {
         dl.append(h('dt', null, k), h('dd', 'num', v));
       }
       c.append(dl);
@@ -301,7 +301,7 @@
       const gm = segPick('市场', Object.keys(MKT).map(k => [k, MKT[k]]), sel.mkt, (v, kb) => { sel.mkt = v; draw(kb ? 'm' : null); });
       const gc = segPick('成本情景（单边）', COSTS.map(c => [c, `${c} bps`]), sel.cost, (v, kb) => { sel.cost = v; draw(kb ? 'c' : null); });
       pickers.append(gm, gc);
-      const cap = h('p', 'fine-print rw-cap', `${MKT[sel.mkt]} · 主评价期 2015–2025 · 单边 ${sel.cost} bps · 现金 0 收益`);
+      const cap = h('p', 'fine-print rw-cap', `${MKT[sel.mkt]} · 主评价期 2015–2025 · 单边 ${sel.cost} bps · 现金 0 收益 · 年化按实际自然时间，Sharpe 仅作描述`);
       const parts = [...head, verdictBlock(sci, passes, tests.length, mech, layers), pickers, cap, metricCards(metrics, tests, sel.mkt, sel.cost)];
       let eq = null, dd = null;
       if (curves) {
@@ -333,7 +333,7 @@
     if (!others.length) { box.append(h('p', 'fine-print', '没有其他已完成的运行')); return box; }
     const lab = h('label', 'form-field'); lab.append('比较对象');
     const sel = h('select'); sel.append(h('option', null, '选择一个已完成的运行'));
-    for (const r of others) { const o = h('option', null, `${shortId(r)} · ${r.factor_id} · ${r.dataset_id}`); o.value = r.run_id; sel.append(o); }
+    for (const r of others) { const o = h('option', null, `${shortId(r)} · ${r.factor_id}`); o.title = `${r.factor_id}@${r.factor_version} · ${r.dataset_id}@${r.dataset_version}`; o.value = r.run_id; sel.append(o); }
     sel.firstChild.value = ''; lab.append(sel);
     const out = h('div', 'rw-cmp'); out.setAttribute('role', 'status');
     sel.onchange = async () => {

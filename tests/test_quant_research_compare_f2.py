@@ -105,7 +105,7 @@ class CompareConditions(unittest.TestCase):
         b = copy.deepcopy(LEGACY); del b["cash_return"]
         r = self.cmp(b)
         self.assertEqual(r["result"], "NOT_COMPARABLE"); self.assertEqual(r["unknown_conditions"].get("cash"), ["b"])
-        self.assertFalse(r["ranking_allowed"]); self.assertTrue(any("现金收益未知" in x for x in r["reasons_zh"]))
+        self.assertFalse(r["ranking_allowed"]); self.assertTrue(any("未知" in x and "现金收益" in x for x in r["reasons_zh"]))
 
     def test_both_unknown_still_not_comparable(self):
         a_cfg = copy.deepcopy(LEGACY); del a_cfg["metrics"]["annualization_days"]
@@ -132,6 +132,8 @@ class CompareConditions(unittest.TestCase):
         self.assertEqual(r["result"], "NOT_COMPARABLE")
         self.assertTrue({"execution_contract", "cost_contract", "metric_contract", "cost", "annualization"} <= set(r["differences"]))
         self.assertIsNone(r["sensitivity_axis"])
+        self.assertLessEqual(len(r["reasons_zh"]), 4)
+        self.assertTrue(r["reasons_zh"][0].startswith("引擎会计口径不同")); self.assertIn("费用/成本假设", r["reasons_zh"][1])
 
     def test_phase5_same_frozen_config_comparable_and_unhashed_config_unknown(self):
         ds, a = self.phase5_run()

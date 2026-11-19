@@ -397,11 +397,13 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .rw-art a{font-family:var(--mono);font-size:12.5px;overflow-wrap:anywhere}
 .rw-cmp-head{font-weight:600;margin:8px 0 2px}
 .rw-cmp ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--text-2)}
-.rw-fold .form-field{display:grid;gap:4px;font-size:12.5px;margin-top:10px}
-.rw-fold select{max-width:100%}
+.rw-fold .form-field{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;font-size:12.5px;margin-top:10px}
+.rw-fold select{width:100%;min-width:0;max-width:100%;text-overflow:ellipsis}
 @media (max-width:640px){
   .rw-mcards{grid-template-columns:1fr 1fr}
   .rw-chart{height:200px}
   .rw-sel{gap:8px}
 }
 @media (max-width:380px){.rw-mcards{grid-template-columns:1fr}}
+#rw-d-tech .setting-row{min-width:0}
+#rw-d-tech .setting-row .num,.rw-errata .setting-row .num{min-width:0;overflow-wrap:anywhere;word-break:break-word;white-space:pre-wrap}
