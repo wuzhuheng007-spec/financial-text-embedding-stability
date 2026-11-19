@@ -378,5 +378,35 @@ class FrameShapeTests(unittest.TestCase):
         self.assertNotIn("a string body", str(c.exception))  # structure only, never content
 
 
+class HeartbeatTests(Base):
+    def test_heartbeat_runs_on_clock_while_server_pings(self):
+        import websocket
+        from unittest import mock
+        from scripts.quant_news_v1 import collector
+        class F:
+            def __init__(self, d): self.data = d
+        class WS:
+            def __init__(self): self.sent, self.n = [], 0
+            def settimeout(self, t): pass
+            def send(self, t): self.sent.append(t)
+            def recv_data_frame(self, c=True):
+                self.n += 1
+                if self.n < 5:
+                    return websocket.ABNF.OPCODE_PING, F(b"")  # server keeps pinging: reads never time out
+                return websocket.ABNF.OPCODE_CLOSE, F((4003).to_bytes(2, "big") + b"bye")
+            def close(self): pass
+        class P:
+            kind, ping_text, replay_text = "WEBSOCKET_PUSH", "ping", "replay"
+            parse = staticmethod(adapters.BenzingaStream.parse)
+            def __init__(self): self.ws = WS()
+            def connect(self): return self.ws
+        p = P(); clock = iter([0, 0, 40, 40, 80, 80, 120, 120, 160, 160, 200, 200, 240, 240])
+        with mock.patch.object(collector.time, "monotonic", side_effect=lambda: next(clock)):
+            with self.assertRaises(adapters.ProviderError) as c:
+                collector._stream_loop(self.db, p, "benzinga_stream", {}, None, reconnect=False)
+        self.assertIn("code 4003", c.exception.detail)          # server close code recorded
+        self.assertGreaterEqual(p.ws.sent.count("ping"), 2)     # heartbeat ran although no read timed out
+
+
 if __name__ == "__main__":
     unittest.main()

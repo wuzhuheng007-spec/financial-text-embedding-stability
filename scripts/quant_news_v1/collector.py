@@ -202,18 +202,25 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
                 rest = AlpacaRest(env.get("ALPACA_KEY_ID", ""), env.get("ALPACA_SECRET_KEY", ""))
                 c = _apply_all(db, provider_name, rest.fetch(since_utc=_minus_minutes(last, 15)), via="gap_fill_rest", online=False)
                 _state_after(c, db, provider_name, provider.kind)
-        ws.settimeout(30)
+        # Heartbeat on a clock, not on a read timeout: the server's own ping frames keep reads from ever
+        # timing out, so a timeout-driven heartbeat would go stale on a perfectly healthy connection.
+        ws.settimeout(10)
+        beat_every, last_beat = 30.0, time.monotonic()
         while deadline is None or time.monotonic() < deadline:
-            try:
-                text = ws.recv()
-            except websocket.WebSocketTimeoutException:
+            if time.monotonic() - last_beat >= beat_every:
                 if provider.ping_text:
                     ws.send(provider.ping_text)
                 _state_after(dict(ZERO), db, provider_name, provider.kind)
+                last_beat = time.monotonic()
+            try:
+                kind, text = _next_frame(ws, websocket)
+            except websocket.WebSocketTimeoutException:
                 continue
             except websocket.WebSocketConnectionClosedException:
-                raise ProviderError("NETWORK_OTHER", "connection closed by server")
-            if not text:
+                raise ProviderError("NETWORK_OTHER", "connection closed by server (no close frame)")
+            if kind == "close":
+                raise ProviderError("NETWORK_OTHER", f"server closed the stream: {text}")
+            if kind != "text" or not text:
                 continue
             try:
                 items = provider.parse(text)
@@ -237,6 +244,21 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
             ws.close()
         except Exception:  # noqa: BLE001
             pass
+
+
+def _next_frame(ws, websocket):
+    """('text', str) | ('close', 'code N reason R') | ('control', None). Control frames (ping/pong) come back
+    to the caller so the clock-based heartbeat keeps running; the library still answers pings itself."""
+    if not hasattr(ws, "recv_data_frame"):  # simple test doubles
+        return "text", ws.recv()
+    op, frame = ws.recv_data_frame(True)
+    if op == websocket.ABNF.OPCODE_CLOSE:
+        data = frame.data or b""
+        code = int.from_bytes(data[:2], "big") if len(data) >= 2 else None
+        return "close", f"code {code} reason {data[2:].decode('utf-8', 'replace')[:120]}"
+    if op == websocket.ABNF.OPCODE_TEXT:
+        return "text", frame.data.decode("utf-8", "replace") if isinstance(frame.data, bytes) else frame.data
+    return "control", None
 
 
 def _keep_receiving(db, provider_name):
