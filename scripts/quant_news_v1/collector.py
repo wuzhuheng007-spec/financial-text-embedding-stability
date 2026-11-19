@@ -192,9 +192,14 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
             except ProviderError as e:
                 store.set_state(db, provider_name, _keep_receiving(db, provider_name),
                                 detail=f"stream up; REST gap fill unavailable ({e.error_class})", gap_fill_errors=1)
-        if reconnect and not rest_ok and provider.replay_text:  # partial fallback only (last 100 cached)
+        if reconnect and provider.replay_text:
+            # Supplement, never complete recovery: the REST key does not see every stream article (observed
+            # 2026-11-19: Benzinga Korea items on the stream are absent from REST), so after a reconnect the
+            # last <=100 cached stream messages are requested too; they are stored as via=replay, not live,
+            # and replays of already-seen events are dropped by event id.
             ws.send(provider.replay_text); replay_until = time.monotonic() + 15
-            store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail="REST unavailable: replay sent (partial recovery, max 100)",
+            store.set_state(db, provider_name, _keep_receiving(db, provider_name),
+                            detail=("REST gap fill done + replay supplement (max 100)" if rest_ok else "REST unavailable: replay only (partial, max 100)"),
                             replays_sent=1)
         elif reconnect and provider_name == "alpaca_stream":
             last = db.execute("SELECT MAX(provider_created_at) FROM versions WHERE provider=?", (provider_name,)).fetchone()[0]
