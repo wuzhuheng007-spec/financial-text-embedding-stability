@@ -38,11 +38,35 @@ CREATE TABLE IF NOT EXISTS runs (
   FOREIGN KEY (dataset_id, dataset_version) REFERENCES datasets(dataset_id, dataset_version),
   FOREIGN KEY (factor_id, factor_version) REFERENCES factors(factor_id, factor_version));
 CREATE INDEX IF NOT EXISTS runs_status ON runs(status, created_at);
+-- v2 sidecars (additive; legacy rows stay valid and read back as UNKNOWN where a v2 field is absent)
+CREATE TABLE IF NOT EXISTS dataset_meta (
+  dataset_id TEXT NOT NULL, dataset_version TEXT NOT NULL, meta_json TEXT NOT NULL, meta_sha256 TEXT NOT NULL,
+  recorded_at TEXT NOT NULL, PRIMARY KEY (dataset_id, dataset_version));
+CREATE TABLE IF NOT EXISTS factor_specs (
+  factor_id TEXT NOT NULL, factor_version TEXT NOT NULL, spec_json TEXT NOT NULL, spec_sha256 TEXT NOT NULL,
+  recorded_at TEXT NOT NULL, PRIMARY KEY (factor_id, factor_version));
+CREATE TABLE IF NOT EXISTS artifacts (
+  run_id TEXT NOT NULL, name TEXT NOT NULL, kind TEXT NOT NULL, rel_path TEXT NOT NULL, bytes INTEGER NOT NULL,
+  sha256 TEXT NOT NULL, created_at TEXT NOT NULL, review_json TEXT, PRIMARY KEY (run_id, name));
+CREATE TABLE IF NOT EXISTS result_grades (
+  grade_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_kind TEXT NOT NULL, subject_id TEXT NOT NULL,
+  software_status TEXT NOT NULL, mechanical_check TEXT NOT NULL, data_pit_eligibility TEXT NOT NULL,
+  scientific_status TEXT NOT NULL, replication_scope TEXT NOT NULL, evidence_json TEXT NOT NULL, recorded_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS external_runs (
+  import_id TEXT PRIMARY KEY, study_id TEXT NOT NULL, title TEXT NOT NULL, engine_id TEXT NOT NULL, engine_version TEXT NOT NULL,
+  protocol_id TEXT NOT NULL, evaluation_mode TEXT NOT NULL, record_json TEXT NOT NULL, record_sha256 TEXT NOT NULL, imported_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS worker_capabilities (
+  image_id TEXT NOT NULL, engine_id TEXT NOT NULL, engine_version TEXT NOT NULL, detail_json TEXT NOT NULL, checked_at TEXT NOT NULL,
+  PRIMARY KEY (image_id, engine_id, engine_version));
 """
 # Additive migrations (v1.1): never drop or rewrite existing rows.
 MIGRATIONS = [("factors", "impl_sha256", "TEXT"), ("runs", "worker_id", "TEXT"), ("runs", "heartbeat_at", "TEXT"),
               ("runs", "lease_expires_at", "TEXT"), ("runs", "attempt_of", "TEXT"), ("runs", "exit_reason", "TEXT"),
-              ("runs", "image_id", "TEXT"), ("runs", "verifier_version", "TEXT"), ("runs", "factor_impl_sha256", "TEXT")]
+              ("runs", "image_id", "TEXT"), ("runs", "verifier_version", "TEXT"), ("runs", "factor_impl_sha256", "TEXT"),
+              # v2 run identity (contracts.json run_v2_required_additions); NULL on legacy rows = legacy_mom20_v1 / UNKNOWN
+              ("runs", "engine_id", "TEXT"), ("runs", "engine_version", "TEXT"), ("runs", "evaluation_mode", "TEXT"),
+              ("runs", "benchmark_id", "TEXT"), ("runs", "contracts_json", "TEXT"), ("runs", "dataset_mask_hash", "TEXT"),
+              ("runs", "runtime_image_digest", "TEXT"), ("runs", "lockfile_hash", "TEXT"), ("runs", "evidence_grade", "TEXT")]
 TERMINAL = ("SUCCEEDED", "FAILED", "CANCELLED")
 LEASE_SECONDS = int(os.environ.get("QUANT_RESEARCH_LEASE_SECONDS", "60"))
 
@@ -194,10 +218,24 @@ def recover_lost(db, live_workers: set[str] | None, max_run_seconds: int = 300) 
     return out
 
 
-def claim_next(db, worker_id: str = "unknown") -> sqlite3.Row | None:
-    """Atomically move the oldest QUEUED run to RUNNING with a lease held by worker_id."""
+LEGACY_ENGINE = ("legacy_mom20_v1", "1")
+
+
+def engine_of(row) -> tuple:
+    keys = row.keys() if hasattr(row, "keys") else []
+    e = row["engine_id"] if "engine_id" in keys else None
+    return (e, row["engine_version"]) if e else LEGACY_ENGINE
+
+
+def claim_next(db, worker_id: str = "unknown", engines: list | None = None) -> sqlite3.Row | None:
+    """Atomically move the oldest QUEUED run that THIS worker can execute to RUNNING with a lease.
+    engines = (engine_id, engine_version) pairs the worker's image actually supports; default legacy only.
+    A run for an engine the worker lacks is never claimed (it stays QUEUED for a capable worker)."""
+    engines = [tuple(e) for e in (engines or [LEGACY_ENGINE])]
     db.execute("BEGIN IMMEDIATE")
-    row = db.execute("SELECT run_id FROM runs WHERE status='QUEUED' ORDER BY created_at, run_id LIMIT 1").fetchone()
+    clauses = " OR ".join("(COALESCE(engine_id,?)=? AND COALESCE(engine_version,?)=?)" for _ in engines)
+    args = [x for e in engines for x in (LEGACY_ENGINE[0], e[0], LEGACY_ENGINE[1], e[1])]
+    row = db.execute("SELECT run_id FROM runs WHERE status='QUEUED' AND (" + clauses + ") ORDER BY created_at, run_id LIMIT 1", args).fetchone()
     if not row:
         db.execute("COMMIT")
         return None
@@ -207,8 +245,12 @@ def claim_next(db, worker_id: str = "unknown") -> sqlite3.Row | None:
     return db.execute("SELECT * FROM runs WHERE run_id=?", (row[0],)).fetchone()
 
 
-def claim_run(db, run_id: str, worker_id: str = "unknown") -> sqlite3.Row | None:
-    """Claim exactly this QUEUED run (used by restore checks: never takes another queued request)."""
+def claim_run(db, run_id: str, worker_id: str = "unknown", engines: list | None = None) -> sqlite3.Row | None:
+    """Claim exactly this QUEUED run (used by restore checks: never takes another queued request).
+    Refused (None) when the run's engine is not among `engines` (default legacy only)."""
+    row = db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
+    if row is None or engine_of(row) not in [tuple(e) for e in (engines or [LEGACY_ENGINE])]:
+        return None
     db.execute("BEGIN IMMEDIATE")
     cur = db.execute("UPDATE runs SET status='RUNNING', started_at=?, worker_id=?, heartbeat_at=?, lease_expires_at=? WHERE run_id=? AND status='QUEUED'",
                      (utcnow(), worker_id, utcnow(), _ts(LEASE_SECONDS), run_id))
@@ -242,14 +284,40 @@ def read_all(path: Path | None = None) -> dict:
         datasets = [dict(r) for r in db.execute("SELECT * FROM datasets ORDER BY dataset_id, dataset_version")]
         factors = [dict(r) for r in db.execute("SELECT * FROM factors ORDER BY factor_id, factor_version")]
         runs = [dict(r) for r in db.execute("SELECT * FROM runs ORDER BY created_at DESC LIMIT 100")]
+        tabs = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        dmeta = {(r[0], r[1]): json.loads(r[2]) for r in db.execute("SELECT dataset_id, dataset_version, meta_json FROM dataset_meta")} if "dataset_meta" in tabs else {}
+        fspec = {(r[0], r[1]): (json.loads(r[2]), r[3]) for r in db.execute("SELECT factor_id, factor_version, spec_json, spec_sha256 FROM factor_specs")} if "factor_specs" in tabs else {}
+        external = [dict(r) for r in db.execute("SELECT * FROM external_runs ORDER BY imported_at DESC")] if "external_runs" in tabs else []
+        grades = [dict(r) for r in db.execute("SELECT * FROM result_grades ORDER BY grade_id")] if "result_grades" in tabs else []
+        caps = [dict(r) for r in db.execute("SELECT * FROM worker_capabilities ORDER BY checked_at DESC")] if "worker_capabilities" in tabs else []
+        arts = {}
+        if "artifacts" in tabs:
+            for r in db.execute("SELECT run_id, name, kind, bytes, sha256 FROM artifacts ORDER BY run_id, name"):
+                arts.setdefault(r[0], []).append({"name": r[1], "kind": r[2], "bytes": r[3], "sha256": r[4]})
+    from .catalog import DATASET_V2_FIELDS, FACTOR_V2_FIELDS, latest_grades
     for d in datasets:
         d["manifest"] = json.loads(d.pop("manifest_json"))
         d.pop("snapshot_path", None)
+        meta = dmeta.get((d["dataset_id"], d["dataset_version"]))
+        d["meta"] = meta or {k: "UNKNOWN" for k in DATASET_V2_FIELDS}
+        d["meta_recorded"] = meta is not None
     for f in factors:
         f["params"] = json.loads(f.pop("params_json"))
         f["input_requirements"] = json.loads(f.pop("input_requirements_json"))
+        spec = fspec.get((f["factor_id"], f["factor_version"]))
+        f["spec"] = spec[0] if spec else {k: "UNKNOWN" for k in FACTOR_V2_FIELDS}
+        f["spec_sha256"] = spec[1] if spec else None
+    g = latest_grades(grades)
     for r in runs:
         r["summary"] = json.loads(r.pop("summary_json")) if r.get("summary_json") else None
         r.pop("config_json", None)
         r.pop("artifact_dir", None)
-    return {"state": "READY", "datasets": datasets, "factors": factors, "runs": runs}
+        r["contracts"] = json.loads(r.pop("contracts_json")) if r.get("contracts_json") else None
+        r["engine_id"] = r.get("engine_id") or LEGACY_ENGINE[0]
+        r["engine_version"] = r.get("engine_version") or LEGACY_ENGINE[1]
+        r["grade"] = g.get(("run", r["run_id"]))
+        r["artifacts"] = arts.get(r["run_id"], [])
+    for x in external:
+        x["record"] = json.loads(x.pop("record_json"))
+        x["grade"] = g.get(("external", x["import_id"]))
+    return {"state": "READY", "datasets": datasets, "factors": factors, "runs": runs, "external_runs": external, "capabilities": caps}
