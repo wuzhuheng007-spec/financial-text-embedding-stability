@@ -159,5 +159,15 @@ class ImportAndCompare(Base):
         self.assertEqual(catalog.compare(self.db, legacy, legacy2)["result"], "COMPARABLE")
 
 
+class LegacyDatasetEligibility(Base):
+    def test_mom20_on_legacy_v1_dataset_stays_eligible(self):
+        catalog.register_builtin_specs(self.db)
+        m = {"schema": "quant_research_dataset_v1", "dataset_id": "qqq", "dataset_version": "1", "title": "t", "symbol": "US.QQQ", "frequency": "DAY",
+             "adjustment": "a1", "start_date": "2000-01-01", "end_date": "2026-11-17", "rows": 10, "content_sha256": "x", "audit_status": "AUDITED"}
+        registry.register_dataset(self.db, m, "datasets/qqq/1")
+        self.assertEqual(catalog.eligibility(self.db, ("qqq", "1"), ("mom20", "1"))["status"], "ELIGIBLE")
+        self.assertEqual(catalog.eligibility(self.db, ("qqq", "1"), ("phase5_strategy_v1", "1"))["status"], "BLOCKED_INPUTS")
+
+
 if __name__ == "__main__":
     unittest.main()

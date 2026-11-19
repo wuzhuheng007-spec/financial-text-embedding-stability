@@ -178,10 +178,10 @@ def builtin_specs(repo: Path = REPO) -> list[dict]:
     inputs = {"data_kind": "OHLC_DAILY_BUNDLE_SQLITE", "series": cfg["series"], "fields": ["open", "close"]}
     out.append({**common, "factor_id": "phase5_strategy_v1", "factor_version": "1", "title": "phase5 三项价格规则（P1/P2/P3 + 基准）", "kind": "STRATEGY_FAMILY",
                 "params": cfg, "input_requirements": inputs, "output_definition": "per market x strategy x cost x period ledgers, metrics, 12 primary contrasts vs MA200",
-                "expected_direction": "POSITIVE increment vs MA200 (one-sided)", "definition": "see PROTOCOL_zh.md (frozen)"})
-    for sid, title, defin, key in (("P1_TREND", "P1 趋势确认", "60-bar risk-normalised momentum > 0.5 and C > MA120 enter; score <= 0 or C < MA60 exit", "trend"),
-                                   ("P2_RECOVERY", "P2 恐慌修复", "stress (dd252 <= -15% and r20 <= -8%) within 20 bars, r5 > 0 and C > MA20 enter; 40-bar max hold, 8% close trailing stop", "recovery"),
-                                   ("P3_RISK_BUDGET", "P3 波动预算", "P1 direction x min(1, 10% / (vol20*sqrt(252)))", "risk_budget")):
+                "expected_direction": "POSITIVE increment vs MA200 (one-sided)", "definition": "三项价格规则与两个基准，按冻结协议 PROTOCOL_zh.md 执行；12 项主检验相对 MA200"})
+    for sid, title, defin, key in (("P1_TREND", "P1 趋势确认", "60 条风险标准化动量 > 0.5 且收盘 > MA120 入场；动量 <= 0 或收盘 < MA60 离场", "trend"),
+                                   ("P2_RECOVERY", "P2 恐慌修复", "近 20 条内出现压力日（252 条回撤 <= -15% 且 20 条收益 <= -8%），5 条收益 > 0 且收盘 > MA20 入场；最长持有 40 条，收盘回撤 8% 止损", "recovery"),
+                                   ("P3_RISK_BUDGET", "P3 波动预算", "沿用 P1 方向，目标权重 min(1, 10% / 年化 20 条波动)", "risk_budget")):
         out.append({**common, "factor_id": f"phase5_{sid.lower()}", "factor_version": "1", "title": title, "kind": "STRATEGY_MEMBER",
                     "params": {"member_of": "phase5_strategy_v1@1", "strategy": sid, **({key: cfg[key]} if key in cfg else {}), **({"trend": cfg["trend"]} if sid == "P3_RISK_BUDGET" else {})},
                     "input_requirements": inputs, "output_definition": f"target weight {sid} (0..1, long/cash)", "expected_direction": "POSITIVE increment vs MA200", "definition": defin})
@@ -230,6 +230,11 @@ def eligibility(db, dataset: tuple | None, factor: tuple, engine: tuple | None =
     if dataset:
         m = db.execute("SELECT meta_json FROM dataset_meta WHERE dataset_id=? AND dataset_version=?", dataset).fetchone()
         meta = json.loads(m[0]) if m else {k: "UNKNOWN" for k in DATASET_V2_FIELDS}
+        if not m:  # legacy dataset: only the data kind is derivable (from its registered manifest schema); the rest stays UNKNOWN
+            base = db.execute("SELECT manifest_json FROM datasets WHERE dataset_id=? AND dataset_version=?", dataset).fetchone()
+            schema = json.loads(base[0]).get("schema") if base else None
+            meta["data_kind"] = {"quant_research_dataset_v1": "OHLC_DAILY_SINGLE_CSV",
+                                 "quant_research_dataset_bundle_v1": "OHLC_DAILY_BUNDLE_SQLITE"}.get(schema, "UNKNOWN")
         if spec["evaluation_mode"] == "EQUITY_CROSS_SECTION" and meta["data_kind"] != "EQUITY_UNIVERSE_PANEL":
             reasons.append("WRONG_EVALUATION_MODE: cross-section needs a single-market historical equity universe with membership/industry/size/status evidence")
         if spec["input_data_kind"] != meta["data_kind"]:

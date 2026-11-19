@@ -263,6 +263,9 @@ def main(argv=None) -> int:
         s.add_argument(a, required=True)
     s.add_argument("--autype", type=int, required=True); s.add_argument("--currency", default=None)
     sub.add_parser("register-defaults")
+    rb = sub.add_parser("register-bundle", help="freeze a multi-series research SQLite (phase5 input) byte-for-byte and register it with v2 metadata")
+    for x in ("--source", "--dataset-id", "--dataset-version", "--title", "--expected-sha256"):
+        rb.add_argument(x, required=True)
     rs = sub.add_parser("register-snapshot"); rs.add_argument("rel_dir", help="datasets/<id>/<version> under the research root")
     e = sub.add_parser("enqueue"); e.add_argument("--dataset", required=True); e.add_argument("--factor", required=True); e.add_argument("--protocol", required=True)
     v = sub.add_parser("verify"); v.add_argument("run_id")
@@ -296,6 +299,11 @@ def main(argv=None) -> int:
         specs = catalog.register_builtin_specs(db)       # v2 specs: idempotent, conflicts refused
         imported = catalog.import_phase5(db)             # historical external import (not a run)
         print("registered", [f"{k[0]}@{k[1]}" for k in FACTORS], json.dumps(specs), imported)
+    elif a.cmd == "register-bundle":
+        from . import catalog
+        m = catalog.register_bundle_snapshot(db, Path(a.source), a.dataset_id, a.dataset_version, a.title, catalog.PHASE5_DATASET_META,
+                                             expected_sha256=a.expected_sha256)
+        print(json.dumps({k: m[k] for k in ("dataset_id", "dataset_version", "rows", "content_sha256")}))
     elif a.cmd == "enqueue":
         ds, fv = tuple(a.dataset.split("@")), tuple(a.factor.split("@"))
         print(registry.create_run(db, ds, fv, json.loads(Path(a.protocol).read_text(encoding="utf-8")), requested_by="cli"))
