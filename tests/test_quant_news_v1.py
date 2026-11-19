@@ -99,8 +99,15 @@ class StoreTests(Base):
 
 
 class CollectorTests(Base):
-    def test_fake_stream_end_to_end_states(self):
+    def _exercise_fake_stream(self, connected_at_utc, *, reconnect):
         from scripts.quant_news_v1 import collector
+        from datetime import datetime
+        from unittest.mock import patch
+
+        class ConnectionClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return connected_at_utc.astimezone(tz) if tz is not None else connected_at_utc.replace(tzinfo=None)
 
         class FakeWS:
             def __init__(self, frames): self.frames = list(frames); self.sent = []
@@ -120,12 +127,41 @@ class CollectorTests(Base):
             parse = staticmethod(adapters.BenzingaStream.parse)
 
         fp = FakeProvider()
-        with self.assertRaises(adapters.ProviderError):  # server closes after the frames
-            collector._stream_loop(self.db, fp, "benzinga_stream", {}, None, reconnect=True)
+        # Freeze only the connection clock: wall-clock date cannot change live/replay expectations.
+        with patch("datetime.datetime", ConnectionClock), self.assertRaises(adapters.ProviderError):
+            collector._stream_loop(self.db, fp, "benzinga_stream", {}, None, reconnect=reconnect)
+        return fp
+
+    def test_fake_stream_end_to_end_states(self):
+        from datetime import datetime, timezone
+        fp = self._exercise_fake_stream(datetime(2026, 11, 19, 13, 35, 13, tzinfo=timezone.utc), reconnect=True)
         self.assertEqual(fp.ws.sent[0], "replay")  # gap fill after a reconnect
         st = dict(self.db.execute("select state, counters_json from provider_state").fetchone())
         self.assertEqual(st["state"], "RECEIVING")
         c = json.loads(st["counters_json"]); self.assertEqual((c["news_new"], c["news_versions"], c["duplicates"]), (1, 1, 1))
+
+    def test_historical_replay_is_cached_without_claiming_live_news(self):
+        from datetime import datetime, timezone
+        fp = self._exercise_fake_stream(datetime(2026, 11, 20, tzinfo=timezone.utc), reconnect=True)
+        self.assertEqual(fp.ws.sent[0], "replay")
+        self.assertEqual(self.db.execute("select state from provider_state").fetchone()[0], "CONNECTED_NO_MESSAGES_YET")
+        c = json.loads(self.db.execute("select counters_json from provider_state").fetchone()[0])
+        self.assertEqual((c["news_new"], c["news_versions"], c["duplicates"]), (1, 1, 1))
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 1)
+        self.assertEqual(self.db.execute("select count(*) from versions").fetchone()[0], 2)
+        self.assertIsNone(self.db.execute("select first_online_seen_at from items").fetchone()[0])
+        self.assertEqual({r[0] for r in self.db.execute("select distinct via from versions")}, {"replay"})
+
+    def test_old_nonreplay_stream_is_cached_without_claiming_live_news(self):
+        from datetime import datetime, timezone
+        fp = self._exercise_fake_stream(datetime(2026, 11, 20, tzinfo=timezone.utc), reconnect=False)
+        self.assertNotIn("replay", fp.ws.sent)
+        self.assertEqual(self.db.execute("select state from provider_state").fetchone()[0], "CONNECTED_NO_MESSAGES_YET")
+        c = json.loads(self.db.execute("select counters_json from provider_state").fetchone()[0])
+        self.assertEqual((c["news_new"], c["news_versions"], c["duplicates"]), (1, 1, 1))
+        self.assertEqual(self.db.execute("select count(*) from versions").fetchone()[0], 2)
+        self.assertIsNone(self.db.execute("select first_online_seen_at from items").fetchone()[0])
+        self.assertEqual({r[0] for r in self.db.execute("select distinct via from versions")}, {"stream_late"})
 
     def test_not_configured_is_recorded_not_crashed(self):
         from scripts.quant_news_v1 import collector
