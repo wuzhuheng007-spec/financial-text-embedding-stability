@@ -246,6 +246,15 @@ def eligibility(db, dataset: tuple | None, factor: tuple, engine: tuple | None =
             reasons.append("RIGHTS: research use not granted for this dataset")
         if engine in ENGINES and meta["data_kind"] not in ENGINES[engine]["dataset_kinds"]:
             reasons.append(f"ENGINE_DATASET_KIND: {engine[0]} reads {ENGINES[engine]['dataset_kinds']}")
+        if engine == ("phase5_o2o_v1", "1") and meta["data_kind"] in ENGINES[engine]["dataset_kinds"]:
+            # Acceptance needs a designated reference (finding F3): today only the frozen first-round results, which
+            # exist for the exact input alone. Another input would end INCOMPLETE, so it is not offered as runnable.
+            ds_row = db.execute("SELECT content_sha256 FROM datasets WHERE dataset_id=? AND dataset_version=?", dataset).fetchone()
+            cfg_path = REPO / PHASE5_DIR / "config.json"
+            expected = json.loads(cfg_path.read_text(encoding="utf-8")).get("expected_db_sha256") if cfg_path.is_file() else None
+            if ds_row is None or ds_row[0] != expected:
+                reasons.append("BLOCKED_INPUTS: NO_ACCEPTANCE_REFERENCE - only the frozen exact input (c5b5ec22...) has a designated reference; "
+                               "a different input version would end unverified")
     blocked_inputs = any(r.startswith(("BLOCKED_INPUTS", "INPUT_KIND", "WRONG_EVALUATION", "NOT_POINT")) for r in reasons)
     status = "ELIGIBLE" if not reasons else ("BLOCKED_INPUTS" if blocked_inputs else "BLOCKED")
     return {"status": status, "reasons": reasons, "spec_kind": spec["kind"], "engine": "@".join(engine) if engine else None}
@@ -284,16 +293,105 @@ def run_contracts(row) -> dict:
     return c
 
 
+# Conditions resolved from what a run actually executed (closeout 2026-11-20, finding F2). The factor/strategy itself
+# and its parameters are deliberately NOT conditions: different factors under identical conditions are comparable.
+RESOLVED_CONDITIONS = ("execution_valuation", "cost", "slippage", "cash", "annualization", "benchmark", "input_content", "sample_mask")
+CONDITION_LABELS_ZH = {"evaluation_mode": "评价模式", "execution_contract": "执行契约", "cost_contract": "成本契约", "cash_contract": "现金契约",
+                       "metric_contract": "年化契约", "boundary_contract": "区间边界契约", "benchmark_id": "基准", "dataset_mask_hash": "样本掩码",
+                       "execution_valuation": "执行与估值", "cost": "费用/成本假设", "slippage": "滑点", "cash": "现金收益",
+                       "annualization": "年化口径", "benchmark": "基准定义", "input_content": "输入数据内容", "sample_mask": "有效样本区间"}
+UNKNOWN = "UNKNOWN"
+ENGINE_SLIPPAGE = "NONE_APPLIED: the engine has no separate slippage term; all trading friction is the cost bps"
+
+
+def _norm_text(t) -> str:
+    return " ".join(str(t).split())
+
+
+def _phase5_frozen_config(protocol: dict) -> dict | None:
+    """The frozen config a phase5 run executed, only if its recorded hash matches the file present here."""
+    want = protocol.get("frozen_config_sha256")
+    path = REPO / PHASE5_DIR / "config.json"
+    if not want or not path.is_file() or sha_file(path) != want:
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def resolved_conditions(db, row) -> dict:
+    """Economic and evaluation conditions of a run, resolved from its frozen config (not from engine labels alone).
+    Anything that cannot be resolved is UNKNOWN; UNKNOWN never counts as equal."""
+    cfg = json.loads(row["config_json"]) if row["config_json"] else {}
+    ds = db.execute("SELECT content_sha256 FROM datasets WHERE dataset_id=? AND dataset_version=?", (row["dataset_id"], row["dataset_version"])).fetchone()
+    c = {k: UNKNOWN for k in RESOLVED_CONDITIONS}
+    content = ds[0] if ds else UNKNOWN
+    c["input_content"] = content
+    eng = registry.engine_of(row)
+    e = ENGINES.get(eng)
+    if e is None:
+        return c
+    c["slippage"] = ENGINE_SLIPPAGE
+    if eng == registry.LEGACY_ENGINE:
+        ex = cfg.get("execution") if isinstance(cfg.get("execution"), dict) else {}
+        if all(ex.get(k) for k in ("price", "rule", "return_accounting")):
+            c["execution_valuation"] = {"contract": e["execution_contract"], "price": _norm_text(ex["price"]), "rule": _norm_text(ex["rule"]),
+                                        "accounting": _norm_text(ex["return_accounting"])}
+        co = cfg.get("costs") if isinstance(cfg.get("costs"), dict) else {}
+        if co.get("scenarios_bps_one_way") is not None and co.get("definition"):
+            c["cost"] = {"contract": e["cost_contract"], "scenarios_bps_one_way": sorted(float(x) for x in co["scenarios_bps_one_way"]),
+                         "definition": _norm_text(co["definition"])}
+        cash = cfg.get("cash_return")
+        if isinstance(cash, dict) and isinstance(cash.get("daily"), (int, float)):
+            c["cash"] = {"daily_rate": float(cash["daily"])}
+        m = cfg.get("metrics") if isinstance(cfg.get("metrics"), dict) else {}
+        if isinstance(m.get("annualization_days"), (int, float)):
+            c["annualization"] = {"contract": e["metric_contract"], "annualization_days": m["annualization_days"]}
+        if cfg.get("benchmark"):
+            c["benchmark"] = {"id": "BUY_HOLD_SAME_SERIES_LEGACY", "definition": _norm_text(cfg["benchmark"])}
+        if cfg.get("segments") and content != UNKNOWN and "warmup_trading_days" in cfg and "min_days_for_metrics" in m:
+            c["sample_mask"] = sha_text(canonical({"dataset_content_sha256": content, "segments": cfg["segments"],
+                                                   "warmup_trading_days": cfg["warmup_trading_days"], "min_days_for_metrics": m["min_days_for_metrics"]}))
+    elif eng == ("phase5_o2o_v1", "1"):
+        fz = _phase5_frozen_config(cfg)
+        if fz is not None:
+            c["execution_valuation"] = {"contract": e["execution_contract"], "rule": _norm_text(fz["execution"])}
+            c["cost"] = {"contract": e["cost_contract"], "scenarios_bps_one_way": sorted(float(x) for x in fz["cost_bps_one_way"]),
+                         "primary_bps": float(fz["primary_cost_bps"])}
+            if fz.get("cash_return") == 0:
+                c["cash"] = {"daily_rate": 0.0}
+            c["annualization"] = {"contract": e["metric_contract"]}
+            if content != UNKNOWN:
+                c["sample_mask"] = sha_text(canonical({"dataset_content_sha256": content, "periods": fz["periods"], "series": fz["series"],
+                                                       "warmup_closes": fz["warmup_closes"], "gap_rule": _norm_text(fz["gap_rule"])}))
+        if cfg.get("benchmark_id"):
+            c["benchmark"] = {"id": cfg["benchmark_id"]}
+    return c
+
+
 def compare(db, run_a: str, run_b: str) -> dict:
+    """Comparison eligibility of two runs. COMPARABLE (ranking allowed) only when every engine contract AND every
+    resolved economic/evaluation condition is known on both sides and equal. Different known conditions ->
+    NOT_COMPARABLE (side by side allowed; a pure cost difference is offered as a labelled cost sensitivity view).
+    Any unknown required condition -> NOT_COMPARABLE with unknown_conditions; never an automatic match."""
     ra = db.execute("SELECT * FROM runs WHERE run_id=?", (run_a,)).fetchone(); rb = db.execute("SELECT * FROM runs WHERE run_id=?", (run_b,)).fetchone()
     if ra is None or rb is None:
         raise LookupError("run not found")
     ca, cb = run_contracts(ra), run_contracts(rb)
-    diffs = {k: {"a": ca.get(k), "b": cb.get(k)} for k in COMPARE_REQUIRED_EQUAL if ca.get(k) != cb.get(k)}
-    same_snapshot = (ra["dataset_id"], ra["dataset_version"]) == (rb["dataset_id"], rb["dataset_version"])
-    if diffs:
-        return {"result": "NOT_COMPARABLE", "differences": diffs, "side_by_side_allowed": True, "ranking": None}
-    return {"result": "COMPARABLE", "differences": {}, "same_snapshot_and_mask": same_snapshot, "ranking_allowed": same_snapshot}
+    ca.update(resolved_conditions(db, ra)); cb.update(resolved_conditions(db, rb))
+    fields = COMPARE_REQUIRED_EQUAL + RESOLVED_CONDITIONS
+    unknown = {k: [side for side, c in (("a", ca), ("b", cb)) if c.get(k) in (None, UNKNOWN)] for k in fields}
+    unknown = {k: v for k, v in unknown.items() if v}
+    diffs = {k: {"a": ca.get(k), "b": cb.get(k)} for k in fields if k not in unknown and ca.get(k) != cb.get(k)}
+    reasons = [f"{CONDITION_LABELS_ZH.get(k, k)}不同" for k in diffs] + [f"{CONDITION_LABELS_ZH.get(k, k)}未知（{'、'.join(v)}）" for k, v in unknown.items()]
+    same_factor = (ra["factor_id"], ra["factor_version"]) == (rb["factor_id"], rb["factor_version"])
+    base = {"differences": diffs, "unknown_conditions": unknown, "conditions": {"a": ca, "b": cb}, "same_factor": same_factor,
+            "side_by_side_allowed": True, "checked_fields": list(fields)}
+    if diffs or unknown:
+        axis = "cost" if set(diffs) == {"cost"} and not unknown else None
+        if axis:
+            reasons = ["仅费用/成本假设不同：可作为成本敏感性并列展示，不做统一排名"]
+        return {"result": "NOT_COMPARABLE", **base, "sensitivity_axis": axis, "ranking_allowed": False, "ranking": None, "reasons_zh": reasons}
+    return {"result": "COMPARABLE", **base, "sensitivity_axis": None, "same_snapshot_and_mask": True, "ranking_allowed": True,
+            "reasons_zh": ["执行、成本、现金、年化、基准、输入内容与有效样本均一致" + ("（同一因子/策略）" if same_factor else "（不同因子/策略，条件相同）")]}
 
 
 # ---------------------------------------------------------------- grades

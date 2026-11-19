@@ -8,6 +8,9 @@ from pathlib import Path
 
 from scripts.quant_research_v1 import catalog, registry
 
+# closeout 2026-11-20 (F3): phase5 runs need a designated reference, which exists only for the frozen exact input
+EXACT = "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e"
+
 LEGACY_SCHEMA = """
 CREATE TABLE datasets (dataset_id TEXT NOT NULL, dataset_version TEXT NOT NULL, title TEXT NOT NULL, symbol TEXT NOT NULL, frequency TEXT NOT NULL,
   adjustment TEXT NOT NULL, start_date TEXT NOT NULL, end_date TEXT NOT NULL, rows INTEGER NOT NULL, content_sha256 TEXT NOT NULL,
@@ -85,11 +88,18 @@ class SpecVersioning(Base):
 class Eligibility(Base):
     def setUp(self):
         super().setUp(); catalog.register_builtin_specs(self.db)
-        self.ds = self.dataset("phase5_bundle", "c5b5ec22")
+        self.ds = self.dataset("phase5_bundle", "c5b5ec22", content=EXACT)
         catalog.register_dataset_meta(self.db, *self.ds, catalog.PHASE5_DATASET_META)
 
     def cap(self):
         self.db.execute("INSERT INTO worker_capabilities VALUES('sha256:img','phase5_o2o_v1','1',?,?)", (json.dumps({"ok": True}), registry.utcnow())); self.db.commit()
+
+    def test_external_input_has_no_reference_and_is_blocked(self):
+        self.cap()
+        other = self.dataset("phase5_bundle", "other", content="f" * 64)
+        catalog.register_dataset_meta(self.db, *other, catalog.PHASE5_DATASET_META)
+        e = catalog.eligibility(self.db, other, ("phase5_strategy_v1", "1"))
+        self.assertEqual(e["status"], "BLOCKED_INPUTS"); self.assertTrue(any("NO_ACCEPTANCE_REFERENCE" in r for r in e["reasons"]))
 
     def test_unbuilt_engine_blocks_then_capability_allows(self):
         e = catalog.eligibility(self.db, self.ds, ("phase5_strategy_v1", "1"))
@@ -145,7 +155,7 @@ class ImportAndCompare(Base):
             catalog.import_phase5(self.db)
 
     def test_compare_requires_equal_contracts(self):
-        catalog.register_builtin_specs(self.db); ds = self.dataset()
+        catalog.register_builtin_specs(self.db); ds = self.dataset(content=EXACT)
         legacy = registry.create_run(self.db, ds, ("mom20", "1"), {"protocol_id": "mom20-daily-long-cash", "factor": {"factor_id": "mom20", "factor_version": "1"}, "segments": [1]})
         legacy2 = registry.create_run(self.db, ds, ("mom20", "1"), {"protocol_id": "mom20-daily-long-cash", "factor": {"factor_id": "mom20", "factor_version": "1"}, "segments": [1]})
         self.db.execute("INSERT INTO worker_capabilities VALUES('img','phase5_o2o_v1','1',?,?)", (json.dumps({"ok": True}), registry.utcnow()))
@@ -156,7 +166,11 @@ class ImportAndCompare(Base):
         self.assertEqual(r["result"], "NOT_COMPARABLE")
         self.assertTrue({"execution_contract", "cost_contract", "metric_contract", "boundary_contract", "benchmark_id"} <= set(r["differences"]))
         self.assertIsNone(r["ranking"])
-        self.assertEqual(catalog.compare(self.db, legacy, legacy2)["result"], "COMPARABLE")
+        # closeout 2026-11-20 (F2): these minimal configs state no costs/cash/annualization/benchmark/execution, so the
+        # conditions are UNKNOWN; two UNKNOWNs never match (was COMPARABLE before the fix). Full configs: test_quant_research_compare_f2.py
+        same = catalog.compare(self.db, legacy, legacy2)
+        self.assertEqual(same["result"], "NOT_COMPARABLE"); self.assertFalse(same["ranking_allowed"])
+        self.assertTrue({"cost", "cash", "annualization"} <= set(same["unknown_conditions"]))
 
 
 class LegacyDatasetEligibility(Base):
