@@ -1,9 +1,9 @@
 {
   "AGENTS.md": "c159b61acbc106958d01de20d118950bbd827c916aecb314b45f2984d5cac3be",
-  "JOURNAL.md": "80694fbf79292369fca8e42b8e22367301fe6e628b08df2924679aa8397507b0",
+  "JOURNAL.md": "00330424c6e9786b99957055199a329c9bd5c3a20a40924558860add1356b740",
   "PUBLICATION_ADAPTATIONS.json": "e6fe194973c1e74e5a6d9de29383a19b2b049e9e317526c17447f843e0dcbfd0",
   "README.md": "2c67e88fdcd4867812d3b4ae9171bcbea5d0c6bb3df2844a3b773329630be891",
-  "STATUS.json": "81ca99d52dc0585139f9734261b76147f930adb5a209ea61a1075940782693c1",
+  "STATUS.json": "30533e1f2bb87267286b7ea6c6fb0a3f564bfb8f66cae279d228b997425a6548",
   "claims.json": "0728f1176ab0bfd9ca463d6cf6c18c9057698a2c14943db0176facc04439f99c",
   "data_audit/README_zh.md": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
   "data_audit/audit/anchor_dates.json": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
@@ -16,6 +16,7 @@
   "data_audit/merge_policy.json": "6479b3149668aa21f0c27f0934d48a1165c33bc6616b5c0e8dbcef3c821598ec",
   "data_audit/merge_receipt.json": "e6c4f4088e099e471a9dae7471df5cf3f4ad8377ba8514a05a30bdebed12a100",
   "data_audit/series_registry.json": "9481b61fe9ecc90d63c671e889ba6fc10dba3e426ce86e39e027e8ad8bccb9b2",
+  "image_review/Bear_Markets_and_Factor_Checklist_zh.md": "3f317bb9d1da73da52a33462327bbf66cd884a7ea3aa1423150cfb17e00913d0",
   "image_review/Historical_Images_Review_zh.md": "d12b75b5167a9310b77a9de93c2db4616182c7e1b4f05d7ace74777c4139ae33",
   "image_review/Nasdaq_Supplement_Review_zh.md": "b5b0759ae3e053392a797e37676d27049aecec3cbe49a0ed6f092582d9a7c082",
   "phase0/Market_Sentiment_Turning_Points_20261119.md": "d660330dcc87ee5c63535c935ae30e65f5d0889e76cfa943e5c8953b2aaeaf02",
@@ -161,6 +162,6 @@
   "phase4/results/state_contrasts.csv": "0d6ec469937336658b2adb477a083b02a544065442d3a813106985ee228b26c1",
   "phase4/results/state_summary.csv": "d6a7f4036af62ab392c53a620acd89b46b0d9ae369cf013754f4994063ea67f9",
   "record_step.py": "889bc07e9c3e2aac3a82056a4e042bf702dd3d7e844407f3da3e99715ad8d98c",
-  "steps.json": "0d30b12d7bd8d3ee001ab639036bbd9cb65ac83f3128de7fcf3665a686f9cfb2",
+  "steps.json": "b0732765a950c34e697d380503244e102d9b8af7c053beb39634d30f0433f2ee",
   "verify_publication.py": "8d23bbfa9b68a090ebb2202430b8e2bcb9f22f34702c9849361ebdc62b5b2baf"
 }

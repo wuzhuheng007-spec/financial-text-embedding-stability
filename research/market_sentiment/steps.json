@@ -414,5 +414,21 @@
       "phase4/PUBLICATION_ACK.json": "43b021a4b0f4c307c64c5865f28aa1c5375120ba7bbef47c75b478156894e68d"
     },
     "recorded_at_utc": "2026-11-19T03:23:05.571535+00:00"
+  },
+  {
+    "id": "R018",
+    "title": "熊市机制与九步因子清单适用性审核",
+    "plan": "阅读新增六图，核对关键时序/口径，将横截面清单适配为市场择时检查项。",
+    "actual": "实际打开三篇官方历史/政策分析，核对QQQ同区间24个报价观测和23个收益区间；保留失败论文访问；登记多标签危机机制，逐项辨别九步流程适用性。未运行新因子或策略实验。",
+    "status": "PARTIALLY_SUPPORTED_REVIEW_ONLY",
+    "evidence": [
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md"
+    ],
+    "claims": "图片提供机制与流程线索，统计阈值及因果不能直接采纳；时间序列择时与横截面选股分开评价。",
+    "limits": "历史图具体数据仅局部核验；三篇来源不认证所有图片；尚无新金融效力或独立验证。",
+    "evidence_sha256": {
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md": "3f317bb9d1da73da52a33462327bbf66cd884a7ea3aa1423150cfb17e00913d0"
+    },
+    "recorded_at_utc": "2026-11-19T03:43:43.263193+00:00"
   }
 ]
