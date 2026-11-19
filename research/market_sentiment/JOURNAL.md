@@ -155,3 +155,17 @@
 **限制：** 仍缺完整中国本土情绪、历史可得版本、新闻首次时间/预期与独立复制；不为每次涨跌编造单一原因。
 
 证据：[phase3/Phase3_Event_Atlas_Report_zh.md](phase3/Phase3_Event_Atlas_Report_zh.md)、[phase3/ALL_EVENTS_20pct_zh.md](phase3/ALL_EVENTS_20pct_zh.md)、[phase3/results_v1_1/display_cells.json](phase3/results_v1_1/display_cells.json)、[phase3/results_v1_1/overlapping_window_associations.csv](phase3/results_v1_1/overlapping_window_associations.csv)、[phase3/results_v1_1/event_aligned_medians.csv](phase3/results_v1_1/event_aligned_medians.csv)、[phase3/results_v1_1/report_reconciliation.json](phase3/results_v1_1/report_reconciliation.json)、[phase3/citation_audit.json](phase3/citation_audit.json)、[phase3/evidence_ledger.json](phase3/evidence_ledger.json)、[phase3/AUDIT_FINAL.json](phase3/AUDIT_FINAL.json)
+
+## R011 · 第三阶段公开载荷同步与远端核对
+
+**状态：** SYNCED_REMOTE_READBACK_VERIFIED；记录UTC：2026-11-19T02:00:37.708114+00:00
+
+**计划：** 本地校验后非强制快进同步，精确读回关键文件，记录已公开范围。
+
+**实际：** 提交c65fe925包含56个新增/更新公开文件，带预期父提交非强制更新成功；报告、展示原数值、自查、逐步日志和总清单5个远端文件逐字节与本地一致。
+
+**结论：** 第三阶段公开代码、全事件与聚合结果及负面记录已在指定研究分支可读；P35同步验收通过。
+
+**限制：** 该核对只证明发布一致性，不是独立科学验证；原始行情、逐行风险与预测未公开。
+
+证据：[phase3/PUBLICATION_ACK_20261119.json](phase3/PUBLICATION_ACK_20261119.json)

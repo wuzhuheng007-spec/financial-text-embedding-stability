@@ -1,9 +1,9 @@
 {
   "AGENTS.md": "c159b61acbc106958d01de20d118950bbd827c916aecb314b45f2984d5cac3be",
-  "JOURNAL.md": "faac5ce8bec4c57dd47869a56ef30e2bf4a5cbbe16bf6d0ea9f32742896069e3",
+  "JOURNAL.md": "141d163c1c2c31a75cc01af9e8c7757a9c6e55bfe2c2a190c58a18c02083672d",
   "PUBLICATION_ADAPTATIONS.json": "e6fe194973c1e74e5a6d9de29383a19b2b049e9e317526c17447f843e0dcbfd0",
   "README.md": "1130ca6e36355a4dfc61db9a81dbe91d2e5189800331b36c4cba57184f656c6e",
-  "STATUS.json": "1958b5105aa505dca08dcd3683938741cac6a4bd5acb36dda573fb8ab4c0bec2",
+  "STATUS.json": "07d913afb43886bbb1c2184645f256ee11be85c495b6ec20ea2c3f0bb136dd4d",
   "claims.json": "86712d512a8a509f5ca988e966ff9072d37bf0b7faf96d83c95c3dd5de61a0b0",
   "data_audit/README_zh.md": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
   "data_audit/audit/anchor_dates.json": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
@@ -86,6 +86,7 @@
   "phase3/AMENDMENT_v1_1.json": "7ce8f7b58f2179ea1c3504acf9ed63310efeec5cf42cde42f2b4c2047db7dcb9",
   "phase3/AUDIT_FINAL.json": "887e81753535f2fd0bd9c3e61def6b151acf0a2d76378574a1a06490a3828b96",
   "phase3/PROTOCOL_zh.md": "e04133ab949f3c051677a2a5e748f0153b45db04e85bcb0b0073ce1ec22c037b",
+  "phase3/PUBLICATION_ACK_20261119.json": "c5e0bd37c42b6eea3dd778f5ae64cdde0975723e7f9c06f1f842cd7810b3779a",
   "phase3/Phase3_Event_Atlas_Report_zh.md": "08e5980e3ae8f90690429d574b63243527ae71b280e751f8e837dc3dff562518",
   "phase3/RUN_zh.md": "f0edbc5d994193abe3d4183f6acad7669946a420f723b9da12388be6167c48d0",
   "phase3/analyze.py": "5c33817895d49f6e3b86d991f1956a7d8dbbfada2bdf6b604ccbc844c0ce65db",
@@ -133,6 +134,6 @@
   "phase3/self_check.py": "59a918d3800d23cfbbf601aa0fd4c8625dd0619bc18fb1b2960cbbae8c043be5",
   "phase3/verify_report.py": "b09d2065b9f99dd6a87d674e3d85aad23714ae7858ac0acbd0a925b27468c40e",
   "record_step.py": "889bc07e9c3e2aac3a82056a4e042bf702dd3d7e844407f3da3e99715ad8d98c",
-  "steps.json": "91a34b215948ee531f5b11293dd4a9b4d0bf28f83dac897c4352a5bfd220549b",
+  "steps.json": "ec57064b4fb2e1bf8ffdc87c2958a7b68f9a82fea094b8ae55ad6a630f1bfe31",
   "verify_publication.py": "8d23bbfa9b68a090ebb2202430b8e2bcb9f22f34702c9849361ebdc62b5b2baf"
 }

@@ -270,5 +270,21 @@
       "phase3/AUDIT_FINAL.json": "887e81753535f2fd0bd9c3e61def6b151acf0a2d76378574a1a06490a3828b96"
     },
     "recorded_at_utc": "2026-11-19T01:56:43.825427+00:00"
+  },
+  {
+    "id": "R011",
+    "title": "第三阶段公开载荷同步与远端核对",
+    "plan": "本地校验后非强制快进同步，精确读回关键文件，记录已公开范围。",
+    "actual": "提交c65fe925包含56个新增/更新公开文件，带预期父提交非强制更新成功；报告、展示原数值、自查、逐步日志和总清单5个远端文件逐字节与本地一致。",
+    "status": "SYNCED_REMOTE_READBACK_VERIFIED",
+    "evidence": [
+      "phase3/PUBLICATION_ACK_20261119.json"
+    ],
+    "claims": "第三阶段公开代码、全事件与聚合结果及负面记录已在指定研究分支可读；P35同步验收通过。",
+    "limits": "该核对只证明发布一致性，不是独立科学验证；原始行情、逐行风险与预测未公开。",
+    "evidence_sha256": {
+      "phase3/PUBLICATION_ACK_20261119.json": "c5e0bd37c42b6eea3dd778f5ae64cdde0975723e7f9c06f1f842cd7810b3779a"
+    },
+    "recorded_at_utc": "2026-11-19T02:00:37.708114+00:00"
   }
 ]

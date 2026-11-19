@@ -1,0 +1,19 @@
+{
+  "status": "PASS_REMOTE_READBACK",
+  "verified_commit": "c65fe9259fe633350ab403d3cc185b5a31ed9851",
+  "protocol_checkpoint": "941d12be7d0ab2415208517038af42a803657a36",
+  "branch": "codex/personal-cloud-ui-20261118",
+  "non_force_update": true,
+  "expected_parent": "941d12be7d0ab2415208517038af42a803657a36",
+  "key_files_exact_readback": [
+    "phase3/Phase3_Event_Atlas_Report_zh.md",
+    "phase3/results_v1_1/display_cells.json",
+    "phase3/results_v1_1/self_check.json",
+    "steps.json",
+    "PUBLICATION_MANIFEST.json"
+  ],
+  "public_files_updated": 56,
+  "independent_scientific_validation": false,
+  "meaning": "Publication acknowledgment only; no new financial calculation; resolves phase3 evidence_ledger P35 local-ready state.",
+  "observed_utc": "2026-11-19T02:00:37.435Z"
+}
