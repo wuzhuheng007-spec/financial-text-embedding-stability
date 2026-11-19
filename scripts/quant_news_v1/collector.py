@@ -43,13 +43,16 @@ def _lock():
 
 
 def _apply_all(db, provider_name, items, via, online=True) -> dict:
-    c = {"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0}
+    c = {"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0,
+         "history_versions": 0, "conflicts_kept": 0, "stale_after_delete": 0, "restored": 0}
     for n in items:
         c["messages"] += 1
         if store.seen_message(db, provider_name, n.get("message_id")):
             c["duplicates"] += 1; continue
         r = store.apply(db, n, provider=provider_name, via=via, received_at=store.utcnow(), online=online)
-        c[{"NEW": "news_new", "NEW_VERSION": "news_versions", "DUPLICATE": "duplicates", "TOMBSTONE": "tombstones"}[r]] += 1
+        c[{"NEW": "news_new", "NEW_VERSION": "news_versions", "DUPLICATE": "duplicates", "TOMBSTONE": "tombstones",
+           "HISTORY_VERSION": "history_versions", "CONFLICT_KEPT": "conflicts_kept", "STALE_AFTER_DELETE": "stale_after_delete",
+           "RESTORED": "restored"}[r]] += 1
     return c
 
 
@@ -106,18 +109,56 @@ def _sleep(seconds, deadline):
         time.sleep(min(1.0, end - time.monotonic()))
 
 
-def _state_after(c, db, provider_name, kind):
+def _state_after(c, db, provider_name, kind, live=True):
+    """RECEIVING only after LIVE news (a genuine new push, or a non-backfill REST poll); backfill, gap fill,
+    replay and late stream events never turn a connection into 'receiving'."""
     cur = db.execute("SELECT state FROM provider_state WHERE provider=?", (provider_name,)).fetchone()
-    got_news = c["news_new"] or c["news_versions"] or (cur and cur[0] == "RECEIVING")
+    got_news = (live and (c.get("news_new") or c.get("news_versions"))) or (cur and cur[0] == "RECEIVING")
     store.set_state(db, provider_name, "RECEIVING" if got_news else "CONNECTED_NO_MESSAGES_YET", detail=kind, **c)
+
+
+def _cursor(db, name, value=None):
+    db.execute("CREATE TABLE IF NOT EXISTS cursors (name TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL)")
+    if value is None:
+        r = db.execute("SELECT value FROM cursors WHERE name=?", (name,)).fetchone()
+        return r[0] if r else None
+    db.execute("INSERT INTO cursors VALUES(?,?,?) ON CONFLICT(name) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at",
+               (name, str(value), store.utcnow())); db.commit()
+
+
+def benzinga_rest_sync(db, provider_name, rest, env, via):
+    """Incremental REST sync on the provider's UPDATE time (updatedSince, paged, oldest first) plus removals
+    (/news-removed). The cursor is the server clock at the start of the last successful sync minus an overlap,
+    so late-indexed updates are not skipped; duplicates are absorbed by the store. First run = bounded backfill."""
+    overlap = int(env.get("NEWS_OVERLAP_SECONDS", "300")); max_pages = int(env.get("NEWS_MAX_PAGES", "20"))
+    started = time.time()
+    cur = _cursor(db, f"{provider_name}:updated_since")
+    first = cur is None
+    since = int(float(cur)) - overlap if cur else int(started - 60 * int(env.get("NEWS_BACKFILL_MINUTES", "120")))
+    items, trunc = rest.updated_since(since, max_pages=max_pages)
+    removed, trunc_r = rest.removed_since(since)
+    c = _apply_all(db, provider_name, items, via="backfill" if first else via, online=False)
+    c2 = _apply_all(db, provider_name, removed, via="removed_poll", online=False)
+    for k, v in c2.items():
+        c[k] += v
+    c["rest_pages_truncated"] = int(trunc or trunc_r); c["first_sync"] = int(first)
+    _cursor(db, f"{provider_name}:updated_since", started)
+    return c
 
 
 def _poll_loop(db, provider, provider_name, env, deadline):
     every = max(15, int(env.get("NEWS_POLL_SECONDS", "60")))
+    if provider_name == "benzinga_rest":
+        while deadline is None or time.monotonic() < deadline:
+            c = benzinga_rest_sync(db, provider_name, provider, env, via="rest_poll")
+            # REST items are never an "online receipt": the label says polling, latency stats exclude them
+            _state_after(c, db, provider_name, f"REST_POLL updatedSince every {every}s (polling, not push)", live=not c["first_sync"])
+            _sleep(every, deadline)
+        return
     last = db.execute("SELECT MAX(provider_created_at) FROM versions WHERE provider=?", (provider_name,)).fetchone()[0]
     first = last is None
     while deadline is None or time.monotonic() < deadline:
-        since = None if first else _minus_minutes(last, 15)  # overlap window catches late updates; duplicates are free
+        since = None if first else _minus_minutes(last, 15)
         items = provider.fetch(since_utc=since, limit=100)
         c = _apply_all(db, provider_name, items, via="backfill" if first else "rest_poll", online=not first)
         _state_after(c, db, provider_name, "REST_POLL (polling, not push)")
@@ -126,15 +167,35 @@ def _poll_loop(db, provider, provider_name, env, deadline):
         _sleep(every, deadline)
 
 
+ZERO = {"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0}
+
+
 def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
+    """Live stream. Gap recovery is the REST updatedSince + removals sync (complete for the gap), not the
+    stream's 'replay' (only the last 100 cached messages); replay is sent only when REST is unavailable and
+    its messages are recorded as via='replay'. A stream event whose provider timestamp is older than this
+    connection is recorded as 'stream_late' (not a new push)."""
     import websocket
+    from datetime import datetime, timezone
     ws = provider.connect()
+    connected_at = datetime.now(timezone.utc)
     store.set_state(db, provider_name, "CONNECTED_NO_MESSAGES_YET", detail=provider.kind, connects=1)
+    replay_until = None
     try:
-        if provider_name == "benzinga_stream":
-            _benzinga_rest_fill(db, provider_name, env, reconnect)
-        if reconnect and provider.replay_text:      # Benzinga: up to 100 cached messages after a gap
-            ws.send(provider.replay_text)
+        rest_ok = False
+        if provider_name == "benzinga_stream" and env.get("BENZINGA_TOKEN"):
+            try:
+                c = benzinga_rest_sync(db, provider_name, BenzingaRest(env["BENZINGA_TOKEN"]), env, via="gap_fill_rest")
+                store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail="stream up; REST updatedSince gap fill done",
+                                gap_fill_items=c["messages"], rest_pages_truncated=c["rest_pages_truncated"])
+                rest_ok = True
+            except ProviderError as e:
+                store.set_state(db, provider_name, _keep_receiving(db, provider_name),
+                                detail=f"stream up; REST gap fill unavailable ({e.error_class})", gap_fill_errors=1)
+        if reconnect and not rest_ok and provider.replay_text:  # partial fallback only (last 100 cached)
+            ws.send(provider.replay_text); replay_until = time.monotonic() + 15
+            store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail="REST unavailable: replay sent (partial recovery, max 100)",
+                            replays_sent=1)
         elif reconnect and provider_name == "alpaca_stream":
             last = db.execute("SELECT MAX(provider_created_at) FROM versions WHERE provider=?", (provider_name,)).fetchone()[0]
             if last:
@@ -148,7 +209,7 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
             except websocket.WebSocketTimeoutException:
                 if provider.ping_text:
                     ws.send(provider.ping_text)
-                _state_after({"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0}, db, provider_name, provider.kind)
+                _state_after(dict(ZERO), db, provider_name, provider.kind)
                 continue
             except websocket.WebSocketConnectionClosedException:
                 raise ProviderError("NETWORK_OTHER", "connection closed by server")
@@ -159,7 +220,17 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
             except ValueError:
                 store.set_state(db, provider_name, "PROTOCOL_ERROR", detail="unparseable message", error_class="PROTOCOL_ERROR", bad_messages=1)
                 continue
-            _state_after(_apply_all(db, provider_name, items, via="stream"), db, provider_name, provider.kind)
+            for it in items:
+                ev = store._ts(it.get("event_at"))
+                if replay_until and time.monotonic() < replay_until and ev and ev < connected_at:
+                    via, online = "replay", False
+                elif ev and (connected_at - ev).total_seconds() > 5:
+                    via, online = "stream_late", False
+                else:
+                    via, online = "stream", True
+                c = _apply_all(db, provider_name, [it], via=via, online=online)
+                c[f"via_{via}"] = 1
+                _state_after(c, db, provider_name, provider.kind, live=(via == "stream"))
     finally:
         try:
             ws.close()
@@ -170,23 +241,6 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
 def _keep_receiving(db, provider_name):
     cur = db.execute("SELECT state FROM provider_state WHERE provider=?", (provider_name,)).fetchone()
     return "RECEIVING" if cur and cur[0] == "RECEIVING" else "CONNECTED_NO_MESSAGES_YET"
-
-
-def _benzinga_rest_fill(db, provider_name, env, reconnect):
-    """Gap fill through REST (if the REST key works): first start = small backfill, reconnect = everything
-    updated since 15 min before the newest stored item. Recorded as backfill/gap fill, never as online receipt."""
-    if not env.get("BENZINGA_TOKEN"):
-        return
-    last = db.execute("SELECT MAX(provider_created_at) FROM versions WHERE provider=?", (provider_name,)).fetchone()[0]
-    try:
-        rest = BenzingaRest(env["BENZINGA_TOKEN"])
-        items = rest.fetch(since_utc=_minus_minutes(last, 15) if last else None, limit=100 if last else 30)
-    except ProviderError as e:
-        store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail=f"stream up; REST gap fill unavailable ({e.error_class})",
-                        gap_fill_errors=1)
-        return
-    c = _apply_all(db, provider_name, items, via="gap_fill_rest" if last else "backfill", online=False)
-    store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail="stream up; REST gap fill done", gap_fill_items=c["messages"])
 
 
 def _minus_minutes(iso, minutes):

@@ -15,8 +15,9 @@ BZ_CREATED = {"id": "msg-1", "api_version": "websocket/v1", "kind": "news",
                                    "channels": [{"name": "News"}], "stocks": [{"name": "NVDA"}, {"name": "QQQ"}], "tags": []}}}
 
 
-def bz(action, msg_id, title="NVIDIA Shares Rise"):
+def bz(action, msg_id, title="NVIDIA Shares Rise", updated="Wed, 19 Nov 2026 08:40:00 -0500", ts="2026-11-19T13:40:00Z"):
     m = json.loads(json.dumps(BZ_CREATED)); m["id"] = msg_id; m["data"]["action"] = action; m["data"]["content"]["title"] = title
+    m["data"]["content"]["updated"] = updated; m["data"]["timestamp"] = ts
     return m
 
 
@@ -74,9 +75,10 @@ class StoreTests(Base):
         self.assertEqual(store.apply(self.db, upd, provider="benzinga_stream", via="stream", received_at="2026-11-19T13:36:00Z"), "NEW_VERSION")
         # the same article through Massive's Benzinga REST is the same item, not a new one
         m = adapters.normalize_massive({"benzinga_id": 38945001, "title": "NVIDIA Shares Rise After Results", "tickers": ["NVDA", "QQQ"]})
-        self.assertIn(store.apply(self.db, m, provider="massive_benzinga", via="rest_poll", received_at="2026-11-19T13:37:00Z"), ("DUPLICATE", "NEW_VERSION"))
+        # no update time while the current version has one -> history only (R4)
+        self.assertEqual(store.apply(self.db, m, provider="massive_benzinga", via="rest_poll", received_at="2026-11-19T13:37:00Z"), "HISTORY_VERSION")
         self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 1)
-        d = adapters.normalize_benzinga(bz("Deleted", "msg-3"))
+        d = adapters.normalize_benzinga(bz("Deleted", "msg-3", ts="2026-11-19T13:50:00Z"))
         self.assertEqual(store.apply(self.db, d, provider="benzinga_stream", via="stream", received_at="2026-11-19T13:40:00Z"), "TOMBSTONE")
         row = self.db.execute("select deleted, latest_version from items").fetchone()
         self.assertEqual(row[0], 1); self.assertGreaterEqual(row[1], 2)
@@ -151,7 +153,8 @@ class BenzingaRestAndRedactionTests(Base):
                          ("benzinga", "38945001", "2026-11-19T13:35:10Z", "2026-11-19T14:00:00Z"))
         self.assertEqual(store.apply(self.db, n, provider="benzinga_rest", via="backfill", received_at="2026-11-19T14:01:00Z", online=False), "NEW")
         s = adapters.normalize_benzinga(BZ_CREATED)  # the stream copy of the same article
-        self.assertIn(store.apply(self.db, s, provider="benzinga_stream", via="stream", received_at="2026-11-19T14:02:00Z"), ("DUPLICATE", "NEW_VERSION"))
+        # the stream copy is older (updated 13:35:14Z < 14:00Z): stored as history, current stays the REST one
+        self.assertEqual(store.apply(self.db, s, provider="benzinga_stream", via="stream", received_at="2026-11-19T14:02:00Z"), "HISTORY_VERSION")
         self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 1)
 
     def test_http_error_with_token_url_is_redacted(self):
@@ -182,12 +185,185 @@ class BenzingaRestAndRedactionTests(Base):
         calls = []
         class P:
             kind = "REST_POLL"
-            def fetch(self, **kw):
+            def updated_since(self, *a, **kw):
                 calls.append(1); raise adapters.ProviderError("AUTH_FAILED", "HTTP 401")
+            fetch = removed_since = updated_since
         with mock.patch.object(collector, "build", return_value=P()):
             self.assertEqual(collector.run("benzinga_rest", max_seconds=3), 0)
         self.assertEqual(len(calls), 1)
         self.assertEqual(self.db.execute("select state from provider_state where provider='benzinga_rest'").fetchone()[0], "AUTH_FAILED")
+
+
+class OrderingRegressionTests(Base):
+    """Arrival order must not decide the current content; old backfill must not resurrect deleted articles."""
+
+    def art(self, updated, title, action="created", body="b"):
+        return {"upstream": "benzinga", "upstream_id": "77", "message_id": None, "action": action, "title": title, "teaser": None,
+                "body": body, "url": "https://www.benzinga.com/77", "source": "Benzinga", "authors": None, "symbols": ["MU"],
+                "channels": [], "provider_created_at": "2026-11-19T13:00:00Z", "provider_updated_at": updated, "raw": {}}
+
+    def current(self):
+        r = store.read_for_portal()["items"][0]
+        return r["title"], r["deleted"]
+
+    def test_newer_then_older_backfill_keeps_newer_current(self):
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T14:00:00Z", "v2"), provider="benzinga_stream", via="stream", received_at="2026-11-19T14:00:01Z"), "NEW")
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T13:30:00Z", "v1"), provider="benzinga_rest", via="gap_fill_rest", received_at="2026-11-19T14:05:00Z", online=False), "HISTORY_VERSION")
+        self.assertEqual(self.current(), ("v2", 0))
+        self.assertEqual(self.db.execute("select count(*) from versions").fetchone()[0], 2)  # arrival history kept
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T14:10:00Z", "v3"), provider="benzinga_stream", via="stream", received_at="2026-11-19T14:10:01Z"), "NEW_VERSION")
+        self.assertEqual(self.current(), ("v3", 0))
+        # same exact older content again -> duplicate, not a flip back
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T13:30:00Z", "v1"), provider="benzinga_rest", via="rest_poll", received_at="2026-11-19T14:11:00Z"), "DUPLICATE")
+        self.assertEqual(self.current(), ("v3", 0))
+
+    def test_same_time_conflict_and_missing_time_rules(self):
+        store.apply(self.db, self.art("2026-11-19T14:00:00Z", "first"), provider="benzinga_stream", via="stream", received_at="2026-11-19T14:00:01Z")
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T14:00:00Z", "second"), provider="benzinga_rest", via="rest_poll", received_at="2026-11-19T14:01:00Z"), "CONFLICT_KEPT")
+        self.assertEqual(store.apply(self.db, self.art(None, "untimed"), provider="benzinga_rest", via="rest_poll", received_at="2026-11-19T14:02:00Z"), "HISTORY_VERSION")
+        self.assertEqual(self.current(), ("first", 0))
+        self.assertEqual(self.db.execute("select conflicts from items").fetchone()[0], 1)
+
+    def test_delete_then_old_backfill_stays_deleted(self):
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T15:00:00Z", None, action="deleted"), provider="benzinga_rest", via="removed_poll", received_at="2026-11-19T15:00:05Z"), "TOMBSTONE")
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T14:00:00Z", "old"), provider="benzinga_rest", via="backfill", received_at="2026-11-19T15:01:00Z", online=False), "STALE_AFTER_DELETE")
+        self.assertEqual(store.apply(self.db, self.art(None, "old-untimed"), provider="benzinga_rest", via="backfill", received_at="2026-11-19T15:02:00Z", online=False), "STALE_AFTER_DELETE")
+        self.assertEqual(store.read_for_portal()["items"], [])  # never published to the page: no current version
+        self.assertEqual(self.db.execute("select deleted, latest_version, versions_n from items").fetchone()[:], (1, 0, 2))
+        self.assertEqual(self.db.execute("select count(*) from tombstones").fetchone()[0], 1)
+
+    def test_republish_after_removal_is_restored_by_rule(self):
+        store.apply(self.db, self.art("2026-11-19T14:00:00Z", "v1"), provider="benzinga_stream", via="stream", received_at="2026-11-19T14:00:01Z")
+        store.apply(self.db, self.art("2026-11-19T15:00:00Z", None, action="deleted"), provider="benzinga_stream", via="stream", received_at="2026-11-19T15:00:01Z")
+        self.assertEqual(self.current(), ("v1", 1))
+        self.assertEqual(store.apply(self.db, self.art("2026-11-19T16:00:00Z", "republished"), provider="benzinga_stream", via="stream", received_at="2026-11-19T16:00:01Z"), "RESTORED")
+        self.assertEqual(self.current(), ("republished", 0))
+        # a later deletion keeps the latest removal time; an earlier duplicate removal does not move it back
+        store.apply(self.db, self.art("2026-11-19T17:00:00Z", None, action="deleted"), provider="benzinga_rest", via="removed_poll", received_at="2026-11-19T17:00:01Z")
+        store.apply(self.db, self.art("2026-11-19T15:00:00Z", None, action="deleted"), provider="benzinga_rest", via="removed_poll", received_at="2026-11-19T17:01:00Z")
+        self.assertEqual(self.db.execute("select deleted, deleted_provider_at from items").fetchone()[:], (1, "2026-11-19T17:00:00Z"))
+
+    def test_stream_deletion_uses_event_time(self):
+        d = adapters.normalize_benzinga(bz("Deleted", "m9", updated="Wed, 19 Nov 2026 08:00:00 -0500", ts="2026-11-19T15:30:00Z"))
+        self.assertEqual((d["action"], d["provider_updated_at"]), ("deleted", "2026-11-19T15:30:00Z"))
+
+
+class RestSyncTests(Base):
+    """updatedSince paging, removals and the cursor (fake HTTP, no network)."""
+
+    def test_sync_pages_updates_applies_removals_and_moves_cursor(self):
+        from unittest import mock
+        from urllib.parse import urlparse, parse_qs
+        from scripts.quant_news_v1 import collector
+        seen = []
+        def fake(url, headers, timeout=20.0):
+            q = {k: v[0] for k, v in parse_qs(urlparse(url).query).items()}; path = urlparse(url).path
+            seen.append((path, q.get("updatedSince"), q.get("page"), q.get("sort")))
+            if path.endswith("news-removed"):
+                return {"removed": [{"id": 2, "updated": "Wed, 19 Nov 2026 10:00:00 -0500"}]}
+            page = int(q["page"]); size = int(q["pageSize"])
+            ids = list(range(1, 151))[page * size:(page + 1) * size]
+            return [{"id": i, "title": f"t{i}", "created": "Wed, 19 Nov 2026 08:00:00 -0500", "updated": "Wed, 19 Nov 2026 09:00:00 -0500",
+                     "url": f"https://www.benzinga.com/{i}", "stocks": [{"name": "MU"}]} for i in ids]
+        rest = adapters.BenzingaRest("bzTESTtoken1234567890abcdef")
+        with mock.patch.object(adapters, "http_json", side_effect=fake):
+            c = collector.benzinga_rest_sync(self.db, "benzinga_rest", rest, {}, via="rest_poll")
+        news = [x for x in seen if x[0] == "/api/v2/news"]
+        self.assertEqual([x[2] for x in news], ["0", "1"])           # paged until a short page
+        self.assertTrue(all(x[3] == "updated:asc" and x[1] for x in news))  # by UPDATE time, not creation
+        self.assertEqual((c["news_new"], c["tombstones"], c["rest_pages_truncated"]), (150, 1, 0))
+        self.assertEqual(self.db.execute("select deleted from items where upstream_id='2'").fetchone()[0], 1)
+        cur1 = float(collector._cursor(self.db, "benzinga_rest:updated_since"))
+        seen.clear()
+        with mock.patch.object(adapters, "http_json", side_effect=fake):
+            c = collector.benzinga_rest_sync(self.db, "benzinga_rest", rest, {"NEWS_OVERLAP_SECONDS": "300"}, via="rest_poll")
+        self.assertEqual(int(seen[0][1]), int(cur1) - 300)               # next sync = cursor minus overlap
+        self.assertEqual((c["news_new"], c["news_versions"], c["duplicates"]), (0, 0, 150))  # overlap re-reads are absorbed
+        self.assertEqual(self.db.execute("select deleted from items where upstream_id='2'").fetchone()[0], 1)  # still deleted
+        self.assertEqual([i["upstream_id"] for i in store.read_for_portal(500)["items"] if not i["deleted"] and i["upstream_id"] == "2"], [])
+
+    def test_truncation_is_reported(self):
+        from unittest import mock
+        rest = adapters.BenzingaRest("bzTESTtoken1234567890abcdef")
+        with mock.patch.object(adapters, "http_json", return_value=[{"id": 1, "updated": "Wed, 19 Nov 2026 09:00:00 -0500"}]):
+            items, trunc = rest.updated_since(0, max_pages=2, page_size=1)
+        self.assertTrue(trunc); self.assertEqual(len(items), 2)
+
+
+class ProbeTests(Base):
+    def test_stream_probe_no_replay_by_default_closes_and_redacts(self):
+        from unittest import mock
+        from scripts.quant_news_v1 import probe
+        token = "bzWStoken0987654321zyxw"
+        class WS:
+            def __init__(self): self.sent, self.closed, self.n = [], False, 0
+            def settimeout(self, t): pass
+            def send(self, t): self.sent.append(t)
+            def recv(self):
+                self.n += 1
+                if self.n == 1:  # a past article (event time before connect) and garbage containing the token
+                    return json.dumps(BZ_CREATED)
+                if self.n == 2:
+                    return f"error for wss://api.benzinga.com/api/v1/news/stream?token={token}"
+                raise RuntimeError(f"socket died url=wss://x?token={token}")
+            def close(self): self.closed = True
+        ws = WS()
+        with mock.patch.dict(os.environ, {"BENZINGA_TOKEN": token}), mock.patch.object(adapters.BenzingaStream, "connect", return_value=ws):
+            r = probe.probe("benzinga_stream", 2)
+        text = json.dumps(r)
+        self.assertNotIn(token, text); self.assertIn("token=***", text)
+        self.assertNotIn("replay", ws.sent)                 # default: no replay
+        self.assertTrue(ws.closed and r["connection_closed"])  # closed on the error path too
+        self.assertEqual(r["result"], "UNEXPECTED")
+
+    def test_replay_is_reported_separately(self):
+        from unittest import mock
+        from scripts.quant_news_v1 import probe
+        class WS:
+            sent, closed = [], False
+            def send(self, t): self.sent.append(t)
+            def close(self): self.closed = True
+        ws = WS(); past = adapters.normalize_benzinga(BZ_CREATED)
+        phases = iter([([], [], [], 0), ([], [past], [], 1)])  # phase 1: nothing new; phase 2 (after replay): one cached message
+        with mock.patch.dict(os.environ, {"BENZINGA_TOKEN": "bzTESTtoken1234567890abcdef"}),                 mock.patch.object(adapters.BenzingaStream, "connect", return_value=ws),                 mock.patch.object(probe, "_listen", side_effect=lambda *a: next(phases)):
+            r = probe.probe("benzinga_stream", 1, replay=True)
+        self.assertEqual((r["new_pushes"]["sample_count"], r["replay"]["cached_messages"], ws.sent), (0, 1, ["replay"]))
+        self.assertTrue(r["observed"].startswith("CONNECTED_NO_NEW_PUSH")); self.assertTrue(ws.closed)
+
+
+class LiveVsLateTests(Base):
+    def test_only_fresh_pushes_make_receiving(self):
+        from datetime import datetime, timedelta, timezone
+        from scripts.quant_news_v1 import collector
+        iso = lambda d: d.strftime("%Y-%m-%dT%H:%M:%SZ")
+        now = datetime.now(timezone.utc)
+        old = bz("Created", "old-1"); old["data"]["timestamp"] = iso(now - timedelta(hours=2)); old["data"]["id"] = 501
+        fresh = bz("Created", "new-1"); fresh["data"]["timestamp"] = iso(now + timedelta(seconds=1)); fresh["data"]["id"] = 502
+        class WS:
+            def __init__(self, frames): self.frames, self.sent = list(frames), []
+            def settimeout(self, t): pass
+            def send(self, t): self.sent.append(t)
+            def recv(self):
+                import websocket
+                if self.frames:
+                    return self.frames.pop(0)
+                raise websocket.WebSocketConnectionClosedException()
+            def close(self): pass
+        class P:
+            kind, ping_text, replay_text = "WEBSOCKET_PUSH", "ping", "replay"
+            parse = staticmethod(adapters.BenzingaStream.parse)
+            def __init__(self, frames): self.ws = WS(frames)
+            def connect(self): return self.ws
+        with self.assertRaises(adapters.ProviderError):
+            collector._stream_loop(self.db, P([json.dumps(old)]), "benzinga_stream", {}, None, reconnect=False)
+        st = self.db.execute("select state from provider_state").fetchone()[0]
+        self.assertEqual(st, "CONNECTED_NO_MESSAGES_YET")  # a late/past event is stored but is not a live push
+        self.assertEqual(self.db.execute("select via from versions where upstream_id='501'").fetchone()[0], "stream_late")
+        self.assertIsNone(self.db.execute("select first_online_seen_at from items where upstream_id='501'").fetchone()[0])
+        with self.assertRaises(adapters.ProviderError):
+            collector._stream_loop(self.db, P([json.dumps(fresh)]), "benzinga_stream", {}, None, reconnect=False)
+        self.assertEqual(self.db.execute("select state from provider_state").fetchone()[0], "RECEIVING")
+        self.assertEqual(self.db.execute("select via from versions where upstream_id='502'").fetchone()[0], "stream")
 
 
 if __name__ == "__main__":

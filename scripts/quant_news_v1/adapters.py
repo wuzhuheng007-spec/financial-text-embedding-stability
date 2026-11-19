@@ -118,7 +118,11 @@ def normalize_benzinga(msg: dict) -> dict:
             "source": "Benzinga", "authors": c.get("author"),
             "symbols": sorted({s.get("name") for s in c.get("stocks") or [] if s.get("name")}),
             "channels": [x.get("name") for x in c.get("channels") or [] if x.get("name")],
-            "provider_created_at": to_utc(c.get("created")), "provider_updated_at": to_utc(c.get("updated") or data.get("timestamp")),
+            "provider_created_at": to_utc(c.get("created")),
+            # a deletion's own time is the event timestamp; content.updated is the article's last edit
+            "provider_updated_at": (to_utc(data.get("timestamp")) or to_utc(c.get("updated"))) if action in ("deleted", "removed")
+                                   else (to_utc(c.get("updated")) or to_utc(data.get("timestamp"))),
+            "event_at": to_utc(data.get("timestamp")),  # when the provider emitted this stream event
             "raw": msg}
 
 
@@ -180,6 +184,41 @@ class BenzingaRest:
         if isinstance(data, dict):  # {"ok": false, "errors": [...]}
             raise ProviderError("HTTP_ERROR", f"error object: {json.dumps(data)[:200]}")
         return [normalize_benzinga_rest(r) for r in data or []]
+
+    def _get(self, path: str, q: dict):
+        try:
+            return http_json(f"https://api.benzinga.com{path}?{urllib.parse.urlencode({'token': self.token, **q})}", {})
+        except ProviderError as e:
+            if e.detail.startswith("HTTP 404"):
+                return []
+            raise
+
+    def updated_since(self, since_epoch: int, max_pages: int = 20, page_size: int = 100) -> tuple[list[dict], bool]:
+        """Every article UPDATED (not only created) since since_epoch, oldest update first, paged.
+        Returns (items, truncated): truncated=True when max_pages was reached before a short page."""
+        out = []
+        for page in range(max_pages):
+            data = self._get("/api/v2/news", {"updatedSince": str(int(since_epoch)), "sort": "updated:asc", "displayOutput": "full",
+                                              "pageSize": str(page_size), "page": str(page)})
+            if isinstance(data, dict):
+                raise ProviderError("HTTP_ERROR", f"error object: {json.dumps(data)[:200]}")
+            out.extend(normalize_benzinga_rest(r) for r in data or [])
+            if len(data or []) < page_size:
+                return out, False
+        return out, True
+
+    def removed_since(self, since_epoch: int, max_pages: int = 10, page_size: int = 1000) -> tuple[list[dict], bool]:
+        """GET /api/v2/news-removed: {id, updated=removal time}. The response object's arrays are flattened."""
+        out = []
+        for page in range(max_pages):
+            data = self._get("/api/v2/news-removed", {"updatedSince": str(int(since_epoch)), "pageSize": str(page_size), "page": str(page)})
+            rows = [r for v in (data.values() if isinstance(data, dict) else [data]) if isinstance(v, list) for r in v]
+            out.extend({"upstream": "benzinga", "upstream_id": str(r.get("id")), "message_id": None, "action": "deleted",
+                        "provider_updated_at": to_utc(r.get("updated")), "provider_created_at": None, "symbols": [], "channels": [],
+                        "raw": r} for r in rows if r.get("id") is not None)
+            if len(rows) < page_size:
+                return out, False
+        return out, True
 
 
 class MassiveRest:

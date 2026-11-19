@@ -2,8 +2,22 @@
 
 items     one row per upstream article (upstream, upstream_id): the same Benzinga article arriving via
           the Benzinga stream and via Massive's Benzinga REST is ONE item, not two.
-versions  a new version only when the content hash changes; every receipt is counted.
-tombstones deletion events are kept; the item is flagged deleted, its versions are not erased.
+versions  every distinct content ever received (arrival history; a hash seen before is a DUPLICATE).
+tombstones every deletion/removal event; the item is flagged deleted, its versions are never erased.
+
+Which version is CURRENT (items.latest_version) is decided by the provider's update time, not arrival order:
+  R1 newer provider_updated_at than current            -> becomes current (NEW_VERSION)
+  R2 older provider_updated_at                         -> kept as history only (HISTORY_VERSION)
+  R3 same provider_updated_at, different content       -> current kept (first arrival wins), CONFLICT_KEPT
+  R4 incoming has no update time, current has one      -> history only (HISTORY_VERSION)
+  R5 neither has an update time                        -> arrival order: incoming becomes current
+Deletions (stream action deleted, REST /news-removed) use the provider's removal time (else receipt time):
+  D1 a deletion marks the item deleted (also for an id never seen: a deleted stub, no visible version)
+  D2 content with update time <= removal time, or no update time, arriving after a deletion is stored as
+     history and the item STAYS deleted (STALE_AFTER_DELETE) - old backfill cannot resurrect it
+  D3 content whose provider update time is strictly later than the removal time is treated as the provider
+     publishing it again: the item is restored (RESTORED) and that content becomes current
+  D4 repeated deletions keep the latest removal time
 """
 from __future__ import annotations
 
@@ -20,7 +34,8 @@ SCHEMA = """
 CREATE TABLE IF NOT EXISTS items (
   upstream TEXT NOT NULL, upstream_id TEXT NOT NULL, first_seen_at TEXT NOT NULL, first_seen_via TEXT NOT NULL,
   first_online_seen_at TEXT, latest_version INTEGER NOT NULL, deleted INTEGER NOT NULL DEFAULT 0, deleted_at TEXT,
-  receipts INTEGER NOT NULL DEFAULT 1, PRIMARY KEY (upstream, upstream_id));
+  receipts INTEGER NOT NULL DEFAULT 1, deleted_provider_at TEXT, restored_at TEXT, versions_n INTEGER NOT NULL DEFAULT 0,
+  conflicts INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (upstream, upstream_id));
 CREATE TABLE IF NOT EXISTS versions (
   upstream TEXT NOT NULL, upstream_id TEXT NOT NULL, version INTEGER NOT NULL, content_sha256 TEXT NOT NULL,
   provider TEXT NOT NULL, via TEXT NOT NULL, title TEXT, teaser TEXT, body TEXT, url TEXT, source TEXT, authors TEXT,
@@ -77,35 +92,70 @@ def _authors(a):
     return ", ".join(str(x) for x in a if x) or None if isinstance(a, (list, tuple)) else a
 
 
+def _ts(v):
+    """UTC ISO (with or without fractions) -> datetime for comparison; None stays None."""
+    if not v:
+        return None
+    try:
+        return datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
 def apply(db, n: dict, *, provider: str, via: str, received_at: str, online: bool = True) -> str:
-    """Store one normalized message. Returns NEW | NEW_VERSION | DUPLICATE | TOMBSTONE."""
+    """Store one normalized message under rules R1-R5 / D1-D4 (module docstring). Returns NEW | NEW_VERSION |
+    HISTORY_VERSION | CONFLICT_KEPT | DUPLICATE | TOMBSTONE | STALE_AFTER_DELETE | RESTORED."""
     key = (n["upstream"], str(n["upstream_id"]))
     raw = json.dumps(n.get("raw"), ensure_ascii=False, default=str)
+    row = db.execute("SELECT latest_version, deleted, deleted_provider_at, versions_n FROM items WHERE upstream=? AND upstream_id=?", key).fetchone()
     if n.get("action") == "deleted":
+        removed_at = n.get("provider_updated_at") or received_at
         db.execute("INSERT INTO tombstones VALUES(?,?,?,?,?,?)", (*key, provider, n.get("provider_updated_at"), received_at, raw))
-        db.execute("UPDATE items SET deleted=1, deleted_at=? WHERE upstream=? AND upstream_id=?", (received_at, *key))
+        if row is None:  # D1: deletion before (or without) any content
+            db.execute("""INSERT INTO items(upstream,upstream_id,first_seen_at,first_seen_via,first_online_seen_at,latest_version,deleted,deleted_at,
+                          deleted_provider_at,versions_n) VALUES(?,?,?,?,NULL,0,1,?,?,0)""", (*key, received_at, via, received_at, removed_at))
+        else:
+            prev = _ts(row["deleted_provider_at"])
+            keep = removed_at if prev is None or (_ts(removed_at) or prev) >= prev else row["deleted_provider_at"]  # D4
+            db.execute("UPDATE items SET deleted=1, deleted_at=COALESCE(deleted_at, ?), deleted_provider_at=?, receipts=receipts+1 WHERE upstream=? AND upstream_id=?",
+                       (received_at, keep, *key))
         db.commit(); return "TOMBSTONE"
     h = content_hash(n)
-    row = db.execute("SELECT latest_version FROM items WHERE upstream=? AND upstream_id=?", key).fetchone()
-    if row:
-        last = db.execute("SELECT content_sha256 FROM versions WHERE upstream=? AND upstream_id=? AND version=?", (*key, row[0])).fetchone()
-        db.execute("UPDATE items SET receipts=receipts+1, first_online_seen_at=COALESCE(first_online_seen_at, ?) WHERE upstream=? AND upstream_id=?",
-                   (received_at if online else None, *key))
-        if last and last[0] == h:
-            db.commit(); return "DUPLICATE"
-        version = row[0] + 1
+    if row is None:
+        db.execute("""INSERT INTO items(upstream,upstream_id,first_seen_at,first_seen_via,first_online_seen_at,latest_version,versions_n)
+                      VALUES(?,?,?,?,?,1,1)""", (*key, received_at, via, received_at if online else None))
+        _insert_version(db, key, 1, h, n, provider, via, received_at, raw)
+        db.commit(); return "NEW"
+    db.execute("UPDATE items SET receipts=receipts+1, first_online_seen_at=COALESCE(first_online_seen_at, ?) WHERE upstream=? AND upstream_id=?",
+               (received_at if online else None, *key))
+    if db.execute("SELECT 1 FROM versions WHERE upstream=? AND upstream_id=? AND content_sha256=?", (*key, h)).fetchone():
+        db.commit(); return "DUPLICATE"  # this exact content was already received (current or history)
+    version = row["versions_n"] + 1
+    _insert_version(db, key, version, h, n, provider, via, received_at, raw)
+    db.execute("UPDATE items SET versions_n=? WHERE upstream=? AND upstream_id=?", (version, *key))
+    inc = _ts(n.get("provider_updated_at"))
+    if row["deleted"]:
+        removed = _ts(row["deleted_provider_at"])
+        if inc is not None and removed is not None and inc > removed:  # D3
+            db.execute("UPDATE items SET deleted=0, restored_at=?, latest_version=? WHERE upstream=? AND upstream_id=?", (received_at, version, *key))
+            db.commit(); return "RESTORED"
+        db.commit(); return "STALE_AFTER_DELETE"  # D2
+    cur = db.execute("SELECT provider_updated_at FROM versions WHERE upstream=? AND upstream_id=? AND version=?", (*key, row["latest_version"])).fetchone()
+    cur_t = _ts(cur[0]) if cur else None
+    if cur is None or (inc is not None and (cur_t is None or inc > cur_t)) or (inc is None and cur_t is None):  # R1 / R5
         db.execute("UPDATE items SET latest_version=? WHERE upstream=? AND upstream_id=?", (version, *key))
-        result = "NEW_VERSION"
-    else:
-        version = 1
-        db.execute("INSERT INTO items(upstream,upstream_id,first_seen_at,first_seen_via,first_online_seen_at,latest_version) VALUES(?,?,?,?,?,1)",
-                   (*key, received_at, via, received_at if online else None))
-        result = "NEW"
+        db.commit(); return "NEW_VERSION"
+    if inc is not None and cur_t is not None and inc == cur_t:  # R3
+        db.execute("UPDATE items SET conflicts=conflicts+1 WHERE upstream=? AND upstream_id=?", key)
+        db.commit(); return "CONFLICT_KEPT"
+    db.commit(); return "HISTORY_VERSION"  # R2 / R4
+
+
+def _insert_version(db, key, version, h, n, provider, via, received_at, raw):
     db.execute("INSERT INTO versions VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                (*key, version, h, provider, via, n.get("title"), n.get("teaser"), n.get("body"), n.get("url"), n.get("source"),
                 _authors(n.get("authors")), json.dumps(n.get("symbols") or []), json.dumps(n.get("channels") or []),
                 n.get("provider_created_at"), n.get("provider_updated_at"), received_at, utcnow(), raw))
-    db.commit(); return result
 
 
 def set_state(db, provider: str, state: str, *, detail: str | None = None, error_class: str | None = None, **counters_delta) -> None:
@@ -142,7 +192,7 @@ def read_for_portal(limit: int = 200, path: Path | None = None) -> dict:
     with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
         db.row_factory = sqlite3.Row
         rows = db.execute("""SELECT i.upstream, i.upstream_id, i.first_seen_at, i.first_seen_via, i.first_online_seen_at, i.deleted,
-                i.deleted_at, i.receipts, i.latest_version, v.provider, v.via, v.title, v.teaser, v.body, v.url, v.source, v.authors,
+                i.deleted_at, i.receipts, i.latest_version, i.versions_n, i.conflicts, i.restored_at, v.provider, v.via, v.title, v.teaser, v.body, v.url, v.source, v.authors,
                 v.symbols_json, v.channels_json, v.provider_created_at, v.provider_updated_at, v.received_at, v.available_at
               FROM items i JOIN versions v ON v.upstream=i.upstream AND v.upstream_id=i.upstream_id AND v.version=i.latest_version
               ORDER BY COALESCE(v.provider_created_at, i.first_seen_at) DESC LIMIT ?""", (limit,)).fetchall()
