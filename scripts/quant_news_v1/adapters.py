@@ -108,16 +108,39 @@ def classify_exception(exc: BaseException) -> ProviderError:
 
 
 # ---------- normalization (pure functions; covered by fixture tests) ----------
+def _names(lst) -> list[str]:
+    """Benzinga lists come as [{"name": ...}] or as plain strings; accept both."""
+    out = []
+    for x in lst or []:
+        v = x.get("name") if isinstance(x, dict) else x if isinstance(x, str) else None
+        if v:
+            out.append(str(v))
+    return out
+
+
+def shape(v, depth=0):
+    """Structure only (keys and value types), for diagnosing unexpected frames without logging content."""
+    if isinstance(v, dict):
+        return {k: shape(x, depth + 1) for k, x in list(v.items())[:25]} if depth < 3 else "dict"
+    if isinstance(v, list):
+        return [shape(v[0], depth + 1)] if v else []
+    return type(v).__name__
+
+
 def normalize_benzinga(msg: dict) -> dict:
     data = msg.get("data") or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"unexpected data type {type(data).__name__}")
     c = data.get("content") or {}
+    if not isinstance(c, dict):
+        raise ValueError(f"unexpected content type {type(c).__name__}")
     action = str(data.get("action", "")).lower()
     return {"upstream": "benzinga", "upstream_id": str(data.get("id") or c.get("id")), "message_id": msg.get("id"),
             "action": {"created": "created", "updated": "updated", "deleted": "deleted", "removed": "deleted"}.get(action, action or "created"),
             "title": c.get("title"), "teaser": c.get("teaser") or None, "body": c.get("body") or None, "url": c.get("url"),
             "source": "Benzinga", "authors": c.get("author"),
-            "symbols": sorted({s.get("name") for s in c.get("stocks") or [] if s.get("name")}),
-            "channels": [x.get("name") for x in c.get("channels") or [] if x.get("name")],
+            "symbols": sorted(set(_names(c.get("stocks")))),
+            "channels": _names(c.get("channels")),
             "provider_created_at": to_utc(c.get("created")),
             # a deletion's own time is the event timestamp; content.updated is the article's last edit
             "provider_updated_at": (to_utc(data.get("timestamp")) or to_utc(c.get("updated"))) if action in ("deleted", "removed")
@@ -284,7 +307,16 @@ class BenzingaStream:
         if text.strip().lower() == "pong":
             return []
         msg = json.loads(text)
-        return [normalize_benzinga(msg)] if isinstance(msg, dict) and msg.get("data") else []
+        msgs = msg if isinstance(msg, list) else [msg]
+        out = []
+        for m in msgs:
+            if not (isinstance(m, dict) and m.get("data")):
+                continue
+            try:
+                out.append(normalize_benzinga(m))
+            except (AttributeError, TypeError, KeyError) as exc:
+                raise ValueError(f"unexpected frame shape {json.dumps(shape(m))[:300]}") from None
+        return out
 
     ping_text, replay_text = "ping", "replay"
 

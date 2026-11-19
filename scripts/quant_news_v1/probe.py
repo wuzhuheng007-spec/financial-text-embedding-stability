@@ -97,8 +97,8 @@ def _listen(ws, p, seconds, connected_at):
         frames += 1
         try:
             items = p.parse(text)
-        except ValueError:
-            other.append(redact(text)[:200]); continue
+        except ValueError as exc:  # non-JSON text, or JSON of an unexpected shape (structure only, no content)
+            other.append(redact(str(exc) if str(exc).startswith("unexpected") else text)[:300]); continue
         for it in items:
             ev = it.get("event_at")
             (new if ev and ev >= connected_at else older).append(it)

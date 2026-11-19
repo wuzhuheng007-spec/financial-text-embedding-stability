@@ -366,5 +366,17 @@ class LiveVsLateTests(Base):
         self.assertEqual(self.db.execute("select via from versions where upstream_id='502'").fetchone()[0], "stream")
 
 
+class FrameShapeTests(unittest.TestCase):
+    def test_string_lists_and_bad_shapes(self):
+        m = json.loads(json.dumps(BZ_CREATED)); m["data"]["content"]["stocks"] = ["NVDA", "QQQ"]; m["data"]["content"]["channels"] = ["News"]
+        n = adapters.BenzingaStream.parse(json.dumps(m))[0]
+        self.assertEqual((n["symbols"], n["channels"]), (["NVDA", "QQQ"], ["News"]))
+        self.assertEqual(len(adapters.BenzingaStream.parse(json.dumps([BZ_CREATED, BZ_CREATED]))), 2)
+        bad = {"id": "x", "data": {"action": "created", "id": 1, "content": "a string body"}}
+        with self.assertRaises(ValueError) as c:
+            adapters.BenzingaStream.parse(json.dumps(bad))
+        self.assertNotIn("a string body", str(c.exception))  # structure only, never content
+
+
 if __name__ == "__main__":
     unittest.main()

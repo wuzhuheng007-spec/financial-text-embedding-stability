@@ -217,8 +217,9 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
                 continue
             try:
                 items = provider.parse(text)
-            except ValueError:
-                store.set_state(db, provider_name, "PROTOCOL_ERROR", detail="unparseable message", error_class="PROTOCOL_ERROR", bad_messages=1)
+            except ValueError as exc:  # recorded (structure only) and skipped; the connection stays up
+                store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail=f"skipped frame: {str(exc)[:200]}",
+                                error_class="PROTOCOL_ERROR", bad_messages=1)
                 continue
             for it in items:
                 ev = store._ts(it.get("event_at"))
