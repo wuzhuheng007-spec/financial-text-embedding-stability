@@ -496,8 +496,8 @@
     const name = `${f.form} ${SEC_FORMS[f.form] || ''}${items.length ? '：' + items.join('、') : ''}`.trim();
     const t = h('span', 't', name); t.title = `${f.issuer_name || ''} · ${name}`;
     const scope = SEC_SCOPE[f.association_scope];
-    if (scope) t.append(h('span', 'tag tag-trust', scope[0]));
-    main.append(h('span', 'sym', f.symbols || ''), t, h('span', 'd num', (f.filing_date || '').slice(5)));
+    const badge = scope ? h('span', 'tag tag-trust', scope[0]) : h('span');  // outside the truncated title: always visible
+    main.append(h('span', 'sym', f.symbols || ''), t, badge, h('span', 'd num', (f.filing_date || '').slice(5)));
     const more = h('details', 'sec-more'); const sum = h('summary', null, '详情'); sum.setAttribute('aria-label', `${f.symbols} ${f.form} 详情`);
     const dl = h('dl');
     const add = (k, v) => { if (v) dl.append(h('dt', null, k), h('dd', null, v)); };
