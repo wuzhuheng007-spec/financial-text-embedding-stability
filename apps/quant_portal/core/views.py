@@ -689,7 +689,7 @@ def news_json(request):
         if st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET") and age is not None and age > 180:
             label, kind = f"新闻采集中断 · 最近心跳 {hb}", "down"
         elif st == "RECEIVING" and delivered:
-            label, kind = "新闻源已接通", "ok"
+            label, kind = ("新闻源已接通 · REST 轮询（非推送）" if "REST" in (prov.get("detail") or "") else "新闻源已接通 · 实时推送"), "ok"
         elif st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET"):
             label, kind = "新闻源已连接，尚未观察到新消息", "idle"
         elif st in ("CONNECTING",):

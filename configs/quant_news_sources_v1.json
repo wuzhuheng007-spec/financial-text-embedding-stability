@@ -3,17 +3,57 @@
   "_comment": "Rights are recorded separately per use. UNCONFIRMED until the owner records the provider's written answer. Data whose training right is not CONFIRMED never enters a training job.",
   "recorded_at": "2026-11-19",
   "providers": {
-    "benzinga_stream": {"title": "Benzinga News Stream（官方 WebSocket 推送）", "transport": "WEBSOCKET_PUSH", "priority": 1,
+    "benzinga_stream": {
+      "title": "Benzinga News Stream（官方 WebSocket 推送）",
+      "transport": "WEBSOCKET_PUSH",
+      "priority": 1,
       "docs": "https://docs.benzinga.com/ws-reference/data-websocket/get-news-stream",
-      "rights": {"display": "UNCONFIRMED", "store": "UNCONFIRMED", "research_analysis": "UNCONFIRMED", "model_training": "UNCONFIRMED"},
-      "notes": "One active connection per key per stream (docs); collected by one server process only."},
-    "massive_benzinga": {"title": "Benzinga News via Massive（REST 轮询）", "transport": "REST_POLL", "priority": 2,
+      "rights": {
+        "display": "UNCONFIRMED",
+        "store": "UNCONFIRMED",
+        "research_analysis": "UNCONFIRMED",
+        "model_training": "UNCONFIRMED"
+      },
+      "notes": "One active connection per key per stream (docs); collected by one server process only."
+    },
+    "benzinga_rest": {
+      "title": "Benzinga News REST（官方 API，轮询）",
+      "transport": "REST_POLL",
+      "priority": 1,
+      "docs": "https://docs.benzinga.com/api-reference/news-api/get-news-items",
+      "rights": {
+        "display": "UNCONFIRMED",
+        "store": "UNCONFIRMED",
+        "research_analysis": "UNCONFIRMED",
+        "model_training": "UNCONFIRMED"
+      },
+      "notes": "Same article id space as the stream. Used as the main source only if the stream is not enabled for the key, and for gap fill after reconnects. Rate limit not documented; default poll 60 s."
+    },
+    "massive_benzinga": {
+      "title": "Benzinga News via Massive（REST 轮询）",
+      "transport": "REST_POLL",
+      "priority": 2,
       "docs": "https://massive.com/docs/rest/partners/benzinga/news",
-      "rights": {"display": "UNCONFIRMED", "store": "UNCONFIRMED", "research_analysis": "UNCONFIRMED", "model_training": "NOT_GRANTED_WITHOUT_EXPLICIT_LICENCE"},
-      "notes": "Polling, not push. Market Data Terms §5(g): AI/ML training, fine-tuning or distillation needs an explicit licence."},
-    "alpaca_stream": {"title": "Alpaca News（WebSocket，备用）", "transport": "WEBSOCKET_PUSH", "priority": 3,
+      "rights": {
+        "display": "UNCONFIRMED",
+        "store": "UNCONFIRMED",
+        "research_analysis": "UNCONFIRMED",
+        "model_training": "NOT_GRANTED_WITHOUT_EXPLICIT_LICENCE"
+      },
+      "notes": "Polling, not push. Market Data Terms §5(g): AI/ML training, fine-tuning or distillation needs an explicit licence."
+    },
+    "alpaca_stream": {
+      "title": "Alpaca News（WebSocket，备用）",
+      "transport": "WEBSOCKET_PUSH",
+      "priority": 3,
       "docs": "https://docs.alpaca.markets/us/docs/streaming-real-time-news",
-      "rights": {"display": "UNCONFIRMED", "store": "UNCONFIRMED", "research_analysis": "UNCONFIRMED", "model_training": "UNCONFIRMED"},
-      "notes": "Upstream changed in Nov 2026 (community reply 2026-11-18); actual `source` and ETF tagging must be sampled."}
+      "rights": {
+        "display": "UNCONFIRMED",
+        "store": "UNCONFIRMED",
+        "research_analysis": "UNCONFIRMED",
+        "model_training": "UNCONFIRMED"
+      },
+      "notes": "Upstream changed in Nov 2026 (community reply 2026-11-18); actual `source` and ETF tagging must be sampled."
+    }
   }
 }

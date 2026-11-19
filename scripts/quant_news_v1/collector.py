@@ -8,8 +8,9 @@ exclusive lock, so the provider sees one connection; the web app only reads the 
 States written to provider_state: NOT_CONFIGURED, CONNECTING, CONNECTED_NO_MESSAGES_YET (connected or
 polling successfully, no news observed yet; not a failure and not an acceptance), RECEIVING,
 AUTH_FAILED, FORBIDDEN, RATE_LIMITED, NETWORK_DNS, NETWORK_TLS, NETWORK_TIMEOUT, NETWORK_OTHER,
-HTTP_ERROR, PROTOCOL_ERROR, CONNECTION_LIMIT, STOPPED. Backoff is bounded (5 s .. 300 s; 15 min after
-auth/permission errors).
+HTTP_ERROR, PROTOCOL_ERROR, CONNECTION_LIMIT, STOPPED. Backoff is bounded (5 s .. 300 s). AUTH_FAILED and
+FORBIDDEN are NOT retried: the state is recorded and the process idles without contacting the provider until
+it is restarted with a corrected key or plan (a permission error does not fix itself by retrying).
 """
 from __future__ import annotations
 
@@ -21,7 +22,7 @@ import sys
 import time
 
 from . import store
-from .adapters import AlpacaRest, ProviderError, build
+from .adapters import AlpacaRest, BenzingaRest, ProviderError, build
 
 
 class Stop(Exception):
@@ -83,13 +84,19 @@ def _run(db, provider_name: str, max_seconds: float | None) -> int:
                 break
             except ProviderError as e:
                 store.set_state(db, provider_name, e.error_class, detail=e.detail, error_class=e.error_class, errors=1)
-                wait = 900 if e.error_class in ("AUTH_FAILED", "FORBIDDEN") else (e.retry_after or backoff)
+                if e.error_class in ("AUTH_FAILED", "FORBIDDEN"):
+                    print(f"{provider_name} {e.error_class}: {e.detail}; not retrying (fix key/plan, then restart)", flush=True)
+                    _sleep(float("inf"), deadline)
+                    break
+                wait = e.retry_after or backoff
                 print(f"{provider_name} {e.error_class}: {e.detail}; retry in {int(wait)}s", flush=True)
                 had_connection = True
                 _sleep(min(wait, 900), deadline); backoff = min(backoff * 2, 300)
     except Stop:
         pass
-    store.set_state(db, provider_name, "STOPPED", detail="collector stopped")
+    cur = db.execute("SELECT state FROM provider_state WHERE provider=?", (provider_name,)).fetchone()
+    if not (cur and cur[0] in ("AUTH_FAILED", "FORBIDDEN")):  # keep the permission result visible after stop
+        store.set_state(db, provider_name, "STOPPED", detail="collector stopped")
     return 0
 
 
@@ -124,6 +131,8 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
     ws = provider.connect()
     store.set_state(db, provider_name, "CONNECTED_NO_MESSAGES_YET", detail=provider.kind, connects=1)
     try:
+        if provider_name == "benzinga_stream":
+            _benzinga_rest_fill(db, provider_name, env, reconnect)
         if reconnect and provider.replay_text:      # Benzinga: up to 100 cached messages after a gap
             ws.send(provider.replay_text)
         elif reconnect and provider_name == "alpaca_stream":
@@ -156,6 +165,28 @@ def _stream_loop(db, provider, provider_name, env, deadline, reconnect):
             ws.close()
         except Exception:  # noqa: BLE001
             pass
+
+
+def _keep_receiving(db, provider_name):
+    cur = db.execute("SELECT state FROM provider_state WHERE provider=?", (provider_name,)).fetchone()
+    return "RECEIVING" if cur and cur[0] == "RECEIVING" else "CONNECTED_NO_MESSAGES_YET"
+
+
+def _benzinga_rest_fill(db, provider_name, env, reconnect):
+    """Gap fill through REST (if the REST key works): first start = small backfill, reconnect = everything
+    updated since 15 min before the newest stored item. Recorded as backfill/gap fill, never as online receipt."""
+    if not env.get("BENZINGA_TOKEN"):
+        return
+    last = db.execute("SELECT MAX(provider_created_at) FROM versions WHERE provider=?", (provider_name,)).fetchone()[0]
+    try:
+        rest = BenzingaRest(env["BENZINGA_TOKEN"])
+        items = rest.fetch(since_utc=_minus_minutes(last, 15) if last else None, limit=100 if last else 30)
+    except ProviderError as e:
+        store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail=f"stream up; REST gap fill unavailable ({e.error_class})",
+                        gap_fill_errors=1)
+        return
+    c = _apply_all(db, provider_name, items, via="gap_fill_rest" if last else "backfill", online=False)
+    store.set_state(db, provider_name, _keep_receiving(db, provider_name), detail="stream up; REST gap fill done", gap_fill_items=c["messages"])
 
 
 def _minus_minutes(iso, minutes):

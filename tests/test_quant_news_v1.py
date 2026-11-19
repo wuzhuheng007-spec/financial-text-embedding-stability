@@ -140,5 +140,55 @@ class CollectorTests(Base):
         self.assertNotIn("token", json.dumps(r).lower())
 
 
+class BenzingaRestAndRedactionTests(Base):
+    TOKEN = "bzTESTtoken1234567890abcdef"
+
+    def test_rest_item_offsets_parsed_to_utc_and_same_id_space(self):
+        r = {"id": 38945001, "author": "A", "created": "Wed, 19 Nov 2026 08:35:10 -0500", "updated": "Wed, 19 Nov 2026 09:00:00 -0500",
+             "title": "x", "teaser": "", "body": "<p>b</p>", "url": "https://www.benzinga.com/x", "stocks": [{"name": "MU"}], "channels": [{"name": "News"}]}
+        n = adapters.normalize_benzinga_rest(r)
+        self.assertEqual((n["upstream"], n["upstream_id"], n["provider_created_at"], n["provider_updated_at"]),
+                         ("benzinga", "38945001", "2026-11-19T13:35:10Z", "2026-11-19T14:00:00Z"))
+        self.assertEqual(store.apply(self.db, n, provider="benzinga_rest", via="backfill", received_at="2026-11-19T14:01:00Z", online=False), "NEW")
+        s = adapters.normalize_benzinga(BZ_CREATED)  # the stream copy of the same article
+        self.assertIn(store.apply(self.db, s, provider="benzinga_stream", via="stream", received_at="2026-11-19T14:02:00Z"), ("DUPLICATE", "NEW_VERSION"))
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 1)
+
+    def test_http_error_with_token_url_is_redacted(self):
+        import io, urllib.error
+        from unittest import mock
+        rest = adapters.BenzingaRest(self.TOKEN)
+        url = f"https://api.benzinga.com/api/v2/news?token={self.TOKEN}&pageSize=1"
+        err = urllib.error.HTTPError(url, 401, "Unauthorized", {}, io.BytesIO(f'{{"error":"bad token {self.TOKEN}"}}'.encode()))
+        with mock.patch("urllib.request.urlopen", side_effect=err):
+            with self.assertRaises(adapters.ProviderError) as c:
+                rest.fetch(limit=1)
+        text = str(c.exception) + c.exception.detail + repr(c.exception.__cause__) + repr(c.exception.__context__)
+        self.assertEqual(c.exception.error_class, "AUTH_FAILED")
+        self.assertNotIn(self.TOKEN, text); self.assertIn("body=", c.exception.detail)
+        self.assertNotIn(self.TOKEN, adapters.redact(f"GET {url} failed"))
+        self.assertIn("token=***", adapters.redact("wss://api.benzinga.com/api/v1/news/stream?token=other-unregistered-value"))
+
+    def test_404_no_data_is_empty_not_error(self):
+        import io, urllib.error
+        from unittest import mock
+        err = urllib.error.HTTPError("u", 404, "Not Found", {}, io.BytesIO(b'{"ok":false}'))
+        with mock.patch("urllib.request.urlopen", side_effect=err):
+            self.assertEqual(adapters.BenzingaRest(self.TOKEN).fetch(tickers=["SOXX"]), [])
+
+    def test_auth_failure_is_recorded_once_not_retried(self):
+        from unittest import mock
+        from scripts.quant_news_v1 import collector
+        calls = []
+        class P:
+            kind = "REST_POLL"
+            def fetch(self, **kw):
+                calls.append(1); raise adapters.ProviderError("AUTH_FAILED", "HTTP 401")
+        with mock.patch.object(collector, "build", return_value=P()):
+            self.assertEqual(collector.run("benzinga_rest", max_seconds=3), 0)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(self.db.execute("select state from provider_state where provider='benzinga_rest'").fetchone()[0], "AUTH_FAILED")
+
+
 if __name__ == "__main__":
     unittest.main()

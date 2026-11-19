@@ -9,15 +9,40 @@ Massive Benzinga News  GET https://api.massive.com/benzinga/v2/news  results[{be
 Alpaca News  wss://stream.data.alpaca.markets/v1beta1/news (auth headers), subscribe {"action":"subscribe",
   "news":["*"]}; arrays of {T:"n", id, headline, summary, author, created_at, updated_at, url, content,
   symbols[], source}. REST GET https://data.alpaca.markets/v1beta1/news for gap fill.
-Secrets are never logged; URLs that carry a token are never logged.
+Benzinga News REST  GET https://api.benzinga.com/api/v2/news?token=...  JSON array of {id, author, created,
+  updated (RFC 2822 with offset), title, teaser, body, url, channels[{name}], stocks[{name}], tags[{name}]};
+  params pageSize<=100, displayOutput full|abstract|headline, updatedSince/publishedSince (epoch), tickers,
+  channels, sort. 401 = token invalid; 404 no_data_found = empty result, not an error.
+Secrets are never logged: every error detail passes through redact(), which masks registered secret values
+and any token=/apikey= query value, so an exception that carries a request URL cannot leak a key.
 """
 from __future__ import annotations
 
 import json
+import re
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+
+
+_SECRETS: set[str] = set()
+_QS_SECRET = re.compile(r"(?i)((?:token|apikey|api_key|key)=)[^&\s'\"]+")
+
+
+def register_secret(value: str | None) -> None:
+    if value and len(value) >= 6:
+        _SECRETS.add(value)
+
+
+def redact(text) -> str:
+    out = str(text)
+    for sec in sorted(_SECRETS, key=len, reverse=True):
+        out = out.replace(sec, "***")
+        q = urllib.parse.quote(sec, safe="")
+        if q != sec:
+            out = out.replace(q, "***")
+    return _QS_SECRET.sub(r"\1***", out)
 
 
 class ProviderError(Exception):
@@ -25,8 +50,9 @@ class ProviderError(Exception):
     NETWORK_OTHER, HTTP_ERROR, PROTOCOL_ERROR, NOT_CONFIGURED."""
 
     def __init__(self, error_class: str, detail: str = "", retry_after: float | None = None):
+        detail = redact(detail)[:300]
         super().__init__(f"{error_class}: {detail}")
-        self.error_class, self.detail, self.retry_after = error_class, detail[:300], retry_after
+        self.error_class, self.detail, self.retry_after = error_class, detail, retry_after
 
 
 def to_utc(value) -> str | None:
@@ -52,10 +78,16 @@ def classify_exception(exc: BaseException) -> ProviderError:
     if isinstance(exc, ProviderError):
         return exc
     status = getattr(exc, "code", None) or getattr(getattr(exc, "resp", None), "status", None) or getattr(exc, "status_code", None)
+    body = ""
+    try:  # the provider's own error text (redacted, short) is what tells us which product is missing
+        raw = exc.read() if hasattr(exc, "read") else getattr(exc, "resp_body", b"") or b""
+        body = " body=" + redact(raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw)[:200] if raw else ""
+    except Exception:  # noqa: BLE001
+        body = ""
     if status in (401,):
-        return ProviderError("AUTH_FAILED", f"HTTP {status}")
+        return ProviderError("AUTH_FAILED", f"HTTP {status}{body}")
     if status in (402, 403):
-        return ProviderError("FORBIDDEN", f"HTTP {status} (plan or permission)")
+        return ProviderError("FORBIDDEN", f"HTTP {status} (plan or permission){body}")
     if status == 429:
         ra = None
         try:
@@ -64,7 +96,7 @@ def classify_exception(exc: BaseException) -> ProviderError:
             ra = None
         return ProviderError("RATE_LIMITED", "HTTP 429", ra)
     if isinstance(status, int):
-        return ProviderError("HTTP_ERROR", f"HTTP {status}")
+        return ProviderError("HTTP_ERROR", f"HTTP {status}{body}")
     reason = getattr(exc, "reason", exc)
     if isinstance(reason, socket.gaierror) or isinstance(exc, socket.gaierror):
         return ProviderError("NETWORK_DNS", type(reason).__name__)
@@ -90,6 +122,11 @@ def normalize_benzinga(msg: dict) -> dict:
             "raw": msg}
 
 
+def normalize_benzinga_rest(r: dict) -> dict:
+    """REST items have the same shape as the stream's data.content; the article id is the same id space."""
+    return normalize_benzinga({"id": None, "data": {"action": "created", "id": r.get("id"), "content": r}}) | {"raw": r}
+
+
 def normalize_massive(r: dict) -> dict:
     return {"upstream": "benzinga", "upstream_id": str(r.get("benzinga_id")), "message_id": None, "action": "created",
             "title": r.get("title"), "teaser": r.get("teaser") or None, "body": r.get("body") or None, "url": r.get("url"),
@@ -107,13 +144,42 @@ def normalize_alpaca(m: dict) -> dict:
 
 
 # ---------- REST helpers ----------
-def http_json(url: str, headers: dict, timeout: float = 20.0) -> dict:
+def http_json(url: str, headers: dict, timeout: float = 20.0):
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "quant-news/1", **headers})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return json.loads(r.read().decode("utf-8"))
     except Exception as exc:  # noqa: BLE001 - classified, never echoed with the URL (may carry a key)
         raise classify_exception(exc) from None
+
+
+class BenzingaRest:
+    name, kind = "benzinga_rest", "REST_POLL"
+    BASE = "https://api.benzinga.com/api/v2/news"
+
+    def __init__(self, token: str):
+        if not token:
+            raise ProviderError("NOT_CONFIGURED", "BENZINGA_TOKEN missing")
+        register_secret(token); self.token = token
+
+    def fetch(self, since_utc: str | None = None, limit: int = 100, tickers: list[str] | None = None,
+              channels: list[str] | None = None, display: str = "full") -> list[dict]:
+        q = {"token": self.token, "pageSize": str(min(limit, 100)), "displayOutput": display, "sort": "updated:desc"}
+        if since_utc:
+            q["updatedSince"] = str(int(datetime.fromisoformat(since_utc.replace("Z", "+00:00")).timestamp()))
+        if tickers:
+            q["tickers"] = ",".join(tickers)
+        if channels:
+            q["channels"] = ",".join(channels)
+        try:
+            data = http_json(f"{self.BASE}?{urllib.parse.urlencode(q)}", {})
+        except ProviderError as e:
+            if e.detail.startswith("HTTP 404"):  # no_data_found: an empty window, not a failure
+                return []
+            raise
+        if isinstance(data, dict):  # {"ok": false, "errors": [...]}
+            raise ProviderError("HTTP_ERROR", f"error object: {json.dumps(data)[:200]}")
+        return [normalize_benzinga_rest(r) for r in data or []]
 
 
 class MassiveRest:
@@ -123,7 +189,7 @@ class MassiveRest:
     def __init__(self, api_key: str):
         if not api_key:
             raise ProviderError("NOT_CONFIGURED", "MASSIVE_API_KEY missing")
-        self.headers = {"Authorization": f"Bearer {api_key}"}
+        register_secret(api_key); self.headers = {"Authorization": f"Bearer {api_key}"}
 
     def fetch(self, since_utc: str | None = None, limit: int = 100, tickers: list[str] | None = None) -> list[dict]:
         q = {"sort": "published.desc", "limit": str(limit)}
@@ -140,7 +206,7 @@ class AlpacaRest:
     def __init__(self, key_id: str, secret: str):
         if not (key_id and secret):
             raise ProviderError("NOT_CONFIGURED", "ALPACA_KEY_ID/ALPACA_SECRET_KEY missing")
-        self.headers = {"APCA-API-KEY-ID": key_id, "APCA-API-SECRET-KEY": secret}
+        register_secret(secret); self.headers = {"APCA-API-KEY-ID": key_id, "APCA-API-SECRET-KEY": secret}
 
     def fetch(self, since_utc: str | None = None, limit: int = 50, tickers: list[str] | None = None) -> list[dict]:
         q = {"sort": "desc", "limit": str(limit), "include_content": "true"}
@@ -158,8 +224,8 @@ class BenzingaStream:
 
     def __init__(self, token: str, tickers: list[str] | None = None):
         if not token:
-            raise ProviderError("NOT_CONFIGURED", "BENZINGA_TOKEN missing")
-        self.token, self.tickers = token, tickers
+            raise ProviderError("NOT_CONFIGURED", "BENZINGA_WS_TOKEN / BENZINGA_TOKEN missing")
+        register_secret(token); self.token, self.tickers = token, tickers
 
     def connect(self, timeout: float = 20.0):
         import websocket
@@ -169,7 +235,7 @@ class BenzingaStream:
         try:
             ws = websocket.create_connection(f"{self.URL}?{urllib.parse.urlencode(q)}", timeout=timeout)
         except websocket.WebSocketBadStatusException as exc:
-            raise classify_exception(type("E", (Exception,), {"code": exc.status_code})()) from None
+            raise classify_exception(type("E", (Exception,), {"code": exc.status_code, "resp_body": getattr(exc, "resp_body", b"")})()) from None
         except Exception as exc:  # noqa: BLE001
             raise classify_exception(exc) from None
         return ws
@@ -223,8 +289,11 @@ class AlpacaStream:
 
 def build(provider: str, env: dict):
     """Provider factory from environment variables (values never logged)."""
-    if provider == "benzinga_stream":
-        return BenzingaStream(env.get("BENZINGA_TOKEN", ""), [t for t in env.get("NEWS_TICKERS", "").split(",") if t] or None)
+    if provider == "benzinga_stream":  # the stream may use its own WebSocket token; default to the REST key
+        return BenzingaStream(env.get("BENZINGA_WS_TOKEN") or env.get("BENZINGA_TOKEN", ""),
+                              [t for t in env.get("NEWS_TICKERS", "").split(",") if t] or None)
+    if provider == "benzinga_rest":
+        return BenzingaRest(env.get("BENZINGA_TOKEN", ""))
     if provider == "massive_benzinga":
         return MassiveRest(env.get("MASSIVE_API_KEY", ""))
     if provider == "alpaca_stream":
