@@ -11,6 +11,10 @@ REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.op
 exec 9>"${QUANT_RESEARCH_LOCK:-/run/lock/quant-research.lock}"
 flock -n 9 || { echo "a research job is already running"; exit 0; }
 IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
+# A protected job killed together with its launcher (host crash, SIGKILL) leaves its EXITED containers behind; remove
+# only exited containers carrying this scheduler's own job label (never running ones, never anything else).
+STALE=$(docker ps -a --filter label=quant.research.job --filter status=exited --format '{{.Names}}' | paste -sd' ' -)
+[ -n "$STALE" ] && { echo "removing exited research job containers: $STALE"; docker rm $STALE >/dev/null; }
 # Research job containers already running (normally none, since this lock is held): lets the worker confirm that
 # a RUNNING row whose lease expired really has no live worker before marking it lost. Legacy jobs are identified by
 # their container id, protected numeric jobs by their job token label (= the run's worker id).
