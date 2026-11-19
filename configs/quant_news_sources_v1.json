@@ -14,7 +14,14 @@
         "research_analysis": "UNCONFIRMED",
         "model_training": "UNCONFIRMED"
       },
-      "notes": "One active connection per key per stream (docs); collected by one server process only."
+      "notes": "One active connection per key per stream (docs); collected by one server process only.",
+      "observed_access": {
+        "observed_at": "2026-11-19 (Beijing 14:34-14:50)",
+        "key_fingerprint": "fee31351 (same value for REST and WS)",
+        "rest": "HTTP 200; /api/v2/news returns English Benzinga articles; tickers= filter returned empty lists for every tried variant; Korean-language Benzinga articles seen on the stream are NOT returned (by id: empty = unknown or not entitled)",
+        "stream": "handshake 101; live Created/Updated events received (incl. Benzinga Korea), event->receipt 191-3644 ms; replay request returned 0 messages in a 15 s window",
+        "rights_note": "Observed technical access only. Display/store/research/training rights remain UNCONFIRMED until the account's written terms are recorded; nothing from this source enters a training job."
+      }
     },
     "benzinga_rest": {
       "title": "Benzinga News REST（官方 API，轮询）",
@@ -27,7 +34,14 @@
         "research_analysis": "UNCONFIRMED",
         "model_training": "UNCONFIRMED"
       },
-      "notes": "Same article id space as the stream. Used as the main source only if the stream is not enabled for the key, and for gap fill after reconnects. Rate limit not documented; default poll 60 s."
+      "notes": "Same article id space as the stream. Used as the main source only if the stream is not enabled for the key, and for gap fill after reconnects. Rate limit not documented; default poll 60 s.",
+      "observed_access": {
+        "observed_at": "2026-11-19 (Beijing 14:34-14:50)",
+        "key_fingerprint": "fee31351 (same value for REST and WS)",
+        "rest": "HTTP 200; /api/v2/news returns English Benzinga articles; tickers= filter returned empty lists for every tried variant; Korean-language Benzinga articles seen on the stream are NOT returned (by id: empty = unknown or not entitled)",
+        "stream": "handshake 101; live Created/Updated events received (incl. Benzinga Korea), event->receipt 191-3644 ms; replay request returned 0 messages in a 15 s window",
+        "rights_note": "Observed technical access only. Display/store/research/training rights remain UNCONFIRMED until the account's written terms are recorded; nothing from this source enters a training job."
+      }
     },
     "massive_benzinga": {
       "title": "Benzinga News via Massive（REST 轮询）",
