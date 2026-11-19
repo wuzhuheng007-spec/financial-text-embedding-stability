@@ -44,7 +44,7 @@ def _lock():
 
 def _apply_all(db, provider_name, items, via, online=True) -> dict:
     c = {"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0,
-         "history_versions": 0, "conflicts_kept": 0, "stale_after_delete": 0, "restored": 0}
+         "history_versions": 0, "conflicts_kept": 0, "stale_after_delete": 0, "restored": 0, "stale_tombstones": 0}
     for n in items:
         c["messages"] += 1
         if store.seen_message(db, provider_name, n.get("message_id")):
@@ -52,7 +52,7 @@ def _apply_all(db, provider_name, items, via, online=True) -> dict:
         r = store.apply(db, n, provider=provider_name, via=via, received_at=store.utcnow(), online=online)
         c[{"NEW": "news_new", "NEW_VERSION": "news_versions", "DUPLICATE": "duplicates", "TOMBSTONE": "tombstones",
            "HISTORY_VERSION": "history_versions", "CONFLICT_KEPT": "conflicts_kept", "STALE_AFTER_DELETE": "stale_after_delete",
-           "RESTORED": "restored"}[r]] += 1
+           "RESTORED": "restored", "STALE_TOMBSTONE": "stale_tombstones"}[r]] += 1
     return c
 
 
@@ -77,7 +77,7 @@ def _run(db, provider_name: str, max_seconds: float | None) -> int:
         store.set_state(db, provider_name, e.error_class, detail=e.detail, error_class=e.error_class); print(e); return 2
     backoff = 5.0
     # A restart after downtime is a gap like any reconnect: if this cache already synced before, recover.
-    had_connection = _cursor(db, f"{provider_name}:updated_since") is not None
+    had_connection = (_cursor(db, f"{provider_name}:updated_since") is not None or _cursor(db, f"{provider_name}:articles:done") is not None)
     try:
         while deadline is None or time.monotonic() < deadline:
             try:
@@ -128,23 +128,66 @@ def _cursor(db, name, value=None):
                (name, str(value), store.utcnow())); db.commit()
 
 
+CHANNEL_PAGE_SIZE = {"articles": 100, "removed": 1000}
+
+
+def sync_state(db, provider_name) -> dict:
+    """Per channel: completion watermark (epoch of the last fully finished window) and an optional
+    continuation {since, target, next_page} of an unfinished window."""
+    out = {}
+    for ch in CHANNEL_PAGE_SIZE:
+        done = _cursor(db, f"{provider_name}:{ch}:done")
+        if done is None and ch == "articles":  # cursor name before the per-channel split (same meaning)
+            done = _cursor(db, f"{provider_name}:updated_since")
+        pend = _cursor(db, f"{provider_name}:{ch}:pending")
+        out[ch] = {"done": float(done) if done is not None else None, "pending": json.loads(pend) if pend else None}
+    return out
+
+
+def _sync_channel(db, provider_name, rest, env, ch, via, now, c):
+    """Fetch one channel's window page by page. The completion watermark advances to the window's target
+    (the clock when the window was opened) only after a short page; a truncated or failed window keeps the
+    old watermark and stores where to continue, so the next sync resumes at that page of the SAME window
+    (offset paging: items sharing one update time across a page boundary are not skipped)."""
+    overlap = int(env.get("NEWS_OVERLAP_SECONDS", "300")); max_pages = int(env.get("NEWS_MAX_PAGES", "20"))
+    size = int(env.get(f"NEWS_PAGE_SIZE_{ch.upper()}", CHANNEL_PAGE_SIZE[ch]))
+    st = sync_state(db, provider_name)[ch]
+    if st["pending"]:
+        since, target, page = st["pending"]["since"], st["pending"]["target"], st["pending"]["next_page"]
+    else:
+        since = int(st["done"]) - overlap if st["done"] is not None else int(now - 60 * int(env.get("NEWS_BACKFILL_MINUTES", "120")))
+        target, page = now, 0
+    first_window = st["done"] is None
+    pending_key = f"{provider_name}:{ch}:pending"
+    for _ in range(max_pages):
+        try:
+            items, n_raw = rest.fetch_page(ch, since, page, size)
+        except Exception:
+            _cursor(db, pending_key, json.dumps({"since": since, "target": target, "next_page": page, "reason": "error"}))
+            raise
+        got = _apply_all(db, provider_name, items, via=("backfill" if first_window and ch == "articles" else ("removed_poll" if ch == "removed" else via)), online=False)
+        for k, v in got.items():
+            c[k] = c.get(k, 0) + v
+        page += 1
+        if n_raw < size:  # window complete
+            _cursor(db, f"{provider_name}:{ch}:done", target)
+            db.execute("DELETE FROM cursors WHERE name=?", (pending_key,)); db.commit()
+            return False
+    _cursor(db, pending_key, json.dumps({"since": since, "target": target, "next_page": page, "reason": "max_pages"}))
+    return True
+
+
 def benzinga_rest_sync(db, provider_name, rest, env, via):
     """Incremental REST sync on the provider's UPDATE time (updatedSince, paged, oldest first) plus removals
-    (/news-removed). The cursor is the server clock at the start of the last successful sync minus an overlap,
-    so late-indexed updates are not skipped; duplicates are absorbed by the store. First run = bounded backfill."""
-    overlap = int(env.get("NEWS_OVERLAP_SECONDS", "300")); max_pages = int(env.get("NEWS_MAX_PAGES", "20"))
-    started = time.time()
-    cur = _cursor(db, f"{provider_name}:updated_since")
-    first = cur is None
-    since = int(float(cur)) - overlap if cur else int(started - 60 * int(env.get("NEWS_BACKFILL_MINUTES", "120")))
-    items, trunc = rest.updated_since(since, max_pages=max_pages)
-    removed, trunc_r = rest.removed_since(since)
-    c = _apply_all(db, provider_name, items, via="backfill" if first else via, online=False)
-    c2 = _apply_all(db, provider_name, removed, via="removed_poll", online=False)
-    for k, v in c2.items():
-        c[k] += v
-    c["rest_pages_truncated"] = int(trunc or trunc_r); c["first_sync"] = int(first)
-    _cursor(db, f"{provider_name}:updated_since", started)
+    (/news-removed), each channel with its own completion watermark and continuation (see _sync_channel).
+    Duplicates from the overlap are absorbed by the store. First window = bounded backfill."""
+    now = time.time()
+    c = {"messages": 0, "news_new": 0, "news_versions": 0, "duplicates": 0, "tombstones": 0}
+    first = sync_state(db, provider_name)["articles"]["done"] is None
+    trunc = {}
+    for ch in CHANNEL_PAGE_SIZE:
+        trunc[ch] = _sync_channel(db, provider_name, rest, env, ch, via, now, c)
+    c["rest_pages_truncated"] = int(any(trunc.values())); c["first_sync"] = int(first)
     return c
 
 

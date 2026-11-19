@@ -142,6 +142,8 @@
         ['最近错误', p.last_error_class ? `${p.last_error_class} · ${t(p.last_error_at, true)}` : '无']);
       const lags = (data.items || []).filter(i => i.provider === c.provider && i.provider_created_at && i.first_online_seen_at)
         .slice(0, 50).map(i => (Date.parse(i.first_online_seen_at) - Date.parse(i.provider_created_at)) / 1000).filter(Number.isFinite).sort((a, b) => a - b);
+      for (const g of data.gap_fill?.channels || []) rows.push([`REST 补漏（${g.channel === 'articles' ? '文章' : g.channel === 'removed' ? '删除' : g.channel}）`,
+        `已完整覆盖至 ${t(g.complete_through_utc, true)}${g.unfinished_window ? ` · 有未完成窗口，下次从第 ${g.unfinished_window.next_page + 1} 页续传（${g.unfinished_window.reason}）` : ''}`]);
       if (lags.length) rows.push(['发布→首次在线收到（近 ' + lags.length + ' 条，中位）', `${lags[Math.floor(lags.length / 2)].toFixed(1)} 秒 · 不是事件发生后的总延迟`]);
     }
     const box = h('div');

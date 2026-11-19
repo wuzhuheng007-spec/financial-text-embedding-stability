@@ -18,6 +18,9 @@ Deletions (stream action deleted, REST /news-removed) use the provider's removal
   D3 content whose provider update time is strictly later than the removal time is treated as the provider
      publishing it again: the item is restored (RESTORED) and that content becomes current
   D4 repeated deletions keep the latest removal time
+  D5 a deletion whose removal time is not later than the provider update time of the currently VISIBLE
+     content (e.g. an old removal replayed after a republish) is kept as a tombstone record but does not
+     hide that content (STALE_TOMBSTONE)
 """
 from __future__ import annotations
 
@@ -104,7 +107,7 @@ def _ts(v):
 
 def apply(db, n: dict, *, provider: str, via: str, received_at: str, online: bool = True) -> str:
     """Store one normalized message under rules R1-R5 / D1-D4 (module docstring). Returns NEW | NEW_VERSION |
-    HISTORY_VERSION | CONFLICT_KEPT | DUPLICATE | TOMBSTONE | STALE_AFTER_DELETE | RESTORED."""
+    HISTORY_VERSION | CONFLICT_KEPT | DUPLICATE | TOMBSTONE | STALE_TOMBSTONE | STALE_AFTER_DELETE | RESTORED."""
     key = (n["upstream"], str(n["upstream_id"]))
     raw = json.dumps(n.get("raw"), ensure_ascii=False, default=str)
     row = db.execute("SELECT latest_version, deleted, deleted_provider_at, versions_n FROM items WHERE upstream=? AND upstream_id=?", key).fetchone()
@@ -115,6 +118,13 @@ def apply(db, n: dict, *, provider: str, via: str, received_at: str, online: boo
             db.execute("""INSERT INTO items(upstream,upstream_id,first_seen_at,first_seen_via,first_online_seen_at,latest_version,deleted,deleted_at,
                           deleted_provider_at,versions_n) VALUES(?,?,?,?,NULL,0,1,?,?,0)""", (*key, received_at, via, received_at, removed_at))
         else:
+            if not row["deleted"] and row["latest_version"]:
+                cur = db.execute("SELECT provider_updated_at FROM versions WHERE upstream=? AND upstream_id=? AND version=?",
+                                 (*key, row["latest_version"])).fetchone()
+                cur_t, rem_t = _ts(cur[0]) if cur else None, _ts(removed_at)
+                if cur_t is not None and rem_t is not None and rem_t <= cur_t:  # D5
+                    db.execute("UPDATE items SET receipts=receipts+1 WHERE upstream=? AND upstream_id=?", key)
+                    db.commit(); return "STALE_TOMBSTONE"
             prev = _ts(row["deleted_provider_at"])
             keep = removed_at if prev is None or (_ts(removed_at) or prev) >= prev else row["deleted_provider_at"]  # D4
             db.execute("UPDATE items SET deleted=1, deleted_at=COALESCE(deleted_at, ?), deleted_provider_at=?, receipts=receipts+1 WHERE upstream=? AND upstream_id=?",
@@ -182,6 +192,27 @@ def set_state(db, provider: str, state: str, *, detail: str | None = None, error
     sets = ", ".join(f"{k}=?" for k in stamp)
     db.execute(f"UPDATE provider_state SET {sets} WHERE provider=?", (*stamp.values(), provider))
     db.commit()
+
+
+def read_sync_state(path: Path | None = None) -> dict:
+    """Read-only: REST gap-fill completion watermarks and unfinished windows per provider/channel."""
+    path = path or db_path()
+    if not path.is_file():
+        return {"state": "NOT_STARTED", "channels": []}
+    with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE name='cursors'").fetchone():
+            return {"state": "NO_REST_SYNC_YET", "channels": []}
+        rows = db.execute("SELECT name, value, updated_at FROM cursors ORDER BY name").fetchall()
+    chans = {}
+    for name, value, updated in rows:
+        parts = name.split(":")
+        prov, ch, kind = (parts[0], "articles", "done") if parts[-1] == "updated_since" else (parts[0], parts[1], parts[2]) if len(parts) == 3 else (parts[0], "?", "?")
+        c = chans.setdefault((prov, ch), {"provider": prov, "channel": ch, "complete_through_utc": None, "unfinished_window": None})
+        if kind == "done":
+            c["complete_through_utc"] = datetime.fromtimestamp(float(value), timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"); c["updated_at"] = updated
+        elif kind == "pending":
+            c["unfinished_window"] = json.loads(value)
+    return {"state": "READY", "channels": list(chans.values())}
 
 
 def read_for_portal(limit: int = 200, path: Path | None = None) -> dict:

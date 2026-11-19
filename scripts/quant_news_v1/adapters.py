@@ -224,6 +224,23 @@ class BenzingaRest:
                 return []
             raise
 
+    def fetch_page(self, channel: str, since_epoch: int, page: int, page_size: int) -> tuple[list[dict], int]:
+        """One page of a channel ('articles' = /news by update time ascending, 'removed' = /news-removed).
+        Returns (normalized items, raw row count of the page); a short page means the window is complete."""
+        if channel == "articles":
+            data = self._get("/api/v2/news", {"updatedSince": str(int(since_epoch)), "sort": "updated:asc", "displayOutput": "full",
+                                              "pageSize": str(page_size), "page": str(page)})
+            if isinstance(data, dict):
+                raise ProviderError("HTTP_ERROR", f"error object: {json.dumps(data)[:200]}")
+            return [normalize_benzinga_rest(r) for r in data or []], len(data or [])
+        if channel == "removed":
+            data = self._get("/api/v2/news-removed", {"updatedSince": str(int(since_epoch)), "pageSize": str(page_size), "page": str(page)})
+            rows = [r for v in (data.values() if isinstance(data, dict) else [data]) if isinstance(v, list) for r in v]
+            return [{"upstream": "benzinga", "upstream_id": str(r.get("id")), "message_id": None, "action": "deleted",
+                     "provider_updated_at": to_utc(r.get("updated")), "provider_created_at": None, "symbols": [], "channels": [], "raw": r}
+                    for r in rows if r.get("id") is not None], len(rows)
+        raise ValueError(channel)
+
     def updated_since(self, since_epoch: int, max_pages: int = 20, page_size: int = 100) -> tuple[list[dict], bool]:
         """Every article UPDATED (not only created) since since_epoch, oldest update first, paged.
         Returns (items, truncated): truncated=True when max_pages was reached before a short page."""

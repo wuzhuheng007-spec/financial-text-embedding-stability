@@ -187,7 +187,7 @@ class BenzingaRestAndRedactionTests(Base):
             kind = "REST_POLL"
             def updated_since(self, *a, **kw):
                 calls.append(1); raise adapters.ProviderError("AUTH_FAILED", "HTTP 401")
-            fetch = removed_since = updated_since
+            fetch = removed_since = fetch_page = updated_since
         with mock.patch.object(collector, "build", return_value=P()):
             self.assertEqual(collector.run("benzinga_rest", max_seconds=3), 0)
         self.assertEqual(len(calls), 1)
@@ -273,7 +273,7 @@ class RestSyncTests(Base):
         self.assertTrue(all(x[3] == "updated:asc" and x[1] for x in news))  # by UPDATE time, not creation
         self.assertEqual((c["news_new"], c["tombstones"], c["rest_pages_truncated"]), (150, 1, 0))
         self.assertEqual(self.db.execute("select deleted from items where upstream_id='2'").fetchone()[0], 1)
-        cur1 = float(collector._cursor(self.db, "benzinga_rest:updated_since"))
+        cur1 = float(collector._cursor(self.db, "benzinga_rest:articles:done"))
         seen.clear()
         with mock.patch.object(adapters, "http_json", side_effect=fake):
             c = collector.benzinga_rest_sync(self.db, "benzinga_rest", rest, {"NEWS_OVERLAP_SECONDS": "300"}, via="rest_poll")
@@ -468,6 +468,138 @@ class RebuildTests(Base):
         self.assertIsNone(self.db.execute("select first_online_seen_at from items where upstream_id='5'").fetchone()[0])
         self.assertEqual(self.db.execute("select state from provider_state").fetchone()[0], "RECEIVING")
         old = sqlite3.connect(src.parent / "n.pre_idfix_test.sqlite3"); self.assertEqual(old.execute("select count(*) from items").fetchone()[0], 3); old.close()
+
+
+class PagingWatermarkTests(Base):
+    """Truncated / failed windows must not advance the completion watermark; the next sync resumes the tail."""
+    T0500, T0630 = 1795064400, 1795069800  # 2026-11-19T05:00:00Z, 06:30:00Z (epoch)
+
+    class Server:
+        def __init__(self, articles=0, removed=0, same_time=False, fail_page=None):
+            self.articles = [{"id": 1000 + i, "title": f"t{i}", "created": "Thu, 19 Nov 2026 00:00:00 -0500",
+                              "updated": "Thu, 19 Nov 2026 00:10:00 -0500" if same_time else f"Thu, 19 Nov 2026 00:{10 + i // 60:02d}:{i % 60:02d} -0500",
+                              "url": f"https://www.benzinga.com/{1000 + i}"} for i in range(articles)]
+            self.removed = [{"id": 5000 + i, "updated": "Thu, 19 Nov 2026 00:20:00 -0500"} for i in range(removed)]
+            self.calls = []; self.fail_page = fail_page
+
+        def fetch_page(self, ch, since, page, size):
+            self.calls.append((ch, since, page, size))
+            if self.fail_page == (ch, page):
+                self.fail_page = None
+                raise adapters.ProviderError("NETWORK_TIMEOUT", "timeout")
+            rows = (self.articles if ch == "articles" else self.removed)[page * size:(page + 1) * size]
+            if ch == "articles":
+                return [adapters.normalize_benzinga_rest(r) for r in rows], len(rows)
+            return [{"upstream": "benzinga", "upstream_id": str(r["id"]), "message_id": None, "action": "deleted",
+                     "provider_updated_at": adapters.to_utc(r["updated"]), "provider_created_at": None, "symbols": [], "channels": [], "raw": r}
+                    for r in rows], len(rows)
+
+    def sync(self, srv, clock, env=None):
+        from unittest import mock
+        from scripts.quant_news_v1 import collector
+        e = {"NEWS_MAX_PAGES": "1", "NEWS_OVERLAP_SECONDS": "300", **(env or {})}
+        with mock.patch.object(collector.time, "time", return_value=clock):
+            return collector.benzinga_rest_sync(self.db, "benzinga_rest", srv, e, via="rest_poll")
+
+    def state(self):
+        from scripts.quant_news_v1 import collector
+        return collector.sync_state(self.db, "benzinga_rest")
+
+    def seed_done(self, epoch):
+        from scripts.quant_news_v1 import collector
+        for ch in ("articles", "removed"):
+            collector._cursor(self.db, f"benzinga_rest:{ch}:done", epoch)
+
+    def test_101_items_page_100_max_pages_1(self):
+        srv = self.Server(articles=101); self.seed_done(self.T0500)
+        c = self.sync(srv, self.T0630)
+        st = self.state()["articles"]
+        self.assertEqual(c["rest_pages_truncated"], 1)
+        self.assertEqual(st["done"], self.T0500)  # NOT moved to 06:30
+        self.assertEqual(st["pending"], {"since": self.T0500 - 300, "target": self.T0630, "next_page": 1, "reason": "max_pages"})
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 100)
+        self.sync(srv, self.T0630 + 600)  # resumes page 1 of the SAME window, not page 0
+        self.assertEqual([x[:3] for x in srv.calls if x[0] == "articles"][-1], ("articles", self.T0500 - 300, 1))
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 101)
+        st = self.state()["articles"]
+        self.assertEqual((st["done"], st["pending"]), (self.T0630, None))  # watermark = target of the finished window
+        self.sync(srv, self.T0630 + 1200)
+        self.assertEqual([x[:3] for x in srv.calls if x[0] == "articles"][-1], ("articles", self.T0630 - 300, 0))
+
+    def test_removed_channel_truncation(self):
+        srv = self.Server(articles=0, removed=3); self.seed_done(self.T0500)
+        self.sync(srv, self.T0630, {"NEWS_PAGE_SIZE_REMOVED": "2"})
+        st = self.state()["removed"]
+        self.assertEqual((st["done"], st["pending"]["next_page"]), (self.T0500, 1))
+        self.sync(srv, self.T0630 + 60, {"NEWS_PAGE_SIZE_REMOVED": "2"})
+        self.assertEqual(self.db.execute("select count(*) from tombstones").fetchone()[0], 3)
+        self.assertEqual(self.state()["removed"]["done"], self.T0630)
+
+    def test_failure_mid_window_keeps_watermark_and_resumes(self):
+        srv = self.Server(articles=150, fail_page=("articles", 1)); self.seed_done(self.T0500)
+        with self.assertRaises(adapters.ProviderError):
+            self.sync(srv, self.T0630, {"NEWS_MAX_PAGES": "5"})
+        st = self.state()["articles"]
+        self.assertEqual((st["done"], st["pending"]["next_page"], st["pending"]["reason"]), (self.T0500, 1, "error"))
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 100)  # page 0 kept
+        self.sync(srv, self.T0630 + 60, {"NEWS_MAX_PAGES": "5"})
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 150)
+        self.assertEqual(self.state()["articles"]["done"], self.T0630)
+
+    def test_same_update_time_across_page_boundary(self):
+        srv = self.Server(articles=101, same_time=True); self.seed_done(self.T0500)
+        self.sync(srv, self.T0630); self.sync(srv, self.T0630 + 60)
+        self.assertEqual(self.db.execute("select count(*) from items").fetchone()[0], 101)
+
+
+class DeleteReorderTests(Base):
+    def art(self, updated, title, action="created"):
+        return {"upstream": "benzinga", "upstream_id": "88", "message_id": None, "action": action, "title": title, "teaser": None, "body": "b",
+                "url": "https://www.benzinga.com/88", "source": "Benzinga", "authors": None, "symbols": ["MU"], "channels": [],
+                "provider_created_at": "2026-11-19T05:00:00Z", "provider_updated_at": updated, "raw": {}}
+
+    def visible(self):
+        r = [i for i in store.read_for_portal()["items"] if i["upstream_id"] == "88"]
+        return (r[0]["title"], r[0]["deleted"]) if r else None
+
+    def test_old_delete_replayed_after_republish_does_not_hide(self):
+        ap = lambda n, t: store.apply(self.db, n, provider="benzinga_stream", via="stream", received_at=t)
+        self.assertEqual(ap(self.art("2026-11-19T05:00:00Z", "v1"), "2026-11-19T05:00:01Z"), "NEW")
+        self.assertEqual(ap(self.art("2026-11-19T05:10:00Z", None, "deleted"), "2026-11-19T05:10:01Z"), "TOMBSTONE")
+        self.assertEqual(self.visible(), ("v1", 1))
+        self.assertEqual(ap(self.art("2026-11-19T05:20:00Z", "v2 republished"), "2026-11-19T05:20:01Z"), "RESTORED")
+        self.assertEqual(self.visible(), ("v2 republished", 0))
+        self.assertEqual(ap(self.art("2026-11-19T05:10:00Z", None, "deleted"), "2026-11-19T05:25:00Z"), "STALE_TOMBSTONE")  # replay
+        self.assertEqual(self.visible(), ("v2 republished", 0))
+        self.assertEqual(self.db.execute("select count(*) from tombstones").fetchone()[0], 2)  # replay kept as history
+        self.assertEqual(ap(self.art("2026-11-19T05:30:00Z", None, "deleted"), "2026-11-19T05:30:01Z"), "TOMBSTONE")  # genuinely newer
+        self.assertEqual(self.visible(), ("v2 republished", 1))
+
+    def test_delete_then_old_backfill_still_cannot_resurrect(self):
+        ap = lambda n, t, v="stream": store.apply(self.db, n, provider="benzinga_rest", via=v, received_at=t, online=False)
+        ap(self.art("2026-11-19T05:00:00Z", "v1"), "2026-11-19T05:00:01Z")
+        ap(self.art("2026-11-19T05:10:00Z", None, "deleted"), "2026-11-19T05:10:01Z", "removed_poll")
+        self.assertEqual(ap(self.art("2026-11-19T05:00:00Z", "v1 old copy"), "2026-11-19T05:11:00Z", "backfill"), "STALE_AFTER_DELETE")
+        self.assertEqual(self.visible(), ("v1", 1))
+
+
+class BackupRestoreCheckTests(Base):
+    def test_fixed_copy_restore_reconciles_and_detects_tampering(self):
+        import sqlite3
+        from pathlib import Path
+        from scripts.quant_news_v1 import backup_check
+        store.apply(self.db, adapters.normalize_benzinga(BZ_CREATED), provider="benzinga_stream", via="stream", received_at="2026-11-19T13:35:15Z")
+        store.set_state(self.db, "benzinga_stream", "RECEIVING", detail="x")
+        src = Path(os.environ["QUANT_NEWS_DB"]); fixed = src.with_name("fixed.sqlite3")
+        d = sqlite3.connect(fixed); self.db.backup(d); d.close()
+        r = backup_check.restore_check(fixed, src.parent / "restore")
+        self.assertTrue(r["ok"], r["problems"]); self.assertEqual(r["integrity_check"], ["ok"])
+        self.assertTrue(all(v["restored_equal"] for v in r["tables"].values()))
+        self.assertEqual((r["semantic"]["items"], r["semantic"]["versions"]), (1, 1))
+        with self.assertRaises(FileExistsError):  # never overwrites an existing restore directory
+            backup_check.restore_check(fixed, src.parent / "restore")
+        con = sqlite3.connect(src.parent / "restore" / "fixed.sqlite3"); con.execute("UPDATE versions SET title='tampered'"); con.commit(); con.close()
+        self.assertNotEqual(backup_check.digest(src.parent / "restore" / "fixed.sqlite3")["tables"]["versions"]["sha256"], r["tables"]["versions"]["sha256"])
 
 
 if __name__ == "__main__":

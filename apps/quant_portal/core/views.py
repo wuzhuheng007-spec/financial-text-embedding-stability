@@ -701,6 +701,15 @@ def news_json(request):
         else:
             label, kind = f"新闻源异常（{st}）", "down"
     data["connection"] = {"label": label, "kind": kind, "provider": prov["provider"] if prov else None}
+    # Separate facts: online connection (above), latest receipt, and gap-fill completeness per REST channel.
+    data["receipt"] = {"last_message_at": prov.get("last_message_at") if prov else None, "last_news_at": prov.get("last_news_at") if prov else None}
+    try:
+        from scripts.quant_news_v1.store import read_sync_state
+        data["gap_fill"] = read_sync_state()
+    except Exception as exc:  # noqa: BLE001 - diagnostics only
+        data["gap_fill"] = {"state": "UNREADABLE", "error_class": type(exc).__name__}
+    # A live source is not a historical research panel: text research stays blocked until a panel qualifies.
+    data["historical_news_panel_ready"] = False
     try:
         data["sources"] = json.loads((REPO_ROOT / "configs/quant_news_sources_v1.json").read_text(encoding="utf-8"))["providers"]
     except (OSError, ValueError, KeyError):
