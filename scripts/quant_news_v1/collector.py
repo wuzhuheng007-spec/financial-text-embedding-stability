@@ -75,7 +75,9 @@ def _run(db, provider_name: str, max_seconds: float | None) -> int:
         provider = build(provider_name, env)
     except ProviderError as e:
         store.set_state(db, provider_name, e.error_class, detail=e.detail, error_class=e.error_class); print(e); return 2
-    backoff, had_connection = 5.0, False
+    backoff = 5.0
+    # A restart after downtime is a gap like any reconnect: if this cache already synced before, recover.
+    had_connection = _cursor(db, f"{provider_name}:updated_since") is not None
     try:
         while deadline is None or time.monotonic() < deadline:
             try:
