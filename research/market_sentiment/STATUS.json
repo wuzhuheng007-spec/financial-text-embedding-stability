@@ -3,7 +3,7 @@
   "project": "medium_term_market_sentiment",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/personal-cloud-ui-20261118",
-  "latest_step_id": "R014",
+  "latest_step_id": "R016",
   "price_baseline": "EXECUTED_DESCRIPTIVE_SELF_CHECKED",
   "bw_availability_audit": "SOURCE_AND_CONSTRUCTION_AUDIT_EXECUTED_PIT_NOT_QUALIFIED",
   "news_increment_evaluation": "NOT_RUN_IN_THIS_STUDY",
@@ -13,13 +13,14 @@
   "sync_checkpoint": "See Git commit history and sync receipts; no self-referential current commit claim",
   "bw_raw_pc1_comparison": "EXECUTED_CURRENT_VINTAGE_ONLY",
   "official_news_field_pilot": "THREE_EVENTS_METADATA_ONLY",
-  "last_confirmed_remote_checkpoint": "c65fe9259fe633350ab403d3cc185b5a31ed9851",
-  "next": "Acquire China-local sentiment/financing and true news timing/expectations with original vintages; separately freeze next validation",
+  "last_confirmed_remote_checkpoint": "f2ce5829e6c75a7980c21c90c8734373a6264dd6",
+  "next": "Build first-availability/expectations event panel and China-local historical breadth; freeze new tests only after genuine inputs",
   "phase3": "EVENT_ATLAS_AND_FIXED_PROXY_DIAGNOSTICS_EXECUTED_SELF_CHECKED_CURRENT_VINTAGE",
   "all_events_claim": "Only fixed-rule census within accepted coverage; not complete causal news explanations",
   "market_sentiment_predictive_factor": "NOT_ESTABLISHED",
   "official_event_universe": "238_FED_STATEMENT_URLS_METADATA_ONLY",
   "phase3_publication": "REMOTE_READBACK_VERIFIED",
   "historical_images_review": "PARTIAL_FACT_AUDIT_HYPOTHESES_ONLY",
-  "phase4": "FROZEN_NOT_YET_ANALYZED"
+  "phase4": "EXECUTED_SELF_CHECKED_CURRENT_VINTAGE",
+  "phase4_factor_efficacy": "NOT_ESTABLISHED"
 }

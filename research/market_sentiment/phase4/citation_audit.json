@@ -1,0 +1,73 @@
+[
+  {
+    "key": "NDXE_FRED",
+    "title": "NASDAQ-100 Equal Weighted (NASDAQNDXE)",
+    "author": "Nasdaq, Inc., distributed by FRED",
+    "url": "https://fred.stlouisfed.org/series/NASDAQNDXE",
+    "reference": "turn246397381view0",
+    "support": "Series identity, source, daily units and copyright; not psychological sentiment",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "NDX_FRED",
+    "title": "NASDAQ-100 (NASDAQ100)",
+    "author": "Nasdaq, Inc., distributed by FRED",
+    "url": "https://fred.stlouisfed.org/series/NASDAQ100",
+    "reference": "turn246397381view1",
+    "support": "Daily index close and identity; not Nasdaq Composite or QQQ",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "TIPS",
+    "title": "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed",
+    "author": "Board of Governors; distributed by FRED",
+    "url": "https://fred.stlouisfed.org/series/DFII10",
+    "reference": "turn246397381view2",
+    "support": "TIPS constant-maturity yield identity and percent units; not complete equity discount rate",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "NDXE_OVERVIEW",
+    "title": "Overview for NDXE",
+    "author": "Nasdaq",
+    "url": "https://indexes.nasdaqomx.com/index/Overview/NDXE",
+    "reference": "turn675117247view0",
+    "support": "Same Nasdaq100 securities, equal weighting design, inception/base date June20 2005; not all-market advancing-share count",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "NDXE_METHOD",
+    "title": "Nasdaq-100 Equal Weighted Index Methodology",
+    "author": "Nasdaq, Inc.",
+    "year": 2026,
+    "url": "https://indexes.nasdaqomx.com/docs/methodology_NDXE.pdf",
+    "reference": "turn992915522view0",
+    "support": "Equal issuer weighting, quarterly rebalance; 2026-05-01 reference-date and replacement changes; current method not automatically historical constant method",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "CBOE_ARCHIVE",
+    "title": "Historical Data - Cboe Volume & Put/Call Ratios",
+    "author": "Cboe",
+    "url": "https://www.cboe.com/us/options/market_statistics/historical_data/",
+    "reference": "turn675117247view3",
+    "support": "Listed recent historical file range ends2019; not proof newer daily records cannot be collected",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  },
+  {
+    "key": "SSE_YEAR",
+    "title": "股票成交概况 / 年度股票情况",
+    "author": "上海证券交易所",
+    "url": "https://www.sse.com.cn/market/stockdata/overview/yearly/",
+    "reference": "turn271786382view0",
+    "support": "Official annual overview landing page; does not establish complete daily historical constituent breadth availability",
+    "primary_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT_ONLY"
+  }
+]

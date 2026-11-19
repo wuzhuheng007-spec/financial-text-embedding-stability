@@ -211,3 +211,31 @@
 **限制：** 等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。
 
 证据：[phase4/PLAN_zh.md](phase4/PLAN_zh.md)、[phase4/config.json](phase4/config.json)、[phase4/freeze_receipt.json](phase4/freeze_receipt.json)、[phase4/input_manifest.json](phase4/input_manifest.json)
+
+## R015 · 参与结构与实际利率全比较实际执行
+
+**状态：** EXECUTED_CURRENT_VINTAGE_LIMITED_DIAGNOSTIC；记录UTC：2026-11-19T03:21:30.904119+00:00
+
+**计划：** 按R014冻结规则计算新增代理、状态关联与强基线增量检验，保存全部敏感性和失败样本。
+
+**实际：** 完成1200个拟合和70082行预测，覆盖两个alpha、三个期限、所有预定市场；等权/市值源的两个单边不一致日期拆成三段，禁止补价；保存360行模型汇总、318行对照、180行状态汇总及60行状态对照。
+
+**结论：** 固定规则内QQQ/SOX缩窄队列未来均值较低，但多重比较后未建立稳健效应；强基线之外没有确立新增模块的预测改善。
+
+**限制：** 当前版本，纳指内部结构代理，不是完整广度或心理情绪；中国仅外部环境；独立危机数有限；一个确定性模型族。
+
+证据：[phase4/analyze.py](phase4/analyze.py)、[phase4/results/run_manifest.json](phase4/results/run_manifest.json)、[phase4/results/coverage.json](phase4/results/coverage.json)、[phase4/results/model_coverage.csv](phase4/results/model_coverage.csv)、[phase4/results/model_summary.csv](phase4/results/model_summary.csv)、[phase4/results/model_contrasts.csv](phase4/results/model_contrasts.csv)、[phase4/results/state_summary.csv](phase4/results/state_summary.csv)、[phase4/results/state_contrasts.csv](phase4/results/state_contrasts.csv)
+
+## R016 · 原始输入复核与第四阶段结果报告
+
+**状态：** PARTIALLY_SUPPORTED_SAME_AUTHOR_SELF_CHECKED；记录UTC：2026-11-19T03:21:30.905962+00:00
+
+**计划：** 从源重算代理及日期，重拟合全部模型，核对所有汇总；记录新结论边界和未取得数据。
+
+**实际：** 核对23749行前阶段输入保持不变、47498个来源日期、118745个新特征、68993个未来路径最小值；增广系统重拟合1200个模型，核对280328个预测单元及全部汇总；完整报告和7条一手来源审核已保存，24个主展示结果单元另与原表核对。
+
+**结论：** 数据及结果在本轮口径下可追溯；未形成可靠反转标准，未开展新闻预期差效力检验。
+
+**限制：** 独立复核和PIT版本未取得；A股本土广度、新闻首次时间/市场预期和历史盈利预测仍缺。
+
+证据：[phase4/check.py](phase4/check.py)、[phase4/results/self_check.json](phase4/results/self_check.json)、[phase4/Phase4_Participation_Real_Rates_Report_zh.md](phase4/Phase4_Participation_Real_Rates_Report_zh.md)、[phase4/results/display_cells.json](phase4/results/display_cells.json)、[phase4/citation_audit.json](phase4/citation_audit.json)、[phase4/evidence_ledger.json](phase4/evidence_ledger.json)、[phase4/AUDIT_FINAL.json](phase4/AUDIT_FINAL.json)

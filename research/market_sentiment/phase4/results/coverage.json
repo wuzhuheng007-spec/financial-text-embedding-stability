@@ -1,0 +1,44 @@
+{
+  "markets": [
+    {
+      "symbol": "US.QQQ",
+      "parent_rows": 6967,
+      "new_complete_features": 5200,
+      "first_complete": "2005-09-26",
+      "last_complete": "2026-11-17"
+    },
+    {
+      "symbol": "US..SOX",
+      "parent_rows": 7764,
+      "new_complete_features": 4948,
+      "first_complete": "2005-09-26",
+      "last_complete": "2026-11-17"
+    },
+    {
+      "symbol": "SH.000001",
+      "parent_rows": 7486,
+      "new_complete_features": 5018,
+      "first_complete": "2005-09-26",
+      "last_complete": "2026-11-17"
+    },
+    {
+      "symbol": "SH.000688",
+      "parent_rows": 1532,
+      "new_complete_features": 1281,
+      "first_complete": "2021-08-03",
+      "last_complete": "2026-11-17"
+    }
+  ],
+  "source_pair": {
+    "pair_first": "2005-06-28",
+    "pair_last": "2026-11-17",
+    "pair_rows": 5381,
+    "pair_segments": 3,
+    "asymmetric_source_dates": [
+      "2008-11-14",
+      "2019-04-19"
+    ],
+    "NDXE_first": "2005-06-28",
+    "real_first": "2003-01-02"
+  }
+}
