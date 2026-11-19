@@ -182,14 +182,19 @@
   });
 
   // ---------- results ----------
+  // Status vocabulary stays separate: software / mechanical check / data timing / return screen / replication scope.
+  // Engineering success never reads as "strategy works"; the return-screen verdict is shown as it is.
+  const SCOPE_ZH = s => /^same frozen program and same input/.test(s || '') ? '同一冻结程序、同一输入的工程复算，不是独立验证'
+    : /different input version|external mode/.test(s || '') ? '同一冻结程序、不同输入版本（external），不是未见数据' : (s ? '见技术详情' : '');
+  const MECH_ZH = m => !m ? '未记录' : /^PASS/.test(m) || /RECONCILED|TOLERANCE/.test(m) ? '通过' : /INCOMPLETE/.test(m) ? '缺参考，未完成' : /FAIL/.test(m) ? '未通过' : m;
   function gradeChips(g, sw) {
     const box = h('div', 'rw-status');
     box.append(chip(`软件：${sw}`, 'tag-dim'));
     if (g) {
-      box.append(chip(`机械复核：${/PASS|RECONCILED|TOLERANCE/.test(g.mechanical_check) ? '通过' : g.mechanical_check}`, 'tag-dim'),
+      box.append(chip(`机械复核：${MECH_ZH(g.mechanical_check)}`, 'tag-dim'),
         chip(g.data_pit_eligibility === 'CURRENT_VINTAGE_NOT_POINT_IN_TIME' ? '数据：当前版本回填，非时点' : `数据：${g.data_pit_eligibility}`, 'tag-dim'),
         chip(`收益筛选：${SCI[g.scientific_status] || g.scientific_status}`, 'tag-dim'));
-      box.append(h('div', 'fine-print rw-grade-note', `复制范围：${g.replication_scope}`));
+      if (SCOPE_ZH(g.replication_scope)) box.append(h('div', 'fine-print rw-grade-note', `复制范围：${SCOPE_ZH(g.replication_scope)}`));
     }
     return box;
   }
@@ -212,41 +217,149 @@
   const MKT = {'US.QQQ': 'QQQ', 'US..SOX': 'SOX', 'SH.000001': '上证综指', 'SH.000688': '科创50'};
   const STRAT = ['BUY_HOLD', 'MA200', 'P1_TREND', 'P2_RECOVERY', 'P3_RISK_BUDGET'];
   const STRAT_ZH = {BUY_HOLD: '买入持有', MA200: 'MA200 基准', P1_TREND: 'P1 趋势', P2_RECOVERY: 'P2 修复', P3_RISK_BUDGET: 'P3 波动预算'};
-  function phase5Tables(metrics, tests, cost) {
-    const out = [];
-    const t = h('table', 'official-table'); const hr = h('tr'); ['市场', '策略', '年化（自然时间）', '最大回撤', '平均暴露', '累计费用', 'Sharpe（描述）'].forEach(x => hr.append(h('th', null, x))); t.append(hr);
+  const COSTS = ['0', '10', '25'];
+  const P5KEY = 'quant.rw.p5sel';
+  const p5sel = () => { let v = {}; try { v = JSON.parse(store.get(P5KEY) || '{}') || {}; } catch (_) { v = {}; }
+    return {mkt: MKT[v.mkt] ? v.mkt : 'US.QQQ', cost: COSTS.includes(v.cost) ? v.cost : '10'}; };
+  const isPass = c => String(c.first_screen_return_increment_pass ?? c.pass) === 'True' || c.first_screen_return_increment_pass === true;
+  // Segmented single choice: buttons with aria-pressed; Left/Right/Home/End move the choice and the focus.
+  function segPick(label, items, current, onPick) {
+    const g = h('div', 'seg'); g.setAttribute('role', 'group'); g.setAttribute('aria-label', label);
+    const btns = items.map(([val, text]) => { const b = h('button', null, text); b.type = 'button'; b.dataset.val = val; b.setAttribute('aria-pressed', String(val === current));
+      b.onclick = () => onPick(val); return b; });
+    g.addEventListener('keydown', e => {
+      const i = btns.findIndex(b => b === document.activeElement); if (i < 0) return;
+      const j = {ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: btns.length - 1}[e.key]; if (j == null) return;
+      e.preventDefault(); const k = (j + btns.length) % btns.length; onPick(btns[k].dataset.val, true);
+    });
+    g.append(...btns); return g;
+  }
+  function verdictBlock(sci, passes, total, mechText, mechLayers) {
+    const box = h('div', 'rw-summary'); box.setAttribute('role', 'note');
+    const v = h('p', 'rw-verdict', SCI[sci] || sci || '未评价');
+    const sub = h('p', 'rw-verdict-sub', total ? `${total} 项主检验 ${passes} 项通过（P1–P3 相对 MA200，单边 10 bps，Holm 校正）` : '没有主检验结果');
+    const ul = h('ul');
+    ul.append(h('li', null, `机械复核：${mechText}${mechLayers ? `（${mechLayers}）` : ''}。这只说明计算可复现，不说明策略有效。`),
+      h('li', null, '数据为当前版本回填、非时点；QQQ 为 ETF，其余三个为指数代理；历史已看过，不是未见样本。'));
+    box.append(v, sub, ul); return box;
+  }
+  function metricCards(metrics, tests, mkt, cost) {
+    const wrap = h('div', 'rw-mcards');
+    for (const st of STRAT) {
+      const m = metrics.find(x => x.symbol === mkt && x.strategy === st && String(x.cost_bps) === String(cost));
+      const c = h('article', 'rw-mcard'); c.append(h('h4', null, STRAT_ZH[st]));
+      if (!m) { c.append(h('p', 'fine-print', '无已执行区间')); wrap.append(c); continue; }
+      const dl = h('dl');
+      for (const [k, v] of [['年化（自然时间）', pct(m.cagr, 2)], ['最大回撤', pct(m.max_drawdown)], ['平均暴露', pct(m.mean_exposure)], ['累计费用', pct(m.cost_fraction_sum, 2)], ['Sharpe（描述）', num(m.descriptive_sharpe_sqrt252)]]) {
+        dl.append(h('dt', null, k), h('dd', 'num', v));
+      }
+      c.append(dl);
+      const t = tests.find(x => x.symbol === mkt && x.strategy === st);
+      if (t) c.append(h('p', 'rw-test', String(cost) === '10'
+        ? `相对 MA200：年化差 ${pct(Number(t.mean_daily_net_delta) * 252, 2)} · Holm p ${num(t.holm_p, 3)} · ${isPass(t) ? '通过' : '未通过'}`
+        : '主检验只在单边 10 bps 下进行'));
+      wrap.append(c);
+    }
+    return wrap;
+  }
+  function wideTable(heads, rows) {
+    const t = h('table', 'official-table rw-wide'); const hr = h('tr'); heads.forEach(x => hr.append(h('th', null, x))); t.append(hr);
+    for (const r of rows) { const tr = h('tr'); r.forEach((v, i) => tr.append(h('td', i > 1 ? 'num' : null, v))); t.append(tr); }
+    const w = h('div', 'table-scroll rw-scroll'); w.tabIndex = 0; w.setAttribute('role', 'region'); w.setAttribute('aria-label', heads.join(' ')); w.append(t);
+    return w;
+  }
+  function fold(title, ...children) { const d = h('details', 'rw-fold'); d.append(h('summary', null, title), ...children); return d; }
+  function allMetricsTable(metrics, cost) {
+    const rows = [];
     for (const sym of Object.keys(MKT)) for (const st of STRAT) {
       const m = metrics.find(x => x.symbol === sym && x.strategy === st && String(x.cost_bps) === String(cost)); if (!m) continue;
-      const tr = h('tr'); tr.append(h('td', null, st === 'BUY_HOLD' ? MKT[sym] : ''), h('td', null, STRAT_ZH[st]), h('td', 'num', pct(m.cagr, 2)), h('td', 'num', pct(m.max_drawdown)),
-        h('td', 'num', pct(m.mean_exposure)), h('td', 'num', pct(m.cost_fraction_sum, 2)), h('td', 'num', num(m.descriptive_sharpe_sqrt252))); t.append(tr);
+      rows.push([MKT[sym], STRAT_ZH[st], pct(m.cagr, 2), pct(m.max_drawdown), pct(m.mean_exposure), pct(m.cost_fraction_sum, 2), num(m.descriptive_sharpe_sqrt252)]);
     }
-    const w1 = h('div', 'table-scroll'); w1.append(t); out.push(h('h3', 'fact-group-title', `主评价期 2015–2025 · 单边 ${cost} bps · 现金 0 收益`), w1);
-    const t2 = h('table', 'official-table'); const hr2 = h('tr'); ['市场', '候选', '相对 MA200 年化算术差', '日均差 95% 区间', 'Holm p', '25 bps 仍为正', '首轮筛选'].forEach(x => hr2.append(h('th', null, x))); t2.append(hr2);
-    for (const c of tests) {
-      const tr = h('tr'); const pass = String(c.first_screen_return_increment_pass ?? c.pass) === 'True' || c.first_screen_return_increment_pass === true;
-      tr.append(h('td', null, MKT[c.symbol] || c.symbol), h('td', null, STRAT_ZH[c.strategy] || c.strategy), h('td', 'num', pct(Number(c.mean_daily_net_delta) * 252, 2)),
-        h('td', 'num', `[${Number(c.ci_low_daily).toExponential(1)}, ${Number(c.ci_high_daily).toExponential(1)}]`), h('td', 'num', num(c.holm_p, 3)),
-        h('td', null, Number(c.mean_daily_delta_cost25) > 0 ? '是' : '否'), h('td', null, pass ? '通过' : '未通过')); t2.append(tr);
+    return wideTable(['市场', '策略', '年化', '最大回撤', '平均暴露', '累计费用', 'Sharpe'], rows);
+  }
+  function testsTable(tests) {
+    return wideTable(['市场', '候选', '年化差', '日均差 95% 区间', 'Holm p', '25 bps 仍为正', '首轮筛选'], tests.map(c => [MKT[c.symbol] || c.symbol, STRAT_ZH[c.strategy] || c.strategy,
+      pct(Number(c.mean_daily_net_delta) * 252, 2), `[${Number(c.ci_low_daily).toExponential(1)}, ${Number(c.ci_high_daily).toExponential(1)}]`, num(c.holm_p, 3),
+      Number(c.mean_daily_delta_cost25) > 0 ? '是' : '否', isPass(c) ? '通过' : '未通过']));
+  }
+  const fmtBytes = n => n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : n >= 1024 ? `${(n / 1024).toFixed(1)} KB` : `${n} B`;
+  function artifactList(d) {
+    const ul = h('ul', 'rw-art');
+    for (const a of d.run.artifacts || []) {
+      const li = h('li'); const l = h('a', null, a.name); l.href = `${U.runUrl.replace('RUN_ID', d.run.run_id)}/artifacts/${encodeURIComponent(a.name)}`; l.setAttribute('download', a.name);
+      li.append(l, h('span', 'fine-print num', `${fmtBytes(a.bytes)} · sha256 ${a.sha256.slice(0, 12)}…`)); ul.append(li);
     }
-    const w2 = h('div', 'table-scroll'); w2.append(t2);
-    out.push(h('h3', 'fact-group-title', '12 项主检验（循环区块 126，1999 次，Holm）'), w2);
-    return out;
+    return ul;
+  }
+  // Results page for the phase5 family: short summary + selected market/cost + key cards and curves on top;
+  // everything long (all markets, the full test table, downloads, full limits, comparison) folded but reachable.
+  function phase5View(body, {head, metrics, tests, curves, sci, passes, mech, layers, d, limitsText}) {
+    const sel = p5sel();
+    const draw = (focusGroup) => {
+      store.set(P5KEY, JSON.stringify(sel));
+      const pickers = h('div', 'rw-sel');
+      const gm = segPick('市场', Object.keys(MKT).map(k => [k, MKT[k]]), sel.mkt, (v, kb) => { sel.mkt = v; draw(kb ? 'm' : null); });
+      const gc = segPick('成本情景（单边）', COSTS.map(c => [c, `${c} bps`]), sel.cost, (v, kb) => { sel.cost = v; draw(kb ? 'c' : null); });
+      pickers.append(gm, gc);
+      const cap = h('p', 'fine-print rw-cap', `${MKT[sel.mkt]} · 主评价期 2015–2025 · 单边 ${sel.cost} bps · 现金 0 收益`);
+      const parts = [...head, verdictBlock(sci, passes, tests.length, mech, layers), pickers, cap, metricCards(metrics, tests, sel.mkt, sel.cost)];
+      let eq = null, dd = null;
+      if (curves) {
+        eq = s('svg', {class: 'rw-chart', role: 'img', 'aria-label': `${MKT[sel.mkt]} 净值（对数坐标）`}); dd = s('svg', {class: 'rw-chart rw-chart-sm', role: 'img', 'aria-label': `${MKT[sel.mkt]} 回撤`});
+        const legend = h('div', 'chart-foot'); legend.append(h('span', 'rw-key', 'P1'), h('span', 'rw-key rw-key-p2', 'P2'), h('span', 'rw-key rw-key-p3', 'P3'), h('span', 'rw-key rw-key-b', 'MA200 基准'), h('span', 'rw-key rw-key-bh', '买入持有'),
+          h('span', null, '曲线抽样显示，精确值以账本为准'));
+        parts.push(eq, legend, h('div', 'fine-print', '回撤'), dd);
+      }
+      parts.push(fold(`全部市场指标（主评价期 · ${sel.cost} bps）`, h('p', 'rw-scroll-hint', '表格可左右滑动；首列固定'), allMetricsTable(metrics, sel.cost)),
+        fold(`完整 ${tests.length} 项主检验（循环区块 126，1999 次，Holm）`, h('p', 'rw-scroll-hint', '表格可左右滑动；首列固定'), testsTable(tests)));
+      if (d) parts.push(fold(`产物下载（${(d.run.artifacts || []).length} 个，哈希已登记）`, artifactList(d)), comparePanel(d.run));
+      parts.push(fold('结论与限制（全文）', h('p', null, limitsText || '')));
+      body.replaceChildren(...parts);
+      if (focusGroup) (focusGroup === 'm' ? pickers.firstChild : pickers.lastChild).querySelector('[aria-pressed="true"]')?.focus();
+      const cv = curves?.[sel.mkt]?.[sel.cost];
+      if (cv && eq) requestAnimationFrame(() => {
+        const col = {P1_TREND: 'var(--accent)', P2_RECOVERY: 'var(--warn)', P3_RISK_BUDGET: 'var(--ok)', MA200: 'var(--text-3)', BUY_HOLD: 'var(--text-2)'};
+        const se = Object.keys(cv.nav).map(k => ({values: cv.nav[k], color: col[k], dash: k === 'BUY_HOLD' ? '4 3' : ''})); se.dates = cv.date; lineChart(eq, se, {log: true});
+        const sd = Object.keys(cv.nav).map(k => ({values: ddOf(cv.nav[k]), color: col[k], dash: k === 'BUY_HOLD' ? '4 3' : ''})); sd.dates = cv.date; lineChart(dd, sd, {pctAxis: true});
+      });
+    };
+    draw();
+  }
+  // Comparison with another finished run: the backend decides (resolved costs, cash, valuation, annualisation,
+  // benchmark, input and sample mask); the page only shows its short reasons.
+  function comparePanel(run) {
+    const others = reg.runs.filter(r => r.run_id !== run.run_id && r.status === 'SUCCEEDED');
+    const box = fold('与其他运行比较');
+    if (!others.length) { box.append(h('p', 'fine-print', '没有其他已完成的运行')); return box; }
+    const lab = h('label', 'form-field'); lab.append('比较对象');
+    const sel = h('select'); sel.append(h('option', null, '选择一个已完成的运行'));
+    for (const r of others) { const o = h('option', null, `${shortId(r)} · ${r.factor_id} · ${r.dataset_id}`); o.value = r.run_id; sel.append(o); }
+    sel.firstChild.value = ''; lab.append(sel);
+    const out = h('div', 'rw-cmp'); out.setAttribute('role', 'status');
+    sel.onchange = async () => {
+      if (!sel.value) { out.replaceChildren(); return; }
+      out.replaceChildren(h('p', 'fine-print', '核对比较条件…'));
+      try {
+        const j = await fetchJSON(`${U.compareUrl}?a=${encodeURIComponent(run.run_id)}&b=${encodeURIComponent(sel.value)}`);
+        const head = j.result === 'COMPARABLE' ? '条件一致：可以并列并排序' : j.sensitivity_axis === 'cost' ? '只有成本假设不同：可作成本敏感性并列，不做统一排名' : '条件不同或未知：可并列查看，不做统一排名';
+        const ul = h('ul'); (j.reasons_zh || []).slice(0, 8).forEach(x => ul.append(h('li', null, x)));
+        out.replaceChildren(h('p', 'rw-cmp-head', head), ul);
+      } catch (e) { out.replaceChildren(h('p', 'fine-print', `比较失败：${e.message}`)); }
+    };
+    box.append(lab, out); return box;
   }
   async function openImport(id) {
     let x; try { x = await fetchJSON(U.importUrl.replace('IMPORT_ID', id)); } catch (e) { $('rw-state').textContent = `读取失败：${e.message}`; return; }
     const box = $('rw-detail'); box.hidden = false; $('rw-d-title').textContent = `${x.title}`;
-    const body = $('rw-d-body'); const rec = x.record; let cost = '10';
-    const head = [h('p', 'muted', `这是外部历史运行的导入记录，不是本平台执行的任务。原运行 ${local(rec.original_run.started_at_utc, true)}，冻结提交 ${rec.freeze_commit.slice(0, 10)}，输入 ${rec.inputs.input_db_sha256.slice(0, 12)}…（截至 ${rec.inputs.data_end}）。`),
+    const rec = x.record;
+    const head = [h('p', 'muted', `外部历史运行的导入记录，不是本平台执行的任务。原运行 ${local(rec.original_run.started_at_utc, true)}，输入 ${rec.inputs.input_db_sha256.slice(0, 12)}…（截至 ${rec.inputs.data_end}）。`),
       gradeChips(x.grade, '历史导入（非平台执行）')];
-    const draw = () => {
-      const seg = h('div', 'seg'); seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', '成本情景');
-      for (const c of ['0', '10', '25']) { const b = h('button', null, `${c} bps`); b.type = 'button'; b.setAttribute('aria-pressed', String(c === cost)); b.onclick = () => { cost = c; draw(); }; seg.append(b); }
-      const lim = h('div', 'rw-limits'); lim.append(h('strong', null, '结论与限制'), h('p', null, `12 项主检验 ${rec.results.primary_pass_count} 项通过。QQQ 为 ETF（a1 前复权，未认证总收益）；其余三个是指数代理（不可直接交易）；数据为当前版本回填，非时点；历史已看过，不是未见样本。T1/T2：缺历史新闻/事件输入。`));
-      body.replaceChildren(...head, seg, ...phase5Tables(rec.results.primary_metrics, rec.results.primary_tests, cost), lim);
-    };
-    draw();
-    const tech = $('rw-d-tech'); tech.replaceChildren(details('导入记录', [['import_id', x.import_id], ['记录 sha256', x.record_sha256], ['配置 sha256', rec.code.config_sha256], ['代码 sha256', rec.code.code_sha256],
-      ['协议 sha256', rec.code.protocol_sha256], ['原环境', `Python ${rec.original_run.python} · numpy ${rec.original_run.numpy} · pandas ${rec.original_run.pandas}`], ['复核分层', rec.validation_layers], ['证据文件', rec.evidence_files]]));
+    phase5View($('rw-d-body'), {head, metrics: rec.results.primary_metrics, tests: rec.results.primary_tests, curves: null, sci: x.grade?.scientific_status,
+      passes: rec.results.primary_pass_count, mech: MECH_ZH(x.grade?.mechanical_check), layers: '', d: null,
+      limitsText: 'QQQ 为 ETF（a1 前复权，未认证总收益）；其余三个是指数代理（不可直接交易）；数据为当前版本回填，非时点；历史已看过，不是未见样本。T1/T2：缺历史新闻/事件输入。'});
+    const tech = $('rw-d-tech'); tech.replaceChildren(details('导入记录', [['import_id', x.import_id], ['记录 sha256', x.record_sha256], ['冻结提交', rec.freeze_commit], ['配置 sha256', rec.code.config_sha256], ['代码 sha256', rec.code.code_sha256],
+      ['协议 sha256', rec.code.protocol_sha256], ['原环境', `Python ${rec.original_run.python} · numpy ${rec.original_run.numpy} · pandas ${rec.original_run.pandas}`], ['复核分层', rec.validation_layers],
+      ['复制范围（原文）', x.grade?.replication_scope || '—'], ['证据文件', rec.evidence_files]]));
     box.scrollIntoView({block: 'start'});
   }
   function lineChart(svg, series, {log = false, pctAxis = false} = {}) {
@@ -264,7 +377,8 @@
       grid.append(s('line', {x1: pad.l, x2: W - pad.r, y1: yy, y2: yy}));
       const t = s('text', {x: W - pad.r + 6, y: yy + 4}); t.textContent = pctAxis ? `${(v * 100).toFixed(0)}%` : v.toFixed(2); g.append(t);
     }
-    for (let k = 0; k <= 4; k++) { const i = Math.round((n - 1) * k / 4); const t = s('text', {x: x(i), y: H - 6, 'text-anchor': k === 0 ? 'start' : k === 4 ? 'end' : 'middle'}); t.textContent = (series.dates?.[i] || '').slice(0, 7); g.append(t); }
+    const ticks = W < 480 ? 2 : 4;
+    for (let k = 0; k <= ticks; k++) { const i = Math.round((n - 1) * k / ticks); const t = s('text', {x: x(i), y: H - 6, 'text-anchor': k === 0 ? 'start' : k === ticks ? 'end' : 'middle'}); t.textContent = (series.dates?.[i] || '').slice(0, 7); g.append(t); }
     const ser = s('g', {class: 'series'});
     for (const sr of series) ser.append(s('path', {d: sr.values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(''), stroke: sr.color, 'stroke-dasharray': sr.dash || ''}));
     svg.replaceChildren(grid, g, ser);
@@ -273,7 +387,7 @@
   function actionsFor(r) {
     const bar = h('div', 'rw-dl');
     if (!['QUEUED', 'RUNNING'].includes(r.status)) {
-      const again = h('button', 'button button-primary', r.status === 'SUCCEEDED' ? '用相同冻结配置重跑（新运行）' : '重试（新运行）'); again.type = 'button';
+      const again = h('button', 'button button-outline', r.status === 'SUCCEEDED' ? '用相同冻结配置重跑（新运行）' : '重试（新运行）'); again.type = 'button';
       again.onclick = async () => { again.disabled = true;
         try { const j = await fetchJSON(U.runUrl.replace('RUN_ID', r.run_id) + '/rerun/', {method: 'POST', headers: {'X-CSRFToken': csrf()}}); highlight = j.run_id; showTab('tasks'); await load(); }
         catch (e) { again.textContent = `失败：${e.message}`; again.disabled = false; } };
@@ -281,34 +395,18 @@
     }
     return bar;
   }
+  const LAYER_ZH = {internal_self_check: '内部自检', output_integrity: '输出完整性', reference_reconciliation: '参考对账'};
   function renderPhase5Run(d, body) {
-    const rep = d.report; let cost = '10', mkt = 'US.QQQ';
-    const draw = () => {
-      const seg = h('div', 'seg'); seg.setAttribute('aria-label', '成本情景');
-      for (const c of ['0', '10', '25']) { const b = h('button', null, `${c} bps`); b.type = 'button'; b.setAttribute('aria-pressed', String(c === cost)); b.onclick = () => { cost = c; draw(); }; seg.append(b); }
-      const ms = h('div', 'seg'); ms.setAttribute('aria-label', '市场');
-      for (const k of Object.keys(MKT)) { const b = h('button', null, MKT[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === mkt)); b.onclick = () => { mkt = k; draw(); }; ms.append(b); }
-      const eq = s('svg', {class: 'rw-chart', role: 'img', 'aria-label': '净值（对数坐标）'}); const dd = s('svg', {class: 'rw-chart rw-chart-sm', role: 'img', 'aria-label': '回撤'});
-      const legend = h('div', 'chart-foot'); legend.append(h('span', 'rw-key', 'P1'), h('span', 'rw-key rw-key-p2', 'P2'), h('span', 'rw-key rw-key-p3', 'P3'), h('span', 'rw-key rw-key-b', 'MA200 基准'), h('span', 'rw-key rw-key-bh', '买入持有'),
-        h('span', null, '主评价期；曲线抽样显示，精确值以账本为准'));
-      body.replaceChildren(actionsFor(d.run), gradeChips(d.run.grade, STATUS[d.run.status]), h('p', 'muted', rep.summary_line), seg, ms, eq, legend, h('div', 'fine-print', '回撤'), dd,
-        ...phase5Tables(rep.primary_metrics, rep.primary_tests, cost), dlBar(d), limits(rep));
-      const cv = rep.curves?.[mkt]?.[cost];
-      if (cv) requestAnimationFrame(() => {
-        const col = {P1_TREND: 'var(--accent)', P2_RECOVERY: 'var(--warn)', P3_RISK_BUDGET: 'var(--ok)', MA200: 'var(--text-3)', BUY_HOLD: 'var(--text-2)'};
-        const se = Object.keys(cv.nav).map(k => ({values: cv.nav[k], color: col[k], dash: k === 'BUY_HOLD' ? '4 3' : ''})); se.dates = cv.date; lineChart(eq, se, {log: true});
-        const sd = Object.keys(cv.nav).map(k => ({values: ddOf(cv.nav[k]), color: col[k], dash: k === 'BUY_HOLD' ? '4 3' : ''})); sd.dates = cv.date; lineChart(dd, sd, {pctAxis: true});
-      });
-    };
-    draw();
+    const rep = d.report;
+    const lay = rep.mechanical?.layers ? Object.entries(rep.mechanical.layers).map(([k, v]) => `${LAYER_ZH[k] || k} ${v === 'PASS' ? '通过' : v}`).join(' · ') : '';
+    const same = rep.mechanical?.same_input != null && rep.mechanical?.ledger_files ? `；${rep.mechanical.same_input}/${rep.mechanical.ledger_files} 份账本与首轮同输入结果字节一致` : '';
+    phase5View(body, {head: [gradeChips(d.run.grade, STATUS[d.run.status]), actionsFor(d.run)], metrics: rep.primary_metrics, tests: rep.primary_tests, curves: rep.curves,
+      sci: rep.science?.scientific_status, passes: rep.science?.primary_passes ?? 0, mech: MECH_ZH(rep.mechanical?.status) + same, layers: lay, d, limitsText: rep.limits_zh});
   }
   function dlBar(d) {
     const dl = h('div', 'rw-dl'); dl.append(h('span', 'muted', '产物下载：'));
     for (const a of d.run.artifacts || []) { const l = h('a', 'button button-outline', a.name); l.href = `${U.runUrl.replace('RUN_ID', d.run.run_id)}/artifacts/${encodeURIComponent(a.name)}`; dl.append(l); }
     return dl;
-  }
-  function limits(rep) {
-    const lim = h('div', 'rw-limits'); lim.append(h('strong', null, '结论与限制'), h('p', null, rep.limits_zh || '')); return lim;
   }
   function renderMom20(d, body) {
     const r = d.run, m = d.metrics; let bps = '0';
@@ -352,7 +450,9 @@
     const tech = $('rw-d-tech'); tech.replaceChildren();
     const kv = [['run_id', r.run_id], ['引擎', `${r.engine_id}@${r.engine_version}`], ['契约', r.contracts || '旧运行：按旧引擎推导'], ['提交 / 开始 / 结束（UTC）', `${r.created_at || '—'} / ${r.started_at || '—'} / ${r.finished_at || '—'}`],
       ['执行者', r.worker_id || '—'], ['镜像', r.image_id || '—'], ['代码版本', r.code_version || '—'], ['退出原因', r.exit_reason || r.error_class || '—'], ['重试自', r.attempt_of || '—'],
-      ['配置 sha256', r.config_sha256], ['样本 mask', r.dataset_mask_hash || '—'], ['结果摘要', r.results_digest || '—'], ['产物', (r.artifacts || []).map(a => `${a.name} ${a.sha256.slice(0, 12)}`).join('\n') || '—']];
+      ['配置 sha256', r.config_sha256], ['样本 mask', r.dataset_mask_hash || '—'], ['结果摘要', r.results_digest || '—'], 
+      ['机械复核（原文）', r.grade?.mechanical_check || '—'], ['复制范围（原文）', r.grade?.replication_scope || '—'], ['隔离方式', d.report?.isolation || '—'],
+      ['产物', (r.artifacts || []).map(a => `${a.name} ${a.sha256.slice(0, 12)}`).join('\n') || '—']];
     for (const [k, v] of kv) { const row = h('div', 'setting-row'); row.append(h('span', 'label', k), h('span', 'num fine-print', typeof v === 'string' ? v : JSON.stringify(v))); tech.append(row); }
     const log = h('pre', 'rw-log'); log.textContent = (d.log_tail || []).join('\n'); tech.append(log);
     box.scrollIntoView({block: 'start'});
