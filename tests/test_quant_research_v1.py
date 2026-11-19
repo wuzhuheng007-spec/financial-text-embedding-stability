@@ -1,4 +1,8 @@
 """Research workflow v1: hand-computed backtest, no look-ahead, registry, worker, verifier, determinism."""
+import os as _os
+_os.environ.setdefault("QUANT_CODE_VERSION", "test-code-version")
+_os.environ.setdefault("QUANT_IMAGE_ID", "sha256:test-image")
+
 import copy
 import json
 import os

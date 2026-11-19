@@ -29,7 +29,12 @@ import sys
 from contextlib import closing
 from pathlib import Path
 
-VERIFIER_VERSION = "audit-v2.0"
+VERIFIER_VERSION = "audit-v2.1"
+# Runs executed before execution provenance was recorded (2026-11-19). For these, missing factor
+# fingerprint / code version / image id is reported as incomplete provenance, never as a pass, and
+# a fingerprint registered later is NOT taken as evidence of what they executed. Every other run
+# must carry all bindings or the audit fails.
+LEGACY_RUNS_WITHOUT_PROVENANCE = {"run-20261119T012943Z-6ee999", "run-20261119T013414Z-62e709"}
 LEDGER_COLUMNS = ("date", "prev_close", "open", "close", "factor_prev_close", "signal_from_prev_close",
                   "position_overnight", "position_after_open", "exec_price", "turnover", "cost",
                   "gross_return", "net_return", "nav", "factor_close", "target_next_open",
@@ -208,21 +213,27 @@ def audit_run(root: Path, run_id: str, repo_root: Path | None = None) -> dict:
         check("factor_params_eq_registry", _canon(metrics["factor"]["params"]) == fac["params_json"] == _canon(cfg["factor"]["params"]))
         src_fp = factor_source_fingerprint(repo_root)
         reg_fp = fac["impl_sha256"] if "impl_sha256" in cols else None
-        run_fp = metrics["factor"].get("impl_sha256")
-        checks["factor_impl_fingerprint"] = {"ok": True, "source": src_fp, "registry": reg_fp, "run": run_fp or "NOT_RECORDED_LEGACY_RUN"}
-        if reg_fp is not None and reg_fp != src_fp:
-            check("factor_impl_registry_eq_source", False, f"{reg_fp} vs {src_fp}")
-        if run_fp is not None:
-            check("factor_impl_run_eq_registry", run_fp == reg_fp, f"{run_fp} vs {reg_fp}")
         rt = metrics.get("runtime") or {}
-        checks["code_and_image"] = {"ok": True, "registry_code_version": run["code_version"],
-                                    "run_code_version": rt.get("code_version", "NOT_RECORDED_LEGACY_RUN"),
-                                    "registry_image_id": run["image_id"] if "image_id" in run.keys() else None,
-                                    "run_image_id": rt.get("image_id", "NOT_RECORDED_LEGACY_RUN")}
-        if rt.get("code_version") and run["code_version"]:
-            check("code_version_run_eq_registry", rt["code_version"] == run["code_version"])
-        if rt.get("image_id") and "image_id" in run.keys() and run["image_id"]:
-            check("image_id_run_eq_registry", rt["image_id"] == run["image_id"])
+        run_fp, run_code, run_img = metrics["factor"].get("impl_sha256"), rt.get("code_version"), rt.get("image_id")
+        reg_run = dict(run)
+        missing = [k for k, v in (("factor_impl_sha256", run_fp), ("code_version", run_code), ("image_id", run_img)) if not v]
+        legacy = run_id in LEGACY_RUNS_WITHOUT_PROVENANCE
+        result["provenance"] = {"complete": not missing, "missing": missing, "legacy_exception": legacy,
+                                "note": ("原执行溯源信息不完整：运行时未记录因子实现指纹/代码版本/镜像。数值复验只说明结果与协议的独立实现一致，"
+                                         "不能证明当时执行了哪一份实现；之后登记的指纹不作为当时实现的证据。") if missing else None}
+        if missing and not legacy:
+            check("execution_provenance_complete", False, f"missing {missing}")
+        if reg_fp is None or reg_fp != src_fp:
+            check("factor_impl_registry_eq_source", False, f"{reg_fp} vs {src_fp}")
+        if run_fp:
+            check("factor_impl_run_eq_registry", run_fp == reg_fp and run_fp == reg_run.get("factor_impl_sha256"), f"{run_fp} vs {reg_fp}")
+        if run_code:
+            check("code_version_run_eq_registry", run_code == reg_run.get("code_version"), f"{run_code} vs {reg_run.get('code_version')}")
+        if run_img:
+            check("image_id_run_eq_registry", run_img == reg_run.get("image_id"), f"{run_img} vs {reg_run.get('image_id')}")
+        checks["bindings_recorded"] = {"ok": True, "factor_impl": {"source": src_fp, "registry": reg_fp, "run": run_fp},
+                                       "code_version": {"run": run_code, "registry": reg_run.get("code_version")},
+                                       "image_id": {"run": run_img, "registry": reg_run.get("image_id")}}
         # ---- independent recomputation ----
         bars = read_snapshot(snap)
         costs = cfg["costs"]["scenarios_bps_one_way"]

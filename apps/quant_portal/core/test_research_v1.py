@@ -1,4 +1,8 @@
 """Research workbench endpoints: owner-only, web only queues (never runs), results and ledger download."""
+import os as _os
+_os.environ.setdefault("QUANT_CODE_VERSION", "test-code-version")
+_os.environ.setdefault("QUANT_IMAGE_ID", "sha256:test-image")
+
 import os
 import sqlite3
 import tempfile
@@ -85,7 +89,7 @@ class ResearchRerunTests(ResearchEndpointTests):
         r = self.client.post(reverse("research_run_create"), {"dataset": "syn@1", "factor": "mom20@1", "protocol": "mom20-daily-long-cash"}).json()
         run_once(60)
         runs = self.client.get(reverse("research_registry_json")).json()["runs"]
-        self.assertTrue(runs[0]["latest_audit"]["ok"]); self.assertEqual(runs[0]["latest_audit"]["verifier_version"], "audit-v2.0")
+        self.assertTrue(runs[0]["latest_audit"]["ok"]); self.assertEqual(runs[0]["latest_audit"]["verifier_version"], "audit-v2.1")
         again = self.client.post(reverse("research_run_rerun", args=[r["run_id"]])).json()
         self.assertEqual(again["result"], "QUEUED")
         db = registry.connect()

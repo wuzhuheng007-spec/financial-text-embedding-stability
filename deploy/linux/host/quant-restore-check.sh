@@ -42,7 +42,9 @@ RESEARCH_OK=true
 if [ -d "$B/research_backup/research" ]; then
   scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX)
   cp -a "$B/research_backup" "$scratch/b"; mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
-  if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60        -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro        "$APP_IMAGE" /x/r.py verify /b /r </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+  REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
+  IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
+  if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60 -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"        -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro        "$APP_IMAGE" /x/r.py verify /b /r </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
   rm -rf "$scratch"
 fi
 

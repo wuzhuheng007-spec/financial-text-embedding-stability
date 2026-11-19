@@ -108,6 +108,9 @@ def _execute(db, run, research_root, ds, fac, spec, cfg, out, log, hb) -> dict:
         return False
     say(f"run {run['run_id']} worker {run['worker_id']} dataset {ds['dataset_id']}@{ds['dataset_version']} "
         f"factor {spec['factor_id']}@{spec['factor_version']}")
+    # Execution identity is mandatory for new runs: no code version / image id, no run.
+    if not os.environ.get("QUANT_CODE_VERSION") or not os.environ.get("QUANT_IMAGE_ID"):
+        raise ValueError("RUNTIME_IDENTITY_MISSING: QUANT_CODE_VERSION and QUANT_IMAGE_ID must be set by the runner")
     # The code that will actually execute must be the registered implementation (blind spot B).
     fp = impl_fingerprint(spec["fn"])
     if fac["impl_sha256"] is None or fp != fac["impl_sha256"]:
@@ -147,7 +150,7 @@ def _execute(db, run, research_root, ds, fac, spec, cfg, out, log, hb) -> dict:
         curves[str(bps)] = {"date": [r[idx["date"]] for r in pick], "nav": [float(r[idx["nav"]]) for r in pick],
                             "benchmark_nav": [float(r[idx["benchmark_nav"]]) for r in pick]}
     digest = results_digest(scenarios, ledgers)
-    runtime = {"code_version": os.environ.get("QUANT_CODE_VERSION") or run["code_version"],
+    runtime = {"code_version": os.environ["QUANT_CODE_VERSION"],
                "image_id": os.environ.get("QUANT_IMAGE_ID"), "python": platform.python_version(), "worker_id": run["worker_id"]}
     metrics = {"run_id": run["run_id"],
                "dataset": {k: ds[k] for k in ("dataset_id", "dataset_version", "content_sha256", "start_date", "end_date")},

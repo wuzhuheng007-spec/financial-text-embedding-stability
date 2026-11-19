@@ -1,5 +1,9 @@
 """R2/R3 regressions: independent audit catches tampering and swapped factors; lost workers,
 cancellation, timeouts and commit races end in explicit states. Synthetic data, isolated roots."""
+import os as _os
+_os.environ.setdefault("QUANT_CODE_VERSION", "test-code-version")
+_os.environ.setdefault("QUANT_IMAGE_ID", "sha256:test-image")
+
 import copy
 import json
 import os
@@ -62,7 +66,7 @@ class AuditTests(Base):
         self.assertEqual(self.status(rid)[:2], ("SUCCEEDED", "COMPLETED"))
         a = audit_run(self.root, rid)
         self.assertTrue(a["ok"], a["problems"])
-        self.assertTrue((d / "audit_audit-v2.0.json").is_file())
+        self.assertTrue((d / "audit_audit-v2.1.json").is_file())
         m = json.loads((d / "metrics.json").read_text(encoding="utf-8"))
         self.assertEqual(m["factor"]["impl_sha256"], self.db.execute("SELECT impl_sha256 FROM factors").fetchone()[0])
 
@@ -124,6 +128,26 @@ class AuditTests(Base):
         self.assertIn("ledger_file_set_eq_config", " ".join(audit_run(self.root, rid)["problems"]))
         (d / "ledger_cost7bps.csv").unlink()
         self.assertTrue(audit_run(self.root, rid)["ok"])
+
+    def test_new_run_without_runtime_identity_is_refused(self):
+        from scripts.quant_research_v1.worker import run_once
+        saved = os.environ.pop("QUANT_IMAGE_ID")
+        try:
+            rid = registry.create_run(self.db, ("syn", "1"), ("mom20", "1"), self.cfg)
+            self.assertEqual(run_once(60), 1)
+        finally:
+            os.environ["QUANT_IMAGE_ID"] = saved
+        st = self.db.execute("SELECT status, error_detail FROM runs WHERE run_id=?", (rid,)).fetchone()
+        self.assertEqual(st[0], "FAILED"); self.assertIn("RUNTIME_IDENTITY_MISSING", st[1])
+
+    def test_new_run_with_stripped_provenance_fails_audit(self):
+        rid, d = self.run_ok()
+        m = json.loads((d / "metrics.json").read_text(encoding="utf-8"))
+        m["factor"].pop("impl_sha256"); m["runtime"].pop("image_id")
+        (d / "metrics.json").write_text(json.dumps(m), encoding="utf-8")
+        a = audit_run(self.root, rid)
+        self.assertFalse(a["ok"]); self.assertIn("execution_provenance_complete", " ".join(a["problems"]))
+        self.assertFalse(a["provenance"]["complete"]); self.assertFalse(a["provenance"]["legacy_exception"])
 
     def test_snapshot_reader_rejects_invalid_rows(self):
         d = self.root / "datasets/bad"; d.mkdir(parents=True)

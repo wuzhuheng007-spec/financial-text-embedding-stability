@@ -1,5 +1,9 @@
 """R1: full streaming SQLite digests above the old 200,000-row cap; research backup and an
 isolated restore that reads only the backup copy and reruns completed runs under new ids."""
+import os as _os
+_os.environ.setdefault("QUANT_CODE_VERSION", "test-code-version")
+_os.environ.setdefault("QUANT_IMAGE_ID", "sha256:test-image")
+
 import copy
 import importlib.util
 import json

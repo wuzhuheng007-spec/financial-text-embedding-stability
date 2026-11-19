@@ -192,7 +192,8 @@
       ['协议', `${m.protocol.protocol_id} v${m.protocol.protocol_version}`], ['配置 sha256', m.protocol.config_sha256],
       ['代码版本', m.runtime?.code_version || r.code_version || '—'], ['镜像', m.runtime?.image_id || '未记录（旧运行）'], ['结果摘要 results_digest', m.results_digest]);
     kv.push(['最新独立复算', a ? `${a.ok ? '一致' : '不一致'} · ${a.verifier_version} · ${a.audited_at_utc} · ${a.file}${a.problems.length ? ' · ' + a.problems.join('；') : ''}` : '无'],
-      ['账本内部一致性（v1）', d.verify ? (d.verify.ok ? '通过' : '未通过') : '—']);
+      ['账本内部一致性（v1）', d.verify ? (d.verify.ok ? '通过' : '未通过') : '—'],
+      ['执行溯源', a?.provenance ? (a.provenance.complete ? '完整（指纹、配置、数据、代码与镜像均已绑定）' : a.provenance.note) : '—']);
     for (const [k, v] of kv) { const row = h('div', 'setting-row'); row.append(h('span', 'label', k), h('span', 'num fine-print', v)); tech.append(row); }
     const log = h('pre', 'rw-log'); log.textContent = (d.log_tail || []).join('\n'); tech.append(log);
   }

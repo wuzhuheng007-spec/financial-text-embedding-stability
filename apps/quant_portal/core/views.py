@@ -497,7 +497,8 @@ def _latest_audit(root, run_id):
         except (OSError, ValueError):
             continue
         item = {"verifier_version": a.get("verifier_version"), "ok": bool(a.get("ok")), "audited_at_utc": a.get("audited_at_utc"),
-                "problems": (a.get("problems") or [])[:3], "file": f.relative_to(root).as_posix()}
+                "problems": (a.get("problems") or [])[:3], "file": f.relative_to(root).as_posix(),
+                "provenance": a.get("provenance")}
         if best is None or (item["audited_at_utc"] or "") > (best["audited_at_utc"] or ""):
             best = item
     return best
