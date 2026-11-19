@@ -1,9 +1,9 @@
 {
   "AGENTS.md": "c159b61acbc106958d01de20d118950bbd827c916aecb314b45f2984d5cac3be",
-  "JOURNAL.md": "6556843248b94cd4b1b7153fe056ed2972d231b070a7e43be169d659ee53a45d",
+  "JOURNAL.md": "92aff0627c598ec10d054b077efb674ddf2aaee06dcfc9927e3227558a19ef93",
   "PUBLICATION_ADAPTATIONS.json": "e6fe194973c1e74e5a6d9de29383a19b2b049e9e317526c17447f843e0dcbfd0",
   "README.md": "1130ca6e36355a4dfc61db9a81dbe91d2e5189800331b36c4cba57184f656c6e",
-  "STATUS.json": "250e59fbef22421212d26f8611f69617e073d91b182501976a2109e8c814f7e6",
+  "STATUS.json": "9037b3c83032b00150765cbd71ee8a5725c9e33abd5a510864db4d5a7a91cffd",
   "claims.json": "86712d512a8a509f5ca988e966ff9072d37bf0b7faf96d83c95c3dd5de61a0b0",
   "data_audit/README_zh.md": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
   "data_audit/audit/anchor_dates.json": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
@@ -135,7 +135,12 @@
   "phase3/results_v1_1/self_check.json": "7fd7b72548e8c5793bb37ba4f11765b1c0518afaa9d042df5a008dd382e70966",
   "phase3/self_check.py": "59a918d3800d23cfbbf601aa0fd4c8625dd0619bc18fb1b2960cbbae8c043be5",
   "phase3/verify_report.py": "b09d2065b9f99dd6a87d674e3d85aad23714ae7858ac0acbd0a925b27468c40e",
+  "phase4/PLAN_zh.md": "07465e874fdbfd0297bfdbb61c152717417548e2acc0a87099bb570eef8fc0b5",
+  "phase4/config.json": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+  "phase4/freeze.py": "e83903e30e1f0a164035157748bc3557df8c956ccc9bcc00e11b5d34c5cf2610",
+  "phase4/freeze_receipt.json": "fc1ee32e21a6c9fd65b7e2462c94333155ee17d8d1eccb53bf2d6738868be28c",
+  "phase4/input_manifest.json": "4e78f636fe3df45776663d7e117b7db39344495d7f458017d5f613eb2542fe02",
   "record_step.py": "889bc07e9c3e2aac3a82056a4e042bf702dd3d7e844407f3da3e99715ad8d98c",
-  "steps.json": "6a28995cab1e448f2d173ede64f9bb859a33bad8eb39089ebe795856526a13d5",
+  "steps.json": "7cad52d3b698eb6497d02d2db1dcf058c7543eac85b429c1bdde7d542b0ee644",
   "verify_publication.py": "8d23bbfa9b68a090ebb2202430b8e2bcb9f22f34702c9849361ebdc62b5b2baf"
 }

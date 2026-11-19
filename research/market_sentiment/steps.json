@@ -318,5 +318,27 @@
       "image_review/Nasdaq_Supplement_Review_zh.md": "b5b0759ae3e053392a797e37676d27049aecec3cbe49a0ed6f092582d9a7c082"
     },
     "recorded_at_utc": "2026-11-19T03:03:02.416763+00:00"
+  },
+  {
+    "id": "R014",
+    "title": "参与结构与实际利率检验冻结",
+    "plan": "先核对新增数据覆盖，再固定广度代理、利率变量、强基线和完整比较，计算前记录。",
+    "actual": "实际下载NASDAQNDXE、NASDAQ100、DFII10当前版本；阅读Nasdaq官方方法及变更说明；冻结三个新增模块和alpha敏感性、同样本时序检验及多重比较规则。尚未计算第四阶段收益对照或模型。",
+    "status": "PROTOCOL_FROZEN_BEFORE_PHASE4_FINANCIAL_ANALYSIS",
+    "evidence": [
+      "phase4/PLAN_zh.md",
+      "phase4/config.json",
+      "phase4/freeze_receipt.json",
+      "phase4/input_manifest.json"
+    ],
+    "claims": "取得可追溯的等权/市值指数与TIPS输入，可开展有限覆盖检验；新闻和中国本土广度未取得。",
+    "limits": "等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。",
+    "evidence_sha256": {
+      "phase4/PLAN_zh.md": "07465e874fdbfd0297bfdbb61c152717417548e2acc0a87099bb570eef8fc0b5",
+      "phase4/config.json": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+      "phase4/freeze_receipt.json": "fc1ee32e21a6c9fd65b7e2462c94333155ee17d8d1eccb53bf2d6738868be28c",
+      "phase4/input_manifest.json": "4e78f636fe3df45776663d7e117b7db39344495d7f458017d5f613eb2542fe02"
+    },
+    "recorded_at_utc": "2026-11-19T03:13:49.795444+00:00"
   }
 ]

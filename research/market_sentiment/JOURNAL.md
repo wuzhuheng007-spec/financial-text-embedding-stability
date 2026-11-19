@@ -197,3 +197,17 @@
 **限制：** 没有新增历史盈利预期/成分/新闻数据；非独立验证。
 
 证据：[image_review/Nasdaq_Supplement_Review_zh.md](image_review/Nasdaq_Supplement_Review_zh.md)
+
+## R014 · 参与结构与实际利率检验冻结
+
+**状态：** PROTOCOL_FROZEN_BEFORE_PHASE4_FINANCIAL_ANALYSIS；记录UTC：2026-11-19T03:13:49.795444+00:00
+
+**计划：** 先核对新增数据覆盖，再固定广度代理、利率变量、强基线和完整比较，计算前记录。
+
+**实际：** 实际下载NASDAQNDXE、NASDAQ100、DFII10当前版本；阅读Nasdaq官方方法及变更说明；冻结三个新增模块和alpha敏感性、同样本时序检验及多重比较规则。尚未计算第四阶段收益对照或模型。
+
+**结论：** 取得可追溯的等权/市值指数与TIPS输入，可开展有限覆盖检验；新闻和中国本土广度未取得。
+
+**限制：** 等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。
+
+证据：[phase4/PLAN_zh.md](phase4/PLAN_zh.md)、[phase4/config.json](phase4/config.json)、[phase4/freeze_receipt.json](phase4/freeze_receipt.json)、[phase4/input_manifest.json](phase4/input_manifest.json)

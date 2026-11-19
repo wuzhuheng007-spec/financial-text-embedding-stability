@@ -1,0 +1,6 @@
+{
+  "frozen_utc": "2026-11-19T03:13:13.266441+00:00",
+  "config_sha256": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+  "financial_phase4_results_before_freeze": false,
+  "source_inputs_inspected": "metadata, dates, missingness only; no new outcome contrast or fit"
+}
