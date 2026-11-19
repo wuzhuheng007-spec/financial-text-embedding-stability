@@ -1,0 +1,23 @@
+{
+  "dataset_version": "0.1",
+  "status": "MERGED_WITH_EXPLICIT_UNRESOLVED_LIMITS",
+  "original_sha256": "85aa32f5749ceadd3b5eb28245b693063136552a81756edb302acf49b1eeb309",
+  "patch_sha256": "08ff7106037db53ddc45dc86f93f5d7dcfd3df5e47471d679e02317f1db0f170",
+  "manifest_files_verified": {
+    "original": 250,
+    "patch": 33
+  },
+  "primary_windows_merged": 5,
+  "new_rows": 1227,
+  "anchors_checked": 36,
+  "unresolved_candidate_dates": 7,
+  "original_unchanged": true,
+  "patch_unchanged": true,
+  "observations_total": 35822,
+  "excluded_observations": 167,
+  "daily_or_weekly_missing_prices_inserted": 0,
+  "provider_calendar_used_as_sole_filter": false,
+  "no_point_in_time_data_claim": true,
+  "no_alpha_claim": true,
+  "code_sha256": "473e61789c65a78eb5691686d1be074606760550045f636ceb198a63dd583d06"
+}

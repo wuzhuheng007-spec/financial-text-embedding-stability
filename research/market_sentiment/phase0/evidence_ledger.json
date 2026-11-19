@@ -1,0 +1,285 @@
+{
+  "date": "2026-11-19 Asia/Shanghai",
+  "sources": [
+    {
+      "id": "R01",
+      "title": "NVIDIA财报",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2027",
+      "source_identity": "NVIDIA，2026-11-17，公司原始发布",
+      "authorized_claim_scope": "报告和指引，不证明超出事前预期",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R02",
+      "title": "CEO变动公告",
+      "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-CEO-Transition/",
+      "source_identity": "NVIDIA，2026-11-12",
+      "authorized_claim_scope": "离职与临时CEO",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R03",
+      "title": "财报电话会直接报道",
+      "url": "https://www.reuters.com/business/view-nvidia-earnings-beat-estimates-attention-turns-call-2026-11-17/",
+      "source_identity": "Reuters，2026-11-17",
+      "authorized_claim_scope": "不计划恢复职位的报道，不证明大盘归因",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R04",
+      "title": "Anthropic欧洲发行文件",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026073040/anthropicpbc-fwpxeeaprospea.htm",
+      "source_identity": "Anthropic向SEC提交，2026-11",
+      "authorized_claim_scope": "预定交易与交割安排，不保证最终执行",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R05",
+      "title": "FOMC声明",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+      "source_identity": "Fed，2026-10-28",
+      "authorized_claim_scope": "维持利率与反对票",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R06",
+      "title": "Monetary Policy Report，1999年2月",
+      "url": "https://www.federalreserve.gov/boarddocs/hh/1999/february/ReportSection2.htm",
+      "source_identity": "Federal Reserve",
+      "authorized_claim_scope": "1998年杠杆、融资、避险与恢复背景",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R07",
+      "title": "Investor Sentiment in the Stock Market",
+      "url": "https://pages.stern.nyu.edu/~jwurgler/papers/wurgler_baker_investor_sentiment.pdf",
+      "source_identity": "Malcolm Baker、Jeffrey Wurgler；JEP，2007；10.1257/jep.21.2.129",
+      "authorized_claim_scope": "情绪代理与历史讨论，非本轮复现",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R08",
+      "title": "Monetary Policy Report，2003年2月",
+      "url": "https://www.federalreserve.gov/boarddocs/hh/2003/February/ReportSection2.htm",
+      "source_identity": "Federal Reserve",
+      "authorized_claim_scope": "2001—2002年降息、盈利与治理担忧",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R09",
+      "title": "股市何以有转机",
+      "url": "https://news.sina.com.cn/c/2005-05-19/02376681642.shtml",
+      "source_identity": "央视《中国财经报道》，2005；新浪转载原节目文本",
+      "authorized_claim_scope": "5·19历史叙事，非机器可读行情",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R10",
+      "title": "股权分置改革试点通知",
+      "url": "https://www.szse.cn/marketServices/deal/reform/t20050608_519253.html",
+      "source_identity": "证监会，2005；深交所发布",
+      "authorized_claim_scope": "制度启动与实施程序",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R11",
+      "title": "The Great Recession",
+      "url": "https://www.federalreservehistory.org/essays/great-recession-of-200709",
+      "source_identity": "Robert Rich，Fed History，2013",
+      "authorized_claim_scope": "危机、政策、市场与经济时序",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R12",
+      "title": "GFSR，Box 1.1",
+      "url": "https://www.imf.org/external/pubs/ft/gfsr/2015/02/pdf/text.pdf",
+      "source_identity": "IMF，2015-10",
+      "authorized_claim_scope": "中国股市杠杆与强平反馈",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R13",
+      "title": "2019年1月FOMC声明",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20190130a.htm",
+      "source_identity": "Fed，2019-01-30",
+      "authorized_claim_scope": "耐心政策表述",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R14",
+      "title": "Assessing Global Financial Stability",
+      "url": "https://www.imf.org/en/news/articles/2019/02/04/sp012419-assessing-global-financial-stability",
+      "source_identity": "IMF，2019",
+      "authorized_claim_scope": "中国贸易、监管与融资条件背景",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R15",
+      "title": "2020年3月23日FOMC声明",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200323a.htm",
+      "source_identity": "Fed，2020-03-23",
+      "authorized_claim_scope": "市场运作与资产购买措施",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R16",
+      "title": "2022年11月FOMC纪要",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20221102.htm",
+      "source_identity": "Fed，2022-11-23发布；会议11月1—2日",
+      "authorized_claim_scope": "紧缩、时滞和终点预期；回测要用发布日期",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R17",
+      "title": "2024年9月24日发布会全文",
+      "url": "https://www.sse.com.cn/home/component/news/c/c_20240924_10762338.shtml",
+      "source_identity": "国新办发布会，上交所转载",
+      "authorized_claim_scope": "政策宣布和具体工具",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R18",
+      "title": "失业新闻与股市反应",
+      "url": "https://www.nber.org/system/files/working_papers/w8092/w8092.pdf",
+      "source_identity": "John H. Boyd、Jian Hu、Ravi Jagannathan；NBER WP8092，2001；10.3386/w8092",
+      "authorized_claim_scope": "消息反应的状态依赖；引用的是工作论文版本",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R19",
+      "title": "VIX与期限结构说明",
+      "url": "https://www.cboe.com/insights/posts/inside-volatility-trading-is-vix-backwardation-necessarily-a-sign-of-a-future-down-market",
+      "source_identity": "Cboe，2022",
+      "authorized_claim_scope": "预期波动不等于方向",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R20",
+      "title": "AAII调查方法",
+      "url": "https://www.aaii.com/sentimentsurvey",
+      "source_identity": "AAII，持续更新",
+      "authorized_claim_scope": "周度调查、六个月预期与样本性质",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R21",
+      "title": "Investor Sentiment and the Cross-Section of Stock Returns",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2006.00885.x",
+      "source_identity": "Malcolm Baker、Jeffrey Wurgler；JF，2006；10.1111/j.1540-6261.2006.00885.x",
+      "authorized_claim_scope": "原始情绪指数与横截面研究",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R22",
+      "title": "Investor Sentiment Aligned",
+      "url": "https://ink.library.smu.edu.sg/lkcsb_research/3775/",
+      "source_identity": "Dashan Huang、Fuwei Jiang、Jun Tu、Guofu Zhou；RFS，2015；10.1093/rfs/hhu080",
+      "authorized_claim_scope": "学术身份与预测总市场的研究目标",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R23",
+      "title": "HY OAS序列说明",
+      "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+      "source_identity": "ICE，经FRED",
+      "authorized_claim_scope": "当前公开历史长度限制",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "R24",
+      "title": "BW复现与中美扩展",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/ecin.13290",
+      "source_identity": "Kaiwen Leong、Dan Li、Huailu Li、Chuangwei Peng、Zhanyu Xu；Economic Inquiry；在线首发2025，当前页标示2026卷；10.1111/ecin.13290",
+      "authorized_claim_scope": "部分代理跨时期变化及中美差异",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "D01",
+      "title": "中国股价代理",
+      "url": "https://fred.stlouisfed.org/series/SPASTT01CNM661N",
+      "source_identity": "OECD，经FRED",
+      "authorized_claim_scope": "本轮下载原始输入",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "D02",
+      "title": "美国股价代理",
+      "url": "https://fred.stlouisfed.org/series/SPASTT01USM661N",
+      "source_identity": "OECD，经FRED",
+      "authorized_claim_scope": "本轮下载原始输入",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    },
+    {
+      "id": "D03",
+      "title": "VIX输入",
+      "url": "https://fred.stlouisfed.org/series/VIXCLS",
+      "source_identity": "Cboe，经FRED",
+      "authorized_claim_scope": "本轮下载原始输入",
+      "status": "VERIFIED_AT_STATED_SCOPE",
+      "verification": "Primary document directly opened and inspected; current Reuters reporting explicitly attributed."
+    }
+  ],
+  "unresolved_claims": [
+    {
+      "claim": "Anthropic IPO caused market-wide liquidity exhaustion",
+      "status": "NOT_VERIFIED",
+      "reason": "No measured counterfactual, investor funding/flows or event study."
+    },
+    {
+      "claim": "News-reaction candidate predicts medium-term reversals",
+      "status": "NOT_VERIFIED",
+      "reason": "No point-in-time news/expectation panel; proposed only."
+    },
+    {
+      "claim": "Thirty-year full A-share efficacy established",
+      "status": "NOT_VERIFIED",
+      "reason": "Country proxy starts 1999; no all-A panel; current vintage."
+    },
+    {
+      "claim": "Pilot shows universal improvement from price confirmation",
+      "status": "INCONCLUSIVE",
+      "reason": "US and China results differ; rare clustered signals; descriptive design."
+    }
+  ],
+  "failed_source_access": [
+    "CNN official Fear and Greed body",
+    "NBER w25040 landing page",
+    "IMF 2006 Article IV body",
+    "2026-10-28 FOMC minutes body"
+  ],
+  "plan_evidence": "protocol.md",
+  "numerical_provenance": [
+    "raw_manifest.json",
+    "pilot_config.json",
+    "pilot_run_manifest.json",
+    "pilot_results.json",
+    "pilot_summary.csv",
+    "self_check.json"
+  ]
+}

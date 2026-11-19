@@ -1,0 +1,90 @@
+[
+  {
+    "id": "R000",
+    "title": "历史机制综述与公开月度初筛归档",
+    "status": "ARCHIVED_DESCRIPTIVE_ONLY",
+    "plan": "整理此前已执行的历史资料和OECD/FRED探索性筛选。",
+    "actual": "原报告、协议、20行初筛结果和运行回执导入本目录；本次没有重跑旧实验。",
+    "evidence": [
+      "phase0/Market_Sentiment_Turning_Points_20261119.md",
+      "phase0/pilot_run_manifest.json",
+      "phase0/pilot_summary.csv",
+      "phase0/self_check.json"
+    ],
+    "claims": "固定旧输入上的描述性筛选及其负面/稀疏结果保留；不同市场未呈一致改善。",
+    "limits": "不同于moomoo价格数据；非PIT、非独立未知测试，不与后续结果合并。",
+    "evidence_sha256": {
+      "phase0/Market_Sentiment_Turning_Points_20261119.md": "d660330dcc87ee5c63535c935ae30e65f5d0889e76cfa943e5c8953b2aaeaf02",
+      "phase0/pilot_run_manifest.json": "2f1708437ad154d0b687dddb3c850ea089887fb634a9eb08eee4c189fcd89706",
+      "phase0/pilot_summary.csv": "9343f994bb3b898287a0a4083ed8b91b961b73d1c7f83fea2535d5f5ca9f864b",
+      "phase0/self_check.json": "6cc32d287b7f66e201f4e00cdaa60341883cf8aa246fdc21b9c86d3d8aaa1870"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.084180+00:00"
+  },
+  {
+    "id": "R001",
+    "title": "moomoo历史数据验收与已知问题隔离",
+    "status": "MERGED_WITH_UNRESOLVED_LIMITS",
+    "plan": "验收原始包及定向补抓，保留异常证据和缺失。",
+    "actual": "既有5段补抓新增1227行，数据库与原响应逐行核对；原回执导入GitHub。",
+    "evidence": [
+      "data_audit/merge_receipt.json",
+      "data_audit/series_registry.json",
+      "data_audit/audit/post_merge_self_check.json",
+      "data_audit/audit/unresolved_dates.json"
+    ],
+    "claims": "声明版本内的文件和派生数据对账通过，7个SOX候选缺口未填。",
+    "limits": "源行情私有；没有逐日跨供应商独立核价，不认证总回报或完整交易日历。",
+    "evidence_sha256": {
+      "data_audit/merge_receipt.json": "e6c4f4088e099e471a9dae7471df5cf3f4ad8377ba8514a05a30bdebed12a100",
+      "data_audit/series_registry.json": "9481b61fe9ecc90d63c671e889ba6fc10dba3e426ce86e39e027e8ad8bccb9b2",
+      "data_audit/audit/post_merge_self_check.json": "7841655b7b8972dbf9a73e430b65c36deac8bbf7fe9f81a6baa49990692497be",
+      "data_audit/audit/unresolved_dates.json": "77e5108dbab7f9d49eb677526d8b7110fc21117f1a42d788a79a847cdc2be6b2"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.084948+00:00"
+  },
+  {
+    "id": "R002",
+    "title": "第一阶段价格状态基线及历史拐点对照",
+    "status": "PARTIALLY_SUPPORTED",
+    "plan": "固定规则后比较四条代理的4/8/12自然周价格分布，并区分极值日与确认日。",
+    "actual": "此前实际运行270行统计、108行状态差和401条两阈值极值；输入回溯和未来扰动自检通过，本次导入既有结果。",
+    "evidence": [
+      "phase1/PROTOCOL_zh.md",
+      "phase1/config.json",
+      "phase1/results/run_manifest.json",
+      "phase1/results/baseline_summary.csv",
+      "phase1/results/self_check.json",
+      "phase1/Phase1_Research_Report_zh.md"
+    ],
+    "claims": "在指定后期段的8周主展示，弱势反弹相对全部周的均值差方向不同，四个主区间都覆盖零；局部20%确认不代表下跌结束。",
+    "limits": "当期版本价格、相关标的、重叠窗口、同团队自检，未验证情绪或可交易收益。",
+    "evidence_sha256": {
+      "phase1/PROTOCOL_zh.md": "9746cdef0b7e9aac93592fc31cf8087cd4cc9dd379655114f3d7fbd9dca0df22",
+      "phase1/config.json": "12845f996c85d68296fa3873d98e9379092a0fd0d386fa0f9faa2d451270110e",
+      "phase1/results/run_manifest.json": "5fff243ed3c253f275c95e7a7050bdda709bb70fef045c1fc3729956f4ed4aae",
+      "phase1/results/baseline_summary.csv": "2cfd7ece51778bf8cca59afed2812a100fc463655f780a94e8b07d7d397d8499",
+      "phase1/results/self_check.json": "f307b3aaccd8c49fdfae1759140a28b8bd1b64e395f90af6ebcbae9ea2185169",
+      "phase1/Phase1_Research_Report_zh.md": "c01723e23ea63291da19bddfd4865f6fc25b42d49d40906a56fd983fb5b3f771"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.085829+00:00"
+  },
+  {
+    "id": "R003",
+    "title": "第二阶段BW可用性审核启动",
+    "status": "IN_PROGRESS",
+    "plan": "核对作者版本、发布滞后、宏观修订和全样本拟合；再做固定原始代理数值诊断。",
+    "actual": "已查阅作者README和Stata源码，冻结诊断方案；尚未执行本阶段数值诊断。",
+    "evidence": [
+      "phase2/PLAN_zh.md",
+      "phase2/freeze_receipt.json"
+    ],
+    "claims": "研究目标及执行边界已记录；尚无新增收益或预测结果。",
+    "limits": "没有历史发布版本，不把当前SENT一阶差分当作情绪变化。",
+    "evidence_sha256": {
+      "phase2/PLAN_zh.md": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "phase2/freeze_receipt.json": "11183532764b616122e096aa93bb59750d4a464a301b1b7592088818a0ee4549"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.086276+00:00"
+  }
+]

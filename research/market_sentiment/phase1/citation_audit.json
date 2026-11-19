@@ -1,0 +1,237 @@
+{
+  "retrieval_date_client": "2026-11-19",
+  "search_scope": "Targeted official sources and original paper identities; not exhaustive systematic review",
+  "sources": [
+    {
+      "id": "L01",
+      "title": "Investor Sentiment and the Cross-Section of Stock Returns",
+      "authors_or_institution": "Malcolm Baker; Jeffrey Wurgler",
+      "venue_year": "Journal of Finance 61(4),1645-1680,2006",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2006.00885.x",
+      "retrieval_ref": "turn856815596view0",
+      "scope": "情绪代理及股票横截面研究；不直接证明本研究的大盘择时",
+      "inspected_location": "Abstract and introduction, lines72-101",
+      "doi": "10.1111/j.1540-6261.2006.00885.x",
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "L02",
+      "title": "Investor Sentiment Aligned: A Powerful Predictor of Stock Returns",
+      "authors_or_institution": "Dashan Huang; Fuwei Jiang; Jun Tu; Guofu Zhou",
+      "venue_year": "Review of Financial Studies 28(3),791-837,2015",
+      "url": "https://ink.library.smu.edu.sg/lkcsb_research/3775/",
+      "retrieval_ref": "turn779377530view0",
+      "scope": "总市场收益预测目标、作者及发表身份；本轮未复现论文或核查全文算法",
+      "inspected_location": "Metadata and author abstract, lines15-81",
+      "doi": "10.1093/rfs/hhu080",
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "L03",
+      "title": "Giving Content to Investor Sentiment: The Role of Media in the Stock Market",
+      "authors_or_institution": "Paul C. Tetlock",
+      "venue_year": "Journal of Finance 62(3),1139-1168,2007",
+      "url": "https://business.columbia.edu/faculty/research/giving-content-investor-sentiment-role-media-stock-market",
+      "retrieval_ref": "turn856815596view2",
+      "scope": "日报文本悲观语气与价格压力/随后回归的原论文报告；不能外推为中期因子已有效",
+      "inspected_location": "Author institution abstract and publication metadata, lines56-85",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "L04",
+      "title": "The Stock Market's Reaction to Unemployment News: Why Bad News Is Usually Good for Stocks",
+      "authors_or_institution": "John H. Boyd; Jian Hu; Ravi Jagannathan",
+      "venue_year": "Journal of Finance 60(2),649-672,2005",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2005.00742.x",
+      "retrieval_ref": "turn826537694view2",
+      "scope": "失业消息反应随经济扩张/收缩变化的原论文报告，支持条件化的研究动机",
+      "inspected_location": "Abstract lines82-84; identity lines15-56",
+      "doi": "10.1111/j.1540-6261.2005.00742.x",
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "M01",
+      "title": "AAII Investor Sentiment Survey",
+      "authors_or_institution": "AAII",
+      "venue_year": "Official methodology, retrieved2026-11-19",
+      "url": "https://www.aaii.com/sentimentsurvey",
+      "retrieval_ref": "turn401593480view0",
+      "scope": "每周调查未来六个月方向；周四公布的当前说明。历史文件未下载，不据此声称已回测",
+      "inspected_location": "Methodology lines136-139,215-223,285-287",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "M02",
+      "title": "VIX Options Product Specifications",
+      "authors_or_institution": "Cboe",
+      "venue_year": "Official product description",
+      "url": "https://www.cboe.com/tradable-products/vix/vix-options/specifications/",
+      "retrieval_ref": "turn335711326view0",
+      "scope": "VIX基于SPX期权报价，衡量30天预期波动；不是本项目价格波动率的同义词",
+      "inspected_location": "Description lines77-79",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "D01",
+      "title": "Jeffrey Wurgler: Investor sentiment data",
+      "authors_or_institution": "Jeffrey Wurgler, NYU Stern",
+      "venue_year": "Author data page; workbook README updatedMarch2026",
+      "url": "https://pages.stern.nyu.edu/~jwurgler/main.htm",
+      "retrieval_ref": "turn401593480view2",
+      "scope": "官方作者数据链接与版本入口；下载的工作簿另由哈希与schema审计确认",
+      "inspected_location": "Data link lines44-46",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H01",
+      "title": "Monetary Policy Report: Economic and Financial Developments in1998 and Early1999",
+      "authors_or_institution": "Federal Reserve",
+      "venue_year": "1999-02-23",
+      "url": "https://www.federalreserve.gov/boarddocs/hh/1999/february/ReportSection2.htm",
+      "retrieval_ref": "turn481262281view0",
+      "scope": "俄罗斯违约后风险重估、信用收缩背景；不是当时可用的提前指标",
+      "inspected_location": "Financial market developments, lines171-202,315",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H02",
+      "title": "Monetary Policy Report: Economic and Financial Developments in2002 and Early2003",
+      "authors_or_institution": "Federal Reserve",
+      "venue_year": "2003-02-11",
+      "url": "https://www.federalreserve.gov/boarddocs/hh/2003/February/ReportSection2.htm",
+      "retrieval_ref": "turn481262281view1",
+      "scope": "盈利前景、治理担忧和短暂反弹；财报匹配或超过预期而前瞻销售利润仍暗淡",
+      "inspected_location": "Equity prices lines264-277",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H03",
+      "title": "The Great Recession",
+      "authors_or_institution": "Robert Rich, Federal Reserve History",
+      "venue_year": "Retrospective account,2013",
+      "url": "https://www.federalreservehistory.org/essays/great-recession-of-200709",
+      "retrieval_ref": "turn779377530view3",
+      "scope": "2007-2009危机、市场和实体经济时序；使用的是官方机构历史回顾而非当时文本",
+      "inspected_location": "Main account lines39-42 and policy discussion",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H04",
+      "title": "关于上市公司股权分置改革试点有关问题的通知",
+      "authors_or_institution": "中国证监会，深交所发布",
+      "venue_year": "2005-04-30,证监发[2005]32号",
+      "url": "https://www.szse.cn/marketServices/deal/reform/t20050608_519253.html",
+      "retrieval_ref": "turn861574238view0",
+      "scope": "改革试点启动及实施程序；不直接确定股市最低点",
+      "inspected_location": "Main text lines14-35",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H05",
+      "title": "深圳证监局关于2015年第三季度证券期货纠纷投诉情况的通报",
+      "authors_or_institution": "深圳证监局",
+      "venue_year": "网页2015-10-30；落款2015-10-27",
+      "url": "https://www.csrc.gov.cn/shenzhen/c101531/c1309473/content.shtml",
+      "retrieval_ref": "turn879811242view0",
+      "scope": "确有融资融券强平和分级基金下折投诉；不据此估计全市场强平规模或证明下跌因果",
+      "inspected_location": "Hotspots lines45-49",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H06",
+      "title": "Federal Reserve issues FOMC statement",
+      "authors_or_institution": "Federal Reserve",
+      "venue_year": "2019-01-30,14:00EST",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20190130a.htm",
+      "retrieval_ref": "turn779377530view4",
+      "scope": "政策耐心表述；不自动等于降息或A股宽松",
+      "inspected_location": "Statement lines11-15",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H07",
+      "title": "Federal Reserve issues FOMC statement",
+      "authors_or_institution": "Federal Reserve",
+      "venue_year": "2020-03-23,08:00EDT",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200323a.htm",
+      "retrieval_ref": "turn779377530view5",
+      "scope": "按市场运行需要购买国债与MBS以支持信用传导",
+      "inspected_location": "Statement lines11-18",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H08",
+      "title": "Minutes of the Federal Open Market Committee, November1-2,2022",
+      "authors_or_institution": "Federal Reserve",
+      "venue_year": "会议2022-11-01/02；网页更新2022-11-23",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20221102.htm",
+      "retrieval_ref": "turn481262281view2",
+      "scope": "放慢加息步伐与最终政策限制程度分开；不能把纪要回填到会议当日",
+      "inspected_location": "Policy discussion lines248-252; last update line310",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    },
+    {
+      "id": "H09",
+      "title": "国新办举行新闻发布会：介绍金融支持经济高质量发展有关情况",
+      "authors_or_institution": "国务院新闻办/人民银行等，上交所转载原文",
+      "venue_year": "2024-09-24,09:00北京时间",
+      "url": "https://www.sse.com.cn/home/component/news/c/c_20240924_10762338.shtml",
+      "retrieval_ref": "turn861574238view3",
+      "scope": "降准降息和支持股市工具的政策宣布；不证明当天为价格最低点或因果贡献",
+      "inspected_location": "Publication and main announcement lines36-62",
+      "doi": null,
+      "primary_source_opened": true,
+      "status": "VERIFIED_AT_STATED_SCOPE"
+    }
+  ],
+  "failed_accesses": [
+    {
+      "url": "https://doi.org/10.1093/rfs/hhu080",
+      "result": "Publisher redirected page inaccessible; author institutional metadata used instead"
+    },
+    {
+      "url": "https://www.nber.org/papers/w8092",
+      "result": "403; 2005 publisher article opened instead"
+    },
+    {
+      "url": "https://www.imf.org/external/pubs/ft/gfsr/2015/02/pdf/text.pdf",
+      "result": "403; alternate full PDF too large; excluded from this round claim support"
+    },
+    {
+      "url": "https://www.aaii.com/files/surveys/sentiment.xls",
+      "result": "403; no historical spreadsheet acquired"
+    },
+    {
+      "url": "https://www.cboe.com/tradable_products/vix/vix_white_paper/",
+      "result": "404; official specifications page opened instead"
+    }
+  ],
+  "quoted_passages_reproduced": false
+}

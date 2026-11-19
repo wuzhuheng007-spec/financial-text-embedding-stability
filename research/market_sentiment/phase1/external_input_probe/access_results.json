@@ -1,0 +1,16 @@
+[
+  {
+    "file": "BW_SENTIMENT.xlsx",
+    "url": "https://pages.stern.nyu.edu/~jwurgler/data/SENTIMENT.xlsx",
+    "status": "DOWNLOADED_REQUIRES_SCHEMA_AND_DATE_AUDIT",
+    "bytes": 130146,
+    "sha256": "3580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+    "content_type": "application/vnd.openxmlformats"
+  },
+  {
+    "file": "AAII_sentiment.xls",
+    "url": "https://www.aaii.com/files/surveys/sentiment.xls",
+    "status": "ACCESS_NOT_COMPLETED",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

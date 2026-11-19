@@ -1,0 +1,52 @@
+{
+  "source_url": "https://pages.stern.nyu.edu/~jwurgler/data/SENTIMENT.xlsx",
+  "source_landing_url": "https://pages.stern.nyu.edu/~jwurgler/main.htm",
+  "source_sha256": "3580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+  "workbook_sheets": [
+    "README",
+    "DATA"
+  ],
+  "data_rows": 816,
+  "columns": [
+    "yearmo",
+    "SENT",
+    "SENT_ORTH",
+    "pdnd",
+    "ripo",
+    "nipo",
+    "cefd",
+    "s",
+    "indpro",
+    "consdur",
+    "consnon",
+    "consserv",
+    "recess",
+    "employ",
+    "cpi"
+  ],
+  "time_unit": "monthly yearmo",
+  "duplicate_months": 0,
+  "measures": {
+    "SENT": {
+      "nonmissing_months": 726,
+      "first_yearmo": 196507,
+      "last_yearmo": 202512,
+      "missing_within_nonmissing_span": []
+    },
+    "SENT_ORTH": {
+      "nonmissing_months": 725,
+      "first_yearmo": 196507,
+      "last_yearmo": 202512,
+      "missing_within_nonmissing_span": [
+        202510
+      ]
+    }
+  },
+  "notes": [
+    "Current-vintage workbook, README updated March2026. Values as of end of indicated period is not proof of public availability at that time.",
+    "README permits data revisions. Historical release calendar and expanding-window index construction not certified.",
+    "No BW/AAII factor efficacy run in phase1.",
+    "SENT_ORTH missing values are not filled."
+  ],
+  "audit_code_sha256": "3d83380d3e383482e2b53375c11324735f5887650d268c8da165457aeefb6733"
+}

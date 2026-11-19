@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "validation_type": "same-author raw-input reconciliation and future-perturbation check",
+  "independent_validation": false,
+  "weekly_prices_checked": 4942,
+  "eligible_feature_rows_checked": 4594,
+  "forward_outcomes_checked": 13620,
+  "summary_rows_reconciled": 270,
+  "primary_bootstrap_intervals_recomputed": 7,
+  "cycle_rows_checked": 401,
+  "future_perturbation_checks": [
+    {
+      "symbol": "US.QQQ",
+      "future_prices_multiplied_by": 7,
+      "prefix_rows": 723,
+      "earlier_states_unchanged": true
+    },
+    {
+      "symbol": "SH.000001",
+      "future_prices_multiplied_by": 7,
+      "prefix_rows": 782,
+      "earlier_states_unchanged": true
+    },
+    {
+      "symbol": "SH.000688",
+      "future_prices_multiplied_by": 7,
+      "prefix_rows": 163,
+      "earlier_states_unchanged": true
+    },
+    {
+      "symbol": "US..SOX",
+      "future_prices_multiplied_by": 7,
+      "prefix_rows": 806,
+      "earlier_states_unchanged": true
+    }
+  ],
+  "input_unchanged": true,
+  "code_sha256": "efe68d3d04f9e39412643d606560326c415daa71ffafa3eaed02c848b965e61f"
+}

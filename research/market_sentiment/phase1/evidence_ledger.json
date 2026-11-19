@@ -1,0 +1,87 @@
+{
+  "status": "PARTIALLY_SUPPORTED",
+  "numeric_chain": [
+    "report cells / figures",
+    "results/primary_display_cells.csv or cycles_all_thresholds.csv",
+    "results/weekly_panel.csv",
+    "run_manifest.json and config.json",
+    "immutable market_research.sqlite and prior row provenance"
+  ],
+  "run_manifest": "results/run_manifest.json",
+  "configuration": "config.json",
+  "input_database_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "claims": [
+    {
+      "id": "N01",
+      "claim": "Price-state means, intervals and counts shown in section3",
+      "evidence": "results/primary_display_cells.csv",
+      "status": "VERIFIED_AT_SCOPED_DESCRIPTIVE_LEVEL"
+    },
+    {
+      "id": "N02",
+      "claim": "Weak-rebounding effects differ in direction and four primary intervals include zero",
+      "evidence": "results/primary_display_cells.csv; filter state=weak_rebounding",
+      "status": "VERIFIED_AT_SCOPED_DESCRIPTIVE_LEVEL"
+    },
+    {
+      "id": "N03",
+      "claim": "Retrospective threshold extrema and confirmation dates",
+      "evidence": "results/cycles_all_thresholds.csv; illustrative_case_price_matches.csv",
+      "status": "VERIFIED_UNDER_FROZEN_OPERATIONAL_DEFINITION"
+    },
+    {
+      "id": "N04",
+      "claim": "All figure inputs",
+      "evidence": "results/primary_display_cells.csv; weekly_panel.csv; cycles_all_thresholds.csv",
+      "status": "VERIFIED_FROM_SAVED_RESULTS"
+    },
+    {
+      "id": "D01",
+      "claim": "BW workbook nonmissing dates and missing month",
+      "evidence": "external_input_probe/BW_schema_audit.json; BW_SENTIMENT.xlsx; audit_external.py",
+      "status": "VERIFIED_CURRENT_VINTAGE_ONLY"
+    },
+    {
+      "id": "Q01",
+      "claim": "No price signal or news sentiment efficacy established",
+      "evidence": "PROTOCOL_zh.md; run_manifest.json; NEWS_DATA_CONTRACT_zh.md",
+      "status": "INCONCLUSIVE_FOR_PREDICTIVE_CLAIM"
+    }
+  ],
+  "citations": "citation_audit.json",
+  "self_check": "results/self_check.json",
+  "independent_validation": false,
+  "plan_execution": [
+    {
+      "id": "P1",
+      "status": "PASS",
+      "artifact": "freeze_receipt.json"
+    },
+    {
+      "id": "P2",
+      "status": "PASS",
+      "artifact": "results/run_manifest.json"
+    },
+    {
+      "id": "P3",
+      "status": "PASS",
+      "artifact": "results/self_check.json"
+    },
+    {
+      "id": "P4",
+      "status": "PASS_AT_STATED_SCOPE",
+      "artifact": "citation_audit.json"
+    },
+    {
+      "id": "P5",
+      "status": "PASS",
+      "artifact": "Phase1_Research_Report_zh.md"
+    },
+    {
+      "id": "P6_EXTRA",
+      "status": "BW_AUDITED_AAII_ACCESS_INCOMPLETE",
+      "artifact": "external_input_probe/access_results.json",
+      "deviation": "Added feasibility diagnosis only; frozen analysis inputs unchanged"
+    }
+  ]
+}

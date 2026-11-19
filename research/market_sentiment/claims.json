@@ -1,0 +1,55 @@
+[
+  {
+    "id": "C001",
+    "claim": "历史行情已合并且已知缺口保留",
+    "status": "VERIFIED_AT_DECLARED_SCOPE",
+    "evidence": [
+      "data_audit/merge_receipt.json",
+      "data_audit/audit/unresolved_dates.json"
+    ]
+  },
+  {
+    "id": "C002",
+    "claim": "旧公开月度初筛不能证明中美通用情绪反转规则",
+    "status": "INCONCLUSIVE_FOR_GENERALIZATION",
+    "evidence": [
+      "phase0/pilot_summary.csv",
+      "phase0/protocol.md"
+    ]
+  },
+  {
+    "id": "C003",
+    "claim": "第一阶段固定弱势反弹价格规则未显示跨指数一致改善",
+    "status": "VERIFIED_DESCRIPTIVE_ONLY",
+    "evidence": [
+      "phase1/results/primary_display_cells.csv",
+      "phase1/config.json"
+    ]
+  },
+  {
+    "id": "C004",
+    "claim": "局部阈值回升不保证后续下跌结束，QQQ2022为本配置的说明性反例",
+    "status": "VERIFIED_OPERATIONAL_EXAMPLE",
+    "evidence": [
+      "phase1/results/cycles_dates_only.csv",
+      "phase1/Phase1_Research_Report_zh.md"
+    ]
+  },
+  {
+    "id": "C005",
+    "claim": "新闻反应变化在价格状态之外具有稳定预测增量",
+    "status": "NOT_VERIFIED",
+    "evidence": [
+      "phase1/NEWS_DATA_CONTRACT_zh.md"
+    ]
+  },
+  {
+    "id": "C006",
+    "claim": "当前发布BW工作簿可直接作为当时可得的历史情绪信号",
+    "status": "NOT_ESTABLISHED",
+    "evidence": [
+      "phase1/external_input_probe/BW_schema_audit.json",
+      "phase2/PLAN_zh.md"
+    ]
+  }
+]

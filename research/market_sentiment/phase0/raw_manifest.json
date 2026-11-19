@@ -1,0 +1,66 @@
+[
+  {
+    "series": "SPASTT01CNM661N",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SPASTT01CNM661N&cosd=1990-01-01&coed=2026-11-18",
+    "sha256": "e9d0249d76f12e9b98344d98b0b0d959f2d60b1934a92cc7de5ef12323bd9494",
+    "bytes": 6743,
+    "valid_rows": 334,
+    "first": [
+      "1999-01-01,31.03657",
+      "1999-02-01,29.59338"
+    ],
+    "last": [
+      "2026-09-01,105.74020",
+      "2026-10-01,101.37470"
+    ],
+    "retrieved_utc": "2026-11-18T20:24:11.191279+00:00"
+  },
+  {
+    "series": "SPASTT01USM661N",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SPASTT01USM661N&cosd=1990-01-01&coed=2026-11-18",
+    "sha256": "87b79c73f5ae0a47278ace763c6e40b2380ecf4fe4d62bfae5cb46511c49f54d",
+    "bytes": 9449,
+    "valid_rows": 442,
+    "first": [
+      "1990-01-01,18.566480",
+      "1990-02-01,18.077590"
+    ],
+    "last": [
+      "2026-09-01,226.100300",
+      "2026-10-01,225.032800"
+    ],
+    "retrieved_utc": "2026-11-18T20:24:14.339148+00:00"
+  },
+  {
+    "series": "VIXCLS",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=1990-01-01&coed=2026-11-18",
+    "sha256": "eed5fb6b53326825a3e92ba7055749b45b29e9c79015f4263d7494e666573910",
+    "bytes": 162003,
+    "valid_rows": 9319,
+    "first": [
+      "1990-01-02,17.24",
+      "1990-01-03,18.19"
+    ],
+    "last": [
+      "2026-11-16,22.91",
+      "2026-11-17,25.46"
+    ],
+    "retrieved_utc": "2026-11-18T20:24:19.236891+00:00"
+  },
+  {
+    "series": "BAMLH0A0HYM2",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAMLH0A0HYM2&cosd=1990-01-01&coed=2026-11-18",
+    "sha256": "a8995f0ad90c31fb9b879ec5d8d8fe21b116ef32b985b94cf6971a8a8e63c0c5",
+    "bytes": 12686,
+    "valid_rows": 785,
+    "first": [
+      "2023-11-20,3.92",
+      "2023-11-21,3.95"
+    ],
+    "last": [
+      "2026-11-16,3.34",
+      "2026-11-17,3.43"
+    ],
+    "retrieved_utc": "2026-11-18T20:24:22.090891+00:00"
+  }
+]

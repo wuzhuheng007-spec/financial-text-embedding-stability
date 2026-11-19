@@ -1,0 +1,63 @@
+{
+  "version": "0.1",
+  "date_client": "2026-11-19",
+  "source": "moomoo only",
+  "cutoff": "2026-11-17",
+  "scope": "Current-vintage price research dataset with explicit quality flags; no alpha claim.",
+  "merge": {
+    "only_failed_window_patches": true,
+    "patch_must_match_saved_raw_response": true,
+    "patch_date_set_must_match_frozen_reference": true,
+    "qqq_adjustment_anchor_days": 36,
+    "anchor_fields": [
+      "open",
+      "high",
+      "low",
+      "close"
+    ],
+    "anchor_comparison": "exact float equality; early and recent anchors; not a proof of every historical adjustment"
+  },
+  "research_exclusions": [
+    {
+      "symbol": "SH.000001",
+      "frequency": "DAY",
+      "date": "2014-12-20",
+      "reason": "Saturday source anomaly, reconfirmed by provider; preserve but exclude"
+    },
+    {
+      "symbol": "SH.000001",
+      "frequency": "WEEK",
+      "date": "2014-12-15",
+      "reason": "Week contains the anomalous Saturday and is not independently accepted"
+    },
+    {
+      "symbol": "*",
+      "frequency": "WEEK",
+      "rule": "week label plus four calendar days exceeds cutoff",
+      "reason": "Not a completed week at the cutoff"
+    },
+    {
+      "symbol": "SH.000688",
+      "frequency": "*",
+      "rule": "original before_live_index_publication flag",
+      "reason": "Prepublication history excluded from as-available research views"
+    }
+  ],
+  "unresolved": {
+    "sox_daily_candidate_dates": [
+      "2000-01-03",
+      "2000-03-01",
+      "2000-03-02",
+      "2000-03-03",
+      "2000-03-06",
+      "2000-08-28",
+      "2009-08-11"
+    ],
+    "sox_gap_basis": "Missing relative to observed QQQ dates, and empty on provider recheck; not independently certified SOX session calendar",
+    "missing_prices": "No insertion or forward/back filling",
+    "calendars": "Vendor calendar retained as evidence, not used as sole filtering authority",
+    "volume": "Raw fields only; index activity definitions unverified",
+    "total_return": "Not established by a forward-adjustment flag",
+    "timestamps": "Preserve raw values; nominal date-level availability only, no intraday synchronization claim"
+  }
+}

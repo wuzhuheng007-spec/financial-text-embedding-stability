@@ -1,0 +1,14 @@
+{
+  "date_client": "2026-11-19",
+  "project": "medium_term_market_sentiment",
+  "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
+  "branch": "codex/personal-cloud-ui-20261118",
+  "latest_step_id": "R003",
+  "price_baseline": "EXECUTED_DESCRIPTIVE_SELF_CHECKED",
+  "bw_availability_audit": "IN_PROGRESS",
+  "news_increment_evaluation": "NOT_RUN_IN_THIS_STUDY",
+  "other_repository_experiments": "Separate; existing source reports are not reclassified by this study",
+  "current_vintage": true,
+  "independent_replication": false,
+  "sync_checkpoint": "Prepared initial archive and frozen next-stage plan; branch history is authoritative after push"
+}

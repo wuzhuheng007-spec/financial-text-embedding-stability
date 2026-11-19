@@ -1,0 +1,129 @@
+{
+  "independent_auditor": false,
+  "method": "Separate self-check implementation re-read raw CSV; did not import pilot.py",
+  "rows_checked": 20,
+  "checks": [
+    {
+      "market": "US",
+      "segment": "full",
+      "rule": "all_months",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "full",
+      "rule": "panic_level",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "full",
+      "rule": "panic_easing",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "full",
+      "rule": "easing_plus_momentum",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "full",
+      "rule": "momentum_only",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "2016_2025",
+      "rule": "all_months",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "2016_2025",
+      "rule": "panic_level",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "2016_2025",
+      "rule": "panic_easing",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "2016_2025",
+      "rule": "easing_plus_momentum",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "US",
+      "segment": "2016_2025",
+      "rule": "momentum_only",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "full",
+      "rule": "all_months",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "full",
+      "rule": "panic_level",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "full",
+      "rule": "panic_easing",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "full",
+      "rule": "easing_plus_momentum",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "full",
+      "rule": "momentum_only",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "2016_2025",
+      "rule": "all_months",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "2016_2025",
+      "rule": "panic_level",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "2016_2025",
+      "rule": "panic_easing",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "2016_2025",
+      "rule": "easing_plus_momentum",
+      "counts_and_means": "PASS"
+    },
+    {
+      "market": "CN",
+      "segment": "2016_2025",
+      "rule": "momentum_only",
+      "counts_and_means": "PASS"
+    }
+  ],
+  "raw_hashes": "PASS",
+  "uncertainty_check": "Bootstrap code inspected; not an independent statistical replication."
+}

@@ -1,0 +1,81 @@
+{
+  "Final status": "PARTIALLY_SUPPORTED",
+  "Plan–execution gate": "PASS",
+  "Experimental sufficiency gate": "LIMITED",
+  "Result provenance gate": "PASS",
+  "Citation verification gate": "PASS",
+  "Commands actually run": 5,
+  "command_count_scope": "Successful main-program invocations only: baseline.py once, self_check.py once, audit_external.py once, make_report.py twice (second invocation only narrows report wording, with no new analysis). Retrieval and shell diagnostics excluded; packaging not yet counted.",
+  "Authoritative artifacts inspected": 18,
+  "artifact_count_scope": "16 directly inspected official/original sources, one immutable price database, one original author workbook; excludes derived files",
+  "Unresolved blockers": [
+    {
+      "item": "Point-in-time news and expectations not acquired",
+      "blocks": "news factor validation"
+    },
+    {
+      "item": "BW release-time/revision and historical fitting audit incomplete",
+      "blocks": "PIT sentiment timing claims"
+    },
+    {
+      "item": "AAII original spreadsheet access403",
+      "blocks": "AAII reproduction"
+    },
+    {
+      "item": "Seven SOX candidate gaps and unverified full calendar",
+      "blocks": "complete long-history coverage claims"
+    },
+    {
+      "item": "No independent external audit or pristine future holdout",
+      "blocks": "independent replication/general efficacy claims"
+    }
+  ],
+  "Claims authorized": "Scoped deterministic price-state descriptions, retrospective rule-defined turns, directly inspected source facts, workbook schema audit",
+  "Claims not authorized": "Sentiment predictive efficacy, causal market attribution, actual strategy excess return, universal turning-time rule",
+  "Worktree/user data preserved": "YES",
+  "price_input_unchanged": true,
+  "independent_validation": false,
+  "self_check": {
+    "status": "PASS",
+    "validation_type": "same-author raw-input reconciliation and future-perturbation check",
+    "independent_validation": false,
+    "weekly_prices_checked": 4942,
+    "eligible_feature_rows_checked": 4594,
+    "forward_outcomes_checked": 13620,
+    "summary_rows_reconciled": 270,
+    "primary_bootstrap_intervals_recomputed": 7,
+    "cycle_rows_checked": 401,
+    "future_perturbation_checks": [
+      {
+        "symbol": "US.QQQ",
+        "future_prices_multiplied_by": 7,
+        "prefix_rows": 723,
+        "earlier_states_unchanged": true
+      },
+      {
+        "symbol": "SH.000001",
+        "future_prices_multiplied_by": 7,
+        "prefix_rows": 782,
+        "earlier_states_unchanged": true
+      },
+      {
+        "symbol": "SH.000688",
+        "future_prices_multiplied_by": 7,
+        "prefix_rows": 163,
+        "earlier_states_unchanged": true
+      },
+      {
+        "symbol": "US..SOX",
+        "future_prices_multiplied_by": 7,
+        "prefix_rows": 806,
+        "earlier_states_unchanged": true
+      }
+    ],
+    "input_unchanged": true,
+    "code_sha256": "efe68d3d04f9e39412643d606560326c415daa71ffafa3eaed02c848b965e61f"
+  },
+  "report_code_sha256": "e199a3816e9d6bf388cba59c5232d22d50188af5f1dfccb589126ee781508298",
+  "report_command": [
+    "sentiment_phase1_20261119/make_report.py"
+  ]
+}
