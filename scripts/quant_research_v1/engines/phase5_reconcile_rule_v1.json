@@ -1,0 +1,26 @@
+{
+ "rule_id": "phase5_reference_reconcile_v1",
+ "declared_at_utc": "2026-11-20T04:40:00Z",
+ "declared_before": "the M1/M2 closeout re-execution of 2026-11-20; no value here was derived from an observed difference",
+ "tolerance_source": "phase5 validation package tolerances already used for layer A on 2026-11-19 (suggested_abs 1e-8, suggested_rel 1e-10)",
+ "finite_numeric": {"abs_tol": 1e-08, "rel_tol": 1e-10, "test": "|actual - reference| <= abs_tol + rel_tol * |reference|"},
+ "cell_classes": ["MISSING_COLUMN", "EMPTY", "NAN", "POS_INF", "NEG_INF", "FINITE", "TEXT"],
+ "class_rule": "the class of every cell must be identical on both sides; TEXT cells must be equal strings; FINITE cells must pass the finite_numeric test",
+ "schema_rule": "column names and column order identical",
+ "key_rule": "keys unique on each side and the key sets equal in both directions",
+ "tables": {
+  "metrics.csv": {"keys": ["symbol", "period", "cost_bps", "strategy"], "status_column": "status",
+                  "allowed_status": ["EXECUTED_PRICE_ONLY", "NO_ELIGIBLE_INTERVALS"]},
+  "contrasts.csv": {"keys": ["symbol", "strategy", "period", "cost_bps", "block", "seed"]},
+  "factor_diagnostics.csv": {"keys": ["symbol", "period", "factor"]}
+ },
+ "ledgers": {
+  "index": "private_output_hashes.json",
+  "raw_hash": "SHA-256 of the decompressed ledger CSV, recomputed by the control step (never taken from the program's own claim)",
+  "strong_evidence": "ledger sets equal in both directions AND every raw hash equal to the reference index",
+  "row_path": "otherwise every ledger is read from the designated reference ledger set (references/phase5_strategy_v1/<input sha256>/) and compared row by row: same schema, keys [signal_date] unique, same row order, cell rule above",
+  "keys": ["signal_date"]
+ },
+ "required_layers": ["internal_self_check", "output_integrity", "reference_reconciliation"],
+ "acceptance": "PASS only when every required layer is PASS; a missing reference makes the result INCOMPLETE (not accepted), never PASS"
+}

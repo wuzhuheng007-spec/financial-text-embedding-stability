@@ -20,4 +20,6 @@ RUN mkdir -p /app/apps/quant_portal/var && chown 10001:10001 /app/apps/quant_por
     && find /app -name '__pycache__' -prune -exec rm -rf {} +
 USER 10001:10001
 ENTRYPOINT ["python", "-m", "scripts.quant_research_v1.worker"]
-CMD ["worker", "--once", "--max-seconds", "900"]
+# Default command only prints the verified capability. Jobs run via deploy/linux/host/quant-research-job.sh
+# (control: job-claim / job-supervise / job-finalize; compute: -m scripts.quant_research_v1.engines.phase5_o2o compute).
+CMD ["capability"]

@@ -46,7 +46,18 @@ if [ -d "$B/research_backup" ]; then cp -a "$B/research_backup" "$scratch/b"; el
 mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
 REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
 IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
-if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60      -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"      -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro      -v /srv/quant/app/deploy/linux/host/backup_scope.json:/x/scope.json:ro      "$APP_IMAGE" /x/r.py verify /b /r --scope /x/scope.json </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+# v2 (numeric) runs are re-executed ONLY through the protected launcher (separate control/compute containers,
+# input read-only subpath, work subpath only) on the scratch copy - the same flags as production (finding F1).
+NUMERIC_IMAGE=$(sed -n 's/^NUMERIC_IMAGE=//p' /srv/quant/private.env)
+V2FLAG=(); [ -n "$NUMERIC_IMAGE" ] && V2FLAG=(--v2-via-launcher)
+if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60      -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"      -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro      -v /srv/quant/app/deploy/linux/host/backup_scope.json:/x/scope.json:ro      "$APP_IMAGE" /x/r.py verify /b /r --scope /x/scope.json "${V2FLAG[@]}" </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+if [ "$RESEARCH_OK" = true ] && grep -q '"state": "PENDING_PROTECTED_RERUNS"' "$B/research_restore_check.json"; then
+  cp "$B/research_restore_check.json" "$B/research_restore_prepare.json"
+  for rid in $(python3 -c 'import json,sys; print(" ".join(x["new_run_id"] for x in json.load(open(sys.argv[1]))["pending_protected_reruns"]))' "$B/research_restore_prepare.json"); do
+    /usr/local/sbin/quant-research-job.sh --image "$NUMERIC_IMAGE" --var-dir "$scratch/r" --run "$rid" --max-seconds 900 >> "$B/research_restore_jobs.log" 2>&1 || true
+  done
+  if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"        -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro        "$APP_IMAGE" /x/r.py verify-finish /r </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+fi
 rm -rf "$scratch"
 
 python3 - "$B" "$OWNER" "$SQLITE_OK" "$RESEARCH_OK" <<'PY'

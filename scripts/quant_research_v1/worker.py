@@ -8,6 +8,15 @@
   register-defaults                     register built-in factors (binds implementation fingerprints)
   enqueue --dataset ID@V --factor ID@V --protocol CONFIG.json
   verify RUN_ID                         legacy ledger-consistency check (v1); see audit.py for v2
+  capability                            print this image's verified engine capabilities (no registry write)
+  register-reference --source DIR --input-sha SHA   copy + verify the designated reference ledgers (phase5 exact input)
+Protected v2 jobs (CONTROL role; started by deploy/linux/host/quant-research-job.sh, never by the web):
+  job-claim --worker-id TOKEN [--run RUN_ID] --max-seconds S   claim one v2 run, prepare runs/<id>/work, print JSON
+  job-supervise RUN_ID --worker-id TOKEN --max-seconds S       renew the lease; exit 10 cancel, 11 timeout, 12 not running
+  job-finalize RUN_ID --compute-exit N --stop-reason R         verify the compute work tree, accept or fail the run
+v2 engines are NOT executed inside `worker --once` / `run-one` (that would give the numeric child the registry and
+every run directory); they run only through the protected launcher. QUANT_RESEARCH_INPROCESS_V2=1 re-enables the
+in-process path for unit tests only, and such runs are recorded as IN_PROCESS_TEST_ONLY.
 Runs never write outside runs/<run_id>/ and never overwrite an existing directory or file.
 
 Environment set by the host runner: QUANT_CODE_VERSION (git revision of the image),
@@ -21,6 +30,7 @@ import hashlib
 import json
 import os
 import platform
+import re
 import signal
 import sys
 import threading
@@ -87,15 +97,29 @@ class Heartbeat(threading.Thread):
             db.close()
 
 
-def worker_engines(db=None) -> list:
+V2_ENGINES = (("phase5_o2o_v1", "1"),)
+
+
+def inprocess_v2_allowed() -> bool:
+    return os.environ.get("QUANT_RESEARCH_INPROCESS_V2") == "1"
+
+
+def worker_engines(db=None, for_inprocess: bool = True) -> list:
     """Engines this worker will claim: the ones requested for this job image (QUANT_WORKER_ENGINES, default the
     legacy engine) that ALSO pass a live capability self-test here. Verified capabilities are recorded in the
-    registry (worker_capabilities) under this image id; the browser never declares them."""
+    registry (worker_capabilities) under this image id; the browser never declares them.
+    for_inprocess=True (worker --once / run-one): v2 engines are excluded unless QUANT_RESEARCH_INPROCESS_V2=1,
+    because in-process execution has no mount isolation. The protected launcher's job-claim passes False."""
     requested = [tuple(x.split("@")) for x in (os.environ.get("QUANT_WORKER_ENGINES") or "legacy_mom20_v1@1").split(",") if x.strip()]
     ok = []
     for eng in requested:
         if eng == registry.LEGACY_ENGINE:
-            ok.append(eng); continue
+            if for_inprocess:
+                ok.append(eng)
+            continue
+        if eng in V2_ENGINES and for_inprocess and not inprocess_v2_allowed():
+            print(f"{eng[0]}@{eng[1]} runs only through the protected launcher (quant-research-job.sh); not claimed here", file=sys.stderr)
+            continue
         if eng == ("phase5_o2o_v1", "1"):
             from .engines import phase5_o2o
             cap = phase5_o2o.capability()
@@ -228,8 +252,15 @@ def execute_v2(db, run, research_root: Path, hb: Heartbeat) -> dict:
             if hb.cancel.is_set():
                 raise RunCancelled()
         say(f"run {run['run_id']} worker {run['worker_id']} image {os.environ.get('QUANT_IMAGE_ID')} dataset {ds['dataset_id']}@{ds['dataset_version']}")
+        if not inprocess_v2_allowed():
+            raise RuntimeError("INPROCESS_V2_REFUSED: v2 engines run only through the protected launcher")
         fields = phase5_o2o.execute(run, ds, research_root, out, say, stop_now)
         say(f"results_digest={fields['results_digest']}; registering artifacts")
+    _register_v2(db, run, out, fields)
+    return fields
+
+
+def _register_v2(db, run, out: Path, fields: dict):
     from . import catalog
     names = [n for n in fields.pop("_artifacts") if (out / n).is_file()]
     catalog.register_artifacts(db, run["run_id"], out, names)
@@ -237,7 +268,6 @@ def execute_v2(db, run, research_root: Path, hb: Heartbeat) -> dict:
                (os.environ["QUANT_CODE_VERSION"], os.environ["QUANT_IMAGE_ID"], os.environ.get("QUANT_IMAGE_DIGEST") or "LOCAL_IMAGE_ID_ONLY",
                 os.environ.get("QUANT_NUMERIC_LOCK_SHA256"), "PLATFORM_EXECUTED_SAME_IMPLEMENTATION", run["run_id"]))
     db.commit()
-    return fields
 
 
 def _record_grade(db, run_id: str, final: str, grade: dict | None):
@@ -321,6 +351,159 @@ def _run_claimed(db, run, research_root: Path, wid: str, max_seconds: int) -> in
         db.close()
 
 
+# ---------------------------------------------------------------- protected v2 jobs (CONTROL role)
+_SAFE_REL = re.compile(r"^datasets/[A-Za-z0-9._@-]+/[A-Za-z0-9._@-]+$")
+
+
+def job_claim(worker_id: str, run_id: str | None, max_seconds: int) -> int:
+    """Claim one v2 run for the protected launcher and prepare runs/<id>/work (the ONLY place compute may write).
+    Prints one JSON line: {"run_id": null} when idle, else the subpaths the launcher mounts."""
+    research_root = registry.root(); db = registry.connect()
+    try:
+        engines = [e for e in worker_engines(db, for_inprocess=False) if e in V2_ENGINES]
+        if not engines:
+            print(json.dumps({"run_id": None, "reason": "no verified v2 engine capability in this image"})); return 0
+        run = registry.claim_run(db, run_id, worker_id, engines=engines) if run_id else registry.claim_next(db, worker_id, engines=engines)
+        if run is None:
+            print(json.dumps({"run_id": None, "reason": (f"{run_id} not claimable" if run_id else f"no queued run for {['@'.join(e) for e in engines]}")}))
+            return 2 if run_id else 0
+        rid = run["run_id"]
+        try:
+            if not os.environ.get("QUANT_CODE_VERSION") or not os.environ.get("QUANT_IMAGE_ID"):
+                raise ValueError("RUNTIME_IDENTITY_MISSING: QUANT_CODE_VERSION and QUANT_IMAGE_ID must be set by the launcher")
+            ds = db.execute("SELECT * FROM datasets WHERE dataset_id=? AND dataset_version=?", (run["dataset_id"], run["dataset_version"])).fetchone()
+            if not _SAFE_REL.match(ds["snapshot_path"]):
+                raise ValueError(f"UNSAFE_SNAPSHOT_PATH: {ds['snapshot_path']!r}")
+            out = research_root / "runs" / rid
+            out.mkdir(parents=True, exist_ok=False); (out / "work").mkdir()
+            from .engines import phase5_o2o
+            sha = phase5_o2o.sha_file(research_root / ds["snapshot_path"] / "market_research.sqlite")
+            with open(out / "run.log", "w", encoding="utf-8") as log:
+                log.write(f"{registry.utcnow()} run {rid} claimed by protected job {worker_id} image {os.environ.get('QUANT_IMAGE_ID')} "
+                          f"dataset {ds['dataset_id']}@{ds['dataset_version']}\n")
+                log.write(f"{registry.utcnow()} input sha256 before run {sha} (control step)\n")
+            if sha != ds["content_sha256"]:
+                raise ValueError(f"INPUT_HASH_MISMATCH: snapshot {sha} != registered {ds['content_sha256']}")
+            print(json.dumps({"run_id": rid, "input_subpath": f"research/{ds['snapshot_path']}", "work_subpath": f"research/runs/{rid}/work",
+                              "content_sha256": ds["content_sha256"], "max_seconds": max_seconds}))
+            return 0
+        except Exception as exc:  # noqa: BLE001
+            registry.finish(db, rid, "FAILED", error_class=type(exc).__name__, error_detail=str(exc)[:500], exit_reason="ERROR", artifact_dir=f"runs/{rid}")
+            print(json.dumps({"run_id": rid, "abort": f"{type(exc).__name__}: {exc}"[:300]})); return 1
+    finally:
+        db.close()
+
+
+def job_supervise(run_id: str, worker_id: str, max_seconds: int) -> int:
+    """Lease keeper for a protected job: renews the lease, watches cancel and the deadline. Never touches files."""
+    every = float(os.environ.get("QUANT_RESEARCH_HEARTBEAT_SECONDS", "5"))
+    deadline = time.monotonic() + max_seconds
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+    db = registry.connect()
+    try:
+        while True:
+            time.sleep(every)
+            if time.monotonic() > deadline:
+                print("TIMEOUT", flush=True); return 11
+            try:
+                if registry.heartbeat(db, run_id, worker_id):
+                    print("CANCEL", flush=True); return 10
+                st = db.execute("SELECT status FROM runs WHERE run_id=?", (run_id,)).fetchone()
+                if not st or st[0] != "RUNNING":
+                    print(f"NOT_RUNNING {st[0] if st else None}", flush=True); return 12
+            except Exception:  # noqa: BLE001 - a missed beat only shortens the lease
+                pass
+    finally:
+        db.close()
+
+
+def job_finalize(run_id: str, compute_exit: int, stop_reason: str) -> int:
+    """Terminal transition for a protected job. stop_reason: none | cancel | timeout | terminated | supervisor_lost."""
+    research_root = registry.root(); db = registry.connect()
+    try:
+        run = db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
+        if run is None or run["status"] != "RUNNING":
+            print(f"{run_id} not RUNNING ({run['status'] if run else 'missing'}); nothing to finalize"); return 0
+        out = research_root / "runs" / run_id; work = out / "work"
+        art = f"runs/{run_id}"
+        with open(out / "run.log", "a", encoding="utf-8") as log:
+            def say(msg):
+                log.write(f"{registry.utcnow()} {msg}\n"); log.flush()
+            say(f"compute container exit {compute_exit}; stop reason {stop_reason}")
+            if stop_reason == "cancel":
+                registry.finish(db, run_id, "CANCELLED", error_class="CANCELLED_BY_OWNER", exit_reason="CANCELLED_WHILE_RUNNING", artifact_dir=art)
+                print(f"{run_id} CANCELLED"); return 0
+            if stop_reason == "timeout":
+                registry.finish(db, run_id, "FAILED", error_class="TIMEOUT", exit_reason="TIMEOUT", error_detail="exceeded the job time limit", artifact_dir=art)
+                print(f"{run_id} FAILED/TIMEOUT"); return 1
+            if stop_reason in ("terminated", "supervisor_lost"):
+                registry.finish(db, run_id, "FAILED", error_class="TERMINATED", exit_reason="TERMINATED_BY_SIGNAL",
+                                error_detail=f"{stop_reason}: job stopped (container stop); partial files kept", artifact_dir=art)
+                print(f"{run_id} FAILED/TERMINATED_BY_SIGNAL"); return 143
+            from .engines import phase5_o2o
+            ce = {}
+            try:
+                ce = json.loads((work / "compute_exit.json").read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                pass
+            if ce.get("status") == "TIMEOUT" or compute_exit == 124:
+                registry.finish(db, run_id, "FAILED", error_class="TIMEOUT", exit_reason="TIMEOUT", error_detail="compute deadline", artifact_dir=art)
+                print(f"{run_id} FAILED/TIMEOUT"); return 1
+            if ce.get("status") == "TERMINATED" or compute_exit == 143:
+                registry.finish(db, run_id, "FAILED", error_class="TERMINATED", exit_reason="TERMINATED_BY_SIGNAL",
+                                error_detail="compute received SIGTERM; partial files kept", artifact_dir=art)
+                print(f"{run_id} FAILED/TERMINATED_BY_SIGNAL"); return 143
+            try:
+                ds = db.execute("SELECT * FROM datasets WHERE dataset_id=? AND dataset_version=?", (run["dataset_id"], run["dataset_version"])).fetchone()
+                fields = phase5_o2o.finalize(run, ds, research_root, out, work, say,
+                                             isolation=os.environ.get("QUANT_JOB_ISOLATION") or "UNDECLARED_BY_LAUNCHER")
+                say(f"results_digest={fields['results_digest']}; registering artifacts")
+                grade = fields.pop("_grade", None)
+                _register_v2(db, run, out, fields)
+                final = registry.finish(db, run_id, "SUCCEEDED", **fields)
+                _record_grade(db, run_id, final, grade)
+                print(f"{run_id} {final} {fields['results_digest']}"); return 0
+            except Exception as exc:  # noqa: BLE001 - recorded, never crashes the scheduler
+                detail = str(exc)[:500] + (" (compute exit 137: killed, e.g. out of memory)" if compute_exit == 137 else "")
+                say(f"not accepted: {type(exc).__name__}: {detail}")
+                registry.finish(db, run_id, "FAILED", error_class=type(exc).__name__, error_detail=detail[:500], exit_reason="ERROR", artifact_dir=art)
+                print(f"{run_id} FAILED {type(exc).__name__}: {detail[:200]}"); return 1
+    finally:
+        db.close()
+
+
+def register_reference(src: Path, input_sha: str) -> dict:
+    """Copy the designated reference ledger set for the phase5 EXACT input into references/phase5_strategy_v1/<sha>/,
+    verifying every file against the frozen first-round hash index. Idempotent; refuses partial or different sets."""
+    import gzip
+    import shutil
+    from .engines import phase5_o2o
+    cfg = json.loads((phase5_o2o.FROZEN_DIR / "config.json").read_text(encoding="utf-8"))
+    if input_sha != cfg["expected_db_sha256"]:
+        raise ValueError("NO_INDEX_FOR_INPUT: only the frozen exact input has a first-round hash index")
+    idx_path = phase5_o2o.FROZEN_DIR / "results" / "private_output_hashes.json"
+    fh = json.loads(idx_path.read_text(encoding="utf-8"))
+    dst = registry.root() / "references" / "phase5_strategy_v1" / input_sha
+    man = dst / "REFERENCE_MANIFEST.json"
+    if man.is_file():
+        m = json.loads(man.read_text(encoding="utf-8"))
+        if m.get("index_sha256") == phase5_o2o.sha_file(idx_path) and m.get("files") == len(fh):
+            return {**m, "state": "ALREADY_REGISTERED"}
+        raise ValueError("REFERENCE_CONFLICT: a different reference set is registered for this input")
+    bad = [k for k, v in fh.items() if not (src / k).is_file()
+           or hashlib.sha256(gzip.decompress((src / k).read_bytes())).hexdigest() != v["uncompressed_sha256"]]
+    if bad:
+        raise ValueError(f"REFERENCE_MISMATCH: {len(bad)} of {len(fh)} files missing or differing, e.g. {bad[:3]}")
+    dst.mkdir(parents=True, exist_ok=False)
+    for k in sorted(fh):
+        (dst / k).parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(src / k, dst / k)
+    m = {"schema": "phase5_reference_ledgers_v1", "study_id": "phase5_strategy_v1", "input_sha256": input_sha, "files": len(fh),
+         "index": "research/market_sentiment/phase5_strategy_v1/results/private_output_hashes.json", "index_sha256": phase5_o2o.sha_file(idx_path),
+         "registered_at": registry.utcnow(), "nature": "first-round private ledgers of the frozen program (same author); private, never published"}
+    man.write_text(json.dumps(m, indent=1), encoding="utf-8")
+    return {**m, "state": "REGISTERED"}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -339,7 +522,24 @@ def main(argv=None) -> int:
     rs = sub.add_parser("register-snapshot"); rs.add_argument("rel_dir", help="datasets/<id>/<version> under the research root")
     e = sub.add_parser("enqueue"); e.add_argument("--dataset", required=True); e.add_argument("--factor", required=True); e.add_argument("--protocol", required=True)
     v = sub.add_parser("verify"); v.add_argument("run_id")
+    sub.add_parser("capability")
+    rr = sub.add_parser("register-reference"); rr.add_argument("--source", required=True); rr.add_argument("--input-sha", required=True)
+    jc = sub.add_parser("job-claim"); jc.add_argument("--worker-id", required=True); jc.add_argument("--run"); jc.add_argument("--max-seconds", type=int, default=900)
+    js = sub.add_parser("job-supervise"); js.add_argument("run_id"); js.add_argument("--worker-id", required=True); js.add_argument("--max-seconds", type=int, default=900)
+    jf = sub.add_parser("job-finalize"); jf.add_argument("run_id"); jf.add_argument("--compute-exit", type=int, required=True)
+    jf.add_argument("--stop-reason", choices=["none", "cancel", "timeout", "terminated", "supervisor_lost"], default="none")
     a = ap.parse_args(argv)
+    if a.cmd == "capability":
+        from .engines import phase5_o2o
+        print(json.dumps({"phase5_o2o_v1@1": phase5_o2o.capability()})); return 0
+    if a.cmd == "job-claim":
+        return job_claim(a.worker_id, a.run, a.max_seconds)
+    if a.cmd == "job-supervise":
+        return job_supervise(a.run_id, a.worker_id, a.max_seconds)
+    if a.cmd == "job-finalize":
+        return job_finalize(a.run_id, a.compute_exit, a.stop_reason)
+    if a.cmd == "register-reference":
+        print(json.dumps(register_reference(Path(a.source), a.input_sha))); return 0
     if a.cmd == "worker":
         return run_once(a.max_seconds)
     if a.cmd == "run-one":

@@ -19,7 +19,14 @@ verify BACKUP_DIR RESTORE_DIR [--scope SCOPE_JSON] [--run RUN_ID]
     (QUANT_WORKER_ENGINES + live capability); others are hash-checked and reported as not re-executed here.
     --run RUN_ID restores everything but re-executes ONLY that run (new run id, attempt_of = original, same
     frozen config and engine) and compares results_digest and every deterministic artifact byte-for-byte.
-Exit code: 0 only when ok. stdout is always exactly one JSON document.
+    --v2-via-launcher (closeout 2026-11-20, F1): v2 re-executions are NOT run inside this process. The new run rows
+    are queued (attempt_of = original) and listed in pending_protected_reruns with state PENDING_PROTECTED_RERUNS;
+    the host then executes exactly those ids with deploy/linux/host/quant-research-job.sh --var-dir RESTORE_DIR
+    (the same control/compute separation as production) and calls verify-finish.
+verify-finish RESTORE_DIR
+    Compares every protected re-execution listed by the prepare step (status, attempt_of, config hash,
+    results_digest, deterministic artifacts byte-for-byte) and checks that no original run record changed.
+Exit code: 0 only when ok (prepare with pending reruns: 0 = ready for the launcher). stdout is one JSON document.
 """
 import contextlib, datetime, hashlib, json, os, pathlib, shutil, sqlite3, sys, traceback
 
@@ -101,7 +108,7 @@ def backup(src: pathlib.Path, out: pathlib.Path, scope: dict) -> dict:
         pathlib.Path(str(reg_copy) + side).unlink(missing_ok=True)
     incomplete = {r["run_id"] for r in runs if r["status"] not in TERMINAL}
     files = []
-    for top in ("datasets", "runs", "audits"):
+    for top in ("datasets", "runs", "audits", "references"):
         base = research / top
         if not base.is_dir():
             continue
@@ -148,7 +155,11 @@ def required_files(m: dict, scope: dict, cfg_costs) -> list:
     return req
 
 
-def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | None = None) -> dict:
+def _engine_of(x: dict, legacy) -> tuple:
+    return (x["engine_id"], x["engine_version"]) if x.get("engine_id") else tuple(legacy)
+
+
+def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | None = None, v2_launcher: bool = False) -> dict:
     report = {"ok": False, "checked_at_utc": now(), "requirement": scope["research"]["requirement"], "problems": [], "reruns": [],
               "restore_source": "backup directory only (production volume not mounted)"}
     P = report["problems"]
@@ -240,16 +251,21 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | 
         targets = [x for x in m["runs"] if x["run_id"] == only_run]
         if not targets or targets[0]["status"] != "SUCCEEDED":
             P.append(f"--run {only_run}: not a SUCCEEDED run in this backup"); report["state"] = "FAILED_TARGET"; db.close(); return report
-    report["not_reexecuted_here"] = [x["run_id"] for x in targets if (x.get("engine_id"), x.get("engine_version")) not in
-                                     [(None, None)] + [(e[0], e[1]) for e in supported if e != registry.LEGACY_ENGINE]
-                                     and not (not x.get("engine_id") and registry.LEGACY_ENGINE in supported)]
+    runnable = {tuple(e) for e in supported} | ({tuple(e) for e in worker.V2_ENGINES} if v2_launcher else set())
+    report["v2_reexecution"] = ("PROTECTED_LAUNCHER (separate control/compute containers)" if v2_launcher
+                                else "IN_PROCESS_TEST_ONLY" if worker.inprocess_v2_allowed() else "NOT_AVAILABLE_IN_THIS_IMAGE")
+    report["not_reexecuted_here"] = [x["run_id"] for x in targets if _engine_of(x, registry.LEGACY_ENGINE) not in runnable]
     if only_run and report["not_reexecuted_here"]:
         P.append(f"engine of {only_run} is not supported by this image")
+    pending = []
     for r in [x for x in targets if x["run_id"] not in report["not_reexecuted_here"]]:
         entry = {"original_run_id": r["run_id"]}
         try:
             orig = db.execute("select * from runs where run_id=?", (r["run_id"],)).fetchone()
             if orig["engine_id"] if "engine_id" in orig.keys() else None:
+                if v2_launcher and not worker.inprocess_v2_allowed():
+                    pending.append({"original_run_id": r["run_id"], "new_run_id": _queue_v2_rerun(db, orig)})
+                    continue
                 entry.update(_rerun_v2(db, root, orig, registry, worker)); report["reruns"].append(entry)
                 if not entry.get("ok"):
                     P.append(f"rerun mismatch for {r['run_id']}")
@@ -276,6 +292,14 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | 
             entry["error"] = f"{type(exc).__name__}: {exc}"[:400]; entry["traceback_tail"] = traceback.format_exc().splitlines()[-3:]
             P.append(f"rerun error for {r['run_id']}: {entry['error']}")
         report["reruns"].append(entry)
+    if pending and not P:
+        report["pending_protected_reruns"] = pending
+        state = {"schema": "quant_research_restore_state_v1", "report": report, "pending": pending,
+                 "before": {k: list(v) for k, v in before.items()}, "snap_cols": snap_cols}
+        (rdir / "restore_state.json").write_text(json.dumps(state, indent=1))
+        db.close()
+        report["ok"] = True; report["state"] = "PENDING_PROTECTED_RERUNS"
+        return report
     after = {r[0]: tuple(r) for r in db.execute(f"select {snap_cols} from runs") if r[0] in before}
     changed = sorted(k for k in before if before[k] != after.get(k))
     report["original_runs_changed_by_restore_check"] = changed
@@ -287,15 +311,59 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | 
     return report
 
 
-def _rerun_v2(db, root, orig, registry, worker) -> dict:
-    """Re-execute one v2 run under a NEW run id (attempt_of = original) with its frozen config and engine;
-    exactly that id is claimed. Compare results_digest and every deterministic artifact byte-for-byte."""
+def verify_finish(rdir: pathlib.Path) -> dict:
+    """Second half of a restore check whose v2 re-executions ran through the protected launcher."""
+    st = json.loads((rdir / "restore_state.json").read_text())
+    report = st["report"]; P = report["problems"]
+    root = rdir / "research"
+    os.environ["QUANT_RESEARCH_ROOT"] = str(root)
+    sys.path.insert(0, "/app")
+    from scripts.quant_research_v1 import registry
+    db = registry.connect()
+    for item in st["pending"]:
+        entry = {"original_run_id": item["original_run_id"]}
+        try:
+            orig = db.execute("select * from runs where run_id=?", (item["original_run_id"],)).fetchone()
+            entry.update(_compare_v2(db, root, orig, item["new_run_id"], None))
+            entry["executed_by"] = "protected launcher (quant-research-job.sh)"
+            if not entry.get("ok"):
+                P.append(f"rerun mismatch for {item['original_run_id']}")
+        except Exception as exc:  # noqa: BLE001
+            entry["error"] = f"{type(exc).__name__}: {exc}"[:400]; P.append(f"rerun error for {item['original_run_id']}: {entry['error']}")
+        report["reruns"].append(entry)
+    before = {k: tuple(v) for k, v in st["before"].items()}
+    after = {r[0]: tuple(r) for r in db.execute(f"select {st['snap_cols']} from runs") if r[0] in before}
+    changed = sorted(k for k in before if before[k] != after.get(k))
+    report["original_runs_changed_by_restore_check"] = changed
+    if changed:
+        P.append(f"restore check changed original run records: {changed}")
+    db.close()
+    report.pop("pending_protected_reruns", None)
+    report["protected_reruns"] = st["pending"]
+    report["finished_at_utc"] = now()
+    report["ok"] = not P
+    report["state"] = "OK" if not P else "FAILED_RERUN"
+    return report
+
+
+def _queue_v2_rerun(db, orig) -> str:
     from scripts.quant_research_v1 import catalog
-    eng = (orig["engine_id"], orig["engine_version"])
-    new_id = catalog.create_run_v2(db, (orig["dataset_id"], orig["dataset_version"]), (orig["factor_id"], orig["factor_version"]),
-                                   json.loads(orig["config_json"]), eng, requested_by=f"restore-check:{orig['run_id']}", attempt_of=orig["run_id"])
+    return catalog.create_run_v2(db, (orig["dataset_id"], orig["dataset_version"]), (orig["factor_id"], orig["factor_version"]),
+                                 json.loads(orig["config_json"]), (orig["engine_id"], orig["engine_version"]),
+                                 requested_by=f"restore-check:{orig['run_id']}", attempt_of=orig["run_id"])
+
+
+def _rerun_v2(db, root, orig, registry, worker) -> dict:
+    """IN-PROCESS (unit tests only, QUANT_RESEARCH_INPROCESS_V2=1): re-execute one v2 run under a NEW run id
+    (attempt_of = original); exactly that id is claimed. Production uses --v2-via-launcher + verify-finish."""
+    new_id = _queue_v2_rerun(db, orig)
     with contextlib.redirect_stdout(sys.stderr):
         code = worker.run_specific(new_id, int(os.environ.get("QUANT_RESTORE_MAX_SECONDS", "900")))
+    return _compare_v2(db, root, orig, new_id, code)
+
+
+def _compare_v2(db, root, orig, new_id: str, code) -> dict:
+    eng = (orig["engine_id"], orig["engine_version"])
     new = db.execute("select * from runs where run_id=?", (new_id,)).fetchone()
     od, nd = root / "runs" / orig["run_id"], root / "runs" / new_id
     byte_equal = {n: (od / n).is_file() and (nd / n).is_file() and (od / n).read_bytes() == (nd / n).read_bytes() for n in DETERMINISTIC_V2 if (od / n).is_file()}
@@ -309,11 +377,19 @@ def _rerun_v2(db, root, orig, registry, worker) -> dict:
 
 
 def main(argv) -> int:
-    mode, a, b = argv[1], pathlib.Path(argv[2]), pathlib.Path(argv[3])
+    mode = argv[1]
+    if mode == "verify-finish":
+        try:
+            res = verify_finish(pathlib.Path(argv[2]))
+        except Exception as exc:  # noqa: BLE001
+            res = {"ok": False, "state": "FAILED_EXCEPTION", "error": f"{type(exc).__name__}: {exc}"[:400], "traceback_tail": traceback.format_exc().splitlines()[-3:]}
+        print(json.dumps(res))
+        return 0 if res["ok"] else 1
+    a, b = pathlib.Path(argv[2]), pathlib.Path(argv[3])
     scope = load_scope(argv[argv.index("--scope") + 1] if "--scope" in argv else None)
     only_run = argv[argv.index("--run") + 1] if "--run" in argv else None
     try:
-        res = backup(a, b, scope) if mode == "backup" else verify(a, b, scope, only_run)
+        res = backup(a, b, scope) if mode == "backup" else verify(a, b, scope, only_run, v2_launcher="--v2-via-launcher" in argv)
     except Exception as exc:  # noqa: BLE001
         res = {"ok": False, "state": "FAILED_EXCEPTION", "error": f"{type(exc).__name__}: {exc}"[:400], "traceback_tail": traceback.format_exc().splitlines()[-3:]}
     print(json.dumps(res))

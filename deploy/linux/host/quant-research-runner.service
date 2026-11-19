@@ -6,7 +6,7 @@ After=docker.service
 [Service]
 Type=oneshot
 ExecStart=/usr/local/sbin/quant-research-runner.sh
-# The worker aborts a run after 300 s; this is the outer bound for the whole container.
-TimeoutStartSec=10min
+# Legacy job <= 300 s plus one protected numeric job <= 900 s (+ claim/finalize); outer bound for the whole service.
+TimeoutStartSec=25min
 Nice=15
 IOSchedulingClass=idle
