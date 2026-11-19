@@ -323,3 +323,17 @@
 **限制：** 主要为美国历史证据，非系统综述；原始市场结果未独立复制；未认证PIT或A股迁移；五篇不验证截图均值乘波动的IC，也不证明本项目市场顶底或净收益可预测。
 
 证据：[literature/five_papers_v1/AUDIT_FINAL.json](literature/five_papers_v1/AUDIT_FINAL.json)、[literature/five_papers_v1/PLAN_zh.md](literature/five_papers_v1/PLAN_zh.md)、[literature/five_papers_v1/REVIEW_zh.md](literature/five_papers_v1/REVIEW_zh.md)、[literature/five_papers_v1/acquire.py](literature/five_papers_v1/acquire.py)、[literature/five_papers_v1/acquisition_manifest.json](literature/five_papers_v1/acquisition_manifest.json)、[literature/five_papers_v1/citation_registry.json](literature/five_papers_v1/citation_registry.json)、[literature/five_papers_v1/reading_ledger.json](literature/five_papers_v1/reading_ledger.json)、[literature/five_papers_v1/self_check.json](literature/five_papers_v1/self_check.json)、[literature/five_papers_v1/source_audit.json](literature/five_papers_v1/source_audit.json)
+
+## R023 · 首轮行情策略协议与执行代码预运行锁定
+
+**状态：** PRE_RUN_SPECIFICATION_SYNTHETIC_CHECKED_HISTORY_ALREADY_SEEN；记录UTC：2026-11-19T04:43:17.401313+00:00
+
+**计划：** 在真实行情策略计算前固定三价格策略、两项文本阻碍、成交成本与主检验；先完成人工路径和因果前缀检查。
+
+**实际：** 固定config/PROTOCOL及run/check代码，人工路径成本核算与未来扰动/前缀检查通过；尚未运行真实行情策略，新闻候选保持BLOCKED。配置计划经Git预运行提交后才执行。
+
+**结论：** 规则与计算代码已写出，同作者人工检查已执行；不支持金融功效或未见预注册声明。
+
+**限制：** 已看过的历史；只使用当前版本OHLC；理论指数单位；假设成本；新闻数据缺失。
+
+证据：[phase5_strategy_v1/PROTOCOL_zh.md](phase5_strategy_v1/PROTOCOL_zh.md)、[phase5_strategy_v1/check.py](phase5_strategy_v1/check.py)、[phase5_strategy_v1/config.json](phase5_strategy_v1/config.json)、[phase5_strategy_v1/run.py](phase5_strategy_v1/run.py)、[phase5_strategy_v1/unit_check.json](phase5_strategy_v1/unit_check.json)

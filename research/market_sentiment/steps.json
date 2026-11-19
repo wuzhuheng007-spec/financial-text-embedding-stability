@@ -544,5 +544,29 @@
       "literature/five_papers_v1/source_audit.json": "8345b1e26661a71a24964dac043f6d31d62a173f2331aff1f9e476bb9f6e0bf7"
     },
     "recorded_at_utc": "2026-11-19T04:21:20.358777+00:00"
+  },
+  {
+    "id": "R023",
+    "title": "首轮行情策略协议与执行代码预运行锁定",
+    "plan": "在真实行情策略计算前固定三价格策略、两项文本阻碍、成交成本与主检验；先完成人工路径和因果前缀检查。",
+    "actual": "固定config/PROTOCOL及run/check代码，人工路径成本核算与未来扰动/前缀检查通过；尚未运行真实行情策略，新闻候选保持BLOCKED。配置计划经Git预运行提交后才执行。",
+    "status": "PRE_RUN_SPECIFICATION_SYNTHETIC_CHECKED_HISTORY_ALREADY_SEEN",
+    "evidence": [
+      "phase5_strategy_v1/PROTOCOL_zh.md",
+      "phase5_strategy_v1/check.py",
+      "phase5_strategy_v1/config.json",
+      "phase5_strategy_v1/run.py",
+      "phase5_strategy_v1/unit_check.json"
+    ],
+    "claims": "规则与计算代码已写出，同作者人工检查已执行；不支持金融功效或未见预注册声明。",
+    "limits": "已看过的历史；只使用当前版本OHLC；理论指数单位；假设成本；新闻数据缺失。",
+    "evidence_sha256": {
+      "phase5_strategy_v1/PROTOCOL_zh.md": "7281efccfa693831b623c45168b92bbda2a929970b20dfcccc749f7e8eb07a8a",
+      "phase5_strategy_v1/check.py": "7195c6a39f9a348f4feeea765f1dbd02986d1878d8c4881ed9d5cab693d1e756",
+      "phase5_strategy_v1/config.json": "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb",
+      "phase5_strategy_v1/run.py": "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae",
+      "phase5_strategy_v1/unit_check.json": "a5855a7b7ccfc83b4cf30b987bc2ea2e198695bd8d3f0ed7bac7f93a5c0984d2"
+    },
+    "recorded_at_utc": "2026-11-19T04:43:17.401313+00:00"
   }
 ]

@@ -1,0 +1,17 @@
+{
+  "synthetic": {
+    "status": "PASS_SYNTHETIC_CAUSALITY_AND_ACCOUNTING_ONLY",
+    "prefix_lengths": [
+      280,
+      400,
+      519
+    ],
+    "future_perturbation_cut": 450,
+    "analytical_cost_cases_bps": [
+      0,
+      10,
+      25
+    ],
+    "allocation_cases": 4
+  }
+}
