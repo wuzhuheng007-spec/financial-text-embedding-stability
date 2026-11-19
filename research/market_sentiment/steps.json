@@ -286,5 +286,21 @@
       "phase3/PUBLICATION_ACK_20261119.json": "c5e0bd37c42b6eea3dd778f5ae64cdde0975723e7f9c06f1f842cd7810b3779a"
     },
     "recorded_at_utc": "2026-11-19T02:00:37.708114+00:00"
+  },
+  {
+    "id": "R012",
+    "title": "历史牛熊复盘图片学习与局部事实审核",
+    "plan": "读取用户材料，核对可见矛盾，登记可检验机制，不直接采纳图示统计或因果。",
+    "actual": "打开四个一手来源，核对四日本地OHLC；登记极值/收盘口径、1996详情复制错误、政策日期及纳指周期内部不一致；提出六组候选变量，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_IMAGE_REVIEW_AND_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Historical_Images_Review_zh.md"
+    ],
+    "claims": "图片提供机制线索；只有局部事实已核验，新因子效力和图中未注明口径的统计均未确立。",
+    "limits": "行业/个股涨幅、开户与宏观实时版本未完整核验；未获得新广度/资金数据库；没有独立验证。",
+    "evidence_sha256": {
+      "image_review/Historical_Images_Review_zh.md": "d12b75b5167a9310b77a9de93c2db4616182c7e1b4f05d7ace74777c4139ae33"
+    },
+    "recorded_at_utc": "2026-11-19T02:59:03.931763+00:00"
   }
 ]
