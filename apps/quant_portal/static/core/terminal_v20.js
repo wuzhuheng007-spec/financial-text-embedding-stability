@@ -64,7 +64,7 @@
   // ---------- connection ----------
   function connState() {
     if (!feed && !feedError) return {state: 'idle', text: ''};
-    if (feedError && Date.now() - lastFeedOk > 15e3) return {state: 'down', text: '连接中断'};
+    if ((feed || feedError) && Date.now() - lastFeedOk > 15e3) return {state: 'down', text: '连接中断'};
     if (feed?.provider_gates?.moomoo) return {state: 'idle', text: '行情未启用'};
     const m = (feed?.states || []).find(x => x.provider === 'moomoo');
     if (!m) return {state: 'idle', text: ''};
@@ -215,7 +215,7 @@
 
   // ---------- chart ----------
   const chart = {sym: null, range: store.get('quant.range') || '2h', sessions: new Set(Object.keys(SESS)), data: [], gapMs: 180e3,
-    domain: null, hoverX: null, loading: false, lastLoad: 0, earliest: new Map(), drag: null};
+    domain: null, hoverX: null, loading: false, pendingLoad: false, lastLoad: 0, earliest: new Map(), drag: null};
   function rangeAvailable(r) {
     const e = chart.earliest.get(chart.sym);
     if (e == null) return r === '30m' || r === '2h';
@@ -239,12 +239,14 @@
       const pts = toPoints(j.points);
       const e = firsts.length ? Math.min(...firsts) : pts[0]?.t;
       if (e != null) chart.earliest.set(sym, e);
+      if (sym !== chart.sym) return;
       if (!rangeAvailable(chart.range)) chart.range = ['all', '24h', '2h', '30m'].find(rangeAvailable) || '2h';
       renderRangeButtons();
     } catch (_) { /* range buttons stay conservative */ }
   }
   async function loadChart(force) {
-    if (!chart.sym || !root.dataset.timelineUrl || chart.loading) return;
+    if (!chart.sym || !root.dataset.timelineUrl) return;
+    if (chart.loading) { if (force) chart.pendingLoad = true; return; }
     if (!force && Date.now() - chart.lastLoad < 5e3) return;
     chart.loading = true; const sym = chart.sym, range = chart.range;
     const state = $('chart-state');
@@ -263,7 +265,10 @@
       drawChart();
     } catch (_) {
       if (!chart.data.length) { state.hidden = false; state.textContent = '走势暂不可用'; }
-    } finally { chart.loading = false; }
+    } finally {
+      chart.loading = false;
+      if (chart.pendingLoad) { chart.pendingLoad = false; void loadChart(true); }
+    }
   }
   function selectSymbol(sym) {
     if (!sym) return;
@@ -469,7 +474,12 @@
   }
   document.addEventListener('quant-feed', e => { feed = e.detail; feedError = false; lastFeedOk = Date.now(); onFeed(); });
   document.addEventListener('quant-feed-error', () => { feedError = true; onFeed(); });
-  setInterval(() => { if (feed) renderConn(); }, 5e3);
+  setInterval(() => {
+    if (!feed) return;
+    const wasDown = $('conn')?.dataset.state === 'down';
+    const down = renderConn().state === 'down';
+    if (down !== wasDown) { renderCards(down); renderList(down); renderDetailHead(down); }
+  }, 5e3);
 
   window.quantSetSymbols?.(symbols().map(sym => ({symbol: sym})));
   syncSettingButtons(); bindChart();
