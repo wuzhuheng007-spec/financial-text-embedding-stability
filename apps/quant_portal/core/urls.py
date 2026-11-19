@@ -7,6 +7,7 @@ urlpatterns = [
     path("personal-feed.json", views.personal_feed_json, name="personal_feed_json"),
     path("research-sentiment.json", views.research_sentiment_json, name="research_sentiment_json"),
     path("official-filings.json", views.official_filings_json, name="official_filings_json"),
+    path("news.json", views.news_json, name="news_json"),
     path("research/registry.json", views.research_registry_json, name="research_registry_json"),
     path("research/runs/", views.research_run_create, name="research_run_create"),
     path("research/runs/<str:run_id>.json", views.research_run_json, name="research_run_json"),

@@ -642,3 +642,70 @@ def research_run_ledger(request, run_id):
     response = HttpResponse(f.read_bytes(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = f'attachment; filename="{run_id}_ledger_cost{bps}bps.csv"'
     return _no_store(response)
+
+
+# ---------- real-time news v1 (owner only; reads the collector's cache, never calls a provider) ----------
+_MACRO_CHANNELS = {"economics", "economic data", "macro economic events", "federal reserve", "fed", "treasuries", "bonds",
+                   "government", "politics", "global", "commodities", "forex", "inflation", "interest rates"}
+_ETF_WATCH = {"TQQQ", "QQQ", "SOXX", "SPY"}
+
+
+@login_required
+def news_json(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("News unavailable")
+    import json
+    import sys
+    from datetime import datetime, timezone
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_news_v1.store import read_for_portal
+    try:
+        data = read_for_portal(limit=200)
+    except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "items": [], "providers": []}
+    watch = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    for it in data["items"]:
+        syms = set(it.get("symbols") or [])
+        chans = {c.lower() for c in it.get("channels") or []}
+        it["relevance"] = {"direct_watch": sorted(syms & watch), "direct_watch_etf": sorted(syms & watch & _ETF_WATCH),
+                           "macro": bool(chans & _MACRO_CHANNELS),
+                           "note": "直接提及=供应商标注的代码；宏观=供应商频道；无版本化成分数据，不推断 ETF 专属。"}
+        if not it.get("body"):
+            it["body"] = None
+    now = datetime.now(timezone.utc)
+    active = [p for p in data["providers"] if p["provider"] != "unconfigured"]
+    prov = max(active, key=lambda p: p.get("updated_at") or "", default=None)
+    label, kind = "新闻源未连接", "off"
+    if prov:
+        hb = prov.get("last_heartbeat_at")
+        try:
+            age = (now - datetime.fromisoformat(hb.replace("Z", "+00:00"))).total_seconds() if hb else None
+        except ValueError:
+            age = None
+        st = prov["state"]
+        delivered = any(i.get("available_at") for i in data["items"] if i.get("provider") == prov["provider"])
+        if st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET") and age is not None and age > 180:
+            label, kind = f"新闻采集中断 · 最近心跳 {hb}", "down"
+        elif st == "RECEIVING" and delivered:
+            label, kind = "新闻源已接通", "ok"
+        elif st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET"):
+            label, kind = "新闻源已连接，尚未观察到新消息", "idle"
+        elif st in ("CONNECTING",):
+            label, kind = "新闻源连接中", "idle"
+        elif st == "STOPPED":
+            label, kind = "新闻采集已停止", "down"
+        elif st == "NOT_CONFIGURED":
+            label, kind = "新闻源未配置", "off"
+        else:
+            label, kind = f"新闻源异常（{st}）", "down"
+    data["connection"] = {"label": label, "kind": kind, "provider": prov["provider"] if prov else None}
+    try:
+        data["sources"] = json.loads((REPO_ROOT / "configs/quant_news_sources_v1.json").read_text(encoding="utf-8"))["providers"]
+    except (OSError, ValueError, KeyError):
+        data["sources"] = {}
+    data["watchlist"] = sorted(watch)
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response

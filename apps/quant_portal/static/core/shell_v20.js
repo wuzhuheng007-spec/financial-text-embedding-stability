@@ -12,13 +12,17 @@
   applyTheme(d.dataset.theme === 'light' ? 'light' : 'dark');
   theme?.addEventListener('click', () => { const t = d.dataset.theme === 'light' ? 'dark' : 'light'; store.set('quant.theme', t); applyTheme(t); });
 
+  // Sidebar: no saved choice = automatic (full on wide screens, icon rail between 761 and 1100 CSS px).
+  // A click saves an explicit "open" or "collapsed" that then wins at every width (phones use the tab bar).
   const side = document.getElementById('side-toggle');
-  side?.setAttribute('aria-pressed', String(d.dataset.side === 'collapsed'));
+  const railAuto = window.matchMedia('(min-width: 761px) and (max-width: 1100px)');
+  const isCollapsed = () => d.dataset.side === 'collapsed' || (d.dataset.side !== 'open' && railAuto.matches);
+  const syncSide = () => { const c = isCollapsed(); side?.setAttribute('aria-pressed', String(c));
+    side?.setAttribute('aria-label', c ? '展开侧边栏' : '折叠侧边栏'); const l = side?.querySelector('.nav-label'); if (l) l.textContent = c ? '展开' : '折叠'; };
+  syncSide(); railAuto.addEventListener?.('change', syncSide);
   side?.addEventListener('click', () => {
-    const collapsed = d.dataset.side !== 'collapsed';
-    if (collapsed) d.dataset.side = 'collapsed'; else delete d.dataset.side;
-    store.set('quant.side', collapsed ? 'collapsed' : 'open');
-    side.setAttribute('aria-pressed', String(collapsed));
+    const next = isCollapsed() ? 'open' : 'collapsed';
+    d.dataset.side = next; store.set('quant.side', next); syncSide();
     document.dispatchEvent(new CustomEvent('quant-resize'));
   });
 

@@ -19,8 +19,8 @@
   {% endif %}
   <div class="ov-grid">
     <section class="card" aria-labelledby="ov-news-title">
-      <div class="section-head"><h2 id="ov-news-title">新闻与事件</h2><a class="text-button" href="#news">全部</a></div>
-      <div id="ov-news" class="list"><div class="compact-empty"><span>暂无新闻</span><a class="button button-outline" href="#settings/sources">查看设置</a></div></div>
+      <div class="section-head"><h2 id="ov-news-title">新闻</h2><a class="text-button" href="#news">全部</a></div>
+      <div id="ov-news2" class="list"{% if personal_feed_enabled %} data-news-url="{% url 'news_json' %}"{% endif %}><div class="compact-empty"><span>{% if personal_feed_enabled %}读取中…{% else %}暂无新闻{% endif %}</span></div></div>
     </section>
     <section class="card" aria-labelledby="ov-sec-title">
       <div class="section-head"><h2 id="ov-sec-title">官方公告</h2><a class="text-button" href="#research/sec">全部</a></div>
@@ -69,6 +69,21 @@
 {# ===================== 新闻 ===================== #}
 <section class="view" data-view="news" aria-label="新闻">
   {% if personal_feed_enabled %}
+  <div id="nv" class="nv" data-news-url="{% url 'news_json' %}">
+    <div class="nv-bar">
+      <div class="seg" role="group" aria-label="新闻范围"><button type="button" data-scope="watch">自选</button><button type="button" data-scope="all">全市场</button><button type="button" data-scope="macro">宏观</button></div>
+      <label class="nv-sym"><span>标的</span><select id="nv-symbol" aria-label="按标的筛选"><option value="">全部</option></select></label>
+    </div>
+    <div id="nv-state"></div>
+    <div class="nv-body">
+      <div class="nv-col card">
+        <button class="nv-banner" type="button" id="nv-banner" hidden></button>
+        <div id="nv-list" class="nv-list" aria-label="新闻列表"></div>
+      </div>
+      <article id="nv-reader" class="card nv-reader" aria-label="阅读"></article>
+    </div>
+  </div>
+  <details class="disclosure section" id="nv-legacy"><summary>金十快讯（本机采集；云端未启用）</summary><div class="disclosure-body">
   <div id="news-source-state" hidden></div>
   <div id="news-top10-block"><div class="section-head"><h2>重点事件</h2><span class="count" id="top10-count">0</span></div>
   <div id="personal-top10" class="top10-list" aria-live="polite"></div></div>
@@ -87,6 +102,7 @@
     <div class="section-head"><h2 id="sentiment-title">新闻情绪</h2><span class="count" id="sentiment-count"></span></div>
     <div id="personal-sentiment"></div>
   </section>
+  </div></details>
   {% else %}
   <div class="empty-state"><strong>暂无新闻</strong></div>
   {% endif %}
@@ -197,9 +213,10 @@
         {% endif %}
         {% if personal_feed_enabled %}
         <div id="source-status-strip" class="feed-health-summary" role="status" translate="no" aria-label="其他数据源状态"></div>
-        <div class="status-grid" aria-label="数据来源状态">
+        <section class="status-card card section" id="news-src-card" data-news-url="{% url 'news_json' %}" aria-labelledby="news-src-title"><div class="card-top"><h2 id="news-src-title">新闻源</h2><span class="tag">读取中</span></div><div class="nv-card-body"><p class="muted">读取中…</p></div></section>
+        <div class="status-grid section" aria-label="数据来源状态">
           <section class="status-card card"><div class="card-top"><h2>moomoo 行情</h2><span class="tag" id="moomoo-state">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="moomoo-times"></p></section>
-          <section class="status-card card"><div class="card-top"><h2>金十新闻</h2><span class="tag" id="jin10-state">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="jin10-times"></p></section>
+          <section class="status-card card"><div class="card-top"><h2>金十新闻（本机）</h2><span class="tag" id="jin10-state">{{ provider_states.jin10.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="jin10-times"></p></section>
         </div>
         <p class="fine-print">行情价格保留供应商原始精度；页面主价格按两位小数显示，悬停可见精确值。供应商未提供延迟属性，页面不作实时性声明。报价时间为供应商数据时间，不是成交时间。</p>
         <p class="fine-print" id="news-screening-counts"></p>
@@ -215,6 +232,7 @@
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v4"></script>
 <script defer charset="utf-8" src="{% static 'core/research_v1.js' %}"></script>
+<script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=21-1"></script>
 {% endif %}
-<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=20-1"></script>
+<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=21-1"></script>
 {% endblock %}

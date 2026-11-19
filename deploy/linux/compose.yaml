@@ -227,6 +227,28 @@ services:
     mem_limit: 1g
     pids_limit: 128
 
+  # Real-time news collector (profile "news"): ONE process for ONE provider, started only after the owner
+  # writes /srv/quant/secrets/news.env (NEWS_PROVIDER + that provider's key). Egress only; no database
+  # access; it writes its own SQLite cache under personal_var/news/, which the web app reads.
+  news:
+    <<: *hardening
+    profiles: ["news"]
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    entrypoint: ["python", "-m", "scripts.quant_news_v1.collector"]
+    command: ["run"]
+    environment:
+      TZ: UTC
+    env_file:
+      - path: ${NEWS_ENV_FILE:-/srv/quant/secrets/news.env}
+        required: false
+    networks: [egress]
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+    cpus: 0.5
+    mem_limit: 256m
+    pids_limit: 64
+    stop_grace_period: 15s
+
 networks:
   backend:
     internal: true

@@ -477,25 +477,46 @@
       a.append(h('span', 't', t), m); return a;
     }));
   }
-  const SEC_SCOPE = {FUND_TRUST: '基金信托层级', ISSUER_TRUST_ALL_SERIES: '信托层级 · 非本 ETF 专属'};
+  // Official announcements: main row = symbol · form name (+ 8-K item names) · filing date.
+  // Number, report period, raw acceptance time and attribution live in the row's details.
+  const SEC_FORMS = {'8-K': '重大事项报告', '10-Q': '季度报告', '10-K': '年度报告', '20-F': '年度报告（外国发行人）', '6-K': '外国发行人报告',
+    'N-CSR': '基金年度报告', 'N-CSRS': '基金半年度报告', 'N-30D': '基金定期报告', 'N-PORT-P': '基金持仓报告', 'NPORT-P': '基金持仓报告',
+    '497': '基金招募说明书补充', '497K': '基金概要说明书', '485BPOS': '基金注册声明修订', 'DEF 14A': '股东大会委托书', '4': '内部人持股变动',
+    'S-8': '员工股权计划注册', '424B2': '募集说明书补充', 'SC 13G': '大股东持股披露', 'SC 13G/A': '大股东持股披露（修订）', '144': '拟出售限制股通知'};
+  const SEC_ITEMS = {'1.01': '重大协议', '2.02': '业绩公告', '2.03': '债务', '5.02': '董事/高管变动', '5.07': '股东表决结果', '7.01': 'Reg FD 披露', '8.01': '其他事项'};
+  const SEC_SCOPE = {
+    FUND_TRUST: ['信托级', '该代码对应的是基金信托层级的申报主体，未逐只核对基金归属。'],
+    ISSUER_TRUST_ALL_SERIES: ['信托级', '在 SEC 只能定位到发行信托；这份申报可能只涉及同一信托下的其他基金，不代表与本 ETF 直接相关。'],
+  };
+  function secRow(f) {
+    const row = h('div', 'sec-row');
+    const ok = typeof f.document_url === 'string' && f.document_url.startsWith('https://www.sec.gov/');
+    const main = h(ok ? 'a' : 'div', 'sec-main'); if (ok) { main.href = f.document_url; main.target = '_blank'; main.rel = 'noopener noreferrer'; }
+    const items = String(f.items || '').split(',').map(x => SEC_ITEMS[x.trim()]).filter(Boolean);
+    const name = `${f.form} ${SEC_FORMS[f.form] || ''}${items.length ? '：' + items.join('、') : ''}`.trim();
+    const t = h('span', 't', name); t.title = `${f.issuer_name || ''} · ${name}`;
+    const scope = SEC_SCOPE[f.association_scope];
+    if (scope) t.append(h('span', 'tag tag-trust', scope[0]));
+    main.append(h('span', 'sym', f.symbols || ''), t, h('span', 'd num', (f.filing_date || '').slice(5)));
+    const more = h('details', 'sec-more'); const sum = h('summary', null, '详情'); sum.setAttribute('aria-label', `${f.symbols} ${f.form} 详情`);
+    const dl = h('dl');
+    const add = (k, v) => { if (v) dl.append(h('dt', null, k), h('dd', null, v)); };
+    add('申报主体', f.issuer_name); add('提交日期', f.filing_date); add('报告期', f.report_date);
+    add('编号', f.accession_number); add('SEC 受理时间（原始）', f.acceptance_datetime_raw ? `${f.acceptance_datetime_raw}${f.acceptance_tz_marker === 'Z_AS_RETURNED' ? '（SEC 原样返回的 Z 标记，未换算）' : ''}` : '');
+    add('归属', scope ? scope[1] : '发行人本身的申报。');
+    add('来源', ok ? 'SEC EDGAR 原始文件（新窗口打开）' : 'SEC EDGAR');
+    more.append(sum, dl); row.append(main, more); return row;
+  }
   async function loadOverviewSec() {
     const box = $('ov-sec'); if (!box || !root.dataset.officialUrl) { if (box) box.replaceChildren(h('div', 'compact-empty', '暂无公告')); return; }
     try {
       const r = await timedFetch(root.dataset.officialUrl, 20e3);
       if (!r.ok) throw new Error();
       const j = await r.json();
-      const rows = (j.filings || []).filter(f => f.in_window).sort((a, b) => String(b.filing_date).localeCompare(String(a.filing_date))).slice(0, 6);
+      const rows = (j.filings || []).filter(f => f.in_window).sort((a, b) => String(b.filing_date).localeCompare(String(a.filing_date))).slice(0, 5);
       if (!rows.length) { box.replaceChildren(h('div', 'compact-empty', '近 30 天没有新公告')); return; }
-      box.replaceChildren(...rows.map(f => {
-        const ok = typeof f.document_url === 'string' && f.document_url.startsWith('https://www.sec.gov/');
-        const a = h(ok ? 'a' : 'div', 'list-row'); if (ok) { a.href = f.document_url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
-        const m = h('span', 'm'); m.append(h('span', 'tag', f.form), h('span', null, f.symbols || ''), h('span', 'num', f.filing_date || ''));
-        if (f.report_date) m.append(h('span', 'num', `报告期 ${f.report_date}`));
-        m.append(h('span', 'num', `编号 ${f.accession_number}`));
-        const scope = SEC_SCOPE[f.association_scope]; const title = h('span', 't', f.issuer_name || f.form);
-        if (scope) title.append(h('span', 'scope-badge', scope));
-        a.append(title, m); return a;
-      }));
+      const open = new Set([...box.querySelectorAll('.sec-more[open]')].map(d => d.closest('.sec-row')?.dataset.acc));
+      box.replaceChildren(...rows.map(f => { const row = secRow(f); row.dataset.acc = f.accession_number; if (open.has(f.accession_number)) row.querySelector('details').open = true; return row; }));
     } catch (_) { box.replaceChildren(h('div', 'compact-empty', '公告暂不可用')); }
   }
 
