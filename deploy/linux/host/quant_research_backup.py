@@ -7,19 +7,29 @@ backup SRC_VAR OUT_DIR [--scope SCOPE_JSON]
     under research/{datasets,runs,audits} with relative path, size and SHA-256. Frozen protocols,
     code version and image id recorded. If research backup is REQUIRED by the scope file and the
     registry is missing, the backup FAILS (exit 1).
-verify BACKUP_DIR RESTORE_DIR [--scope SCOPE_JSON]
+verify BACKUP_DIR RESTORE_DIR [--scope SCOPE_JSON] [--run RUN_ID]
     Restores ONLY from BACKUP_DIR into RESTORE_DIR (production volume never mounted) and checks the
     required scope: registry, manifest, every manifest file (hash and size), required per-dataset and
     per-run files, protocols, table digests. Then re-runs every SUCCEEDED run under a NEW run id via
     run_specific (exactly that id; earlier QUEUED/RUNNING requests are never claimed or changed), and
     compares config hash, data hash, results_digest and every ledger byte-for-byte. Missing scope =
     structured failure, exit 1. SKIPPED only when the scope file says NOT_REQUIRED.
+    v2 runs (engine_id set, e.g. phase5_o2o_v1): every artifact registered for the run is REQUIRED and must match
+    the registry's size and SHA-256. Re-execution happens only for runs whose engine THIS image supports
+    (QUANT_WORKER_ENGINES + live capability); others are hash-checked and reported as not re-executed here.
+    --run RUN_ID restores everything but re-executes ONLY that run (new run id, attempt_of = original, same
+    frozen config and engine) and compares results_digest and every deterministic artifact byte-for-byte.
 Exit code: 0 only when ok. stdout is always exactly one JSON document.
 """
 import contextlib, datetime, hashlib, json, os, pathlib, shutil, sqlite3, sys, traceback
 
 TERMINAL = ("SUCCEEDED", "FAILED", "CANCELLED")
 RUN_FILES = ("config.json", "metrics.json", "curves.json", "verify.json", "run.log")
+# v2 artifacts that must be byte-identical on a re-execution of the same frozen config and input
+# (timestamps live only in run.log, program_stdout.log, environment.json, self_check.json, program_run_manifest.json,
+# input_manifest.json/code_manifest.json may differ only in mount flags / platform code version).
+DETERMINISTIC_V2 = ("metrics.csv", "contrasts.csv", "factor_diagnostics.csv", "private_output_hashes.json", "signals_primary.csv.gz",
+                    "ledgers_all.tar", "report.json", "science.json", "mechanical_check.json")
 DEFAULT_SCOPE = {"research": {"requirement": "REQUIRED", "required": {"protocols": ["quant_research_mom20_v1.json"]}}}
 
 
@@ -78,8 +88,14 @@ def backup(src: pathlib.Path, out: pathlib.Path, scope: dict) -> dict:
     con = sqlite3.connect(reg_copy); con.execute("pragma journal_mode=DELETE")
     check = con.execute("pragma quick_check").fetchone()[0]
     con.row_factory = sqlite3.Row
-    runs = [dict(r) for r in con.execute("select run_id, status, results_digest, artifact_dir, dataset_id, dataset_version, config_sha256 from runs order by created_at")]
-    datasets = [dict(r) for r in con.execute("select dataset_id, dataset_version, content_sha256, snapshot_path from datasets")]
+    cols = {r[1] for r in con.execute("pragma table_info(runs)")}
+    eng = ", engine_id, engine_version" if "engine_id" in cols else ""
+    runs = [dict(r) for r in con.execute(f"select run_id, status, results_digest, artifact_dir, dataset_id, dataset_version, config_sha256{eng} from runs order by created_at")]
+    datasets = [dict(r) for r in con.execute("select dataset_id, dataset_version, content_sha256, snapshot_path, manifest_json from datasets")]
+    for d in datasets:
+        d["files"] = json.loads(d.pop("manifest_json")).get("files") or ["data.csv", "manifest.json"]
+    tabs = {r[0] for r in con.execute("select name from sqlite_master where type='table'")}
+    artifacts = [dict(r) for r in con.execute("select run_id, name, rel_path, bytes, sha256 from artifacts order by run_id, name")] if "artifacts" in tabs else []
     con.close()
     for side in ("-wal", "-shm"):
         pathlib.Path(str(reg_copy) + side).unlink(missing_ok=True)
@@ -104,7 +120,7 @@ def backup(src: pathlib.Path, out: pathlib.Path, scope: dict) -> dict:
                 "code_version": os.environ.get("QUANT_CODE_VERSION"), "image_id": os.environ.get("QUANT_IMAGE_ID"),
                 "registry": {"rel": "registry.sqlite3", "size": reg_copy.stat().st_size, "sha256": sha_file(reg_copy),
                              "quick_check": check, "tables": table_digests(reg_copy)},
-                "runs": runs, "incomplete_runs": sorted(incomplete), "datasets": datasets, "files": files, "protocols": protocols,
+                "runs": runs, "incomplete_runs": sorted(incomplete), "datasets": datasets, "artifacts": artifacts, "files": files, "protocols": protocols,
                 "counts": {"research_files": len(files), "research_file_bytes": sum(f["size"] for f in files), "protocol_files": len(protocols),
                            "registry_files": 1, "runs": len(runs), "succeeded_runs": sum(r["status"] == "SUCCEEDED" for r in runs)}}
     (rout / "RESEARCH_MANIFEST.json").write_text(json.dumps(manifest, indent=1))
@@ -116,16 +132,23 @@ def required_files(m: dict, scope: dict, cfg_costs) -> list:
     """Every file the scope requires, derived from the backed-up registry rows (not from what is present)."""
     req = []
     for d in m["datasets"]:
-        for n in scope["research"]["required"].get("per_registered_dataset", ["data.csv", "manifest.json"]):
+        for n in d.get("files") or scope["research"]["required"].get("per_registered_dataset", ["data.csv", "manifest.json"]):
             req.append(f"{d['snapshot_path']}/{n}")
+    v2 = {}
+    for a in m.get("artifacts", []):
+        v2.setdefault(a["run_id"], []).append(a["rel_path"])
     for r in m["runs"]:
-        if r["status"] == "SUCCEEDED":
+        if r["status"] != "SUCCEEDED":
+            continue
+        if r.get("engine_id"):  # v2: everything registered for the run is required
+            req += v2.get(r["run_id"], [f"runs/{r['run_id']}/NO_ARTIFACTS_REGISTERED"])
+        else:
             req += [f"runs/{r['run_id']}/{n}" for n in RUN_FILES]
             req += [f"runs/{r['run_id']}/ledger_cost{int(b)}bps.csv" for b in cfg_costs.get(r["run_id"], [])]
     return req
 
 
-def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict) -> dict:
+def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict, only_run: str | None = None) -> dict:
     report = {"ok": False, "checked_at_utc": now(), "requirement": scope["research"]["requirement"], "problems": [], "reruns": [],
               "restore_source": "backup directory only (production volume not mounted)"}
     P = report["problems"]
@@ -173,7 +196,7 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict) -> dict:
     costs = {}
     for r in m["runs"]:
         cfgp = root / "runs" / r["run_id"] / "config.json"
-        if r["status"] == "SUCCEEDED" and cfgp.is_file():
+        if r["status"] == "SUCCEEDED" and not r.get("engine_id") and cfgp.is_file():
             try:
                 costs[r["run_id"]] = json.loads(cfgp.read_text())["costs"]["scenarios_bps_one_way"]
             except (ValueError, KeyError):
@@ -185,9 +208,15 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict) -> dict:
         if not (b / "protocols" / name).is_file():
             P.append(f"missing required protocol: {name}")
     for d in m["datasets"]:
-        snap = root / d["snapshot_path"] / "data.csv"
+        main = "market_research.sqlite" if "market_research.sqlite" in (d.get("files") or []) else "data.csv"
+        snap = root / d["snapshot_path"] / main
         if snap.is_file() and sha_file(snap) != d["content_sha256"]:
             P.append(f"dataset {d['dataset_id']}@{d['dataset_version']} hash differs from registry")
+    for a in m.get("artifacts", []):
+        f = root / a["rel_path"]
+        if f.is_file() and (f.stat().st_size != a["bytes"] or sha_file(f) != a["sha256"]):
+            P.append(f"artifact differs from registry: {a['rel_path']}")
+    report["artifacts_checked"] = len(m.get("artifacts", []))
     report.update(files_checked=len(m["files"]), required_files_checked=len(req), counts=m["counts"])
     if P:
         report["state"] = "FAILED_SCOPE_CHECK"; return report
@@ -201,13 +230,30 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict) -> dict:
     db = registry.connect()
     for spec in FACTORS.values():
         registry.register_factor(db, spec)
+    supported = worker.worker_engines(db)
+    report["engines_in_this_image"] = ["@".join(e) for e in supported]
     snap_cols = "run_id,status,started_at,finished_at,worker_id,lease_expires_at,cancel_requested,results_digest"
     before = {r[0]: tuple(r) for r in db.execute(f"select {snap_cols} from runs")}
     report["original_runs_at_checkpoint"] = {k: v[1] for k, v in before.items()}
-    for r in [x for x in m["runs"] if x["status"] == "SUCCEEDED"]:
+    targets = [x for x in m["runs"] if x["status"] == "SUCCEEDED"]
+    if only_run:
+        targets = [x for x in m["runs"] if x["run_id"] == only_run]
+        if not targets or targets[0]["status"] != "SUCCEEDED":
+            P.append(f"--run {only_run}: not a SUCCEEDED run in this backup"); report["state"] = "FAILED_TARGET"; db.close(); return report
+    report["not_reexecuted_here"] = [x["run_id"] for x in targets if (x.get("engine_id"), x.get("engine_version")) not in
+                                     [(None, None)] + [(e[0], e[1]) for e in supported if e != registry.LEGACY_ENGINE]
+                                     and not (not x.get("engine_id") and registry.LEGACY_ENGINE in supported)]
+    if only_run and report["not_reexecuted_here"]:
+        P.append(f"engine of {only_run} is not supported by this image")
+    for r in [x for x in targets if x["run_id"] not in report["not_reexecuted_here"]]:
         entry = {"original_run_id": r["run_id"]}
         try:
             orig = db.execute("select * from runs where run_id=?", (r["run_id"],)).fetchone()
+            if orig["engine_id"] if "engine_id" in orig.keys() else None:
+                entry.update(_rerun_v2(db, root, orig, registry, worker)); report["reruns"].append(entry)
+                if not entry.get("ok"):
+                    P.append(f"rerun mismatch for {r['run_id']}")
+                continue
             ds = db.execute("select content_sha256 from datasets where dataset_id=? and dataset_version=?", (orig["dataset_id"], orig["dataset_version"])).fetchone()
             new_id = registry.create_run(db, (orig["dataset_id"], orig["dataset_version"]), (orig["factor_id"], orig["factor_version"]),
                                          json.loads(orig["config_json"]), requested_by=f"restore-check:{r['run_id']}")
@@ -241,11 +287,33 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path, scope: dict) -> dict:
     return report
 
 
+def _rerun_v2(db, root, orig, registry, worker) -> dict:
+    """Re-execute one v2 run under a NEW run id (attempt_of = original) with its frozen config and engine;
+    exactly that id is claimed. Compare results_digest and every deterministic artifact byte-for-byte."""
+    from scripts.quant_research_v1 import catalog
+    eng = (orig["engine_id"], orig["engine_version"])
+    new_id = catalog.create_run_v2(db, (orig["dataset_id"], orig["dataset_version"]), (orig["factor_id"], orig["factor_version"]),
+                                   json.loads(orig["config_json"]), eng, requested_by=f"restore-check:{orig['run_id']}", attempt_of=orig["run_id"])
+    with contextlib.redirect_stdout(sys.stderr):
+        code = worker.run_specific(new_id, int(os.environ.get("QUANT_RESTORE_MAX_SECONDS", "900")))
+    new = db.execute("select * from runs where run_id=?", (new_id,)).fetchone()
+    od, nd = root / "runs" / orig["run_id"], root / "runs" / new_id
+    byte_equal = {n: (od / n).is_file() and (nd / n).is_file() and (od / n).read_bytes() == (nd / n).read_bytes() for n in DETERMINISTIC_V2 if (od / n).is_file()}
+    out = {"engine": "@".join(eng), "new_run_id": new_id, "worker_exit": code, "new_status": new["status"], "new_exit_reason": new["exit_reason"],
+           "attempt_of": new["attempt_of"], "config_sha256_equal": new["config_sha256"] == orig["config_sha256"],
+           "original_results_digest": orig["results_digest"], "new_results_digest": new["results_digest"],
+           "digest_equal": new["results_digest"] == orig["results_digest"], "artifacts_byte_equal": byte_equal}
+    out["ok"] = (new["status"] == "SUCCEEDED" and out["digest_equal"] and out["config_sha256_equal"] and bool(byte_equal) and all(byte_equal.values())
+                 and new["attempt_of"] == orig["run_id"])
+    return out
+
+
 def main(argv) -> int:
     mode, a, b = argv[1], pathlib.Path(argv[2]), pathlib.Path(argv[3])
     scope = load_scope(argv[argv.index("--scope") + 1] if "--scope" in argv else None)
+    only_run = argv[argv.index("--run") + 1] if "--run" in argv else None
     try:
-        res = backup(a, b, scope) if mode == "backup" else verify(a, b, scope)
+        res = backup(a, b, scope) if mode == "backup" else verify(a, b, scope, only_run)
     except Exception as exc:  # noqa: BLE001
         res = {"ok": False, "state": "FAILED_EXCEPTION", "error": f"{type(exc).__name__}: {exc}"[:400], "traceback_tail": traceback.format_exc().splitlines()[-3:]}
     print(json.dumps(res))

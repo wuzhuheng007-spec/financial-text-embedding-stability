@@ -593,7 +593,7 @@ def research_run_rerun(request, run_id):
         if row["status"] in ("QUEUED", "RUNNING"):
             return JsonResponse({"result": "REJECTED", "reason": "run still active"}, status=400)
         from scripts.quant_research_v1 import catalog
-        eng = registry.engine_of(row); attempt = run_id if row["status"] in ("FAILED", "CANCELLED") else None
+        eng = registry.engine_of(row); attempt = run_id  # every rerun is a new run linked to its source run
         if eng == registry.LEGACY_ENGINE:
             new_id = registry.create_run(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
                                          json.loads(row["config_json"]), requested_by=request.user.username, attempt_of=attempt)

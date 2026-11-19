@@ -326,6 +326,7 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     w = sub.add_parser("worker"); w.add_argument("--once", action="store_true", required=True); w.add_argument("--max-seconds", type=int, default=300)
     sub.add_parser("recover")
+    ro = sub.add_parser("run-one", help="execute exactly this QUEUED run (never another one)"); ro.add_argument("run_id"); ro.add_argument("--max-seconds", type=int, default=900)
     rt = sub.add_parser("retry"); rt.add_argument("run_id")
     s = sub.add_parser("snapshot")
     for a in ("--source", "--symbol", "--dataset-id", "--dataset-version", "--title", "--receipt", "--audit-status"):
@@ -341,6 +342,8 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     if a.cmd == "worker":
         return run_once(a.max_seconds)
+    if a.cmd == "run-one":
+        return run_specific(a.run_id, a.max_seconds)
     db = registry.connect()
     if a.cmd == "recover":
         print(json.dumps(registry.recover_lost(db, live_workers())))

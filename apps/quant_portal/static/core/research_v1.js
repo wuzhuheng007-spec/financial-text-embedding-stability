@@ -158,7 +158,7 @@
       const idc = h('td', 'num', shortId(r)); idc.title = r.run_id;
       tr.append(idc, h('td', null, `${r.engine_id} · ${r.dataset_id} · ${r.factor_id}@${r.factor_version}`));
       const st = h('td'); st.append(chip(STATUS[r.status] || r.status, `run-${r.status.toLowerCase()}`));
-      if (r.attempt_of) st.append(h('div', 'fine-print', `重试自 ${r.attempt_of.slice(-6)}`));
+      if (r.attempt_of) st.append(h('div', 'fine-print', `重跑自 ${r.attempt_of.slice(-6)}`));
       tr.append(st, h('td', 'fine-print', stageOf(r)));
       const act = h('td', 'rw-actions');
       if (!['QUEUED', 'RUNNING'].includes(r.status)) { const b = h('button', 'button button-outline', '查看'); b.type = 'button'; b.onclick = () => { showTab('results'); openRun(r.run_id); }; act.append(b); }

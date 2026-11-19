@@ -93,7 +93,8 @@ class ResearchRerunTests(ResearchEndpointTests):
         again = self.client.post(reverse("research_run_rerun", args=[r["run_id"]])).json()
         self.assertEqual(again["result"], "QUEUED")
         db = registry.connect()
-        self.assertIsNone(db.execute("select attempt_of from runs where run_id=?", (again["run_id"],)).fetchone()[0])  # succeeded -> plain rerun
+        # M2 change (task E5/E6): every rerun, also of a SUCCEEDED run, is a new run linked by attempt_of
+        self.assertEqual(db.execute("select attempt_of from runs where run_id=?", (again["run_id"],)).fetchone()[0], r["run_id"])
         registry.request_cancel(db, again["run_id"]); db.close()
         retry = self.client.post(reverse("research_run_rerun", args=[again["run_id"]])).json()
         db = registry.connect()
