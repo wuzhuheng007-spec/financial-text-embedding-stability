@@ -69,8 +69,9 @@
 {# ===================== 新闻 ===================== #}
 <section class="view" data-view="news" aria-label="新闻">
   {% if personal_feed_enabled %}
-  <div class="section-head"><h2>重点事件</h2><span class="count" id="top10-count">0</span></div>
-  <div id="personal-top10" class="top10-list" aria-live="polite"></div>
+  <div id="news-source-state" hidden></div>
+  <div id="news-top10-block"><div class="section-head"><h2>重点事件</h2><span class="count" id="top10-count">0</span></div>
+  <div id="personal-top10" class="top10-list" aria-live="polite"></div></div>
   <section class="section news-section" id="personal-feed-root" data-time-zone="{{ display_timezone }}" data-feed-url="{% url 'personal_feed_json' %}" data-selection-url="{% url 'personal_quote_selection' %}" data-interest-url="{% url 'personal_news_interest' %}" data-event-preferences-url="{% url 'personal_event_preferences' %}" data-analysis-priority-url="{% url 'personal_analysis_priority' %}" aria-labelledby="news-title">
     <div class="section-head"><h2 id="news-title">快讯</h2><span class="count" id="news-count">0</span></div>
     <div class="news-tabs" role="group" aria-label="快讯筛选"><button class="button" type="button" data-news-filter="all" aria-pressed="false">全部</button><button class="button" type="button" data-news-filter="interest" aria-pressed="true">我的关注</button><button class="button" type="button" data-news-filter="focus" aria-pressed="false">重点事件</button></div>
@@ -82,7 +83,7 @@
     <button class="button button-outline new-news-banner" type="button" id="new-news-banner" hidden></button>
     <div id="personal-news" class="news-list" aria-live="polite"><div class="empty-state">暂无新闻</div></div>
   </section>
-  <section class="section" aria-labelledby="sentiment-title">
+  <section class="section" id="news-sentiment-block" aria-labelledby="sentiment-title">
     <div class="section-head"><h2 id="sentiment-title">新闻情绪</h2><span class="count" id="sentiment-count"></span></div>
     <div id="personal-sentiment"></div>
   </section>
@@ -94,6 +95,29 @@
 {# ===================== 研究 ===================== #}
 <section class="view" data-view="research" aria-label="研究">
   {% if personal_feed_enabled %}
+  <section id="research-workbench" class="rw" data-registry-url="{% url 'research_registry_json' %}" data-create-url="{% url 'research_run_create' %}" data-run-url="/research/runs/RUN_ID" aria-labelledby="rw-title">
+    <div class="section-head"><h2 id="rw-title">研究工作台</h2><span class="fine-print" id="rw-state" role="status"></span></div>
+    <div class="ov-grid rw-top">
+      <div class="card"><div class="section-head"><h2>数据集</h2></div><div class="list" id="rw-datasets"><div class="list-row"><span class="t skeleton">&nbsp;</span></div></div></div>
+      <div class="card"><div class="section-head"><h2>因子</h2></div><div class="list" id="rw-factors"><div class="list-row"><span class="t skeleton">&nbsp;</span></div></div></div>
+    </div>
+    <form class="card rw-create section" id="rw-create">
+      <div class="section-head"><h2>创建实验</h2></div>
+      <div class="watch-form">
+        <label class="form-field">数据集<select id="rw-ds" required></select></label>
+        <label class="form-field">因子<select id="rw-fac" required></select></label>
+        <label class="form-field">协议<select id="rw-proto" required></select></label>
+        <button class="button button-primary" id="rw-submit" type="submit" disabled>提交到后台</button>
+      </div>
+      <p class="fine-print" id="rw-proto-note"></p><p class="fine-print" id="rw-msg" role="status"></p>
+    </form>
+    <section class="card section"><div class="section-head"><h2>实验列表</h2></div><div id="rw-runs"></div></section>
+    <section class="card section" id="rw-detail" hidden aria-labelledby="rw-d-title">
+      <div class="section-head"><h2 id="rw-d-title">结果</h2></div>
+      <div id="rw-d-body"></div>
+      <details class="disclosure section"><summary>实验详情</summary><div class="disclosure-body" id="rw-d-tech"></div></details>
+    </section>
+  </section>
   <section id="panel-research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no" aria-labelledby="research-sentiment-heading">
     <div class="section-head"><h2 id="research-sentiment-heading">研究情绪</h2><span class="count" id="research-sentiment-count"></span></div>
     <p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的研究候选；文字语气不代表报道属实或预测收益。</p>
@@ -186,6 +210,7 @@
 <script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=20-1"></script>
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v4"></script>
+<script defer charset="utf-8" src="{% static 'core/research_v1.js' %}"></script>
 {% endif %}
 <script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=20-1"></script>
 {% endblock %}

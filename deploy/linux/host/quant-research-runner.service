@@ -1,0 +1,12 @@
+[Unit]
+Description=Run one queued quant research job (if any) in a bounded one-off container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/quant-research-runner.sh
+# The worker aborts a run after 300 s; this is the outer bound for the whole container.
+TimeoutStartSec=10min
+Nice=15
+IOSchedulingClass=idle

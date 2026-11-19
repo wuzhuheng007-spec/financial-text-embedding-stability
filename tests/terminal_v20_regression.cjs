@@ -85,3 +85,19 @@ test('a selection change aborts the obsolete chart request at once and fetches t
   assert.equal(h.requests.length, 2, 'no wait for the old request timeout');
   assert.match(h.requests[1].url, /symbol=MU/);
 });
+test('an identical in-flight query is not re-sent (forced reload of the same selection)', async () => {
+  const h = harness(); h.api.chart.sym = 'NVDA';
+  const first = h.api.loadChart(true);
+  await h.api.loadChart(true); await h.api.loadChart(false);
+  assert.equal(h.requests.length, 1);
+  h.reply(0); await first; await settle();
+  assert.equal(h.requests.length, 1, 'no queued duplicate after it settles');
+});
+test('coverage lookup and chart load for the same symbol/range share one request', async () => {
+  const h = harness(); h.api.chart.sym = 'NVDA'; h.api.chart.range = 'all';
+  const cov = h.api.loadEarliest('NVDA'); const ch = h.api.loadChart(true);
+  assert.equal(h.requests.length, 1); assert.match(h.requests[0].url, /symbol=NVDA&session=ALL&range=all/);
+  h.reply(0, {points: [{source_at: '2026-11-10T15:00:00Z', price_text: '10', session: 'REGULAR'}]});  // older than 24 h: 'all' stays valid
+  await cov; await ch; await settle();
+  assert.equal(h.api.chart.data.length, 1); assert.ok(h.api.chart.earliest.has('NVDA'));
+});

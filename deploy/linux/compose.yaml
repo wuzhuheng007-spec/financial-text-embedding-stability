@@ -207,6 +207,26 @@ services:
       start_period: 60s
     stop_grace_period: 30s
 
+  # Research job runner (profile "jobs"): one-shot `worker --once` started by quant-research-runner.timer.
+  # No network, no secrets, bounded CPU/memory/processes. It writes only research/ files on personal_var
+  # (its own SQLite registry), so it never takes the feed cache's write lock.
+  research-runner:
+    <<: *hardening
+    restart: "no"
+    profiles: ["jobs"]
+    image: ${APP_IMAGE:-quant-personal-app:local}
+    entrypoint: ["python", "-m", "scripts.quant_research_v1.worker"]
+    command: ["worker", "--once", "--max-seconds", "300"]
+    environment:
+      TZ: UTC
+      OMP_NUM_THREADS: "1"
+    network_mode: none
+    volumes:
+      - personal_var:/app/apps/quant_portal/var
+    cpus: 1.0
+    mem_limit: 1g
+    pids_limit: 128
+
 networks:
   backend:
     internal: true

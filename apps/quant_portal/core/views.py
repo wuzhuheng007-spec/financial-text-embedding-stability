@@ -462,3 +462,125 @@ def change_language(request):
     if not url_has_allowed_host_and_scheme(target,allowed_hosts={request.get_host()},require_https=False):
         target="/"
     return redirect(target)
+
+
+# ---------- research workflow v1 (owner only; web never runs a backtest itself) ----------
+import re as _re
+
+_RUN_ID = _re.compile(r"^run-\d{8}T\d{6}Z-[0-9a-f]{6}$")
+# Only protocols frozen in the repository can be selected; no user-supplied code or parameters.
+RESEARCH_PROTOCOLS = {"mom20-daily-long-cash": "configs/quant_research_mom20_v1.json"}
+
+
+def _research_owner(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Research unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_research_v1 import registry
+    return registry, REPO_ROOT
+
+
+def _no_store(response):
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+def research_registry_json(request):
+    registry, repo = _research_owner(request)
+    import json
+    try:
+        data = registry.read_all()
+    except Exception as exc:  # noqa: BLE001 - an unreadable registry is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "datasets": [], "factors": [], "runs": []}
+    protocols = []
+    for pid, rel in RESEARCH_PROTOCOLS.items():
+        cfg = json.loads((repo / rel).read_text(encoding="utf-8"))
+        protocols.append({"protocol_id": pid, "protocol_version": cfg["protocol_version"],
+                          "factor": cfg["factor"], "costs_bps": cfg["costs"]["scenarios_bps_one_way"],
+                          "segments": cfg["segments"], "execution": cfg["execution"]["price"],
+                          "return_label": cfg["price_series"]["return_label"]})
+    data["protocols"] = protocols
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+@require_POST
+def research_run_create(request):
+    registry, repo = _research_owner(request)
+    import json
+    ds = (request.POST.get("dataset") or "").split("@", 1)
+    fv = (request.POST.get("factor") or "").split("@", 1)
+    pid = request.POST.get("protocol") or ""
+    if len(ds) != 2 or len(fv) != 2 or pid not in RESEARCH_PROTOCOLS:
+        return JsonResponse({"result": "INVALID_SELECTION"}, status=400)
+    protocol = json.loads((repo / RESEARCH_PROTOCOLS[pid]).read_text(encoding="utf-8"))
+    db = registry.connect()
+    try:
+        run_id = registry.create_run(db, tuple(ds), tuple(fv), protocol, requested_by=request.user.username)
+    except (LookupError, ValueError) as exc:
+        return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": "QUEUED", "run_id": run_id}))
+
+
+@login_required
+@require_POST
+def research_run_cancel(request, run_id):
+    registry, _ = _research_owner(request)
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    db = registry.connect()
+    try:
+        status = registry.request_cancel(db, run_id)
+    except LookupError:
+        raise Http404()
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": status}))
+
+
+def _run_dir(registry, run_id):
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    path = registry.root() / "runs" / run_id
+    if not path.is_dir():
+        raise Http404()
+    return path
+
+
+@login_required
+def research_run_json(request, run_id):
+    registry, _ = _research_owner(request)
+    import json
+    rows = [r for r in registry.read_all()["runs"] if r["run_id"] == run_id]
+    if not rows:
+        raise Http404()
+    data = {"run": rows[0]}
+    path = registry.root() / "runs" / run_id
+    if _RUN_ID.match(run_id) and path.is_dir():
+        for name in ("metrics", "curves", "verify"):
+            f = path / f"{name}.json"
+            data[name] = json.loads(f.read_text(encoding="utf-8")) if f.is_file() else None
+        log = path / "run.log"
+        data["log_tail"] = log.read_text(encoding="utf-8").splitlines()[-30:] if log.is_file() else []
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_run_ledger(request, run_id):
+    registry, _ = _research_owner(request)
+    path = _run_dir(registry, run_id)
+    bps = request.GET.get("bps", "0")
+    if bps not in {"0", "5", "10"}:
+        raise Http404()
+    f = path / f"ledger_cost{bps}bps.csv"
+    if not f.is_file():
+        raise Http404()
+    response = HttpResponse(f.read_bytes(), content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = f'attachment; filename="{run_id}_ledger_cost{bps}bps.csv"'
+    return _no_store(response)

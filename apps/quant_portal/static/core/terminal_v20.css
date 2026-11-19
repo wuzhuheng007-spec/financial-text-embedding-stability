@@ -272,3 +272,17 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   .q-price{font-size:22px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- Research workbench ---------- */
+.rw .rw-top{margin-top:0}
+.rw-chart{display:block;width:100%;height:260px;margin-top:10px}
+.rw-chart-sm{height:120px}
+.rw-chart .grid line{stroke:var(--line)}.rw-chart .axis text{fill:var(--text-3);font-size:11px;font-family:var(--mono)}
+.rw-chart .series path{fill:none;stroke-width:1.6}
+.rw-key::before{content:"";display:inline-block;width:12px;height:2px;margin-right:6px;vertical-align:middle;background:var(--accent)}
+.rw-key-b::before{background:var(--text-3)}
+.rw-dl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.rw-log{max-height:220px;overflow:auto;background:var(--bg-2);border:1px solid var(--line);border-radius:7px;padding:8px;font-size:11.5px;white-space:pre-wrap}
+.run-succeeded{color:var(--ok)}.run-failed{color:var(--danger)}.run-running,.run-queued{color:var(--accent)}
+.q-basis{font-size:11px;color:var(--text-3);white-space:nowrap}
+.mk-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}

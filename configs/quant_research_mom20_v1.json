@@ -1,0 +1,41 @@
+{
+  "schema": "quant_research_protocol_v1",
+  "protocol_id": "mom20-daily-long-cash",
+  "protocol_version": "1",
+  "frozen_at_utc": "2026-11-19T01:40:00Z",
+  "frozen_before_any_result": true,
+  "purpose": "Engineering baseline to exercise the research workflow (dataset -> factor -> chronological backtest with costs -> recorded run -> result page). Not evidence that the rule is effective.",
+  "factor": {"factor_id": "mom20", "factor_version": "1", "params": {"lookback_days": 20}},
+  "signal": "position target = 1 (long) if factor > 0 at the close, else 0 (cash). Missing factor (warm-up) = cash.",
+  "execution": {
+    "price": "OPEN of the next trading day in the dataset",
+    "rule": "A signal formed at the close of day t is executed at the open of day t+1; it never trades at the close it was computed on.",
+    "return_accounting": "Day t+1 return = (1 + p_old*(open/prev_close - 1)) * (1 - cost) * (1 + p_new*(close/open - 1)) - 1, where p_old is the position held overnight and p_new the position after the open trade."
+  },
+  "warmup_trading_days": 20,
+  "price_series": {
+    "field_basis": "vendor forward-adjusted OHLC (autype a1)",
+    "return_label": "前复权价格收益（a1）",
+    "dividend_note": "The a1/a0 ratio changes near quarterly ex-dividend dates, so a1 appears to include cash-dividend adjustment, but the vendor method is undocumented: results are labelled adjusted price returns, not total returns."
+  },
+  "costs": {
+    "scenarios_bps_one_way": [0, 5, 10],
+    "definition": "cost = bps/10000 * turnover; turnover = |p_new - p_old| as a fraction of NAV traded at the open (a full switch long->cash or cash->long is 1.0, counted once).",
+    "nature": "engineering assumption, not a broker fee schedule"
+  },
+  "cash_return": {"daily": 0.0, "note": "No risk-free yield credited to cash; Sharpe uses rf = 0."},
+  "benchmark": "Buy-and-hold of the same series with the same accounting: long from the first tradable open after warm-up (entry turnover 1.0 charged under each cost scenario), no further trades.",
+  "segments": [
+    {"name": "development", "start": "1999-01-01", "end": "2012-12-31"},
+    {"name": "validation",  "start": "2013-01-01", "end": "2019-12-31"},
+    {"name": "holdout",     "start": "2020-01-01", "end": "2026-12-31"}
+  ],
+  "segment_rule": "One continuous simulation; each segment's metrics use only that segment's daily returns, with NAV rebased to 1 at the segment start. The rule has no fitted parameters, so segments are reported separately rather than used for selection.",
+  "metrics": {
+    "annualization_days": 252,
+    "list": ["total_return", "cagr", "ann_vol", "sharpe_rf0", "max_drawdown", "trades", "turnover_sum", "exposure", "days"],
+    "min_days_for_metrics": 126,
+    "insufficient_sample": "metrics null, reason INSUFFICIENT_SAMPLE"
+  },
+  "selection_rule": "All cost scenarios and all segments are saved and shown; no scenario or interval is selected after seeing results."
+}

@@ -50,7 +50,8 @@
     li.append(top);
     li.append(el('div', null, [f.issuer_name, f.primary_doc_description, f.items ? `Items ${f.items}` : ''].filter(Boolean).join(' · ')));
     const meta = el('div', 'muted');
-    meta.append(`SEC 受理时间原字段 ${f.acceptance_datetime_raw || '无'}（${f.acceptance_tz_marker}）· 首次采集 ${fmt(f.first_seen_at_utc)} · `);
+    // Report period and accession distinguish same-issuer, same-day, same-form filings; they are never merged.
+    meta.append(`${f.report_date ? '报告期 ' + f.report_date + ' · ' : ''}编号 ${f.accession_number} · SEC 受理时间原字段 ${f.acceptance_datetime_raw || '无'}（${f.acceptance_tz_marker}）· 首次采集 ${fmt(f.first_seen_at_utc)} · `);
     meta.append(secLink(f.document_url, '原文'), ' · ', secLink(f.index_url, '申报索引'));
     li.append(meta);
     return li;

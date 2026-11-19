@@ -12,6 +12,9 @@
   const SESS = {PREMARKET: '盘前', REGULAR: '常规', AFTERHOURS: '盘后', OVERNIGHT: '夜盘'};
   const SESS_COLOR = {PREMARKET: 'var(--s-pre)', REGULAR: 'var(--s-reg)', AFTERHOURS: 'var(--s-after)', OVERNIGHT: 'var(--s-night)'};
   const BASIS = {REGULAR_LAST_SAME_MESSAGE: '较常规时段价', PREV_CLOSE_SAME_MESSAGE: '较昨收'};
+  // Short, always-visible comparison label (no hover): session move vs regular price, or vs previous close.
+  const basisLabel = (c, q) => !c ? '' : c.base_kind === 'PREV_CLOSE_SAME_MESSAGE' ? '较昨收'
+    : ({AFTERHOURS: '盘后涨跌', PREMARKET: '盘前涨跌', OVERNIGHT: '夜盘涨跌'}[q?.session] || '较常规时段价');
   const VIEWS = {overview: '总览', markets: '行情', news: '新闻', research: '研究', settings: '设置'};
   const RANGE_MS = {'30m': 30 * 60e3, '2h': 2 * 3600e3, '24h': 24 * 3600e3, all: 7 * 24 * 3600e3};
   const store = {
@@ -90,13 +93,13 @@
   function buildCard(sym) {
     const card = h('button', 'qcard'); card.type = 'button'; card.dataset.symbol = sym;
     const id = h('div', 'q-id'); const symEl = h('span', 'q-sym', sym); const nameEl = h('span', 'q-name'); id.append(symEl, nameEl);
-    const row = h('div', 'q-price-row'); const price = h('span', 'q-price', '—'); const chg = h('span', 'q-change'); row.append(price, chg);
+    const row = h('div', 'q-price-row'); const price = h('span', 'q-price', '—'); const chg = h('span', 'q-change'); const basis = h('span', 'q-basis'); row.append(price, chg, basis);
     const sp = s('svg', {class: 'q-spark', viewBox: '0 0 112 46', preserveAspectRatio: 'none', 'aria-hidden': 'true'});
     const meta = h('div', 'q-meta'); const sess = h('span', 'sess'); const stale = h('span', 'stale-tag', '连接中断'); stale.hidden = true;
     const time = h('span', 'q-time'); meta.append(sess, stale, time);
     card.append(id, row, sp, meta);
     card.addEventListener('click', () => { location.hash = `#markets/${sym}`; });
-    const ref = {card, nameEl, price, chg, sp, sess, stale, time, last: null};
+    const ref = {card, nameEl, price, chg, basis, sp, sess, stale, time, last: null};
     cards.set(sym, ref);
     return ref;
   }
@@ -118,7 +121,8 @@
       setText(ref.chg, `${signed(c.change_text)}  ${signed(c.change_pct_text)}%`);
       ref.chg.className = `q-change ${dirOf(c.change_text)}`;
       ref.chg.title = `${BASIS[c.base_kind] || '较参考价'} ${money(c.base_text, cur)}`;
-    } else { setText(ref.chg, ''); ref.chg.title = ''; }
+      setText(ref.basis, basisLabel(c, q));
+    } else { setText(ref.chg, ''); ref.chg.title = ''; setText(ref.basis, ''); }
     const sess = q?.session;
     if (SESS[sess]) { ref.sess.hidden = false; ref.sess.dataset.s = sess; setText(ref.sess, SESS[sess]); } else ref.sess.hidden = true;
     setText(ref.time, q?.source_at ? `更新 ${timeOf(q.source_at)}` : '');
@@ -161,15 +165,23 @@
     const c = changeOf(sym); const color = c ? `var(--${dirOf(c.change_text) === 'fall' ? 'fall' : dirOf(c.change_text) === 'rise' ? 'rise' : 'text-2'})` : 'var(--accent)';
     ref.sp.replaceChildren(...pathsFor(sample, x, y, 180e3).map(p => s('path', {d: p.d, stroke: color})));
   }
+  // In-flight timeline requests shared by (symbol, session, range): identical queries are not re-sent.
+  const inflight = new Map();
+  function getTimeline(sym, range, ctrl) {
+    const key = `${sym}|ALL|${range}`;
+    if (inflight.has(key)) return inflight.get(key);
+    const p = timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, 20e3, ctrl)
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .finally(() => inflight.delete(key));
+    inflight.set(key, p);
+    return p;
+  }
   const toPoints = rows => (rows || []).map(r => ({t: ms(r.source_at), p: Number(r.price_text), seg: r.segment ?? 0, s: r.session}))
     .filter(p => p.t != null && Number.isFinite(p.p)).sort((a, b) => a.t - b.t);
   async function loadSpark(sym) {
     if (!root.dataset.timelineUrl) return;
     try {
-      const u = `${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=2h`;
-      const r = await timedFetch(u, 20e3);
-      if (!r.ok) return;
-      spark.set(sym, toPoints((await r.json()).points));
+      spark.set(sym, toPoints((await getTimeline(sym, '2h')).points));
       drawSpark(sym);
     } catch (_) { /* keep last sparkline */ }
   }
@@ -195,7 +207,7 @@
       const q = quoteOf(sym), ch = changeOf(sym);
       setText(it.p, q ? money(q.price_text, currencyOf(sym)) : '—');
       setText(it.n, nameOf(sym));
-      setText(it.c, ch ? `${signed(ch.change_pct_text)}%` : '');
+      setText(it.c, ch ? `${basisLabel(ch, q).replace('涨跌', '')} ${signed(ch.change_pct_text)}%` : '');
       it.c.className = `c num ${ch ? dirOf(ch.change_text) : ''}`;
       it.b.setAttribute('aria-current', String(sym === selected));
       it.b.setAttribute('aria-selected', String(sym === selected));
@@ -203,6 +215,29 @@
       return it.b;
     });
     if (box.children.length !== nodes.length || [...box.children].some((n, i) => n !== nodes[i])) box.replaceChildren(...nodes);
+    nodes.forEach(b => b.setAttribute('tabindex', b.getAttribute('aria-selected') === 'true' ? '0' : '-1'));
+    if (selected !== listShown) { listShown = selected; revealSelected(); }
+  }
+  let listShown = null;
+  // Scroll only the horizontal symbol strip (never the page) so the selected symbol is visible.
+  function revealSelected() {
+    const box = $('mk-list'), it = listItems.get(selected)?.b;
+    if (!box || !it || box.scrollWidth <= box.clientWidth + 1) return;
+    const left = it.offsetLeft - box.offsetLeft - (box.clientWidth - it.offsetWidth) / 2;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    box.scrollTo({left: Math.max(0, left), behavior: reduce ? 'auto' : 'smooth'});
+  }
+  function bindListKeys() {
+    const box = $('mk-list'); if (!box) return;
+    box.addEventListener('keydown', e => {
+      const list = symbols(); const i = list.indexOf(selected); let j = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = Math.min(list.length - 1, i + 1);
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = Math.max(0, i - 1);
+      else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = list.length - 1;
+      if (j == null || j === i) return;
+      e.preventDefault(); location.hash = `#markets/${list[j]}`;
+      requestAnimationFrame(() => listItems.get(list[j])?.b.focus({preventScroll: true}));
+    });
   }
   function renderDetailHead(down) {
     if (!selected || !$('d-sym')) return;
@@ -215,7 +250,8 @@
     dc.className = `d-change num ${c ? dirOf(c.change_text) : ''}`;
     const se = $('d-sess');
     if (SESS[q?.session]) { se.hidden = false; se.dataset.s = q.session; setText(se, SESS[q.session]); } else se.hidden = true;
-    setText($('d-basis'), c ? `${BASIS[c.base_kind] || '较参考价'} ${money(c.base_text, cur)}` : '');
+    setText($('d-basis'), c ? (c.base_kind === 'PREV_CLOSE_SAME_MESSAGE' ? `较昨收 ${money(c.base_text, cur)}`
+      : `${basisLabel(c, q)} · 基准为同一报价中的常规时段价 ${money(c.base_text, cur)}，不是全天涨跌`) : '');
     setText($('d-time'), q?.source_at ? `更新 ${fmtMDHMS.format(ms(q.source_at))}` : '');
     $('d-stale').hidden = !down;
   }
@@ -239,9 +275,7 @@
   async function loadEarliest(sym) {
     if (chart.earliest.has(sym) || !root.dataset.timelineUrl) return;
     try {
-      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=all`, 20e3);
-      if (!r.ok) return;
-      const j = await r.json();
+      const j = await getTimeline(sym, 'all');
       const firsts = (j.point_metrics?.coverage_segments || []).map(x => ms(x.first_source_at)).filter(x => x != null);
       const pts = toPoints(j.points);
       const e = firsts.length ? Math.min(...firsts) : pts[0]?.t;
@@ -253,16 +287,15 @@
   }
   async function loadChart(force) {
     if (!chart.sym || !root.dataset.timelineUrl) return;
-    if (chart.loading) { if (force) chart.pendingLoad = true; return; }
+    // The same symbol/range already in flight: wait for it rather than queue an identical reload.
+    if (chart.loading) { if (force && chart.loadingKey !== `${chart.sym}|${chart.range}`) chart.pendingLoad = true; return; }
     if (!force && Date.now() - chart.lastLoad < 5e3) return;
-    chart.loading = true; const sym = chart.sym, range = chart.range;
+    chart.loading = true; const sym = chart.sym, range = chart.range; chart.loadingKey = `${sym}|${range}`;
     chart.ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     const state = $('chart-state');
     if (!chart.data.length) { state.hidden = false; state.textContent = '加载中…'; }
     try {
-      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, 20e3, chart.ctrl);
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      const j = await r.json();
+      const j = await getTimeline(sym, range, chart.ctrl);
       if (sym !== chart.sym || range !== chart.range) return;
       chart.data = toPoints(j.points); chart.gapMs = Math.max(60e3, (j.gap_seconds || 180) * 1000);
       chart.lastLoad = Date.now();
@@ -274,13 +307,15 @@
     } catch (_) {
       if (!chart.data.length) { state.hidden = false; state.textContent = '走势暂不可用'; }
     } finally {
-      chart.loading = false; chart.ctrl = null;
+      chart.loading = false; chart.ctrl = null; chart.loadingKey = null;
       if (chart.pendingLoad) { chart.pendingLoad = false; void loadChart(true); }
     }
   }
   // A selection change makes the in-flight chart request obsolete: abort it now so the
   // queued reload for the new selection is not held up by the old request's timeout.
-  function cancelChart() { if (chart.loading && chart.ctrl) { chart.pendingLoad = true; chart.ctrl.abort(); } }
+  function cancelChart() {
+    if (chart.loading && chart.loadingKey !== `${chart.sym}|${chart.range}`) { chart.pendingLoad = true; chart.ctrl?.abort(); }
+  }
   function selectSymbol(sym) {
     if (!sym) return;
     const changed = sym !== chart.sym;
@@ -401,18 +436,39 @@
     if ('ResizeObserver' in window) new ResizeObserver(() => drawChart()).observe($('chart'));
   }
 
+  // ---------- news source state ----------
+  function newsState() {
+    if (feed?.provider_gates?.jin10) return {k: 'off', text: '新闻源未连接'};
+    const j = (feed?.states || []).find(x => x.provider === 'jin10');
+    if (!j || j.worker_alive !== 1 || j.state === 'DISCONNECTED' || j.heartbeat_stale)
+      return j?.last_success_at ? {k: 'down', text: `新闻采集中断 · 最近成功 ${fmtMDHM.format(ms(j.last_success_at))}`} : {k: 'off', text: '新闻源未连接'};
+    return {k: 'ok', text: '采集正常 · 当前窗口暂无新闻'};
+  }
+  function compactState(text) {
+    const box = h('div', 'compact-empty'); const a = h('a', 'button button-outline', '查看设置'); a.href = '#settings/sources';
+    box.append(h('span', null, text), a); return box;
+  }
+  let newsStateSig = '';
+  function renderNewsState() {
+    const st = newsState(); const hasNews = (feed?.news || []).length > 0;
+    const sig = `${st.text}|${hasNews}`; if (sig === newsStateSig) return; newsStateSig = sig;
+    const box = $('news-source-state'); if (!box) return;
+    box.hidden = st.k === 'ok'; if (!box.hidden) box.replaceChildren(compactState(st.text));
+    // Without an input source, 0-count panels say nothing: hide them; keep cached items visible if any exist.
+    for (const id of ['news-top10-block', 'news-sentiment-block']) { const el = $(id); if (el) el.hidden = st.k !== 'ok'; }
+    const body = $('personal-feed-root'); if (body) body.hidden = st.k !== 'ok' && !hasNews;
+  }
+
   // ---------- overview lists ----------
   let newsSig = '';
   function renderOverviewNews() {
     const box = $('ov-news'); if (!box) return;
     const top = feed?.top10 || [];
     const rows = (top.length ? top : (feed?.news || [])).slice(0, 6);
-    const sig = JSON.stringify(rows.map(r => [r.item_key, r.version]));
+    const st = newsState();
+    const sig = JSON.stringify([st.text, rows.map(r => [r.item_key, r.version])]);
     if (sig === newsSig) return; newsSig = sig;
-    if (!rows.length) {
-      const empty = h('div', 'compact-empty'); const a = h('a', 'button button-outline', '查看设置'); a.href = '#settings/sources';
-      empty.append(h('span', null, '暂无新闻'), a); box.replaceChildren(empty); return;
-    }
+    if (!rows.length) { box.replaceChildren(st.k === 'ok' ? h('div', 'compact-empty', st.text) : compactState(st.text)); return; }
     box.replaceChildren(...rows.map(r => {
       const a = h('a', 'list-row'); a.href = '#news';
       const t = r.headline_zh || r.display_title || r.title || (r.content || '').slice(0, 60);
@@ -421,6 +477,7 @@
       a.append(h('span', 't', t), m); return a;
     }));
   }
+  const SEC_SCOPE = {FUND_TRUST: '基金信托层级', ISSUER_TRUST_ALL_SERIES: '信托层级 · 非本 ETF 专属'};
   async function loadOverviewSec() {
     const box = $('ov-sec'); if (!box || !root.dataset.officialUrl) { if (box) box.replaceChildren(h('div', 'compact-empty', '暂无公告')); return; }
     try {
@@ -433,7 +490,11 @@
         const ok = typeof f.document_url === 'string' && f.document_url.startsWith('https://www.sec.gov/');
         const a = h(ok ? 'a' : 'div', 'list-row'); if (ok) { a.href = f.document_url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
         const m = h('span', 'm'); m.append(h('span', 'tag', f.form), h('span', null, f.symbols || ''), h('span', 'num', f.filing_date || ''));
-        a.append(h('span', 't', f.issuer_name || f.form), m); return a;
+        if (f.report_date) m.append(h('span', 'num', `报告期 ${f.report_date}`));
+        m.append(h('span', 'num', `编号 ${f.accession_number}`));
+        const scope = SEC_SCOPE[f.association_scope]; const title = h('span', 't', f.issuer_name || f.form);
+        if (scope) title.append(h('span', 'scope-badge', scope));
+        a.append(title, m); return a;
       }));
     } catch (_) { box.replaceChildren(h('div', 'compact-empty', '公告暂不可用')); }
   }
@@ -479,7 +540,7 @@
   function onFeed() {
     const down = renderConn().state === 'down';
     for (const sym of symbols()) appendLive(sym);
-    renderCards(down); renderList(down); renderDetailHead(down); renderOverviewNews();
+    renderCards(down); renderList(down); renderDetailHead(down); renderOverviewNews(); renderNewsState();
     if (currentView === 'markets' && chart.sym) {
       const q = quoteOf(chart.sym); const t = ms(q?.source_at); const last = chart.data[chart.data.length - 1]?.t;
       if (t != null && (last == null || t > last) && !chart.drag) loadChart(false);
@@ -495,7 +556,7 @@
   }, 5e3);
 
   window.quantSetSymbols?.(symbols().map(sym => ({symbol: sym})));
-  syncSettingButtons(); bindChart();
+  syncSettingButtons(); bindChart(); bindListKeys();
   showView(location.hash);
   if (feedEnabled) {
     symbols().forEach((sym, i) => setTimeout(() => loadSpark(sym), 300 * i));
