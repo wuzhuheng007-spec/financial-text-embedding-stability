@@ -281,3 +281,17 @@
 **限制：** 勘误不改变单标的、单因子工程基线的性质；后段已被查看，不是未见留出集；a1 分红处理未确认；日期序列未与完整交易所日历独立核对。
 
 证据：[platform_baseline/R006_errata_E001.json](platform_baseline/R006_errata_E001.json)
+
+## R020 · 四张因子阈值与终检图学习及现有研究验收对照
+
+**状态：** PARTIALLY_SUPPORTED_METHOD_REVIEW_NOT_FACTOR_ACCEPTANCE；记录UTC：2026-11-19T03:52:59.267599+00:00
+
+**计划：** 核验统计含义、区分时序择时与横截面因子，对照第三四阶段真实证据，保留并发勘误。
+
+**实际：** 实际阅读四图并保存输入哈希；直接打开三条一手方法来源；运行只读核对脚本，校验旧文件身份、1200个保存拟合的标签/特征元数据与12个主对照行，生成10项状态矩阵；未重拟合或重跑旧自查，未开展新策略实验。远端R019原样保留。
+
+**结论：** 图示阈值和中性化变化不能单独认证真假因子；当前证据支持有限历史诊断，不支持第三四阶段实盘因子准入。
+
+**限制：** 非独立验证；旧自查未在本轮重跑；没有新增净收益、容量、真正未见留出或PIT证据；其他平台基线按自身勘误处理。
+
+证据：[image_review/factor_acceptance_v1/PLAN_zh.md](image_review/factor_acceptance_v1/PLAN_zh.md)、[image_review/factor_acceptance_v1/REVIEW_zh.md](image_review/factor_acceptance_v1/REVIEW_zh.md)、[image_review/factor_acceptance_v1/input_manifest.json](image_review/factor_acceptance_v1/input_manifest.json)、[image_review/factor_acceptance_v1/citation_audit.json](image_review/factor_acceptance_v1/citation_audit.json)、[image_review/factor_acceptance_v1/review_existing.py](image_review/factor_acceptance_v1/review_existing.py)、[image_review/factor_acceptance_v1/snapshot.json](image_review/factor_acceptance_v1/snapshot.json)、[image_review/factor_acceptance_v1/readiness.json](image_review/factor_acceptance_v1/readiness.json)、[image_review/factor_acceptance_v1/AUDIT_FINAL.json](image_review/factor_acceptance_v1/AUDIT_FINAL.json)

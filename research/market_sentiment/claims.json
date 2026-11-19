@@ -164,5 +164,14 @@
       "phase4/results/self_check.json",
       "phase4/results/run_manifest.json"
     ]
+  },
+  {
+    "id": "C019",
+    "claim": "第三四阶段为历史预测诊断，尚不具备本阶段扣费可交易因子验收证据；四图示例数字及统一经验阈值不构成认证",
+    "status": "REVIEWED_SCOPE_LIMITATION_NOT_NEW_EFFICACY_RESULT",
+    "evidence": [
+      "image_review/factor_acceptance_v1/REVIEW_zh.md",
+      "image_review/factor_acceptance_v1/readiness.json"
+    ]
   }
 ]

@@ -446,5 +446,35 @@
       "platform_baseline/R006_errata_E001.json": "efe396f75805f510068c84d594eb4b70b936be3db01591b1b958db61cac4898e"
     },
     "recorded_at_utc": "2026-11-19T03:45:17.980723+00:00"
+  },
+  {
+    "id": "R020",
+    "title": "四张因子阈值与终检图学习及现有研究验收对照",
+    "plan": "核验统计含义、区分时序择时与横截面因子，对照第三四阶段真实证据，保留并发勘误。",
+    "actual": "实际阅读四图并保存输入哈希；直接打开三条一手方法来源；运行只读核对脚本，校验旧文件身份、1200个保存拟合的标签/特征元数据与12个主对照行，生成10项状态矩阵；未重拟合或重跑旧自查，未开展新策略实验。远端R019原样保留。",
+    "status": "PARTIALLY_SUPPORTED_METHOD_REVIEW_NOT_FACTOR_ACCEPTANCE",
+    "evidence": [
+      "image_review/factor_acceptance_v1/PLAN_zh.md",
+      "image_review/factor_acceptance_v1/REVIEW_zh.md",
+      "image_review/factor_acceptance_v1/input_manifest.json",
+      "image_review/factor_acceptance_v1/citation_audit.json",
+      "image_review/factor_acceptance_v1/review_existing.py",
+      "image_review/factor_acceptance_v1/snapshot.json",
+      "image_review/factor_acceptance_v1/readiness.json",
+      "image_review/factor_acceptance_v1/AUDIT_FINAL.json"
+    ],
+    "claims": "图示阈值和中性化变化不能单独认证真假因子；当前证据支持有限历史诊断，不支持第三四阶段实盘因子准入。",
+    "limits": "非独立验证；旧自查未在本轮重跑；没有新增净收益、容量、真正未见留出或PIT证据；其他平台基线按自身勘误处理。",
+    "evidence_sha256": {
+      "image_review/factor_acceptance_v1/PLAN_zh.md": "74f28ee30b0b69b72bffe1ed410af950fefa9eb72940d246bd49ae312c7fd69c",
+      "image_review/factor_acceptance_v1/REVIEW_zh.md": "b85a2eb9fac5e3122728ad84a52a48a4a8b3eab030364bc5b5f781ca1da8a254",
+      "image_review/factor_acceptance_v1/input_manifest.json": "6698b0c9b9a87d30835b0ca62d3a39396c96ba582c987575f7d9da6b55f4b4b2",
+      "image_review/factor_acceptance_v1/citation_audit.json": "4e0216b8943aa8c0c44147ecad04a2e1eccad003c26ededb4452c052f236253e",
+      "image_review/factor_acceptance_v1/review_existing.py": "3f80b685481d733075a3ecfe35ce0eccb9d94f34aa2ab5cc7762df014c2c7aa3",
+      "image_review/factor_acceptance_v1/snapshot.json": "38bc8434bfc8826dd7496820ee0c9e5745a0fb424be3e11efc7b65dabdaf1cb6",
+      "image_review/factor_acceptance_v1/readiness.json": "1e13677dc95be7eaeea7631c4f8d17636b8c799ad4b98d2ec3038c4ac7fb0577",
+      "image_review/factor_acceptance_v1/AUDIT_FINAL.json": "6151f95ea78cc362151544d87209b1352ea73e6fe030fd17dba5fc7a35f01a31"
+    },
+    "recorded_at_utc": "2026-11-19T03:52:59.267599+00:00"
   }
 ]

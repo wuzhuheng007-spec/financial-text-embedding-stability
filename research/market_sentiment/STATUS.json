@@ -3,7 +3,7 @@
   "project": "medium_term_market_sentiment",
   "repository": "wuzhuheng007-spec/financial-text-embedding-stability",
   "branch": "codex/personal-cloud-ui-20261118",
-  "latest_step_id": "R019",
+  "latest_step_id": "R020",
   "price_baseline": "EXECUTED_DESCRIPTIVE_SELF_CHECKED",
   "bw_availability_audit": "SOURCE_AND_CONSTRUCTION_AUDIT_EXECUTED_PIT_NOT_QUALIFIED",
   "news_increment_evaluation": "NOT_RUN_IN_THIS_STUDY",
@@ -23,5 +23,6 @@
   "historical_images_review": "PARTIAL_FACT_AUDIT_HYPOTHESES_ONLY",
   "phase4": "EXECUTED_SELF_CHECKED_CURRENT_VINTAGE",
   "phase4_factor_efficacy": "NOT_ESTABLISHED",
-  "phase4_publication": "REMOTE_READBACK_VERIFIED"
+  "phase4_publication": "REMOTE_READBACK_VERIFIED",
+  "factor_acceptance_review": "READ_ONLY_EVIDENCE_REVIEW_CANDIDATES_NOT_QUALIFIED"
 }

@@ -1,0 +1,53 @@
+{
+  "verified": [
+    {
+      "key": "LO2002",
+      "title": "The Statistics of Sharpe Ratios",
+      "authors": [
+        "Andrew W. Lo"
+      ],
+      "year": 2002,
+      "venue": "Financial Analysts Journal 58(4)",
+      "doi": "10.2469/faj.v58.n4.2453",
+      "url": "https://rpc.cfainstitute.org/research/financial-analysts-journal/2002/the-statistics-of-sharpe-ratios",
+      "tool_ref": "turn312474417view0",
+      "opened_scope": "Official publication page and abstract only, full article not accessed",
+      "supports": "Estimation error, serial dependence and limits of square-root annualization",
+      "status": "VERIFIED_FOR_STATED_SUPPORT"
+    },
+    {
+      "key": "DSR2014",
+      "title": "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality",
+      "authors": [
+        "David H. Bailey",
+        "Marcos Lopez de Prado"
+      ],
+      "year": 2014,
+      "version": "2014-07-31 author manuscript",
+      "venue": "Author manuscript states Journal of Portfolio Management forthcoming; final publication metadata not required for claim",
+      "url": "https://davidhbailey.com/dhbpapers/deflated-sharpe.pdf",
+      "tool_ref": "turn312474417view1",
+      "opened_scope": "Author PDF incl abstract and trial-count/selection-bias discussion",
+      "supports": "Selection bias, non-normality, effective independent trials; not a DSR result for this study",
+      "status": "VERIFIED_FOR_STATED_SUPPORT"
+    },
+    {
+      "key": "SCIPY",
+      "title": "scipy.stats.spearmanr",
+      "authors": [
+        "SciPy developers"
+      ],
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html",
+      "tool_ref": "turn312474417view2",
+      "opened_scope": "Official reference documentation",
+      "supports": "Rank-correlation sign/range and test semantics; not validation of universal thresholds",
+      "status": "VERIFIED_FOR_STATED_SUPPORT"
+    }
+  ],
+  "not_used": [
+    {
+      "resource": "Alphalens tears.py/plotting.py/raw GitHub",
+      "reason": "Returned code-page text did not establish requested formula; raw fetch unavailable"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "final_status": "PARTIALLY_SUPPORTED",
+  "plan_execution_gate": "PASS_FOR_READING_AND_READ_ONLY_REVIEW; sync requires remote readback",
+  "experimental_sufficiency_gate": "NOT_APPLICABLE_NO_NEW_FINANCIAL_EXPERIMENT",
+  "factor_readiness": "NOT_QUALIFIED",
+  "result_provenance_gate": "PASS_FOR_SAVED_ARTIFACT_IDENTITY_AND_LISTED_METADATA_ONLY",
+  "citation_verification_gate": "PASS_FOR_THREE_STATED_SUPPORTS",
+  "commands_actually_run_count": 1,
+  "command_count_scope": "Dedicated scientific artifact-review script; read-only shell inspections, editing and publication excluded",
+  "commands_actually_run": [
+    "review_existing.py --workspace /workspace/scratch/b84154318405"
+  ],
+  "authoritative_artifacts_inspected_count": 9,
+  "authoritative_artifacts_inspected": [
+    "sentiment_phase4_20261119/config.json",
+    "sentiment_phase4_20261119/freeze_receipt.json",
+    "sentiment_phase4_20261119/input_manifest.json",
+    "sentiment_phase4_20261119/analyze.py",
+    "sentiment_phase4_20261119/check.py",
+    "sentiment_phase4_20261119/results/run_manifest.json",
+    "sentiment_phase4_20261119/results/self_check.json",
+    "sentiment_phase4_20261119/results/model_contrasts.csv",
+    "sentiment_phase4_20261119/private/fits.json"
+  ],
+  "unresolved_blockers_count": 4,
+  "unresolved_blockers": [
+    "Historical PIT and first availability",
+    "Genuine unseen later validation and independent replication",
+    "Executable strategy costs, turnover and capacity for phases3/4",
+    "Complete local market breadth and news/earnings expectations"
+  ],
+  "claims_authorized": [
+    "Images reviewed and thresholds qualified",
+    "Saved identity and limited metadata checked; prior self-check not rerun",
+    "Candidate financial efficacy not newly established"
+  ],
+  "claims_not_authorized": [
+    "Certified factor or no leakage",
+    "New strategy returns or net Sharpe",
+    "Independent scientific validation"
+  ],
+  "worktree_user_data_preserved": "YES; concurrent R019 preserved"
+}
