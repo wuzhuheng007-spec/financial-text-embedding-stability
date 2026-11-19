@@ -1,0 +1,52 @@
+{
+ "schema": "phase5_closeout_v1",
+ "study_id": "phase5_strategy_v1",
+ "recorded_client_date": "2026-11-19",
+ "freeze_commit": "1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953",
+ "freeze_commit_time_utc": "2026-11-19T04:43:44Z",
+ "parameters_changed": false,
+ "originals_modified": false,
+ "negative_results_kept": true,
+ "layers": {
+  "A_same_input_reproduction": {
+   "status": "REPRODUCED_WITHIN_NUMERIC_TOLERANCE_NOT_BYTE_IDENTICAL",
+   "detail": "264/330 ledgers byte-identical, 66 P3 ledgers <=3.2e-14; dates/counts/decisions identical",
+   "evidence": "VALIDATION.json#A_same_input_reproduction"
+  },
+  "B_independent_implementation": {
+   "status": "INDEPENDENT_IMPLEMENTATION_RECONCILED",
+   "evidence_origin": "EXTERNAL_IMPORT (Claude validation package 2026-11-19, local run); not a run executed by the Quant Portal platform",
+   "max_nav_abs": 5.1315396376594435e-11
+  },
+  "C_other_data": {
+   "same_batch_raw_rederivation": "AGREES (30716 rows bit-identical; 7 SOX gap dates identical; 0/12)",
+   "new_download_historical_vintage_check": "BLOCKED_NO_NEW_DATA (no other export; search closed as 'No other data' by the user)",
+   "unseen_forward_evaluation": "NOT_RUN: requires a separately frozen start and rule; bars after data_end 2026-11-17 are not automatically forward (freeze at 2026-11-19T04:43:44Z, and only dates whose execution point lies after a new freeze could count)",
+   "note": "A new archive SHA or new dates alone do not prove out-of-sample status."
+  }
+ },
+ "primary_screen": {
+  "family": 12,
+  "passes": 0,
+  "status": "FIRST_SCREEN_NOT_PASSED"
+ },
+ "text_candidates": {
+  "T1": "BLOCKED_INPUTS: no qualified historical news panel (timestamps, dedup, company mapping, scoring version)",
+  "T2": "BLOCKED_INPUTS: no time-stamped negative events and expected-response model",
+  "note": "Live Benzinga connection status does not make a historical research panel ready (live_news_source_status != historical_news_panel_ready)."
+ },
+ "boundary_tests_added": {
+  "file": "tests/test_phase5_frozen_boundaries.py",
+  "sha256": "64bad011b51c75e69895296a25e8aa528c45a6e9ce41a639dd89dac4f57321f5",
+  "cases": [
+   "stress days end at bar 319",
+   "P2 memory valid at bar 338",
+   "P2 memory expired at bar 339",
+   "warm-up 252/253/254 -> 0/0/1 intervals, first signal/exec/mark 251/252/253"
+  ],
+  "result": "4 passed (boundary_tests.log)",
+  "engine_error_found": false,
+  "rerun_required": false
+ },
+ "scientific_status": "FIRST_SCREEN_NOT_PASSED; independent replication of a positive result not applicable"
+}

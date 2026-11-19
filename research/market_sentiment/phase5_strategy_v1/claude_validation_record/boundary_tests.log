@@ -1,0 +1,7 @@
+# 2026-11-19T08:23:29Z python -m pytest -q tests/test_phase5_frozen_boundaries.py (numpy/pandas venv: 3.11.9 2.3.5 2.2.3)
+PASSED tests/test_phase5_frozen_boundaries.py::Phase5FrozenBoundaries::test_memory_expired_when_confirmation_at_bar_339
+PASSED tests/test_phase5_frozen_boundaries.py::Phase5FrozenBoundaries::test_memory_still_valid_when_confirmation_at_bar_338
+PASSED tests/test_phase5_frozen_boundaries.py::Phase5FrozenBoundaries::test_stress_days_end_at_bar_319
+PASSED tests/test_phase5_frozen_boundaries.py::Phase5FrozenBoundaries::test_warmup_252_253_254_bars
+4 passed in 3.29s
+# exit=0

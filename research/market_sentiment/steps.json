@@ -616,5 +616,29 @@
       "phase5_strategy_v1/results/text_candidates.json": "c7bb0b4b57c6c5bbba7e521fff9c19a016d2f8308008b83ec519193550d4329a"
     },
     "recorded_at_utc": "2026-11-19T04:49:16.346750+00:00"
+  },
+  {
+    "id": "R025",
+    "title": "Phase5首轮复核收尾：A/B/C分层登记与规则边界补强",
+    "plan": "导入Claude复核（A同输入、B独立实现、C另一数据）的汇总证据，按层次登记；补P2二十条记忆过期与暖机252/253/254的冻结引擎断言；不改参数、不重开搜索。",
+    "actual": "导入VALIDATION.json/VALIDATION_zh.md/A_exact_comparison.json；CLOSEOUT.json分列A数值容差复现、B独立实现对账（外部导入证据，非平台执行）、C同批重派生一致/新下载版本BLOCKED_NO_NEW_DATA/前瞻未运行；新增tests/test_phase5_frozen_boundaries.py，对冻结run.py实际调用，4项通过。",
+    "status": "CLOSED_FIRST_SCREEN_NOT_PASSED_REPLICATION_LAYERS_RECORDED",
+    "evidence": [
+      "phase5_strategy_v1/claude_validation_record/CLOSEOUT.json",
+      "phase5_strategy_v1/claude_validation_record/VALIDATION.json",
+      "phase5_strategy_v1/claude_validation_record/VALIDATION_zh.md",
+      "phase5_strategy_v1/claude_validation_record/A_exact_comparison.json",
+      "phase5_strategy_v1/claude_validation_record/boundary_tests.log"
+    ],
+    "claims": "12项主筛0项通过不变；A在数值容差内复现（非逐字节）；B独立实现对账一致；C仅同批重派生一致，新数据验证BLOCKED；T1/T2缺本研究所需历史文本/事件输入。",
+    "limits": "B与C是本地Claude复核导入的证据，不是平台任务；冻结后之前或之后的行情都未构成未见样本；在线新闻接通不等于历史新闻面板合格。",
+    "evidence_sha256": {
+      "phase5_strategy_v1/claude_validation_record/CLOSEOUT.json": "46e954b6b2cc7eb6d0e7e48a78a3e71b5fa7429a8755ac581e801c582fdcb0ce",
+      "phase5_strategy_v1/claude_validation_record/VALIDATION.json": "26e88823afe5027ff17adc17fcf77cc4f3d067a5490858f3e759a190ffc833a7",
+      "phase5_strategy_v1/claude_validation_record/VALIDATION_zh.md": "d1a13b56be7858669229f0a9423d879e0bca251d68708cfbd1a37702c4dc40a3",
+      "phase5_strategy_v1/claude_validation_record/A_exact_comparison.json": "40166ff4aba8069981c5575b0f2752d0a3e1701b7eccd2123d20bb8fb96172bd",
+      "phase5_strategy_v1/claude_validation_record/boundary_tests.log": "e84596a6d4f0f4dbf86b9eefcbfb22d88d7b9082724251eab15094c513dfc3c0"
+    },
+    "recorded_at_utc": "2026-11-19T08:24:02.069484+00:00"
   }
 ]

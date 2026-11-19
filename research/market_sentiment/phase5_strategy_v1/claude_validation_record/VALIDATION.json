@@ -1,0 +1,882 @@
+{
+ "study_id": "phase5_strategy_v1",
+ "validator": "Claude Code (Claude Opus 5.5), local Windows machine",
+ "inputs": {
+  "package_zip_sha256": "fd5a936775cd0cd28a1aea776ef3ebf332e258b9469c420eae6565cb982ac76a",
+  "package_manifest_files_verified": 354,
+  "package_manifest_mismatches": 0,
+  "input_db_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "freeze_commit": "1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953",
+  "frozen_files_identical_to_freeze_commit": {
+   "config.json": true,
+   "run.py": true,
+   "check.py": true,
+   "PROTOCOL_zh.md": true
+  },
+  "config_sha256": "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb",
+  "run_py_sha256": "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae",
+  "check_py_sha256": "7195c6a39f9a348f4feeea765f1dbd02986d1878d8c4881ed9d5cab693d1e756",
+  "protocol_sha256": "7281efccfa693831b623c45168b92bbda2a929970b20dfcccc749f7e8eb07a8a"
+ },
+ "environment": {
+  "python": "3.11.9",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "scipy": "1.17.0",
+  "first_run": {
+   "python": "3.12.14",
+   "numpy": "2.3.5",
+   "pandas": "2.2.3",
+   "scipy": "1.17.0",
+   "note": "Observed first-run environment; independent validation should record its actual versions."
+  },
+  "note": "Isolated venv with the first run's pinned numpy/pandas/scipy; Python 3.11.9 (3.12 not installed) - byte identity not promised."
+ },
+ "A_same_input_reproduction": {
+  "status": "REPRODUCED_WITHIN_FLOATING_POINT (not byte-identical for P3 ledgers and two CSVs)",
+  "kind": "same program, same DB: repeatability check only - not independent implementation, not new market evidence",
+  "runs": [
+   {
+    "command": "python check.py --unit",
+    "started_utc": "2026-11-19T07:09:39.123Z",
+    "ended_utc": "2026-11-19T07:09:51.154Z",
+    "exit_code": 0
+   },
+   {
+    "command": "python run.py --db <market_research.sqlite> --private-out claude_validation/exact_private --public-out claude_validation/exact_public --freeze-commit 1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953 --mode exact",
+    "started_utc": "2026-11-19T07:09:51.217Z",
+    "ended_utc": "2026-11-19T07:11:33.205Z",
+    "exit_code": 0
+   },
+   {
+    "command": "python check.py --db <market_research.sqlite> --private-out claude_validation/exact_private --public-out claude_validation/exact_public",
+    "started_utc": "2026-11-19T07:11:33.272Z",
+    "ended_utc": "2026-11-19T07:11:48.773Z",
+    "exit_code": 0
+   }
+  ],
+  "ledgers": {
+   "files": {
+    "first": 330,
+    "rerun": 330,
+    "same_set": true
+   },
+   "raw_csv_sha256_identical": 264,
+   "differing_bytes": "all 66 P3_RISK_BUDGET ledgers only",
+   "dates_episodes_rowcounts_identical": true,
+   "max_abs_numeric_diff": {
+    "episode": 0.0,
+    "open_exec": 0.0,
+    "open_mark": 0.0,
+    "target_weight": 1.3766765505351941e-14,
+    "nav_before": 2.1760371282653068e-14,
+    "cash_before": 3.2399430360818826e-14,
+    "units_before": 3.0184188481996443e-16,
+    "trade_value": 3.199957659960617e-14,
+    "fee_entry": 1.0061396160665481e-16,
+    "cash_after": 3.2399430360818826e-14,
+    "units_after": 3.0184188481996443e-16,
+    "nav_posttrade": 2.1760371282653068e-14,
+    "fee_terminal": 9.996344030316351e-17,
+    "end_nav": 2.1760371282653068e-14,
+    "return_net": 1.096345236817342e-15,
+    "turnover_fraction": 1.4210854715202004e-14,
+    "cost_fraction": 1.0018028073766061e-16,
+    "weight_during": 1.3988810110276972e-14,
+    "cash_end": 3.2399430360818826e-14,
+    "units_end": 3.0184188481996443e-16,
+    "price_return": 0.0
+   },
+   "gzip_sha256_identical": 0,
+   "gzip_note": "gzip bytes differ for every file (compressor build); uncompressed CSV is the comparable identity"
+  },
+  "public_outputs": {
+   "metrics_max_abs_diff": {
+    "intervals": 0.0,
+    "terminal_wealth": 1.865174681370263e-14,
+    "total_return": 1.9095836023552692e-14,
+    "cagr": 1.9984014443252818e-15,
+    "max_drawdown": 3.774758283725532e-15,
+    "daily_mean_net": 9.025983085941824e-18,
+    "descriptive_sharpe_sqrt252": 2.886579864025407e-14,
+    "mean_exposure": 1.3877787807814457e-15,
+    "annualized_turnover": 5.1514348342607263e-14,
+    "cost_fraction_sum": 1.6653345369377348e-15,
+    "entry_episodes": 0.0,
+    "boundary_exits": 0.0
+   },
+   "contrasts_max_abs_diff": {
+    "n": 0.0,
+    "primary_test": 0.0,
+    "mean_daily_net_delta": 1.4162390878091902e-18,
+    "annualized_arithmetic_delta": 4.996003610813204e-16,
+    "ci_low_daily": 9.996344030316351e-17,
+    "ci_high_daily": 2.986638172018663e-18,
+    "p_one_sided_positive": 0.0,
+    "mean_daily_delta_cost25": 1.1214716221646936e-18,
+    "holm_p": 0.0
+   },
+   "factor_max_abs_diff": {
+    "n_labels": 0.0,
+    "distinct_factor_values": 0.0,
+    "spearman_8w": 0.0
+   },
+   "byte_identical_after_CRLF_to_LF": {
+    "text_candidates.json": true,
+    "input_inventory.json": true,
+    "metrics.csv": false,
+    "contrasts.csv": false,
+    "factor_diagnostics.csv": true
+   },
+   "crlf_note": "Windows text mode wrote CRLF; after normalising line endings only metrics.csv/contrasts.csv differ, by <=5e-14"
+  },
+  "input_inventory_identical": true,
+  "primary_tests": 12,
+  "primary_passes": 0
+ },
+ "B_independent_implementation": {
+  "status": "INDEPENDENT_IMPLEMENTATION_AGREES",
+  "kind": "re-implemented from PROTOCOL/config without importing run.py and without first-round signals; compared afterwards",
+  "code": "independent_reference.py",
+  "code_sha256": "038fd1b54f8524025eff197b02963b97789718cf84282bb46b629422e0ea899a",
+  "runs": [
+   {
+    "command": "python independent_reference.py --db <package input/market_research.sqlite> --out independent_exact --compare-first-round",
+    "started_utc": "2026-11-19T07:14:40Z",
+    "ended_utc": "2026-11-19T07:15:51Z",
+    "exit_code": 0
+   },
+   {
+    "command": "python independent_rule_tests.py <package db>",
+    "started_utc": "2026-11-19T07:16:23Z",
+    "ended_utc": "2026-11-19T07:16:28Z",
+    "exit_code": 0
+   }
+  ],
+  "comparison_with_first_round": {
+   "ledger_files_compared": 330,
+   "ledgers_missing_in_first_round": [],
+   "first_round_ledgers_not_produced": [],
+   "ledgers_with_date_or_length_mismatch": [],
+   "ledger_max_abs_error": {
+    "target_weight": 2.1649348980190553e-14,
+    "return_net": 1.3877787807814457e-15,
+    "end_nav": 5.1315396376594435e-11,
+    "nav_before": 5.1315396376594435e-11,
+    "fee_entry": 9.880984919163893e-15,
+    "fee_terminal": 3.988476215965875e-14,
+    "trade_value": 9.904965736495797e-12
+   },
+   "ledger_max_rel_error": {
+    "end_nav": 8.764100556390986e-13
+   },
+   "metrics_rows_matched": 360,
+   "metrics_status_mismatch": 0,
+   "metrics_max_abs_error": {
+    "intervals": 0.0,
+    "terminal_wealth": 3.467448550509289e-11,
+    "cagr": 4.6629367034256575e-14,
+    "max_drawdown": 5.795364188543317e-14,
+    "daily_mean_net": 1.7222551509932238e-16,
+    "descriptive_sharpe_sqrt252": 2.212674488077937e-13,
+    "mean_exposure": 4.107825191113079e-15,
+    "annualized_turnover": 1.9184653865522705e-13,
+    "cost_fraction_sum": 2.4424906541753444e-15,
+    "entry_episodes": 0.0,
+    "boundary_exits": 0.0
+   },
+   "contrast_rows_matched": 48,
+   "contrast_max_abs_error": {
+    "n": 0.0,
+    "mean_daily_net_delta": 1.334652874329656e-16,
+    "ci_low_daily": 1.08528637465799e-16,
+    "ci_high_daily": 1.36501053515925e-16,
+    "p_one_sided_positive": 1.1102230246251565e-16,
+    "mean_daily_delta_cost25": 1.0188789915932528e-16,
+    "holm_p": 0.0
+   },
+   "primary_pass_decisions_agree": true,
+   "factor_rows_matched": 72,
+   "factor_max_abs_error": {
+    "n_labels": 0.0,
+    "spearman_8w": 1.0061396160665481e-16,
+    "nan_mismatch": 0
+   }
+  },
+  "causality_checks": [
+   {
+    "symbol": "US.QQQ",
+    "check": "prefix_2322_of_6967",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "US.QQQ",
+    "check": "prefix_4644_of_6967",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "US.QQQ",
+    "check": "future_perturbation_from_3483_of_6967",
+    "max_abs_change": 0.0,
+    "pass": true
+   },
+   {
+    "symbol": "US..SOX",
+    "check": "prefix_1448_of_4344",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "US..SOX",
+    "check": "prefix_2896_of_4344",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "US..SOX",
+    "check": "future_perturbation_from_2172_of_4344",
+    "max_abs_change": 0.0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000001",
+    "check": "prefix_2495_of_7486",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000001",
+    "check": "prefix_4990_of_7486",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000001",
+    "check": "future_perturbation_from_3743_of_7486",
+    "max_abs_change": 0.0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000688",
+    "check": "prefix_510_of_1532",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000688",
+    "check": "prefix_1021_of_1532",
+    "max_abs_change": 0.0,
+    "nan_pattern_changes": 0,
+    "pass": true
+   },
+   {
+    "symbol": "SH.000688",
+    "check": "future_perturbation_from_766_of_1532",
+    "max_abs_change": 0.0,
+    "pass": true
+   }
+  ],
+  "unit_checks": {
+   "buy_all_10bps": {
+    "units": 0.009990009990009992,
+    "cash": -1.450662506785605e-16,
+    "fee": 0.0009990009990009992,
+    "nav_after": 0.999000999000999,
+    "expected_nav_after": 0.9990009990009991
+   },
+   "rebalance_to_half": {
+    "fee": 0.0005997004496254124,
+    "wealth_after_fee": 1.1982014983515734,
+    "weight_after": 0.5
+   },
+   "buy_hold_analytic_0bps": {
+    "end_nav": 1.2,
+    "expected": 1.2
+   },
+   "buy_hold_analytic_10bps": {
+    "end_nav": 1.1976023976023975,
+    "expected": 1.1976023976023975
+   },
+   "buy_hold_analytic_25bps": {
+    "end_nav": 1.1940149625935164,
+    "expected": 1.1940149625935164
+   }
+  },
+  "rule_tests": [
+   {
+    "check": "P2 enters only after stress and confirmation",
+    "pass": true,
+    "detail": "entry_bar=322"
+   },
+   {
+    "check": "P2 holds at most 40 bars (exit signal at entry+40)",
+    "pass": true,
+    "detail": "held_signal_bars=40"
+   },
+   {
+    "check": "P2 close trailing stop (-8% from highest close since entry) exits early",
+    "pass": true,
+    "detail": "exit_after=8 bars"
+   },
+   {
+    "check": "P2 stress memory is 20 bars",
+    "pass": true,
+    "detail": "no entries before the stress window"
+   },
+   {
+    "check": "P3 rebalances to target each open (weight right after trade == target)",
+    "pass": true,
+    "detail": "rows=7"
+   },
+   {
+    "check": "Fee-inclusive target equation: post-fee weight equals target",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "check": "Terminal liquidation fee charged once at the last mark",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "check": "Each period starts with NAV 1",
+    "pass": true,
+    "detail": ""
+   },
+   {
+    "check": "US.QQQ episode 0: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=2000-03-08, episode_start=1999-03-10"
+   },
+   {
+    "check": "US..SOX episode 0: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=1996-12-30, episode_start=1996-01-02"
+   },
+   {
+    "check": "US..SOX episode 3: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=2001-08-29, episode_start=2000-08-29"
+   },
+   {
+    "check": "US..SOX episode 4: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=2010-08-12, episode_start=2009-08-12"
+   },
+   {
+    "check": "SH.000001 episode 0: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=1997-01-09, episode_start=1996-01-02"
+   },
+   {
+    "check": "SH.000688 episode 0: first executable open is bar 252 (after 252 closes)",
+    "pass": true,
+    "detail": "first_exec=2021-08-04, episode_start=2020-07-23"
+   },
+   {
+    "check": "SOX split into episodes at listed unresolved dates",
+    "pass": true,
+    "detail": "[[\"1996-01-02\", \"1999-12-31\", 1011], [\"2000-01-04\", \"2000-02-29\", 39], [\"2000-03-07\", \"2000-08-25\", 121], [\"2000-08-29\", \"2009-08-10\", 2249], [\"2009-08-12\", \"2026-11-17\", 4344]]"
+   },
+   {
+    "check": "Primary period (2015-2025) contains no SOX episode boundary",
+    "pass": true,
+    "detail": ""
+   }
+  ],
+  "rng_note": "Bootstrap block starts drawn with numpy default_rng(seed).integers(0,n,(R,k)) as in the first run so p-values are comparable; block summation, quantiles, p and Holm re-derived.",
+  "tolerances": {
+   "suggested_rel": 1e-10,
+   "suggested_abs": 1e-08,
+   "max_ledger_nav_abs": 5.1315396376594435e-11,
+   "max_ledger_nav_rel": 8.764100556390986e-13
+  }
+ },
+ "C_other_data": {
+  "status": "SAME_BATCH_RAW_REDERIVATION_ONLY - external new-data validation BLOCKED_NO_NEW_DATA",
+  "kind": "external version/implementation check; NOT a new market sample and NOT new dates",
+  "data_found": "E:/moomoo_US_OpenAPI_readonly_setup history + patch archives; their SHA-256 equal input_archives recorded in the package DB, i.e. the same vendor batch the first run used. No other export of these four series was found on this computer (other moomoo files: single-stock K-lines AAPL/AMD/... from an earlier project).",
+  "adapter": "adapt_raw_to_research_db.py",
+  "adapter_sha256": "450c321b525778e32f60b81c68b03d3bf0b4a3318e4fcdb9b76aa2695cda05d5",
+  "input_inventory": "external_input/input_inventory.json",
+  "archives": {
+   "moomoo_history_20261118T214803Z_41e00a.zip": "85aa32f5749ceadd3b5eb28245b693063136552a81756edb302acf49b1eeb309",
+   "moomoo_patch_20261118T221352Z_fa2b41.zip": "08ff7106037db53ddc45dc86f93f5d7dcfd3df5e47471d679e02317f1db0f170"
+  },
+  "derived_db_sha256": "cd2a7f1418b0ef685e2467890c5cc4510b6da8468052e3bb8953472e9593b420",
+  "series": [
+   {
+    "series_id": "SH.000001|DAY|a0",
+    "rows": 7487,
+    "eligible": 7486,
+    "first": "1996-01-02",
+    "last": "2026-11-17",
+    "flags": {
+     "[\"WEEKEND_DATE\"]": 1
+    }
+   },
+   {
+    "series_id": "SH.000001|WEEK|a0",
+    "rows": 1563,
+    "eligible": 1563,
+    "first": "1996-01-01",
+    "last": "2026-11-16",
+    "flags": {}
+   },
+   {
+    "series_id": "SH.000688|DAY|a0",
+    "rows": 1665,
+    "eligible": 1532,
+    "first": "2020-01-02",
+    "last": "2026-11-17",
+    "flags": {
+     "[\"PRE_LIVE_INDEX_PUBLICATION\"]": 133
+    }
+   },
+   {
+    "series_id": "SH.000688|WEEK|a0",
+    "rows": 352,
+    "eligible": 352,
+    "first": "2020-01-06",
+    "last": "2026-11-16",
+    "flags": {}
+   },
+   {
+    "series_id": "US..SOX|DAY|a0",
+    "rows": 7764,
+    "eligible": 7764,
+    "first": "1996-01-02",
+    "last": "2026-11-17",
+    "flags": {}
+   },
+   {
+    "series_id": "US..SOX|WEEK|a0",
+    "rows": 1612,
+    "eligible": 1612,
+    "first": "1996-01-01",
+    "last": "2026-11-16",
+    "flags": {}
+   },
+   {
+    "series_id": "US.QQQ|DAY|a0",
+    "rows": 6967,
+    "eligible": 6967,
+    "first": "1999-03-10",
+    "last": "2026-11-17",
+    "flags": {}
+   },
+   {
+    "series_id": "US.QQQ|DAY|a1",
+    "rows": 6967,
+    "eligible": 6967,
+    "first": "1999-03-10",
+    "last": "2026-11-17",
+    "flags": {}
+   },
+   {
+    "series_id": "US.QQQ|WEEK|a0",
+    "rows": 1445,
+    "eligible": 1445,
+    "first": "1999-03-15",
+    "last": "2026-11-16",
+    "flags": {}
+   }
+  ],
+  "unresolved_dates_derived": [
+   [
+    "US..SOX",
+    "DAY",
+    "2000-01-03",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-01-03..2000-01-03: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2000-03-01",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-03-01..2000-03-06: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2000-03-02",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-03-01..2000-03-06: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2000-03-03",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-03-01..2000-03-06: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2000-03-06",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-03-01..2000-03-06: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2000-08-28",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2000-08-28..2000-08-28: 0 bars"
+   ],
+   [
+    "US..SOX",
+    "DAY",
+    "2009-08-11",
+    "QQQ_BAR_DATE_WITHOUT_SOX_BAR",
+    "recheck 2009-08-11..2009-08-11: 0 bars"
+   ]
+  ],
+  "provider_rechecks": {
+   "2000-01-03..2000-01-03": 0,
+   "2000-03-01..2000-03-06": 0,
+   "2000-08-28..2000-08-28": 0,
+   "2009-08-11..2009-08-11": 0
+  },
+  "vendor_calendar_diagnostic_only": {
+   "US.QQQ|a0": {
+    "calendar_days_without_bar": 26,
+    "bar_days_not_in_calendar": 7,
+    "examples_calendar_only": [
+     "1999-04-02",
+     "1999-05-31",
+     "1999-07-05",
+     "1999-09-06",
+     "1999-11-25"
+    ]
+   },
+   "US.QQQ|a1": {
+    "calendar_days_without_bar": 26,
+    "bar_days_not_in_calendar": 7,
+    "examples_calendar_only": [
+     "1999-04-02",
+     "1999-05-31",
+     "1999-07-05",
+     "1999-09-06",
+     "1999-11-25"
+    ]
+   },
+   "SH.000001|a0": {
+    "calendar_days_without_bar": 0,
+    "bar_days_not_in_calendar": 1,
+    "examples_calendar_only": []
+   },
+   "SH.000688|a0": {
+    "calendar_days_without_bar": 0,
+    "bar_days_not_in_calendar": 0,
+    "examples_calendar_only": []
+   },
+   "US..SOX|a0": {
+    "calendar_days_without_bar": 53,
+    "bar_days_not_in_calendar": 0,
+    "examples_calendar_only": [
+     "1996-02-19",
+     "1996-04-05",
+     "1996-05-27",
+     "1996-07-04",
+     "1996-09-02"
+    ]
+   }
+  },
+  "star50_flag_crosscheck": {
+   "rows_with_downloader_flag_true": 133,
+   "disagreements": 0
+  },
+  "row_comparison_with_package_db": {
+   "package_rows": 30716,
+   "derived_rows": 30716,
+   "n_only_package": 0,
+   "n_only_derived": 0,
+   "ohlc_not_bitwise_equal": 0,
+   "unresolved_identical": true
+  },
+  "reference_external_run": {
+   "runs": [
+    {
+     "command": "python run.py --db <derived_research_same_batch.sqlite> --private-out claude_validation/external_private --public-out claude_validation/external_public --freeze-commit 1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953 --mode external --end 2026-11-17",
+     "started_utc": "2026-11-19T07:19:57.159Z",
+     "ended_utc": "2026-11-19T07:22:00.475Z",
+     "exit_code": 0
+    },
+    {
+     "command": "python check.py --db <derived_research_same_batch.sqlite> --private-out claude_validation/external_private --public-out claude_validation/external_public",
+     "started_utc": "2026-11-19T07:22:00.538Z",
+     "ended_utc": "2026-11-19T07:22:17.578Z",
+     "exit_code": 0
+    },
+    {
+     "command": "python claude_validation/independent_reference.py --db <derived_research_same_batch.sqlite> --out claude_validation/independent_external_same_batch --compare-first-round",
+     "started_utc": "2026-11-19T07:22:17.643Z",
+     "ended_utc": "2026-11-19T07:23:40.712Z",
+     "exit_code": 0
+    }
+   ],
+   "mode": "external",
+   "data_end": "2026-11-17",
+   "input_db_sha256": "cd2a7f1418b0ef685e2467890c5cc4510b6da8468052e3bb8953472e9593b420",
+   "primary_tests": 12,
+   "primary_passes": 0,
+   "raw_ledger_sha256_identical_to_first_round": 264
+  },
+  "independent_on_derived_db": {
+   "primary_passes": 0,
+   "comparison_with_first_round": {
+    "ledger_files_compared": 330,
+    "ledgers_missing_in_first_round": [],
+    "first_round_ledgers_not_produced": [],
+    "ledgers_with_date_or_length_mismatch": [],
+    "ledger_max_abs_error": {
+     "target_weight": 2.1649348980190553e-14,
+     "return_net": 1.3877787807814457e-15,
+     "end_nav": 5.1315396376594435e-11,
+     "nav_before": 5.1315396376594435e-11,
+     "fee_entry": 9.880984919163893e-15,
+     "fee_terminal": 3.988476215965875e-14,
+     "trade_value": 9.904965736495797e-12
+    },
+    "ledger_max_rel_error": {
+     "end_nav": 8.764100556390986e-13
+    },
+    "metrics_rows_matched": 360,
+    "metrics_status_mismatch": 0,
+    "metrics_max_abs_error": {
+     "intervals": 0.0,
+     "terminal_wealth": 3.467448550509289e-11,
+     "cagr": 4.6629367034256575e-14,
+     "max_drawdown": 5.795364188543317e-14,
+     "daily_mean_net": 1.7222551509932238e-16,
+     "descriptive_sharpe_sqrt252": 2.212674488077937e-13,
+     "mean_exposure": 4.107825191113079e-15,
+     "annualized_turnover": 1.9184653865522705e-13,
+     "cost_fraction_sum": 2.4424906541753444e-15,
+     "entry_episodes": 0.0,
+     "boundary_exits": 0.0
+    },
+    "contrast_rows_matched": 48,
+    "contrast_max_abs_error": {
+     "n": 0.0,
+     "mean_daily_net_delta": 1.334652874329656e-16,
+     "ci_low_daily": 1.08528637465799e-16,
+     "ci_high_daily": 1.36501053515925e-16,
+     "p_one_sided_positive": 1.1102230246251565e-16,
+     "mean_daily_delta_cost25": 1.0188789915932528e-16,
+     "holm_p": 0.0
+    },
+    "primary_pass_decisions_agree": true,
+    "factor_rows_matched": 72,
+    "factor_max_abs_error": {
+     "n_labels": 0.0,
+     "spearman_8w": 1.0061396160665481e-16,
+     "nan_mismatch": 0
+    }
+   }
+  },
+  "new_dates_after_2026_11_17": 0,
+  "forward_evaluation": "NOT_RUN_NO_NEW_DATES",
+  "needed_for_real_C": "a different download (other vintage or provider-confirmed re-export) or bars after 2026-11-17 for US.QQQ a1, US..SOX, SH.000001, SH.000688"
+ },
+ "results": {
+  "primary_family": [
+   {
+    "symbol": "US.QQQ",
+    "strategy": "P1_TREND",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0002828508485794,
+    "annualized_arithmetic_delta": -0.0712784138420279,
+    "ci_low_daily": -0.0005646381846005,
+    "ci_high_daily": -2.1057141449004884e-06,
+    "p_one_sided_positive": 0.976,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0003176197942852,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "US.QQQ",
+    "strategy": "P2_RECOVERY",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0003471948382186,
+    "annualized_arithmetic_delta": -0.0874930992311114,
+    "ci_low_daily": -0.0007515039609686,
+    "ci_high_daily": 7.968742601236438e-05,
+    "p_one_sided_positive": 0.952,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0003267737921039,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "US.QQQ",
+    "strategy": "P3_RISK_BUDGET",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0003191137576349,
+    "annualized_arithmetic_delta": -0.0804166669240172,
+    "ci_low_daily": -0.0006132551520455,
+    "ci_high_daily": -2.506901975252276e-05,
+    "p_one_sided_positive": 0.985,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0003463406884538,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "US..SOX",
+    "strategy": "P1_TREND",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0003938783275059,
+    "annualized_arithmetic_delta": -0.0992573385315049,
+    "ci_low_daily": -0.0007910216876756,
+    "ci_high_daily": 8.408753346448486e-06,
+    "p_one_sided_positive": 0.973,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0004253686477932,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "US..SOX",
+    "strategy": "P2_RECOVERY",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0005739426830985,
+    "annualized_arithmetic_delta": -0.1446335561408324,
+    "ci_low_daily": -0.0010925740989699,
+    "ci_high_daily": -7.448921687851578e-05,
+    "p_one_sided_positive": 0.984,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0005425430077935,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "US..SOX",
+    "strategy": "P3_RISK_BUDGET",
+    "n": 2765,
+    "mean_daily_net_delta": -0.0005655960786879,
+    "annualized_arithmetic_delta": -0.1425302118293745,
+    "ci_low_daily": -0.0010040413357309,
+    "ci_high_daily": -0.0001135023841517,
+    "p_one_sided_positive": 0.995,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -0.0005659494619436,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000001",
+    "strategy": "P1_TREND",
+    "n": 2673,
+    "mean_daily_net_delta": 4.301380735348087e-05,
+    "annualized_arithmetic_delta": 0.0108394794530771,
+    "ci_low_daily": -0.0002141500218741,
+    "ci_high_daily": 0.0003032118431558,
+    "p_one_sided_positive": 0.3785,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": 3.299062097880515e-05,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000001",
+    "strategy": "P2_RECOVERY",
+    "n": 2673,
+    "mean_daily_net_delta": -5.8495230415593006e-05,
+    "annualized_arithmetic_delta": -0.0147407980647294,
+    "ci_low_daily": -0.0004486459950923,
+    "ci_high_daily": 0.0003090667985066,
+    "p_one_sided_positive": 0.639,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": -1.9252991060650797e-05,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000001",
+    "strategy": "P3_RISK_BUDGET",
+    "n": 2673,
+    "mean_daily_net_delta": 2.516992270247743e-05,
+    "annualized_arithmetic_delta": 0.0063428205210243,
+    "ci_low_daily": -0.0002327041205353,
+    "ci_high_daily": 0.0002805910847594,
+    "p_one_sided_positive": 0.4194999999999999,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": 2.0132509354457968e-05,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000688",
+    "strategy": "P1_TREND",
+    "n": 1069,
+    "mean_daily_net_delta": 0.0001496011290717,
+    "annualized_arithmetic_delta": 0.0376994845260927,
+    "ci_low_daily": -9.482343987462184e-05,
+    "ci_high_daily": 0.0004198707014838,
+    "p_one_sided_positive": 0.132,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": 0.0001382683972509,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000688",
+    "strategy": "P2_RECOVERY",
+    "n": 1069,
+    "mean_daily_net_delta": 0.000211642154381,
+    "annualized_arithmetic_delta": 0.0533338229040275,
+    "ci_low_daily": -0.0007510961465632,
+    "ci_high_daily": 0.0011551317458297,
+    "p_one_sided_positive": 0.341,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": 0.0002198425402378,
+    "first_screen_return_increment_pass": false
+   },
+   {
+    "symbol": "SH.000688",
+    "strategy": "P3_RISK_BUDGET",
+    "n": 1069,
+    "mean_daily_net_delta": 0.0001007511540242,
+    "annualized_arithmetic_delta": 0.0253892908141214,
+    "ci_low_daily": -0.0003889652921825,
+    "ci_high_daily": 0.0005437862270767,
+    "p_one_sided_positive": 0.3619999999999999,
+    "holm_p": 1.0,
+    "mean_daily_delta_cost25": 0.0001158737522104,
+    "first_screen_return_increment_pass": false
+   }
+  ],
+  "primary_passes": 0,
+  "sensitivity_any_ci_low_above_zero": 0,
+  "sensitivity_min_p": 0.0965,
+  "metrics_rows": 360,
+  "metrics_status_counts": {
+   "EXECUTED_PRICE_ONLY": 330,
+   "NO_ELIGIBLE_INTERVALS": 30
+  },
+  "full_metrics_file": "exact_public/metrics.csv"
+ },
+ "news": {
+  "real_news_data_available": false,
+  "T1": "BLOCKED_NO_NEWS_PANEL",
+  "T2": "BLOCKED_NO_TIME_STAMPED_NEGATIVE_EVENTS_AND_EXPECTED_RESPONSE_MODEL"
+ },
+ "overall": {
+  "A": "REPRODUCED_WITHIN_FLOATING_POINT",
+  "B": "INDEPENDENT_IMPLEMENTATION_AGREES",
+  "C": "SAME_BATCH_REDERIVATION_AGREES; NEW_DATA_VALIDATION_BLOCKED",
+  "candidates_passing_preset_gate": 0,
+  "claims_not_supported": [
+   "any candidate passes the return-increment gate",
+   "news sentiment factor works",
+   "new-market or out-of-sample replication",
+   "tradable index strategy"
+  ],
+  "originals_modified": false,
+  "parameters_changed": false,
+  "negative_results_kept": true
+ }
+}

@@ -1,0 +1,173 @@
+{
+ "scope": "A_SAME_INPUT_REPRODUCTION (same program, same DB; a repeatability check, not independent validation)",
+ "ledger_files": {
+  "first": 330,
+  "rerun": 330,
+  "same_set": true
+ },
+ "ledger_raw_sha256_identical": 264,
+ "ledger_gzip_sha256_identical": 0,
+ "ledgers_with_different_bytes": [
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c10.csv.gz",
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c25.csv.gz",
+  "ledgers/SH_000688/full/P3_RISK_BUDGET_c0.csv.gz",
+  "ledgers/SH_000688/full/P3_RISK_BUDGET_c10.csv.gz"
+ ],
+ "ledgers_row_count_mismatch": [],
+ "ledgers_date_or_episode_mismatch": [],
+ "ledger_max_abs_numeric_diff_by_column": {
+  "episode": 0.0,
+  "open_exec": 0.0,
+  "open_mark": 0.0,
+  "target_weight": 1.3766765505351941e-14,
+  "nav_before": 2.1760371282653068e-14,
+  "cash_before": 3.2399430360818826e-14,
+  "units_before": 3.0184188481996443e-16,
+  "trade_value": 3.199957659960617e-14,
+  "fee_entry": 1.0061396160665481e-16,
+  "cash_after": 3.2399430360818826e-14,
+  "units_after": 3.0184188481996443e-16,
+  "nav_posttrade": 2.1760371282653068e-14,
+  "fee_terminal": 9.996344030316351e-17,
+  "end_nav": 2.1760371282653068e-14,
+  "return_net": 1.096345236817342e-15,
+  "turnover_fraction": 1.4210854715202004e-14,
+  "cost_fraction": 1.0018028073766061e-16,
+  "weight_during": 1.3988810110276972e-14,
+  "cash_end": 3.2399430360818826e-14,
+  "units_end": 3.0184188481996443e-16,
+  "price_return": 0.0
+ },
+ "metrics.csv": {
+  "rows_first": 360,
+  "rows_rerun": 360,
+  "unmatched_rows": 0,
+  "file_sha256_identical": false,
+  "max_abs_numeric_diff": {
+   "intervals": 0.0,
+   "terminal_wealth": 1.865174681370263e-14,
+   "total_return": 1.9095836023552692e-14,
+   "cagr": 1.9984014443252818e-15,
+   "max_drawdown": 3.774758283725532e-15,
+   "daily_mean_net": 9.025983085941824e-18,
+   "descriptive_sharpe_sqrt252": 2.886579864025407e-14,
+   "mean_exposure": 1.3877787807814457e-15,
+   "annualized_turnover": 5.1514348342607263e-14,
+   "cost_fraction_sum": 1.6653345369377348e-15,
+   "entry_episodes": 0.0,
+   "boundary_exits": 0.0
+  },
+  "non_numeric_differences": {}
+ },
+ "contrasts.csv": {
+  "rows_first": 48,
+  "rows_rerun": 48,
+  "unmatched_rows": 0,
+  "file_sha256_identical": false,
+  "max_abs_numeric_diff": {
+   "n": 0.0,
+   "primary_test": 0.0,
+   "mean_daily_net_delta": 1.4162390878091902e-18,
+   "annualized_arithmetic_delta": 4.996003610813204e-16,
+   "ci_low_daily": 9.996344030316351e-17,
+   "ci_high_daily": 2.986638172018663e-18,
+   "p_one_sided_positive": 0.0,
+   "mean_daily_delta_cost25": 1.1214716221646936e-18,
+   "holm_p": 0.0
+  },
+  "non_numeric_differences": {}
+ },
+ "factor_diagnostics.csv": {
+  "rows_first": 72,
+  "rows_rerun": 72,
+  "unmatched_rows": 0,
+  "file_sha256_identical": false,
+  "max_abs_numeric_diff": {
+   "n_labels": 0.0,
+   "distinct_factor_values": 0.0,
+   "spearman_8w": 0.0
+  },
+  "non_numeric_differences": {}
+ },
+ "input_inventory_identical": true,
+ "rerun_primary_tests": 12,
+ "rerun_primary_passes": 0,
+ "manifest_identity": {
+  "input_db_sha256": [
+   true,
+   "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e"
+  ],
+  "config_sha256": [
+   true,
+   "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb"
+  ],
+  "code_sha256": [
+   true,
+   "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae"
+  ],
+  "protocol_sha256": [
+   true,
+   "7281efccfa693831b623c45168b92bbda2a929970b20dfcccc749f7e8eb07a8a"
+  ],
+  "freeze_commit": [
+   true,
+   "1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953"
+  ],
+  "data_end": [
+   true,
+   "2026-11-17"
+  ],
+  "simulation_summary_rows": [
+   true,
+   360
+  ],
+  "private_ledger_files": [
+   true,
+   330
+  ],
+  "primary_family_size": [
+   true,
+   12
+  ],
+  "primary_pass_count": [
+   true,
+   0
+  ]
+ },
+ "environment": {
+  "first": {
+   "python": "3.12.14",
+   "numpy": "2.3.5",
+   "pandas": "2.2.3"
+  },
+  "rerun": {
+   "python": "3.11.9",
+   "numpy": "2.3.5",
+   "pandas": "2.2.3"
+  }
+ },
+ "output_file_sha256_identical": {
+  "contrasts.csv": false,
+  "factor_diagnostics.csv": false,
+  "input_inventory.json": false,
+  "metrics.csv": false,
+  "private_output_hashes.json": false,
+  "text_candidates.json": false
+ }
+}

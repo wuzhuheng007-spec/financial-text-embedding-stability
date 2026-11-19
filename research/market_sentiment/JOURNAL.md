@@ -351,3 +351,17 @@
 **限制：** 非独立验证；历史已见、当前版本、假设费用与零现金收益；QQQ总回报未认证；其他指数非可直接交易；真实文本与事件因子仍BLOCKED；Claude尚未执行。
 
 证据：[phase5_strategy_v1/AUDIT_FINAL.json](phase5_strategy_v1/AUDIT_FINAL.json)、[phase5_strategy_v1/CLAUDE_CODE_TASK.md](phase5_strategy_v1/CLAUDE_CODE_TASK.md)、[phase5_strategy_v1/RESULTS_zh.md](phase5_strategy_v1/RESULTS_zh.md)、[phase5_strategy_v1/build_report.py](phase5_strategy_v1/build_report.py)、[phase5_strategy_v1/environment.json](phase5_strategy_v1/environment.json)、[phase5_strategy_v1/evidence_ledger.json](phase5_strategy_v1/evidence_ledger.json)、[phase5_strategy_v1/freeze_receipt.json](phase5_strategy_v1/freeze_receipt.json)、[phase5_strategy_v1/requirements.txt](phase5_strategy_v1/requirements.txt)、[phase5_strategy_v1/results/contrasts.csv](phase5_strategy_v1/results/contrasts.csv)、[phase5_strategy_v1/results/display_cells.json](phase5_strategy_v1/results/display_cells.json)、[phase5_strategy_v1/results/factor_diagnostics.csv](phase5_strategy_v1/results/factor_diagnostics.csv)、[phase5_strategy_v1/results/input_inventory.json](phase5_strategy_v1/results/input_inventory.json)、[phase5_strategy_v1/results/metrics.csv](phase5_strategy_v1/results/metrics.csv)、[phase5_strategy_v1/results/private_output_hashes.json](phase5_strategy_v1/results/private_output_hashes.json)、[phase5_strategy_v1/results/run_manifest.json](phase5_strategy_v1/results/run_manifest.json)、[phase5_strategy_v1/results/self_check.json](phase5_strategy_v1/results/self_check.json)、[phase5_strategy_v1/results/text_candidates.json](phase5_strategy_v1/results/text_candidates.json)
+
+## R025 · Phase5首轮复核收尾：A/B/C分层登记与规则边界补强
+
+**状态：** CLOSED_FIRST_SCREEN_NOT_PASSED_REPLICATION_LAYERS_RECORDED；记录UTC：2026-11-19T08:24:02.069484+00:00
+
+**计划：** 导入Claude复核（A同输入、B独立实现、C另一数据）的汇总证据，按层次登记；补P2二十条记忆过期与暖机252/253/254的冻结引擎断言；不改参数、不重开搜索。
+
+**实际：** 导入VALIDATION.json/VALIDATION_zh.md/A_exact_comparison.json；CLOSEOUT.json分列A数值容差复现、B独立实现对账（外部导入证据，非平台执行）、C同批重派生一致/新下载版本BLOCKED_NO_NEW_DATA/前瞻未运行；新增tests/test_phase5_frozen_boundaries.py，对冻结run.py实际调用，4项通过。
+
+**结论：** 12项主筛0项通过不变；A在数值容差内复现（非逐字节）；B独立实现对账一致；C仅同批重派生一致，新数据验证BLOCKED；T1/T2缺本研究所需历史文本/事件输入。
+
+**限制：** B与C是本地Claude复核导入的证据，不是平台任务；冻结后之前或之后的行情都未构成未见样本；在线新闻接通不等于历史新闻面板合格。
+
+证据：[phase5_strategy_v1/claude_validation_record/CLOSEOUT.json](phase5_strategy_v1/claude_validation_record/CLOSEOUT.json)、[phase5_strategy_v1/claude_validation_record/VALIDATION.json](phase5_strategy_v1/claude_validation_record/VALIDATION.json)、[phase5_strategy_v1/claude_validation_record/VALIDATION_zh.md](phase5_strategy_v1/claude_validation_record/VALIDATION_zh.md)、[phase5_strategy_v1/claude_validation_record/A_exact_comparison.json](phase5_strategy_v1/claude_validation_record/A_exact_comparison.json)、[phase5_strategy_v1/claude_validation_record/boundary_tests.log](phase5_strategy_v1/claude_validation_record/boundary_tests.log)
