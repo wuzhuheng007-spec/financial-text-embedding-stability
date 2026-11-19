@@ -87,7 +87,29 @@ class Heartbeat(threading.Thread):
             db.close()
 
 
+def worker_engines(db=None) -> list:
+    """Engines this worker will claim: the ones requested for this job image (QUANT_WORKER_ENGINES, default the
+    legacy engine) that ALSO pass a live capability self-test here. Verified capabilities are recorded in the
+    registry (worker_capabilities) under this image id; the browser never declares them."""
+    requested = [tuple(x.split("@")) for x in (os.environ.get("QUANT_WORKER_ENGINES") or "legacy_mom20_v1@1").split(",") if x.strip()]
+    ok = []
+    for eng in requested:
+        if eng == registry.LEGACY_ENGINE:
+            ok.append(eng); continue
+        if eng == ("phase5_o2o_v1", "1"):
+            from .engines import phase5_o2o
+            cap = phase5_o2o.capability()
+            if db is not None and os.environ.get("QUANT_IMAGE_ID"):
+                db.execute("INSERT OR REPLACE INTO worker_capabilities VALUES(?,?,?,?,?)",
+                           (os.environ["QUANT_IMAGE_ID"], eng[0], eng[1], json.dumps(cap), registry.utcnow())); db.commit()
+            if cap["ok"]:
+                ok.append(eng)
+    return ok
+
+
 def execute(db, run, research_root: Path, hb: Heartbeat) -> dict:
+    if registry.engine_of(run) != registry.LEGACY_ENGINE:
+        return execute_v2(db, run, research_root, hb)
     ds = db.execute("SELECT * FROM datasets WHERE dataset_id=? AND dataset_version=?",
                     (run["dataset_id"], run["dataset_version"])).fetchone()
     fac = db.execute("SELECT * FROM factors WHERE factor_id=? AND factor_version=?",
@@ -185,6 +207,50 @@ def _execute(db, run, research_root, ds, fac, spec, cfg, out, log, hb) -> dict:
             "verifier_version": VERIFIER_VERSION, "exit_reason": "COMPLETED"}
 
 
+def execute_v2(db, run, research_root: Path, hb: Heartbeat) -> dict:
+    """Versioned engines (phase5_o2o_v1): same lease/heartbeat/cancel/timeout machinery as the legacy path."""
+    if not os.environ.get("QUANT_CODE_VERSION") or not os.environ.get("QUANT_IMAGE_ID"):
+        raise ValueError("RUNTIME_IDENTITY_MISSING: QUANT_CODE_VERSION and QUANT_IMAGE_ID must be set by the runner")
+    eng = registry.engine_of(run)
+    if eng != ("phase5_o2o_v1", "1"):
+        raise ValueError(f"UNSUPPORTED_ENGINE {eng}")
+    from .engines import phase5_o2o
+    ds = db.execute("SELECT * FROM datasets WHERE dataset_id=? AND dataset_version=?", (run["dataset_id"], run["dataset_version"])).fetchone()
+    out = research_root / "runs" / run["run_id"]
+    out.mkdir(parents=True, exist_ok=False)
+    with open(out / "run.log", "w", encoding="utf-8") as log:
+        def say(msg):
+            log.write(f"{registry.utcnow()} {msg}\n"); log.flush()
+
+        def stop_now():
+            if hb.timeout.is_set():
+                raise RunTimeout()
+            if hb.cancel.is_set():
+                raise RunCancelled()
+        say(f"run {run['run_id']} worker {run['worker_id']} image {os.environ.get('QUANT_IMAGE_ID')} dataset {ds['dataset_id']}@{ds['dataset_version']}")
+        fields = phase5_o2o.execute(run, ds, research_root, out, say, stop_now)
+        say(f"results_digest={fields['results_digest']}; registering artifacts")
+    from . import catalog
+    names = [n for n in fields.pop("_artifacts") if (out / n).is_file()]
+    catalog.register_artifacts(db, run["run_id"], out, names)
+    db.execute("UPDATE runs SET code_version=?, image_id=?, runtime_image_digest=?, lockfile_hash=?, evidence_grade=? WHERE run_id=?",
+               (os.environ["QUANT_CODE_VERSION"], os.environ["QUANT_IMAGE_ID"], os.environ.get("QUANT_IMAGE_DIGEST") or "LOCAL_IMAGE_ID_ONLY",
+                os.environ.get("QUANT_NUMERIC_LOCK_SHA256"), "PLATFORM_EXECUTED_SAME_IMPLEMENTATION", run["run_id"]))
+    db.commit()
+    return fields
+
+
+def _record_grade(db, run_id: str, final: str, grade: dict | None):
+    if not grade:
+        return
+    from . import catalog
+    catalog.record_grade(db, "run", run_id, software_status=final, mechanical_check=grade["mechanical"],
+                         data_pit_eligibility="CURRENT_VINTAGE_NOT_POINT_IN_TIME", scientific_status=grade["scientific"] if final == "SUCCEEDED" else "NOT_EVALUATED",
+                         replication_scope=("same frozen program and same input (engineering integration / repeatability), not independent validation"
+                                            if grade["mode"] == "exact" else "same frozen program on a different input version (external mode); not unseen data"),
+                         evidence={"results_digest": grade["digest"], "artifacts": f"runs/{run_id}/"})
+
+
 def run_once(max_seconds: int) -> int:
     """Normal queue processing: recover confirmed-lost runs, then claim the oldest QUEUED run."""
     research_root = registry.root()
@@ -196,9 +262,10 @@ def run_once(max_seconds: int) -> int:
             (d / "recovery.json").write_text(json.dumps({**r, "status": "FAILED", "exit_reason": "WORKER_LOST"}, indent=1), encoding="utf-8")
         print(f"recovered {r['run_id']} -> FAILED/WORKER_LOST")
     wid = worker_identity()
-    run = registry.claim_next(db, wid)
+    engines = worker_engines(db)
+    run = registry.claim_next(db, wid, engines=engines)
     if run is None:
-        db.close(); print("no queued run"); return 0
+        db.close(); print(f"no queued run for engines {['@'.join(e) for e in engines]}"); return 0
     return _run_claimed(db, run, research_root, wid, max_seconds)
 
 
@@ -207,9 +274,9 @@ def run_specific(run_id: str, max_seconds: int) -> int:
     research_root = registry.root()
     db = registry.connect()
     wid = worker_identity()
-    run = registry.claim_run(db, run_id, wid)
+    run = registry.claim_run(db, run_id, wid, engines=worker_engines(db))
     if run is None:
-        db.close(); print(f"{run_id} not claimable (not QUEUED)"); return 2
+        db.close(); print(f"{run_id} not claimable (not QUEUED or engine not supported here)"); return 2
     return _run_claimed(db, run, research_root, wid, max_seconds)
 
 
@@ -226,7 +293,9 @@ def _run_claimed(db, run, research_root: Path, wid: str, max_seconds: int) -> in
     old_term = signal.signal(signal.SIGTERM, on_term) if threading.current_thread() is threading.main_thread() else None
     try:
         fields = execute(db, run, research_root, hb)
+        grade = fields.pop("_grade", None)
         final = registry.finish(db, run["run_id"], "SUCCEEDED", **fields)
+        _record_grade(db, run["run_id"], final, grade)  # after the terminal transition: a won cancel stays CANCELLED
         print(f"{run['run_id']} {final} {fields['results_digest']}"); return 0
     except RunCancelled:
         registry.finish(db, run["run_id"], "CANCELLED", error_class="CANCELLED_BY_OWNER", exit_reason="CANCELLED_WHILE_RUNNING",

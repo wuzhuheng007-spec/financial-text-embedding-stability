@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1.7
+# Minimal numeric research job image (phase5_o2o_v1). Separate from the web/app image and from the
+# Chinese-model research image: no Django, no Torch, no network or secrets needed at run time.
+#   docker build -f deploy/linux/Dockerfile.numeric --build-arg LOCK_SHA256=$(sha256sum deploy/linux/requirements-numeric.lock | cut -c1-64) .
+# deploy/linux/Dockerfile.numeric.dockerignore is an allowlist.
+FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df
+ARG LOCK_SHA256
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_CACHE_DIR=1 TZ=UTC HOME=/tmp \
+    QUANT_NUMERIC_LOCK_SHA256=${LOCK_SHA256} QUANT_WORKER_ENGINES=phase5_o2o_v1@1
+COPY deploy/linux/requirements-numeric.lock /tmp/req/requirements-numeric.lock
+RUN test "$(sha256sum /tmp/req/requirements-numeric.lock | cut -c1-64)" = "${LOCK_SHA256}" \
+    && python -m pip install --no-cache-dir --require-hashes --no-deps --only-binary=:all: -r /tmp/req/requirements-numeric.lock \
+    && python -c "import numpy, pandas, scipy; print('numeric libs', numpy.__version__, pandas.__version__, scipy.__version__)"
+RUN groupadd --system --gid 10001 quant && useradd --system --uid 10001 --gid 10001 --home-dir /app --shell /usr/sbin/nologin quant
+WORKDIR /app
+COPY scripts/quant_research_v1 /app/scripts/quant_research_v1
+COPY research/market_sentiment/phase5_strategy_v1 /app/research/market_sentiment/phase5_strategy_v1
+RUN mkdir -p /app/apps/quant_portal/var && chown 10001:10001 /app/apps/quant_portal/var \
+    && python -c "from scripts.quant_research_v1.engines import phase5_o2o as p; c = p.capability(); print(c); assert c['ok'], c" \
+    && find /app -name '__pycache__' -prune -exec rm -rf {} +
+USER 10001:10001
+ENTRYPOINT ["python", "-m", "scripts.quant_research_v1.worker"]
+CMD ["worker", "--once", "--max-seconds", "900"]

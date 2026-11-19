@@ -1,0 +1,15 @@
+# Allowlist build context for deploy/linux/Dockerfile.numeric.
+**
+!deploy/linux/requirements-numeric.lock
+!scripts/quant_research_v1/**
+!research/market_sentiment/phase5_strategy_v1/run.py
+!research/market_sentiment/phase5_strategy_v1/check.py
+!research/market_sentiment/phase5_strategy_v1/config.json
+!research/market_sentiment/phase5_strategy_v1/PROTOCOL_zh.md
+!research/market_sentiment/phase5_strategy_v1/environment.json
+!research/market_sentiment/phase5_strategy_v1/requirements.txt
+!research/market_sentiment/phase5_strategy_v1/results/*.csv
+!research/market_sentiment/phase5_strategy_v1/results/*.json
+**/__pycache__
+**/*.py[cod]
+**/*.sqlite*
