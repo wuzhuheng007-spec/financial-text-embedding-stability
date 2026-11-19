@@ -292,7 +292,10 @@ def main(argv=None) -> int:
     elif a.cmd == "register-defaults":
         for spec in FACTORS.values():
             registry.register_factor(db, spec)
-        print("registered", [f"{k[0]}@{k[1]}" for k in FACTORS])
+        from . import catalog
+        specs = catalog.register_builtin_specs(db)       # v2 specs: idempotent, conflicts refused
+        imported = catalog.import_phase5(db)             # historical external import (not a run)
+        print("registered", [f"{k[0]}@{k[1]}" for k in FACTORS], json.dumps(specs), imported)
     elif a.cmd == "enqueue":
         ds, fv = tuple(a.dataset.split("@")), tuple(a.factor.split("@"))
         print(registry.create_run(db, ds, fv, json.loads(Path(a.protocol).read_text(encoding="utf-8")), requested_by="cli"))

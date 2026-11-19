@@ -355,3 +355,13 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
   .rw-runs-table td:empty{display:none}
   .rw-actions .button{margin-top:6px;min-height:36px}
 }
+/* Research workbench M1: four entry points, cards, separate status chips. */
+.rw-tabs{margin:0 0 12px}
+.rw-tabs button[aria-selected=true]{background:var(--card-2);color:var(--text);box-shadow:0 0 0 1px var(--line-2)}
+.rw-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:12px}
+.rw-card h3{font-size:14px;margin:0}
+.rw-card p{margin:6px 0}
+.rw-facts{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--text-2);margin:4px 0 8px}
+.rw-grade-note{flex-basis:100%}
+.rw-result-row .m{align-items:center}
+.rw-key-p2::before{background:var(--warn)}.rw-key-p3::before{background:var(--ok)}.rw-key-bh::before{background:var(--text-2)}

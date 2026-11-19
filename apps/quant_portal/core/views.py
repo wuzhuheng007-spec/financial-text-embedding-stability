@@ -470,6 +470,31 @@ import re as _re
 _RUN_ID = _re.compile(r"^run-\d{8}T\d{6}Z-[0-9a-f]{6}$")
 # Only protocols frozen in the repository can be selected; no user-supplied code or parameters.
 RESEARCH_PROTOCOLS = {"mom20-daily-long-cash": "configs/quant_research_mom20_v1.json"}
+# v2 protocols bound to a versioned engine (contracts in scripts/quant_research_v1/catalog.py ENGINES).
+RESEARCH_PROTOCOLS_V2 = {"phase5_strategy_v1": "research/market_sentiment/phase5_strategy_v1/config.json"}
+_IMPORT_ID = _re.compile(r"^ext-[a-z0-9_]+-\d{8}T\d{6}Z$")
+_ARTIFACT_NAME = _re.compile(r"^[A-Za-z0-9_.-]{1,80}$")
+
+
+def _phase5_protocol(repo):
+    import hashlib, json
+    from scripts.quant_research_v1 import catalog
+    cfg_path = repo / RESEARCH_PROTOCOLS_V2["phase5_strategy_v1"]
+    cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+    return {"protocol_id": "phase5_strategy_v1", "protocol_version": "1", "factor": {"factor_id": "phase5_strategy_v1", "factor_version": "1"},
+            "engine": {"engine_id": "phase5_o2o_v1", "engine_version": "1"}, "evaluation_mode": "MARKET_TIME_SERIES",
+            "benchmark_id": "MA200_SAME_INTERVALS (BUY_HOLD reported alongside)", "sample_mask": {"periods": cfg["periods"], "series": cfg["series"]},
+            "frozen_config_sha256": hashlib.sha256(cfg_path.read_bytes()).hexdigest(), "frozen_files_sha256": catalog.phase5_files(repo),
+            "freeze_commit": catalog.PHASE5_FREEZE_COMMIT, "mode": "exact_or_external_by_input_hash"}
+
+
+def _ro_registry(registry):
+    import sqlite3
+    p = registry.root() / "registry.sqlite3"
+    if not p.is_file():
+        return None
+    db = sqlite3.connect(p.resolve().as_uri() + "?mode=ro", uri=True, timeout=5); db.row_factory = sqlite3.Row
+    return db
 
 
 def _research_owner(request):
@@ -524,10 +549,32 @@ def research_registry_json(request):
                           "factor": cfg["factor"], "costs_bps": cfg["costs"]["scenarios_bps_one_way"],
                           "segments": cfg["segments"], "execution": cfg["execution"]["price"],
                           "return_label": cfg["price_series"]["return_label"]})
+    from scripts.quant_research_v1 import catalog
+    for p in protocols:
+        p["engine"] = "legacy_mom20_v1@1"
+    p5 = _phase5_protocol(repo)
+    protocols.append({"protocol_id": p5["protocol_id"], "protocol_version": p5["protocol_version"], "factor": p5["factor"], "engine": "phase5_o2o_v1@1",
+                      "costs_bps": json.loads((repo / RESEARCH_PROTOCOLS_V2["phase5_strategy_v1"]).read_text(encoding="utf-8"))["cost_bps_one_way"],
+                      "periods": p5["sample_mask"]["periods"], "series": p5["sample_mask"]["series"], "frozen_config_sha256": p5["frozen_config_sha256"],
+                      "benchmark_id": p5["benchmark_id"], "evaluation_mode": p5["evaluation_mode"]})
     data["protocols"] = protocols
+    data["engines"] = {f"{k[0]}@{k[1]}": v for k, v in catalog.ENGINES.items()}
     for r in data.get("runs", []):
         r["latest_audit"] = _latest_audit(registry.root(), r["run_id"])
-    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+    # Eligibility is decided here (backend), for every registered spec against each dataset.
+    db = _ro_registry(registry)
+    if db is not None:
+        try:
+            tabs = {x[0] for x in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if "factor_specs" in tabs:
+                ds_keys = [(d["dataset_id"], d["dataset_version"]) for d in data.get("datasets", [])]
+                for f in data.get("factors", []):
+                    key = (f["factor_id"], f["factor_version"])
+                    f["eligibility"] = {f"{d[0]}@{d[1]}": catalog.eligibility(db, d, key) for d in ds_keys} or {"(no dataset)": catalog.eligibility(db, None, key)}
+                data["capabilities_effective"] = [{"engine": f"{k[0]}@{k[1]}", "workers": v} for k, v in catalog.capabilities(db).items()]
+        finally:
+            db.close()
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False, "default": str}))
 
 
 @login_required
@@ -545,9 +592,14 @@ def research_run_rerun(request, run_id):
             raise Http404()
         if row["status"] in ("QUEUED", "RUNNING"):
             return JsonResponse({"result": "REJECTED", "reason": "run still active"}, status=400)
-        new_id = registry.create_run(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
-                                     json.loads(row["config_json"]), requested_by=request.user.username,
-                                     attempt_of=run_id if row["status"] in ("FAILED", "CANCELLED") else None)
+        from scripts.quant_research_v1 import catalog
+        eng = registry.engine_of(row); attempt = run_id if row["status"] in ("FAILED", "CANCELLED") else None
+        if eng == registry.LEGACY_ENGINE:
+            new_id = registry.create_run(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
+                                         json.loads(row["config_json"]), requested_by=request.user.username, attempt_of=attempt)
+        else:
+            new_id = catalog.create_run_v2(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
+                                           json.loads(row["config_json"]), eng, requested_by=request.user.username, attempt_of=attempt)
     except (LookupError, ValueError) as exc:
         return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
     finally:
@@ -563,12 +615,19 @@ def research_run_create(request):
     ds = (request.POST.get("dataset") or "").split("@", 1)
     fv = (request.POST.get("factor") or "").split("@", 1)
     pid = request.POST.get("protocol") or ""
-    if len(ds) != 2 or len(fv) != 2 or pid not in RESEARCH_PROTOCOLS:
+    if len(ds) != 2 or len(fv) != 2 or pid not in {**RESEARCH_PROTOCOLS, **RESEARCH_PROTOCOLS_V2}:
         return JsonResponse({"result": "INVALID_SELECTION"}, status=400)
-    protocol = json.loads((repo / RESEARCH_PROTOCOLS[pid]).read_text(encoding="utf-8"))
     db = registry.connect()
     try:
-        run_id = registry.create_run(db, tuple(ds), tuple(fv), protocol, requested_by=request.user.username)
+        if pid in RESEARCH_PROTOCOLS_V2:
+            from scripts.quant_research_v1 import catalog
+            protocol = _phase5_protocol(repo)
+            if tuple(fv) != (protocol["factor"]["factor_id"], protocol["factor"]["factor_version"]):
+                return JsonResponse({"result": "REJECTED", "reason": "protocol is frozen for a different strategy"}, status=400)
+            run_id = catalog.create_run_v2(db, tuple(ds), tuple(fv), protocol, ("phase5_o2o_v1", "1"), requested_by=request.user.username)
+        else:
+            protocol = json.loads((repo / RESEARCH_PROTOCOLS[pid]).read_text(encoding="utf-8"))
+            run_id = registry.create_run(db, tuple(ds), tuple(fv), protocol, requested_by=request.user.username)
     except (LookupError, ValueError) as exc:
         return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
     finally:
@@ -626,7 +685,80 @@ def research_run_json(request, run_id):
                                   "corrections_en": [c["correct"] for c in e["corrections"]]}
         log = path / "run.log"
         data["log_tail"] = log.read_text(encoding="utf-8").splitlines()[-30:] if log.is_file() else []
+        rep = path / "report.json"  # phase5_o2o_v1 summary for the page (full numbers stay in the artifacts)
+        data["report"] = json.loads(rep.read_text(encoding="utf-8")) if rep.is_file() else None
     return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_capabilities_json(request):
+    """Engines and the capabilities that job images actually registered (never self-declared by the browser)."""
+    registry, _ = _research_owner(request)
+    from scripts.quant_research_v1 import catalog
+    out = {"engines": {f"{k[0]}@{k[1]}": v for k, v in catalog.ENGINES.items()}, "registered": []}
+    db = _ro_registry(registry)
+    if db is not None:
+        try:
+            out["registered"] = [{"engine": f"{k[0]}@{k[1]}", "workers": v} for k, v in catalog.capabilities(db).items()]
+        finally:
+            db.close()
+    return _no_store(JsonResponse(out, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_compare_json(request):
+    registry, _ = _research_owner(request)
+    from scripts.quant_research_v1 import catalog
+    a, b = request.GET.get("a", ""), request.GET.get("b", "")
+    if not (_RUN_ID.match(a) and _RUN_ID.match(b)):
+        raise Http404()
+    db = _ro_registry(registry)
+    if db is None:
+        raise Http404()
+    try:
+        res = catalog.compare(db, a, b)
+    except LookupError:
+        raise Http404()
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"a": a, "b": b, **res}, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_import_json(request, import_id):
+    registry, _ = _research_owner(request)
+    if not _IMPORT_ID.match(import_id):
+        raise Http404()
+    rows = [x for x in registry.read_all().get("external_runs", []) if x["import_id"] == import_id]
+    if not rows:
+        raise Http404()
+    return _no_store(JsonResponse(rows[0], json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_run_artifact(request, run_id, name):
+    """Download a REGISTERED artifact of an owner run: name must be in the run's artifact list; the resolved
+    path must stay inside that run directory (no traversal, no other run's files)."""
+    registry, _ = _research_owner(request)
+    path = _run_dir(registry, run_id)
+    if not _ARTIFACT_NAME.match(name) or name in (".", ".."):
+        raise Http404()
+    db = _ro_registry(registry)
+    if db is None:
+        raise Http404()
+    try:
+        row = db.execute("SELECT rel_path, sha256 FROM artifacts WHERE run_id=? AND name=?", (run_id, name)).fetchone()
+    finally:
+        db.close()
+    if row is None:
+        raise Http404()
+    f = (path / name).resolve()
+    if f.parent != path.resolve() or not f.is_file() or row["rel_path"] != f"runs/{run_id}/{name}":
+        raise Http404()
+    response = HttpResponse(f.read_bytes(), content_type="application/octet-stream")
+    response["Content-Disposition"] = f'attachment; filename="{run_id}_{name}"'
+    response["X-Content-SHA256"] = row["sha256"]
+    return _no_store(response)
 
 
 @login_required
