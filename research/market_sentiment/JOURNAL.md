@@ -183,3 +183,17 @@
 **限制：** 行业/个股涨幅、开户与宏观实时版本未完整核验；未获得新广度/资金数据库；没有独立验证。
 
 证据：[image_review/Historical_Images_Review_zh.md](image_review/Historical_Images_Review_zh.md)
+
+## R013 · 纳指补充图与盈利利率预期机制登记
+
+**状态：** PARTIALLY_SUPPORTED_HYPOTHESES_ONLY；记录UTC：2026-11-19T03:03:02.416763+00:00
+
+**计划：** 核对新增图片中的政策时序，区分盈利、利率、情绪与成分变化。
+
+**实际：** 实际打开2020-03-15和2022-03-16美联储声明；指出实际加息与预期重定价不能混同；登记盈利修订、叙事兑现差与广度等候选模块，未运行新金融实验。
+
+**结论：** 两条具体政策事实已核验，其余机制作为待检验假说，尚无新预测效力结论。
+
+**限制：** 没有新增历史盈利预期/成分/新闻数据；非独立验证。
+
+证据：[image_review/Nasdaq_Supplement_Review_zh.md](image_review/Nasdaq_Supplement_Review_zh.md)

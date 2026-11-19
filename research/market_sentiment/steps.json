@@ -302,5 +302,21 @@
       "image_review/Historical_Images_Review_zh.md": "d12b75b5167a9310b77a9de93c2db4616182c7e1b4f05d7ace74777c4139ae33"
     },
     "recorded_at_utc": "2026-11-19T02:59:03.931763+00:00"
+  },
+  {
+    "id": "R013",
+    "title": "纳指补充图与盈利利率预期机制登记",
+    "plan": "核对新增图片中的政策时序，区分盈利、利率、情绪与成分变化。",
+    "actual": "实际打开2020-03-15和2022-03-16美联储声明；指出实际加息与预期重定价不能混同；登记盈利修订、叙事兑现差与广度等候选模块，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Nasdaq_Supplement_Review_zh.md"
+    ],
+    "claims": "两条具体政策事实已核验，其余机制作为待检验假说，尚无新预测效力结论。",
+    "limits": "没有新增历史盈利预期/成分/新闻数据；非独立验证。",
+    "evidence_sha256": {
+      "image_review/Nasdaq_Supplement_Review_zh.md": "b5b0759ae3e053392a797e37676d27049aecec3cbe49a0ed6f092582d9a7c082"
+    },
+    "recorded_at_utc": "2026-11-19T03:03:02.416763+00:00"
   }
 ]
