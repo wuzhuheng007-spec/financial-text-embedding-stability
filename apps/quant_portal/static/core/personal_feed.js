@@ -641,7 +641,12 @@
     if (inFlight) return;
     inFlight = true;
     try {
-      const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
+      // Abort a hung poll after 12 s so the next interval can try again (inFlight would otherwise stay set).
+      const ac = typeof AbortController === 'function' ? new AbortController() : null;
+      const timer = ac ? setTimeout(() => ac.abort(), 12000) : null;
+      let reply;
+      try { reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store', signal: ac?.signal}); }
+      finally { if (timer) clearTimeout(timer); }
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
       document.dispatchEvent(new CustomEvent('quant-feed', {detail: current}));

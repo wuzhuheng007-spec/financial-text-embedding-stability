@@ -7,8 +7,9 @@ Change is computed only against a base that belongs to the same supplier message
 price, so a session's price is never compared with an unrelated or stale reference:
   * extended-hours quote (AFTERHOURS / PREMARKET / OVERNIGHT): base = data.last_price of the
     same raw message (the regular-session price carried alongside it);
-  * regular / legacy quote: base = data.prev_close_price of the latest raw message for the
-    symbol, used only when that message's data.last_price equals the shown price exactly.
+  * regular / legacy quote: base = data.prev_close_price of the raw message that produced the
+    quote, identified by symbol link + data.data_time_ms equal to the quote's provider time (ms)
+    + data.last_price equal to the shown price. Price equality alone is never enough (DATA-01).
 Otherwise no change is returned. Read-only; never calls a provider.
 """
 from __future__ import annotations
@@ -106,12 +107,54 @@ def quote_changes(db_path: Path, owner_id: int, latest_quotes: dict) -> dict:
                     if change:
                         out[symbol] = change
             else:
-                row = db.execute("""SELECT raw_sha256 FROM session_quotes WHERE owner_id=? AND symbol=?
-                    ORDER BY id DESC LIMIT 1""", (owner_id, symbol)).fetchone()
-                raw = _raw(db, row[0] if row else None)
-                if raw and _dec(raw["data"].get("last_price")) == _dec(quote["price_text"]):
+                raw = _same_message_raw(db, owner_id, symbol, quote)
+                if raw:
                     change = change_for(quote["price_text"], raw["data"].get("prev_close_price"),
-                                        "PREV_CLOSE_MATCHED_MESSAGE", "data.prev_close_price", raw["received_at"])
+                                        "PREV_CLOSE_SAME_MESSAGE", "data.prev_close_price", raw["received_at"])
                     if change:
                         out[symbol] = change
     return out
+
+
+def _epoch_ms(iso: str | None) -> int | None:
+    from datetime import datetime
+    if not iso:
+        return None
+    try:
+        parsed = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return None
+    return round(parsed.timestamp() * 1000)
+
+
+def _same_message_raw(db: sqlite3.Connection, owner_id: int, symbol: str, quote: dict, scan: int = 400) -> dict | None:
+    """Find the raw message that produced a regular/legacy quote, by identity, not by price alone.
+
+    A raw message qualifies only if it is linked to this symbol (through session_quotes), its own
+    data.data_time_ms equals the quote's provider time to the millisecond, and its data.last_price
+    equals the shown price. Equal prices on another message or trading day never qualify.
+    Only the most recent `scan` linked rows are examined; an older quote gets no change.
+    """
+    target_ms = _epoch_ms(quote.get("source_at") or quote.get("provider_time"))
+    price = _dec(quote.get("price_text"))
+    if target_ms is None or price is None:
+        return None
+    seen = set()
+    for (sha,) in db.execute("""SELECT raw_sha256 FROM session_quotes WHERE owner_id=? AND symbol=?
+                                ORDER BY id DESC LIMIT ?""", (owner_id, symbol, scan)):
+        if sha in seen:
+            continue
+        seen.add(sha)
+        raw = _raw(db, sha)
+        if not raw:
+            continue
+        data = raw["data"]
+        try:
+            msg_ms = int(data.get("data_time_ms"))
+        except (TypeError, ValueError):
+            continue
+        if msg_ms == target_ms and _dec(data.get("last_price")) == price:
+            return raw
+    return None

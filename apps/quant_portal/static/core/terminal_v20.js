@@ -11,7 +11,7 @@
   const PRIORITY = ['TQQQ', 'QQQ', 'SOXX', 'SPY', 'NVDA', 'MU'];
   const SESS = {PREMARKET: '盘前', REGULAR: '常规', AFTERHOURS: '盘后', OVERNIGHT: '夜盘'};
   const SESS_COLOR = {PREMARKET: 'var(--s-pre)', REGULAR: 'var(--s-reg)', AFTERHOURS: 'var(--s-after)', OVERNIGHT: 'var(--s-night)'};
-  const BASIS = {REGULAR_LAST_SAME_MESSAGE: '较常规时段价', PREV_CLOSE_MATCHED_MESSAGE: '较昨收'};
+  const BASIS = {REGULAR_LAST_SAME_MESSAGE: '较常规时段价', PREV_CLOSE_SAME_MESSAGE: '较昨收'};
   const VIEWS = {overview: '总览', markets: '行情', news: '新闻', research: '研究', settings: '设置'};
   const RANGE_MS = {'30m': 30 * 60e3, '2h': 2 * 3600e3, '24h': 24 * 3600e3, all: 7 * 24 * 3600e3};
   const store = {
@@ -20,6 +20,13 @@
   };
   const $ = id => document.getElementById(id);
   const h = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  // Bounded same-origin fetch: a hung request is aborted so later reloads are not blocked forever.
+  const timedFetch = (url, ms) => {
+    const opts = {credentials: 'same-origin', cache: 'no-store'};
+    if (typeof AbortController === 'undefined' || typeof setTimeout === 'undefined') return fetch(url, opts);
+    const ac = new AbortController(); const timer = setTimeout(() => ac.abort(), ms);
+    return fetch(url, {...opts, signal: ac.signal}).finally(() => clearTimeout(timer));
+  };
   const svgNS = 'http://www.w3.org/2000/svg';
   const s = (tag, attrs) => { const n = document.createElementNS(svgNS, tag); for (const k in attrs || {}) n.setAttribute(k, attrs[k]); return n; };
 
@@ -160,7 +167,7 @@
     if (!root.dataset.timelineUrl) return;
     try {
       const u = `${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=2h`;
-      const r = await fetch(u, {credentials: 'same-origin', cache: 'no-store'});
+      const r = await timedFetch(u, 20e3);
       if (!r.ok) return;
       spark.set(sym, toPoints((await r.json()).points));
       drawSpark(sym);
@@ -232,7 +239,7 @@
   async function loadEarliest(sym) {
     if (chart.earliest.has(sym) || !root.dataset.timelineUrl) return;
     try {
-      const r = await fetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=all`, {credentials: 'same-origin', cache: 'no-store'});
+      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=all`, 20e3);
       if (!r.ok) return;
       const j = await r.json();
       const firsts = (j.point_metrics?.coverage_segments || []).map(x => ms(x.first_source_at)).filter(x => x != null);
@@ -252,7 +259,7 @@
     const state = $('chart-state');
     if (!chart.data.length) { state.hidden = false; state.textContent = '加载中…'; }
     try {
-      const r = await fetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, {credentials: 'same-origin', cache: 'no-store'});
+      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, 20e3);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const j = await r.json();
       if (sym !== chart.sym || range !== chart.range) return;
@@ -411,7 +418,7 @@
   async function loadOverviewSec() {
     const box = $('ov-sec'); if (!box || !root.dataset.officialUrl) { if (box) box.replaceChildren(h('div', 'compact-empty', '暂无公告')); return; }
     try {
-      const r = await fetch(root.dataset.officialUrl, {credentials: 'same-origin', cache: 'no-store'});
+      const r = await timedFetch(root.dataset.officialUrl, 20e3);
       if (!r.ok) throw new Error();
       const j = await r.json();
       const rows = (j.filings || []).filter(f => f.in_window).sort((a, b) => String(b.filing_date).localeCompare(String(a.filing_date))).slice(0, 6);

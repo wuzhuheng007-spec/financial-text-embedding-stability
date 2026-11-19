@@ -54,14 +54,42 @@ class QuoteChangeTests(SimpleTestCase):
         self.assertEqual((c["base_text"], c["base_field"], c["change_text"], c["change_pct_text"]),
                          ("150.38", "data.last_price", "1.98", "1.31"))
 
-    def test_regular_change_needs_matching_last_price(self):
+    # DATA-01: the previous close must come from the message that produced the regular quote.
+    T = "2026-11-18T21:00:00.036Z"; T_MS = 1795035600036
+
+    def test_regular_change_uses_prev_close_of_the_same_message(self):
         with tempfile.TemporaryDirectory() as d:
             db = Path(d) / "c.sqlite3"
-            make_db(db, [("MU", "AFTERHOURS", "704.38", "2026-11-18T21:35:40Z", {"last_price": 705.27, "prev_close_price": 700.0})])
-            match = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "705.27", "source_at": "x"}})
-            other = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "706.00", "source_at": "x"}})
-        self.assertEqual((match["MU"]["base_field"], match["MU"]["change_text"]), ("data.prev_close_price", "5.27"))
-        self.assertEqual(other, {})  # no attributable base -> no number
+            make_db(db, [("MU", "AFTERHOURS", "704.38", "2026-11-18T21:35:40Z",
+                          {"data_time_ms": self.T_MS, "last_price": 705.27, "prev_close_price": 700.0})])
+            out = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "705.27", "source_at": self.T}})
+        self.assertEqual((out["MU"]["base_kind"], out["MU"]["base_field"], out["MU"]["change_text"]),
+                         ("PREV_CLOSE_SAME_MESSAGE", "data.prev_close_price", "5.27"))
+
+    def test_equal_price_on_another_message_or_day_is_not_a_link(self):
+        with tempfile.TemporaryDirectory() as d:
+            db = Path(d) / "c.sqlite3"
+            # Same last price, but the message is from the previous day (different data_time_ms).
+            make_db(db, [("MU", "AFTERHOURS", "704.38", "2026-11-17T21:35:40Z",
+                          {"data_time_ms": self.T_MS - 86_400_000, "last_price": 705.27, "prev_close_price": 690.0})])
+            out = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "705.27", "source_at": self.T}})
+        self.assertEqual(out, {})
+
+    def test_same_time_different_price_or_other_symbol_is_not_a_link(self):
+        with tempfile.TemporaryDirectory() as d:
+            db = Path(d) / "c.sqlite3"
+            make_db(db, [("MU", "AFTERHOURS", "704.38", "t", {"data_time_ms": self.T_MS, "last_price": 705.30, "prev_close_price": 700.0}),
+                         ("NVDA", "AFTERHOURS", "150.0", "t", {"data_time_ms": self.T_MS, "last_price": 705.27, "prev_close_price": 1.0})])
+            out = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "705.27", "source_at": self.T}})
+        self.assertEqual(out, {})
+
+    def test_newer_unrelated_message_does_not_replace_the_producing_one(self):
+        with tempfile.TemporaryDirectory() as d:
+            db = Path(d) / "c.sqlite3"
+            make_db(db, [("MU", "AFTERHOURS", "704.00", "a", {"data_time_ms": self.T_MS, "last_price": 705.27, "prev_close_price": 700.0}),
+                         ("MU", "AFTERHOURS", "704.38", "b", {"data_time_ms": self.T_MS + 60_000, "last_price": 705.27, "prev_close_price": 650.0})])
+            out = quote_changes(db, 1, {"MU": {"session": "UNKNOWN", "price_text": "705.27", "source_at": self.T}})
+        self.assertEqual(out["MU"]["base_text"], "700.0")
 
     def test_missing_base_or_row_gives_no_change(self):
         with tempfile.TemporaryDirectory() as d:
