@@ -81,7 +81,11 @@ class ResearchBackupTests(unittest.TestCase):
                 b = rb.backup(var, out)
                 self.assertEqual((b["state"], b["succeeded_runs"], b["incomplete_runs"]), ("OK", 1, []))
                 shutil.rmtree(var)  # the restore must not need (or read) the source
-                res = rb.verify(out, Path(t) / "restore")
+                import contextlib, io
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    res = rb.verify(out, Path(t) / "restore")
+                self.assertEqual(buf.getvalue(), "")  # stdout reserved for the JSON report (restore-check parses it)
                 self.assertTrue(res["ok"], res["problems"])
                 r = res["reruns"][0]
                 self.assertEqual(r["original_run_id"], rid); self.assertNotEqual(r["new_run_id"], rid)

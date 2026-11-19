@@ -16,7 +16,7 @@ verify BACKUP_DIR RESTORE_DIR
     completed run from the restored snapshot and its original frozen config under a NEW run_id and
     compares every ledger byte-for-byte and the results_digest. Prints a JSON report.
 """
-import hashlib, json, os, pathlib, shutil, sqlite3, sys, datetime
+import contextlib, datetime, hashlib, json, os, pathlib, shutil, sqlite3, sys
 
 TERMINAL = ("SUCCEEDED", "FAILED", "CANCELLED")
 RUN_FILES = ("config.json", "metrics.json", "curves.json", "verify.json", "run.log")
@@ -152,7 +152,9 @@ def verify(bdir: pathlib.Path, rdir: pathlib.Path) -> dict:
         orig = db.execute("select * from runs where run_id=?", (r["run_id"],)).fetchone()
         new_id = registry.create_run(db, (orig["dataset_id"], orig["dataset_version"]), (orig["factor_id"], orig["factor_version"]),
                                      json.loads(orig["config_json"]), requested_by=f"restore-check:{r['run_id']}")
-        code = worker.run_once(300)
+        # The worker prints progress lines; keep this tool's stdout a single JSON document.
+        with contextlib.redirect_stdout(sys.stderr):
+            code = worker.run_once(300)
         new = db.execute("select status, results_digest from runs where run_id=?", (new_id,)).fetchone()
         ledgers = sorted(p.name for p in (root / "runs" / r["run_id"]).glob("ledger_cost*bps.csv"))
         same = {n: (root / "runs" / r["run_id"] / n).read_bytes() == (root / "runs" / new_id / n).read_bytes() for n in ledgers}
