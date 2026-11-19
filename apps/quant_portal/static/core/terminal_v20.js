@@ -21,10 +21,10 @@
   const $ = id => document.getElementById(id);
   const h = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   // Bounded same-origin fetch: a hung request is aborted so later reloads are not blocked forever.
-  const timedFetch = (url, ms) => {
+  const timedFetch = (url, ms, external) => {
     const opts = {credentials: 'same-origin', cache: 'no-store'};
     if (typeof AbortController === 'undefined' || typeof setTimeout === 'undefined') return fetch(url, opts);
-    const ac = new AbortController(); const timer = setTimeout(() => ac.abort(), ms);
+    const ac = external || new AbortController(); const timer = setTimeout(() => ac.abort(), ms);
     return fetch(url, {...opts, signal: ac.signal}).finally(() => clearTimeout(timer));
   };
   const svgNS = 'http://www.w3.org/2000/svg';
@@ -222,7 +222,7 @@
 
   // ---------- chart ----------
   const chart = {sym: null, range: store.get('quant.range') || '2h', sessions: new Set(Object.keys(SESS)), data: [], gapMs: 180e3,
-    domain: null, hoverX: null, loading: false, pendingLoad: false, lastLoad: 0, earliest: new Map(), drag: null};
+    domain: null, hoverX: null, loading: false, pendingLoad: false, ctrl: null, lastLoad: 0, earliest: new Map(), drag: null};
   function rangeAvailable(r) {
     const e = chart.earliest.get(chart.sym);
     if (e == null) return r === '30m' || r === '2h';
@@ -256,10 +256,11 @@
     if (chart.loading) { if (force) chart.pendingLoad = true; return; }
     if (!force && Date.now() - chart.lastLoad < 5e3) return;
     chart.loading = true; const sym = chart.sym, range = chart.range;
+    chart.ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     const state = $('chart-state');
     if (!chart.data.length) { state.hidden = false; state.textContent = '加载中…'; }
     try {
-      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, 20e3);
+      const r = await timedFetch(`${root.dataset.timelineUrl}?symbol=${encodeURIComponent(sym)}&session=ALL&range=${range}`, 20e3, chart.ctrl);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const j = await r.json();
       if (sym !== chart.sym || range !== chart.range) return;
@@ -273,15 +274,19 @@
     } catch (_) {
       if (!chart.data.length) { state.hidden = false; state.textContent = '走势暂不可用'; }
     } finally {
-      chart.loading = false;
+      chart.loading = false; chart.ctrl = null;
       if (chart.pendingLoad) { chart.pendingLoad = false; void loadChart(true); }
     }
   }
+  // A selection change makes the in-flight chart request obsolete: abort it now so the
+  // queued reload for the new selection is not held up by the old request's timeout.
+  function cancelChart() { if (chart.loading && chart.ctrl) { chart.pendingLoad = true; chart.ctrl.abort(); } }
   function selectSymbol(sym) {
     if (!sym) return;
     const changed = sym !== chart.sym;
     selected = sym; store.set('quant.selected', sym);
-    if (changed) { chart.sym = sym; chart.data = []; chart.domain = null; chart.hoverX = null; $('chart-svg')?.replaceChildren(); loadEarliest(sym).then(() => loadChart(true)); }
+    if (changed) { chart.sym = sym; chart.data = []; chart.domain = null; chart.hoverX = null; $('chart-svg')?.replaceChildren();
+      setText($('chart-coverage'), ''); cancelChart(); loadEarliest(sym).then(() => loadChart(true)); }
     renderRangeButtons(); renderList(connState().state === 'down'); renderDetailHead(connState().state === 'down');
   }
   function visiblePoints() { return chart.data.filter(p => chart.sessions.has(p.s)); }
@@ -386,6 +391,7 @@
     document.querySelectorAll('#range-seg [data-range]').forEach(b => b.addEventListener('click', () => {
       if (b.disabled || b.dataset.range === chart.range) return;
       chart.range = b.dataset.range; store.set('quant.range', chart.range); chart.domain = null; chart.data = [];
+      setText($('chart-coverage'), ''); cancelChart();
       renderRangeButtons(); loadChart(true);
     }));
     document.querySelectorAll('#session-legend [data-session]').forEach(b => b.addEventListener('click', () => {

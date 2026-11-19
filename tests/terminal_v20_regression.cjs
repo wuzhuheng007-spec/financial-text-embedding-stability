@@ -25,7 +25,7 @@ function harness() {
   assert.ok(cut > 0, 'production bootstrap marker exists');
   vm.runInContext(source.slice(0, cut) + `
     drawChart = () => {};
-    globalThis.audit = {chart, loadChart, loadEarliest, connState,
+    globalThis.audit = {chart, loadChart, loadEarliest, connState, cancelChart,
       setFeed(value, received, failed = false) {feed=value; lastFeedOk=received; feedError=failed;}};
   })();`, context);
   const reply = (index, data = {points: []}) => requests[index].resolve({ok: true, json: async () => data});
@@ -76,4 +76,12 @@ test('a hung chart request is aborted by its timeout and the pending selection i
   t.fn(); await first; await settle();
   assert.equal(h.api.chart.loading, true, 'pending reload started after abort');
   assert.equal(h.requests.length, 2); assert.match(h.requests[1].url, /symbol=MU/);
+});
+test('a selection change aborts the obsolete chart request at once and fetches the new selection', async () => {
+  const h = harness(); h.api.chart.sym = 'NVDA';
+  const first = h.api.loadChart(true);
+  h.api.chart.sym = 'MU'; h.api.cancelChart();
+  await first; await settle();
+  assert.equal(h.requests.length, 2, 'no wait for the old request timeout');
+  assert.match(h.requests[1].url, /symbol=MU/);
 });
