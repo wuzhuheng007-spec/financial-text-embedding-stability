@@ -1,0 +1,26 @@
+{
+  "synthetic": {
+    "status": "PASS_SYNTHETIC_CAUSALITY_AND_ACCOUNTING_ONLY",
+    "prefix_lengths": [
+      280,
+      400,
+      519
+    ],
+    "future_perturbation_cut": 450,
+    "analytical_cost_cases_bps": [
+      0,
+      10,
+      25
+    ],
+    "allocation_cases": 4
+  },
+  "real_run": {
+    "status": "PASS_SAME_AUTHOR_LEDGER_AND_INPUT_CHECK",
+    "ledger_files_recomputed": 330,
+    "real_prefix_cases": 6,
+    "primary_tests": 12,
+    "independent_external_validation": false,
+    "news_factors_validated": false
+  },
+  "checked_at_utc": "2026-11-19T04:46:15.566711+00:00"
+}

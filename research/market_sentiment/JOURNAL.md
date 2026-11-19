@@ -337,3 +337,17 @@
 **限制：** 已看过的历史；只使用当前版本OHLC；理论指数单位；假设成本；新闻数据缺失。
 
 证据：[phase5_strategy_v1/PROTOCOL_zh.md](phase5_strategy_v1/PROTOCOL_zh.md)、[phase5_strategy_v1/check.py](phase5_strategy_v1/check.py)、[phase5_strategy_v1/config.json](phase5_strategy_v1/config.json)、[phase5_strategy_v1/run.py](phase5_strategy_v1/run.py)、[phase5_strategy_v1/unit_check.json](phase5_strategy_v1/unit_check.json)
+
+## R024 · 三项moomoo行情策略首轮实际模拟及Claude复核交接
+
+**状态：** EXECUTED_SELF_CHECKED_NO_RETURN_INCREMENT_SCREEN_PASSED；记录UTC：2026-11-19T04:49:16.346750+00:00
+
+**计划：** 按预运行锁定协议计算三候选、两基准和三成本情景；对账逐日净值并输出可复核指令，不以价格冒充新闻情绪。
+
+**实际：** 冻结提交1cfe1acb在真实运行开始前完成并读回；使用指定SHA的真实moomoo SQLite，得到360行汇总，其中330份有足够区间的实际账本。12项主收益增量检验均未通过。330份账本以现金/单位数和费用独立方程作同作者核对，6个实际行情前缀检查通过；输出全部时期、成本、区块/seed敏感性及Claude三层复核指令。T1/T2新闻策略因缺真实输入未运行。
+
+**结论：** 仅支持此固定配置与当前价格输入下的探索性策略模拟：没有候选通过预设收益增量门槛；部分P3风险指标改善同时伴随较低暴露，不能据此证明alpha。
+
+**限制：** 非独立验证；历史已见、当前版本、假设费用与零现金收益；QQQ总回报未认证；其他指数非可直接交易；真实文本与事件因子仍BLOCKED；Claude尚未执行。
+
+证据：[phase5_strategy_v1/AUDIT_FINAL.json](phase5_strategy_v1/AUDIT_FINAL.json)、[phase5_strategy_v1/CLAUDE_CODE_TASK.md](phase5_strategy_v1/CLAUDE_CODE_TASK.md)、[phase5_strategy_v1/RESULTS_zh.md](phase5_strategy_v1/RESULTS_zh.md)、[phase5_strategy_v1/build_report.py](phase5_strategy_v1/build_report.py)、[phase5_strategy_v1/environment.json](phase5_strategy_v1/environment.json)、[phase5_strategy_v1/evidence_ledger.json](phase5_strategy_v1/evidence_ledger.json)、[phase5_strategy_v1/freeze_receipt.json](phase5_strategy_v1/freeze_receipt.json)、[phase5_strategy_v1/requirements.txt](phase5_strategy_v1/requirements.txt)、[phase5_strategy_v1/results/contrasts.csv](phase5_strategy_v1/results/contrasts.csv)、[phase5_strategy_v1/results/display_cells.json](phase5_strategy_v1/results/display_cells.json)、[phase5_strategy_v1/results/factor_diagnostics.csv](phase5_strategy_v1/results/factor_diagnostics.csv)、[phase5_strategy_v1/results/input_inventory.json](phase5_strategy_v1/results/input_inventory.json)、[phase5_strategy_v1/results/metrics.csv](phase5_strategy_v1/results/metrics.csv)、[phase5_strategy_v1/results/private_output_hashes.json](phase5_strategy_v1/results/private_output_hashes.json)、[phase5_strategy_v1/results/run_manifest.json](phase5_strategy_v1/results/run_manifest.json)、[phase5_strategy_v1/results/self_check.json](phase5_strategy_v1/results/self_check.json)、[phase5_strategy_v1/results/text_candidates.json](phase5_strategy_v1/results/text_candidates.json)

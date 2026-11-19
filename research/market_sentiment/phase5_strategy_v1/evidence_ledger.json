@@ -1,0 +1,72 @@
+{
+  "input_chain": [
+    "moomoo accepted research_daily SQLite SHA256",
+    "config.json + frozen run.py at freeze_receipt.commit",
+    "results/run_manifest.json",
+    "results/metrics.csv or contrasts.csv",
+    "results/display_cells.json -> RESULTS_zh.md"
+  ],
+  "numeric_scope": "Reported CAGR and price drawdown only; no invented data or transferred literature profitability",
+  "paper_citations": "../literature/five_papers_v1/source_audit.json: mechanism inspiration only, no proof of fixed thresholds",
+  "official_source": {
+    "url": "https://openapi.moomoo.com/moomoo-api-doc/en/quote/request-history-kline.html",
+    "opened": true,
+    "supports": "OHLC fields and explicit adjustment parameter",
+    "not_supports": [
+      "Total-return interpretation",
+      "Real fees",
+      "Investible indices",
+      "Signal efficacy"
+    ]
+  },
+  "failed_source_not_used": "https://openapi.moomoo.com/moomoo-api-doc/en/quote/quote_def.html unavailable in this read",
+  "claims": [
+    {
+      "id": "P5-1",
+      "claim": "Fixed price strategies were executed and reconciled",
+      "status": "SAME_AUTHOR_CHECKED",
+      "evidence": [
+        "results/run_manifest.json",
+        "results/self_check.json"
+      ]
+    },
+    {
+      "id": "P5-2",
+      "claim": "12 preset return-increment screens, zero passes",
+      "status": "VERIFIED_THIS_CONFIGURATION_ONLY",
+      "evidence": [
+        "results/contrasts.csv"
+      ]
+    },
+    {
+      "id": "P5-3",
+      "claim": "Text sentiment candidates were validated",
+      "status": "BLOCKED_NOT_RUN",
+      "evidence": [
+        "results/text_candidates.json"
+      ]
+    }
+  ],
+  "plan_actual": [
+    {
+      "plan": "Freeze before first price calculation",
+      "actual": "Remote frozen config/code/protocol; Git commit time precedes run start",
+      "status": "PASS"
+    },
+    {
+      "plan": "Run three candidates and benchmarks on accepted OHLC",
+      "actual": "360 summary rows / 330 eligible ledgers; no parameter tuning",
+      "status": "PASS"
+    },
+    {
+      "plan": "Reconcile actual ledgers",
+      "actual": "330 ledgers and six real-input prefix cases passed same-author checks",
+      "status": "PASS_SAME_AUTHOR_ONLY"
+    },
+    {
+      "plan": "Prepare Claude instructions",
+      "actual": "CLAUDE_CODE_TASK.md supplies same-input / independent-implementation / external-data routes",
+      "status": "PREPARED_NOT_CLAUDE_EXECUTED"
+    }
+  ]
+}

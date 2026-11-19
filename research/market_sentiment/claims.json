@@ -195,5 +195,16 @@
       "literature/five_papers_v1/reading_ledger.json",
       "literature/five_papers_v1/self_check.json"
     ]
+  },
+  {
+    "id": "C022",
+    "claim": "固定三项OHLC行情策略实际运行后，12项主收益增量屏障零通过；同作者账本对账通过，不代表新闻情绪因子或实盘策略验收",
+    "status": "CONFIG_SCOPED_FIRST_SCREEN_NOT_PASSED_INDEPENDENT_VALIDATION_PENDING",
+    "evidence": [
+      "phase5_strategy_v1/RESULTS_zh.md",
+      "phase5_strategy_v1/results/contrasts.csv",
+      "phase5_strategy_v1/results/self_check.json",
+      "phase5_strategy_v1/AUDIT_FINAL.json"
+    ]
   }
 ]
