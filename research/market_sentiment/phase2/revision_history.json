@@ -1,0 +1,54 @@
+{
+  "selection": "All four earlier versions returned for the pinned repository workbook path; no cherry-picking by numerical differences",
+  "snapshots": [
+    {
+      "commit": "64be6d99f0cdc7ad6460ca5c5b2625dc49b8fbcf",
+      "date": "2026-04-03T17:10:13Z",
+      "message": "Detrend update",
+      "file": "SENTIMENT_64be6d99f0cd.xlsx",
+      "blob_sha": "78f6781863dbbbfdbc5ae53ba61ab252da590923",
+      "sha256": "6557bdb8787864873a703e3116f2c3599a9619ed2d9713808b11275e5b332842",
+      "sheets": [
+        "README",
+        "DATA"
+      ]
+    },
+    {
+      "commit": "1267e3c2dac5f9b5563447d644fc913d9f65c0a6",
+      "date": "2026-04-01T19:51:48Z",
+      "message": "Added detrending code",
+      "file": "SENTIMENT_1267e3c2dac5.xlsx",
+      "blob_sha": "af66559c9bcd697e958f92670986685d8bb3afc1",
+      "sha256": "26835ae76e3a900e50c331113456a8d8531e586c066d8bd03405a7a8f76742ae",
+      "sheets": [
+        "README"
+      ]
+    },
+    {
+      "commit": "cc8c4df8dc8273e1a981f396657b02e35fc5e927",
+      "date": "2026-03-26T15:00:43Z",
+      "message": "Updated data for 2026",
+      "file": "SENTIMENT_cc8c4df8dc82.xlsx",
+      "blob_sha": "c751c646d7fb33e511588c94bc3d990b31e8c4c7",
+      "sha256": "fc45f507ebc03a1629d4b764bb1361959879a34b50fa02e6bb13423e29a36da0",
+      "sheets": [
+        "README",
+        "DATA",
+        "STATA CODE"
+      ]
+    },
+    {
+      "commit": "cbf39c061ff9b38e2d85f5499d8be2bbb2334f2d",
+      "date": "2025-08-25T15:36:19Z",
+      "message": "Added SENTIMENT.xlsx file",
+      "file": "SENTIMENT_cbf39c061ff9.xlsx",
+      "blob_sha": "caaef48d1a47b5eff528c240f19124e61d628495",
+      "sha256": "fadc85460ae82c36c583f032f3ea0b20da1e9a03e53eb0897dc2a94f4b2d144b",
+      "sheets": [
+        "README",
+        "DATA",
+        "STATA CODE"
+      ]
+    }
+  ]
+}

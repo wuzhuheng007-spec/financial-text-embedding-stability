@@ -86,5 +86,55 @@
       "phase2/freeze_receipt.json": "11183532764b616122e096aa93bb59750d4a464a301b1b7592088818a0ee4549"
     },
     "recorded_at_utc": "2026-11-19T00:08:21.086276+00:00"
+  },
+  {
+    "id": "R004",
+    "title": "BW构造、可用性与公开版本审核",
+    "status": "PARTIALLY_SUPPORTED",
+    "plan": "按已同步冻结方案审核作者源码、版本与五代理数值构造；不做收益拟合。",
+    "actual": "固定作者commit7a0165f3；重建726个共同月SENT并检查四个拟合截止；SVD自检通过；检查五个工作簿版本，含README-only及截断文件。",
+    "evidence": [
+      "phase2/PLAN_zh.md",
+      "phase2/Phase2_BW_Availability_Report_zh.md",
+      "phase2/source_registry_complete.json",
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/bw_diagnostic/self_check.json",
+      "phase2/results/revision_audit/workbook_inventory.csv",
+      "phase2/results/revision_audit/published_version_comparison.csv",
+      "phase2/results/availability_matrix.csv"
+    ],
+    "claims": "当前维护BW为低频水平序列，不以简单差分解释变化；当前版本SENT数值可高度匹配，但不能据此恢复当时可用性。历史分数随版本/拟合截止变化。",
+    "limits": "发布日历及长历史vintage缺失；变化混合标准化、数据和方法影响；无收益检验或独立审计。",
+    "evidence_sha256": {
+      "phase2/PLAN_zh.md": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "phase2/Phase2_BW_Availability_Report_zh.md": "60bca216f54b6e698a138ae99679604c6d04ff3c227d913fbc807a5e3ebfb244",
+      "phase2/source_registry_complete.json": "9b52ed27f00c34db75e5d23bf55872a40919105a2ea4cf116392593dc0e811cd",
+      "phase2/results/bw_diagnostic/summary.json": "c4b565da4849cf19a8b9fe3fe2d189032510825af25888a9d577c2526a5aea23",
+      "phase2/results/bw_diagnostic/self_check.json": "c79292d023dab11f8d5c9cf013dbbd584373741f55cc01ba8024dc82c12f2695",
+      "phase2/results/revision_audit/workbook_inventory.csv": "f1f1d574075f174fb1e4157b88d1b62499509cdc9b50eb6e58e4e6d812f018f5",
+      "phase2/results/revision_audit/published_version_comparison.csv": "61dcfe1a6f45f4f65d511efb65ee23e87e808a75482b9a9a685d892036005f89",
+      "phase2/results/availability_matrix.csv": "e6577222166a950076cd1eb5b1255cf2370447845ace2f52193deba5e8726af5"
+    },
+    "recorded_at_utc": "2026-11-19T00:20:45.145374+00:00"
+  },
+  {
+    "id": "R005",
+    "title": "官方政策新闻时间与预期字段试点",
+    "status": "METADATA_PILOT_ONLY",
+    "plan": "按冻结计划检查2019FOMC、2020FOMC和2024中国发布会三条官方资料。",
+    "actual": "实际获取三个当前官方页面和哈希；两条美国声明有明确发布安排，中国仅有会议开始时刻；预期等缺失字段保留null。",
+    "evidence": [
+      "phase2/results/news_field_pilot/events.json",
+      "phase2/results/news_field_pilot/summary.json",
+      "phase2/news_field_pilot.py"
+    ],
+    "claims": "字段合同在真实来源上完成有界演示；会议开始、全文发布时间与本轮抓取时间不可混同。",
+    "limits": "手工选取的三条事件不代表完整新闻库；没有预期差、反应残差、金融拟合或效力结论。",
+    "evidence_sha256": {
+      "phase2/results/news_field_pilot/events.json": "98c546a90440544bd1d3cd5c627d64a8cd3dc238927bbd53985193131d8b640b",
+      "phase2/results/news_field_pilot/summary.json": "7da952d1567fced5c168527e30c678dc7cb339ebff2b2c653cbab0003da6d8c8",
+      "phase2/news_field_pilot.py": "ebff2061faa250fcbeb124c3dbac46984ae0672ee9c86bc3bb7524bc46d5ae03"
+    },
+    "recorded_at_utc": "2026-11-19T00:20:45.146170+00:00"
   }
 ]

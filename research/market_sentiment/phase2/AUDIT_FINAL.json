@@ -1,0 +1,24 @@
+{
+  "Final status": "PARTIALLY_SUPPORTED",
+  "Plan–execution gate": "PASS",
+  "Experimental sufficiency gate": "LIMITED",
+  "Result provenance gate": "PASS",
+  "Citation verification gate": "PASS",
+  "Commands actually run": 5,
+  "command_count_scope": "Executed primary programs: diagnose_bw.py, self_check_bw.py, news_field_pilot.py, audit_revisions.py, build_report.py; excludes retrieval/packaging diagnostics",
+  "Authoritative artifacts inspected": 15,
+  "artifact_count_scope": "Six pinned author source files, four earlier workbooks, five opened official web documents; old reports and derived files excluded",
+  "Unresolved blockers": [
+    "Historical BW monthly release/vintage archive absent",
+    "Complete expectations/news event universe absent",
+    "No independent audit or new future outcomes"
+  ],
+  "Claims authorized": "Scoped source/version constraints, current-vintage numerical construction match, prefix sensitivity, observed file revisions and three-event field feasibility",
+  "Claims not authorized": "BW first-difference sentiment factor, historical tradable PIT replication, stable predictive improvement, causal price effect",
+  "Worktree/user data preserved": "YES",
+  "code_sha256": "4dcef4e822c9f3e073dcf7af38a7d84aa7a8d0c0a6fe0ecd93ce08d14adad3aa",
+  "source_commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+  "self_check": "results/bw_diagnostic/self_check.json",
+  "news_pilot": "results/news_field_pilot/summary.json",
+  "fitting_scope": "Unsupervised construction diagnostic only, no financial estimators"
+}

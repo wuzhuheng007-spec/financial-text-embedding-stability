@@ -46,10 +46,48 @@
   {
     "id": "C006",
     "claim": "当前发布BW工作簿可直接作为当时可得的历史情绪信号",
-    "status": "NOT_ESTABLISHED",
+    "status": "NOT_QUALIFIED_FOR_PIT_CLAIM",
     "evidence": [
-      "phase1/external_input_probe/BW_schema_audit.json",
-      "phase2/PLAN_zh.md"
+      "phase2/results/availability_matrix.csv",
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/revision_audit/workbook_inventory.csv"
+    ]
+  },
+  {
+    "id": "C007",
+    "claim": "作者明确不将当前发布的BW水平序列简单差分解释为情绪变化",
+    "status": "VERIFIED_VERSION_SPECIFIC",
+    "evidence": [
+      "phase2/results/availability_matrix.csv",
+      "phase2/citation_audit.json"
+    ]
+  },
+  {
+    "id": "C008",
+    "claim": "固定当前版本下，五代理PC1与发布SENT数值高度接近，历史估计随拟合截止变化",
+    "status": "VERIFIED_CONSTRUCTION_DIAGNOSTIC_ONLY",
+    "evidence": [
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/bw_diagnostic/self_check.json"
+    ]
+  },
+  {
+    "id": "C009",
+    "claim": "公开工作簿历史包括数据修订、无DATA页和截断DATA页版本",
+    "status": "VERIFIED_FILE_VERSION_INVENTORY",
+    "evidence": [
+      "phase2/results/revision_audit/workbook_inventory.csv",
+      "phase2/results/revision_audit/published_version_comparison.csv"
+    ]
+  },
+  {
+    "id": "C010",
+    "claim": "三个官方事件完成时间/预期字段演示，但未建立新闻因子效果",
+    "status": "VERIFIED_METADATA_ONLY",
+    "evidence": [
+      "phase2/results/news_field_pilot/events.json",
+      "phase2/results/news_field_pilot/summary.json",
+      "phase2/results/news_field_pilot/source_readback_check.json"
     ]
   }
 ]

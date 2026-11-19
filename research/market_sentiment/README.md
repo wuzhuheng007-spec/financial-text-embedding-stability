@@ -8,7 +8,8 @@
 - [当前状态](STATUS.json)和[结论登记表](claims.json)：区分已核验的窄结论、假设、负面结果和未通过的数据条件。
 - [第一阶段完整报告](phase1/Phase1_Research_Report_zh.md)：四条价格代理的基线和历史拐点对照。
 - [第一阶段冻结协议](phase1/PROTOCOL_zh.md)与[完整汇总](phase1/results/baseline_summary.csv)。
-- [第二阶段计划](phase2/PLAN_zh.md)：BW发布时间、修订、构造窗口及新闻字段审核。
+- [第二阶段报告](phase2/Phase2_BW_Availability_Report_zh.md)：BW源码、实际数值对照、五个公开文件版本及官方新闻字段试点。
+- [第二阶段计划](phase2/PLAN_zh.md)及[汇总结果](phase2/results/bw_diagnostic/summary.json)。
 - [新闻反应数据合同](phase1/NEWS_DATA_CONTRACT_zh.md)。
 - [最初的历史机制与公开月度初筛](phase0/Market_Sentiment_Turning_Points_20261119.md)：历史记录，输入与后续moomoo研究不同，不混合为独立复制。
 - [行情数据验收说明](data_audit/README_zh.md)：包括未解决的SOX缺口、异常隔离和当前版本限制。

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "validation_type": "Same-author direct window aggregation and SVD cross-check; not independent audit",
+  "independent_validation": false,
+  "weighted_IPO_windows_checked": 726,
+  "prefix_fits_recomputed": 4,
+  "max_eigen_vs_svd_score_difference": 2.220446049250313e-15,
+  "future_input_perturbation_prefix_unchanged": true,
+  "workbook_sha256": "3580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+  "code_sha256": "9fdfb7b339f6356e3c7529796c8ce2a7c876a639183e838af9387963f89724f0",
+  "financial_efficacy_tested": false
+}

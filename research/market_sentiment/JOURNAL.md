@@ -57,3 +57,31 @@
 **限制：** 没有历史发布版本，不把当前SENT一阶差分当作情绪变化。
 
 证据：[phase2/PLAN_zh.md](phase2/PLAN_zh.md)、[phase2/freeze_receipt.json](phase2/freeze_receipt.json)
+
+## R004 · BW构造、可用性与公开版本审核
+
+**状态：** PARTIALLY_SUPPORTED；记录UTC：2026-11-19T00:20:45.145374+00:00
+
+**计划：** 按已同步冻结方案审核作者源码、版本与五代理数值构造；不做收益拟合。
+
+**实际：** 固定作者commit7a0165f3；重建726个共同月SENT并检查四个拟合截止；SVD自检通过；检查五个工作簿版本，含README-only及截断文件。
+
+**结论：** 当前维护BW为低频水平序列，不以简单差分解释变化；当前版本SENT数值可高度匹配，但不能据此恢复当时可用性。历史分数随版本/拟合截止变化。
+
+**限制：** 发布日历及长历史vintage缺失；变化混合标准化、数据和方法影响；无收益检验或独立审计。
+
+证据：[phase2/PLAN_zh.md](phase2/PLAN_zh.md)、[phase2/Phase2_BW_Availability_Report_zh.md](phase2/Phase2_BW_Availability_Report_zh.md)、[phase2/source_registry_complete.json](phase2/source_registry_complete.json)、[phase2/results/bw_diagnostic/summary.json](phase2/results/bw_diagnostic/summary.json)、[phase2/results/bw_diagnostic/self_check.json](phase2/results/bw_diagnostic/self_check.json)、[phase2/results/revision_audit/workbook_inventory.csv](phase2/results/revision_audit/workbook_inventory.csv)、[phase2/results/revision_audit/published_version_comparison.csv](phase2/results/revision_audit/published_version_comparison.csv)、[phase2/results/availability_matrix.csv](phase2/results/availability_matrix.csv)
+
+## R005 · 官方政策新闻时间与预期字段试点
+
+**状态：** METADATA_PILOT_ONLY；记录UTC：2026-11-19T00:20:45.146170+00:00
+
+**计划：** 按冻结计划检查2019FOMC、2020FOMC和2024中国发布会三条官方资料。
+
+**实际：** 实际获取三个当前官方页面和哈希；两条美国声明有明确发布安排，中国仅有会议开始时刻；预期等缺失字段保留null。
+
+**结论：** 字段合同在真实来源上完成有界演示；会议开始、全文发布时间与本轮抓取时间不可混同。
+
+**限制：** 手工选取的三条事件不代表完整新闻库；没有预期差、反应残差、金融拟合或效力结论。
+
+证据：[phase2/results/news_field_pilot/events.json](phase2/results/news_field_pilot/events.json)、[phase2/results/news_field_pilot/summary.json](phase2/results/news_field_pilot/summary.json)、[phase2/news_field_pilot.py](phase2/news_field_pilot.py)

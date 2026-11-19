@@ -1,0 +1,8 @@
+{
+  "n_paired_months": 726,
+  "correlation": 0.9999999999999986,
+  "mean_absolute_difference": 2.7505453960983998e-08,
+  "max_absolute_difference": 2.306773243532234e-07,
+  "rmse": 4.201136151422698e-08,
+  "label": "CURRENT_VINTAGE_NUMERICAL_COMPARISON_NOT_CERTIFIED_STATA_OR_PIT_REPLICATION"
+}

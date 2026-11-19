@@ -1,0 +1,54 @@
+[
+  {
+    "name": "create_bw.do",
+    "path": "StataCode/1. Create Baker-Wurgler Sentiment.do",
+    "blob_sha": "3f2f3549be313f4e0f64bcaf06938854da8feda1",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "local_sha256": "3ab91578fd8fc908c3633e5e3aa4dacb05e91c3423b7149de5c847ac5291118a",
+    "local_git_blob_matches": true,
+    "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+  },
+  {
+    "name": "download_macro.do",
+    "path": "StataCode/0. Download Macro Data.do",
+    "blob_sha": "d284f0d1835d82fd9f0a1ead387d09a3128cc31d",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "local_sha256": "4492abc4c034f2a4e34d65decbc4d7c520129ab72383cde512dd5bab710cb14a",
+    "local_git_blob_matches": true,
+    "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+  },
+  {
+    "name": "publish_workbook.do",
+    "path": "StataCode/2. Create Excel File for Publication.do",
+    "blob_sha": "d9c4619577d290c3c628cf9e7a12f4cce0115128",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "local_sha256": "4b70b5b34580422166c984002fc444c48c955ee651d75eb58a83bea3c6f571c6",
+    "local_git_blob_matches": true,
+    "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+  },
+  {
+    "name": "README_author.md",
+    "path": "README.md",
+    "blob_sha": "b8474f7087ae80e0d4da23e34178cc47b6e2881c",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "local_sha256": "fcb5c7ae164e066abbecbaf62a60402514b1e30f606128c7d1d25c4ec575770c",
+    "local_git_blob_matches": true,
+    "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+  },
+  {
+    "name": "BW_INDEX_DETREND.pdf",
+    "path": "BW INDEX DETREND.pdf",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "blob_sha": "fd2a9855b4ab727f422f14f6012d9a8c0dcb4ab6",
+    "local_sha256": "d43c0c5ca750aa314330eb0fa99d1345762e076b10031e445eb0504d3a637f13",
+    "local_git_blob_matches": true
+  },
+  {
+    "name": "SENTIMENT_github.xlsx",
+    "path": "SENTIMENT.xlsx",
+    "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+    "blob_sha": "a56f31f1e70b45b0002b1f653a6793e6315d306c",
+    "local_sha256": "786bb263ce5827628915482485911c3ed0f78fa4f4225585402a5cd99aed68dc",
+    "local_git_blob_matches": true
+  }
+]
