@@ -13,6 +13,7 @@
   "sync_checkpoint": "See Git commit history and sync receipts; no self-referential current commit claim",
   "bw_raw_pc1_comparison": "EXECUTED_CURRENT_VINTAGE_ONLY",
   "official_news_field_pilot": "THREE_EVENTS_METADATA_ONLY",
-  "last_confirmed_remote_checkpoint": "89ce71ac0038e97bbf8c1f95138791501b33bca6",
-  "next": "Chronological official-event universe and original availability/expectations inputs; no BW simple-difference factor"
+  "last_confirmed_remote_checkpoint": "0e6afda40337143c55be6e0710e530e7bdd51258",
+  "next": "Run complete daily directional-change census and lagged proxy/price comparisons under frozen v1",
+  "phase3": "PROTOCOL_FROZEN_ANALYSIS_NOT_YET_RUN"
 }
