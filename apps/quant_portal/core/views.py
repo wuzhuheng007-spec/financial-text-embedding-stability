@@ -562,6 +562,7 @@ def research_registry_json(request):
                       "benchmark_id": p5["benchmark_id"], "evaluation_mode": p5["evaluation_mode"]})  # noqa: E701
     data["protocols"] = protocols
     data["engines"] = {f"{k[0]}@{k[1]}": v for k, v in catalog.ENGINES.items()}
+    data["admission_paused"] = registry.admission_paused()
     for r in data.get("runs", []):
         r["latest_audit"] = _latest_audit(registry.root(), r["run_id"])
     # Eligibility is decided here (backend), for every registered spec against each dataset.
@@ -588,6 +589,8 @@ def research_run_rerun(request, run_id):
     import json
     if not _RUN_ID.match(run_id):
         raise Http404()
+    if registry.admission_paused():
+        return JsonResponse({"result": "PAUSED", "reason": "研究入队已暂停（发布或回滚维护中）"}, status=503)
     db = registry.connect()
     try:
         row = db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
@@ -615,6 +618,8 @@ def research_run_rerun(request, run_id):
 def research_run_create(request):
     registry, repo = _research_owner(request)
     import json
+    if registry.admission_paused():
+        return JsonResponse({"result": "PAUSED", "reason": "研究入队已暂停（发布或回滚维护中）"}, status=503)
     ds = (request.POST.get("dataset") or "").split("@", 1)
     fv = (request.POST.get("factor") or "").split("@", 1)
     pid = request.POST.get("protocol") or ""

@@ -99,10 +99,27 @@ def register_bundle_snapshot(db, src_sqlite: Path, dataset_id: str, dataset_vers
         raise ValueError("SNAPSHOT_SOURCE_HASH_MISMATCH")
     rel = Path("datasets") / dataset_id / dataset_version
     out = registry.root() / rel
-    out.mkdir(parents=True, exist_ok=False)
-    dst = out / "market_research.sqlite"
+    # Idempotent and safe to retry (closeout F5): same id/version + same bytes -> ALREADY_REGISTERED; different bytes
+    # -> refused; a directory without a registry row (interrupted attempt) -> refused with the path to inspect.
+    have = db.execute("SELECT content_sha256, snapshot_path FROM datasets WHERE dataset_id=? AND dataset_version=?", (dataset_id, dataset_version)).fetchone()
+    if have:
+        if have[0] != src_sha:
+            raise ValueError(f"DATASET_VERSION_CONFLICT: {dataset_id}@{dataset_version} is registered with {have[0]}, not {src_sha}")
+        stored = registry.root() / have[1] / "market_research.sqlite"
+        if not stored.is_file() or sha_file(stored) != src_sha:
+            raise ValueError(f"REGISTERED_SNAPSHOT_DAMAGED: {have[1]} does not hold the registered bytes")
+        register_dataset_meta(db, dataset_id, dataset_version, meta)
+        return {**json.loads((registry.root() / have[1] / "manifest.json").read_text(encoding="utf-8")), "state": "ALREADY_REGISTERED"}
+    if out.exists():
+        raise ValueError(f"UNREGISTERED_DIRECTORY_EXISTS: {rel} (interrupted earlier attempt?) - inspect and remove it, then retry")
+    tmp = out.parent / f".{dataset_version}.partial"
+    if tmp.exists():
+        shutil.rmtree(tmp)
+    tmp.mkdir(parents=True)
+    dst = tmp / "market_research.sqlite"
     shutil.copyfile(src_sqlite, dst)
     if sha_file(dst) != src_sha:
+        shutil.rmtree(tmp)
         raise ValueError("SNAPSHOT_COPY_HASH_MISMATCH")
     con = sqlite3.connect(f"file:{dst.resolve().as_posix()}?mode=ro&immutable=1", uri=True)
     try:
@@ -117,10 +134,11 @@ def register_bundle_snapshot(db, src_sqlite: Path, dataset_id: str, dataset_vers
                 "end_date": max(s["end"] for s in series), "rows": sum(s["rows"] for s in series), "content_sha256": src_sha,
                 "files": ["market_research.sqlite", "manifest.json"], "series": series, "unresolved_dates": gaps,
                 "audit_status": "EXTERNAL_SNAPSHOT_HASH_BOUND", "point_in_time": False}
-    (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    (tmp / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.rename(out)
     registry.register_dataset(db, manifest, rel.as_posix())
     register_dataset_meta(db, dataset_id, dataset_version, meta)
-    return manifest
+    return {**manifest, "state": "REGISTERED"}
 
 
 # ---------------------------------------------------------------- factors / strategies

@@ -71,6 +71,18 @@ TERMINAL = ("SUCCEEDED", "FAILED", "CANCELLED")
 LEASE_SECONDS = int(os.environ.get("QUANT_RESEARCH_LEASE_SECONDS", "60"))
 
 
+ADMISSION_FLAG = "ADMISSION_PAUSED"
+
+
+def admission_paused(path: Path | None = None) -> str | None:
+    """Reason text when new research requests are paused (release / rollback maintenance), else None."""
+    f = (path or root()) / ADMISSION_FLAG
+    try:
+        return f.read_text(encoding="utf-8").strip() or "paused"
+    except OSError:
+        return None
+
+
 def utcnow() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 

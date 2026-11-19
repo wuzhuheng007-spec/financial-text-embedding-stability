@@ -138,6 +138,7 @@
     if (!f) { el.textContent = '该协议的策略未登记'; $('rw-submit').disabled = true; }
     else if (!e) { el.textContent = '资格未知（后端未返回），不能提交'; $('rw-submit').disabled = true; }
     else { el.textContent = e.status === 'ELIGIBLE' ? '后端资格检查：可运行' : `后端资格检查：${ELIG[e.status]?.[0] || e.status} · ${e.reasons.map(reasonText).join('；')}`; $('rw-submit').disabled = e.status !== 'ELIGIBLE'; }
+    if (reg.admission_paused) { el.textContent = `研究入队已暂停：${reg.admission_paused}`; $('rw-submit').disabled = true; }
     $('rw-proto-note').textContent = p ? (p.engine === 'phase5_o2o_v1@1'
       ? `收盘信号 → 下一开盘执行 → 再下一开盘估值；扣费后目标权重、现金/单位漂移；每评价期重置、片段末收费平仓；按实际经过时间年化 · 成本 ${p.costs_bps.join('/')} bps · 基准 MA200（同区间）· 冻结配置 ${p.frozen_config_sha256.slice(0, 12)}`
       : `收盘信号、次日开盘执行 · ${p.return_label} · ${p.segments.map(g => `${SEG[g.name] || g.name} ${g.start.slice(0, 4)}–${g.end.slice(0, 4)}`).join(' / ')} · 协议已冻结，网页不能改参数`) : '';
@@ -388,6 +389,7 @@
     const bar = h('div', 'rw-dl');
     if (!['QUEUED', 'RUNNING'].includes(r.status)) {
       const again = h('button', 'button button-outline', r.status === 'SUCCEEDED' ? '用相同冻结配置重跑（新运行）' : '重试（新运行）'); again.type = 'button';
+      if (reg?.admission_paused) { again.disabled = true; again.title = '研究入队已暂停（维护中）'; }
       again.onclick = async () => { again.disabled = true;
         try { const j = await fetchJSON(U.runUrl.replace('RUN_ID', r.run_id) + '/rerun/', {method: 'POST', headers: {'X-CSRFToken': csrf()}}); highlight = j.run_id; showTab('tasks'); await load(); }
         catch (e) { again.textContent = `失败：${e.message}`; again.disabled = false; } };

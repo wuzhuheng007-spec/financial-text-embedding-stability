@@ -99,3 +99,30 @@ class ResearchV2EndpointTests(TestCase):
         other = get_user_model().objects.create_user("qa@example.org", password="test-password-long")
         self.client.force_login(other)
         self.assertEqual(self.client.get(url("metrics.csv")).status_code, 404)            # owner only
+
+
+@override_settings(PERSONAL_MODE=True, PERSONAL_FEED_OWNER_USERNAME=OWNER)
+class ResearchAdmissionPauseTests(TestCase):
+    """Closeout 2026-11-20 (F5): during a release or rollback the operator pauses NEW research requests."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        os.environ["QUANT_RESEARCH_ROOT"] = str(Path(self.tmp.name) / "research")
+        self.user = get_user_model().objects.create_user(OWNER, password="test-password-long")
+        db = registry.connect(); db.close()
+        self.client.force_login(self.user)
+
+    def tearDown(self):
+        os.environ.pop("QUANT_RESEARCH_ROOT", None); self.tmp.cleanup()
+
+    def test_paused_admission_refuses_create_and_rerun_and_is_reported(self):
+        (registry.root() / registry.ADMISSION_FLAG).write_text("release drill", encoding="utf-8")
+        r = self.client.post(reverse("research_run_create"), {"dataset": "x@1", "factor": "mom20@1", "protocol": "mom20-daily-long-cash"})
+        self.assertEqual((r.status_code, r.json()["result"]), (503, "PAUSED"))
+        r = self.client.post(reverse("research_run_rerun", args=["run-20261120T000000Z-abcdef"]))
+        self.assertEqual(r.status_code, 503)
+        self.assertEqual(self.client.get(reverse("research_registry_json")).json()["admission_paused"], "release drill")
+        (registry.root() / registry.ADMISSION_FLAG).unlink()
+        self.assertIsNone(self.client.get(reverse("research_registry_json")).json()["admission_paused"])
+        r = self.client.post(reverse("research_run_create"), {"dataset": "x@1", "factor": "mom20@1", "protocol": "mom20-daily-long-cash"})
+        self.assertNotEqual(r.status_code, 503)

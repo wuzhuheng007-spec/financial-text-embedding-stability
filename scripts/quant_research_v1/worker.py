@@ -9,6 +9,10 @@
   enqueue --dataset ID@V --factor ID@V --protocol CONFIG.json
   verify RUN_ID                         legacy ledger-consistency check (v1); see audit.py for v2
   capability                            print this image's verified engine capabilities (no registry write)
+  admission pause --reason TEXT | open | status   pause/resume NEW research requests from the web (release/rollback)
+  cancel-queued --engine ID@V --reason TEXT       cancel QUEUED runs of one engine (CANCELLED_BEFORE_START), e.g.
+                                                  before rolling the app back to an image whose worker lacks engines
+  withdraw-capability --engine ID@V               delete recorded capabilities of an engine (page shows it as not built)
   register-reference --source DIR --input-sha SHA   copy + verify the designated reference ledgers (phase5 exact input)
 Protected v2 jobs (CONTROL role; started by deploy/linux/host/quant-research-job.sh, never by the web):
   job-claim --worker-id TOKEN [--run RUN_ID] --max-seconds S   claim one v2 run, prepare runs/<id>/work, print JSON
@@ -523,12 +527,39 @@ def main(argv=None) -> int:
     e = sub.add_parser("enqueue"); e.add_argument("--dataset", required=True); e.add_argument("--factor", required=True); e.add_argument("--protocol", required=True)
     v = sub.add_parser("verify"); v.add_argument("run_id")
     sub.add_parser("capability")
+    ad = sub.add_parser("admission"); ad.add_argument("action", choices=["pause", "open", "status"]); ad.add_argument("--reason", default="release or rollback maintenance")
+    cq = sub.add_parser("cancel-queued"); cq.add_argument("--engine", required=True); cq.add_argument("--reason", required=True)
+    wc = sub.add_parser("withdraw-capability"); wc.add_argument("--engine", required=True)
     rr = sub.add_parser("register-reference"); rr.add_argument("--source", required=True); rr.add_argument("--input-sha", required=True)
     jc = sub.add_parser("job-claim"); jc.add_argument("--worker-id", required=True); jc.add_argument("--run"); jc.add_argument("--max-seconds", type=int, default=900)
     js = sub.add_parser("job-supervise"); js.add_argument("run_id"); js.add_argument("--worker-id", required=True); js.add_argument("--max-seconds", type=int, default=900)
     jf = sub.add_parser("job-finalize"); jf.add_argument("run_id"); jf.add_argument("--compute-exit", type=int, required=True)
     jf.add_argument("--stop-reason", choices=["none", "cancel", "timeout", "terminated", "supervisor_lost"], default="none")
     a = ap.parse_args(argv)
+    if a.cmd == "admission":
+        f = registry.root() / registry.ADMISSION_FLAG
+        if a.action == "pause":
+            registry.root().mkdir(parents=True, exist_ok=True); f.write_text(f"{a.reason} (since {registry.utcnow()})\n", encoding="utf-8")
+        elif a.action == "open":
+            f.unlink(missing_ok=True)
+        print(json.dumps({"admission": "PAUSED" if registry.admission_paused() else "OPEN", "reason": registry.admission_paused()})); return 0
+    if a.cmd in ("cancel-queued", "withdraw-capability"):
+        eid, ever = a.engine.split("@")
+        db = registry.connect()
+        try:
+            if a.cmd == "cancel-queued":
+                ids = [r[0] for r in db.execute("SELECT run_id FROM runs WHERE status='QUEUED' AND COALESCE(engine_id,?)=? AND COALESCE(engine_version,?)=?",
+                                                (registry.LEGACY_ENGINE[0], eid, registry.LEGACY_ENGINE[1], ever))]
+                for rid in ids:
+                    db.execute("""UPDATE runs SET status='CANCELLED', cancel_requested=1, finished_at=?, exit_reason='CANCELLED_BEFORE_START',
+                                  error_class='CANCELLED_BY_OPERATOR', error_detail=? WHERE run_id=? AND status='QUEUED'""", (registry.utcnow(), a.reason[:300], rid))
+                db.commit(); print(json.dumps({"cancelled": ids}))
+            else:
+                n = db.execute("DELETE FROM worker_capabilities WHERE engine_id=? AND engine_version=?", (eid, ever)).rowcount
+                db.commit(); print(json.dumps({"withdrawn_capability_rows": n, "engine": a.engine}))
+        finally:
+            db.close()
+        return 0
     if a.cmd == "capability":
         from .engines import phase5_o2o
         print(json.dumps({"phase5_o2o_v1@1": phase5_o2o.capability()})); return 0
@@ -575,7 +606,7 @@ def main(argv=None) -> int:
         from . import catalog
         m = catalog.register_bundle_snapshot(db, Path(a.source), a.dataset_id, a.dataset_version, a.title, catalog.PHASE5_DATASET_META,
                                              expected_sha256=a.expected_sha256)
-        print(json.dumps({k: m[k] for k in ("dataset_id", "dataset_version", "rows", "content_sha256")}))
+        print(json.dumps({k: m.get(k) for k in ("state", "dataset_id", "dataset_version", "rows", "content_sha256")}))
     elif a.cmd == "enqueue":
         ds, fv = tuple(a.dataset.split("@")), tuple(a.factor.split("@"))
         print(registry.create_run(db, ds, fv, json.loads(Path(a.protocol).read_text(encoding="utf-8")), requested_by="cli"))
