@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+import sqlite3
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -42,6 +43,14 @@ def for_owner(user, watch_symbols: set[str]) -> dict:
     data = read_personal_cache(Path(settings.PERSONAL_FEED_DB_PATH),user.pk,news_limit=200,included_only=True)
     from scripts.quant_personal_feed.security_profiles_v16 import read_profiles
     data["security_profiles"] = read_profiles()
+    from scripts.quant_personal_feed.reference_v20 import instrument_metadata, quote_changes
+    data["instrument_metadata"] = instrument_metadata()
+    try:
+        data["quote_changes"] = quote_changes(Path(settings.PERSONAL_FEED_DB_PATH), user.pk,
+                                              data.get("latest_quotes") or {})
+    except (OSError, sqlite3.Error, ValueError):
+        # A missing base only hides the change figure; prices stay visible.
+        data["quote_changes"] = {}
     try:
         import json
         config = json.loads((ROOT / "configs/quant_portal_personal_feeds_v11_20261116.json").read_text(encoding="utf-8"))

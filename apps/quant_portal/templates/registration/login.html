@@ -1,10 +1,9 @@
 {% extends 'core/base.html' %}
 {% block title %}登录 · Quant 观察台{% endblock %}
-{% block content %}
+{% block anon_content %}
 <section class="auth-card card" aria-labelledby="login-title">
-  <p class="eyebrow">LOCAL PERSONAL TEST</p>
-  <h1 id="login-title">登录观察台</h1>
-  <p class="muted">先使用本机个人账户。页面只读取已允许展示的缓存资料；新增多人账户需管理员邀请。</p>
+  <div class="brand"><span class="brand-mark" aria-hidden="true">Q</span><span class="brand-text">QUANT</span></div>
+  <h1 id="login-title">登录</h1>
   {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
   <form method="post" action="{% url 'login' %}" class="stack-form">
     {% csrf_token %}
@@ -17,6 +16,6 @@
     {% if form.password.errors %}<div class="field-error">{{ form.password.errors }}</div>{% endif %}
     <button class="button button-primary" type="submit">登录</button>
   </form>
-  <p class="fine-print">注册入口仅通过管理员发出的邀请链接开放。</p>
+  <p class="fine-print">新账户需管理员邀请。</p>
 </section>
 {% endblock %}

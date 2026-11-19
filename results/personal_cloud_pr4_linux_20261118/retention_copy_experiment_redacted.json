@@ -1,0 +1,90 @@
+{
+ "copy": "isolated Docker volume copy of a fresh online backup (not production)",
+ "as_of_utc": "2026-11-28T00:00:00Z",
+ "keep_days": 8,
+ "kind": "ISOLATED_COPY_NOT_PRODUCTION",
+ "simulated_raw_prune": {
+  "rows_before": 218120,
+  "rows_after": 19,
+  "seconds": 14.3
+ },
+ "space_after_raw_prune": {
+  "page_size": 4096,
+  "page_count": 83550,
+  "freelist_pages": 51683,
+  "reusable_free_bytes": 211693568,
+  "file_bytes": {
+   "main": 342220800,
+   "-wal": 0,
+   "-shm": 32768
+  }
+ },
+ "dry_run": {
+  "rows_total": 225057,
+  "protected": {
+   "recent_window": 0,
+   "latest_cell": 24,
+   "raw_evidence_present": 18
+  },
+  "selected_rows": 225015,
+  "selected_payload_bytes": 61168970,
+  "seconds": 2.0
+ },
+ "apply": {
+  "deleted_rows": 225015,
+  "delete": {
+   "batches": 113,
+   "max_write_hold_ms": 43.0,
+   "mean_write_hold_ms": 19.6
+  },
+  "archive_verification": {
+   "file_sha256_ok": true,
+   "reread_digest_ok": true,
+   "restore_digest_ok": true,
+   "ok": true
+  },
+  "space_after": {
+   "page_size": 4096,
+   "page_count": 83550,
+   "freelist_pages": 82236,
+   "reusable_free_bytes": 336838656,
+   "file_bytes": {
+    "main": 342220800,
+    "-wal": 4906952,
+    "-shm": 32768
+   }
+  },
+  "refused": null,
+  "seconds": 41.7,
+  "archive_bytes": 12692637
+ },
+ "concurrent_writer": {
+  "writes": 731,
+  "errors": 0,
+  "p50_ms": 3.7,
+  "max_ms": 174.96
+ },
+ "space_before_vacuum": {
+  "page_size": 4096,
+  "page_count": 83550,
+  "freelist_pages": 82240,
+  "reusable_free_bytes": 336855040,
+  "file_bytes": {
+   "main": 342220800,
+   "-wal": 0,
+   "-shm": 32768
+  }
+ },
+ "vacuum_copy_seconds": 0.1,
+ "space_after_vacuum_copy": {
+  "page_size": 4096,
+  "page_count": 1090,
+  "freelist_pages": 0,
+  "reusable_free_bytes": 0,
+  "file_bytes": {
+   "main": 4464640,
+   "-wal": 0,
+   "-shm": 32768
+  }
+ }
+}

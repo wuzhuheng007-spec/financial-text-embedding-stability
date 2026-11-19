@@ -1,0 +1,16 @@
+$ docker compose -p quant-pr4-restore -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env down -v
+# exit=0 expected=0 seconds=0.4
+ Volume quant-pr4-restore_status_v45 Removing
+ Volume quant-pr4-restore_personal_var Removing
+ Volume quant-pr4-restore_caddy_config Removing
+ Volume quant-pr4-restore_status_v42 Removing
+ Volume quant-pr4-restore_status_v45 Removed
+ Volume quant-pr4-restore_caddy_data Removing
+ Volume quant-pr4-restore_private_artifacts Removing
+ Volume quant-pr4-restore_pg_data Removing
+ Volume quant-pr4-restore_personal_var Removed
+ Volume quant-pr4-restore_caddy_config Removed
+ Volume quant-pr4-restore_status_v42 Removed
+ Volume quant-pr4-restore_caddy_data Removed
+ Volume quant-pr4-restore_private_artifacts Removed
+ Volume quant-pr4-restore_pg_data Removed

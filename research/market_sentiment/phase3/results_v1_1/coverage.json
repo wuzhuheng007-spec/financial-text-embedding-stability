@@ -1,0 +1,54 @@
+[
+  {
+    "symbol": "US.QQQ",
+    "autype": 1,
+    "rows": 6967,
+    "first": "1999-03-10",
+    "last": "2026-11-17",
+    "segments": 1,
+    "known_holes": 0,
+    "complete_feature_rows": 6714,
+    "outcome4_rows": 6888,
+    "outcome8_rows": 6811,
+    "outcome12_rows": 6732
+  },
+  {
+    "symbol": "SH.000001",
+    "autype": 0,
+    "rows": 7486,
+    "first": "1996-01-02",
+    "last": "2026-11-17",
+    "segments": 1,
+    "known_holes": 0,
+    "complete_feature_rows": 7233,
+    "outcome4_rows": 7349,
+    "outcome8_rows": 7278,
+    "outcome12_rows": 7200
+  },
+  {
+    "symbol": "SH.000688",
+    "autype": 0,
+    "rows": 1532,
+    "first": "2020-07-23",
+    "last": "2026-11-17",
+    "segments": 1,
+    "known_holes": 0,
+    "complete_feature_rows": 1281,
+    "outcome4_rows": 1486,
+    "outcome8_rows": 1453,
+    "outcome12_rows": 1414
+  },
+  {
+    "symbol": "US..SOX",
+    "autype": 0,
+    "rows": 7764,
+    "first": "1996-01-02",
+    "last": "2026-11-17",
+    "segments": 5,
+    "known_holes": 7,
+    "complete_feature_rows": 6849,
+    "outcome4_rows": 7610,
+    "outcome8_rows": 7457,
+    "outcome12_rows": 7315
+  }
+]

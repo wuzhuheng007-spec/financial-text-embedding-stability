@@ -116,7 +116,9 @@ def dashboard(request):
         evidence_state="CODEX_REVIEW_DEVELOPMENT",
         source_review_status="CODEX_REVIEW_SOURCE_SUPPORTED",
     )
-    card_filter = shared_cards | personal_cards if settings.PERSONAL_MODE else shared_cards
+    personal_owner = (settings.PERSONAL_MODE and
+                      request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME)
+    card_filter = shared_cards | personal_cards if personal_owner else shared_cards
     eligible_cards = PublicFactCard.objects.filter(card_filter)
     cards = list(eligible_cards.order_by("-source_date", "issuer", "metric")[:30])
     actual_cards = [card for card in cards if card.fact_kind == PublicFactCard.FactKind.ACTUAL]
@@ -148,6 +150,8 @@ def dashboard(request):
         "personal_mode": settings.PERSONAL_MODE,
         "personal_feed_enabled": (settings.PERSONAL_MODE and
                                   request.user.username == settings.PERSONAL_FEED_OWNER_USERNAME),
+        "deployment_kind": settings.DEPLOYMENT_KIND,
+        "provider_gates": settings.PROVIDER_GATES,
     })
 
 
@@ -157,6 +161,29 @@ def personal_feed_json(request):
         raise Http404("Personal feed unavailable")
     symbols = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
     data = for_owner(request.user, symbols)
+    data["provider_gates"] = {k: v for k, v in settings.PROVIDER_GATES.items() if v}
+    data["deployment_kind"] = settings.DEPLOYMENT_KIND
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+def official_filings_json(request):
+    """Owner-only, read-only SEC EDGAR filing metadata for the watchlist; never calls SEC."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Official filings unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_cloud_official.sec_filings import read_for_portal
+    symbols = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    try:
+        data = read_for_portal(settings.OFFICIAL_FILINGS_DB_PATH, symbols)
+    except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "instruments": [], "filings": []}
+    data["watchlist"] = sorted(symbols)
     response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
     response["Cache-Control"] = "private, no-store"
     return response
@@ -435,3 +462,250 @@ def change_language(request):
     if not url_has_allowed_host_and_scheme(target,allowed_hosts={request.get_host()},require_https=False):
         target="/"
     return redirect(target)
+
+
+# ---------- research workflow v1 (owner only; web never runs a backtest itself) ----------
+import re as _re
+
+_RUN_ID = _re.compile(r"^run-\d{8}T\d{6}Z-[0-9a-f]{6}$")
+# Only protocols frozen in the repository can be selected; no user-supplied code or parameters.
+RESEARCH_PROTOCOLS = {"mom20-daily-long-cash": "configs/quant_research_mom20_v1.json"}
+
+
+def _research_owner(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("Research unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_research_v1 import registry
+    return registry, REPO_ROOT
+
+
+def _latest_audit(root, run_id):
+    """Most recent independent audit for a run: written by the run itself (audit_*.json) or a later
+    re-audit kept under research/audits/<run_id>/. Older files are never modified."""
+    import json
+    if not _RUN_ID.match(run_id):
+        return None
+    found = list((root / "runs" / run_id).glob("audit_*.json")) + list((root / "audits" / run_id).glob("*.json"))
+    best = None
+    for f in found:
+        try:
+            a = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        item = {"verifier_version": a.get("verifier_version"), "ok": bool(a.get("ok")), "audited_at_utc": a.get("audited_at_utc"),
+                "problems": (a.get("problems") or [])[:3], "file": f.relative_to(root).as_posix(),
+                "provenance": a.get("provenance")}
+        if best is None or (item["audited_at_utc"] or "") > (best["audited_at_utc"] or ""):
+            best = item
+    return best
+
+
+def _no_store(response):
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@login_required
+def research_registry_json(request):
+    registry, repo = _research_owner(request)
+    import json
+    try:
+        data = registry.read_all()
+    except Exception as exc:  # noqa: BLE001 - an unreadable registry is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "datasets": [], "factors": [], "runs": []}
+    protocols = []
+    for pid, rel in RESEARCH_PROTOCOLS.items():
+        cfg = json.loads((repo / rel).read_text(encoding="utf-8"))
+        protocols.append({"protocol_id": pid, "protocol_version": cfg["protocol_version"],
+                          "factor": cfg["factor"], "costs_bps": cfg["costs"]["scenarios_bps_one_way"],
+                          "segments": cfg["segments"], "execution": cfg["execution"]["price"],
+                          "return_label": cfg["price_series"]["return_label"]})
+    data["protocols"] = protocols
+    for r in data.get("runs", []):
+        r["latest_audit"] = _latest_audit(registry.root(), r["run_id"])
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+@require_POST
+def research_run_rerun(request, run_id):
+    """New run with the same dataset, factor and frozen config; linked as a retry if the original failed or was cancelled."""
+    registry, _ = _research_owner(request)
+    import json
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    db = registry.connect()
+    try:
+        row = db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
+        if row is None:
+            raise Http404()
+        if row["status"] in ("QUEUED", "RUNNING"):
+            return JsonResponse({"result": "REJECTED", "reason": "run still active"}, status=400)
+        new_id = registry.create_run(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
+                                     json.loads(row["config_json"]), requested_by=request.user.username,
+                                     attempt_of=run_id if row["status"] in ("FAILED", "CANCELLED") else None)
+    except (LookupError, ValueError) as exc:
+        return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": "QUEUED", "run_id": new_id, "attempt_of": run_id}))
+
+
+@login_required
+@require_POST
+def research_run_create(request):
+    registry, repo = _research_owner(request)
+    import json
+    ds = (request.POST.get("dataset") or "").split("@", 1)
+    fv = (request.POST.get("factor") or "").split("@", 1)
+    pid = request.POST.get("protocol") or ""
+    if len(ds) != 2 or len(fv) != 2 or pid not in RESEARCH_PROTOCOLS:
+        return JsonResponse({"result": "INVALID_SELECTION"}, status=400)
+    protocol = json.loads((repo / RESEARCH_PROTOCOLS[pid]).read_text(encoding="utf-8"))
+    db = registry.connect()
+    try:
+        run_id = registry.create_run(db, tuple(ds), tuple(fv), protocol, requested_by=request.user.username)
+    except (LookupError, ValueError) as exc:
+        return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": "QUEUED", "run_id": run_id}))
+
+
+@login_required
+@require_POST
+def research_run_cancel(request, run_id):
+    registry, _ = _research_owner(request)
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    db = registry.connect()
+    try:
+        status = registry.request_cancel(db, run_id)
+    except LookupError:
+        raise Http404()
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": status}))
+
+
+def _run_dir(registry, run_id):
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    path = registry.root() / "runs" / run_id
+    if not path.is_dir():
+        raise Http404()
+    return path
+
+
+@login_required
+def research_run_json(request, run_id):
+    registry, _ = _research_owner(request)
+    import json
+    rows = [r for r in registry.read_all()["runs"] if r["run_id"] == run_id]
+    if not rows:
+        raise Http404()
+    data = {"run": rows[0]}
+    path = registry.root() / "runs" / run_id
+    if _RUN_ID.match(run_id) and path.is_dir():
+        for name in ("metrics", "curves", "verify"):
+            f = path / f"{name}.json"
+            data[name] = json.loads(f.read_text(encoding="utf-8")) if f.is_file() else None
+        data["latest_audit"] = _latest_audit(registry.root(), run_id)
+        data["errata"] = None
+        from .personal_feed_cache import REPO_ROOT
+        er = REPO_ROOT / "configs/quant_research_mom20_v1.ERRATA.json"
+        if er.is_file() and rows[0]["protocol_id"] == "mom20-daily-long-cash":
+            e = json.loads(er.read_text(encoding="utf-8"))
+            if run_id in e["applies_to"]["runs"] or rows[0].get("config_sha256") == e["applies_to"]["config_sha256"]:
+                data["errata"] = {"erratum_id": e["erratum_id"],
+                                  "corrections": e.get("corrections_zh") or [c["correct"] for c in e["corrections"]],
+                                  "corrections_en": [c["correct"] for c in e["corrections"]]}
+        log = path / "run.log"
+        data["log_tail"] = log.read_text(encoding="utf-8").splitlines()[-30:] if log.is_file() else []
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+def research_run_ledger(request, run_id):
+    registry, _ = _research_owner(request)
+    path = _run_dir(registry, run_id)
+    bps = request.GET.get("bps", "0")
+    if bps not in {"0", "5", "10"}:
+        raise Http404()
+    f = path / f"ledger_cost{bps}bps.csv"
+    if not f.is_file():
+        raise Http404()
+    response = HttpResponse(f.read_bytes(), content_type="text/csv; charset=utf-8")
+    response["Content-Disposition"] = f'attachment; filename="{run_id}_ledger_cost{bps}bps.csv"'
+    return _no_store(response)
+
+
+# ---------- real-time news v1 (owner only; reads the collector's cache, never calls a provider) ----------
+_MACRO_CHANNELS = {"economics", "economic data", "macro economic events", "federal reserve", "fed", "treasuries", "bonds",
+                   "government", "politics", "global", "commodities", "forex", "inflation", "interest rates"}
+_ETF_WATCH = {"TQQQ", "QQQ", "SOXX", "SPY"}
+
+
+@login_required
+def news_json(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("News unavailable")
+    import json
+    import sys
+    from datetime import datetime, timezone
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.quant_news_v1.store import read_for_portal
+    try:
+        data = read_for_portal(limit=200)
+    except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "items": [], "providers": []}
+    watch = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    for it in data["items"]:
+        syms = set(it.get("symbols") or [])
+        chans = {c.lower() for c in it.get("channels") or []}
+        it["relevance"] = {"direct_watch": sorted(syms & watch), "direct_watch_etf": sorted(syms & watch & _ETF_WATCH),
+                           "macro": bool(chans & _MACRO_CHANNELS),
+                           "note": "直接提及=供应商标注的代码；宏观=供应商频道；无版本化成分数据，不推断 ETF 专属。"}
+        if not it.get("body"):
+            it["body"] = None
+    now = datetime.now(timezone.utc)
+    active = [p for p in data["providers"] if p["provider"] != "unconfigured"]
+    prov = max(active, key=lambda p: p.get("updated_at") or "", default=None)
+    label, kind = "新闻源未连接", "off"
+    if prov:
+        hb = prov.get("last_heartbeat_at")
+        try:
+            age = (now - datetime.fromisoformat(hb.replace("Z", "+00:00"))).total_seconds() if hb else None
+        except ValueError:
+            age = None
+        st = prov["state"]
+        delivered = any(i.get("available_at") for i in data["items"] if i.get("provider") == prov["provider"])
+        if st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET") and age is not None and age > 180:
+            label, kind = f"新闻采集中断 · 最近心跳 {hb}", "down"
+        elif st == "RECEIVING" and delivered:
+            label, kind = ("新闻源已接通 · REST 轮询（非推送）" if prov["provider"] in ("benzinga_rest", "massive_benzinga") else "新闻源已接通 · 实时推送"), "ok"
+        elif st in ("RECEIVING", "CONNECTED_NO_MESSAGES_YET"):
+            label, kind = "新闻源已连接，尚未观察到新消息", "idle"
+        elif st in ("CONNECTING",):
+            label, kind = "新闻源连接中", "idle"
+        elif st == "STOPPED":
+            label, kind = "新闻采集已停止", "down"
+        elif st == "NOT_CONFIGURED":
+            label, kind = "新闻源未配置", "off"
+        else:
+            label, kind = f"新闻源异常（{st}）", "down"
+    data["connection"] = {"label": label, "kind": kind, "provider": prov["provider"] if prov else None}
+    try:
+        data["sources"] = json.loads((REPO_ROOT / "configs/quant_news_sources_v1.json").read_text(encoding="utf-8"))["providers"]
+    except (OSError, ValueError, KeyError):
+        data["sources"] = {}
+    data["watchlist"] = sorted(watch)
+    response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
+    response["Cache-Control"] = "private, no-store"
+    return response

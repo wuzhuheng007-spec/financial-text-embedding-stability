@@ -1,0 +1,29 @@
+{
+  "status": "PARTIALLY_SUPPORTED",
+  "source_claims": "results/availability_matrix.csv",
+  "citation_audit": "citation_audit.json",
+  "numerical_claims": [
+    {
+      "claim": "Published SENT numerical comparison",
+      "evidence": "results/bw_diagnostic/published_comparison.json"
+    },
+    {
+      "claim": "Prefix cutoff sensitivity",
+      "evidence": "results/bw_diagnostic/prefix_sensitivity.csv"
+    },
+    {
+      "claim": "Version history differences and incomplete files",
+      "evidence": "results/revision_audit/workbook_inventory.csv; published_version_comparison.csv"
+    },
+    {
+      "claim": "Official event field counts",
+      "evidence": "results/news_field_pilot/events.json; summary.json"
+    }
+  ],
+  "immutable_inputs": [
+    "NYU workbook SHA2563580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+    "Pinned author commit7a0165f324f06a0f88aafc253de18c63431d2a9d"
+  ],
+  "no_return_test": true,
+  "same_author_self_check": true
+}

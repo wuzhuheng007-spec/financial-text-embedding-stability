@@ -1,0 +1,39 @@
+{
+ "anon": {
+  "/": 302,
+  "/personal-feed.json": 302,
+  "/readyz/": 200
+ },
+ "owner_login": [
+  302,
+  "/"
+ ],
+ "owner": {
+  "/": 200,
+  "/settings/": 200,
+  "/personal-feed.json": 200,
+  "/research-sentiment.json": 200
+ },
+ "other_login": 302,
+ "other": {
+  "/personal-feed.json": 404,
+  "/research-sentiment.json": 404
+ },
+ "owner_feed": {
+  "news_total": 3,
+  "quotes": 1
+ },
+ "static": {
+  "/static/core/i18n_v15.5afc689f14ef.js?v=personal-v19-1": 200,
+  "/static/core/personal_feed.ce0f7f50dce8.js?v=personal-v19-1": 200,
+  "/static/core/personal_timeline.71b081718ebb.js": 200,
+  "/static/core/portal.a16bbe40782d.css?v=personal-v19-1": 200,
+  "/static/core/research_sentiment_v4.b54fee7c697e.js?v=research-v45-compact-1": 200,
+  "/static/core/workspace_v15.edad59093b3a.js?v=personal-v19-1": 200
+ },
+ "headers_login_page": {
+  "Referrer-Policy": "same-origin",
+  "Strict-Transport-Security": "max-age=3600",
+  "X-Frame-Options": "DENY"
+ }
+}

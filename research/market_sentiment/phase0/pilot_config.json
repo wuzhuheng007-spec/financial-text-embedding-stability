@@ -1,0 +1,15 @@
+{
+  "run_id": "sentiment_pilot_20261119_v1",
+  "seed": 20261119,
+  "bootstrap_reps": 2000,
+  "block_months": 12,
+  "panic_vix_level": 30,
+  "recent_panic_months": 3,
+  "momentum_months": 3,
+  "outcome": "P[t+4]/P[t+1]-1",
+  "outcome_end": "2025-12",
+  "US_start": "1996-01",
+  "CN_start": "1999-01",
+  "later_segment_start": "2016-01",
+  "status": "EXPLORATORY_CURRENT_VINTAGE_DESCRIPTIVE_NOT_TRADABLE_RETURNS"
+}

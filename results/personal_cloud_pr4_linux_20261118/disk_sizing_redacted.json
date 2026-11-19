@@ -1,0 +1,104 @@
+{
+ "schema": "pr4_linux_disk_sizing_redacted_1",
+ "measured_at_asia_shanghai": "2026-11-18T08:25+08:00",
+ "method": "read-only: docker system df, du, SQLite mode=ro counts, gzip of an existing backup copy",
+ "candidate": {
+  "provider": "Alibaba Cloud Simple Application Server",
+  "region": "Singapore",
+  "vcpu": 4,
+  "memory_gib": 8,
+  "system_disk_gib": 70,
+  "os": "Ubuntu 22.04",
+  "quoted_price": "CNY 156/month (user-provided page quote; not verified, not purchased)"
+ },
+ "measured": {
+  "images_unpacked_gb": {
+   "app": 0.321,
+   "research": 1.71,
+   "postgres16": 0.648,
+   "caddy": 0.092,
+   "total": 2.77
+  },
+  "model_volume_gb": 0.409,
+  "private_runtime_data_gb": {
+   "apps_quant_portal_var_excl_venv_backups": 0.435,
+   "feed_cache_sqlite_now": 0.31,
+   "artifacts_runtime_excl_backups_model": 0.015,
+   "postgres_test_volume": 0.05
+  },
+  "feed_cache_growth": {
+   "backup_sizes_mb": {
+    "04:28": 170.9,
+    "05:30": 190.5,
+    "06:07": 208.5,
+    "06:42": 231.6,
+    "08:22_live": 310.4
+   },
+   "observed_mb_per_hour_04_28_to_08_22": 35.6,
+   "session_quotes": {
+    "rows_last24h": 175616,
+    "avg_payload_bytes": 277,
+    "indexes": 3,
+    "retention": "NONE in code (unbounded)"
+   },
+   "session_raw_responses": {
+    "rows_last24h": 173493,
+    "avg_payload_bytes": 799,
+    "retention": "pruned after 48h (raw_response_recent_hours=48)"
+   }
+  },
+  "backup_gzip_ratio": 6.6,
+  "container_memory_mib": {
+   "research_after_scoring": 254,
+   "web": 119,
+   "feed": 45,
+   "db": 36,
+   "proxy": 24
+  }
+ },
+ "assumptions": [
+  "session_quotes grows about 0.10 GB/day (175.6k rows x ~550 B incl. 3 indexes); weekends lower, more symbols higher",
+  "raw responses steady state about 0.35 GB (48h x ~173k rows/day x ~1 KB)",
+  "Ubuntu 22.04 + agents ~5 GB; Docker engine ~0.5 GB; journald capped ~1 GB; container logs capped 7 x 10 MB x 5 = 0.35 GB",
+  "image upgrade keeps old+new images: +2.8 GB; server-side research build temp ~4 GB (avoidable by building elsewhere and docker load)",
+  "7 daily gzip backups of all private stores"
+ ],
+ "projection_gb": {
+  "fixed": 17.0,
+  "day_30": {
+   "feed_cache": 3.5,
+   "backups_7_gzip": 3.7,
+   "total": 24.2
+  },
+  "day_90": {
+   "feed_cache": 9.5,
+   "backups_7_gzip": 10.1,
+   "total": 36.6
+  },
+  "day_180": {
+   "feed_cache": 18.5,
+   "backups_7_gzip": 19.6,
+   "total": 55.1
+  },
+  "with_30_day_session_quote_retention_steady": {
+   "feed_cache": 3.5,
+   "backups_7_gzip": 3.7,
+   "total": 24.2
+  }
+ },
+ "verdict": {
+  "cpu_memory": "SUFFICIENT: measured containers < 1 GiB total; 8 GiB leaves room for model scoring and PostgreSQL",
+  "disk_70gib": "SUFFICIENT for about 5 months as-is (crosses 80% = 56 GB near day 180); SUFFICIENT long-term only after adding session-quote retention or archiving. Not sufficient for indefinite unbounded growth with uncompressed backups.",
+  "conditions": [
+   "build images off-server or run docker builder prune after builds",
+   "gzip backups and keep 7 local, copy older ones off-server",
+   "alert at 70% disk use",
+   "add session_quotes retention before day ~150"
+  ]
+ },
+ "not_verified": [
+  "actual Alibaba checkout price, tax, renewal, traffic quota",
+  "peak-memory under simultaneous model scoring and backup",
+  "Jin10 cloud permission (blocked)"
+ ]
+}

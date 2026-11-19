@@ -133,7 +133,8 @@ def test_semantic_review_gates_display_and_binds_response_hash(tmp_path:Path,mon
       VALUES(1,?,1,?,'g','COMPLETE',1,'2026-11-16T00:00:00Z','rev','prompt',?)''',(key,'b'*64,result))
     db.close()
     item={'item_key':key,'version':1,'title':'NVIDIA 公布业绩','content':'报告内容',
-          'received_at':'2026-11-16T00:00:00Z','published_at_utc':'2026-11-16T00:00:00Z'}
+          'content_sha256':'b'*64,'received_at':'2026-11-16T00:00:00Z',
+          'published_at_utc':'2026-11-16T00:00:00Z'}
     output=enrich({'news':[item.copy()]},owner_id=1,analysis_db=db_path,config=cfg)
     assert output['news'][0]['analysis_status']=='REVIEW_PENDING'
     assert output['news'][0]['analysis'] is None
@@ -146,6 +147,10 @@ def test_semantic_review_gates_display_and_binds_response_hash(tmp_path:Path,mon
     output=enrich({'news':[item.copy()]},owner_id=1,analysis_db=db_path,config=cfg)
     assert output['news'][0]['analysis_status']=='COMPLETE'
     assert output['news'][0]['analysis']['headline_en']=='Headline'
+    changed=dict(item,content_sha256='c'*64)
+    stale=enrich({'news':[changed]},owner_id=1,analysis_db=db_path,config=cfg)
+    assert stale['news'][0]['analysis_status']=='NOT_QUEUED'
+    assert stale['news'][0]['analysis'] is None
     with sqlite3.connect(db_path) as db:
         db.execute("UPDATE analysis_jobs SET result_json=? WHERE owner_id=1 AND item_key=?",(result+' ',key))
     output=enrich({'news':[item.copy()]},owner_id=1,analysis_db=db_path,config=cfg)

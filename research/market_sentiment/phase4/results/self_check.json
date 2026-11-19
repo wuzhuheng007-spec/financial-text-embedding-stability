@@ -1,0 +1,27 @@
+{
+  "status": "PASS_SAME_AUTHOR_SELF_CHECK",
+  "independent_validation": false,
+  "checks": {
+    "parent_price_feature_outcome_rows_unchanged": 23749,
+    "source_alignment_dates": 47498,
+    "new_source_feature_cells": 118745,
+    "forward_close_path_minima": 68993,
+    "augmented_system_refitted_models": 1200,
+    "prediction_cells_reconciled": 280328,
+    "model_summary_rows": 360,
+    "paired_model_contrasts": 318,
+    "state_summary_rows": 180,
+    "state_contrast_rows": 60,
+    "source_prefix_comparisons": 6
+  },
+  "run_manifest_sha256": "540089f8d2acc32c5d5c5ea3bc1f861d8145d0d42de6db204006543169169b03",
+  "check_code_sha256": "51649ddace711fb9df3529bec93939e003cc6e91c5de7c0846e0874f2c36e307",
+  "finished_utc": "2026-11-19T03:17:57.555315+00:00",
+  "limits": [
+    "current vintage",
+    "correlated markets",
+    "one deterministic model family",
+    "China inputs external only",
+    "not a news-reaction or strategy backtest"
+  ]
+}

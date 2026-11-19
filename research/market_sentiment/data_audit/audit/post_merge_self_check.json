@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "verification_type": "Author self-check, separate implementation",
+  "raw_provider_records_rechecked": 35822,
+  "new_patch_rows_rechecked": 1227,
+  "excluded_records_checked": 167,
+  "sqlite_integrity": "ok",
+  "all_observation_prices_and_vendor_json_match_raw": true,
+  "csv_files_checked": 18,
+  "csv_rows_checked": 71477,
+  "csv_prices_dates_provenance_and_flags_match_database": true,
+  "original_and_patch_unchanged": true,
+  "independent_validation": false,
+  "investment_efficacy_tested": false
+}

@@ -1,0 +1,5 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env run --rm --no-deps feed moomoo-auth status
+# exit=0 expected=0 seconds=1.9
+{"credential_state": "NOT_INSTALLED", "key_file_present": true, "storage": "SERVER_AES256GCM_KEYFILE"}
+ Container quant-pr4-test-feed-run-af865b709663 Creating
+ Container quant-pr4-test-feed-run-af865b709663 Created

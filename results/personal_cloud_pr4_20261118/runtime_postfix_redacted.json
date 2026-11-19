@@ -1,0 +1,91 @@
+{
+  "schema": "personal_cloud_pr4_postfix_runtime_redacted_1",
+  "checked_at_utc": "2026-11-17T22:13:08.369504+00:00",
+  "checked_at_asia_shanghai": "2026-11-18T06:13:08.369504+08:00",
+  "code_head_local": "faa5020536dd99d1a2b3bd2810e080873136ba44",
+  "portal_http": {
+    "readyz": 200,
+    "css": 200
+  },
+  "feed_process_status": "FEED_RUNNING pid=291504",
+  "feed_cached_news_items": 394,
+  "feed_quote_symbols": [
+    "MU",
+    "NVDA",
+    "QQQ",
+    "SOXX",
+    "SPY",
+    "TQQQ"
+  ],
+  "feed_provider_states": {
+    "jin10": {
+      "state": "CONNECTED",
+      "heartbeat_at": "2026-11-17T22:13:03.459906Z",
+      "last_success_at": "2026-11-17T22:12:18.376188Z",
+      "last_push_at": null,
+      "last_quote_saved_at": null,
+      "worker_alive": 1,
+      "business_attempts_today": 631,
+      "business_calls_today": 628,
+      "business_failure_total": 22,
+      "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP"
+    },
+    "moomoo": {
+      "state": "CONNECTED_DELAY_UNKNOWN",
+      "heartbeat_at": "2026-11-17T22:13:03.494238Z",
+      "last_success_at": "2026-11-17T22:13:03.494238Z",
+      "last_push_at": "2026-11-17T22:13:03.492156Z",
+      "last_quote_saved_at": "2026-11-17T22:11:45.584285Z",
+      "worker_alive": 1,
+      "business_attempts_today": 0,
+      "business_calls_today": 0,
+      "business_failure_total": 0,
+      "coverage_gap": null
+    },
+    "moomoo_snapshot": {
+      "state": "SECURITY_POLICY_BLOCKED",
+      "heartbeat_at": "2026-11-17T22:07:13.898360Z",
+      "last_success_at": "2026-11-17T21:33:47.449087Z",
+      "last_push_at": null,
+      "last_quote_saved_at": "2026-11-17T21:33:42.613582Z",
+      "worker_alive": 0,
+      "business_attempts_today": 503,
+      "business_calls_today": 500,
+      "business_failure_total": 6,
+      "coverage_gap": null
+    }
+  },
+  "last_recorded_jin10_sqlite_error": {
+    "at_utc": "2026-11-17T22:06:18.119563Z",
+    "sqlite_code": 5
+  },
+  "research_worker": {
+    "run_id": "v42_20261117T221003709561Z",
+    "state": "RUNNING",
+    "stage": "DISCOVER",
+    "last_success_at_utc": "2026-11-17T22:10:11.382369+00:00",
+    "daily_attempts": 15,
+    "daily_limit": 500,
+    "backlog": 0,
+    "process_alive_identity": true,
+    "model_revision": "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    "segment_rule_version": "zh_html_source_map_punctuation_numbered_v2",
+    "last_error_class": null
+  },
+  "daily_price_worker": {
+    "run_id": "v45_ed0b4d0434a8494180fc711a62fb71b4",
+    "state": "RUNNING",
+    "process_alive_identity": true,
+    "last_tick_at_utc": "2026-11-17T22:13:00.100884+00:00",
+    "last_label_new_versions": 0,
+    "next_due_utc": "2026-11-18T21:45:00+00:00",
+    "daily_budget": 8
+  },
+  "real_label_versions_count": 0,
+  "limitations": [
+    "short observation only",
+    "Jin10 page continuity possible gap",
+    "REST stock-quote HTTP 439 endpoint remains disabled",
+    "no cloud container run"
+  ]
+}

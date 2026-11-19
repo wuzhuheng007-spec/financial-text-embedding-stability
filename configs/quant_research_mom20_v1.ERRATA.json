@@ -1,0 +1,140 @@
+{
+ "schema": "quant_research_errata_v1",
+ "erratum_id": "E-mom20-v1-001",
+ "recorded_utc": "2026-11-19T02:45:00Z",
+ "applies_to": {
+  "config": "configs/quant_research_mom20_v1.json",
+  "config_sha256": "63a8993d006211981bb6baccc8ca58eeaee9347cef167dda4808fbe147fc3825",
+  "runs": [
+   "run-20261119T012943Z-6ee999",
+   "run-20261119T013414Z-62e709"
+  ]
+ },
+ "config_unchanged": "The referenced config bytes are kept as-is (its hash is cited by the runs). Corrections live here; a protocol whose meaning changes gets a new version.",
+ "corrections": [
+  {
+   "was": "三个区间里策略总收益都低于持有基准 / all segments and all costs below buy-and-hold",
+   "correct": "Generated from the result file: strategy above benchmark in 1 of 9 segment cells (0bps/development: 0.4454895054800099 vs 0.2487051939284779), below in 8. Neither the exception nor the rest supports a general claim."
+  },
+  {
+   "was": "frozen_at_utc = 2026-11-19T01:40:00Z / 协议在计算前冻结",
+   "correct": "The frozen_at_utc value is not a valid timestamp. The first real computation (01:16:08Z, local dry run) preceded the first git commit of the config (01:25:31Z) and its results were read before that commit. The config content is identical in every run (same hash), but there is no external evidence that it was fixed before the first computation; the runs are not pre-registered."
+  },
+  {
+   "was": "a1 含现金分红调整（README 表述）",
+   "correct": "Inference only: the a1/a0 ratio steps near quarterly ex-dividend dates. Without vendor documentation, a1 is a vendor forward-adjusted price series; dividend treatment unconfirmed; not a total return."
+  },
+  {
+   "was": "交易日历",
+   "correct": "Trading days are the dates present in the vendor series after the audited filter; no independent reconciliation with a complete exchange calendar was done."
+  },
+  {
+   "was": "留出段 / holdout",
+   "correct": "The 2020–2026 segment is a later historical segment that had already been viewed (dataset audit and earlier phases cover it). It is not an unseen holdout. The config keeps the name 'holdout' (hash-bound); displays call it 后段."
+  }
+ ],
+ "timeline": {
+  "first_real_computation": {
+   "what": "local dry run run-20261119T011608Z-d2a689 on the same snapshot hash",
+   "created_utc": "2026-11-19T01:16:08Z",
+   "finished_utc": "2026-11-19T01:16:10Z",
+   "config_sha256": "63a8993d006211981bb6baccc8ca58eeaee9347cef167dda4808fbe147fc3825",
+   "results_digest": "ac604975da2615ebcb2fa06d2f5ebcc87f4c0f1d28e3176035d9591e3722c1a7",
+   "note": "Its segment results were printed and read before the config was committed."
+  },
+  "config_first_committed": {
+   "commit": "9f916278099a108582b468664f55cd35fd6b2b79",
+   "committed_utc": "2026-11-19T01:25:31Z",
+   "canonical_config_sha256": "63a8993d006211981bb6baccc8ca58eeaee9347cef167dda4808fbe147fc3825"
+  },
+  "web_runs": [
+   {
+    "run_id": "run-20261119T012943Z-6ee999",
+    "queued_utc": "2026-11-19T01:29:43Z",
+    "started_utc": "2026-11-19T01:30:32Z",
+    "finished_utc": "2026-11-19T01:30:33Z"
+   },
+   {
+    "run_id": "run-20261119T013414Z-62e709",
+    "queued_utc": "2026-11-19T01:34:14Z",
+    "started_utc": "2026-11-19T01:34:42Z",
+    "finished_utc": "2026-11-19T01:34:43Z"
+   }
+  ],
+  "frozen_at_utc_field": {
+   "value": "2026-11-19T01:40:00Z",
+   "finding": "hand-written, not a clock reading; later than every event above, so it is wrong as a timestamp"
+  }
+ },
+ "generated_comparison": {
+  "strategy_above_benchmark": [
+   "0bps/development"
+  ],
+  "strategy_below_benchmark": [
+   "0bps/validation",
+   "0bps/holdout",
+   "5bps/development",
+   "5bps/validation",
+   "5bps/holdout",
+   "10bps/development",
+   "10bps/validation",
+   "10bps/holdout"
+  ],
+  "equal": [],
+  "cells": [
+   {
+    "cell": "0bps/development",
+    "strategy_total_return": 0.4454895054800099,
+    "benchmark_total_return": 0.2487051939284779
+   },
+   {
+    "cell": "0bps/validation",
+    "strategy_total_return": 0.9550426532050489,
+    "benchmark_total_return": 2.545989512216691
+   },
+   {
+    "cell": "0bps/holdout",
+    "strategy_total_return": 1.6786089416756376,
+    "benchmark_total_return": 2.2229420910889024
+   },
+   {
+    "cell": "5bps/development",
+    "strategy_total_return": 0.22802508707204927,
+    "benchmark_total_return": 0.24808084133150654
+   },
+   {
+    "cell": "5bps/validation",
+    "strategy_total_return": 0.7983887564695504,
+    "benchmark_total_return": 2.545989512216689
+   },
+   {
+    "cell": "5bps/holdout",
+    "strategy_total_return": 1.5112521110361388,
+    "benchmark_total_return": 2.2229420910888984
+   },
+   {
+    "cell": "10bps/development",
+    "strategy_total_return": 0.043191655870870704,
+    "benchmark_total_return": 0.24745648873454473
+   },
+   {
+    "cell": "10bps/validation",
+    "strategy_total_return": 0.6542181081490983,
+    "benchmark_total_return": 2.5459895122166816
+   },
+   {
+    "cell": "10bps/holdout",
+    "strategy_total_return": 1.3542755666227815,
+    "benchmark_total_return": 2.2229420910889
+   }
+  ]
+ },
+ "corrections_zh": [
+  "分段比较：由结果文件生成，9 个“成本×区间”格中策略高于基准 1 格（0 bps 开发段 44.55% 对 24.87%），低于 8 格；原“全部低于基准”的说法错误。例外与其余结果都不能推出普遍结论。",
+  "协议时间：frozen_at_utc=01:40:00Z 为手填值，不是有效时间戳。首次真实计算（01:16:08Z 本机演练）早于配置首次 Git 提交（01:25:31Z），且演练结果在提交前已被查看；各次运行配置内容相同，但不能证明计算前已冻结，运行不属于预注册。",
+  "分红：a1 含现金分红调整只是根据 a1/a0 比值在季度除息日附近变化的推断，没有供应商文档；只称供应商前复权价格收益，不称总收益。",
+  "交易日历：交易日采用供应商序列中出现的日期，没有与完整的交易所日历独立核对。",
+  "后段：2020–2026 段此前已被查看，不是未见过的留出集；配置里的名称 holdout 因哈希绑定保留，页面称“后段”。"
+ ],
+ "corrections_zh_added_utc": "2026-11-19T04:10:00Z"
+}

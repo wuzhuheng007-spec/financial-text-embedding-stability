@@ -23,7 +23,7 @@
     NO_SUBSCRIPTIONS: '未选择行情订阅'
   };
   let current = null;
-  let filter = 'all';
+  let filter = 'interest';
   let inFlight = false;
   let quoteSignature = '';
   let selectionSignature = '';
@@ -52,6 +52,8 @@
     MIXED:['混合','Mixed'],UNKNOWN:['未知','Unknown']};
   const bilingual=(pair) => language === 'en' ? pair[1] : pair[0];
   const sessionLabels = {PREMARKET:'盘前', REGULAR:'常规', AFTERHOURS:'盘后', OVERNIGHT:'夜盘'};
+  const sessionEnglish = {PREMARKET:'Pre-market', REGULAR:'Regular', AFTERHOURS:'After-hours', OVERNIGHT:'Overnight'};
+  const sessionName = key => (language === 'en' ? sessionEnglish[key] : sessionLabels[key]) || bilingual(['时段未核实','Session unverified']);
 
   function csrfToken() {
     return document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
@@ -66,7 +68,7 @@
   }
 
   function stamp(value) {
-    if (!value) return '未知';
+    if (!value) return bilingual(['未知','Unknown']);
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
     try { return new Intl.DateTimeFormat('zh-CN', {
@@ -89,23 +91,47 @@
     return values.length ? values.reduce((best, value) => Date.parse(value) > Date.parse(best) ? value : best) : null;
   }
   function quoteLabel(quote, provider, selected=true) {
-    if (!quote) return '暂无报价';
-    if (!selected) return '未订阅 · 保留历史缓存';
+    if (!quote) return bilingual(['暂无报价','No quote available']);
+    if (!selected) return bilingual(['未订阅 · 保留历史缓存','Not subscribed · historical cache retained']);
     const sourceAt = Date.parse(quote.source_at);
     const stale = Number.isFinite(sourceAt) && Date.now() - sourceAt > 10 * 60 * 1000;
-    if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return '采集已断开 · 保留最后报价';
-    if (stale) return '报价来源时间较旧';
-    if (provider?.state === 'CONNECTED_MARKET_CLOSED') return '连接活跃 · 当前常规市场休市';
-    return '最新缓存报价 · 实时性未核实';
+    if (provider?.state === 'DISCONNECTED' || provider?.state === 'AUTH_EXPIRED' || provider?.worker_alive === 0) return bilingual(['采集已断开 · 保留最后报价','Collection disconnected · last quote retained']);
+    if (stale) return bilingual(['报价来源时间较旧','Quote source time is old']);
+    if (provider?.state === 'CONNECTED_MARKET_CLOSED') return bilingual(['连接活跃 · 当前常规市场休市','Connection active · regular market closed']);
+    return bilingual(['最新缓存报价 · 实时性未核实','Latest cached quote · real-time status unverified']);
   }
   function renderStates() {
     const snapshot = stateOf('moomoo_snapshot');
+    const health=document.getElementById('feed-health-summary');
+    if (health) {
+      const push=stateOf('moomoo'); const news=stateOf('jin10');
+      const recent=(value,seconds) => {const age=Date.now()-Date.parse(value);return Number.isFinite(age)&&age>=0&&age<=seconds*1000;};
+      const receiving=push?.worker_alive===1 && recent(push?.last_push_at,20);
+      const newsOk=news?.worker_alive===1 && recent(news?.heartbeat_at,90) && recent(news?.last_success_at,180);
+      // A provider deliberately not started on this deployment is a gate, not a failure.
+      const gates=current?.provider_gates||{};
+      const gateText={
+        PENDING_SUPPORT_REPLY:['未在此部署启用：等待供应商对云端使用的答复','Not enabled here: awaiting the provider\'s reply on cloud use'],
+        PENDING_WRITTEN_PERMISSION:['未在此部署启用：需供应商书面许可','Not enabled here: provider written permission required'],
+        UNREACHABLE_FROM_DEPLOYMENT:['未在此部署启用：服务器无法连接供应商服务','Not enabled here: this server cannot reach the provider']};
+      const quoteSpan=gates.moomoo
+        ? node('span','health-warning',bilingual(['行情（moomoo）：'+gateText[gates.moomoo][0],'Quotes (moomoo): '+gateText[gates.moomoo][1]]))
+        : node('span',receiving?'health-ok':'health-warning',bilingual(receiving?['行情：正在接收推送','Quotes: receiving push']:['行情：请检查更新状态','Quotes: check update status']));
+      const newsSpan=gates.jin10
+        ? node('span','health-warning',bilingual(['新闻（金十）：'+gateText[gates.jin10][0],'News (Jin10): '+gateText[gates.jin10][1]]))
+        : node('span',newsOk?'health-ok':'health-warning',bilingual(newsOk?['新闻：采集正常','News: collection active']:['新闻：更新中断或尚无成功记录','News: interrupted or no successful receipt']));
+      health.replaceChildren(quoteSpan, newsSpan,
+        node('span','muted',bilingual(['报价时间见行情卡；新闻主张以原始来源为准。','Quote times appear on each card; news claims remain attributed to their sources.'])));
+    }
     for (const name of ['moomoo', 'jin10']) {
       const state = stateOf(name);
       const pill = document.getElementById(`${name}-state`);
       const times = document.getElementById(`${name}-times`);
       if (!pill || !times) continue;
       pill.textContent = stateLabels[state?.state] || state?.state || '尚未启动';
+      const pushAge=Date.now()-Date.parse(state?.last_push_at);
+      if (name==='moomoo' && state?.worker_alive===1 && Number.isFinite(pushAge) && pushAge>=0 && pushAge<=20000)
+        pill.textContent=bilingual(['正在接收推送','Receiving push']);
       const worker = state?.worker_alive === 0 ? '采集线程已退出' : state?.worker_alive === 1 ? '采集线程运行中' : '线程状态未知';
       times.textContent = name === 'moomoo' ?
         `${worker} · 心跳：${stamp(state?.heartbeat_at)} · 最近推送：${stamp(state?.last_push_at)} · 最新缓存报价收到时间：${stamp(latestCacheTime('received_at'))} · 最新分时段报价来源时间：${stamp(latestCacheTime('source_at'))} · 重复包（v1.1 计数）：${state?.duplicate_quote_packets ?? '未知'}` +
@@ -118,11 +144,11 @@
     const article = node('article', 'snapshot-item');
     const head = node('div');
     head.append(node('strong', null, symbol));
-    head.append(node('p', 'muted', profile?.name || quote?.display_name || '名称待核实'));
+    head.append(node('p', 'muted', profile?.name || quote?.display_name || bilingual(['名称待核实','Name unverified'])));
     const selectedSession = sessionChoice.get(symbol) || 'AUTO';
     const picker = node('select', 'session-picker');
-    picker.setAttribute('aria-label', `${symbol} 报价时段`);
-    for (const [key, label] of [['AUTO','最近有来源时间'],...Object.entries(sessionLabels)]) {
+    picker.setAttribute('aria-label', `${symbol} ${bilingual(['报价时段','quote session'])}`);
+    for (const [key, label] of [['AUTO',bilingual(['最近有来源时间','Latest with source time'])],...Object.keys(sessionLabels).map(key=>[key,sessionName(key)])]) {
       const option = node('option', null, label); option.value = key; picker.append(option);
     }
     picker.value = selectedSession;
@@ -130,7 +156,7 @@
     head.append(picker);
     const openChart = () => document.dispatchEvent(new CustomEvent('personal-chart-open', {
       detail: {symbol, session: sessionChoice.get(symbol) || 'AUTO'}}));
-    const chartButton = node('button', 'button button-outline chart-open-button', '查看曲线');
+    const chartButton = node('button', 'button button-outline chart-open-button', bilingual(['查看曲线','View chart']));
     chartButton.type = 'button';
     chartButton.addEventListener('click', openChart);
     head.append(chartButton);
@@ -142,8 +168,8 @@
     const shown = selectedSession === 'AUTO' ? latest || null : bySession.get(selectedSession) || null;
     const capability = selectedSession === 'AUTO' ? null : byCapability.get(selectedSession);
     const value = node('div', 'snapshot-value');
-    value.append(node('strong', null, shown?.price_text ?? '暂无报价'));
-    value.append(node('span', null, shown?.currency || profile?.currency || '供应商未标注币种'));
+    value.append(node('strong', null, shown?.price_text ?? bilingual(['暂无报价','No quote available'])));
+    value.append(node('span', null, shown?.currency || profile?.currency || bilingual(['供应商未标注币种','Currency not labeled by supplier'])));
     const meta = node('div', 'snapshot-meta');
     let details = null;
     const reason = symbolState?.reason ? ` · ${symbolState.reason}` : '';
@@ -157,9 +183,9 @@
       const marketCode = quote?.market_state || '供应商未提供';
       const dateText = shown.trade_date ? `${shown.trade_date}（供应商日期与来源时间的纽约日期一致；非独立交易日确认）` : '供应商未提供可确认的交易日';
       const delayText = shown.delay_status && shown.delay_status !== 'UNKNOWN' ? shown.delay_status : '供应商未标注延迟';
-      const channelLabel = shown.source_channel === 'REST_STOCK_QUOTE' ? '定时快照' : shown.source_channel === 'WS_QUOTE' ? '推送缓存' : '历史缓存';
-      meta.textContent = `${sessionLabels[shown.session] || '时段未核实'}报价 · ${channelLabel}${closed}${reason}` +
-        `\n来源时间：${timeText} · ${quoteLabel(shown, activeFeed, selected)}`;
+      const channelLabel = shown.source_channel === 'REST_STOCK_QUOTE' ? bilingual(['定时快照','Scheduled snapshot']) : shown.source_channel === 'WS_QUOTE' ? bilingual(['推送缓存','Push cache']) : bilingual(['历史缓存','Historical cache']);
+      meta.textContent = `${sessionName(shown.session)} ${bilingual(['报价','quote'])} · ${channelLabel}${closed}${reason}` +
+        `\n${bilingual(['来源时间：','Source time: '])}${timeText} · ${quoteLabel(shown, activeFeed, selected)}`;
       details=node('details','quote-details');
       details.append(node('summary',null,'数据详情'));
       details.append(node('p',null,`本机获取：${stamp(shown.received_at)}\n交易日：${dateText}${dateHint}\n采集：${feedState} · 常规市场状态：${marketCode}\n延迟：${delayText}\n币种依据：${shown.currency ? '供应商报价字段' : profile?.currency ? '证券资料字段' : '供应商未提供'}\n价格字段：${shown.provider_field_path || '未记录'} · 时间字段：${shown.source_time_field_path || '未记录'}`));
@@ -170,13 +196,15 @@
     }
     const regular = bySession.get('REGULAR');
     if (regular && selectedSession !== 'REGULAR') {
-      meta.textContent += `\n常规报价参考：${regular.price_text} · 来源 ${stamp(regular.source_at)}（独立保留）`;
+      meta.textContent += `\n${bilingual(['常规报价参考：','Regular-session reference: '])}${regular.price_text} · ${bilingual(['来源','Source'])} ${stamp(regular.source_at)} ${bilingual(['（独立保留）','(retained separately)'])}`;
     }
     article.append(head, value, meta);
     if (details) article.append(details);
     return article;
   }
   function renderQuotes() {
+    // v20: quote cards are rendered by terminal_v20.js from the broadcast below.
+    if (!quoteBox) return;
     const signature = JSON.stringify([current?.quotes,current?.latest_quotes,current?.security_profiles,current?.session_quotes,current?.session_capabilities,
       current?.symbols,current?.selection,stateOf('moomoo')?.state,[...sessionChoice]]);
     if (signature === quoteSignature) return;
@@ -197,7 +225,7 @@
       const symbol = el.dataset.watchSymbol;
       const quote = latest[symbol];
       const reason = states.get(symbol)?.reason;
-      el.textContent = quote ? `${quote.price_text} ${quote.currency || profiles[symbol]?.currency || '（供应商未标注币种）'} · ${sessionLabels[quote.session] || '时段未核实'} · ${quoteLabel(quote, quote.source_channel === 'REST_STOCK_QUOTE' ? snapshot : moomoo, selected.has(symbol))} · 来源 ${stamp(quote.source_at)}` :
+      el.textContent = quote ? `${quote.price_text} ${quote.currency || profiles[symbol]?.currency || bilingual(['（供应商未标注币种）','(currency unlabeled)'])} · ${sessionName(quote.session)} · ${quoteLabel(quote, quote.source_channel === 'REST_STOCK_QUOTE' ? snapshot : moomoo, selected.has(symbol))} · ${bilingual(['来源','Source'])} ${stamp(quote.source_at)}` :
         `暂无个人报价${reason ? ' · ' + reason : ' · 未订阅或尚未收到推送'}`;
     });
   }
@@ -254,7 +282,7 @@
     const signature=JSON.stringify(current?.news_interests || []);
     if (signature === interestSignature) return;
     interestSignature=signature;
-    interestBox.replaceChildren(node('span','subscription-status','独立新闻关注：'));
+    interestBox.replaceChildren(node('span','subscription-status','关注：'));
     const names={SNDK:'闪迪',SKHYNIX:'SK 海力士',SPACEX:'SpaceX'};
     (current?.news_interests || []).forEach(row => {
       const button=node('button',`button ${row.enabled ? 'button-primary' : 'button-outline'}`,names[row.interest_key] || row.interest_key);
@@ -312,8 +340,8 @@
   function renderTop10() {
     if (!topBox) return;
     const rows=current?.top10 || [];
-    document.getElementById('top10-count').textContent=String(rows.length);
-    document.getElementById('news-count').textContent=String(current?.news?.length || 0);
+    const topCount=document.getElementById('top10-count'); if (topCount) topCount.textContent=String(rows.length);
+    const newsCount=document.getElementById('news-count'); if (newsCount) newsCount.textContent=String(current?.news?.length || 0);
     const signature=JSON.stringify(rows.map(x=>[x.item_key,x.version,x.rank?.score,x.analysis_status,x.headline_en]));
     if (signature===topSignature) return;
     if (topSignature && topBox.getBoundingClientRect().top < -30) {
@@ -325,15 +353,19 @@
       return;
     }
     topSignature=signature;
-    if (!rows.length) { topBox.replaceChildren(node('div','empty-state','当前没有符合科技股及相关宏观范围的已缓存事件。')); return; }
+    if (!rows.length) { topBox.replaceChildren(node('div','empty-state','暂无重点事件')); return; }
     topBox.replaceChildren(...rows.map((row,index)=>{
       const button=node('button','top10-row'); button.type='button';
       const title=language==='en' ? (row.headline_en || `Translation pending — ${row.title}`) : (row.headline_zh || row.title);
       const why=row.scope==='DIRECT_SUBJECT' ? bilingual(['直接涉及关注对象','Directly concerns a followed entity']) :
         row.scope==='INDUSTRY' ? bilingual(['涉及科技产业链','Technology industry chain']) : bilingual(['相关宏观事件','Relevant macro event']);
+      const phrase=row.evidence_phrase || bilingual(['匹配依据未知','Match unknown']);
+      const evidence=language==='en' && /[\u3400-\u9fff]/.test(phrase) ? `Translation pending — ${phrase}` : phrase;
       button.append(node('span','top10-rank',`#${index+1} · ${title}`),
-        node('span','news-meta',`${why} · ${row.evidence_phrase || bilingual(['匹配依据未知','Match unknown'])} · ${stamp(row.published_at_utc || row.received_at)}`),
-        node('span','analysis-status',`${bilingual(['供应商报道／待核实','Supplier report / unverified'])} · ${row.claim_stage || 'GENERAL'} · ${bilingual(['分析','Analysis'])}: ${bilingual(analysisStates[row.analysis_status]||analysisStates.NOT_QUEUED)} · ${bilingual(['新闻语气','News tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)} · ${bilingual(['规则排序','Rule order'])} ${row.rank?.score ?? ''}`));
+        node('span','news-meta',`${why} · ${evidence} · ${stamp(row.published_at_utc || row.received_at)}`),
+        node('span','analysis-status',bilingual(['供应商报道 · 点击查看来源','Supplier report · open source details']) +
+          (row.tone && row.tone!=='UNKNOWN' ? ` · ${bilingual(['文本语气','Text tone'])}: ${bilingual(toneLabels[row.tone]||toneLabels.UNKNOWN)}` : '')));
+      button.title=title;
       button.onclick=()=>{
         window.quantOpenPanel?.('news');
         // Reading a news item never enqueues the paused v16 interpretation worker.
@@ -347,7 +379,7 @@
   function renderSentiment() {
     if (!sentimentBox) return;
     const rows=current?.sentiment_observation || [];
-    document.getElementById('sentiment-count').textContent=rows.length ? `${rows[0].event_count} ${bilingual(['事件','events'])}` : bilingual(['待分析','Pending']);
+    const sentimentCount=document.getElementById('sentiment-count'); if (sentimentCount) sentimentCount.textContent=rows.length ? `${rows[0].event_count} ${bilingual(['事件','events'])}` : bilingual(['待分析','Pending']);
     const grid=node('div','sentiment-grid');
     rows.forEach(row=>{
       const cell=node('div','sentiment-cell');
@@ -369,6 +401,14 @@
   function analysisCard(item) {
     const wrap=node('div','analysis-card');
     const status=item.analysis_status||'NOT_QUEUED';
+    const available=Boolean(item.v18_event_features?.length || item.staged_extraction?.length ||
+      item.staged_interpretation || (item.analysis && ['COMPLETE','DRAFT'].includes(status)));
+    if (!available) {
+      const details=node('details','analysis-unavailable');
+      details.append(node('summary',null,bilingual(['解读暂不可用 · 查看原因','Interpretation unavailable · details'])));
+      details.append(node('p','muted',`${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)} · ${bilingual(['当前没有通过内容检查的解读。可展开原文或查看来源页面。','No interpretation has passed the content checks. Read the report or open its source.'])}`));
+      return details;
+    }
     wrap.append(node('p','analysis-status',`${bilingual(['新闻解读','News interpretation'])}: ${bilingual(analysisStates[status]||analysisStates.NOT_QUEUED)}`));
     const categories=(item.event_labels?.categories || []).filter(x=>x.id!=='OTHER');
     const category=categories[0]?.id;
@@ -379,7 +419,7 @@
       MACRO_RATES:['关注发布机构的正式数据和政策声明。','Check the issuing agency’s official data and policy statement.'],
       FINANCE_CREDIT:['关注正式融资条款、到期安排或并购公告。','Check formal financing terms, maturities or merger filings.']};
     const sourceHint=watchHints[category] || ['关注原始公告及后续更正。','Check the primary announcement and any correction.'];
-    wrap.append(node('p','analysis-fact',`${bilingual(['来源内容','Source report'])}: ${item.display_title || item.title || '原文无标题'}`));
+
     if (item.v18_event_features?.length) {
       wrap.append(node('p','analysis-status',bilingual(['事件与语气字段 · 同团队开发审阅；报道未独立核实',
         'Event and tone fields · same-team development review; report not independently verified'])));
@@ -476,7 +516,7 @@
     // The old v16 automatic interpretation queue remains paused in v1.8.
     const published = item.published_at_utc ? stamp(item.published_at_utc) :
       (item.published_raw ? `${item.published_raw}（时区未确认）` : '未知');
-    article.append(node('p', 'news-meta', `${item.source_status} · 来源发布时间：${published} · 本机收到：${stamp(item.received_at)} · 版本 ${item.version}`));
+    article.append(node('p', 'news-meta', `${bilingual(['来源：金十 · 供应商报道','Source: Jin10 · supplier report'])} · ${published}`));
     const modelTitle=item.analysis?.[`headline_${language}`];
     const sourceTitle=item.display_title || item.title || '原文未提供标题';
     const reviewedTranslation=['MACHINE_TRANSLATION_CODEX_REVIEWED','MACHINE_TRANSLATION_CODEX_CORRECTED'].includes(item.source_translation_status) ? item.source_translation_en : null;
@@ -492,6 +532,7 @@
     original.dataset.sourceOriginal='1';
     original.append(node('summary',null,bilingual(['展开原文','Expand original report'])));
     original.append(node('p','news-body',body));
+    original.append(node('p','news-meta',`${bilingual(['收到时间','Received'])}: ${stamp(item.received_at)} · ${bilingual(['版本','Version'])} ${item.version}`));
     article.append(original);
     if (reviewedTranslation) {
       const translated=node(language==='en' ? 'div' : 'details','news-translation');
@@ -541,7 +582,7 @@
     }
     newsSignature=signature; renderedNews=rows; newsBanner.hidden=true;
     if (!rows.length) {
-      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无已缓存快讯；请查看上方连接状态。' : '当前缓存和筛选条件中没有匹配快讯；可切换“全部快讯”或调整关注范围。'));
+      newsBox.replaceChildren(node('div', 'empty-state', filter === 'all' ? '暂无新闻' : '没有匹配的快讯，可切换到“全部”'));
       return;
     }
     if (filter !== 'focus') { newsBox.replaceChildren(...rows.map(newsArticle)); restoreReading(); return; }
@@ -600,9 +641,15 @@
     if (inFlight) return;
     inFlight = true;
     try {
-      const reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store'});
+      // Abort a hung poll after 12 s so the next interval can try again (inFlight would otherwise stay set).
+      const ac = typeof AbortController === 'function' ? new AbortController() : null;
+      const timer = ac ? setTimeout(() => ac.abort(), 12000) : null;
+      let reply;
+      try { reply = await fetch(endpoint, {credentials: 'same-origin', cache: 'no-store', signal: ac?.signal}); }
+      finally { if (timer) clearTimeout(timer); }
       if (!reply.ok) throw new Error(`LOCAL_HTTP_${reply.status}`);
       current = await reply.json();
+      document.dispatchEvent(new CustomEvent('quant-feed', {detail: current}));
       renderStates(); renderQuotes(); renderSubscriptionControls(); renderInterestControls(); renderEventControls();
       if (!readingRestored) {
         try {
@@ -616,6 +663,9 @@
       }
       renderTop10(); renderSentiment(); renderNews();
     } catch (_) {
+      document.dispatchEvent(new CustomEvent('quant-feed-error'));
+      const health=document.getElementById('feed-health-summary');
+      if (health) health.replaceChildren(node('span','health-warning',bilingual(['页面数据连接中断，以下为上次缓存。','Page data connection interrupted; showing the previous cache.'])));
       for (const name of ['moomoo', 'jin10']) {
         const pill = document.getElementById(`${name}-state`);
         if (pill) pill.textContent = '本机缓存接口断开';

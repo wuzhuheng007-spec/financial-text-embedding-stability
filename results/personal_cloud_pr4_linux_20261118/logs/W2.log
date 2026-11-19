@@ -1,0 +1,7 @@
+$ C:\Users\ROG\Documents\ChatGPT\financial-text-embedding-stability-sync-20261113\apps\quant_portal\var\.venv\Scripts\python.exe -m unittest tests.test_personal_production_settings
+# exit=0 expected=0 seconds=5.3
+...
+----------------------------------------------------------------------
+Ran 3 tests in 3.591s
+
+OK

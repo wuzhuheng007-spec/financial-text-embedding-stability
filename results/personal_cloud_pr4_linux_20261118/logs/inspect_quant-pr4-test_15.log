@@ -1,0 +1,5 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env run --rm --no-deps -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/acceptance_synthetic.py:/accept/a.py:ro --entrypoint python research /accept/a.py inspect
+# exit=0 expected=0 seconds=1.3
+{"feed_news_versions": [[4]], "feed_journal_mode": [["wal"]], "feed_indexes": [[19]], "queue_jobs_by_state": [["DONE", 4]], "queue_worker_runs": [[3]], "score_rows_by_status": [["DONE", "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d", 9]], "score_articles_by_cohort": [["PROSPECTIVE_RECEIPT", 4]], "daily_snapshots": [[1]]}
+ Container quant-pr4-test-research-run-e61b97e06f27 Creating
+ Container quant-pr4-test-research-run-e61b97e06f27 Created

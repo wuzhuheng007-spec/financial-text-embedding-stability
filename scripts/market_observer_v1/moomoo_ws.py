@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from .moomoo_webapi_oauth import LocalTokenStore, OAuthError
+from .moomoo_webapi_oauth import LocalTokenStore, OAuthError, OAuthTransientError
 from .service import AuthorizationError, QuotaError
 
 
@@ -194,6 +194,8 @@ class MoomooWebSocketPush:
             return
         try:
             token = self.token_store.access_token()
+        except OAuthTransientError as exc:
+            raise ConnectionError(f"token refresh unavailable: {exc}") from None
         except OAuthError as exc:
             raise AuthorizationError(str(exc)) from None
         if self._factory is None:
@@ -343,6 +345,8 @@ class MoomooWebSocketPush:
             return
         try:
             token = self.token_store.access_token()
+        except OAuthTransientError as exc:
+            raise ConnectionError(f"token refresh unavailable: {exc}") from None
         except OAuthError as exc:
             raise AuthorizationError(str(exc)) from None
         request_id = uuid.uuid4().hex

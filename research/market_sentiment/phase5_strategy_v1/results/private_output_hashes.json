@@ -1,0 +1,1652 @@
+{
+  "ledgers/US_QQQ/full/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "da4770a6ebfc92fc7a56a4e9bb648da9a1536f90b54815e208c386ab0e8af0e8",
+    "compressed_sha256": "7d787c776fbef4ff8a966ae85a6e33663f260f80c8e85e2c5446387f84646a3a",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "2a5aa28d8feca41b13fab8edc18837b2e54927867ab402b3de428857c5aed9a6",
+    "compressed_sha256": "b5f78ec31ee4aa2fb11af9faa0726bad3cd8de0f5defa365bb32f3fddd67d1e0",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "3f50b0997ad3670d9b56756f6f86b692b0f6b6adcdcdf1c78c2d774f00a8d00c",
+    "compressed_sha256": "f6d58fd3044175597a85d452762d2d5f03d5eb3e2efad947ff82ce9a39f18d5b",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "0d3908a385fc8629e743b2fce676cc456a584769f854af0b47aeccbe54ed6bee",
+    "compressed_sha256": "9ffebe5d8e6564edfd2c2e82ac251d411bf588a3cae53e28748686e62f1236be",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "58ed4f910e7821043ff1d43d84fcc802a4cb4b9cc460843e7a0c1334205bf1ab",
+    "compressed_sha256": "02c275a52e5ea460fb789e93a76502fc5804d1de98531f927969f654a095cac2",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "91dc73a322167e765529117418945a389cbd9cf5ccaa243a393313469f31290c",
+    "compressed_sha256": "8f54e1dde825b51a5b538ade4192c432300a5a18130201efcd7cacaa23e6ac21",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "c751f81e4f53bd544f5fb5ec0f1aabec12bb46e12e798ee572b1b62ed3d80515",
+    "compressed_sha256": "339ed6acd2a09ca51c10b7bb147333cc93e92abb7ea41081ee416df76aace0bc",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "e45f6ab438079a2c2ab364a9dc44b5d32826d9d1178557ad38d6b5b71e7e6d42",
+    "compressed_sha256": "29a26e478d3b5e2262b5353d2a4f0cf8f853879d3e98a88c70977fb57edf3820",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "0cc2972b17906ec129db1d101df07f233fe4ff8ac3f5f9b1c5fec491d18915a5",
+    "compressed_sha256": "ab2e74fb90abaa7b58f00c01ebaa7feaa0339edb860eb9bcbaa2891542fdc4b2",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "c20c73f39171bcf435cb8a7a61e2de50c60a2e7e69ff691a610ff91bc8df1897",
+    "compressed_sha256": "5dccf28bb318d277abda6d1c8b2aded7501a4776a61641b3a55ea3b3feba0d52",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "20ae0a5e4e249b154c9e870935068ab047feda23d68e2997c9d247dad85dd87c",
+    "compressed_sha256": "7b3338925f9ed2e234cbfd342589f438d020fb34fe5e81ab125d61a7badcf32c",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "54b8878addb548824470886ccd337f7f527c84203762c83879803597f23ebd07",
+    "compressed_sha256": "41a3f8db36ec2bb40cd8ff243f61e66e468c3aaa9c4d139256d9df4222f74591",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "c467e2a0d2a66958598390484322db6dc9ab52ac9a5cfeb7a8405327ba4ce3d4",
+    "compressed_sha256": "51556f938ab4f613918bf92622ad0167a027d2fdcecac175a8ed40638bc2c792",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "8cb18c6b48c9bb4b6cd1c62020d499ac1fc4c894ac4973e8630853df056d403d",
+    "compressed_sha256": "55a787f68aca048d6b0181cb0c2053ed3f231c2fe2516f16798cdfec98a332a7",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/full/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "a10c99bb68b7824ec569124d95e7b101e49cba28b18f167554d24c30a7009cfb",
+    "compressed_sha256": "90abb35d98e18ec3d37021bff75595d2cfec7f66aa0b7974c11bc7e252f26158",
+    "rows": 6714
+  },
+  "ledgers/US_QQQ/development/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "5788f7d353fb33889afd0094860786e03548518b48d7726a64c89996d4f168ec",
+    "compressed_sha256": "fdd578647d14f592b9ea478853cf569cfc1ab38ba56a17115dddc35ffcdc079f",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "af8158359af4fc83b9c0745e96ef5336d5536dc7e23844d0cda5ff615aabdb24",
+    "compressed_sha256": "19c8f6595241823310c19356941a9c71ed0ed3df307211781e754048f1c09e46",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "0bfa0a17edc7f82c65870fc3f468c24443ef258e05bd0711f1d406f23c937b01",
+    "compressed_sha256": "8fbb881269d83b592bacc9c7a86e84ed116370a6fa5cf10ad985f32a51a00493",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "7b7cd3bf0df2c8c5d7cf7b7b4cc2fcbf69451e145ebc56226889b0a0da89ba56",
+    "compressed_sha256": "f9d48352eca7fe19f9cc50d65ed0a43b1ba499dccd17d8080ae4b520705cebff",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "c48cfa31ea255e4e8e0f035504b5ee4af03aca4f5b1680d1bca1ab0ef79dd83c",
+    "compressed_sha256": "a56f4a30f006bda379c48c38f18d11b4051f6a4996435cbab18ddc174187faa4",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "3bfdd800dfab61cfc3f65323000475fac2a1a3687a897f4805c28eccb8fff949",
+    "compressed_sha256": "31a064e78f23d2275e2b009b4b0a5d8e646a58e070ba8c79665ead6672999e83",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "87838e87c5cbabb76a9a1215d106a8d565d59d9ea74a2377bd154f266bacebaa",
+    "compressed_sha256": "c81a47a40af24fd175e5d9e7da3f36d0147a1dac2732a679d7dccc33301d764f",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "2544d0cd9e909f9696f001230c2eeba54d048d1839f24dd93c310e0ce5eb3687",
+    "compressed_sha256": "68fd32be1a446ddce5657538a3bd795118991ed21dee418455ad3d0434678f0b",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "b314f803e936a7c0161f53227bcc570f71936f680d9fe583ecf614e4b8445000",
+    "compressed_sha256": "2044fa20268de6293c60b4baed11ae2a640a81ad1b3d1f98995374966ffc87e6",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "f9c9a6d30171da9d2ff75a2ad05428811053495a78dc16cb62d2bfbcf3f17861",
+    "compressed_sha256": "14b78e4b710b4d32d57ccc3aacb7d9657a0629dc1f9980b9a4df567e786c855f",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "b0340e9d96632ca252512ef32138be5383e3bc9035f163fe4a95629b35c6f319",
+    "compressed_sha256": "1f490a2038491d0b9f2dbc4dd9a5553e08ff9a8e25222689a872d2885765adcc",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "8c5fb92452335e4521664378a90158eef227e5a2a05dbeb0e3fef3927a6cafcb",
+    "compressed_sha256": "2eec1b412137215de3d308269ad28e7ca25596a6266cbbbf50480b53305a64dd",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "efb68b9e87916749b7452adba552c311d24b271ea65137ab709c8dc4fffaca39",
+    "compressed_sha256": "ad00bb1890eeca4e4e56c255f52772190e85f642bd5987d7282f7efd13ef838a",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "2d05662e649b9e820563e907fa5894f7b249a4f2d75b83f6bf8d2e009cc6d307",
+    "compressed_sha256": "eb48ac34cc958e2a4622da3306fabf4977792c5266d6054b86eb9a11c3f25cca",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/development/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "60efd1d98716b34de7632574d62b221f01036897d55be5d8d495cb54310a9818",
+    "compressed_sha256": "9475a1becbe4808815f2f77f85a3a245b711bb1f10a866b9d26c726d022eccd8",
+    "rows": 3727
+  },
+  "ledgers/US_QQQ/check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "2c59229ff974e42b4cf328b2a5cc9449951a13ee3347405a848f30e43e9cf045",
+    "compressed_sha256": "6c092260bd36e8ea5ec2ec7e50f1df8b9b7cd8feae8df7fa8849bce1333682ef",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "b36d9fe257892eeb1cbfe156ebc6ec7cb87f398203056bd0adc0f39083ade149",
+    "compressed_sha256": "6dd6301d03e44d102a271a649086ab6539e6a4fe3ff964baf2ab0ec14863a310",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "b164970baf5692f19d9778cbeb3d777c19c69a959e09bf6a89d6d93524e6c2e5",
+    "compressed_sha256": "0dcdca2279dd3c3ee7a28fe8e6f7d2598e837583edb86126d557d7427f9830c0",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "5d8825a4a41178eb083d77848cb6de2c8cd00d1b31ff7ba9b1cd8dc781e9c9b5",
+    "compressed_sha256": "28f260e1e4ae27553db071864aebdba7faaee7769a7093ed554eec4c68fbec6c",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "c427ee4d77dc3afa8395b80865e60c46099ec1237d06281b71518a4c3a5ff85b",
+    "compressed_sha256": "493d5867fa2c8501fc2bb3db259b68f41feec2d67cfc614e7c32533b3a7a400f",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "a23f1497dd9d7a65ee68f863929bdd0eba1c1a521112a223b524a6c2e816b049",
+    "compressed_sha256": "9245080bce8df1fe281dbcb7451c5b5adf9b602455780ba9a59ffe37c75e06ff",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "7715b1e6b3154b6d00765d7f79135a3c8baa7b03ad632a0237ba766d25364812",
+    "compressed_sha256": "d5c596715c1482c650ace8e70a285626778ed0f096447ea191ef3d13f2fbe68f",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "27b25eecb3ba3b022154dbd024f3761c56c98889b535ae21f89202eff5fb1e23",
+    "compressed_sha256": "e6098ff874bd122251524c1300b1574886b4c2826caba985ca45bc2db611d6a9",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "fac9431204bd12f2cd9553147189fda0210550821230c65a11c339b77c707149",
+    "compressed_sha256": "adcd65b9db0ab3ad12d7b04f88c4bc99b4b8cdf24a8231d5a1590583f4b7ae3f",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "04eb2276aa6559a475beebaf82cf81582c483d29ccbad83d36971dcc1047ec66",
+    "compressed_sha256": "e2a112cdd7b09b889f5bd1aba7b15db5bd6119c44161c6417f0f657fd1761f8c",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "db6e38e84d439a6fe5a13897efb76f7c60ee14cc9ba048ac406d57b6fbf1c033",
+    "compressed_sha256": "383a1d03a4eb095b3af9514269893a13535d85af1ec270ec0b588e3151acbb77",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "186355eb68aa907efebac9a1ea9fca9a938fa9146155d845dca7a51516dcd101",
+    "compressed_sha256": "f679502c5bc7a9db7a4795bcba84a200c114943f520f1231be1e845a7578bade",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "641270da07a7ba03f38ac5d68ddcdbf940ada2363c0326c8b022cf0eaa239832",
+    "compressed_sha256": "7bf682d76af6cedd68166d10753523bb74f22269afb16dad7238fd572adb11d0",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "c9d7032a0da547a80096e87e4ce250451ce888087244fbb1e1bb45ba27c62a37",
+    "compressed_sha256": "8506cda5888e3956c5641998b69b8c06169b8bd8b28d2db69a3b534afb809e5a",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "cce007c0f22ae8224a5e259168f7d012fed54ef050bb8ed4ff75462021d7e30e",
+    "compressed_sha256": "23232ca32977a03000062a65cacfcfa9b66680af049300075a8fbe405abb565d",
+    "rows": 1257
+  },
+  "ledgers/US_QQQ/late_check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "b43e6d3c6b7649a52794c63057a880334ee3bb958777a5784f19ae76ba06bfce",
+    "compressed_sha256": "209a78b3225367d00c8898aaba740248d7c5cdbfc0cd6b796faedf9368b3feae",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "a24a9816580d78e74380df8c13a9b47d4b24e6687fbfadb1c90ccd5601a2bb35",
+    "compressed_sha256": "8c56ba2e1e543cf8f321e30369d6dcaf6e6b202bd0e2968c6b1cc0a4ca22e4c3",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "8ca8bccb89be007b249bb5a0dbdace9a83989bfd06bce6452a4cfe6a654474b3",
+    "compressed_sha256": "e9dd5815f8aa0407d027d737fc4ac832f2016dcd8d7083931891964e49ecaf40",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "f465e388bea42f8aa84c21301877f14bf15de7f4203de664c65ad19750666d8d",
+    "compressed_sha256": "c029f3b7bd4fd88607117cbc7014071cb21ba44694ddccffaf9266cc9486d7b7",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "ddc4cab667f0f8d862939e88f9d8ac10e6a1f0833f18f6a5eb7dcf689ca501ae",
+    "compressed_sha256": "35f63eb027b57f059f619d5fe1dedaaf805a024abc4a9b26aeb1d1c510394ace",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "1dbcb3d844cbeb82e83b3253aada4bbb03466cb29cc13fc130273c2cfa3d85a5",
+    "compressed_sha256": "91ba5c4e3a1abe7fc7e34cca65291966146cc835effd2dce10796b9e626c5744",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "891ce6dba1267e4e1ba1debb884a8b6656e69edfe9fd4ceb6d1c5621cbdd60b7",
+    "compressed_sha256": "917e9944aff7b0c13fd2214ab6fc53684a02d648cf9559014e91c88774d1b4d2",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "98e2695a7ec0995a719f723b4adb8071c96e007e7c1f97224c163ba823dadfc1",
+    "compressed_sha256": "6cff3aadf696b5ebd386f281eeb098f945262a76df9f630c4dfb17f76804308a",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "69a9e99a974ed6d358db047fcc1911277f1e29d70ab0d8b337f6518465ab22be",
+    "compressed_sha256": "d07790be39b6bb5cb8513d98394c33c90d439d286ed5880e2317e5982496bc87",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "ebb8eb5abd53f2bd52125f5a392561c2e06d567451fc30c4be8fcb7e33b39b58",
+    "compressed_sha256": "f5e8ce12485f728ad75ef1c7cd452c32b751c97b50afaa67e5eecbf3d48f542c",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "8c4b37dac0c291130cdc4c038c8b197081bd16ebb029edf0986e772fa65084dc",
+    "compressed_sha256": "69ce03ccd00841e33874ee3c76ad6342450bded274bfa2f23a921b59910ca8d1",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "ca024f7844ef2fe877bd6f36826a77217b10f46ab8537798ebb8d958c065f589",
+    "compressed_sha256": "6346cc3716dd471ab1f4fb0ad850dec83249e1e04707097774b83d10f622bc88",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "edcc436c927fc6652ad90ee7c4ab9afe5d319f12265175b5f5205462e2623054",
+    "compressed_sha256": "af687fbc256166a359be67ae5f9f2cbea4aa15c7d3b1b4151d3aef86a74c2390",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "efab50618ccfef7e948acfa868aef02df0ac2379ceebe6f28376464d968ca071",
+    "compressed_sha256": "2e68fb6297bb9261c5349f49e7f1581735f4c980cdaafbb71e97e74ff9c7d155",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/late_check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "d191d53d5f43fb63a121d0b928aec3d908320311f8c41799ccf23a8eef4507b3",
+    "compressed_sha256": "52525429704fc1c7615100b76aad2c6843de860aab4c3ced2f7d3dd552b4c2da",
+    "rows": 1507
+  },
+  "ledgers/US_QQQ/monitor/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "f51d156b040d40a3b3f7b838887a52ce12f85f773283831ecf1ebfed999a6c49",
+    "compressed_sha256": "2cb046e1801e7b4175b401151750c8a230fcd8688e5fd79ccf999035e8fe95ad",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "16ed7f9de3c7ce0c58935294e2240a5768208192d461747fd56fb7d9b679d65f",
+    "compressed_sha256": "fe4a319af0b48117e456bab7402853e2e2ebb8f8f53f3aa43d8910fc24288fea",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "d1ec92417b3498379e5080f62efedcdc85a7b2e4dbb5f278965f588412da2975",
+    "compressed_sha256": "fa4e8795d0f92cd3a3e432e44caa700ea68581d314bdf1843c3c74307477d59c",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "c1c3d3aaf0be7ed066a587534bef8139255707a412b51e80961ac2c3fe368d43",
+    "compressed_sha256": "e4654e3c839972c58baafe175b6d3eeff1a6110f9297721965416888afd033c1",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "5af18306a3e645c1ff891e47e6ab4ecc112ddd038f8c01f5394dfbdaa6864521",
+    "compressed_sha256": "cb1de5d7316d6e23273933848382c09b8b46416452949b4092194f5bd833de8a",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "3f8ccbcdc520c97a06b1512e8ae896a19ccc26d3b5874740f146fe24c90d7dbb",
+    "compressed_sha256": "6fa6e0c2541bc55fd1b5cc542b1b66fbd9e397c4346dd36e7f4c1b53a8ba8b8d",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "0d92ba892433bfe7fa794f54154bb2f38a1e58e09018fb9c847f8c503b577d6a",
+    "compressed_sha256": "dcd2f407b0baa1f925f1528ec731e98ce5d205d5cb2350918d70d71715b02976",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "31f9d50182e45fcc85c832a2a685f558804c7311d918459879df14a96ed71823",
+    "compressed_sha256": "b1c3746e68345f0fbc76ec30da8858675fad2422d777d10a5d4c94ec816e268a",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "c1c3d3aaf0be7ed066a587534bef8139255707a412b51e80961ac2c3fe368d43",
+    "compressed_sha256": "e4654e3c839972c58baafe175b6d3eeff1a6110f9297721965416888afd033c1",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "18acf7f2e8a3e67397040968d059ba7838701f2e176edcb4edf285b6a77daa49",
+    "compressed_sha256": "93c8e0deeba20f5209e86337c21d89d588634609e4d15805a9c4955165ccfaf8",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "a517dee0724a9779f252d31c55b9f2b931623c539dec179bfe8b8fc98174da7b",
+    "compressed_sha256": "b96412f8c8f07d9e11c9dceec1db0cc2b1eb79766b988589ad58e27720099c82",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "abfea8704bdea5855d1b2e0c7010bc2d3c9eefd5f40e549569659017cd9c3ca4",
+    "compressed_sha256": "8d455423cfcb2be713fed709ffe5a86411f36ace1e4b49df533182ebf51f007d",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "b7daa09c2ac74001b2c9bd4a49a9a2e8ae81541d711e207bbc8bc26012de240a",
+    "compressed_sha256": "778d68dc8a1192ca495f7733785e1315faed9fed1dceac27e5c330ffeba653ee",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "c1c3d3aaf0be7ed066a587534bef8139255707a412b51e80961ac2c3fe368d43",
+    "compressed_sha256": "e4654e3c839972c58baafe175b6d3eeff1a6110f9297721965416888afd033c1",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/monitor/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "961c733b910aa481681390f2ab923073a3f03f6ac289bd4b39ff5a0db3757588",
+    "compressed_sha256": "1f3b1f360b9d5fc0bd14f7c5fe4dea789e7ef30e6193a5480baef7bf5f5b72b7",
+    "rows": 220
+  },
+  "ledgers/US_QQQ/primary/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "6420914f98124ea4f3c803d340fc17133bab6fa8976f48f043ebebe961e9ee85",
+    "compressed_sha256": "8850f3524cf7c4a945c2f0c2b9477223f2550c78696ffe09d99c6b2858c870e0",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "9333670143d9822a0f6fbbba2bfca35f4dbd0d533fda98e93b346804241f784b",
+    "compressed_sha256": "35d161aa7cbcb07bd9fd67ba210cf64a9b2cbe1c03a1e373bb85c4e160c654b8",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "5f913a9e75b7a361fc4c93f86525cd3bf4bba979ddfd75353faf515d653654c5",
+    "compressed_sha256": "088afa0a08ad66cd84569e50cbc05524b7a067e47614a3a4c2b239f8c3b2db52",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "5ab166592b52e6d705a3d04dd3489e75e6791c6b9e4e740840da3b6db5a7c888",
+    "compressed_sha256": "84ebd0cd3294c4fff26e5d8b76261ea0ec040b948927b73da27dfbbd22fd4e3b",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "d2e2834cc7d93413f47e4a9c7c1e4ce329fff6f5fe7ce2bb59ee1336da0c10de",
+    "compressed_sha256": "4f5abdd289023d07048cfad25a2017e905e65722d0092dd33dc30e190bd990e7",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "b9401d97d4544f54d82ab90cee24f1a6f44dc5be0829342a9c271bed9460230a",
+    "compressed_sha256": "d58506eaabb02f2b64c2666fe0dd42f326ac681eea74eb934d48e5c21ff5dc0d",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "67791c3e07d5cf2866808b2078d26b947afdc2c447df96ec2a4235297db24fef",
+    "compressed_sha256": "50f5e006587a8f151b60137eaf7201b307ce26396caecd1f3f1433d3f18e46f6",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "fdf138d9e8e11e45daea9660feece29394d15a7eccb14693adb2be276bcf02bf",
+    "compressed_sha256": "8668e95b1f3c2ea42cdaae272f191d47e3f6556e7b316a563f887447f76d660e",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "3f0b7cf2c5d36141abb0a321a97cdda0adfd2d627eda0792345e3662c9ca6e81",
+    "compressed_sha256": "508f423ad7c25d98ad798cfe5d79c599435dfafb046d9da9a7b69b052824e236",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "00610ef159f82b9d3f31c614ae5aea1fd809d62dab34a1e9eab3c4bd7f29ab1e",
+    "compressed_sha256": "0559b0a3b79973b1440de1e1b283db25f676073bc5ebd5a66b8676507ed29530",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "0a3a19dbb2d93cbd8aa9895deab507b0c809d54fb418cd743529d67de81122c0",
+    "compressed_sha256": "d4b59a7f3a60f892e74150166a90e203b1bf45f5e3df683228b5cde9a501badf",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "298a88acf6e49b3c4a14abd6af7b6d471fe2a97bff23a648effa0734b1d71643",
+    "compressed_sha256": "767c59af498c1a4db969444d2ae2905a515d8a6d24d182760cca39bb1ef0a5e1",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "3d82c74b71d872aafc56c91344761261960cc9d4f270c8cc6c4a94e1273bc22d",
+    "compressed_sha256": "a6d0acc3650bbd3951168ff5ae6a65c3ba73f3628b11c0197ebfeb8c5bc252c4",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "aaf12a388faea7e17df9070e6a24aa12124016ba831a18c2ba531131f284c026",
+    "compressed_sha256": "26c7e9c456bd74a785295974ab046bfbb3ce985e5ea1c6e15781aa8367b6345b",
+    "rows": 2765
+  },
+  "ledgers/US_QQQ/primary/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "dcdc4c3ae72f3ff077d7b14732b2ada8797bf2cb91e827ff91558c1ec2294006",
+    "compressed_sha256": "a1161c2468c62dc1f94439cb8f8ecc6ad4a063f4d2cd736113222e7a70134bb8",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/full/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "9302e665cc5d492f3f49ba516cdfdaa66314db1fff09984259010c59dfb0169a",
+    "compressed_sha256": "172b25408574beeb3e383c2e541dea9b8514de4795b7791c6a22c4cd42b198ee",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "f507f93d6e3b03990e27312ecc434cec716bc857fbbc0b9018619770b4a67d30",
+    "compressed_sha256": "1d57e7717bc74ad31b77ad8b3f45134602647a2e487a4d35551070f1827079df",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "70129ec0faee31388ac4d972e000347d40b9f2a442324c19294749f9bc6b620f",
+    "compressed_sha256": "a1c529ce8acd92a75de7354142a7248de9de2e30f3856887fe260cecb83c16bc",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "7302f87cf4ac018b6b748336976db5e250a8896b906e891f4e363dad5934011f",
+    "compressed_sha256": "45ddae748584960296e64e860e2ea0d5e976ef1223623b50d62900448aab26c8",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "10648368cdb789a5cc10193e50fc8dba1968c23c0758b108bed9e4efb5659fa6",
+    "compressed_sha256": "d8c347476d545c1d668e062420d15402a9d23331437c7debeab138198d532cb8",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "cb1fffd4323febfa361ec41d83f36af8a6b75ce4af104ca7ce81fc4f795a2a2b",
+    "compressed_sha256": "bb48aab68b67d796789baaae5ab489c62b6877f72b5c8a655176d9946629aea3",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "3728ef99921f9c78f00de62fdf92d4bba7b9dcf82e6cd4e2acc224ba154fe16f",
+    "compressed_sha256": "13f2f2fa265f1952aa6132b347a507ea0e81e2e677df18fa4ce406da2e1e65ef",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "504d389173ccab3134066c079bffb479d893505484054dbec7964e0fec556151",
+    "compressed_sha256": "2f1e492180ebd5491f6c678f86b53b0e3ba57443c470fb779f9c7c59ebf94ebf",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "45363d2bedd7211d673ecb11242fc23af763ce15c2f23593d23ba01f4b886096",
+    "compressed_sha256": "6623462bc93af458fbf2636899f1c2675255f7978bbfad85ed5e6d3725100cc9",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "6722afb186c33c38c64e510ef16feb16988d0b6c7375a3896015f457a1d99988",
+    "compressed_sha256": "8d58c256e4d474263a7439b5c191377b7f4188295fedc5f3bc30d59e21fdb464",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "d26357f4697e78711770b75bb7ad6ef1e78de15c66063e25187ebe435e63bd94",
+    "compressed_sha256": "5a54ad4fb5e40f2d409f6714d4d88ca0d916cbfb153662c7746c88f393536f0c",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "4066ba820c2d0eeb9948661ad182ec299062a4c210cbba75664dafffb3de83ab",
+    "compressed_sha256": "90f89d44bc2e2fe155352ede00c94d3abe1f2940af03aaa1281e0ddfceec8242",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "fd10f2b0eb66833d66c97633d1382cf3a4343776e9aab57fdb93de9b1f8c39b0",
+    "compressed_sha256": "887cdb0557e296322a099cb59689550d6434eb89f3810823545530b51a09ce16",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "7354e56a4587379e1e120f143960bbba8d4835c1dc2afc88752bc9df2fefa1bf",
+    "compressed_sha256": "03066d984425d677d1251f48ec18b9e1cbd157aeef9a101bda11195de5b25fdb",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/full/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "9f5652862c7146f815425be1af3519dc1911b06f7cdd5d7fc123d18e82a64e5f",
+    "compressed_sha256": "804735554494bca851e379af59cd21fc44d15a8cb7cb26c19c445cae30a540b8",
+    "rows": 6845
+  },
+  "ledgers/US__SOX/development/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "c1bca6f663bd72b730d7e22b0129266e6af39723510ca0db6c1d6dfe38ad1767",
+    "compressed_sha256": "437322ed99a5fecd7c6c64ff15be286e83035aec415df75c7c2e5f8fe57fbc4c",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "c65b77d9a3f2b999f6339b31b7379e0542a5abb03574afd723ed7e0987a6bb3b",
+    "compressed_sha256": "c00c520c2c0702d29e12dda94456edaec0842692b722aa09a588c9ca2c06fe3b",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "d7e08a2571967503744e7b75db8b9f33756e93f22dd6611b30ca2caed3c756cb",
+    "compressed_sha256": "ea216c0465961bbb3734f8bab882a903894fa48c55ab3497fc1c0cc73b81ea34",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "03c8fe05c00a6534f13a17829249c160a1b70b6e72273f15b70d6feb4174b18d",
+    "compressed_sha256": "e3502325e95244c652c1905e9d9bd1f86b19714657b3c5279b6734fbd3db3155",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "a1e6cceface5d618c35b86c35de31c479bb76cd88ec5544b6d67ebc224b0d5ab",
+    "compressed_sha256": "3d5b1253a5851748683847a9a517338f77250e6fa08c3865f200948003fc2dfc",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "e87cf0a54c9654fe1ff508b4322004e259fedf14d0a5b8426735c85cc42118fd",
+    "compressed_sha256": "ba5f842f4e12a9ba7145d03365f86f3e30395704bb359e9660cca8b4de838399",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "93c1102abc672197958ac347357ad94c313e2e02a57c2a0fa7ca97e85498d365",
+    "compressed_sha256": "66410e4c1d88f1eb2f8b79969a38af5d0aedc206497a266fb8205725be89cf01",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "063af8179ff21d719b7eb4e23a0bee55460cbcae9570a7256efdb93ddd9ad522",
+    "compressed_sha256": "77383ae4adeaa8dea14c504456da359e01de080c869579874f187c92bda13feb",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "f3e3111891e6b9135ed0b95486f1b61f2d791899a0d72d12be7858a990a85e96",
+    "compressed_sha256": "7b46e27db81aed85af8b98665baf0d829f482c95d6c809b868efe88fcdc2f222",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "c464df2ab9140810e9fe249255ff2c9375791f05c505f5b4020db342ffee8673",
+    "compressed_sha256": "3ea2affa2017d13a99ac2ea3398576b36968e2910eef8f2f4fd06ab717085c3b",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "d8ff4f4a7f971c2562559ba61c05eb19d43086c5bcae6f3965f02f763408871c",
+    "compressed_sha256": "1e16fa7535bb929e6a00dfefdabe8b8111dfc399ef1d3fa0fcf7ccf6090f528f",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "ebd7b7b231717e3109121f8ba896bf3d2cb0f1fd8997c8c863dea667b068054d",
+    "compressed_sha256": "1dbf70101f1fe37b1ca17ba03e0e165746c03b089f8ad77607a10e68388a3978",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "d6be2291bdb54b133cd81b521c7dd79fe8ff08a5338ec08635a923890a345faf",
+    "compressed_sha256": "f769afefea28fb28d900d62633ed3448045ba89bb097ba80ea65c579a1f45168",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "b7042d68dca865be8105b1a3ba605f0c286f4882818d4af626ea2d96c62e2377",
+    "compressed_sha256": "cc22eefa60aba34f9cfc84cc7ea8efef3534b0ae1eac8c3887e0188b78d2b0ee",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/development/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "a19dd6ec95052d610ca99c71907a0d7e8b209f37c017e406955479785386cd64",
+    "compressed_sha256": "a7f5b4e1f4f2879ffcd61e3db655ec7dca05a1b0babfe904520731e32942a618",
+    "rows": 3858
+  },
+  "ledgers/US__SOX/check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "68b297d6b5e2c869ad3da7b18292c08cfbc44f69454d08888dc48380d73a1b96",
+    "compressed_sha256": "15d75676d3704e2fed69f0f8072ea930af7e1092053f34eadff949f94715a7fc",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "3e19da4843e4553772a73a561c5e9402082b0be214c4663ec71c09bf85104dd8",
+    "compressed_sha256": "1f2051f2d4d16cf61ad00574280792348635f9730e3c4bada7b48634f916b0b5",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "9827d2472f1d6169f9c2af63f44a47ad69b86620e029ae697721fd4e26d750c0",
+    "compressed_sha256": "909a720a37392e832d1dfe3315ee41546ad20027f89903a39632e53baf3bbc63",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "92d31f038f058739ef0cd9447e6cead2eaa0963cf660206fcd65a8d69b83422c",
+    "compressed_sha256": "d77689b51aa04724661ce470516175788af35e1656eb9ccaae957b6454c16ada",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "5708ff129726090df1f0a1609c56d5f12225ebc853dad84cf7b4093efd8cb632",
+    "compressed_sha256": "227046ebf6ec99576ea4bd567117c2d4ba4043277d727b22ed157920d2d1893d",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "73708994e57a6377d7b3a3905002e07f301ba01e8afffd7577a50239749e68c4",
+    "compressed_sha256": "c6c669165da417a6d8eafc15d46d0b772f446c9369d4cc68af3e461b352100c3",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "83bd80a4009f80be4157d0cc7b0411ebf25f90c4f7b049d10a379f18942ba698",
+    "compressed_sha256": "7eb46c3a77e1e646f392a71774e0fdb1f01013b47bfca29218b3527e7df205d3",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "95fac8537328f7d4c630f937437c7b2d019565450b03fcfd317b7b3cb001165c",
+    "compressed_sha256": "7140321100ef1c9c9b6e8fa0b2fbd6d81fe1203cdda0d371f102a7477fc9652f",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "3da45389e35bbff582f409b2058e1fd7b94bf56935af621fc64806bb330bba45",
+    "compressed_sha256": "9a76f20a0ea8ba2b3eece2dcf194c4184b63ae9b1d8d3b71da18652227b98746",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "281897053c0b3461b9c2fda0b043a9ab52629477a041839cc457a57e9bcf13dc",
+    "compressed_sha256": "178adc84079b38dd0fccc0f93d17680e216277e4abbc59a58807aeaf49df19d5",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "cdf5c5d8909e7be476ee8b055e1ba23dbec1a3369f94b7b526232f16bf7b3988",
+    "compressed_sha256": "ea64a8a61965d3aa7ebdef8efd22076e18c6d491c8e84f9d6d5e7ce0ba14027b",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "7cb1a4c284b58449daad66069d45afae50de5b02b39953da6b480ed8b5b56f33",
+    "compressed_sha256": "3091ff7195653607fa0e00636b51af00f55df992b3c5f40428bccf0cea2bae22",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "62b3e1a148743cb2ab99d436c00aa096291e152e7cbe4b9bf3a58c4b283c623d",
+    "compressed_sha256": "065e8c1d3d5ce1fc46cb3a1487ccb9682bc8cee8b18be6fb0d6c8b9a1a8cde2f",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "50c99f54254db88a4c2ce29f8ed00d733a808d4b6659d4c7271cfaeb565202a0",
+    "compressed_sha256": "992aaa7253a34b392dd678927156ca3652249b1921108dea9c408a671128d47e",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "5e39b710f3dbcbee8d45edaa0d92312d3ba656185791d0b49ae436476f0afb27",
+    "compressed_sha256": "f74bfd8ffd428f05c42c1edd06d3b3ef42ce306109add344fe6881bbd8d160b5",
+    "rows": 1257
+  },
+  "ledgers/US__SOX/late_check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "84b67a09dc54562beb7a483684a0c8821b77b4825f629d35c7b4db3f7c6d412c",
+    "compressed_sha256": "05271f781e75e179349b79c1f21fc56684a155cad76d45e6e22765a7bebfe0e3",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "9a5a3e5b4c5c3fdd095025cb8b55cd57dd980dde68c492821cd8a18135cd2cd1",
+    "compressed_sha256": "2f114937beac064a85bbb02ae6d4ffe45099e6a3aa3a84c35deaf66de1affc72",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "0e4e09e279bc3a3223446675aaf7b308313d6a70eef3b4e2b7ee486fcec0a07e",
+    "compressed_sha256": "22c448efa71997fd30389c3b9ccb426518f13237599cb34ab821cb333d08622d",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "f9ba4b17d784229dd9f97d973802647af4181cd368425b8cd3b37c69fcd96af1",
+    "compressed_sha256": "956508eb0765d0d1656c0532b46c1974bf8ce514c88a7dca02412b7e84aaf86d",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "19d1f332949b9078bebe10bb3a561c4c225cee79e02f12b86c2081fc9ddd5e16",
+    "compressed_sha256": "01d402d33cff765ca2116da32eae5d3b5a49828274b5e727a65159f7c04d5453",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "7230a7035950bcda5e77816ff2e56a7a1e371d535a1a3e7076da518260d6891c",
+    "compressed_sha256": "c967c2fc83ef6acd88ed13fee4844ac0015bd0512410853b04d7b87dd8f5a927",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "f5908c8be11882f5c07aa74bf9ec972b3fb8989f7a685bf83954ba1499576094",
+    "compressed_sha256": "b4e89295c4c3c3b42b19cdc459199f0adff35df72a45ce186fec44f9ac289bc3",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "4dabd545601a7142c0533198beafab834826c8c26f1d80b94133242156d51ec9",
+    "compressed_sha256": "02341c7cf4952be1f45b3ba1966ee75df87b43d84db1296ee53431517590826f",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "773c37737f9d34259dd8a99a8401c80ff307cb1d7264307caaa85cb17092d5c5",
+    "compressed_sha256": "379f1e2baa64e37d7804fa68e753d1f2b6fa40baceb0ee525cd93a686c1aff15",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "e36aab73776a96d811e74106a78c4ff9c086611bd721823fb5f6db2e5d5d8f49",
+    "compressed_sha256": "7c61750c6ab8c1a89ee72de3cd4da6ff87974a216ef79a7511bbafef03dd55b1",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "00fd274fe44f317d9597ca8468edf79b73481c089872bed6be7ada0f505df63c",
+    "compressed_sha256": "e3a4e2f6bc1de4e12873f62c0069f6fcf2df115c0873d89e2c9660c20600d023",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "99bb316e50e02b5ec956123fd95776edcebafc65a9eba17405ee1206740ec081",
+    "compressed_sha256": "ff70972f1c1fe26313782b4acadafe35e7c71b2b558960f07d6a1a06d19e465d",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "b10bb94189017191eada401b85e76ce672407999b03335c7461413db8a48f5f9",
+    "compressed_sha256": "ae58f5e63b2dbbeac3146786f3156c349ce883038d0f1aa11192d159c333518c",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "8cc21719be0b01d5ac886c5052e6d326d7beedfbd3ae8c1467a24131ebe0d925",
+    "compressed_sha256": "105d9577670a849deb7862ad5f645736159ae0713dc9d2ece8cf28dc731cd091",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/late_check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "682fe6b5f6cac31131f16d2c8990b8f52da76a54ce034cf48cb93261441ddd30",
+    "compressed_sha256": "8d2a1845057e5b436e828dd8791edf098478affa00a8cb8794461a551ba5ec65",
+    "rows": 1507
+  },
+  "ledgers/US__SOX/monitor/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "2c65f1004a8357d8c98395717e18e0d2a02209a0e9706d07761f085f53c8cb92",
+    "compressed_sha256": "a2df2506fa4849939fdcba86c0cd196d1ec6c4de1dc0b2a1630c24951724c6a5",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "9a7466fcf6ae72c3acbfa04773db3eba82d1c2e9179a7aeeadf9cdf5c385abb6",
+    "compressed_sha256": "b3ebba4b25aa52465623caef1fa8b78f8bc6339229b88c20829ce3ed7cad04ab",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "085d98d0e51e635f30968b4d12980d9ef9207b0bc10681992fcfc3eac592b359",
+    "compressed_sha256": "6f00b638ec4912d4daa9dd751078860daf7edd0be508154c8ff05cc08d4a89eb",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "53bcfb68f9e0c64930658c94f22d2b9235e6acdee98c117156e33cbfc8e39c2a",
+    "compressed_sha256": "82a625e917a41c1f1867e8f1f8db515a0e6844277fd74c1b4af5ebd0fdd17bce",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "13508490de9ef4cd0a94b6bb2fc0153059bf86b52146f536e185815bcb782e5d",
+    "compressed_sha256": "b1dbb70b69d4e904f24065d2781b5e09a1e325e60af79faa3ae4df87dc4feb7f",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "48622cc2de1b69c5df6c474cb9c40a33258bc58de33e778c2691bed69e92cdc4",
+    "compressed_sha256": "063377af439cfefd4bb79b75165f8faae35adfa00c386140925712b8d33cf6ac",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "6f580b560097f975cc8d01d11be89187d9c292551ec0816991925f61bb4b7c8d",
+    "compressed_sha256": "e5bc243c04171eec7bae5585d8c44634fe7305fed1494da2c419edd2cf55c5e4",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "1094763708807f625e58a5dc480bd4f8dd3758438d46e6ef45b9f663cf57e01c",
+    "compressed_sha256": "ac16f16e2c05fb9dc32a4cc09d62b9000a99ad1501cfa73ced5ad86189cdd647",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "7b7e35f8ee948987e24e1c58a99b2add143e686abf8391536dc51dce82c194c4",
+    "compressed_sha256": "4ef8c422aedb0022b61943186e7ecbbc3d388a1184ba0b60d2c9e9804eeb89e6",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "a1c7b0e87de59ca7ed02e9f767bd92f54b454d864f313d2fadae979b13016ef2",
+    "compressed_sha256": "b2b6b298d0a2028fb79ce6ff2fde7756b93f9aec89ce1356b26e355c01ede957",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "fa2df07f7ca85f34ffd3e5d74ed07dfe73ca223cf0f704b7937f97769d09b86d",
+    "compressed_sha256": "2e919f5bd915df5445c18c99244f0a11e41831e086d536463d37d51ff112abf9",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "79aa4fc68cfaa4cc4d42ae541778f4e2dad57adcc998bafddee7b715a0ea169c",
+    "compressed_sha256": "f80bcd1fb5e3022914455550a4a3cad6a3dc0f67f31e8e3a007e01467731c1ad",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "95e2fa4e155f5bb9c31ea70385ee18b9d2c7f49ffb0849ebcdc0239fc82a9560",
+    "compressed_sha256": "9f9158f12e594a358b839338ce146aef6e44c76b5434ae3576f6747c0a5e5002",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "da969576318e0dbccd8ccd9984e7087a5dba0b6f566ce660b5e90045d2951ed5",
+    "compressed_sha256": "250b0cf862a2cf3920f64edc705a1d365dc0858eee7dc41e93c8dc2cb28277db",
+    "rows": 220
+  },
+  "ledgers/US__SOX/monitor/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "68dd8b0631f44c5523d375b2ef5860f448c83eb4d4ae365ec4297d50608dd72e",
+    "compressed_sha256": "1d7425d4c85a91f93fe30947f54dec883c65a644a229707d218605a32add38ab",
+    "rows": 220
+  },
+  "ledgers/US__SOX/primary/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "e035a8f1f75779e694855a8655977d369beddd717ead58f4d50fc97cef86b54c",
+    "compressed_sha256": "41ce0ac9e1fb63dc348f23e28543c3c5206468d4d8bf4fe8069f14ac04cbd55a",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "06baef51d0a5bd23001d59dc91e97cf651ff631b3959c7e7bea58b0a94305547",
+    "compressed_sha256": "18731a8511b92831f9fa74134af4fee0fdbbf8b3ff9ae3564cae929732055449",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "887be9226a2e7d201bd5add3ed2e0b5f732595599d6b5535fb35c93a2aaad687",
+    "compressed_sha256": "4857edf44d164cdcec73909f1d74fedaac6e594c4ea5b37bde32bf87b4b453f7",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "f9deb309078bf53216857a4cfe0a51852a634334e2d782b199b5cfcd2b0ecb92",
+    "compressed_sha256": "52ffb19663b229b303bac497d055a3811924de5e1f4268c3f90d52f8992c7d1b",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "68f7a4f9f70980d4a4c6cdab96a08e22b28fa22919cc10f332178b33639c90cf",
+    "compressed_sha256": "0b5f7ac091e56e1fae21690d227bb71c01e3d8b09c68d8f56eb814e51d29f33b",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "1acfcd0c3817ce34f7f8f8c90d558ad3fa8eb11a6a7315269f173d4b541e913e",
+    "compressed_sha256": "64c6ed3f59f37c7caaea54f2631e98ea1e7c766018825aef2bb96bcf6415c587",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "89944e5a7f27c3a80f242b50b84581ba8c777f9db319bfc5bcb712ba010a5249",
+    "compressed_sha256": "8a48447033cbdd248e9240f441f0cbff2145c3808d4e0a27bd2b176fe4913aa3",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "32818157c36147b6d8fda316ba6b2cee9fbc26e1b0cbd0d70dcd9a0788e95a99",
+    "compressed_sha256": "b487fc62edcea1335f2c8325a44f7779aee769a413281516714a5efdb8062293",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "2abc2cca0d276453285eeaa5db4191e094162c494cba8da98605355c497e0227",
+    "compressed_sha256": "3979ea96b5bb1b68b44cfd377a498b059e28972f1e3fda65c97cf0e699f26c8d",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "324e8c32bbd5fd2e99e798e9d0b80d488b690a2ad69463b1d1e197c3638f2df0",
+    "compressed_sha256": "e3008ead72e90f7617935419a227ff9042faef74551df06b84bda3799f9e8834",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "78cf1fb2e3a09699e3675d20979d8da56ebb4c2a0413ba443d091b2727a29e08",
+    "compressed_sha256": "a24616948ff8d497977f9e6d9dbc82632bac3d55342922120102c2e316b49e55",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "173dd88a5fd128a5ce4398fea10cbe3df63a61e8f4c7111457ff03981e8c382c",
+    "compressed_sha256": "d0a33fb9192af1a7fd737c3777fda68019d9eaf74855fc39f7288d4d9667535d",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "74704d49c41adf7f9d580aebe5f369706d574bb216930616a0e523763356d4f8",
+    "compressed_sha256": "c001de38915babe6d8d5515197bb1ac3d6ce630af95c5cb258c3569b6425eb6f",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "55edd6fb81006d5c246fcc4047d2b6fd500cde25fcc09c22d0dfbde169950de8",
+    "compressed_sha256": "41c362280183d3856fcbf85e0fdebc3c1d4ada05c303151a770270ddf1c4504f",
+    "rows": 2765
+  },
+  "ledgers/US__SOX/primary/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "be975d568ca497a6fb440529b684ca4da047d44fdb91d4a6b2642f3fe3528e58",
+    "compressed_sha256": "9478652dd66615cfc49238a3088a07e516936274b5b458e6c83859cbcc54840b",
+    "rows": 2765
+  },
+  "ledgers/SH_000001/full/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "03d88daca6f375d2cc9f90db24e9dda21c8db3387f39c3829eb657688e2bed00",
+    "compressed_sha256": "62f5bae6f94020b4b7886e32866959401679b87086a821f50e41e567ca449c43",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "9e6079de93db011bb919117a93c360e9c15e2268a15691eec3806e29f096db60",
+    "compressed_sha256": "0e3afe6fb9e3a6d82bf7eee0532e97035783353c9cc340d3329090980788ef17",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "fc54dd11c06c9b046fe70e093d38103d40d859e7fba28fd150d5f59825e61cad",
+    "compressed_sha256": "001a4b87e8ee770c7d4cc3b2afd6b9606eb8c1829a6541818e93f7f3b8a6e633",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "a1281d2beb58a584c6703525813f7d6f787ede82f9f48028e5044b60a9c1b4f4",
+    "compressed_sha256": "49115dd94fa54b7ec82a222462b1864c562ecbdd6dbcd3d521529a6cec4c596e",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "12f7b71e9b300ac0034fcd21ff59e106f8e461a1225f71e7559ca03357f3350a",
+    "compressed_sha256": "f539bdd998055f68f92266b42d67b3698be09183f068859e43380113f74efe6b",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "6df9224918c57547013694b5a2a681eb29f07a39697ec814e5893e45409c660a",
+    "compressed_sha256": "918fd2db1e1618a4cfe37a6f3fe6b8e65fd68a6fa2ff08ebfd7068ca57d5642b",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "e92d95134642930a33b9279a4206a7a97f25fe25358bb9749f3431fc57e8aadc",
+    "compressed_sha256": "121e6d00c20c571daad31ace7372bdc64898cf1d4df32b3abc226faf16a3869c",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "dde9feafa8f4f19bd4270515325b9388f98439ff2f2b069200560aa2824d7579",
+    "compressed_sha256": "49302205d132b8ae8c198d12d1b251ed8a322542966b7e327774dcc50f0ddbeb",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "bf3fc22c54b4aec6b926f6f1c376353e7ede91a9e3e008355d0e7b818bc29c87",
+    "compressed_sha256": "f06ded9846b4404f17208b2cebbd3f48c2247eda6b860ee1303bc4c1ecc9116f",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "6e004af843615dcb96bb46e1a84cff315a1b4bdf5226d435d92bb4184917c983",
+    "compressed_sha256": "bddba0b9e15f234bdf62e06a9bc74ef570dae3221d61a36d2165e97dbdd8a31b",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "9e2956278689eba209c3eb3dbd67a6a14fdfaddb86713d0bed9e64a2b2e378f1",
+    "compressed_sha256": "17991002c72973836bd9a01539f6dbd8811d2c59fc262db1142e751203adf1a6",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "ae2e9ea5f8de7012d4766a100fa54448fd42d35808dc545113d90a71f5891e05",
+    "compressed_sha256": "ba449a17c8670b82c2ecb1bf5877d591790b4d3349226c41e384d00536302b24",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "825f7a3043ce33e0d096024cf857f3a86cefa49c64d1b87ca4c8561c79dc66f0",
+    "compressed_sha256": "185f95244e75780299e257efe1ca4426d0d4e51d683ef27f4f013171fb5d1472",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "43f392ede9122a5578f3e42b2c2dd4d64a049baaa28ce20a2261aa15b8a73e8e",
+    "compressed_sha256": "b3e5275d561c6bba14762932a319a995bf5a40de5367a025bf6cfbdc79aa1415",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/full/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "189a3de1c97802003b012af85f44225751cf6b2918b7ac94f7382c326de22d13",
+    "compressed_sha256": "664edcc078b9f13218d5a9ed57e61e769a90c7b9dc6177805b7f4466179c1cc0",
+    "rows": 7233
+  },
+  "ledgers/SH_000001/development/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "17ad5c053fb821e4355afb3dc703647192f668288aad6933b8c759f633dda9c4",
+    "compressed_sha256": "b63a8b18ea5b145502a3f88356d035c98c13a4a77ffb44fa434b29654ee2d183",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "d9250961614cff1e06ecc2c634f49ed3e6a4cbc5ed9638307dff629a03973ec7",
+    "compressed_sha256": "8549d145ea8686799846fa580d6d24de1561518121506d0d39a1f3012da224f0",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "1fa07761849646525b21f8d0f352ec07f708899d9fdb7cbf14bdcad69deb2bfa",
+    "compressed_sha256": "c1af2b5abf516a62a5076ccaae9d1323d0e178f456f4d24e6941138695278d52",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "48c5f7a8d9259f4a257f0baf494aadfa29287b2c2d61a2ec94d28e1eb2735101",
+    "compressed_sha256": "c12995087c491633afd33efa3a8008c4cc4d43d0dae420106adad1f9bf62d13a",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "592000d32b23e511fd87a8c69436aec63b7ba3546be63d4f5448695b85589520",
+    "compressed_sha256": "b618309a2454040a4bfbc9b6c7f8ec2435bcc04ab2237e738329658cd8e45b9f",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "ca63d6daa557b634e453a09d977ab35dad05e40537eb84c89c3bf75129f4bd80",
+    "compressed_sha256": "049de7cbf04d5beead26f07ac5202e703dcd674c83d163f8561e9d18902bf45f",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "19f13191529abcc9e3aa51cce98f9d988653acf73a61d08fab0fedf5a395ab3c",
+    "compressed_sha256": "73dddf433681f9265406bf5a7e84af57d2fd3cf70ab36858909ebc2b3c420de6",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "862e791eca155ad63122896e4d27ce610ca117e42217377864206e8cad1b2731",
+    "compressed_sha256": "d46e5a7d685e4dff49ed66c977779068a49664b82f3a42c2530701d4b0858c8d",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "f84f5967f52272f4df57345bddf13fc87af60d762d2ddbdfe1b3c47834421a75",
+    "compressed_sha256": "077ab5528ac4bf48160957390fa78bb43ed58c15c78ca1e9ce97dd8f4866237c",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "c06811d071dc129eb22b7df080b164d0a5448249211fd5741ffb0ea080910ca7",
+    "compressed_sha256": "2f9b81bc00e032c665115f442b1646c8526ce3ee2cf2db14c50beabefb1f674f",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "5bc1c51bf6a0dba64bbedc4f2e1198db11ccda52310a05c2486bb440a0a58093",
+    "compressed_sha256": "0245913f02f41d79838f7d40d421737b5e2d897f463fd66a69ff2076ebb2597a",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "5cd61661891222548a3beac005fa4c5baec57009783237e5e7163f360dd33f6f",
+    "compressed_sha256": "b9daefb9e69970b3a26f1677ae97bc5e38202789eadcc7062c7c55916a33b649",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "28a6ef3fbb19c1fe2ad05fb78072b817431dd875e03ba4f35cac2e610ab44354",
+    "compressed_sha256": "1f340898bfd0461aa19010d07d6061411050b96200bf2adb5721c3fdbbaff2bd",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "ebed74952b5fcbebb6c422cd3855a5934a304dee6f0ae957c741ab7b48e00344",
+    "compressed_sha256": "1f46934cdeb024a6ed1f978f62253bddb9e65fe4cd33132685ef1df323e1233e",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/development/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "d36bf885c62496612dceec931e115b7470f75aa60c91349cfa47e0505ca4bc24",
+    "compressed_sha256": "956f55b8aa3a8207905218095e46d9ae8a8fca0414342ed847a563908530b666",
+    "rows": 4349
+  },
+  "ledgers/SH_000001/check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "b5932b77683df9af8a803f947d30b428b1a35fdafdefc1801d742797162192ec",
+    "compressed_sha256": "421f7a384837e9cad7944165c0440700f73dea263bd58d069a5df80921bf0632",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "8b075d14c881b079b80594584e3f5a2b58ee3d98b90f8aa32cf2cbc9a4cd62ef",
+    "compressed_sha256": "6e15c8b0e1bfc41e95f1f47129e1ace5eb1b3e3d30bfaa9c2fca2097e208baa2",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "3bb3ed39537c6a5dc5505a8af2aeb4c8423c304c3982512c9189581b3ba3ed79",
+    "compressed_sha256": "ff1208acefe01c181701660f0a659e199d3e4c5a727627f19cdd988ece368723",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "e09013aec7e0399037d28244a50717bcfe91896ebbb1ab4e8598deaf6c405f47",
+    "compressed_sha256": "24960ae818e807f88c7127b6cecf70591fad97baeb748ed4a223f64d4f4d5e52",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "36a88580de189b65e88b7523d791c613682f45e924f98a3a2f9be7f980a11bec",
+    "compressed_sha256": "04a6f3a6604ca8006153ed82580d4879dc2e137174a4cd530005b7a75bff2eb5",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "ca9e65049412b1a9bf1bb9d69e6d5c020c43bf28015f1f53fd8f722255f01614",
+    "compressed_sha256": "2ca35bbacd69babc96d850f07020b40c344b86b0fabf8466606f35e8c3e247f5",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "dee9ed8a8e77902bb1f59cd937dd08bc47b77bb80337f886835799a9ae1c8ed1",
+    "compressed_sha256": "8b47664c7c2569d5fa31d71c4d31a3d4257f4ec5d38620fdab4c6735a40be0b9",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "fed6c80737370982a435283a6c186375563cf910f43406a040f83102afdb34b5",
+    "compressed_sha256": "e3ede41df71508ec2a5a18a8d6c950cfe5172944e89af4916b4c6fb0f371fa2f",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "41bf394ba91a1149df85baf5627ea0a9b545e02e39c7fd9e51e941bcc7b06bb2",
+    "compressed_sha256": "a8c92ee37ced543718ea477e61c1d9c4c2575b0ffd85c514a3f3a31d17d6f64d",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "b47dd9739f764ea3d5661f9643db20fb5ac23a8b7f62f7c53dea9e47bffbe229",
+    "compressed_sha256": "4e13631f3a798a82c3c5f65353135ccb02d58422c4b3a2fd13ae22c71c343bbf",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "f210e24d4535552ddfc63a64f4b4d03de994607aa26862b59fbc27977fe9a88a",
+    "compressed_sha256": "79b17e9b4e8f5de4ec6ce92b2311d637a2dcc58ab9f42af1e0a77a32d352d8d1",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "73a2cd0764335bfba3061baf6db60b5391e7ba380024718134975fa5c863e1ab",
+    "compressed_sha256": "ab616c9692af8b718d6bdd07475adc9a86c6379bdc95ed28a9b34fbd3da3b25d",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "eea99194e90394834397be5c82bca47b3c4c065d63f68666c24402712c29cef3",
+    "compressed_sha256": "1b06f78965c978794319841e53a7db1f9fc5d3e6cc085ff9ca41e42c7dd89de5",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "d070806888b6aad36f1f219c5b89bfa1c1c140d241db2f18f2979c2997684c23",
+    "compressed_sha256": "18487c9c91a8b02c0c0e3d2c6fc9c295cb3a65d37d4bfc1521609e226c3cccf0",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "66a0d1df0d1587e6575e7130605120408f5d7cd42bad0d9169d595a7da164dcb",
+    "compressed_sha256": "bfe9b5319f823a816449f46f74461bbfd6155cc31d901a742d0a72083e48c19a",
+    "rows": 1218
+  },
+  "ledgers/SH_000001/late_check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "a090b1b40397d6c5d3cf8b9feb6df3b7b452effcd5846b1492cfd59244bc4a31",
+    "compressed_sha256": "6381772babddac9264d289de8a5211fd489dec7bcb9dc95233d19bbc0de21750",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "1f14f2088dc57b5b414d822174c10d16926524aa9a297237038146379bfb65b2",
+    "compressed_sha256": "137e39dd8969be387518b6bc31534747e8998fb80e67796e365e41e9b4ab8e94",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "ef43665a6f8f5294aaaf33e505f150e6f33de4573f0b2197a56792e6e56e7955",
+    "compressed_sha256": "4e39f507d11ee9f4a75d3eb1dc8e964dc1afd7d94eca27314f3ad044c2469b15",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "a91f201965451cab6ead4ad8e8fd6ce80709180ab680e4e887d8f4b8a9395ea9",
+    "compressed_sha256": "32bd9d7e5bce7846f3da7b76d29d5b9cd782d2c39ffe75b463d4bcb5f6fb285e",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "26d55b5eaa749153e862bf97aa1bd1a0b8f64f769676ed83a67951e65f62bcbf",
+    "compressed_sha256": "a21a9f2284d64378e80e72e96df3aca58511b740f7ddddd6f0b347fa3458d80b",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "9806e5f74dec0f73a68242f92c8612a55715a7a12195d3d8d656d60ce2a7e7d9",
+    "compressed_sha256": "782e47946daf39f7732242b2502f981bb6fb378be3748207f469ce82d36a5a08",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "23bf0f583589e920017bb7816d0a7e15c14a5af1a08c31aadc3053fc9a870228",
+    "compressed_sha256": "3f93639bdaf832e98444c73d831a571718af92081ebac252daea65065349898a",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "25687b816722fa218eda99a294913ae2ebba78f40e43168cd1b9d235b66931b1",
+    "compressed_sha256": "e7f2bd59e9bc8c8b8aa4b39b238af4ab387f924f4ee382a9f6a073db819a4bd1",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "b317f3f20b75a44a3d28a6e62cb2d60d5f280e8dc1ade6385d44c4a8d3e66317",
+    "compressed_sha256": "7477cb2391d1d2ceb421b92bc6ee5017ff6a0bc71b878622d015f10210d6c88c",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "d9f7dda6e7e1521133e984e3f0fb64387980b7b75fa939c755092b47e09d6fa3",
+    "compressed_sha256": "9c010ddbfa92bd89e7f6e0225372675a8f35274391c937e5ed19d262992bd32e",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "d12854c3e68fa84b8682487fc42cf0434b1ac107e48199612eceefd1cca43497",
+    "compressed_sha256": "38d5944cf4d2cf112821a9f1a632decaca9ad64e6e7f2dbc9f1f7007aacdde07",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "bbcaecbe90ff89d5cffc1e356dbc58501e0d8ed2e210b2e2742cbd77eedb44e6",
+    "compressed_sha256": "b0dbf616e13587c7ab20e899f52bf3c7870102c2ff12a6622f6d1b76f7fad187",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "7f634033736cb80b8540bc426d8294be19795540736c83c113ecfcfbd486252a",
+    "compressed_sha256": "fb7c6f92158bee54f521272fc1a22fd5d8b6ffca3cc79357376798535eaa8456",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "56cbcdf6677248c0a3377aefea6dfe4f75b63eee66fc235d7c3012fc31487725",
+    "compressed_sha256": "12d16debe63567737731766b8c86b8ba5387d690161d6b787305fcf62d974734",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/late_check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "fb9d20878333815cd1c87818f79c3f99c1a7f3d72ffb0d69de67f5e8b5ca1e45",
+    "compressed_sha256": "2ed23db7fe27e03cf2ff9b9516b1758eed8e2869529f0147c55bb00a71b507e4",
+    "rows": 1454
+  },
+  "ledgers/SH_000001/monitor/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "56fb1fe48e84e3aa217d9c98a0b8ab04c09fc6feb12cf843a6582c420d4771b6",
+    "compressed_sha256": "f32fc5938ac1ef588b99418efcc9d8108c8a46b74a0feefe09075e42915b594b",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "df0b6f209837dd99176f7e318e04fbdc6a0cd8785003e5fa540140f079f0f2eb",
+    "compressed_sha256": "1bfee799735a5b8216bf501c4c84a0f7f7454f6c23510a620a5f81803dfe5956",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "5a1fa995671ed2f5204a3d8f2c1da302910f330c76245bf21908274632728f4d",
+    "compressed_sha256": "da3259c3e8cb148cf23f480865c54f34664d6feba386b6333ea4528f754b6796",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "0e54cbf13f30dae5dc5f9ba9c646873bda9c3e810e7151d5f96a659cf58810c1",
+    "compressed_sha256": "9fabcf0c08858147c3a1716d00bdbe686731382b7d06d3a447edb8c3cb8a9f04",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "279ae429fc1ff33d2b6a1f7ca05a058302275c98ca14d50561aa4b4d1dfcb62c",
+    "compressed_sha256": "67666d296f8519a51e07736d3915800045a68ad857422b599cbb2409b8c6d657",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "67cd772c1461238ed4c6b8dd3b3a5ba3def89f0f797fa924af95807fb73737ba",
+    "compressed_sha256": "e208e1dd66b98fb6901a2884adf1791d557e938cc6bafc3c37dcd9290e75d763",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "a2ca5a3018e16fadfd65b897157cdbcd3dfa4eeb233b4dec420c139f5dac4f9f",
+    "compressed_sha256": "33f86d91f90742100bb97b7be5d6336e0037d819dab8202406984427be70639c",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "f10f4084c2cc1fa116e3be13b679880accf72cb8f65c0e5772a6e0fc491bd2f7",
+    "compressed_sha256": "adfae3f853ebb5bdd5d9f3299880ff6e0056fab083ff45f4f9c610d1f34b57ad",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "0e54cbf13f30dae5dc5f9ba9c646873bda9c3e810e7151d5f96a659cf58810c1",
+    "compressed_sha256": "9fabcf0c08858147c3a1716d00bdbe686731382b7d06d3a447edb8c3cb8a9f04",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "35dfe61a5146eac5148e851b0612203cae6e7121528f8ec9d3dd3c514382263a",
+    "compressed_sha256": "69f576ed7fee712aa8c5e1fa1efc3fdd87e8374be6ea3f14acbf0286fc56fdae",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "44167b64e129cbe7c75e9ba3fb3689f01a678d1de29896a76cd1110f1e846214",
+    "compressed_sha256": "b097c5ce0bca73cbd5e244efdf0596bd9dcbb886dee6d005204a43f15cdb33db",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "dfe6ee0f254190491706f6aae59556590f390d8429c658485af94bee86ac5e1c",
+    "compressed_sha256": "ae00a93a84eeed8675bc0c5222979d0faf7f59f82e645f88fdeef9ecfdf2a4db",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "bd6cc15d5343d71f86b432a029a394d0f8e53e3ceb34c56e8fcd2dd498817f2b",
+    "compressed_sha256": "34cfb10106c2fdcbadcf4df8e223b91d9ef3c3309d05b3f70690ff8359506a94",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "0e54cbf13f30dae5dc5f9ba9c646873bda9c3e810e7151d5f96a659cf58810c1",
+    "compressed_sha256": "9fabcf0c08858147c3a1716d00bdbe686731382b7d06d3a447edb8c3cb8a9f04",
+    "rows": 209
+  },
+  "ledgers/SH_000001/monitor/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "db40a213bb0d399653ba4dfa09b2f4c5014e6ee0459a91e88ac3aeaa74f512a3",
+    "compressed_sha256": "75e6aa2896af1bc7f19e403c8e69560aff0f5c771c4e407e70fed56a9d4b2a73",
+    "rows": 209
+  },
+  "ledgers/SH_000001/primary/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "cfabc526585f169302c55b7ca2cb5a508c173b9f6fed5acd6ac4dfc91dbb41d9",
+    "compressed_sha256": "6e0b0ba08fed3be211814f951f09b9873b9aa52223ec1ba4cbd4665e6275bfad",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "b089bf74029b0fd41e4890f0bc44ca99010b86e05c7b9061752ce6327833f975",
+    "compressed_sha256": "29c4e6018ea38b02a603ebfe7abb2db761707f801f978a93b84a071d62552a39",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "57326c8d069aaa3545eb63a29b00fa5b98ce05a4d81a9f7a6d21290cd6c6e217",
+    "compressed_sha256": "acb4e6d20da91628cab412fddbe97ab36c5068db703b205ea23979722f21bebd",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "62ec1cd6102add623e7cfcf1ecb058f14089056ca23daec7129b7278167d5d00",
+    "compressed_sha256": "e543af510dfdf656131660f55e7aa3711b762a637fb97f5d620cd588b143e31d",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "841d26f064f3cb34357024b02eb50671aff9e000d0d6b54975c5ef4926aaec0b",
+    "compressed_sha256": "7b78fa8ac1209a8aeb0424118fc9784afb51cd2d0589e5cb6a1ae47547f2e9e4",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "bb1aa0ca47e1dde52767c51b04205b3a9e2a0d5788c43744def33d5e3410e8e6",
+    "compressed_sha256": "942da0dc8d263abba1b9098745ecd6b24b304708074f81a1931cf841f23a6b3a",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "fa57cb173989c966aa0081d7763b0eb1c292f90fbbc8c1e3c02c092d50bd6420",
+    "compressed_sha256": "67a0a213a906fce6b59e56daa71b6303bef5ed13bc283376b932afcdd4b4e298",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "2439c2e4a9fca4e4069cc6c9f2dc29b1bd393409308198b858451253faa785ec",
+    "compressed_sha256": "b754578bc6374450efb7bcfde0361cb3179479304d2b2b6698f6c405b387de78",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "e5f3f62eec1c989c0329da846122390450c280c8e12361e350d9c9e36193f40b",
+    "compressed_sha256": "5e5dddba0c49e71966c6acc279e996827a6b175bcfcdd817af31dfadf50c2134",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "2949847ca258f6ab2335122ed385e43e6c71d1a123c25c88647a665e0f9f0ac2",
+    "compressed_sha256": "af740c7d62a09b01be5bf5b04eb389b6b7f6067aa94b8ba35aedc2bfb5ce030e",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "7ab160db02e7df2cbf9df8f79c00f4d2778bb95947111da41d83b562915c383d",
+    "compressed_sha256": "3c988669b6770358c1638e42ec4790dd3072a239fc11412b53419d54b9897e5a",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "b438cf91bc0c55d711a6883f3c9e11039e1f598d76895e8af4acbc5721c98ced",
+    "compressed_sha256": "71ef7d2e24951a86e9480ace686c0c440c698dcc0cf6218a328c51c413809885",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "33276b4f6c0b9769ba2b366d6e76586c021747ab453fbef6614b0f4ca77007df",
+    "compressed_sha256": "a0c48d97f2b6942b858d185dbbdd2f5d769a304c81510a5b9e3f02d8d710799b",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "79c5c5ccc224ec2b71b371d62402bcc4e5458d17821695770dfe4aaae324ee0f",
+    "compressed_sha256": "ab40d7252566b1e3c67ef7b9c24e8ed683c8aa77b1aa1f2b8f095da940cb3e53",
+    "rows": 2673
+  },
+  "ledgers/SH_000001/primary/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "09eb9f0ba42385acc8643621385173ba6104bdf89330256f88d3b66e46e22b23",
+    "compressed_sha256": "1062641186977c7a876d905c323cc22a2dfa8334d25d9082a71e147b2d9504bd",
+    "rows": 2673
+  },
+  "ledgers/SH_000688/full/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "b17654c2ff59e669179249739267cf8f3bec2f3163fc0c7a49841005972e2fa7",
+    "compressed_sha256": "2f494fd5ddc2abefb8ba9941da77fdc8ec2aa6badea60b6d01531f207cf57847",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "d43e334b684e0852e8bbb62a0ea07c870c7faee4527fa9f95cb06e012a862c93",
+    "compressed_sha256": "ac0da4cff668a98e8007a88992028d660b216b7e75e2ee7507d480f2ad0d4399",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "1f2e3d2741a4f465ec15660e2a2c8a2fd5a91926bd6227d508dbe4a8c1b2c75d",
+    "compressed_sha256": "d3c912b3b5425c6fd51753f898f40cc2c779905f8e7a99aee1a1cf5dc34ed7d8",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "ffe21640aca97ca9f51e0fd5515aa6a5d61556fd330ec718bd8edf70167c2615",
+    "compressed_sha256": "22aa37f39af7205d53af71eb17d7d69a960a6ccc5379cc4a3b572beac41601a7",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "a1960219e19d221e4d5133450926a3b0ce7a6eaa829858f2b7d6f6105a87c460",
+    "compressed_sha256": "362d47d1984e82619e58bf042e91ee76b23a49f7e73341f6ab49c7104871abdb",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "4cc1978316fa14630e33465130b91a7ca8e6e6af8c63ed90db4a0607c0dcb955",
+    "compressed_sha256": "1e6044aca00abd22d347429a57a70f683f81d895814e531743c14aeff75cd40f",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "c260b6d481ea9dd8340ee926170ed2f4580ae48349e8686c6b9f4288e1f93ca8",
+    "compressed_sha256": "5df2434900b1af8583589f085f12006832ac0b6c46e06f1fe8faf8abfa9a2ff7",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "dbc624002a3e9cb2ba9d811fba45de8626445b1debf233265fd9aeaab1f95e21",
+    "compressed_sha256": "11a1ffa621488bb9c14eb0a75fe2975dabe56e73dd42c30a1f2b133fa6532764",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "31f7cb29811ea1432843ae58a1cf3fefad7dabf0f9d59eaa93e02a1b460b1c37",
+    "compressed_sha256": "de311216c2eddf00957643788f2090985bceefb355dbd71a89249d723dc33e9f",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "32be2ded2d8361ddcc1283fbed1b64a3f049d35bfa4a92ba26ea2b60db46caa5",
+    "compressed_sha256": "4531571443b4f49b9e98120c57cd60c2a6d3307b14664a1836251b522f7b9b8e",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "bf9b429434466e00d63e4b08f9a57a23e3a2a9dd89fa6a820bace9a8bc98d0e3",
+    "compressed_sha256": "89e5e809564b1c4073c4402477100b5f43610f3fafd39cfea933c5ce2277df16",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "638b203bcb71b5e9a0dc958776a30f348d166a9b322310e05063b2693b9faf8c",
+    "compressed_sha256": "b38040be2db55353db43f7416dc21c583c6c17bcd0d78f38f97fe2302e31871f",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "faa9287f7c128b0fc43397fdadcbc33905b302f38c2a17a4f1c93aa3ed5bd2bf",
+    "compressed_sha256": "ca1a0f4e92b46a19f5b59aa2eb36d179109780f27bf449b8d8d56519db53d44d",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "4f37a3e8b769450aa63a1efc6287931ca02e88c435bc5b2f724fca5ed4dc4a6e",
+    "compressed_sha256": "6424f33bd57e98352d74a92c302855e9b282928b6c47432b73009d34da19c3ca",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/full/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "03f5b53be5c95d28b092daa92cfa70739055109f4d9466a20cc5a3674eb85ff2",
+    "compressed_sha256": "b13fc4dc634dfbe867d0eff48dced35cd6f2d861b85a5747dd030f30fddadec8",
+    "rows": 1279
+  },
+  "ledgers/SH_000688/late_check/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "811468429400c18d17e7597ff6bb5206b8c581c66428ceee9c20b2d8296b92eb",
+    "compressed_sha256": "89b2ee7c6a1773520f662718badaf9e60a3887e523d916b766c6d56f84c8e35a",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "0dd1e668fc36f3d9b94606e1343cf43be20c39cdc98ceb823eefc7ee94f310b0",
+    "compressed_sha256": "1df5a53c0d5cb6c892a5846c157a20bbfcb16fb77fd8eb58319e2044136375f7",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "a6d663982484f413ddd0a9aeee173aa2e60a0e1b080b8cda8b441a5d314be49f",
+    "compressed_sha256": "8b544188b99e6bb723cc5653a9f81f132967fbd859b2a657eacbdc0b21391e0f",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "1c8fbcee8628882cc725ba23cbed1dd07c3856cce1e09fbd93a1cf96483775ee",
+    "compressed_sha256": "ef5815b225588ceaf9bf3589d3dcb5c406896c654e2106003ae998335033dcad",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "d85c53bf415f17eb8d521ac2c4bd65560b36b714b96a9e69ac143cb446cbc884",
+    "compressed_sha256": "8997d5d3c6e95915a41f546c5b556e93fc48ab2ea3ad9bbe1031a80b47419a2f",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "0c2bdadee913cff2de1e79d5d93692d12e056a9295b59abd127ec637dcca411c",
+    "compressed_sha256": "0086b9c2129da3f158dc10ec8861a82e22b36ede3107b092981acabc8a61246e",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "d48c4c3adb4ddd938dbe9bf08c8c102498851eae466fcaa25ff20a655e6d7178",
+    "compressed_sha256": "63f1922221d3f779886259edf84fa0df4881c6b76a7c4cc95c54db6f56f81932",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "18401abfd7f0264ee4e2c8c58040d2142e4747b08df4504d9adfb9ad5f81330a",
+    "compressed_sha256": "12e30879b2962ee155e8defeed2f8fdfb2723137de36e9935221618be47aa394",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "114f2ed314d507df5c2d9513d782f4dcb20be09cf2d2c1399efd6193c4a964e6",
+    "compressed_sha256": "69c91f1f6a83db12bd8a7f30e72ccafcea3637b4c8665998575a644d21209c77",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "2a73ea7cbe01812cdf985c4046f0b99660d61f5570da56ae3e17d1181bf82a41",
+    "compressed_sha256": "6c283d2fa33e66262f9989cb85fbf09e991b26b047fbb4fd877d7a270466b960",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "b1b2d265e51ea365e08d5ce356231ad1c64d11be4e0a391192e293db09d1bd66",
+    "compressed_sha256": "bfcfa7963b2560a3c357657817d79b14af5476732bb0c4977719049283025d13",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "c182632df3215759f9ec1a3daf8bffcd98316249d994252436227df5db74e9b8",
+    "compressed_sha256": "e3a7f876168f752d0ffbd32e0665c603ee3689eeba425452463cc53afb3154fc",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "0f610341511f6203eeb971495fb940ce28c6dc269fc5e716e0e5e5dc81f7613a",
+    "compressed_sha256": "967fb085281786ea71abbe29fb1de4bd33e0aad21770879a97c880937496a03a",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "2abc66b4c85c9c85af85babe5a72d53f1a5d2210194cb41fe3f84e7547ba48ba",
+    "compressed_sha256": "9f91d5a0114e70ad3463ee3f10c61e17e9399297f136c93018b48607e9271b26",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/late_check/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "8a66a0a67c0f36cb126bae1f34ceb80ba032e01bc2fd3736160475c5363c3b02",
+    "compressed_sha256": "22ed51a5e5abb790d74e6eeb20c16ad0a7cf8c1edbd84614cf003e857e1b0fa2",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/monitor/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "65ee39e511e9815111ef4aa5d1d6e7219ebf16f039c18ebdb3235f86c77f9db6",
+    "compressed_sha256": "a9bd8f87bd4228dd78e6dbb50fc5ad3c8fdb929756014ae7cd2b93708d2c002c",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "1dbec25909c26ea7602f1ff765f8107389ed0ec8d2f8b64e71be4af77894c5d0",
+    "compressed_sha256": "28962560057a269b642785e1f3c1116cd3fea7e73fc9e16de94e032ca52c25bd",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "73cf5e6cc845d06951a52615b356b8ebb5f32cf53c51599f7a4f700b31e4c49b",
+    "compressed_sha256": "b330c0f48c8791307d6314be3ccc6ae5b0fb572841937d589f8d1bdd2503d72c",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "25226fd485aa2ac4e267239779eec388a54d986165c4c4c3943601b3963fd9e2",
+    "compressed_sha256": "5c30a8d1644899ed427f4a66baf80356624bf994c7db1262f9082ce8501c3c10",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "bbbb13ba0934841bd5f93f427470ae4d0a324a94f4f6327146c099d9407a52e8",
+    "compressed_sha256": "862c36be3d41b9f49d36405430972b38b16c1c6aa61efa7b38222b14e7eb45fd",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "283a122f874d93fc6b5be8014be3a39fd081fb2e2fae0d856faaab12e42cebf8",
+    "compressed_sha256": "690d9115a6b329713a405f82d57212b549ef450188210577eb0244aa6429b459",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "b53424b67d61fa9dc7d85a7df0c34dcc40e1adbc6536bf58750ee43b3ca9a2dd",
+    "compressed_sha256": "8d0c56d04b8f2a6ca5ad8d763e0bebaace4457dc8f038302d324c031d6291ca9",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "984d1233308e04aa5ff41bc6c0d3b19742d2eb703c58c7a5a10df69fd2bbcaae",
+    "compressed_sha256": "b315167ff8e7c7cbc438b134e9811959b86e7308c025517888af938bce5e8568",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "0982d4cb93419afd12430ba21421f500a7d8ee7aafe7286d06c3d53d6918f11c",
+    "compressed_sha256": "dfaaf8f912b3fc4ed191e31be5d2b64427f96b6b60c482d42f02623454ff35ba",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "ce1d33ae7f77da5b0db1260879663b66edbfe82002112d8d5d02c6cb40926fbb",
+    "compressed_sha256": "1b260554967c005e67d779a48f4cfa26d6ff2e42a81d2d3078c70325524cf759",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "3a879bb31a5ed0109acf096535d19fe25bc3dd421a1ea4a38effa01b1f0dac7b",
+    "compressed_sha256": "a0ca5b51834144e43f523789e6757153630f55165d1794bf53406f3f61bc00a1",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "4feb6306348ca2a9a21b05bcf5f3a1f4928d2d32de0669f6c73585e4b95ec4fb",
+    "compressed_sha256": "0abbb86c807f074e837bff2ce4034e178e8f3d2c137c7b28646aa72e40b4feeb",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "e5edac5dfb56d9b8cde91f702cd0c5ac67d4e7e64cc0e5e9fb96fc8fb51af5e5",
+    "compressed_sha256": "7e8fe62cc08d06a4d86dd545fa773f013592e230119a7b0a55861e55fba900df",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "cf072c84ccb7d328d43200890a89fd20841e30cc769e2ae5f7adab9fce1c6d9a",
+    "compressed_sha256": "df4ca7ae9c9ec41f915fa94cb949ae2c274b3825fc3c3d6cd34134bf43c5aca2",
+    "rows": 209
+  },
+  "ledgers/SH_000688/monitor/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "dd2b68bb422ff2a7f826117750e52acf49085c528f90d130e1bcae0fb06ad03c",
+    "compressed_sha256": "7e8538af07d4162b00e10eced22ddeedb0d12218efe438b59bf0099113e0b779",
+    "rows": 209
+  },
+  "ledgers/SH_000688/primary/BUY_HOLD_c0.csv.gz": {
+    "uncompressed_sha256": "811468429400c18d17e7597ff6bb5206b8c581c66428ceee9c20b2d8296b92eb",
+    "compressed_sha256": "89b2ee7c6a1773520f662718badaf9e60a3887e523d916b766c6d56f84c8e35a",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/MA200_c0.csv.gz": {
+    "uncompressed_sha256": "0dd1e668fc36f3d9b94606e1343cf43be20c39cdc98ceb823eefc7ee94f310b0",
+    "compressed_sha256": "1df5a53c0d5cb6c892a5846c157a20bbfcb16fb77fd8eb58319e2044136375f7",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P1_TREND_c0.csv.gz": {
+    "uncompressed_sha256": "a6d663982484f413ddd0a9aeee173aa2e60a0e1b080b8cda8b441a5d314be49f",
+    "compressed_sha256": "8b544188b99e6bb723cc5653a9f81f132967fbd859b2a657eacbdc0b21391e0f",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P2_RECOVERY_c0.csv.gz": {
+    "uncompressed_sha256": "1c8fbcee8628882cc725ba23cbed1dd07c3856cce1e09fbd93a1cf96483775ee",
+    "compressed_sha256": "ef5815b225588ceaf9bf3589d3dcb5c406896c654e2106003ae998335033dcad",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P3_RISK_BUDGET_c0.csv.gz": {
+    "uncompressed_sha256": "d85c53bf415f17eb8d521ac2c4bd65560b36b714b96a9e69ac143cb446cbc884",
+    "compressed_sha256": "8997d5d3c6e95915a41f546c5b556e93fc48ab2ea3ad9bbe1031a80b47419a2f",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/BUY_HOLD_c10.csv.gz": {
+    "uncompressed_sha256": "0c2bdadee913cff2de1e79d5d93692d12e056a9295b59abd127ec637dcca411c",
+    "compressed_sha256": "0086b9c2129da3f158dc10ec8861a82e22b36ede3107b092981acabc8a61246e",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/MA200_c10.csv.gz": {
+    "uncompressed_sha256": "d48c4c3adb4ddd938dbe9bf08c8c102498851eae466fcaa25ff20a655e6d7178",
+    "compressed_sha256": "63f1922221d3f779886259edf84fa0df4881c6b76a7c4cc95c54db6f56f81932",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P1_TREND_c10.csv.gz": {
+    "uncompressed_sha256": "18401abfd7f0264ee4e2c8c58040d2142e4747b08df4504d9adfb9ad5f81330a",
+    "compressed_sha256": "12e30879b2962ee155e8defeed2f8fdfb2723137de36e9935221618be47aa394",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P2_RECOVERY_c10.csv.gz": {
+    "uncompressed_sha256": "114f2ed314d507df5c2d9513d782f4dcb20be09cf2d2c1399efd6193c4a964e6",
+    "compressed_sha256": "69c91f1f6a83db12bd8a7f30e72ccafcea3637b4c8665998575a644d21209c77",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P3_RISK_BUDGET_c10.csv.gz": {
+    "uncompressed_sha256": "2a73ea7cbe01812cdf985c4046f0b99660d61f5570da56ae3e17d1181bf82a41",
+    "compressed_sha256": "6c283d2fa33e66262f9989cb85fbf09e991b26b047fbb4fd877d7a270466b960",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/BUY_HOLD_c25.csv.gz": {
+    "uncompressed_sha256": "b1b2d265e51ea365e08d5ce356231ad1c64d11be4e0a391192e293db09d1bd66",
+    "compressed_sha256": "bfcfa7963b2560a3c357657817d79b14af5476732bb0c4977719049283025d13",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/MA200_c25.csv.gz": {
+    "uncompressed_sha256": "c182632df3215759f9ec1a3daf8bffcd98316249d994252436227df5db74e9b8",
+    "compressed_sha256": "e3a7f876168f752d0ffbd32e0665c603ee3689eeba425452463cc53afb3154fc",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P1_TREND_c25.csv.gz": {
+    "uncompressed_sha256": "0f610341511f6203eeb971495fb940ce28c6dc269fc5e716e0e5e5dc81f7613a",
+    "compressed_sha256": "967fb085281786ea71abbe29fb1de4bd33e0aad21770879a97c880937496a03a",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P2_RECOVERY_c25.csv.gz": {
+    "uncompressed_sha256": "2abc66b4c85c9c85af85babe5a72d53f1a5d2210194cb41fe3f84e7547ba48ba",
+    "compressed_sha256": "9f91d5a0114e70ad3463ee3f10c61e17e9399297f136c93018b48607e9271b26",
+    "rows": 1069
+  },
+  "ledgers/SH_000688/primary/P3_RISK_BUDGET_c25.csv.gz": {
+    "uncompressed_sha256": "8a66a0a67c0f36cb126bae1f34ceb80ba032e01bc2fd3736160475c5363c3b02",
+    "compressed_sha256": "22ed51a5e5abb790d74e6eeb20c16ad0a7cf8c1edbd84614cf003e857e1b0fa2",
+    "rows": 1069
+  }
+}

@@ -1,0 +1,39 @@
+$ feed with moomoo enabled, no token, no egress; observe 60 s after HOLD
+# exit=0 expected=0 seconds=64.4
+# assertion=PASS
+{
+ "first_hold": {
+  "role": "feed",
+  "state": "RUNNING_HOLD",
+  "reason": "moomoo:AUTH_EXPIRED:None",
+  "updated_at_utc": "2026-11-18T01:20:22.762892Z",
+  "child_pid": 7,
+  "restarts_last_hour": 0,
+  "next_backoff_s": 0.0
+ },
+ "after_60s": {
+  "role": "feed",
+  "state": "RUNNING_HOLD",
+  "reason": "moomoo:AUTH_EXPIRED:None",
+  "updated_at_utc": "2026-11-18T01:21:22.831186Z",
+  "child_pid": 7,
+  "restarts_last_hour": 0,
+  "next_backoff_s": 0.0
+ },
+ "health_exit": 1,
+ "provider": {
+  "jin10": {
+   "enabled": false,
+   "state": null
+  },
+  "moomoo": {
+   "enabled": true,
+   "state": "AUTH_EXPIRED",
+   "heartbeat_age_seconds": 62.3,
+   "business_age_seconds": null,
+   "business": "STALE_OR_NONE"
+  }
+ },
+ "docker_restart_count": "0",
+ "note": "Docker healthcheck=unhealthy does not restart anything; the supervisor intentionally holds"
+}

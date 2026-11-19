@@ -1,0 +1,32 @@
+[
+  {
+    "series": "NASDAQNDXE",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQNDXE&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "c7de91e6acc663a4187f0a73d1373620a4b8e8c997fc88ef284cae53c7eb4631",
+    "first": "2005-06-28",
+    "last": "2026-11-17",
+    "nonmissing": 5381,
+    "capture_utc": "2026-11-19T03:11:56.909419+00:00",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  },
+  {
+    "series": "NASDAQ100",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQ100&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "061ed1c24a683b786698e9ba1078ae658c120b46f7de5db56d713aa64ddbca8e",
+    "first": "1990-01-02",
+    "last": "2026-11-17",
+    "nonmissing": 9290,
+    "capture_utc": "2026-11-19T03:12:03.525060+00:00",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  },
+  {
+    "series": "DFII10",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "d8dace6535b95e3826398ec18a42b92e3673b7a8d33fb1fc616b2e0f3d7a1f8a",
+    "first": "2003-01-02",
+    "last": "2026-11-17",
+    "nonmissing": 5973,
+    "capture_utc": "2026-11-19T03:12:09.043050+00:00",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  }
+]

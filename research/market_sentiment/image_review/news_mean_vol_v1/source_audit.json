@@ -1,0 +1,161 @@
+{
+  "original_study": {
+    "status": "NOT_VERIFIED",
+    "title": null,
+    "authors": null,
+    "data_vendor": null,
+    "score_scale": null,
+    "code": null,
+    "raw_results": null,
+    "notes": "Screenshots pages 3/13–12/13 were provided; no unique original-study identification was established in this bounded search. Similar Quantopian/Sentdex hits were not attributed as the original source."
+  },
+  "primary_sources": [
+    {
+      "key": "numpy_nanmean",
+      "title": "numpy.nanmean",
+      "author": "NumPy Developers",
+      "kind": "Official API documentation",
+      "year": null,
+      "url": "https://numpy.org/doc/stable/reference/generated/numpy.nanmean.html",
+      "web_ref": "turn265900855view1",
+      "opened": true,
+      "status": "VERIFIED",
+      "supports": [
+        "Arithmetic mean over chosen axis ignoring NaNs",
+        "All-NaN slice yields NaN and runtime warning"
+      ],
+      "not_supports": [
+        "Predictive performance of a news sentiment factor"
+      ]
+    },
+    {
+      "key": "numpy_nanstd",
+      "title": "numpy.nanstd",
+      "author": "NumPy Developers",
+      "kind": "Official API documentation",
+      "year": null,
+      "url": "https://numpy.org/doc/stable/reference/generated/numpy.nanstd.html",
+      "web_ref": "turn252992414view0",
+      "opened": true,
+      "status": "VERIFIED",
+      "supports": [
+        "Standard deviation, not variance",
+        "Default ddof=0 with divisor equal to non-NaN count",
+        "All-NaN slice yields NaN and runtime warning"
+      ],
+      "not_supports": [
+        "Investor disagreement or predictive returns"
+      ]
+    },
+    {
+      "key": "scipy_spearmanr",
+      "title": "scipy.stats.spearmanr",
+      "author": "SciPy Developers",
+      "kind": "Official API documentation",
+      "year": null,
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html",
+      "web_ref": "turn265900855view2",
+      "opened": true,
+      "status": "VERIFIED",
+      "supports": [
+        "Rank correlation measures monotone relation; positive/negative direction"
+      ],
+      "not_supports": [
+        "Net strategy profit",
+        "Screenshot IC values",
+        "Valid IID p-values for overlapping financial labels"
+      ]
+    }
+  ],
+  "bounded_original_source_search": {
+    "queries": [
+      "\"news sentiment\" \"sentiment volatility\" stock \"2012\" \"2016\"",
+      "\"sentiment\" \"0.016\" \"volatility\" stocks news",
+      "\"sentiment volatility\" \"October 2012\"",
+      "\"情绪水平\" \"情绪波动\" \"2014\" \"2016\"",
+      "\"sentiment\" \"volatility\" \"2012-10\" quantopian",
+      "\"sentiment\" \"0.016\" \"0.018\" factor",
+      "\"sentiment volatility\" \"1000\"",
+      "Quantopian sentiment mean standard deviation alpha factor Sentdex",
+      "Quantopian \"2012-10-01\" \"sentiment\"",
+      "\"新闻情绪\" \"0.016\" \"波动\"",
+      "\"sentiment\" \"2014-03-01\" \"1000\"",
+      "\"sentiment\" \"nanstd\" \"nanmean\" \"2014\"",
+      "\"sentiment\" \"volatility\" \"2012-10-01\" \"2014-03\"",
+      "\"Sentdex\" \"sentiment\" \"volatility\" \"alpha\" mean",
+      "\"SentimentMean\" \"SentimentVolatility\""
+    ],
+    "engines": [
+      "system2",
+      "system1"
+    ],
+    "exhaustive": false,
+    "unique_query_count": 15,
+    "original_study_found": false,
+    "search_snippets_used_as_claim_support": false
+  },
+  "empirical_transcription_status": "USER_REPORTED_NOT_VERIFIED",
+  "empirical_transcription": [
+    {
+      "quantity": "universe approximate most-active stocks",
+      "value": 1000,
+      "approximate": true,
+      "screenshot_page": "5/13",
+      "original_result_trace": null
+    },
+    {
+      "quantity": "sample-in period",
+      "value": "approximately 2012-10 to 2014-03",
+      "screenshot_page": "5/13",
+      "exact_boundaries_verified": false
+    },
+    {
+      "quantity": "level 60d vs forward 30d RankIC",
+      "value": 0.003,
+      "approximate": true,
+      "screenshot_page": "7/13"
+    },
+    {
+      "quantity": "level 90d vs forward 30d RankIC",
+      "value": 0.002,
+      "approximate": true,
+      "screenshot_page": "7/13"
+    },
+    {
+      "quantity": "time std 60d vs forward 30d RankIC",
+      "value": -0.019,
+      "approximate": true,
+      "screenshot_page": "7/13"
+    },
+    {
+      "quantity": "time std 90d vs forward 30d RankIC",
+      "value": -0.024,
+      "approximate": true,
+      "screenshot_page": "7/13"
+    },
+    {
+      "quantity": "mean*std 30d vs forward 1d RankIC",
+      "value": 0.005,
+      "approximate": true,
+      "screenshot_page": "8/13"
+    },
+    {
+      "quantity": "mean*std 30d vs forward 30d RankIC in sample",
+      "value": 0.016,
+      "approximate": true,
+      "screenshot_page": "8/13"
+    },
+    {
+      "quantity": "later period",
+      "value": "approximately 2014-03 to 2016-03",
+      "screenshot_page": "10/13",
+      "exact_boundaries_verified": false
+    },
+    {
+      "quantity": "mean*std 30d vs forward 30d RankIC later sample",
+      "value": 0.018,
+      "approximate": true,
+      "screenshot_page": "10/13"
+    }
+  ]
+}

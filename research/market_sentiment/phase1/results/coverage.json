@@ -1,0 +1,38 @@
+[
+  {
+    "symbol": "US.QQQ",
+    "weekly_observations": 1445,
+    "feature_eligible_weeks": 1393,
+    "first_week": "1999-03-12",
+    "last_week": "2026-11-13",
+    "first_valid_feature_week": "2000-03-10",
+    "known_gap_invalid_feature_weeks": 0
+  },
+  {
+    "symbol": "SH.000001",
+    "weekly_observations": 1562,
+    "feature_eligible_weeks": 1510,
+    "first_week": "1996-01-05",
+    "last_week": "2026-11-13",
+    "first_valid_feature_week": "1997-01-17",
+    "known_gap_invalid_feature_weeks": 0
+  },
+  {
+    "symbol": "SH.000688",
+    "weekly_observations": 324,
+    "feature_eligible_weeks": 272,
+    "first_week": "2020-07-24",
+    "last_week": "2026-11-13",
+    "first_valid_feature_week": "2021-07-23",
+    "known_gap_invalid_feature_weeks": 0
+  },
+  {
+    "symbol": "US..SOX",
+    "weekly_observations": 1611,
+    "feature_eligible_weeks": 1419,
+    "first_week": "1996-01-05",
+    "last_week": "2026-11-13",
+    "first_valid_feature_week": "1997-01-03",
+    "known_gap_invalid_feature_weeks": 140
+  }
+]

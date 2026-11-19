@@ -1,0 +1,222 @@
+[
+  {
+    "symbol": "US.QQQ",
+    "strategy": "BUY_HOLD",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.1859047916190219,
+    "display": "18.59%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US.QQQ",
+    "strategy": "MA200",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.1216919908212414,
+    "display": "12.17%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US.QQQ",
+    "strategy": "P1_TREND",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.050813096971749,
+    "display": "5.08%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US.QQQ",
+    "strategy": "P2_RECOVERY",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0392608154737448,
+    "display": "3.93%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US.QQQ",
+    "strategy": "P3_RISK_BUDGET",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.04618431502417,
+    "display": "4.62%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US..SOX",
+    "strategy": "BUY_HOLD",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.2372268670456145,
+    "display": "23.72%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US..SOX",
+    "strategy": "MA200",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.1387332241624483,
+    "display": "13.87%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US..SOX",
+    "strategy": "P1_TREND",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0430272491911463,
+    "display": "4.30%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US..SOX",
+    "strategy": "P2_RECOVERY",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0053969449139781,
+    "display": "0.54%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "US..SOX",
+    "strategy": "P3_RISK_BUDGET",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0136520848279706,
+    "display": "1.37%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000001",
+    "strategy": "BUY_HOLD",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0179191220117398,
+    "display": "1.79%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000001",
+    "strategy": "MA200",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0214202013894175,
+    "display": "-2.14%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000001",
+    "strategy": "P1_TREND",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0052961251401141,
+    "display": "-0.53%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000001",
+    "strategy": "P2_RECOVERY",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0255675765930081,
+    "display": "-2.56%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000001",
+    "strategy": "P3_RISK_BUDGET",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0047551619964284,
+    "display": "-0.48%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000688",
+    "strategy": "BUY_HOLD",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0308367569673904,
+    "display": "-3.08%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000688",
+    "strategy": "MA200",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": -0.0234388530551707,
+    "display": "-2.34%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000688",
+    "strategy": "P1_TREND",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0166145901943188,
+    "display": "1.66%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000688",
+    "strategy": "P2_RECOVERY",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0263710186821772,
+    "display": "2.64%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  },
+  {
+    "symbol": "SH.000688",
+    "strategy": "P3_RISK_BUDGET",
+    "period": "primary",
+    "cost_bps": 10,
+    "field": "cagr",
+    "raw_value": 0.0191702022849993,
+    "display": "1.92%",
+    "source": "results/metrics.csv",
+    "run_manifest": "results/run_manifest.json"
+  }
+]

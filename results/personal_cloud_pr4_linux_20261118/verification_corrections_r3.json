@@ -1,0 +1,55 @@
+{
+ "schema": "pr4_r3_corrections_1",
+ "note": "earlier receipts are kept unchanged; these entries correct how they must be read",
+ "round2_verification_matrix.csv": [
+  {
+   "row": "S8",
+   "was": "pass=True",
+   "correct": "command OK, assertion BLOCKED: NOT_INSTALLED proves only that the status query works; real supplier connectivity was not tested"
+  },
+  {
+   "row": "S9 / boot_recovery_redacted.json",
+   "was": "healthy within 3.2 s",
+   "correct": "timer started 5 s after the signal and excluded that fixed wait; round-3 REC-2 measures 7.3 s from before the signal to Docker healthy (web), REC-1 8.8 s for a supervised child restart"
+  },
+  {
+   "row": "B1, B7",
+   "was": "no command log, no duration",
+   "correct": "round-3 B1/B7 record arguments, duration, exit code and a redacted log"
+  },
+  {
+   "row": "summary '42/42 pass'",
+   "was": "exit codes matched",
+   "correct": "means command exit codes matched; business assertions were explicit only for some rows; P1-P5 status exit 0 did not prove business health (v42 was down later)"
+  },
+  {
+   "row": "runner exit",
+   "was": "verify_matrix.py returned 0 regardless of failures",
+   "correct": "round-3 runner exits 1 on any required FAIL (observed: first r3 run exited 1 on HOLD-ERROR)"
+  }
+ ],
+ "round3_first_run_verification_matrix_r3": [
+  {
+   "row": "REC-1",
+   "issue": "harness kill script matched its own command line and killed itself (exit 137) after killing the worker",
+   "superseded_by": "verification_matrix_r3b REC-1"
+  },
+  {
+   "row": "HOLD-ERROR",
+   "issue": "runner environment merge raised TypeError",
+   "superseded_by": "verification_matrix_r3b HOLD-1"
+  },
+  {
+   "row": "LOAD-1",
+   "issue": "FALSE PASS: drain time taken from zeros before discovery; no docker stats samples; backup failed (volume dir owned by root)",
+   "superseded_by": "verification_matrix_r3b LOAD-1"
+  }
+ ],
+ "disk_sizing_redacted.json": {
+  "superseded_by": "disk_sizing_r3_redacted.json",
+  "retracted": [
+   "about 5 months sufficient",
+   "CPU and memory sufficient"
+  ]
+ }
+}

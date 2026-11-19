@@ -1,0 +1,104 @@
+{
+ "source": {
+  "feed_news_versions": [
+   [
+    4
+   ]
+  ],
+  "feed_journal_mode": [
+   [
+    "wal"
+   ]
+  ],
+  "feed_indexes": [
+   [
+    19
+   ]
+  ],
+  "queue_jobs_by_state": [
+   [
+    "DONE",
+    4
+   ]
+  ],
+  "queue_worker_runs": [
+   [
+    6
+   ]
+  ],
+  "score_rows_by_status": [
+   [
+    "DONE",
+    "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    9
+   ]
+  ],
+  "score_articles_by_cohort": [
+   [
+    "PROSPECTIVE_RECEIPT",
+    4
+   ]
+  ],
+  "daily_snapshots": [
+   [
+    1
+   ]
+  ]
+ },
+ "restored": {
+  "feed_news_versions": [
+   [
+    4
+   ]
+  ],
+  "feed_journal_mode": [
+   [
+    "wal"
+   ]
+  ],
+  "feed_indexes": [
+   [
+    19
+   ]
+  ],
+  "queue_jobs_by_state": [
+   [
+    "DONE",
+    4
+   ]
+  ],
+  "queue_worker_runs": [
+   [
+    6
+   ]
+  ],
+  "score_rows_by_status": [
+   [
+    "DONE",
+    "e91b1a3af10e1e8c9c03429d3cd7d5e9a1c8000d",
+    9
+   ]
+  ],
+  "score_articles_by_cohort": [
+   [
+    "PROSPECTIVE_RECEIPT",
+    4
+   ]
+  ],
+  "daily_snapshots": [
+   [
+    1
+   ]
+  ]
+ },
+ "equal": {
+  "feed_news_versions": true,
+  "feed_journal_mode": true,
+  "feed_indexes": true,
+  "queue_jobs_by_state": true,
+  "queue_worker_runs": true,
+  "score_rows_by_status": true,
+  "score_articles_by_cohort": true,
+  "daily_snapshots": true
+ }
+}

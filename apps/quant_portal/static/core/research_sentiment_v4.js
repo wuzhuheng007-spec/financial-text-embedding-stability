@@ -21,6 +21,7 @@
       : '英文 v4 与中文 v4.1 的本机研究候选。文字语气不代表报道属实或预测收益；缓存回放与新收到版本分开。';
     const chinese = data.chinese || {state:'NO_CHINESE_RESEARCH_CACHE',scored_segments:0,rows:[]};
     count.textContent = en() ? `${chinese.scored_segments} Chinese units` : `中文 ${chinese.scored_segments} 个片段`;
+    const auditWasOpen=Boolean(content.querySelector('.research-audit')?.open);
     content.replaceChildren();
     const subhead = document.createElement('h4');
     subhead.textContent = en() ? 'Chinese news · research candidate' : '中文新闻 · 研究候选';
@@ -147,6 +148,27 @@
                   : '暂无合格英文新闻评分。现有中文供应商报道没有送入英文模型。');
       }
     }
+    const audit=document.createElement('details');audit.className='research-audit';audit.open=auditWasOpen;
+    const auditTitle=document.createElement('summary');
+    auditTitle.textContent=en()?'Technical records and research history':'技术记录与研究历史';
+    audit.append(auditTitle,...Array.from(content.childNodes));
+    const summary=document.createElement('div');summary.className='research-summary';
+    const signal=chinese.v43?.daily;
+    const text=document.createElement('p');
+    text.textContent=chinese.state!=='READY' ? (en()?'Scoring cache unavailable.':'评分缓存暂不可用。') :
+      (en()?`${chinese.article_versions ?? 0} observed article versions; ${chinese.scored_segments ?? 0} scored text segments. Coverage is incomplete.`:
+      `已观察 ${chinese.article_versions ?? 0} 个文章版本，已评分 ${chinese.scored_segments ?? 0} 个文本片段。来源覆盖不完整。`);
+    const state=document.createElement('p');
+    state.textContent=signal ? (en()?`Daily tone available for ${signal.n1_valid_company_count ?? 0} companies. This is text tone, not a return forecast.`:
+      `日度语气覆盖 ${signal.n1_valid_company_count ?? 0} 家公司；这表示文字语气，不是涨跌预测。`) :
+      (en()?'No published daily snapshot yet; see the schedule and collection gaps below.':'新闻情绪评分的日度快照：尚无已发布（与研究工作台的价格数据快照无关）；计划时间与采集缺口见下方记录。');
+    summary.append(text,state);
+    const companies=(signal?.companies||[]).filter(x=>x.n1!==null&&x.n1!==undefined);
+    if(companies.length){const list=document.createElement('ul');companies.forEach(x=>{
+      const item=document.createElement('li');item.textContent=`${x.entity_id}: ${Number(x.n1).toFixed(3)} · ${x.n2_observed} ${en()?'observed events':'个已观察事件'}`;list.append(item);
+    });summary.append(list);}
+    content.append(summary,audit);
+    explain.textContent=en()?'News tone describes the language in collected reports. It does not verify their claims.':'新闻语气描述已采集报道的措辞，不代表报道主张已经证实。';
   }
   async function refresh() {
     try {

@@ -1,0 +1,99 @@
+{
+  "status": "EXECUTED_CURRENT_VINTAGE_CONSTRUCTION_DIAGNOSTIC",
+  "author_code_commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+  "workbook_DATA_equal_across_NYU_and_GitHub": true,
+  "NYU_workbook_sha256": "3580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+  "GitHub_workbook_sha256": "786bb263ce5827628915482485911c3ed0f78fa4f4225585402a5cd99aed68dc",
+  "NYU_workbook_bytes_equal_to_GitHub": false,
+  "published_comparison": {
+    "n_paired_months": 726,
+    "correlation": 0.9999999999999986,
+    "mean_absolute_difference": 2.7505453960983998e-08,
+    "max_absolute_difference": 2.306773243532234e-07,
+    "rmse": 4.201136151422698e-08,
+    "label": "CURRENT_VINTAGE_NUMERICAL_COMPARISON_NOT_CERTIFIED_STATA_OR_PIT_REPLICATION"
+  },
+  "prefix_summary": [
+    {
+      "fit_end_yearmo": 201012,
+      "shared_historical_months": 546,
+      "correlation_with_full_window": 0.9998702558871161,
+      "mean_absolute_score_revision": 0.0759824123148133,
+      "max_absolute_score_revision": 0.24408715050648588,
+      "rms_score_revision": 0.0970796781143137,
+      "last_shared_month": "2010-12",
+      "prefix_score_at_last_shared_month": -0.2960072436659924,
+      "full_window_score_at_same_month": -0.3310316704588747
+    },
+    {
+      "fit_end_yearmo": 201612,
+      "shared_historical_months": 618,
+      "correlation_with_full_window": 0.9999510136539883,
+      "mean_absolute_score_revision": 0.03884028530961496,
+      "max_absolute_score_revision": 0.11075812985066724,
+      "rms_score_revision": 0.045885904781214515,
+      "last_shared_month": "2016-12",
+      "prefix_score_at_last_shared_month": -0.18569041329500902,
+      "full_window_score_at_same_month": -0.22971197516351358
+    },
+    {
+      "fit_end_yearmo": 202012,
+      "shared_historical_months": 666,
+      "correlation_with_full_window": 0.9999600894055778,
+      "mean_absolute_score_revision": 0.036899560978684375,
+      "max_absolute_score_revision": 0.06983670432372291,
+      "rms_score_revision": 0.03825455666843132,
+      "last_shared_month": "2020-12",
+      "prefix_score_at_last_shared_month": 0.4977208542128387,
+      "full_window_score_at_same_month": 0.4524485517990859
+    },
+    {
+      "fit_end_yearmo": 202512,
+      "shared_historical_months": 726,
+      "correlation_with_full_window": 1.0,
+      "mean_absolute_score_revision": 0.0,
+      "max_absolute_score_revision": 0.0,
+      "rms_score_revision": 0.0,
+      "last_shared_month": "2025-12",
+      "prefix_score_at_last_shared_month": 0.12571175359730846,
+      "full_window_score_at_same_month": 0.12571175359730846
+    }
+  ],
+  "raw_proxy_fit": {
+    "n_complete_months": 726,
+    "first_month": "1965-07",
+    "last_month": "2025-12",
+    "mean": {
+      "cefd": 8.847927622835345,
+      "nipo_12m": 322.9889807162534,
+      "ripo_weighted_12m_lag12": 17.390799668173138,
+      "pdnd_lag12": -4.719055317099683,
+      "s": 0.14476037055214158
+    },
+    "std_ddof1": {
+      "cefd": 6.584218455239913,
+      "nipo_12m": 239.18862247144452,
+      "ripo_weighted_12m_lag12": 14.011397276250001,
+      "pdnd_lag12": 13.888110293635192,
+      "s": 0.08305734251887077
+    },
+    "pc1_loading": {
+      "cefd": -0.5018456030736604,
+      "nipo_12m": 0.47373940595199904,
+      "ripo_weighted_12m_lag12": 0.44200067299671114,
+      "pdnd_lag12": -0.5729352656817781,
+      "s": -0.010126812553119596
+    },
+    "pc1_eigenvalue": 2.2949219884979666,
+    "pc1_variance_fraction": 0.4589843976995933
+  },
+  "not_done": [
+    "No Stata run",
+    "No historical publication-vintage reconstruction",
+    "No SENT_ORTH reconstruction",
+    "No market-return regression",
+    "No sentiment-change differencing",
+    "No strategy or alpha test"
+  ],
+  "input_unchanged": true
+}

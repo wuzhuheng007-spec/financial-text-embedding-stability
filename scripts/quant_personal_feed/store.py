@@ -50,9 +50,28 @@ class PersonalFeedStore:
         path.parent.mkdir(parents=True, exist_ok=True)
         self.path = path
         self.db = sqlite3.connect(path, timeout=10, isolation_level=None)
+        try:
+            self._initialize(owner_id)
+        except Exception:
+            self.db.close()
+            raise
+
+    def _initialize(self, owner_id: int) -> None:
         self.db.row_factory = sqlite3.Row
-        self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA busy_timeout=10000")
+        # Switching a new file to WAL needs an exclusive lock, and SQLite
+        # returns "locked" at once instead of using the busy handler when
+        # another first opener holds the file. Retry only that, for up to the
+        # same 10 s; any other error, or the deadline, propagates.
+        deadline = time.monotonic() + 10
+        while True:
+            try:
+                self.db.execute("PRAGMA journal_mode=WAL")
+                break
+            except sqlite3.OperationalError as exc:
+                if "locked" not in str(exc) or time.monotonic() >= deadline:
+                    raise
+                time.sleep(0.05)
         timeline_config = Path(__file__).resolve().parents[2] / "configs/quant_portal_personal_timeline_v14_20261116.json"
         retention = json.loads(timeline_config.read_text(encoding="utf-8")) if timeline_config.is_file() else {}
         self.raw_response_recent_hours = int(retention.get("raw_response_recent_hours", 48))
@@ -60,7 +79,23 @@ class PersonalFeedStore:
         self._next_raw_retention_monotonic = 0.0
         if not 1 <= self.raw_response_recent_hours <= 168 or not 0 <= self.raw_response_extra_count <= 1000:
             raise ValueError("Invalid personal raw-response retention limits")
-        self.db.executescript("""
+        # The web workers, the feed process and one-off commands can all open
+        # a brand-new cache at the same moment on a cloud first start. Run the
+        # whole check-then-migrate sequence under one write lock: later openers
+        # wait (busy_timeout), then see the finished schema. Real errors roll
+        # back and propagate unchanged.
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            self._migrate(owner_id)
+        except BaseException:
+            if self.db.in_transaction:
+                self.db.execute("ROLLBACK")
+            raise
+        self.db.execute("COMMIT")
+        self.owner_id = owner_id
+
+    def _migrate(self, owner_id: int) -> None:
+        schema = """
           CREATE TABLE IF NOT EXISTS owner_binding (
             singleton INTEGER PRIMARY KEY CHECK(singleton=1), owner_id INTEGER NOT NULL);
           CREATE TABLE IF NOT EXISTS provider_state (
@@ -90,6 +125,8 @@ class PersonalFeedStore:
             source_channel TEXT NOT NULL, raw_sha256 TEXT NOT NULL);
           CREATE INDEX IF NOT EXISTS session_quotes_latest ON session_quotes
             (owner_id,symbol,session,source_at DESC,received_at DESC,id DESC);
+          CREATE INDEX IF NOT EXISTS session_quotes_last_written ON session_quotes
+            (owner_id,symbol,session,source_channel,id DESC);
           CREATE INDEX IF NOT EXISTS session_quotes_source_range ON session_quotes
             (owner_id,symbol,source_at);
           CREATE TABLE IF NOT EXISTS session_capabilities (
@@ -141,14 +178,17 @@ class PersonalFeedStore:
           CREATE TABLE IF NOT EXISTS event_preferences (
             owner_id INTEGER PRIMARY KEY, entities_json TEXT NOT NULL,
             categories_json TEXT NOT NULL, updated_at TEXT NOT NULL);
-        """)
+        """
+        # One statement at a time: executescript() would COMMIT the
+        # surrounding transaction first.
+        for statement in schema.split(";"):
+            if statement.strip():
+                self.db.execute(statement)
         row = self.db.execute("SELECT owner_id FROM owner_binding WHERE singleton=1").fetchone()
         if row is None:
             self.db.execute("INSERT INTO owner_binding(singleton,owner_id) VALUES(1,?)", (owner_id,))
         elif row["owner_id"] != owner_id:
-            self.db.close()
             raise ValueError("Personal feed cache is bound to a different owner; refuse access")
-        self.owner_id = owner_id
         additions = {
             "last_push_at": "TEXT", "last_quote_saved_at": "TEXT",
             "duplicate_quote_packets": "INTEGER NOT NULL DEFAULT 0",
@@ -339,9 +379,13 @@ class PersonalFeedStore:
            str(price),None,quote["provider_time"],quote["received_at"],market_state,
            quote.get("delay_status") or "UNKNOWN",digest))
         inserted = self.db.total_changes > before
-        self.db.execute("""DELETE FROM quotes WHERE id IN (
-          SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY provider_time DESC,received_at DESC,id DESC
-          LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
+        # An unchanged push cannot increase this symbol's history. Running the
+        # ordered pruning query for every duplicate held the shared SQLite
+        # writer slot while Jin10 tried to record its own heartbeat.
+        if inserted:
+            self.db.execute("""DELETE FROM quotes WHERE id IN (
+              SELECT id FROM quotes WHERE owner_id=? AND symbol=? ORDER BY provider_time DESC,received_at DESC,id DESC
+              LIMIT -1 OFFSET ?)""", (owner_id,symbol,limit))
         return inserted
 
     def put_session_quotes(self, owner_id: int, rows: list[dict], *,
@@ -400,40 +444,49 @@ class PersonalFeedStore:
                    row["trade_date"],row["date_basis"],
                    row["parent_date_hint"],row.get("parent_source_at_hint"),row["delay_status"],source_channel,row["raw_sha256"]))
                 inserted += 1
-            # Keep current visible cells and every response supporting a quote
-            # received in the configured recent chart window. The pre-v1.4
-            # policy already pruned some older originals; it cannot recreate
-            # those missing responses. Older unreferenced extras stay bounded.
-            cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
-                      ).isoformat().replace("+00:00","Z")
-            # Compute the latest visible cell once per owner/symbol/session.
-            # The former correlated subquery sorted the quote history once for
-            # every row while holding a write lock, starving the news worker.
-            if time.monotonic() >= self._next_raw_retention_monotonic:
-                self.db.execute("""WITH latest AS (
-              SELECT raw_sha256, ROW_NUMBER() OVER (
-                PARTITION BY owner_id,symbol,session
-                ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
-                  parent_source_at_hint DESC,received_at DESC,id DESC
-              ) AS rank_in_cell FROM session_quotes
-            ), referenced AS (
-              SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
-              UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
-            )
-            DELETE FROM session_raw_responses WHERE sha256 IN (
-              SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
-                SELECT raw_sha256 FROM referenced
-              ) ORDER BY received_at DESC,sha256 DESC LIMIT -1 OFFSET ?
-            )""", (cutoff,self.raw_response_extra_count))
-                # A live push can arrive every second. Repeating the full
-                # retention walk per push needlessly holds SQLite's writer
-                # lock and can starve the independent Jin10 collector.
-                self._next_raw_retention_monotonic = time.monotonic() + 300
             self.db.commit()
         except BaseException:
             self.db.rollback()
             raise
+        if time.monotonic() >= self._next_raw_retention_monotonic:
+            self._prune_raw_responses()
+            self._next_raw_retention_monotonic = time.monotonic() + 300
         return {"inserted": inserted, "duplicate": duplicate}
+
+    def _prune_raw_responses(self) -> None:
+        """Select stale hashes without a writer lock; delete in short batches.
+
+        The WS collector is the only session-quote writer while the separate
+        REST snapshot endpoint is disabled. This preserves the v1.4 retention
+        rule but avoids holding SQLite's writer slot for the full window scan.
+        """
+        cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
+                  ).isoformat().replace("+00:00", "Z")
+        rows = self.db.execute("""WITH latest AS (
+          SELECT raw_sha256, ROW_NUMBER() OVER (
+            PARTITION BY owner_id,symbol,session
+            ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
+              parent_source_at_hint DESC,received_at DESC,id DESC
+          ) AS rank_in_cell FROM session_quotes
+        ), referenced AS (
+          SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
+          UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
+        )
+        SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
+          SELECT raw_sha256 FROM referenced
+        ) ORDER BY received_at DESC,sha256 DESC LIMIT 10000 OFFSET ?""",
+            (cutoff, self.raw_response_extra_count)).fetchall()
+        hashes = [row[0] for row in rows]
+        for offset in range(0, len(hashes), 400):
+            batch = hashes[offset:offset + 400]
+            placeholders = ",".join("?" for _ in batch)
+            self.db.execute("BEGIN IMMEDIATE")
+            try:
+                self.db.execute(f"DELETE FROM session_raw_responses WHERE sha256 IN ({placeholders})", batch)
+                self.db.commit()
+            except BaseException:
+                self.db.rollback()
+                raise
 
     def put_news(self, owner_id: int, item: dict, *, received_at: str,
                  max_items: int, max_versions: int) -> str:

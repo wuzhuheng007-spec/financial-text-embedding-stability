@@ -1,0 +1,42 @@
+{
+  "study_id": "phase5_strategy_v1",
+  "mode": "exact",
+  "started_at_utc": "2026-11-19T04:44:07.758201+00:00",
+  "finished_at_utc": "2026-11-19T04:45:04.652299+00:00",
+  "freeze_commit": "1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953",
+  "input_db_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "config_sha256": "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb",
+  "code_sha256": "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae",
+  "protocol_sha256": "7281efccfa693831b623c45168b92bbda2a929970b20dfcccc749f7e8eb07a8a",
+  "data_end": "2026-11-17",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "formula_or_threshold_tuning": false,
+  "input_vintage": "CURRENT_NOT_PIT_CERTIFIED",
+  "history_previously_seen": true,
+  "independent_validation": false,
+  "real_broker_orders": 0,
+  "fitted_financial_models": 0,
+  "simulation_summary_rows": 360,
+  "private_ledger_files": 330,
+  "primary_family_size": 12,
+  "primary_pass_count": 0,
+  "outputs_sha256": {
+    "contrasts.csv": "cfdc466574f69f1e478eae76569fddb68ed855813c3c442b4ec06e7069331000",
+    "factor_diagnostics.csv": "3d13935e9c80e7be3cce7a5af4c6df9c0c456817c057496a141eaabac110d42a",
+    "input_inventory.json": "3a7adc3a4c8de80b808f61b8f886b2b8ba8b4a9be1fbb6b6a1169d7ad20395d0",
+    "metrics.csv": "feccda7e6f7f07e17a96f53e11afc49e5c786e1d309392519cbb72d23c881df4",
+    "private_output_hashes.json": "598dbd23ab8036317aebd1771d45a13b1199e0515bc647d78829684e85adf4ea",
+    "text_candidates.json": "c7bb0b4b57c6c5bbba7e521fff9c19a016d2f8308008b83ec519193550d4329a"
+  },
+  "limitations": [
+    "History already seen and prior variants studied",
+    "Current-vintage OHLC, QQQ a1 not certified total return",
+    "Three non-investible indices simulated as theoretical units",
+    "Costs and cash return are assumptions, no tax/borrow/fill model",
+    "Full exchange-calendar audit absent",
+    "Correlated markets and short STAR50 history",
+    "Not a news sentiment factor replication"
+  ]
+}

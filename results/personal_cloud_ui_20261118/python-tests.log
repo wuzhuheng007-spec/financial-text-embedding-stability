@@ -1,0 +1,20 @@
+test_cleanup_lock_does_not_mask_non_lock_failure (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_cleanup_lock_does_not_mask_non_lock_failure) ... ok
+test_failed_schema_initialization_closes_connection (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_failed_schema_initialization_closes_connection) ... ok
+test_jin10_closes_connection_even_if_exit_metric_is_locked (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_jin10_closes_connection_even_if_exit_metric_is_locked) ... ok
+test_non_lock_error_is_not_retried (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_non_lock_error_is_not_retried) ... ok
+test_repeated_locks_outlive_old_three_attempt_limit (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_repeated_locks_outlive_old_three_attempt_limit) ... ok
+test_stop_interrupts_recovery_without_another_provider_start (tests.test_personal_feed_lock_recovery.LockRecoveryTests.test_stop_interrupts_recovery_without_another_provider_start) ... ok
+test_late_old_quote_cannot_replace_newer_source_time (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_late_old_quote_cannot_replace_newer_source_time) ... ok
+test_news_version_dedup_and_untrusted_url (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_news_version_dedup_and_untrusted_url) ... ok
+test_owner_boundary_duplicate_quote_and_revision (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_owner_boundary_duplicate_quote_and_revision) ... ok
+test_provider_success_time_only_changes_on_success (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_provider_success_time_only_changes_on_success) ... ok
+test_retry_after_respects_numeric_and_http_date (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_retry_after_respects_numeric_and_http_date) ... ok
+test_selection_requires_verified_code_and_explicit_replacement (tests.test_quant_personal_feed.PersonalFeedCacheTests.test_selection_requires_verified_code_and_explicit_replacement) ... ok
+test_private_mode_refuses_public_feed_switch (tests.test_personal_production_settings.PersonalProductionSettingsTests.test_private_mode_refuses_public_feed_switch) ... ok
+test_private_mode_works_without_debug_and_keeps_secure_cookies (tests.test_personal_production_settings.PersonalProductionSettingsTests.test_private_mode_works_without_debug_and_keeps_secure_cookies) ... ok
+test_private_production_mode_requires_proxy (tests.test_personal_production_settings.PersonalProductionSettingsTests.test_private_production_mode_requires_proxy) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.237s
+
+OK

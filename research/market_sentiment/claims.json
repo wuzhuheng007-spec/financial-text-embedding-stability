@@ -1,0 +1,210 @@
+[
+  {
+    "id": "C001",
+    "claim": "历史行情已合并且已知缺口保留",
+    "status": "VERIFIED_AT_DECLARED_SCOPE",
+    "evidence": [
+      "data_audit/merge_receipt.json",
+      "data_audit/audit/unresolved_dates.json"
+    ]
+  },
+  {
+    "id": "C002",
+    "claim": "旧公开月度初筛不能证明中美通用情绪反转规则",
+    "status": "INCONCLUSIVE_FOR_GENERALIZATION",
+    "evidence": [
+      "phase0/pilot_summary.csv",
+      "phase0/protocol.md"
+    ]
+  },
+  {
+    "id": "C003",
+    "claim": "第一阶段固定弱势反弹价格规则未显示跨指数一致改善",
+    "status": "VERIFIED_DESCRIPTIVE_ONLY",
+    "evidence": [
+      "phase1/results/primary_display_cells.csv",
+      "phase1/config.json"
+    ]
+  },
+  {
+    "id": "C004",
+    "claim": "局部阈值回升不保证后续下跌结束，QQQ2022为本配置的说明性反例",
+    "status": "VERIFIED_OPERATIONAL_EXAMPLE",
+    "evidence": [
+      "phase1/results/cycles_dates_only.csv",
+      "phase1/Phase1_Research_Report_zh.md"
+    ]
+  },
+  {
+    "id": "C005",
+    "claim": "新闻反应变化在价格状态之外具有稳定预测增量",
+    "status": "NOT_VERIFIED",
+    "evidence": [
+      "phase1/NEWS_DATA_CONTRACT_zh.md"
+    ]
+  },
+  {
+    "id": "C006",
+    "claim": "当前发布BW工作簿可直接作为当时可得的历史情绪信号",
+    "status": "NOT_QUALIFIED_FOR_PIT_CLAIM",
+    "evidence": [
+      "phase2/results/availability_matrix.csv",
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/revision_audit/workbook_inventory.csv"
+    ]
+  },
+  {
+    "id": "C007",
+    "claim": "作者明确不将当前发布的BW水平序列简单差分解释为情绪变化",
+    "status": "VERIFIED_VERSION_SPECIFIC",
+    "evidence": [
+      "phase2/results/availability_matrix.csv",
+      "phase2/citation_audit.json"
+    ]
+  },
+  {
+    "id": "C008",
+    "claim": "固定当前版本下，五代理PC1与发布SENT数值高度接近，历史估计随拟合截止变化",
+    "status": "VERIFIED_CONSTRUCTION_DIAGNOSTIC_ONLY",
+    "evidence": [
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/bw_diagnostic/self_check.json"
+    ]
+  },
+  {
+    "id": "C009",
+    "claim": "公开工作簿历史包括数据修订、无DATA页和截断DATA页版本",
+    "status": "VERIFIED_FILE_VERSION_INVENTORY",
+    "evidence": [
+      "phase2/results/revision_audit/workbook_inventory.csv",
+      "phase2/results/revision_audit/published_version_comparison.csv"
+    ]
+  },
+  {
+    "id": "C010",
+    "claim": "三个官方事件完成时间/预期字段演示，但未建立新闻因子效果",
+    "status": "VERIFIED_METADATA_ONLY",
+    "evidence": [
+      "phase2/results/news_field_pilot/events.json",
+      "phase2/results/news_field_pilot/summary.json",
+      "phase2/results/news_field_pilot/source_readback_check.json"
+    ]
+  },
+  {
+    "id": "C011",
+    "claim": "已验收四条历史在固定20%规则下139个方向确认腿、10%规则下517个；并非所有可能行情定义",
+    "status": "VERIFIED_WITHIN_RULE_AND_COVERAGE",
+    "evidence": [
+      "phase3/results_v1_1/events_all_thresholds.csv",
+      "phase3/results_v1_1/self_check.json"
+    ]
+  },
+  {
+    "id": "C012",
+    "claim": "当前版本风险代理对未来中期收益的稳定预测，以及超过固定价格模型的可靠改善，尚未确立",
+    "status": "INCONCLUSIVE",
+    "evidence": [
+      "phase3/results_v1_1/associations.csv",
+      "phase3/results_v1_1/model_contrasts.csv",
+      "phase3/results_v1_1/model_fit_coverage.csv"
+    ]
+  },
+  {
+    "id": "C013",
+    "claim": "候选联合信号存在反向先触及和未触及案例，不能认定统一可靠反转标准",
+    "status": "VERIFIED_FOR_FROZEN_CANDIDATES_ONLY",
+    "evidence": [
+      "phase3/results_v1_1/alert_summary.csv",
+      "phase3/results_v1_1/report_reconciliation.json"
+    ]
+  },
+  {
+    "id": "C014",
+    "claim": "美联储26个官方索引提取238个唯一声明URL；未认证正文/历史首次时间与因果",
+    "status": "VERIFIED_LINK_METADATA_ONLY",
+    "evidence": [
+      "phase3/results/official_calendar/summary.json",
+      "phase3/results/official_calendar/statement_links.csv"
+    ]
+  },
+  {
+    "id": "C015",
+    "claim": "边界修正已登记并重跑；最终数字经同作者原始输入和汇总核对，尚无独立复制",
+    "status": "VERIFIED_SAME_AUTHOR_ONLY",
+    "evidence": [
+      "phase3/AMENDMENT_v1_1.json",
+      "phase3/results_v1_1/self_check.json",
+      "phase3/results_v1_1/report_reconciliation.json"
+    ]
+  },
+  {
+    "id": "C016",
+    "claim": "在本轮当前版本状态定义中QQQ/SOX缩窄队列未来8周均值较低；多重比较后未确立稳健差异",
+    "status": "DESCRIPTIVE_ONLY_EFFECT_INCONCLUSIVE",
+    "evidence": [
+      "phase4/results/state_summary.csv",
+      "phase4/results/state_contrasts.csv"
+    ]
+  },
+  {
+    "id": "C017",
+    "claim": "固定强基线外新增参与结构与实际利率未建立稳健预测改善；不排除其他数据或模型作用",
+    "status": "INCONCLUSIVE_NOT_ESTABLISHED",
+    "evidence": [
+      "phase4/results/model_contrasts.csv",
+      "phase4/results/model_summary.csv",
+      "phase4/results/model_coverage.csv"
+    ]
+  },
+  {
+    "id": "C018",
+    "claim": "第四阶段输入和全部汇总已作同作者原源重算及模型重拟合，不是独立复制",
+    "status": "VERIFIED_SAME_AUTHOR_ONLY",
+    "evidence": [
+      "phase4/results/self_check.json",
+      "phase4/results/run_manifest.json"
+    ]
+  },
+  {
+    "id": "C019",
+    "claim": "第三四阶段为历史预测诊断，尚不具备本阶段扣费可交易因子验收证据；四图示例数字及统一经验阈值不构成认证",
+    "status": "REVIEWED_SCOPE_LIMITATION_NOT_NEW_EFFICACY_RESULT",
+    "evidence": [
+      "image_review/factor_acceptance_v1/REVIEW_zh.md",
+      "image_review/factor_acceptance_v1/readiness.json"
+    ]
+  },
+  {
+    "id": "C020",
+    "claim": "新闻情绪均值、时间标准差、同日文章离散度、关注度和方向变化应分别定义；乘积是待输入的候选，截图IC及市场择时功效尚未验证",
+    "status": "MATH_CHECKED_MEASUREMENT_LIMITS_EMPIRICAL_EFFICACY_NOT_VERIFIED",
+    "evidence": [
+      "image_review/news_mean_vol_v1/REVIEW_zh.md",
+      "image_review/news_mean_vol_v1/formula_results.json",
+      "image_review/news_mean_vol_v1/source_audit.json",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md"
+    ]
+  },
+  {
+    "id": "C021",
+    "claim": "五篇相关论文已完成有版本和页码依据的主要正文学习；文献支持区分测量、对象与期限，但不替代本项目市场中期拐点效果的实证验收",
+    "status": "LITERATURE_IDENTITIES_VERIFIED_FOCUSED_READING_NOT_NEW_EFFICACY_RESULT",
+    "evidence": [
+      "literature/five_papers_v1/REVIEW_zh.md",
+      "literature/five_papers_v1/source_audit.json",
+      "literature/five_papers_v1/reading_ledger.json",
+      "literature/five_papers_v1/self_check.json"
+    ]
+  },
+  {
+    "id": "C022",
+    "claim": "固定三项OHLC行情策略实际运行后，12项主收益增量屏障零通过；同作者账本对账通过，不代表新闻情绪因子或实盘策略验收",
+    "status": "CONFIG_SCOPED_FIRST_SCREEN_NOT_PASSED_INDEPENDENT_VALIDATION_PENDING",
+    "evidence": [
+      "phase5_strategy_v1/RESULTS_zh.md",
+      "phase5_strategy_v1/results/contrasts.csv",
+      "phase5_strategy_v1/results/self_check.json",
+      "phase5_strategy_v1/AUDIT_FINAL.json"
+    ]
+  }
+]

@@ -7,7 +7,7 @@ from contextlib import closing
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
-from scripts.market_observer_v1.moomoo_webapi_oauth import LocalTokenStore
+from scripts.market_observer_v1.moomoo_webapi_oauth import OAuthError, token_store
 from scripts.news_sentiment_factor_v44.price_pilot import TOKEN
 from .preflight import PUBLIC, ROOT, dump
 
@@ -18,7 +18,10 @@ def run() -> dict:
     with closing(sqlite3.connect(f"file:{feed.as_posix()}?mode=ro", uri=True)) as con:
         row = con.execute("""SELECT state,last_success_at,last_error_class,worker_alive
             FROM provider_state WHERE provider='moomoo_snapshot'""").fetchone()
-    auth = LocalTokenStore(TOKEN).status()
+    try:
+        auth = token_store(TOKEN).status()
+    except OAuthError:
+        auth = {"credential_state": "STORE_NOT_CONFIGURED"}
     result = {"schema": "news_sentiment_factor_v45_rest_439_redacted_1",
               "checked_at_utc": at.isoformat(),
               "checked_at_asia_shanghai": at.astimezone(ZoneInfo("Asia/Shanghai")).isoformat(),

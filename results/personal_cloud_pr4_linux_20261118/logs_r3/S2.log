@@ -1,0 +1,17 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env exec -T web python -c import os,sys,json;sys.path.insert(0,'/app/apps/quant_portal');os.environ.setdefault('DJANGO_SETTINGS_MODULE','portal.settings');import django;django.setup();from django.conf import settings as s;print(json.dumps({k:getattr(s,k) for k in ['DEBUG','PERSONAL_MODE','TRUSTED_REVERSE_PROXY','PUBLIC_MARKET_DATA_ENABLED','SECURE_SSL_REDIRECT','SESSION_COOKIE_SECURE','CSRF_COOKIE_SECURE']}|{'db':s.DATABASES['default']['ENGINE']}))
+# exit=0 expected=0 seconds=1.7
+# assertion=PASS
+{
+ "observed": {
+  "DEBUG": false,
+  "PERSONAL_MODE": true,
+  "TRUSTED_REVERSE_PROXY": true,
+  "PUBLIC_MARKET_DATA_ENABLED": false,
+  "SECURE_SSL_REDIRECT": true,
+  "SESSION_COOKIE_SECURE": true,
+  "CSRF_COOKIE_SECURE": true,
+  "db": "django.db.backends.postgresql"
+ },
+ "mismatches": {}
+}
+{"DEBUG": false, "PERSONAL_MODE": true, "TRUSTED_REVERSE_PROXY": true, "PUBLIC_MARKET_DATA_ENABLED": false, "SECURE_SSL_REDIRECT": true, "SESSION_COOKIE_SECURE": true, "CSRF_COOKIE_SECURE": true, "db": "django.db.backends.postgresql"}

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "D01",
+    "item": "数据及结果身份",
+    "status": "PASS_WITHIN_DECLARED_SCOPE",
+    "evidence": [
+      "phase4/config.json",
+      "phase4/results/run_manifest.json"
+    ],
+    "meaning": "本轮比对源文件/配置/代码与回执哈希一致，不等于认证供应商内容或历史PIT"
+  },
+  {
+    "id": "D02",
+    "item": "信息可用性/PIT",
+    "status": "PARTIAL",
+    "evidence": [
+      "phase4/config.json",
+      "phase4/input_manifest.json"
+    ],
+    "meaning": "滞后来源日期已保存且原自查记录存在；当前版本、真实历史发布版本与所有首次发布时间未恢复"
+  },
+  {
+    "id": "D03",
+    "item": "训练与标签分离",
+    "status": "PASS_SAVED_METADATA_ONLY",
+    "evidence": [
+      "phase4/analyze.py",
+      "phase4/results/self_check.json"
+    ],
+    "meaning": "本轮核对保存模型标签末日早于测试年初；未重拟合。本轮代码阅读确认训练窗标准化；不是所有泄漏的排除证明"
+  },
+  {
+    "id": "D04",
+    "item": "样本与可交易性",
+    "status": "PARTIAL_DIAGNOSTIC_ONLY",
+    "evidence": [
+      "phase4/results/coverage.json",
+      "phase4/PLAN_zh.md"
+    ],
+    "meaning": "已记录接受行情及不一致日期；实际可交易ETF选择、完整日历核对与可成交报价未完成"
+  },
+  {
+    "id": "D05",
+    "item": "风格与增量控制",
+    "status": "PARTIAL",
+    "evidence": [
+      "phase4/config.json",
+      "phase4/results/model_contrasts.csv"
+    ],
+    "meaning": "有价格/VIX/信用/名义利率强基线的同样本比较；不是股票横截面行业市值中性化；不宣称风格因果已分离"
+  },
+  {
+    "id": "D06",
+    "item": "显著性与重叠窗口",
+    "status": "PARTIAL",
+    "evidence": [
+      "phase4/results/model_contrasts.csv",
+      "phase4/config.json"
+    ],
+    "meaning": "预定块自助法和主家族Holm已执行；不能解释为独立危机样本充分或研究全程选择偏差已消除"
+  },
+  {
+    "id": "D07",
+    "item": "成本/换手/容量/扣费Sharpe",
+    "status": "NOT_RUN_IN_PHASE3_OR_PHASE4",
+    "evidence": [
+      "phase4/AUDIT_FINAL.json"
+    ],
+    "meaning": "第三四阶段未实施可交易组合收益回测；其他平台基线模拟成本不能移作本阶段证据"
+  },
+  {
+    "id": "D08",
+    "item": "敏感性与分期",
+    "status": "EXECUTED_LIMITED",
+    "evidence": [
+      "phase4/results/model_contrasts.csv",
+      "phase4/results/model_summary.csv"
+    ],
+    "meaning": "保存两alpha、三期限和不同块/时期；仍仅一个模型族、相关市场、部分短样本"
+  },
+  {
+    "id": "D09",
+    "item": "未见样本外/独立复制",
+    "status": "NOT_ESTABLISHED",
+    "evidence": [
+      "phase4/config.json",
+      "phase4/results/self_check.json"
+    ],
+    "meaning": "逐年预测是时序检查，历史已看过且为当前版本；同作者自查不是独立审计"
+  },
+  {
+    "id": "D10",
+    "item": "正式因子准入",
+    "status": "NOT_QUALIFIED",
+    "evidence": [
+      "phase4/results/model_contrasts.csv",
+      "phase4/AUDIT_FINAL.json"
+    ],
+    "meaning": "尚无稳健增量，未认证为实盘因子；图示经验阈值不能推翻这个状态"
+  }
+]

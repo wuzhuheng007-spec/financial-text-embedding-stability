@@ -1,0 +1,38 @@
+[
+  {
+    "series": "VIXCLS",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "eed5fb6b53326825a3e92ba7055749b45b29e9c79015f4263d7494e666573910",
+    "first": "1990-01-02",
+    "last": "2026-11-17",
+    "nonmissing_rows": 9319,
+    "rows": 9621,
+    "capture_utc": "2026-11-19T01:37:52.414261+00:00",
+    "origin": "Earlier fetched snapshot reused; latest overlapping value checked on official FRED page this turn",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  },
+  {
+    "series": "BAA10Y",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAA10Y&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "ceadf6509b89da1dd1875a3fbd2fec9fd78b80285c2da782cb6e921510746ea4",
+    "first": "1990-01-02",
+    "last": "2026-11-17",
+    "nonmissing_rows": 9219,
+    "rows": 9621,
+    "capture_utc": "2026-11-19T01:38:00.157799+00:00",
+    "origin": "Downloaded this turn",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  },
+  {
+    "series": "DGS10",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10&cosd=1990-01-01&coed=2026-11-17",
+    "sha256": "1129432dc6fd4e0e2a85345167453d24fac2a887a18a0154906a4fba6d0ad8c2",
+    "first": "1990-01-02",
+    "last": "2026-11-17",
+    "nonmissing_rows": 9225,
+    "rows": 9621,
+    "capture_utc": "2026-11-19T01:38:06.347533+00:00",
+    "origin": "Downloaded this turn",
+    "status": "CAPTURED_CURRENT_VINTAGE"
+  }
+]

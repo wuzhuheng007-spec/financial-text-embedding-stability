@@ -1,0 +1,20 @@
+[Unit]
+Description=Refresh SEC EDGAR filing metadata for the quant-personal watchlist
+Requires=docker.service
+After=docker.service
+# At most 5 starts per hour (timer, manual and retries together): retries cannot loop,
+# and a few manual runs cannot block the next scheduled run.
+StartLimitIntervalSec=1h
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+EnvironmentFile=/srv/quant/secrets/sec.env
+ExecStart=/usr/local/sbin/quant-sec-refresh.sh
+TimeoutStartSec=15min
+# exit 1 = PARTIAL (some rows rejected; recorded in the database, not retried here)
+SuccessExitStatus=1
+# exit 2 = source failure, 75 = data lock busy: retry once later; the timer still runs every 6 h.
+Restart=on-failure
+RestartSec=20min
+Nice=10

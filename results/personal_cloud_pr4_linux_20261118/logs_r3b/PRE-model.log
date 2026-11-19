@@ -1,0 +1,7 @@
+$ docker run ... quant_pr4test_model_v41 sha256 vs input_manifest
+# exit=0 expected=0 seconds=1.81
+# assertion=PASS
+{
+ "files": 6,
+ "mismatch": []
+}

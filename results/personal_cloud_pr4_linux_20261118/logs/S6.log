@@ -1,0 +1,17 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env run --rm --no-deps feed
+# exit=1 expected=1 seconds=2.2
+ Container quant-pr4-test-feed-run-7905292f9d31 Creating
+ Container quant-pr4-test-feed-run-7905292f9d31 Created
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/app/scripts/quant_personal_feed/cli.py", line 217, in <module>
+    main()
+  File "/app/scripts/quant_personal_feed/cli.py", line 213, in main
+    run(args.config)
+  File "/app/scripts/quant_personal_feed/cli.py", line 108, in run
+    lock = lock_file(var / "personal_feed.lock")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/scripts/quant_personal_feed/cli.py", line 101, in lock_file
+    raise RuntimeError("Personal feed collector already runs") from None
+RuntimeError: Personal feed collector already runs

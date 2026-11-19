@@ -1,0 +1,41 @@
+{
+  "final_status": "VERIFIED",
+  "scope": "Five-paper identity, focused reading and original synthesis only; not empirical validation",
+  "plan_execution_gate": "PASS",
+  "experimental_sufficiency_gate": "NOT_APPLICABLE",
+  "result_provenance_gate": "PASS",
+  "citation_verification_gate": "PASS",
+  "commands_actually_run": [
+    "python acquire.py literature_private_20261119",
+    "Crossref DOI metadata retrieval (Python standard-library heredoc)"
+  ],
+  "authoritative_artifacts_inspected": {
+    "papers": 5,
+    "fulltext_pdf_pages_total_available": 186,
+    "focus": "Locations in reading_ledger.json; not all 186 pages exhaustively read",
+    "primary_registry_records": 5
+  },
+  "empirical_replication": false,
+  "financial_model_fits": 0,
+  "raw_papers_published": false,
+  "unresolved_blockers": [],
+  "open_research_limits": [
+    "Underlying datasets/coefficients not independently reproduced",
+    "Read HS working-paper body rather than paywalled final body",
+    "Historical first-availability and language-model vintage not certified",
+    "China-local transfer and target model efficacy untested",
+    "Screenshot original-study identity still unresolved"
+  ],
+  "claims_authorized": [
+    "Five selected papers were identified and their principal body sections read",
+    "Summary of reported results at declared versions",
+    "Proposed project-specific design implications clearly labeled"
+  ],
+  "claims_not_authorized": [
+    "Five papers jointly validate a universal timing strategy",
+    "PIT-qualified input or independent replication",
+    "Costed net trading advantage for our project",
+    "Latest exhaustive systematic review"
+  ],
+  "worktree_user_data_preserved": "YES"
+}

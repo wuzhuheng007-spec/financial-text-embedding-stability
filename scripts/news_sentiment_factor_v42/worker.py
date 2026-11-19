@@ -540,7 +540,11 @@ def start(*, minutes: int | None = None) -> dict:
     if current.get("process_alive_identity") and current.get("state") in {"RUNNING","LOADING_MODEL","DAILY_BUDGET_PAUSED","STARTING","UNRESPONSIVE_HEARTBEAT"}:
         raise RuntimeError("WORKER_ALREADY_RUNNING")
     STOP.unlink(missing_ok=True)
-    flags=subprocess.CREATE_NEW_PROCESS_GROUP|subprocess.DETACHED_PROCESS if os.name=="nt" else 0
+    # DETACHED_PROCESS made the venv launcher's child allocate a new, visible
+    # Windows Terminal console; closing that window sent CTRL_CLOSE and the
+    # Intel Fortran runtime aborted the worker ("window-CLOSE event", observed
+    # 2026-11-17/18). CREATE_NO_WINDOW gives the worker a hidden console.
+    flags=subprocess.CREATE_NEW_PROCESS_GROUP|subprocess.CREATE_NO_WINDOW if os.name=="nt" else 0
     PRIVATE.mkdir(parents=True,exist_ok=True)
     with LOG.open("ab") as log:
         child=subprocess.Popen([sys.executable,"-m","scripts.news_sentiment_factor_v42.worker","run",

@@ -1,0 +1,32 @@
+{
+ "web": {
+  "signal_to_pid1": "SIGTERM",
+  "restart_count_before": 0,
+  "restart_count_after": 1,
+  "state": "running healthy",
+  "healthy_after_s": 3.2
+ },
+ "feed": {
+  "signal_to_pid1": "SIGTERM",
+  "restart_count_before": 0,
+  "restart_count_after": 1,
+  "state": "running healthy",
+  "healthy_after_s": 3.2
+ },
+ "research": {
+  "signal_to_pid1": "SIGINT",
+  "restart_count_before": 0,
+  "restart_count_after": 1,
+  "state": "running healthy",
+  "healthy_after_s": 3.2
+ },
+ "research_docker_kill_SIGKILL": {
+  "restart_count_before": 1,
+  "restart_count_after": 1,
+  "state_after_8s": "exited"
+ },
+ "research_after_kill": {
+  "state": "running healthy",
+  "healthy_after_s": 6.3
+ }
+}

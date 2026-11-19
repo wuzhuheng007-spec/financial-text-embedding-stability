@@ -1,0 +1,22 @@
+{
+  "version": "phase1-v1.0",
+  "cutoff": "2026-11-17",
+  "database_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "markets": [{"symbol":"US.QQQ","autype":1},{"symbol":"SH.000001","autype":0},{"symbol":"SH.000688","autype":0},{"symbol":"US..SOX","autype":0}],
+  "weekly_method": "Last accepted daily close in each Monday-Friday week; discard cutoff's incomplete week. No weekly price is filled. Vendor weekly bars are not used.",
+  "feature_windows_observed_weeks": {"recent_momentum":4,"medium_momentum":13,"moving_average":26,"drawdown":52,"realized_volatility":13},
+  "feature_history": "Require 53 consecutive observed weekly records, no known SOX candidate gap within the feature lookback. Closed weeks without quotes are omitted, not filled; feature windows count observed market weeks, not exact calendar weeks.",
+  "states": {"weak_falling":"close < sma26 and momentum4 <= 0","weak_rebounding":"close < sma26 and momentum4 > 0","strong_rising":"close >= sma26 and momentum4 >= 0","strong_fading":"close >= sma26 and momentum4 < 0"},
+  "horizons_calendar_weeks": [4,8,12],
+  "outcome": "Entry reference is next observed weekly close after signal; endpoint is last observed weekly close at/before entry week-label plus h calendar weeks, max 14-day endpoint lag. Record actual entry/end dates. No execution return claim.",
+  "outcome_gap_policy": "Exclude if any known SOX candidate gap lies between signal week start and endpoint week end, or if any adjacent observed-week labels differ by more than 21 days. Exclude incomplete future endpoints. Never bridge a known provider gap.",
+  "segments": [{"name":"development","start":"1996-01-01","end":"2010-12-31"},{"name":"temporal_check_1","start":"2011-01-01","end":"2016-12-31"},{"name":"temporal_check_2","start":"2017-01-01","end":"2025-12-31"},{"name":"monitoring_2026","start":"2026-01-01","end":"2026-11-17"}],
+  "segment_rule":"Signal and complete outcome endpoint must be within the same segment. Full sample summaries are descriptive. Historical segments are not pristine unseen holdouts; no fitting or rule selection in this phase.",
+  "cycle_thresholds": [0.2,0.1],
+  "cycle_rule":"Retrospective directional-change extrema of observed weekly closes, confirmed only upon threshold reversal. Track extremum date and later confirmation separately; reset after known SOX gap or >21-day weekly gap. Right-censored final extrema are not confirmed turns. 20% primary, 10% sensitivity; neither is a universal sentiment definition.",
+  "bootstrap":{"replications":2000,"seed":20261119,"primary_block_observed_weeks":26,"sensitivity_block_observed_weeks":[13,52],"interval":"circular paired-block percentile 95%, conditional mean minus all eligible weeks; no p-values or discovery claim","min_signal_weeks_for_interval":20,"min_contiguous_runs_for_interval":5},
+  "primary_comparison":{"horizon":8,"segment":"temporal_check_2","states":["weak_rebounding","strong_fading"]},
+  "claim_limit":"Current-vintage price-state description only; no point-in-time news, causal identification, strategy return, sentiment factor efficacy or independent replication claim. Earlier OECD/FRED pilot is a different input/design and not pooled.",
+  "fitting":null,
+  "seed_scope":"Bootstrap Monte Carlo only; deterministic features and labels have no training seed."
+}

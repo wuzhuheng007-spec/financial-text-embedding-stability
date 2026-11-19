@@ -28,7 +28,7 @@ def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
             has_reviews=bool(db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='analysis_reviews'").fetchone())
             review_join='LEFT JOIN analysis_reviews r ON r.owner_id=j.owner_id AND r.item_key=j.item_key AND r.version=j.version' if has_reviews else ''
             review_column='r.decision AS review_decision,r.response_sha256 AS review_response_sha256' if has_reviews else 'NULL AS review_decision,NULL AS review_response_sha256'
-            jobs={(r['item_key'],r['version']):dict(r) for r in db.execute(f'''SELECT j.item_key,j.version,
+            jobs={(r['item_key'],r['version']):dict(r) for r in db.execute(f'''SELECT j.item_key,j.version,j.content_sha256,
               status,result_json,validation_json,model_revision,prompt_version,completed_at,
               input_sha256,error_class,{review_column} FROM analysis_jobs j {review_join} WHERE j.owner_id=?''',(owner_id,))}
     approved_db=analysis_db.parent/'personal_analysis_v15d_approved.sqlite3'
@@ -54,6 +54,10 @@ def enrich(data:dict, *, owner_id:int, analysis_db:Path, config:dict) -> dict:
         if not label and decision.status!='INCLUDE':
             continue
         job=jobs.get((item['item_key'],item['version']))
+        if job and job['content_sha256']!=item.get('content_sha256'):
+            # A matching item key and version alone cannot authorize displaying
+            # an analysis against changed source text.
+            job=None
         item['screening_v15']=decision.as_dict() | (label or {})
         item['screening_v15']['event_group_id']=decision.event_group_id
         item['screening_v15']['entity_ids']=list(decision.entity_ids)

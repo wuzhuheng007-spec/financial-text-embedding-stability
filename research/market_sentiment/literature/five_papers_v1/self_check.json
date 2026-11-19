@@ -1,0 +1,46 @@
+{
+  "status": "PASS_SAME_AUTHOR_SOURCE_IDENTITY_CHECK",
+  "checked_at_utc": "2026-11-19T04:20:44.655335+00:00",
+  "papers": [
+    {
+      "id": "BW2007",
+      "private_input_hashes": "MATCH",
+      "title_author_doi_print_year": "MATCH",
+      "read_body_version": "Author-hosted journal PDF"
+    },
+    {
+      "id": "T2007",
+      "private_input_hashes": "MATCH",
+      "title_author_doi_print_year": "MATCH",
+      "read_body_version": "University-hosted journal PDF; author institutional identity verified"
+    },
+    {
+      "id": "HS2016",
+      "private_input_hashes": "MATCH",
+      "title_author_doi_print_year": "MATCH",
+      "read_body_version": "FULL BODY READ: FEDS 2016-048 dated 2016-06-06, DOI 10.17016/FEDS.2016.048. Journal 2017 identity and abstract checked; final body not claimed identical."
+    },
+    {
+      "id": "DEG2015",
+      "private_input_hashes": "MATCH",
+      "title_author_doi_print_year": "MATCH",
+      "read_body_version": "Author-hosted 2014 Advance Access PDF of work in 2015 print issue"
+    },
+    {
+      "id": "LL2025",
+      "private_input_hashes": "MATCH",
+      "title_author_doi_print_year": "MATCH",
+      "read_body_version": "Publisher open-access article/PDF"
+    }
+  ],
+  "available_pdf_pages": 186,
+  "prior_publication": {
+    "status": "PASS",
+    "published_files_hashed": 185,
+    "steps_checked": 22,
+    "claims_checked": 20,
+    "independent_research_validation": false
+  },
+  "independent_empirical_validation": false,
+  "limitations": "Hash and metadata check verifies source identity, not correctness of published empirical estimates"
+}

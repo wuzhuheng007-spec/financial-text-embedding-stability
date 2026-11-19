@@ -1,0 +1,17 @@
+PR #4 Linux round, 2026-11-18 Asia/Shanghai.
+
+Authoritative record: verification_matrix.csv (42 rows). Each row has the exact command,
+exit code, expected exit code, duration, configuration, input type and a log under logs/.
+Re-run with: python deploy/linux/verify_matrix.py <scratch dir with test.env and pw.env> <results dir>
+
+Summary of the final run (2026-11-18 00:13-00:22 UTC): 42/42 rows matched the expected exit code.
+- W1 Windows pytest (token store, owner resolver, feed): exit 0
+- W2 Windows settings rules (portal venv): exit 0
+- L2 Linux pytest 40 + v45 unittest 10 in app image: exit 0
+- L3 v43 synthetic daily snapshot harness 13/13 in research image (network none): exit 0
+- S6 second collector refused: exit 1 (expected 1)
+- S8 Linux moomoo credential: NOT_INSTALLED (real supplier BLOCKED)
+
+These checks show software behaviour on synthetic inputs and read-only local status. They do not
+show supplier connectivity in containers, news truth, Jin10 completeness, model accuracy or return
+predictability.

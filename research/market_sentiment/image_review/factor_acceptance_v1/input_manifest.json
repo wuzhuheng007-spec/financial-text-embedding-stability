@@ -1,0 +1,27 @@
+{
+  "images": [
+    {
+      "filename": "IMG_1579.jpeg",
+      "sha256": "f2237788d21168d4c719a2bf22e13a6841a48a8782e4f50b623d1c67e13c93fc",
+      "status": "USER_PROVIDED_NOT_AN_AUTHORITY_FOR_EXAMPLE_NUMBERS"
+    },
+    {
+      "filename": "IMG_1580.jpeg",
+      "sha256": "3c639e0e89c3a4d95f673aa2f0f2650e0247e20a418911c415791da09304f71d",
+      "status": "USER_PROVIDED_NOT_AN_AUTHORITY_FOR_EXAMPLE_NUMBERS"
+    },
+    {
+      "filename": "IMG_1581.jpeg",
+      "sha256": "a174fb91b89dc94b0b49c846e6f28c2ad4b3e3db6df79cca4fd948067adc0901",
+      "status": "USER_PROVIDED_NOT_AN_AUTHORITY_FOR_EXAMPLE_NUMBERS"
+    },
+    {
+      "filename": "IMG_1582.jpeg",
+      "sha256": "a9b6f7fc2a689229f1e32a8082a089678b50fdc835f777f46b0e870e286c0bf0",
+      "status": "USER_PROVIDED_NOT_AN_AUTHORITY_FOR_EXAMPLE_NUMBERS"
+    }
+  ],
+  "review_scope": "Read-only evidence mapping; no new financial estimator or strategy run",
+  "previous_phase4_run_id": "phase4_20261119_v1",
+  "snapshot": "snapshot.json"
+}

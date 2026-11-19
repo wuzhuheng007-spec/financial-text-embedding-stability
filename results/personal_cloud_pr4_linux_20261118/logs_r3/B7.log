@@ -1,0 +1,6 @@
+$ docker compose -p quant-pr4-restore -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env exec -T db sh -c pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --no-owner --exit-on-error < pg_r3.dump
+# exit=0 expected=0 seconds=0.75
+# assertion=PASS
+{
+ "restored_auth_users": "2"
+}

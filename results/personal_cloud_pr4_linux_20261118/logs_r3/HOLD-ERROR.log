@@ -1,0 +1,6 @@
+$
+# exit=None expected=0 seconds=None
+# assertion=FAIL
+{
+ "error": "TypeError: dict() got multiple values for keyword argument 'SUPERVISOR_POLL'"
+}

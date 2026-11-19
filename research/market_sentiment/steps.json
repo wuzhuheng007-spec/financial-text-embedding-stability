@@ -1,0 +1,620 @@
+[
+  {
+    "id": "R000",
+    "title": "历史机制综述与公开月度初筛归档",
+    "status": "ARCHIVED_DESCRIPTIVE_ONLY",
+    "plan": "整理此前已执行的历史资料和OECD/FRED探索性筛选。",
+    "actual": "原报告、协议、20行初筛结果和运行回执导入本目录；本次没有重跑旧实验。",
+    "evidence": [
+      "phase0/Market_Sentiment_Turning_Points_20261119.md",
+      "phase0/pilot_run_manifest.json",
+      "phase0/pilot_summary.csv",
+      "phase0/self_check.json"
+    ],
+    "claims": "固定旧输入上的描述性筛选及其负面/稀疏结果保留；不同市场未呈一致改善。",
+    "limits": "不同于moomoo价格数据；非PIT、非独立未知测试，不与后续结果合并。",
+    "evidence_sha256": {
+      "phase0/Market_Sentiment_Turning_Points_20261119.md": "d660330dcc87ee5c63535c935ae30e65f5d0889e76cfa943e5c8953b2aaeaf02",
+      "phase0/pilot_run_manifest.json": "2f1708437ad154d0b687dddb3c850ea089887fb634a9eb08eee4c189fcd89706",
+      "phase0/pilot_summary.csv": "9343f994bb3b898287a0a4083ed8b91b961b73d1c7f83fea2535d5f5ca9f864b",
+      "phase0/self_check.json": "6cc32d287b7f66e201f4e00cdaa60341883cf8aa246fdc21b9c86d3d8aaa1870"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.084180+00:00"
+  },
+  {
+    "id": "R001",
+    "title": "moomoo历史数据验收与已知问题隔离",
+    "status": "MERGED_WITH_UNRESOLVED_LIMITS",
+    "plan": "验收原始包及定向补抓，保留异常证据和缺失。",
+    "actual": "既有5段补抓新增1227行，数据库与原响应逐行核对；原回执导入GitHub。",
+    "evidence": [
+      "data_audit/merge_receipt.json",
+      "data_audit/series_registry.json",
+      "data_audit/audit/post_merge_self_check.json",
+      "data_audit/audit/unresolved_dates.json"
+    ],
+    "claims": "声明版本内的文件和派生数据对账通过，7个SOX候选缺口未填。",
+    "limits": "源行情私有；没有逐日跨供应商独立核价，不认证总回报或完整交易日历。",
+    "evidence_sha256": {
+      "data_audit/merge_receipt.json": "e6c4f4088e099e471a9dae7471df5cf3f4ad8377ba8514a05a30bdebed12a100",
+      "data_audit/series_registry.json": "9481b61fe9ecc90d63c671e889ba6fc10dba3e426ce86e39e027e8ad8bccb9b2",
+      "data_audit/audit/post_merge_self_check.json": "7841655b7b8972dbf9a73e430b65c36deac8bbf7fe9f81a6baa49990692497be",
+      "data_audit/audit/unresolved_dates.json": "77e5108dbab7f9d49eb677526d8b7110fc21117f1a42d788a79a847cdc2be6b2"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.084948+00:00"
+  },
+  {
+    "id": "R002",
+    "title": "第一阶段价格状态基线及历史拐点对照",
+    "status": "PARTIALLY_SUPPORTED",
+    "plan": "固定规则后比较四条代理的4/8/12自然周价格分布，并区分极值日与确认日。",
+    "actual": "此前实际运行270行统计、108行状态差和401条两阈值极值；输入回溯和未来扰动自检通过，本次导入既有结果。",
+    "evidence": [
+      "phase1/PROTOCOL_zh.md",
+      "phase1/config.json",
+      "phase1/results/run_manifest.json",
+      "phase1/results/baseline_summary.csv",
+      "phase1/results/self_check.json",
+      "phase1/Phase1_Research_Report_zh.md"
+    ],
+    "claims": "在指定后期段的8周主展示，弱势反弹相对全部周的均值差方向不同，四个主区间都覆盖零；局部20%确认不代表下跌结束。",
+    "limits": "当期版本价格、相关标的、重叠窗口、同团队自检，未验证情绪或可交易收益。",
+    "evidence_sha256": {
+      "phase1/PROTOCOL_zh.md": "9746cdef0b7e9aac93592fc31cf8087cd4cc9dd379655114f3d7fbd9dca0df22",
+      "phase1/config.json": "12845f996c85d68296fa3873d98e9379092a0fd0d386fa0f9faa2d451270110e",
+      "phase1/results/run_manifest.json": "5fff243ed3c253f275c95e7a7050bdda709bb70fef045c1fc3729956f4ed4aae",
+      "phase1/results/baseline_summary.csv": "2cfd7ece51778bf8cca59afed2812a100fc463655f780a94e8b07d7d397d8499",
+      "phase1/results/self_check.json": "f307b3aaccd8c49fdfae1759140a28b8bd1b64e395f90af6ebcbae9ea2185169",
+      "phase1/Phase1_Research_Report_zh.md": "c01723e23ea63291da19bddfd4865f6fc25b42d49d40906a56fd983fb5b3f771"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.085829+00:00"
+  },
+  {
+    "id": "R003",
+    "title": "第二阶段BW可用性审核启动",
+    "status": "IN_PROGRESS",
+    "plan": "核对作者版本、发布滞后、宏观修订和全样本拟合；再做固定原始代理数值诊断。",
+    "actual": "已查阅作者README和Stata源码，冻结诊断方案；尚未执行本阶段数值诊断。",
+    "evidence": [
+      "phase2/PLAN_zh.md",
+      "phase2/freeze_receipt.json"
+    ],
+    "claims": "研究目标及执行边界已记录；尚无新增收益或预测结果。",
+    "limits": "没有历史发布版本，不把当前SENT一阶差分当作情绪变化。",
+    "evidence_sha256": {
+      "phase2/PLAN_zh.md": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "phase2/freeze_receipt.json": "11183532764b616122e096aa93bb59750d4a464a301b1b7592088818a0ee4549"
+    },
+    "recorded_at_utc": "2026-11-19T00:08:21.086276+00:00"
+  },
+  {
+    "id": "R004",
+    "title": "BW构造、可用性与公开版本审核",
+    "status": "PARTIALLY_SUPPORTED",
+    "plan": "按已同步冻结方案审核作者源码、版本与五代理数值构造；不做收益拟合。",
+    "actual": "固定作者commit7a0165f3；重建726个共同月SENT并检查四个拟合截止；SVD自检通过；检查五个工作簿版本，含README-only及截断文件。",
+    "evidence": [
+      "phase2/PLAN_zh.md",
+      "phase2/Phase2_BW_Availability_Report_zh.md",
+      "phase2/source_registry_complete.json",
+      "phase2/results/bw_diagnostic/summary.json",
+      "phase2/results/bw_diagnostic/self_check.json",
+      "phase2/results/revision_audit/workbook_inventory.csv",
+      "phase2/results/revision_audit/published_version_comparison.csv",
+      "phase2/results/availability_matrix.csv"
+    ],
+    "claims": "当前维护BW为低频水平序列，不以简单差分解释变化；当前版本SENT数值可高度匹配，但不能据此恢复当时可用性。历史分数随版本/拟合截止变化。",
+    "limits": "发布日历及长历史vintage缺失；变化混合标准化、数据和方法影响；无收益检验或独立审计。",
+    "evidence_sha256": {
+      "phase2/PLAN_zh.md": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "phase2/Phase2_BW_Availability_Report_zh.md": "60bca216f54b6e698a138ae99679604c6d04ff3c227d913fbc807a5e3ebfb244",
+      "phase2/source_registry_complete.json": "9b52ed27f00c34db75e5d23bf55872a40919105a2ea4cf116392593dc0e811cd",
+      "phase2/results/bw_diagnostic/summary.json": "c4b565da4849cf19a8b9fe3fe2d189032510825af25888a9d577c2526a5aea23",
+      "phase2/results/bw_diagnostic/self_check.json": "c79292d023dab11f8d5c9cf013dbbd584373741f55cc01ba8024dc82c12f2695",
+      "phase2/results/revision_audit/workbook_inventory.csv": "f1f1d574075f174fb1e4157b88d1b62499509cdc9b50eb6e58e4e6d812f018f5",
+      "phase2/results/revision_audit/published_version_comparison.csv": "61dcfe1a6f45f4f65d511efb65ee23e87e808a75482b9a9a685d892036005f89",
+      "phase2/results/availability_matrix.csv": "e6577222166a950076cd1eb5b1255cf2370447845ace2f52193deba5e8726af5"
+    },
+    "recorded_at_utc": "2026-11-19T00:20:45.145374+00:00"
+  },
+  {
+    "id": "R005",
+    "title": "官方政策新闻时间与预期字段试点",
+    "status": "METADATA_PILOT_ONLY",
+    "plan": "按冻结计划检查2019FOMC、2020FOMC和2024中国发布会三条官方资料。",
+    "actual": "实际获取三个当前官方页面和哈希；两条美国声明有明确发布安排，中国仅有会议开始时刻；预期等缺失字段保留null。",
+    "evidence": [
+      "phase2/results/news_field_pilot/events.json",
+      "phase2/results/news_field_pilot/summary.json",
+      "phase2/news_field_pilot.py"
+    ],
+    "claims": "字段合同在真实来源上完成有界演示；会议开始、全文发布时间与本轮抓取时间不可混同。",
+    "limits": "手工选取的三条事件不代表完整新闻库；没有预期差、反应残差、金融拟合或效力结论。",
+    "evidence_sha256": {
+      "phase2/results/news_field_pilot/events.json": "98c546a90440544bd1d3cd5c627d64a8cd3dc238927bbd53985193131d8b640b",
+      "phase2/results/news_field_pilot/summary.json": "7da952d1567fced5c168527e30c678dc7cb339ebff2b2c653cbab0003da6d8c8",
+      "phase2/news_field_pilot.py": "ebff2061faa250fcbeb124c3dbac46984ae0672ee9c86bc3bb7524bc46d5ae03"
+    },
+    "recorded_at_utc": "2026-11-19T00:20:45.146170+00:00"
+  },
+  {
+    "id": "R006",
+    "title": "全样本大涨大跌与风险情绪代理研究冻结",
+    "plan": "枚举20%主口径和10%敏感性事件，保留失败信号，检查风险代理的增量关联；先冻结再计算。",
+    "actual": "核对SQLite及三个FRED当前版本输入哈希；保存完整参数、时序对齐、标签成熟规则、模型比较与验收合同。尚未计算第三阶段金融结果。",
+    "status": "PROTOCOL_FROZEN_BEFORE_FINANCIAL_ANALYSIS",
+    "evidence": [
+      "phase3/config.json",
+      "phase3/freeze_receipt.json",
+      "phase3/input_manifest.json",
+      "phase3/PROTOCOL_zh.md"
+    ],
+    "claims": "只确认输入身份与已固定研究口径，尚无新效力结论。",
+    "limits": "QQQ/STAR历史长度不足30年；当前版本非PIT；缺中国本土长历史情绪/完整新闻首次发布与预期数据。",
+    "evidence_sha256": {
+      "phase3/config.json": "25e61a04814e95ae19d63b35fe2dbfdc24341c0636741d03f5f453c9f4de9a40",
+      "phase3/freeze_receipt.json": "8b305badc173fd3ed018a787317ee0fe11a49b1c4e282f16a3a694c182780268",
+      "phase3/input_manifest.json": "91a882ddb99aa57b85d1ea4509c85efd54736117adbfbbea9f8731acc8bbaad3",
+      "phase3/PROTOCOL_zh.md": "e04133ab949f3c051677a2a5e748f0153b45db04e85bcb0b0073ce1ec22c037b"
+    },
+    "recorded_at_utc": "2026-11-19T01:42:18.123617+00:00"
+  },
+  {
+    "id": "R007",
+    "title": "全样本首轮计算与边界问题登记",
+    "plan": "按R006冻结合同枚举完整行情与候选信号并训练固定时序基线。",
+    "actual": "实际完成v1：656个双阈值行情腿、600个Ridge拟合；边界检查发现6处跨SOX片段注释与8个前态未知信号。登记修正，保留原始结果、代码和回执。",
+    "status": "INITIAL_OUTPUT_RETAINED_BOUNDARY_CHECK_FAILED",
+    "evidence": [
+      "phase3/audit/analyze_v1.py",
+      "phase3/results/run_manifest.json",
+      "phase3/results/events_all_thresholds.csv",
+      "phase3/results/alert_summary.csv",
+      "phase3/AMENDMENT_v1_1.json"
+    ],
+    "claims": "首轮已执行；受影响的信号/注释不能作最终效力证据。",
+    "limits": "发现问题后没有调整阈值或筛选最好参数；保留失败记录。",
+    "evidence_sha256": {
+      "phase3/audit/analyze_v1.py": "f4a4805dc0abe43efddb176ac247204ee71cea0149d0b3926623bf8710a1bb3f",
+      "phase3/results/run_manifest.json": "845fc030f07d25e54ce4053d8cef6d71434d8e96b183dec8c44c04de6eeabf86",
+      "phase3/results/events_all_thresholds.csv": "9833e2d2b73c1161880c41b2010cf194210f374cc50c2d134ef4c361deaf22c2",
+      "phase3/results/alert_summary.csv": "4e774a16ceb23c4171cdc1669b3583483f04df5be02b118dc352f45590574f23",
+      "phase3/AMENDMENT_v1_1.json": "7ce8f7b58f2179ea1c3504acf9ed63310efeec5cf42cde42f2b4c2047db7dcb9"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.821780+00:00"
+  },
+  {
+    "id": "R008",
+    "title": "修正边界后全量重跑与原始输入自查",
+    "plan": "只修正前态未知和跨片段注释，保留冻结科学口径，全量重跑并核对原始证据。",
+    "actual": "v1_1输出139个20%腿、517个10%腿、1391个唯一候选信号及12519个信号期限障碍单元、600个拟合和35575行逐期预测；从原SQLite核对23749个价格与68993个前向标签；检查信号和重新拟合600个模型。关联/模型比较与v1相同。",
+    "status": "EXECUTED_SAME_AUTHOR_CHECKED_CURRENT_VINTAGE",
+    "evidence": [
+      "phase3/analyze.py",
+      "phase3/results_v1_1/run_manifest.json",
+      "phase3/results_v1_1/self_check.json",
+      "phase3/results_v1_1/event_counts.csv",
+      "phase3/results_v1_1/associations.csv",
+      "phase3/results_v1_1/model_contrasts.csv",
+      "phase3/results_v1_1/alert_summary.csv",
+      "phase3/results_v1_1/model_fit_coverage.csv"
+    ],
+    "claims": "固定规则内全事件已枚举；主关联/主增量比较没有确立多重比较调整后稳定预测；确认滞后与误报保留。",
+    "limits": "当前版本、四条相关市场代理、一个固定模型族；STAR短样本；不是独立复制、完整情绪识别或可交易收益回测。",
+    "evidence_sha256": {
+      "phase3/analyze.py": "5c33817895d49f6e3b86d991f1956a7d8dbbfada2bdf6b604ccbc844c0ce65db",
+      "phase3/results_v1_1/run_manifest.json": "859b4f265efa671386031abaf63305f02df10d07fafc798378910ee4389da1bd",
+      "phase3/results_v1_1/self_check.json": "7fd7b72548e8c5793bb37ba4f11765b1c0518afaa9d042df5a008dd382e70966",
+      "phase3/results_v1_1/event_counts.csv": "d812290c49034d2909d5b9f4f9ebfcb798d65b649e31e31544f9444926d93c0c",
+      "phase3/results_v1_1/associations.csv": "9da6950e39cedb7b61e18786f09bd6261c9be0dd775f8df612d28904c8b59472",
+      "phase3/results_v1_1/model_contrasts.csv": "0284c7ca16be8ee6045870e454e2c743d3b22a1dee069789555bf9de1acecc6c",
+      "phase3/results_v1_1/alert_summary.csv": "d8166e446a77b653183827c44d287110c2a288fadfee40cba8451863bb372ee5",
+      "phase3/results_v1_1/model_fit_coverage.csv": "3b2b18fbb5523fa43f45c0919c5cc29455f22534b960b793320e233dcd6883a1"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.823140+00:00"
+  },
+  {
+    "id": "R009",
+    "title": "美联储30年官方声明链接索引",
+    "plan": "遍历1996-2020年度档案和2021-2026日历，只登记真实声明链接与失败覆盖。",
+    "actual": "26个官方索引页面获取成功，提取238条唯一声明URL；保存年份覆盖、原网页哈希及未获得字段。按事后行情起点前后20自然日匹配政策线索。",
+    "status": "OFFICIAL_ARCHIVE_LINK_METADATA_ONLY",
+    "evidence": [
+      "phase3/collect_official_calendar.py",
+      "phase3/results/official_calendar/index_fetch_inventory.csv",
+      "phase3/results/official_calendar/statement_links.csv",
+      "phase3/results/official_calendar/year_coverage.csv",
+      "phase3/results/official_calendar/summary.json",
+      "phase3/results_v1_1/event_policy_date_links.csv"
+    ],
+    "claims": "该公开档案范围内的声明链接清单已提取，不是正文/首次发布时刻或完整新闻因果数据库。",
+    "limits": "90年代不变息会议未必发声明；档案外非例会新闻可能缺失；中国本土政策资料与预期数据待补齐。",
+    "evidence_sha256": {
+      "phase3/collect_official_calendar.py": "882eb5b221a6cbde1aa90d18812a2a4f86560381fa3065f3753db4c1cf741565",
+      "phase3/results/official_calendar/index_fetch_inventory.csv": "ef7abb57be5bc0c81b5b9bb9f94febbe10cdc8ecb918211a0eafcd78bf16b96c",
+      "phase3/results/official_calendar/statement_links.csv": "187f3e584c3bdfd6372e41b325246c5e9f60be5319a24a346f5412429ecc8a44",
+      "phase3/results/official_calendar/year_coverage.csv": "cb777b32df5fe844bdd9640cbcbea421a15132edddbeedecc30a0fbb8ec31bb1",
+      "phase3/results/official_calendar/summary.json": "cad1676abe28ae467f5be7b5414d31662fa91173a2877c23b1af4599c7be523a",
+      "phase3/results_v1_1/event_policy_date_links.csv": "9d91c666e754b6b5ea101dab6b0ab97507770eeea0751d4437b71509b9cfcb75"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.824176+00:00"
+  },
+  {
+    "id": "R010",
+    "title": "逐次事件卡、情绪轨迹与全部结果核对",
+    "plan": "生成全部20%事件卡和原始结果可追溯报告，核验全部主展示单元与引用，发布结论边界。",
+    "actual": "139条事件卡逐条对应；生成聚合轨迹及4/8/12周全结果。核对225行模型汇总、159行对照、756行信号汇总、968行轨迹及60行重叠窗口关联；核验7条一手来源的对应论述。",
+    "status": "PARTIALLY_SUPPORTED_RESEARCH_ATLAS_COMPLETE_WITHIN_SCOPE",
+    "evidence": [
+      "phase3/Phase3_Event_Atlas_Report_zh.md",
+      "phase3/ALL_EVENTS_20pct_zh.md",
+      "phase3/results_v1_1/display_cells.json",
+      "phase3/results_v1_1/overlapping_window_associations.csv",
+      "phase3/results_v1_1/event_aligned_medians.csv",
+      "phase3/results_v1_1/report_reconciliation.json",
+      "phase3/citation_audit.json",
+      "phase3/evidence_ledger.json",
+      "phase3/AUDIT_FINAL.json"
+    ],
+    "claims": "价格与风险代理的重叠窗口关联不等于中期预测；当前有限诊断没有建立统一可靠反转因子。",
+    "limits": "仍缺完整中国本土情绪、历史可得版本、新闻首次时间/预期与独立复制；不为每次涨跌编造单一原因。",
+    "evidence_sha256": {
+      "phase3/Phase3_Event_Atlas_Report_zh.md": "08e5980e3ae8f90690429d574b63243527ae71b280e751f8e837dc3dff562518",
+      "phase3/ALL_EVENTS_20pct_zh.md": "ce024abf7eea5f5c076765a5257d487c441b0e9397bce4d598fc9586e6953043",
+      "phase3/results_v1_1/display_cells.json": "a4d9223a4724f0c7dd7d807d1dbc855d73294df1cd5a3d47cc80d0430bbcf7aa",
+      "phase3/results_v1_1/overlapping_window_associations.csv": "de9fb97770cfda59927d181b2db3d6c1fea8af87bedfd100dfe4ec146bf583b9",
+      "phase3/results_v1_1/event_aligned_medians.csv": "7da98324cad7b04e0e167426c7add7406856ed9140545bb1f7d1b0eb46e7604f",
+      "phase3/results_v1_1/report_reconciliation.json": "7c5d6cd425748d5552d7ec94704ad199a74ac08271610e5b5827026aece00944",
+      "phase3/citation_audit.json": "3211b334512d98b877f7000a05f3735e6857137108de5e0ddac3865eb7349145",
+      "phase3/evidence_ledger.json": "bc16a635a5b9dab193e62cffcaf70faa53d9fd19f117b48ecbfa345cfa2b0384",
+      "phase3/AUDIT_FINAL.json": "887e81753535f2fd0bd9c3e61def6b151acf0a2d76378574a1a06490a3828b96"
+    },
+    "recorded_at_utc": "2026-11-19T01:56:43.825427+00:00"
+  },
+  {
+    "id": "R011",
+    "title": "第三阶段公开载荷同步与远端核对",
+    "plan": "本地校验后非强制快进同步，精确读回关键文件，记录已公开范围。",
+    "actual": "提交c65fe925包含56个新增/更新公开文件，带预期父提交非强制更新成功；报告、展示原数值、自查、逐步日志和总清单5个远端文件逐字节与本地一致。",
+    "status": "SYNCED_REMOTE_READBACK_VERIFIED",
+    "evidence": [
+      "phase3/PUBLICATION_ACK_20261119.json"
+    ],
+    "claims": "第三阶段公开代码、全事件与聚合结果及负面记录已在指定研究分支可读；P35同步验收通过。",
+    "limits": "该核对只证明发布一致性，不是独立科学验证；原始行情、逐行风险与预测未公开。",
+    "evidence_sha256": {
+      "phase3/PUBLICATION_ACK_20261119.json": "c5e0bd37c42b6eea3dd778f5ae64cdde0975723e7f9c06f1f842cd7810b3779a"
+    },
+    "recorded_at_utc": "2026-11-19T02:00:37.708114+00:00"
+  },
+  {
+    "id": "R012",
+    "title": "历史牛熊复盘图片学习与局部事实审核",
+    "plan": "读取用户材料，核对可见矛盾，登记可检验机制，不直接采纳图示统计或因果。",
+    "actual": "打开四个一手来源，核对四日本地OHLC；登记极值/收盘口径、1996详情复制错误、政策日期及纳指周期内部不一致；提出六组候选变量，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_IMAGE_REVIEW_AND_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Historical_Images_Review_zh.md"
+    ],
+    "claims": "图片提供机制线索；只有局部事实已核验，新因子效力和图中未注明口径的统计均未确立。",
+    "limits": "行业/个股涨幅、开户与宏观实时版本未完整核验；未获得新广度/资金数据库；没有独立验证。",
+    "evidence_sha256": {
+      "image_review/Historical_Images_Review_zh.md": "d12b75b5167a9310b77a9de93c2db4616182c7e1b4f05d7ace74777c4139ae33"
+    },
+    "recorded_at_utc": "2026-11-19T02:59:03.931763+00:00"
+  },
+  {
+    "id": "R013",
+    "title": "纳指补充图与盈利利率预期机制登记",
+    "plan": "核对新增图片中的政策时序，区分盈利、利率、情绪与成分变化。",
+    "actual": "实际打开2020-03-15和2022-03-16美联储声明；指出实际加息与预期重定价不能混同；登记盈利修订、叙事兑现差与广度等候选模块，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Nasdaq_Supplement_Review_zh.md"
+    ],
+    "claims": "两条具体政策事实已核验，其余机制作为待检验假说，尚无新预测效力结论。",
+    "limits": "没有新增历史盈利预期/成分/新闻数据；非独立验证。",
+    "evidence_sha256": {
+      "image_review/Nasdaq_Supplement_Review_zh.md": "b5b0759ae3e053392a797e37676d27049aecec3cbe49a0ed6f092582d9a7c082"
+    },
+    "recorded_at_utc": "2026-11-19T03:03:02.416763+00:00"
+  },
+  {
+    "id": "R014",
+    "title": "参与结构与实际利率检验冻结",
+    "plan": "先核对新增数据覆盖，再固定广度代理、利率变量、强基线和完整比较，计算前记录。",
+    "actual": "实际下载NASDAQNDXE、NASDAQ100、DFII10当前版本；阅读Nasdaq官方方法及变更说明；冻结三个新增模块和alpha敏感性、同样本时序检验及多重比较规则。尚未计算第四阶段收益对照或模型。",
+    "status": "PROTOCOL_FROZEN_BEFORE_PHASE4_FINANCIAL_ANALYSIS",
+    "evidence": [
+      "phase4/PLAN_zh.md",
+      "phase4/config.json",
+      "phase4/freeze_receipt.json",
+      "phase4/input_manifest.json"
+    ],
+    "claims": "取得可追溯的等权/市值指数与TIPS输入，可开展有限覆盖检验；新闻和中国本土广度未取得。",
+    "limits": "等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。",
+    "evidence_sha256": {
+      "phase4/PLAN_zh.md": "07465e874fdbfd0297bfdbb61c152717417548e2acc0a87099bb570eef8fc0b5",
+      "phase4/config.json": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+      "phase4/freeze_receipt.json": "fc1ee32e21a6c9fd65b7e2462c94333155ee17d8d1eccb53bf2d6738868be28c",
+      "phase4/input_manifest.json": "4e78f636fe3df45776663d7e117b7db39344495d7f458017d5f613eb2542fe02"
+    },
+    "recorded_at_utc": "2026-11-19T03:13:49.795444+00:00"
+  },
+  {
+    "id": "R015",
+    "title": "参与结构与实际利率全比较实际执行",
+    "plan": "按R014冻结规则计算新增代理、状态关联与强基线增量检验，保存全部敏感性和失败样本。",
+    "actual": "完成1200个拟合和70082行预测，覆盖两个alpha、三个期限、所有预定市场；等权/市值源的两个单边不一致日期拆成三段，禁止补价；保存360行模型汇总、318行对照、180行状态汇总及60行状态对照。",
+    "status": "EXECUTED_CURRENT_VINTAGE_LIMITED_DIAGNOSTIC",
+    "evidence": [
+      "phase4/analyze.py",
+      "phase4/results/run_manifest.json",
+      "phase4/results/coverage.json",
+      "phase4/results/model_coverage.csv",
+      "phase4/results/model_summary.csv",
+      "phase4/results/model_contrasts.csv",
+      "phase4/results/state_summary.csv",
+      "phase4/results/state_contrasts.csv"
+    ],
+    "claims": "固定规则内QQQ/SOX缩窄队列未来均值较低，但多重比较后未建立稳健效应；强基线之外没有确立新增模块的预测改善。",
+    "limits": "当前版本，纳指内部结构代理，不是完整广度或心理情绪；中国仅外部环境；独立危机数有限；一个确定性模型族。",
+    "evidence_sha256": {
+      "phase4/analyze.py": "6ce02d74c482ece4b27546b00a06596375ff776bf114be7a6b881baabb2ffa1f",
+      "phase4/results/run_manifest.json": "540089f8d2acc32c5d5c5ea3bc1f861d8145d0d42de6db204006543169169b03",
+      "phase4/results/coverage.json": "74ff3955b9fd5f0675de16ee84ec8f86bedc462f867f3775a6bfa36b5f75844f",
+      "phase4/results/model_coverage.csv": "feedb991da1f3a684e77c2715cb1b0dd26eba73fbd8d93cc3b66cb82e0f12659",
+      "phase4/results/model_summary.csv": "dbfd65935633f1d108e2e962949f5d3f583543464f6f811f51b9d4efc6390041",
+      "phase4/results/model_contrasts.csv": "b2cef82f94f7058ea55fad74be6cc884759d114425e6bd3939894c57f3459150",
+      "phase4/results/state_summary.csv": "d6a7f4036af62ab392c53a620acd89b46b0d9ae369cf013754f4994063ea67f9",
+      "phase4/results/state_contrasts.csv": "0d6ec469937336658b2adb477a083b02a544065442d3a813106985ee228b26c1"
+    },
+    "recorded_at_utc": "2026-11-19T03:21:30.904119+00:00"
+  },
+  {
+    "id": "R016",
+    "title": "原始输入复核与第四阶段结果报告",
+    "plan": "从源重算代理及日期，重拟合全部模型，核对所有汇总；记录新结论边界和未取得数据。",
+    "actual": "核对23749行前阶段输入保持不变、47498个来源日期、118745个新特征、68993个未来路径最小值；增广系统重拟合1200个模型，核对280328个预测单元及全部汇总；完整报告和7条一手来源审核已保存，24个主展示结果单元另与原表核对。",
+    "status": "PARTIALLY_SUPPORTED_SAME_AUTHOR_SELF_CHECKED",
+    "evidence": [
+      "phase4/check.py",
+      "phase4/results/self_check.json",
+      "phase4/Phase4_Participation_Real_Rates_Report_zh.md",
+      "phase4/results/display_cells.json",
+      "phase4/citation_audit.json",
+      "phase4/evidence_ledger.json",
+      "phase4/AUDIT_FINAL.json"
+    ],
+    "claims": "数据及结果在本轮口径下可追溯；未形成可靠反转标准，未开展新闻预期差效力检验。",
+    "limits": "独立复核和PIT版本未取得；A股本土广度、新闻首次时间/市场预期和历史盈利预测仍缺。",
+    "evidence_sha256": {
+      "phase4/check.py": "51649ddace711fb9df3529bec93939e003cc6e91c5de7c0846e0874f2c36e307",
+      "phase4/results/self_check.json": "f2613e32605db13c97031ae54a34b8f3f2ca725d637a4b16410567a3339c9be8",
+      "phase4/Phase4_Participation_Real_Rates_Report_zh.md": "f425929cebce0e5af9a6db6e531b4e34306db6cf0363658e3d9d96e9136a2ac1",
+      "phase4/results/display_cells.json": "b769abbbfbea568b47229560caba3ec7f9bc6e887721183ca51c9119f7b7dcd7",
+      "phase4/citation_audit.json": "a251c5428d4277a854b8bb8a0e963347d9deb7cbcd6d6c634f87109377819e84",
+      "phase4/evidence_ledger.json": "42f84ef18df95cc6af335b8490b55447493210ea8d04172f960f304ed6a83cb8",
+      "phase4/AUDIT_FINAL.json": "f273cd5fdd75edbe221fcd7d83ad8b74ed375a9b9af108613e1c08f8b8ab10ca"
+    },
+    "recorded_at_utc": "2026-11-19T03:21:30.905962+00:00"
+  },
+  {
+    "id": "R017",
+    "title": "第四阶段同步与远端核对",
+    "plan": "校验公开载荷后带预期父提交非强制同步，读回关键文件。",
+    "actual": "结果提交3a68e0b3非强制更新成功；报告、主展示原数值、自查、日志和公开清单5项内容逐字节读回一致。",
+    "status": "SYNCED_REMOTE_READBACK_VERIFIED",
+    "evidence": [
+      "phase4/PUBLICATION_ACK.json"
+    ],
+    "claims": "P44公开同步验收通过，第四阶段结果可在研究分支读回。",
+    "limits": "发布一致性核对不是独立科学验证；商业原始序列和逐行面板/预测不公开。",
+    "evidence_sha256": {
+      "phase4/PUBLICATION_ACK.json": "43b021a4b0f4c307c64c5865f28aa1c5375120ba7bbef47c75b478156894e68d"
+    },
+    "recorded_at_utc": "2026-11-19T03:23:05.571535+00:00"
+  },
+  {
+    "id": "R018",
+    "title": "熊市机制与九步因子清单适用性审核",
+    "plan": "阅读新增六图，核对关键时序/口径，将横截面清单适配为市场择时检查项。",
+    "actual": "实际打开三篇官方历史/政策分析，核对QQQ同区间24个报价观测和23个收益区间；保留失败论文访问；登记多标签危机机制，逐项辨别九步流程适用性。未运行新因子或策略实验。",
+    "status": "PARTIALLY_SUPPORTED_REVIEW_ONLY",
+    "evidence": [
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md"
+    ],
+    "claims": "图片提供机制与流程线索，统计阈值及因果不能直接采纳；时间序列择时与横截面选股分开评价。",
+    "limits": "历史图具体数据仅局部核验；三篇来源不认证所有图片；尚无新金融效力或独立验证。",
+    "evidence_sha256": {
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md": "3f317bb9d1da73da52a33462327bbf66cd884a7ea3aa1423150cfb17e00913d0"
+    },
+    "recorded_at_utc": "2026-11-19T03:43:43.263193+00:00"
+  },
+  {
+    "id": "R019",
+    "title": "R006 勘误：分段比较、协议时间与口径表述（原拟 R012，并发提交已占用该编号，改记 R019）",
+    "status": "ERRATUM_APPENDED_ORIGINAL_RECORDS_UNCHANGED",
+    "plan": "按外部审查意见，从原运行结果文件重新生成比较，核对首次真实计算、代码提交、入队/开始/结束时间，纠正分红、日历与后段表述；不修改原配置与原记录。",
+    "actual": "由结果文件生成：9 个分段格中策略高于基准 1 格（0 bps 开发段 44.55% 对 24.87%），低于 8 格；R006 的“全部低于”表述错误。首次真实计算为本机演练 01:16:08Z，早于配置首次 Git 提交 01:25:31Z，且演练结果在提交前已被查看；frozen_at_utc=01:40:00Z 为手填错误值。配置内容各次一致（哈希 63a8993d…），但不能证明在首次计算前冻结，运行不属于预注册。",
+    "evidence": [
+      "platform_baseline/R006_errata_E001.json"
+    ],
+    "claims": "仅纠正 R006 的表述与时间元数据；数值结果未变。",
+    "limits": "勘误不改变单标的、单因子工程基线的性质；后段已被查看，不是未见留出集；a1 分红处理未确认；日期序列未与完整交易所日历独立核对。",
+    "evidence_sha256": {
+      "platform_baseline/R006_errata_E001.json": "efe396f75805f510068c84d594eb4b70b936be3db01591b1b958db61cac4898e"
+    },
+    "recorded_at_utc": "2026-11-19T03:45:17.980723+00:00"
+  },
+  {
+    "id": "R020",
+    "title": "四张因子阈值与终检图学习及现有研究验收对照",
+    "plan": "核验统计含义、区分时序择时与横截面因子，对照第三四阶段真实证据，保留并发勘误。",
+    "actual": "实际阅读四图并保存输入哈希；直接打开三条一手方法来源；运行只读核对脚本，校验旧文件身份、1200个保存拟合的标签/特征元数据与12个主对照行，生成10项状态矩阵；未重拟合或重跑旧自查，未开展新策略实验。远端R019原样保留。",
+    "status": "PARTIALLY_SUPPORTED_METHOD_REVIEW_NOT_FACTOR_ACCEPTANCE",
+    "evidence": [
+      "image_review/factor_acceptance_v1/PLAN_zh.md",
+      "image_review/factor_acceptance_v1/REVIEW_zh.md",
+      "image_review/factor_acceptance_v1/input_manifest.json",
+      "image_review/factor_acceptance_v1/citation_audit.json",
+      "image_review/factor_acceptance_v1/review_existing.py",
+      "image_review/factor_acceptance_v1/snapshot.json",
+      "image_review/factor_acceptance_v1/readiness.json",
+      "image_review/factor_acceptance_v1/AUDIT_FINAL.json"
+    ],
+    "claims": "图示阈值和中性化变化不能单独认证真假因子；当前证据支持有限历史诊断，不支持第三四阶段实盘因子准入。",
+    "limits": "非独立验证；旧自查未在本轮重跑；没有新增净收益、容量、真正未见留出或PIT证据；其他平台基线按自身勘误处理。",
+    "evidence_sha256": {
+      "image_review/factor_acceptance_v1/PLAN_zh.md": "74f28ee30b0b69b72bffe1ed410af950fefa9eb72940d246bd49ae312c7fd69c",
+      "image_review/factor_acceptance_v1/REVIEW_zh.md": "b85a2eb9fac5e3122728ad84a52a48a4a8b3eab030364bc5b5f781ca1da8a254",
+      "image_review/factor_acceptance_v1/input_manifest.json": "6698b0c9b9a87d30835b0ca62d3a39396c96ba582c987575f7d9da6b55f4b4b2",
+      "image_review/factor_acceptance_v1/citation_audit.json": "4e0216b8943aa8c0c44147ecad04a2e1eccad003c26ededb4452c052f236253e",
+      "image_review/factor_acceptance_v1/review_existing.py": "3f80b685481d733075a3ecfe35ce0eccb9d94f34aa2ab5cc7762df014c2c7aa3",
+      "image_review/factor_acceptance_v1/snapshot.json": "38bc8434bfc8826dd7496820ee0c9e5745a0fb424be3e11efc7b65dabdaf1cb6",
+      "image_review/factor_acceptance_v1/readiness.json": "1e13677dc95be7eaeea7631c4f8d17636b8c799ad4b98d2ec3038c4ac7fb0577",
+      "image_review/factor_acceptance_v1/AUDIT_FINAL.json": "6151f95ea78cc362151544d87209b1352ea73e6fe030fd17dba5fc7a35f01a31"
+    },
+    "recorded_at_utc": "2026-11-19T03:52:59.267599+00:00"
+  },
+  {
+    "id": "R021",
+    "title": "新闻情绪均值、时间波动与乘积候选的学习及数学辨识检查",
+    "plan": "阅读十张截图，有限检索原研究并核对API定义，使用明确人造数组检查测量含义，形成市场择时与横截面分开的候选合同，追加研究记录。",
+    "actual": "十图输入哈希已保存；三条官方方法文档已直接打开；有限检索未定位到能逐项核对数值的原研究。实际运行formula_audit.py，通过五项同作者确定性数学诊断并保存输入、代码与输出身份。形成候选合同和证据台账；未训练金融模型、未采集真实新闻面板、未复制截图IC。原有发布与证据哈希核对通过；完整发布校验及远端读回另在同步操作核对。",
+    "status": "PARTIALLY_SUPPORTED_METHOD_REVIEW_REAL_NEWS_FACTOR_PENDING_INPUTS",
+    "evidence": [
+      "image_review/news_mean_vol_v1/AUDIT_FINAL.json",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md",
+      "image_review/news_mean_vol_v1/PLAN_zh.md",
+      "image_review/news_mean_vol_v1/REVIEW_zh.md",
+      "image_review/news_mean_vol_v1/evidence_ledger.json",
+      "image_review/news_mean_vol_v1/formula_audit.py",
+      "image_review/news_mean_vol_v1/formula_results.json",
+      "image_review/news_mean_vol_v1/formula_run_manifest.json",
+      "image_review/news_mean_vol_v1/input_manifest.json",
+      "image_review/news_mean_vol_v1/source_audit.json",
+      "image_review/news_mean_vol_v1/toy_config.json"
+    ],
+    "claims": "均值×标准差不保留窗口内时间先后顺序，时间波动不等于同日文章分歧；这些数学限制已用人工数组检查。可将其登记为待验收候选，不能宣称已发现市场情绪拐点预测能力。",
+    "limits": "截图经验数字全部USER_REPORTED_NOT_VERIFIED；原研究身份与原始结果未定位；没有新真实市场回测、PIT新闻验收、净收益或独立验证。",
+    "evidence_sha256": {
+      "image_review/news_mean_vol_v1/AUDIT_FINAL.json": "62bd6592d8047fd2efbacf0b58b4d39f27c960be186500bfca1a8c854d480289",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md": "058fe2a0796b80055df0f71f6c6a3d6ef95951a90ae47610a86093bdc912e29e",
+      "image_review/news_mean_vol_v1/PLAN_zh.md": "5bb220c0e0b9872a78b32c492d1453d9c57a76bfc2b7dabdc875f694793b63ea",
+      "image_review/news_mean_vol_v1/REVIEW_zh.md": "39720141a005a6bc1aa74a8513c6bfe643a72fe7fcd597387ee4a8eaa290959a",
+      "image_review/news_mean_vol_v1/evidence_ledger.json": "b0f255035903944b23c7aafb6903bb7c0ad18d2ef558c0d8d70e7fa88d4112ac",
+      "image_review/news_mean_vol_v1/formula_audit.py": "aef10471f868c52700535778dabe63e84a9b91160692ebc71b67de4784f2226a",
+      "image_review/news_mean_vol_v1/formula_results.json": "16408a399e43e1c6ed548b00dad7d00d43ab130d0c33dd5596cf9777ccdfac27",
+      "image_review/news_mean_vol_v1/formula_run_manifest.json": "e3dfea3453f56886f2ea4adf1427e12b33175bf89e3b675c9ecbd1a63dfca5ad",
+      "image_review/news_mean_vol_v1/input_manifest.json": "bfe91c5469d82ee1431b1a5e532fa270f8fce972e24e3c8ef10e98aaab1c59a1",
+      "image_review/news_mean_vol_v1/source_audit.json": "9e5bc46cbde68e1bdddb89dcef1f4e187aba9e2d5a48db35ccb34d08b7f22e2c",
+      "image_review/news_mean_vol_v1/toy_config.json": "6e4a41e14a11b549b00808dcee201f9cba6d819e058c027c28a44898f6d3addb"
+    },
+    "recorded_at_utc": "2026-11-19T04:08:59.746955+00:00"
+  },
+  {
+    "id": "R022",
+    "title": "五篇投资者情绪、新闻收益期限及分歧论文的正文学习",
+    "plan": "定向网络检索并选择五篇，核对一手论文身份，阅读关键构造/结果/限制，记录来源版本及对市场中期转向研究的启发。",
+    "actual": "取得并提取五份公开PDF；核对作者/机构/出版商来源及五条Crossref元数据；阅读主要方法、结果和限制，保存实际PDF哈希与页码。Heston/Sinha明确阅读2016工作论文正文，另核对2017期刊身份；FEARS区分2014 Advance Access稿与2015卷期。执行来源身份同作者核对并通过；有限访问失败与页码/版本差异保留。未重新拟合任何金融模型或复算盈利。",
+    "status": "FIVE_PAPER_FOCUSED_BODY_REVIEW_COMPLETE_NOT_EMPIRICAL_REPLICATION",
+    "evidence": [
+      "literature/five_papers_v1/AUDIT_FINAL.json",
+      "literature/five_papers_v1/PLAN_zh.md",
+      "literature/five_papers_v1/REVIEW_zh.md",
+      "literature/five_papers_v1/acquire.py",
+      "literature/five_papers_v1/acquisition_manifest.json",
+      "literature/five_papers_v1/citation_registry.json",
+      "literature/five_papers_v1/reading_ledger.json",
+      "literature/five_papers_v1/self_check.json",
+      "literature/five_papers_v1/source_audit.json"
+    ],
+    "claims": "所读文献的测量、预测对象和期限不同；区分短期恐慌反转、个股中期信息延续与市场共同风险状态。具体新增候选为后续研究提议，不是已验证因子。",
+    "limits": "主要为美国历史证据，非系统综述；原始市场结果未独立复制；未认证PIT或A股迁移；五篇不验证截图均值乘波动的IC，也不证明本项目市场顶底或净收益可预测。",
+    "evidence_sha256": {
+      "literature/five_papers_v1/AUDIT_FINAL.json": "c8e685a3800a88e1255324721a96eadef82641d54de3e854539c0e063ded4db7",
+      "literature/five_papers_v1/PLAN_zh.md": "da84d1441eec89f880ca00f3ce1ccf821c0d1f70ece32c085a249b21421b4204",
+      "literature/five_papers_v1/REVIEW_zh.md": "7c561619806e08cec2d5c9b8de746e4664d782888bbfc93d43df738ee8410d96",
+      "literature/five_papers_v1/acquire.py": "bb87bda26835f3ab092ad7adf42814f1239eb6313de710fd90a6c8302a1f3bab",
+      "literature/five_papers_v1/acquisition_manifest.json": "94cfea40c3185f4d6633b4a33e3497eb6b6ebc424f6593b7bc6c9e0379fc3a3b",
+      "literature/five_papers_v1/citation_registry.json": "11d4254dc4af02205bb235a1ec92666e1133d9ec962c6743cf8d3e5567d60163",
+      "literature/five_papers_v1/reading_ledger.json": "8039153f386e309b64aca93de278b12f5af218ddeacb6fe7ae45067e28583e35",
+      "literature/five_papers_v1/self_check.json": "bb7ccc9fd98597ac311142ee7e1d3c9689c2e45041f7a860292c25f9d7b6c9bb",
+      "literature/five_papers_v1/source_audit.json": "8345b1e26661a71a24964dac043f6d31d62a173f2331aff1f9e476bb9f6e0bf7"
+    },
+    "recorded_at_utc": "2026-11-19T04:21:20.358777+00:00"
+  },
+  {
+    "id": "R023",
+    "title": "首轮行情策略协议与执行代码预运行锁定",
+    "plan": "在真实行情策略计算前固定三价格策略、两项文本阻碍、成交成本与主检验；先完成人工路径和因果前缀检查。",
+    "actual": "固定config/PROTOCOL及run/check代码，人工路径成本核算与未来扰动/前缀检查通过；尚未运行真实行情策略，新闻候选保持BLOCKED。配置计划经Git预运行提交后才执行。",
+    "status": "PRE_RUN_SPECIFICATION_SYNTHETIC_CHECKED_HISTORY_ALREADY_SEEN",
+    "evidence": [
+      "phase5_strategy_v1/PROTOCOL_zh.md",
+      "phase5_strategy_v1/check.py",
+      "phase5_strategy_v1/config.json",
+      "phase5_strategy_v1/run.py",
+      "phase5_strategy_v1/unit_check.json"
+    ],
+    "claims": "规则与计算代码已写出，同作者人工检查已执行；不支持金融功效或未见预注册声明。",
+    "limits": "已看过的历史；只使用当前版本OHLC；理论指数单位；假设成本；新闻数据缺失。",
+    "evidence_sha256": {
+      "phase5_strategy_v1/PROTOCOL_zh.md": "7281efccfa693831b623c45168b92bbda2a929970b20dfcccc749f7e8eb07a8a",
+      "phase5_strategy_v1/check.py": "7195c6a39f9a348f4feeea765f1dbd02986d1878d8c4881ed9d5cab693d1e756",
+      "phase5_strategy_v1/config.json": "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb",
+      "phase5_strategy_v1/run.py": "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae",
+      "phase5_strategy_v1/unit_check.json": "a5855a7b7ccfc83b4cf30b987bc2ea2e198695bd8d3f0ed7bac7f93a5c0984d2"
+    },
+    "recorded_at_utc": "2026-11-19T04:43:17.401313+00:00"
+  },
+  {
+    "id": "R024",
+    "title": "三项moomoo行情策略首轮实际模拟及Claude复核交接",
+    "plan": "按预运行锁定协议计算三候选、两基准和三成本情景；对账逐日净值并输出可复核指令，不以价格冒充新闻情绪。",
+    "actual": "冻结提交1cfe1acb在真实运行开始前完成并读回；使用指定SHA的真实moomoo SQLite，得到360行汇总，其中330份有足够区间的实际账本。12项主收益增量检验均未通过。330份账本以现金/单位数和费用独立方程作同作者核对，6个实际行情前缀检查通过；输出全部时期、成本、区块/seed敏感性及Claude三层复核指令。T1/T2新闻策略因缺真实输入未运行。",
+    "status": "EXECUTED_SELF_CHECKED_NO_RETURN_INCREMENT_SCREEN_PASSED",
+    "evidence": [
+      "phase5_strategy_v1/AUDIT_FINAL.json",
+      "phase5_strategy_v1/CLAUDE_CODE_TASK.md",
+      "phase5_strategy_v1/RESULTS_zh.md",
+      "phase5_strategy_v1/build_report.py",
+      "phase5_strategy_v1/environment.json",
+      "phase5_strategy_v1/evidence_ledger.json",
+      "phase5_strategy_v1/freeze_receipt.json",
+      "phase5_strategy_v1/requirements.txt",
+      "phase5_strategy_v1/results/contrasts.csv",
+      "phase5_strategy_v1/results/display_cells.json",
+      "phase5_strategy_v1/results/factor_diagnostics.csv",
+      "phase5_strategy_v1/results/input_inventory.json",
+      "phase5_strategy_v1/results/metrics.csv",
+      "phase5_strategy_v1/results/private_output_hashes.json",
+      "phase5_strategy_v1/results/run_manifest.json",
+      "phase5_strategy_v1/results/self_check.json",
+      "phase5_strategy_v1/results/text_candidates.json"
+    ],
+    "claims": "仅支持此固定配置与当前价格输入下的探索性策略模拟：没有候选通过预设收益增量门槛；部分P3风险指标改善同时伴随较低暴露，不能据此证明alpha。",
+    "limits": "非独立验证；历史已见、当前版本、假设费用与零现金收益；QQQ总回报未认证；其他指数非可直接交易；真实文本与事件因子仍BLOCKED；Claude尚未执行。",
+    "evidence_sha256": {
+      "phase5_strategy_v1/AUDIT_FINAL.json": "cb00ca3567fc782eb9e71f167383d76847c1b37b710ddf2f91ae5d3c8eac527a",
+      "phase5_strategy_v1/CLAUDE_CODE_TASK.md": "e32259c71be08a536c6089d23aab1a0e1d6488f8c63f8f67f1ec900b8eabec1f",
+      "phase5_strategy_v1/RESULTS_zh.md": "ddf8e11b7928fd805538122245573baa0660cb973adb89d5591aaa3b46c68f34",
+      "phase5_strategy_v1/build_report.py": "e3b339d74cddf6fd583c422652474efd8802cd3b31a0caddb45e79a30d79ab00",
+      "phase5_strategy_v1/environment.json": "a2fcea8cd1c33677c651a4d9023f1d18fe402b6a9cd0335ddd5a89bf53195b85",
+      "phase5_strategy_v1/evidence_ledger.json": "4a8cbf1f0268d3b02e0390c246947a0034e2a10dccdd05cc7900b4633601bfb3",
+      "phase5_strategy_v1/freeze_receipt.json": "f50b93bd10315c0f56e78a546f05ceabfcf4430cffd0fe28ea024238a0aa7f95",
+      "phase5_strategy_v1/requirements.txt": "65b97f7db87e4cdcb0f4157240cfece5b48363b3e6a18fdccf72d6528ebcbf85",
+      "phase5_strategy_v1/results/contrasts.csv": "cfdc466574f69f1e478eae76569fddb68ed855813c3c442b4ec06e7069331000",
+      "phase5_strategy_v1/results/display_cells.json": "0f6fad8d89343f0f7423eafe2c5f6ad73697eed5c97c27b0344de8f32626b3ec",
+      "phase5_strategy_v1/results/factor_diagnostics.csv": "3d13935e9c80e7be3cce7a5af4c6df9c0c456817c057496a141eaabac110d42a",
+      "phase5_strategy_v1/results/input_inventory.json": "3a7adc3a4c8de80b808f61b8f886b2b8ba8b4a9be1fbb6b6a1169d7ad20395d0",
+      "phase5_strategy_v1/results/metrics.csv": "feccda7e6f7f07e17a96f53e11afc49e5c786e1d309392519cbb72d23c881df4",
+      "phase5_strategy_v1/results/private_output_hashes.json": "598dbd23ab8036317aebd1771d45a13b1199e0515bc647d78829684e85adf4ea",
+      "phase5_strategy_v1/results/run_manifest.json": "8566db0466ad0937db4a3841e3cfbe71b1e50a691d88833160c4e177e46c26fa",
+      "phase5_strategy_v1/results/self_check.json": "02b3cafaf9c852dd313e4d31af22cbb704f48bccfc5c84290d9268e1c6b56e5d",
+      "phase5_strategy_v1/results/text_candidates.json": "c7bb0b4b57c6c5bbba7e521fff9c19a016d2f8308008b83ec519193550d4329a"
+    },
+    "recorded_at_utc": "2026-11-19T04:49:16.346750+00:00"
+  }
+]

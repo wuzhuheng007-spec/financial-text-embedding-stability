@@ -1,0 +1,164 @@
+{
+ "schema": "pr4_r3_runtime_redacted_1",
+ "method": "process identity (psutil) + business fields from private stores, read-only; status-command exit codes are not used as evidence",
+ "first_check": {
+  "checked_at_utc": "2026-11-18T00:42:21+00:00",
+  "portal": {
+   "pid_file_server_pid": 20548,
+   "readyz": 200,
+   "pass": true
+  },
+  "feed_process": {
+   "pid_file": 6692,
+   "pid_matches": true
+  },
+  "jin10": {
+   "state": "CONNECTED",
+   "last_success_age_s": 20.6,
+   "heartbeat_age_s": 0.6,
+   "failure_total": 23,
+   "news_versions_last_60min": 12,
+   "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP",
+   "pass": true
+  },
+  "moomoo_push": {
+   "state": "CONNECTED_DELAY_UNKNOWN",
+   "last_push_age_s": 1.2,
+   "session_quote_rows_last_10min": 3019,
+   "pass": true
+  },
+  "moomoo_rest_439": {
+   "state": "SECURITY_POLICY_BLOCKED",
+   "worker_alive": 0,
+   "paused_ok": true
+  },
+  "v42": {
+   "state_file_pid": 26300,
+   "pid_matches": false,
+   "heartbeat_age_s": 4542.4,
+   "backlog_db": 0,
+   "last_done_age_s": 4633.2,
+   "daily_snapshot_state": "ALREADY_EXISTS_UNCHANGED",
+   "pass": false
+  },
+  "v45": {
+   "state_file_pid": 18232,
+   "pid_matches": true,
+   "heartbeat_age_s": 51.5,
+   "state": "RUNNING",
+   "next_due_utc": "2026-11-18T21:45:00+00:00",
+   "budget_used_today": 0,
+   "last_error_class": null,
+   "pass": true
+  },
+  "old_ai_queue": {
+   "status": "ANALYSIS_PAUSED_FOR_V17",
+   "paused_ok": true
+  },
+  "second_real_collector_processes": 0
+ },
+ "final_check": {
+  "checked_at_utc": "2026-11-18T01:26:22+00:00",
+  "portal": {
+   "pid_file_server_pid": 20548,
+   "readyz": 200,
+   "pass": true
+  },
+  "feed_process": {
+   "pid_file": 6692,
+   "pid_matches": true
+  },
+  "jin10": {
+   "state": "CONNECTED",
+   "last_success_age_s": 38.2,
+   "heartbeat_age_s": 3.1,
+   "failure_total": 24,
+   "news_versions_last_60min": 7,
+   "coverage_gap": "POSSIBLE_GAP_NO_PAGE_OVERLAP",
+   "pass": true
+  },
+  "moomoo_push": {
+   "state": "CONNECTED_DELAY_UNKNOWN",
+   "last_push_age_s": -0.2,
+   "session_quote_rows_last_10min": 1805,
+   "pass": true
+  },
+  "moomoo_rest_439": {
+   "state": "SECURITY_POLICY_BLOCKED",
+   "worker_alive": 0,
+   "paused_ok": true
+  },
+  "v42": {
+   "state_file_pid": 33580,
+   "pid_matches": true,
+   "heartbeat_age_s": 16.1,
+   "backlog_db": 0,
+   "last_done_age_s": 16.1,
+   "daily_snapshot_state": "ALREADY_EXISTS_UNCHANGED",
+   "pass": true
+  },
+  "v45": {
+   "state_file_pid": 18232,
+   "pid_matches": true,
+   "heartbeat_age_s": 46.6,
+   "state": "RUNNING",
+   "next_due_utc": "2026-11-18T21:45:00+00:00",
+   "budget_used_today": 0,
+   "last_error_class": null,
+   "pass": true
+  },
+  "old_ai_queue": {
+   "status": "ANALYSIS_PAUSED_FOR_V17",
+   "paused_ok": true
+  },
+  "second_real_collector_processes": 0
+ },
+ "incident_v42": {
+  "finding": "v42 was not running at the first check although round-2 matrix row P3 (status command) exited 0",
+  "stops": [
+   {
+    "last_heartbeat_utc": "2026-11-17T23:26:39Z",
+    "log_tail": "forrtl: error (200): program aborting due to window-CLOSE event"
+   },
+   {
+    "last_heartbeat_utc": "2026-11-18T00:53:58Z",
+    "log_tail": "no new log line (launched with FOR_DISABLE_CONSOLE_CTRL_HANDLER=1)"
+   }
+  ],
+  "earlier_same_signature": "2026-11-17T21:56:57Z (round 1)",
+  "mechanism_probe": {
+   "method": "dummy sleep child launched with the v42 start() flags vs CREATE_NO_WINDOW; windows enumerated",
+   "v42_start_flags_DETACHED_PROCESS": "visible Windows Terminal windows 1 -> 2 and a visible PseudoConsoleWindow owned by the child tree",
+   "CREATE_NO_WINDOW": "no new visible window",
+   "side_effect": "the probe showed one window for about 3 s, then closed it"
+  },
+  "cause_status": "mechanism confirmed (worker owns a closable visible console); who/what closed the window is not identified",
+  "repo_fix": "scripts/news_sentiment_factor_v42/worker.py start(): CREATE_NEW_PROCESS_GROUP|CREATE_NO_WINDOW",
+  "production_action": "restarted twice from the production directory with the isolated v3 venv; second restart used the same start() with DETACHED_PROCESS replaced by CREATE_NO_WINDOW at call time (production code unchanged); worker pid 33580, no visible window in its tree",
+  "downtime_effect": "jobs received meanwhile were scored after restart (backlog 11 -> 0); no daily cutoff fell in the gaps"
+ },
+ "jin10_failure_total": {
+  "round_start": 22,
+  "round_end": 24,
+  "note": "two failed business calls during the round; collection continued"
+ },
+ "frozen_data": {
+  "snapshot": "fa8cb76334c94f7560aab543c99cf9f9 ON_TIME_SCHEDULED cutoff 2026-11-17T21:15:00Z available 2026-11-17T21:16:05.265738Z (unchanged)",
+  "labels": {
+   "WAIT_ENTRY": 26,
+   "BLOCKED_SECURITY_MAPPING": 4
+  },
+  "owner_digest_equal_to_baseline": true
+ },
+ "docker_engine_incidents": [
+  {
+   "at_utc": "2026-11-18T00:4x",
+   "symptom": "_ping returned HTTP 500 once, recovered within seconds"
+  },
+  {
+   "at_utc": "2026-11-18T01:05:21Z",
+   "symptom": "WSL engine stopped during a 342 MB SQLite DELETE on a Windows bind mount (WAL grew to 213 MB); Docker log: starting WSL engine ... wslexec error",
+   "action": "Docker Desktop restarted (ready in 11 s); experiment re-run on a Docker volume with batched deletes and --memory 2g"
+  }
+ ]
+}

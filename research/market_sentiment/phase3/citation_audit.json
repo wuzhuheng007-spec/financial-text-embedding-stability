@@ -1,0 +1,89 @@
+[
+  {
+    "key": "FRED_VIX",
+    "title": "CBOE Volatility Index: VIX (VIXCLS)",
+    "author": "Cboe; distributed by Federal Reserve Bank of St. Louis",
+    "year": "current series",
+    "url": "https://fred.stlouisfed.org/series/VIXCLS",
+    "ref": "turn535060250view0",
+    "supports": "Daily close; option-implied near-term volatility expectation; revision and copyright notes",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "FRED_BAA10Y",
+    "title": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity",
+    "author": "Federal Reserve Bank of St. Louis; Moody corporate yield input",
+    "year": "current series",
+    "url": "https://fred.stlouisfed.org/series/BAA10Y",
+    "ref": "turn901228920view2",
+    "supports": "Baa minus ten-year Treasury, percent daily; proprietary source notes; not high-yield OAS",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "FRED_DGS10",
+    "title": "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis",
+    "author": "Board of Governors of the Federal Reserve System",
+    "year": "current series",
+    "url": "https://fred.stlouisfed.org/series/DGS10",
+    "ref": "turn901228920view3",
+    "supports": "Daily ten-year constant-maturity Treasury investment-basis yield",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "CBOE_HISTORY",
+    "title": "Historical Data for Cboe VIX Index and Other Volatility Indices",
+    "author": "Cboe Global Markets",
+    "year": "current page",
+    "url": "https://www.cboe.com/tradable-products/vix/vix-historical-data/",
+    "ref": "turn450276750view0",
+    "supports": "Original 1993 OEX methodology and 2003 SPX revision; separate VXO series",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "VIX_INTERPOLATION",
+    "title": "VIX Maturity Interpolation",
+    "author": "Torben G. Andersen; Oleg Bondarenko; Maria T. Gonzalez-Perez",
+    "year": 2024,
+    "date": "2024-08-05",
+    "venue": "Cboe-hosted author working paper, not asserted to be a journal publication",
+    "doi": null,
+    "url": "https://cdn.cboe.com/resources/education/research_publications/VIXInterpolationWhitepaper.pdf",
+    "ref": "turn535060250view1",
+    "supports": "Introduction p1: modern VIX launched 2003, backdated 1990; 2014 weekly-option inclusion not backfilled; supports method-break caveat, not this project predictive findings",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "FED_CALENDAR",
+    "title": "Meeting calendars and information",
+    "author": "Board of Governors of the Federal Reserve System",
+    "year": "current page covering 2021-2027",
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "ref": "turn450276750view1",
+    "supports": "Statements and minutes distinct; minutes released weeks after decisions; no historical first-publication timestamp proof",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  },
+  {
+    "key": "FED_1996",
+    "title": "1996 FOMC historical materials",
+    "author": "Board of Governors of the Federal Reserve System",
+    "year": 1996,
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomchistorical1996.htm",
+    "ref": "turn901228920view1",
+    "supports": "A Statement link for January and minutes later; many other meeting sections lack Statement link",
+    "primary_source_opened": true,
+    "status": "VERIFIED_FOR_STATED_SUPPORT",
+    "does_not_support": "Causal effects, predictive effectiveness, complete historical information sets"
+  }
+]

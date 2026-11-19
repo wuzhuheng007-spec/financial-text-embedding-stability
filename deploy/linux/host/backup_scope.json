@@ -1,0 +1,32 @@
+{
+  "schema": "quant_backup_scope_v1",
+  "research": {
+    "requirement": "REQUIRED",
+    "since": "2026-11-19",
+    "reason": "The research workbench (registry, frozen snapshots, runs) is enabled on this deployment. A missing research backup is a failure, never a skip. Only an explicit NOT_REQUIRED here allows SKIPPED.",
+    "required": {
+      "registry": "research/registry.sqlite3 (online backup, quick_check ok, every table digested)",
+      "manifest": "research/RESEARCH_MANIFEST.json (parseable, schema quant_research_backup_v1)",
+      "protocols": [
+        "quant_research_mom20_v1.json"
+      ],
+      "per_registered_dataset": [
+        "data.csv",
+        "manifest.json"
+      ],
+      "per_succeeded_run": [
+        "config.json",
+        "metrics.json",
+        "curves.json",
+        "verify.json",
+        "run.log",
+        "ledger_cost<bps>bps.csv for every cost in the run's config"
+      ]
+    }
+  },
+  "news": {
+    "requirement": "COVERED_BY_SQLITE_BACKUP",
+    "since": "2026-11-19",
+    "reason": "news/news_v1.sqlite3 (items, versions, tombstones, provider_state) sits on personal_var and is copied by quant_sqlite_backup.py (rglob *.sqlite3, online backup + quick_check). Rights register configs/quant_news_sources_v1.json ships with the code. Provider keys live in /srv/quant/secrets/news.env and are never in backups or handoffs."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "config": {
+    "run_id": "sentiment_pilot_20261119_v1",
+    "seed": 20261119,
+    "bootstrap_reps": 2000,
+    "block_months": 12,
+    "panic_vix_level": 30,
+    "recent_panic_months": 3,
+    "momentum_months": 3,
+    "outcome": "P[t+4]/P[t+1]-1",
+    "outcome_end": "2025-12",
+    "US_start": "1996-01",
+    "CN_start": "1999-01",
+    "later_segment_start": "2016-01",
+    "status": "EXPLORATORY_CURRENT_VINTAGE_DESCRIPTIVE_NOT_TRADABLE_RETURNS"
+  },
+  "config_sha256": "10f461cf56e30459051c7227f9d9e435779d8e6ad58a95c97b980182cda7a85a",
+  "code_sha256": "81b6a4cd71f35c6e787a067dd0b0624bf94b9f1264e6dc83dfe71973438d2dc4",
+  "input_hashes": {
+    "SPASTT01CNM661N": "e9d0249d76f12e9b98344d98b0b0d959f2d60b1934a92cc7de5ef12323bd9494",
+    "SPASTT01USM661N": "87b79c73f5ae0a47278ace763c6e40b2380ecf4fe4d62bfae5cb46511c49f54d",
+    "VIXCLS": "eed5fb6b53326825a3e92ba7055749b45b29e9c79015f4263d7494e666573910"
+  },
+  "output_hashes": {
+    "pilot_results.json": "66a44cc46f1b6da130ad0dae43940410a95fe216b7abffdfb05b673ffebe1fe3",
+    "pilot_panel.csv": "881ed2b3b2242de0fbb5b0e22d8d92bdfd49dd8b6752f3526377ae3d54093537",
+    "pilot_summary.csv": "9343f994bb3b898287a0a4083ed8b91b961b73d1c7f83fea2535d5f5ca9f864b"
+  },
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "excluded": {
+    "BAMLH0A0HYM2": "Only three-year public history; not tested.",
+    "2026": "Excluded from all computed outcomes."
+  }
+}

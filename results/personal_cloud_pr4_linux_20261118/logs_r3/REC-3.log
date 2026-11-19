@@ -1,0 +1,11 @@
+$ docker kill -s KILL research; wait 20 s
+# exit=None expected=0 seconds=20
+# assertion=PASS
+{
+ "state_after_20s": "exited",
+ "restart_count": [
+  "0",
+  "0"
+ ],
+ "scope": "observed only on Docker Desktop with Engine 29.6.2; not a general rule"
+}

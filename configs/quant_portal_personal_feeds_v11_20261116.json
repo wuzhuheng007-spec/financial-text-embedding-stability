@@ -7,6 +7,7 @@
   "mapping_receipt_sha256": "2847f0d775824273dea7babc838f0a2bad0a4b8128e97490036fd62df1b45bf2",
   "moomoo": {
     "enabled": true,
+    "snapshot_enabled": false,
     "priority_symbols": ["TQQQ", "QQQ", "SOXX", "SPY", "NVDA", "MU"],
     "local_subscription_key_budget": 6,
     "status_path": "apps/quant_portal/var/moomoo_personal_status.json",

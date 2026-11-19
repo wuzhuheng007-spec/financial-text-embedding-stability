@@ -1,0 +1,5 @@
+$ docker compose -f deploy/linux/compose.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env -f deploy/linux/compose.jin10.yaml config --quiet
+# exit=1 expected=1 seconds=0.28
+# assertion=PASS
+
+error while interpolating secrets.jin10_mcp_token.file: required variable JIN10_MCP_TOKEN_PATH is missing a value: path to a 0400 Jin10 token file owned by uid 10001

@@ -1,0 +1,11 @@
+{
+ "rows": 27,
+ "required_fail": [
+  "HOLD-ERROR"
+ ],
+ "blocked": [
+  "S8"
+ ],
+ "not_run": [],
+ "optional_fail": []
+}

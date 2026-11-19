@@ -1,0 +1,5 @@
+$ docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml --env-file C:\Users\ROG\AppData\Local\Temp\claude\2e3b692b00f2c257\56a273db-320e-46ff-9eb6-5ba8952f42cf\scratchpad\pr4test\test.env run --rm --no-deps -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/acceptance_synthetic.py:/accept/a.py:ro --entrypoint python feed /accept/a.py seed-feed
+# exit=0 expected=0 seconds=2.7
+{"owner_id": 1, "owner_binding": 1, "first_insert": {"synthetic-001": "DUPLICATE", "synthetic-002": "DUPLICATE", "synthetic-003": "DUPLICATE"}, "duplicate": "DUPLICATE", "changed_content": "DUPLICATE", "quote_first": true, "quote_repeat_same_price": false, "counts": {"news_items": 3, "news_versions": 4, "quotes": 3}, "kind": "SYNTHETIC_TEST_VOLUME"}
+ Container quant-pr4-test-feed-run-6762d8995089 Creating
+ Container quant-pr4-test-feed-run-6762d8995089 Created

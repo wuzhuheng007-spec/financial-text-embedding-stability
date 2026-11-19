@@ -1,0 +1,152 @@
+{
+  "checked_date_client": "2026-11-19",
+  "author_commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+  "source_snapshots": [
+    {
+      "name": "create_bw.do",
+      "path": "StataCode/1. Create Baker-Wurgler Sentiment.do",
+      "blob_sha": "3f2f3549be313f4e0f64bcaf06938854da8feda1",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "local_sha256": "3ab91578fd8fc908c3633e5e3aa4dacb05e91c3423b7149de5c847ac5291118a",
+      "local_git_blob_matches": true,
+      "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+    },
+    {
+      "name": "download_macro.do",
+      "path": "StataCode/0. Download Macro Data.do",
+      "blob_sha": "d284f0d1835d82fd9f0a1ead387d09a3128cc31d",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "local_sha256": "4492abc4c034f2a4e34d65decbc4d7c520129ab72383cde512dd5bab710cb14a",
+      "local_git_blob_matches": true,
+      "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+    },
+    {
+      "name": "publish_workbook.do",
+      "path": "StataCode/2. Create Excel File for Publication.do",
+      "blob_sha": "d9c4619577d290c3c628cf9e7a12f4cce0115128",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "local_sha256": "4b70b5b34580422166c984002fc444c48c955ee651d75eb58a83bea3c6f571c6",
+      "local_git_blob_matches": true,
+      "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+    },
+    {
+      "name": "README_author.md",
+      "path": "README.md",
+      "blob_sha": "b8474f7087ae80e0d4da23e34178cc47b6e2881c",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "local_sha256": "fcb5c7ae164e066abbecbaf62a60402514b1e30f606128c7d1d25c4ec575770c",
+      "local_git_blob_matches": true,
+      "retrieval_note": "Exact Git blob identity verified; one patch-added trailing LF removed when necessary."
+    },
+    {
+      "name": "BW_INDEX_DETREND.pdf",
+      "path": "BW INDEX DETREND.pdf",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "blob_sha": "fd2a9855b4ab727f422f14f6012d9a8c0dcb4ab6",
+      "local_sha256": "d43c0c5ca750aa314330eb0fa99d1345762e076b10031e445eb0504d3a637f13",
+      "local_git_blob_matches": true
+    },
+    {
+      "name": "SENTIMENT_github.xlsx",
+      "path": "SENTIMENT.xlsx",
+      "commit": "7a0165f324f06a0f88aafc253de18c63431d2a9d",
+      "blob_sha": "a56f31f1e70b45b0002b1f653a6793e6315d306c",
+      "local_sha256": "786bb263ce5827628915482485911c3ed0f78fa4f4225585402a5cd99aed68dc",
+      "local_git_blob_matches": true
+    }
+  ],
+  "earlier_workbooks": [
+    {
+      "commit": "64be6d99f0cdc7ad6460ca5c5b2625dc49b8fbcf",
+      "date": "2026-04-03T17:10:13Z",
+      "message": "Detrend update",
+      "file": "SENTIMENT_64be6d99f0cd.xlsx",
+      "blob_sha": "78f6781863dbbbfdbc5ae53ba61ab252da590923",
+      "sha256": "6557bdb8787864873a703e3116f2c3599a9619ed2d9713808b11275e5b332842",
+      "sheets": [
+        "README",
+        "DATA"
+      ]
+    },
+    {
+      "commit": "1267e3c2dac5f9b5563447d644fc913d9f65c0a6",
+      "date": "2026-04-01T19:51:48Z",
+      "message": "Added detrending code",
+      "file": "SENTIMENT_1267e3c2dac5.xlsx",
+      "blob_sha": "af66559c9bcd697e958f92670986685d8bb3afc1",
+      "sha256": "26835ae76e3a900e50c331113456a8d8531e586c066d8bd03405a7a8f76742ae",
+      "sheets": [
+        "README"
+      ]
+    },
+    {
+      "commit": "cc8c4df8dc8273e1a981f396657b02e35fc5e927",
+      "date": "2026-03-26T15:00:43Z",
+      "message": "Updated data for 2026",
+      "file": "SENTIMENT_cc8c4df8dc82.xlsx",
+      "blob_sha": "c751c646d7fb33e511588c94bc3d990b31e8c4c7",
+      "sha256": "fc45f507ebc03a1629d4b764bb1361959879a34b50fa02e6bb13423e29a36da0",
+      "sheets": [
+        "README",
+        "DATA",
+        "STATA CODE"
+      ]
+    },
+    {
+      "commit": "cbf39c061ff9b38e2d85f5499d8be2bbb2334f2d",
+      "date": "2025-08-25T15:36:19Z",
+      "message": "Added SENTIMENT.xlsx file",
+      "file": "SENTIMENT_cbf39c061ff9.xlsx",
+      "blob_sha": "caaef48d1a47b5eff528c240f19124e61d628495",
+      "sha256": "fadc85460ae82c36c583f032f3ea0b20da1e9a03e53eb0897dc2a94f4b2d144b",
+      "sheets": [
+        "README",
+        "DATA",
+        "STATA CODE"
+      ]
+    }
+  ],
+  "official_sources": [
+    {
+      "id": "FRED_RT",
+      "url": "https://fred.stlouisfed.org/docs/api/fred/realtime_period.html",
+      "scope": "Current FRED versus historical ALFRED vintages",
+      "opened": true
+    },
+    {
+      "id": "FRED_USREC",
+      "url": "https://fred.stlouisfed.org/series/USREC",
+      "scope": "NBER-based dummy convention, not direct contemporary public knowledge",
+      "opened": true
+    },
+    {
+      "id": "FED2019",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20190130a.htm",
+      "scope": "Official declared release14:00EST and patient policy wording",
+      "opened": true
+    },
+    {
+      "id": "FED2020",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20200323a.htm",
+      "scope": "Official declared release08:00EDT and market-functioning purchase policy",
+      "opened": true
+    },
+    {
+      "id": "CN2024",
+      "url": "https://www.sse.com.cn/home/component/news/c/c_20240924_10762338.shtml",
+      "scope": "Conference starts09:00Beijing, not exact full-transcript availability",
+      "opened": true
+    }
+  ],
+  "failed_accesses": [
+    {
+      "url": "https://www.nber.org/news/business-cycle-dating-committee-announcement-june-8-2020",
+      "status": "403; not used for a specific historical announcement-date claim"
+    },
+    {
+      "url": "https://www.nber.org/sites/default/files/2020-11/june2020.pdf",
+      "status": "403; excluded from support"
+    }
+  ],
+  "memo_scope": "Pages1-4 inspected by extraction, page3 also visually reviewed; no claim to independently reproduce memo correlations."
+}

@@ -1,0 +1,24 @@
+{
+ "schema": "pr4_boot_and_recovery_redacted_1",
+ "checked_at_utc": "2026-11-18T00:10:49Z",
+ "computer_rebooted_by_me": false,
+ "windows_local": {
+  "scheduled_tasks": "only QuantFirstSnapshotReadback20261118 (one-time 2026-11-18 05:17, LastTaskResult 0, no next run); none for portal/feed/v42/v45",
+  "run_keys_startup_folder_services": "no entry for portal, feed, v42, v45",
+  "docker_desktop": "HKCU Run key present, but Docker settings-store AutoStart=False; engine was not running at 06:41 after 06:21 boot",
+  "observed_after_reboot": "all 4 processes (5 business functions) stopped until started by hand",
+  "in_process_recovery": {
+   "feed": "each provider in its own thread; one provider failing does not stop the other; moomoo reconnect up to 3 attempts with backoff, then that thread stops; Jin10 SQLite-lock backoff 60/120/240/300 s; no restart if the whole process dies",
+   "v42": "job errors -> RECOVERY_PENDING or FAILED; snapshot errors caught and recorded; non-transient scoring error -> ERROR_PAUSED and process exits; no external restart",
+   "v45": "loop errors caught and recorded; process continues; no external restart"
+  },
+  "conclusion": "No automatic start at boot and no supervisor after a crash on Windows."
+ },
+ "linux_container_test": {
+  "restart_policy": "unless-stopped",
+  "pid1_exit_test": "SIGTERM to web/feed and SIGINT to research: each restarted once (RestartCount 0->1) and healthy within 3.2 s",
+  "docker_kill_test": "docker kill -s KILL research: NOT restarted (Docker treats docker kill as a manual stop); manual up restored it, healthy within 6.3 s",
+  "daemon_or_host_reboot": "NOT_RUN (no reboot performed); on a Linux server the docker service is enabled at boot and unless-stopped containers start with it",
+  "evidence": "verification_matrix.csv rows S9, S12; logs/S9.log"
+ }
+}

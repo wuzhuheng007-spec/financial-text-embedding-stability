@@ -1,0 +1,7 @@
+$
+# exit=None expected=0 seconds=None
+# assertion=PASS
+{
+ "recreated": false,
+ "state_dir": "scratch (not in Git)"
+}

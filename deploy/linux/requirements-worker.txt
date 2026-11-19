@@ -1,0 +1,11 @@
+# Worker runtime additions on top of apps/quant_portal/requirements.lock.
+# Versions match the Windows personal install that ran these workers on
+# 2026-11-18 (system Python 3.11), except pywin32, which is Windows-only.
+beautifulsoup4==4.15.0
+cffi==2.1.0
+cryptography==49.0.0
+psutil==7.2.2
+pycparser==3.0
+soupsieve==2.10
+tzdata==2026.6
+websocket-client==1.9.2

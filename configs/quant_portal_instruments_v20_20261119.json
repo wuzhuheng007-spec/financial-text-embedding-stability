@@ -1,0 +1,12 @@
+{
+  "schema": "quant_portal_instruments_v20",
+  "_comment": "Explicit per-instrument display metadata, keyed by supplier code. Currency is listed only for instruments the owner confirmed; a market prefix such as US. is never treated as a currency. Add new instruments explicitly.",
+  "instruments": {
+    "US.TQQQ": {"symbol": "TQQQ", "short_name": "ProShares UltraPro QQQ", "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"},
+    "US.QQQ":  {"symbol": "QQQ",  "short_name": "Invesco QQQ Trust",      "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"},
+    "US.SOXX": {"symbol": "SOXX", "short_name": "iShares Semiconductor ETF", "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"},
+    "US.SPY":  {"symbol": "SPY",  "short_name": "SPDR S&P 500 ETF",       "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"},
+    "US.NVDA": {"symbol": "NVDA", "short_name": "NVIDIA",                 "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"},
+    "US.MU":   {"symbol": "MU",   "short_name": "Micron Technology",      "currency": "USD", "currency_basis": "OWNER_CONFIRMED", "confirmed_at": "2026-11-19"}
+  }
+}

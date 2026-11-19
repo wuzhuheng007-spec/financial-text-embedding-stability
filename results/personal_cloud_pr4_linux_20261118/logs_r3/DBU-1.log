@@ -1,0 +1,11 @@
+$ compose stop db; wait 20 s; compose start db; poll health web
+# exit=None expected=0 seconds=27.0
+# assertion=PASS
+{
+ "health_exit_while_down": 1,
+ "docker_health_while_down": "healthy",
+ "web_restart_count": [
+  "1",
+  "1"
+ ]
+}

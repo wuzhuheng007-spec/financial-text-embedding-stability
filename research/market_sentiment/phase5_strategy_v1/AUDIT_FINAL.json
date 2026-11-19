@@ -1,0 +1,44 @@
+{
+  "final_status": "INCONCLUSIVE",
+  "scope": "Three fixed OHLC strategy simulations executed and same-author checked; no first-screen return-increment acceptance, no news-factor validation",
+  "plan_execution_gate": "PASS",
+  "experimental_sufficiency_gate": "LIMITED",
+  "result_provenance_gate": "PASS",
+  "citation_verification_gate": "PASS",
+  "commands_actually_run": [
+    "python check.py --unit",
+    "python -m py_compile run.py check.py",
+    "python run.py --db ... --private-out ... --public-out ... --freeze-commit 1cfe1acb9e82c5c22f2ec1122c41cc2dd1209953",
+    "python check.py --db ... --private-out ... --public-out ...",
+    "python build_report.py"
+  ],
+  "authoritative_artifacts_inspected": {
+    "input_db_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+    "config_sha256": "0db1ebb476ec5db341658b6e564a2aa7dc8a279681a24ce781139d0c27d84efb",
+    "code_sha256": "09682c2161fe260d0df41328771368202fb350de5b4d92d68211b85a54604eae",
+    "private_ledger_files": 330,
+    "summary_rows": 360,
+    "primary_tests": 12
+  },
+  "first_screen_passes": 0,
+  "independent_validation": false,
+  "text_candidates": "BLOCKED",
+  "claims_authorized": [
+    "First-run simulated price-layer metrics under declared assumptions",
+    "Exact same-author cash, fees, NAV and reported metric reconciliation",
+    "No candidate passed preset return-increment screen"
+  ],
+  "claims_not_authorized": [
+    "News sentiment factor works",
+    "Tradable index strategy or total-return advantage",
+    "Untouched holdout, universal prediction or causal sentiment effect",
+    "Claude already independently verified"
+  ],
+  "unresolved_blockers": [
+    "No timestamped historical news/events",
+    "Historical vintage/calendar and QQQ dividend treatment not fully certified",
+    "Three index executions non-investible proxies",
+    "Independent implementation and external data validation pending"
+  ],
+  "worktree_user_data_preserved": "YES"
+}

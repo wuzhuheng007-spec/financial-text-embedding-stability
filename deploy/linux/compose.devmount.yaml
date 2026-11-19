@@ -1,0 +1,34 @@
+# TEST ONLY: run the current working-tree code on previously built images
+# without rebuilding (used while the build host is short of disk). Never use
+# for production: production images must be rebuilt from a commit.
+x-code: &code
+  - ../../scripts:/app/scripts:ro
+  - ../../configs:/app/configs:ro
+  - ./entrypoint.py:/app/deploy/linux/entrypoint.py:ro
+  - ./supervisor.py:/app/deploy/linux/supervisor.py:ro
+services:
+  migrate: {volumes: *code}
+  web:
+    volumes:
+      - ../../scripts:/app/scripts:ro
+      - ../../configs:/app/configs:ro
+      - ./entrypoint.py:/app/deploy/linux/entrypoint.py:ro
+      - ./supervisor.py:/app/deploy/linux/supervisor.py:ro
+  feed:
+    volumes:
+      - ../../scripts:/app/scripts:ro
+      - ../../configs:/app/configs:ro
+      - ./entrypoint.py:/app/deploy/linux/entrypoint.py:ro
+      - ./supervisor.py:/app/deploy/linux/supervisor.py:ro
+  research:
+    volumes:
+      - ../../scripts:/app/scripts:ro
+      - ../../configs:/app/configs:ro
+      - ./entrypoint.py:/app/deploy/linux/entrypoint.py:ro
+      - ./supervisor.py:/app/deploy/linux/supervisor.py:ro
+  moomoo-auth:
+    volumes:
+      - ../../scripts:/app/scripts:ro
+      - ../../configs:/app/configs:ro
+      - ./entrypoint.py:/app/deploy/linux/entrypoint.py:ro
+      - ./supervisor.py:/app/deploy/linux/supervisor.py:ro

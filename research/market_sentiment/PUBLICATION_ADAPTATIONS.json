@@ -1,0 +1,503 @@
+{
+  "date": "2026-11-19",
+  "source_results_unchanged": true,
+  "sharing_scope": "Aggregate conclusions, configurations, own code and evidence identities. No private provider rows, account material, original licensed filing text or third-party original workbook/source code redistributed.",
+  "not_embedded": [
+    "Private quote database and raw provider responses",
+    "Row-level weekly_panel.csv",
+    "Original BW workbook and author code; use pinned source links/hashes",
+    "Original OECD/FRED input rows and paired monthly panel"
+  ],
+  "files": [
+    {
+      "source": "sentiment_research_20261119/Market_Sentiment_Turning_Points_20261119.md",
+      "source_sha256": "d660330dcc87ee5c63535c935ae30e65f5d0889e76cfa943e5c8953b2aaeaf02",
+      "published": "research/market_sentiment/phase0/Market_Sentiment_Turning_Points_20261119.md",
+      "published_sha256": "d660330dcc87ee5c63535c935ae30e65f5d0889e76cfa943e5c8953b2aaeaf02",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/protocol.md",
+      "source_sha256": "bab71d4d200f1ca70aebbc0e1df2fd4837dc5a4da6d641fa5fdc2dde49cbfb13",
+      "published": "research/market_sentiment/phase0/protocol.md",
+      "published_sha256": "bab71d4d200f1ca70aebbc0e1df2fd4837dc5a4da6d641fa5fdc2dde49cbfb13",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/pilot.py",
+      "source_sha256": "81b6a4cd71f35c6e787a067dd0b0624bf94b9f1264e6dc83dfe71973438d2dc4",
+      "published": "research/market_sentiment/phase0/pilot.py",
+      "published_sha256": "81b6a4cd71f35c6e787a067dd0b0624bf94b9f1264e6dc83dfe71973438d2dc4",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/pilot_config.json",
+      "source_sha256": "10f461cf56e30459051c7227f9d9e435779d8e6ad58a95c97b980182cda7a85a",
+      "published": "research/market_sentiment/phase0/pilot_config.json",
+      "published_sha256": "10f461cf56e30459051c7227f9d9e435779d8e6ad58a95c97b980182cda7a85a",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/pilot_results.json",
+      "source_sha256": "66a44cc46f1b6da130ad0dae43940410a95fe216b7abffdfb05b673ffebe1fe3",
+      "published": "research/market_sentiment/phase0/pilot_results.json",
+      "published_sha256": "66a44cc46f1b6da130ad0dae43940410a95fe216b7abffdfb05b673ffebe1fe3",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/pilot_summary.csv",
+      "source_sha256": "9343f994bb3b898287a0a4083ed8b91b961b73d1c7f83fea2535d5f5ca9f864b",
+      "published": "research/market_sentiment/phase0/pilot_summary.csv",
+      "published_sha256": "9343f994bb3b898287a0a4083ed8b91b961b73d1c7f83fea2535d5f5ca9f864b",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/pilot_run_manifest.json",
+      "source_sha256": "2f1708437ad154d0b687dddb3c850ea089887fb634a9eb08eee4c189fcd89706",
+      "published": "research/market_sentiment/phase0/pilot_run_manifest.json",
+      "published_sha256": "2f1708437ad154d0b687dddb3c850ea089887fb634a9eb08eee4c189fcd89706",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/raw_manifest.json",
+      "source_sha256": "2ccef373a696dc3b44a979e9402501017fd87458c92a372ad93c4731ae50a75b",
+      "published": "research/market_sentiment/phase0/raw_manifest.json",
+      "published_sha256": "2ccef373a696dc3b44a979e9402501017fd87458c92a372ad93c4731ae50a75b",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/self_check.json",
+      "source_sha256": "6cc32d287b7f66e201f4e00cdaa60341883cf8aa246fdc21b9c86d3d8aaa1870",
+      "published": "research/market_sentiment/phase0/self_check.json",
+      "published_sha256": "6cc32d287b7f66e201f4e00cdaa60341883cf8aa246fdc21b9c86d3d8aaa1870",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_research_20261119/evidence_ledger.json",
+      "source_sha256": "3e1328617169f0ac60ac9478d2b6da5621d8c309bdb2ffe08b0ac5d49a0710b2",
+      "published": "research/market_sentiment/phase0/evidence_ledger.json",
+      "published_sha256": "3e1328617169f0ac60ac9478d2b6da5621d8c309bdb2ffe08b0ac5d49a0710b2",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/README_zh.md",
+      "source_sha256": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
+      "published": "research/market_sentiment/data_audit/README_zh.md",
+      "published_sha256": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/merge_policy.json",
+      "source_sha256": "6479b3149668aa21f0c27f0934d48a1165c33bc6616b5c0e8dbcef3c821598ec",
+      "published": "research/market_sentiment/data_audit/merge_policy.json",
+      "published_sha256": "6479b3149668aa21f0c27f0934d48a1165c33bc6616b5c0e8dbcef3c821598ec",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/merge_receipt.json",
+      "source_sha256": "e6c4f4088e099e471a9dae7471df5cf3f4ad8377ba8514a05a30bdebed12a100",
+      "published": "research/market_sentiment/data_audit/merge_receipt.json",
+      "published_sha256": "e6c4f4088e099e471a9dae7471df5cf3f4ad8377ba8514a05a30bdebed12a100",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/series_registry.json",
+      "source_sha256": "9481b61fe9ecc90d63c671e889ba6fc10dba3e426ce86e39e027e8ad8bccb9b2",
+      "published": "research/market_sentiment/data_audit/series_registry.json",
+      "published_sha256": "9481b61fe9ecc90d63c671e889ba6fc10dba3e426ce86e39e027e8ad8bccb9b2",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/audit/post_merge_self_check.json",
+      "source_sha256": "7841655b7b8972dbf9a73e430b65c36deac8bbf7fe9f81a6baa49990692497be",
+      "published": "research/market_sentiment/data_audit/audit/post_merge_self_check.json",
+      "published_sha256": "7841655b7b8972dbf9a73e430b65c36deac8bbf7fe9f81a6baa49990692497be",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/audit/patch_additions.json",
+      "source_sha256": "9c9b9b63bdf09d980ea0a9d90aaf1a028bd65909bfd57ebef8cdbe06c70847e7",
+      "published": "research/market_sentiment/data_audit/audit/patch_additions.json",
+      "published_sha256": "9c9b9b63bdf09d980ea0a9d90aaf1a028bd65909bfd57ebef8cdbe06c70847e7",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/audit/anchor_dates.json",
+      "source_sha256": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
+      "published": "research/market_sentiment/data_audit/audit/anchor_dates.json",
+      "published_sha256": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/dataset_v0_1/audit/unresolved_dates.json",
+      "source_sha256": "77e5108dbab7f9d49eb677526d8b7110fc21117f1a42d788a79a847cdc2be6b2",
+      "published": "research/market_sentiment/data_audit/audit/unresolved_dates.json",
+      "published_sha256": "77e5108dbab7f9d49eb677526d8b7110fc21117f1a42d788a79a847cdc2be6b2",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/build_dataset.py",
+      "source_sha256": "473e61789c65a78eb5691686d1be074606760550045f636ceb198a63dd583d06",
+      "published": "research/market_sentiment/data_audit/code/build_dataset.py",
+      "published_sha256": "473e61789c65a78eb5691686d1be074606760550045f636ceb198a63dd583d06",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/verify_dataset.py",
+      "source_sha256": "9bd197518c29491bf3190148e9b9a925ec53d816b6e0f0cd4e49d942b9fb4c98",
+      "published": "research/market_sentiment/data_audit/code/verify_dataset.py",
+      "published_sha256": "9bd197518c29491bf3190148e9b9a925ec53d816b6e0f0cd4e49d942b9fb4c98",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "moomoo_research_dataset_20261119/plot_history.py",
+      "source_sha256": "7b13d8eef438ef4fff81cf1f985ab01f109d5efd64c58906e2b16d7651285d44",
+      "published": "research/market_sentiment/data_audit/code/plot_history.py",
+      "published_sha256": "7b13d8eef438ef4fff81cf1f985ab01f109d5efd64c58906e2b16d7651285d44",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/PROTOCOL_zh.md",
+      "source_sha256": "9746cdef0b7e9aac93592fc31cf8087cd4cc9dd379655114f3d7fbd9dca0df22",
+      "published": "research/market_sentiment/phase1/PROTOCOL_zh.md",
+      "published_sha256": "9746cdef0b7e9aac93592fc31cf8087cd4cc9dd379655114f3d7fbd9dca0df22",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/config.json",
+      "source_sha256": "12845f996c85d68296fa3873d98e9379092a0fd0d386fa0f9faa2d451270110e",
+      "published": "research/market_sentiment/phase1/config.json",
+      "published_sha256": "12845f996c85d68296fa3873d98e9379092a0fd0d386fa0f9faa2d451270110e",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/freeze_receipt.json",
+      "source_sha256": "fbaed4495d72cac7bcd77c7a1fc0aa1737171f0f514f8b07bc2a63bae2a278dc",
+      "published": "research/market_sentiment/phase1/freeze_receipt.json",
+      "published_sha256": "fbaed4495d72cac7bcd77c7a1fc0aa1737171f0f514f8b07bc2a63bae2a278dc",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/baseline.py",
+      "source_sha256": "1395b526eefc5c870f9a0eefdd74c7817f4b60ec27e764b494579f7775671f10",
+      "published": "research/market_sentiment/phase1/baseline.py",
+      "published_sha256": "1395b526eefc5c870f9a0eefdd74c7817f4b60ec27e764b494579f7775671f10",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/self_check.py",
+      "source_sha256": "efe68d3d04f9e39412643d606560326c415daa71ffafa3eaed02c848b965e61f",
+      "published": "research/market_sentiment/phase1/self_check.py",
+      "published_sha256": "efe68d3d04f9e39412643d606560326c415daa71ffafa3eaed02c848b965e61f",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/make_report.py",
+      "source_sha256": "e199a3816e9d6bf388cba59c5232d22d50188af5f1dfccb589126ee781508298",
+      "published": "research/market_sentiment/phase1/make_report.py",
+      "published_sha256": "e199a3816e9d6bf388cba59c5232d22d50188af5f1dfccb589126ee781508298",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/audit_external.py",
+      "source_sha256": "3d83380d3e383482e2b53375c11324735f5887650d268c8da165457aeefb6733",
+      "published": "research/market_sentiment/phase1/audit_external.py",
+      "published_sha256": "3d83380d3e383482e2b53375c11324735f5887650d268c8da165457aeefb6733",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/NEWS_DATA_CONTRACT_zh.md",
+      "source_sha256": "f39033c940cf96aae94e221ace85b78a03f63286406405b1f2886d92ec72a06b",
+      "published": "research/market_sentiment/phase1/NEWS_DATA_CONTRACT_zh.md",
+      "published_sha256": "f39033c940cf96aae94e221ace85b78a03f63286406405b1f2886d92ec72a06b",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/citation_audit.json",
+      "source_sha256": "2054b954d2a4dce42c01ca5290c03db8d7e24b896892be212898fced191178af",
+      "published": "research/market_sentiment/phase1/citation_audit.json",
+      "published_sha256": "2054b954d2a4dce42c01ca5290c03db8d7e24b896892be212898fced191178af",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/case_registry.json",
+      "source_sha256": "8b76c61eb52cc6ca6c8d9201048fb711a376875978a64869064f5e088e15c5dc",
+      "published": "research/market_sentiment/phase1/case_registry.json",
+      "published_sha256": "8b76c61eb52cc6ca6c8d9201048fb711a376875978a64869064f5e088e15c5dc",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/evidence_ledger.json",
+      "source_sha256": "7443de963115a0639fadc286f03ce9e1d2d8fe07263dd40e7eea0541e2fe702b",
+      "published": "research/market_sentiment/phase1/evidence_ledger.json",
+      "published_sha256": "7443de963115a0639fadc286f03ce9e1d2d8fe07263dd40e7eea0541e2fe702b",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/AUDIT_FINAL.json",
+      "source_sha256": "0d6cdf8a7d4cfb35a96ba94b22da670740ff062ef7dcad0453fe2c07efd68762",
+      "published": "research/market_sentiment/phase1/AUDIT_FINAL.json",
+      "published_sha256": "0d6cdf8a7d4cfb35a96ba94b22da670740ff062ef7dcad0453fe2c07efd68762",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/software_versions.json",
+      "source_sha256": "c4543c92e0035761c45ad865915d6bcb0eaf9f6c0af67ca2bf9f2d611f62dd88",
+      "published": "research/market_sentiment/phase1/software_versions.json",
+      "published_sha256": "c4543c92e0035761c45ad865915d6bcb0eaf9f6c0af67ca2bf9f2d611f62dd88",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/baseline_summary.csv",
+      "source_sha256": "2cfd7ece51778bf8cca59afed2812a100fc463655f780a94e8b07d7d397d8499",
+      "published": "research/market_sentiment/phase1/results/baseline_summary.csv",
+      "published_sha256": "2cfd7ece51778bf8cca59afed2812a100fc463655f780a94e8b07d7d397d8499",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/state_contrasts.csv",
+      "source_sha256": "e4c9504c576ea8583453a8084e5e2e36f7be562eca57763d94f38e740c4c4f2a",
+      "published": "research/market_sentiment/phase1/results/state_contrasts.csv",
+      "published_sha256": "e4c9504c576ea8583453a8084e5e2e36f7be562eca57763d94f38e740c4c4f2a",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/coverage.json",
+      "source_sha256": "f027a03f80e24b3fb6b0ea4eabe882a4fbd7863a63aacccaca5688c0485a0feb",
+      "published": "research/market_sentiment/phase1/results/coverage.json",
+      "published_sha256": "f027a03f80e24b3fb6b0ea4eabe882a4fbd7863a63aacccaca5688c0485a0feb",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/run_manifest.json",
+      "source_sha256": "5fff243ed3c253f275c95e7a7050bdda709bb70fef045c1fc3729956f4ed4aae",
+      "published": "research/market_sentiment/phase1/results/run_manifest.json",
+      "published_sha256": "5fff243ed3c253f275c95e7a7050bdda709bb70fef045c1fc3729956f4ed4aae",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/self_check.json",
+      "source_sha256": "f307b3aaccd8c49fdfae1759140a28b8bd1b64e395f90af6ebcbae9ea2185169",
+      "published": "research/market_sentiment/phase1/results/self_check.json",
+      "published_sha256": "f307b3aaccd8c49fdfae1759140a28b8bd1b64e395f90af6ebcbae9ea2185169",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/primary_display_cells.csv",
+      "source_sha256": "254213dc76e420637e19f0ade5fde0cefb5b2b0f6894a225618932d750e5597a",
+      "published": "research/market_sentiment/phase1/results/primary_display_cells.csv",
+      "published_sha256": "254213dc76e420637e19f0ade5fde0cefb5b2b0f6894a225618932d750e5597a",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/external_input_probe/access_results.json",
+      "source_sha256": "92e99c528f0423537da15e04c54660ff5c74c013b413f4bfb33e8c3f247321e8",
+      "published": "research/market_sentiment/phase1/external_input_probe/access_results.json",
+      "published_sha256": "92e99c528f0423537da15e04c54660ff5c74c013b413f4bfb33e8c3f247321e8",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/external_input_probe/BW_schema_audit.json",
+      "source_sha256": "35eac9150f987abc1a8107ccd7b7b570d93e7926b7bc30be9b99283293383f2b",
+      "published": "research/market_sentiment/phase1/external_input_probe/BW_schema_audit.json",
+      "published_sha256": "35eac9150f987abc1a8107ccd7b7b570d93e7926b7bc30be9b99283293383f2b",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase1_20261119/Phase1_Research_Report_zh.md",
+      "source_sha256": "76a08f84cb2c85d3ff9deef18988533937a472c4ce9fe25ee698d12429e64e52",
+      "published": "research/market_sentiment/phase1/Phase1_Research_Report_zh.md",
+      "published_sha256": "c01723e23ea63291da19bddfd4865f6fc25b42d49d40906a56fd983fb5b3f771",
+      "adaptation": "Documented publication adaptation; original preserved"
+    },
+    {
+      "source": "sentiment_phase1_20261119/results/cycles_all_thresholds.csv",
+      "source_sha256": "baa9c0bee6bea3a41de594e9f78cc1339a9348ce5ab6144651174d4a4ed34438",
+      "published": "research/market_sentiment/phase1/results/cycles_dates_only.csv",
+      "published_sha256": "fa28a600a0f3430020e0e4405fdb7156c0db7a3ecf105b7f72ef23c844dc0919",
+      "adaptation": "Remove individual source price levels; preserve all rule-defined turn dates and confirmation lags"
+    },
+    {
+      "source": "sentiment_phase2_20261119/PLAN_zh.md",
+      "source_sha256": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "published": "research/market_sentiment/phase2/PLAN_zh.md",
+      "published_sha256": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase2_20261119/freeze_receipt.json",
+      "source_sha256": "11183532764b616122e096aa93bb59750d4a464a301b1b7592088818a0ee4549",
+      "published": "research/market_sentiment/phase2/freeze_receipt.json",
+      "published_sha256": "11183532764b616122e096aa93bb59750d4a464a301b1b7592088818a0ee4549",
+      "adaptation": "NONE"
+    },
+    {
+      "source": "sentiment_phase2_20261119/diagnose_bw.py",
+      "source_sha256": "12b97d4572fb5c22bc83cd3557fa4895616976ed56b62922409e2d1dc6f65a1f",
+      "published": "research/market_sentiment/phase2/diagnose_bw.py",
+      "published_sha256": "12b97d4572fb5c22bc83cd3557fa4895616976ed56b62922409e2d1dc6f65a1f",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/self_check_bw.py",
+      "source_sha256": "9fdfb7b339f6356e3c7529796c8ce2a7c876a639183e838af9387963f89724f0",
+      "published": "research/market_sentiment/phase2/self_check_bw.py",
+      "published_sha256": "9fdfb7b339f6356e3c7529796c8ce2a7c876a639183e838af9387963f89724f0",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/audit_revisions.py",
+      "source_sha256": "bd1feaace564c1c55b355312f409a37b5797aa51aa1cf635dd63ba5034bb731c",
+      "published": "research/market_sentiment/phase2/audit_revisions.py",
+      "published_sha256": "bd1feaace564c1c55b355312f409a37b5797aa51aa1cf635dd63ba5034bb731c",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/news_field_pilot.py",
+      "source_sha256": "ebff2061faa250fcbeb124c3dbac46984ae0672ee9c86bc3bb7524bc46d5ae03",
+      "published": "research/market_sentiment/phase2/news_field_pilot.py",
+      "published_sha256": "ebff2061faa250fcbeb124c3dbac46984ae0672ee9c86bc3bb7524bc46d5ae03",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/build_report.py",
+      "source_sha256": "4dcef4e822c9f3e073dcf7af38a7d84aa7a8d0c0a6fe0ecd93ce08d14adad3aa",
+      "published": "research/market_sentiment/phase2/build_report.py",
+      "published_sha256": "4dcef4e822c9f3e073dcf7af38a7d84aa7a8d0c0a6fe0ecd93ce08d14adad3aa",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/fetch_author_sources.py",
+      "source_sha256": "a9de6997b4c4d0301dd084e4a258b1c27ac58fba3e9a45d72d3c021c21cd1309",
+      "published": "research/market_sentiment/phase2/fetch_author_sources.py",
+      "published_sha256": "a9de6997b4c4d0301dd084e4a258b1c27ac58fba3e9a45d72d3c021c21cd1309",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/Phase2_BW_Availability_Report_zh.md",
+      "source_sha256": "60bca216f54b6e698a138ae99679604c6d04ff3c227d913fbc807a5e3ebfb244",
+      "published": "research/market_sentiment/phase2/Phase2_BW_Availability_Report_zh.md",
+      "published_sha256": "60bca216f54b6e698a138ae99679604c6d04ff3c227d913fbc807a5e3ebfb244",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/prefix_sensitivity.svg",
+      "source_sha256": "72a673e3756333fe63aafe6bb4ed5258c846c4e332b01906fc3b856414a8a39f",
+      "published": "research/market_sentiment/phase2/prefix_sensitivity.svg",
+      "published_sha256": "72a673e3756333fe63aafe6bb4ed5258c846c4e332b01906fc3b856414a8a39f",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/citation_audit.json",
+      "source_sha256": "d463485bf907948d9619dcbcce00ef6c853d17ba0ac22626e65e97c8eee54d26",
+      "published": "research/market_sentiment/phase2/citation_audit.json",
+      "published_sha256": "d463485bf907948d9619dcbcce00ef6c853d17ba0ac22626e65e97c8eee54d26",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/AUDIT_FINAL.json",
+      "source_sha256": "ef34de251000173a7405f778434991ea8acb90d080f48827d9cf00ec0442a157",
+      "published": "research/market_sentiment/phase2/AUDIT_FINAL.json",
+      "published_sha256": "ef34de251000173a7405f778434991ea8acb90d080f48827d9cf00ec0442a157",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/evidence_ledger.json",
+      "source_sha256": "f493e6c13093560c97872be5c2c1879b024bd13f9d71f69b6e86841052799230",
+      "published": "research/market_sentiment/phase2/evidence_ledger.json",
+      "published_sha256": "f493e6c13093560c97872be5c2c1879b024bd13f9d71f69b6e86841052799230",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/availability_matrix.csv",
+      "source_sha256": "e6577222166a950076cd1eb5b1255cf2370447845ace2f52193deba5e8726af5",
+      "published": "research/market_sentiment/phase2/results/availability_matrix.csv",
+      "published_sha256": "e6577222166a950076cd1eb5b1255cf2370447845ace2f52193deba5e8726af5",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/prefix_sensitivity.csv",
+      "source_sha256": "df231f77acb207489a1b1eca8acc653eb7d4ab01bb99872f832894da875e5bf6",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/prefix_sensitivity.csv",
+      "published_sha256": "df231f77acb207489a1b1eca8acc653eb7d4ab01bb99872f832894da875e5bf6",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/published_comparison.json",
+      "source_sha256": "833a8908ecc6f98d0d3f681da05c9390e7e2421a26955ce88ef29980df2f54bc",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/published_comparison.json",
+      "published_sha256": "833a8908ecc6f98d0d3f681da05c9390e7e2421a26955ce88ef29980df2f54bc",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/fit_details.json",
+      "source_sha256": "db22fa14c347337e0e58c80aa1cc82a79f4e3249c738df8ef88377b550495c1d",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/fit_details.json",
+      "published_sha256": "db22fa14c347337e0e58c80aa1cc82a79f4e3249c738df8ef88377b550495c1d",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/summary.json",
+      "source_sha256": "c4b565da4849cf19a8b9fe3fe2d189032510825af25888a9d577c2526a5aea23",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/summary.json",
+      "published_sha256": "c4b565da4849cf19a8b9fe3fe2d189032510825af25888a9d577c2526a5aea23",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/run_manifest.json",
+      "source_sha256": "64e028f1415af2e9a5090f63ad4d8115e4c94dac50ff6990e5632a6c2e7239d9",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/run_manifest.json",
+      "published_sha256": "64e028f1415af2e9a5090f63ad4d8115e4c94dac50ff6990e5632a6c2e7239d9",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/bw_diagnostic/self_check.json",
+      "source_sha256": "c79292d023dab11f8d5c9cf013dbbd584373741f55cc01ba8024dc82c12f2695",
+      "published": "research/market_sentiment/phase2/results/bw_diagnostic/self_check.json",
+      "published_sha256": "c79292d023dab11f8d5c9cf013dbbd584373741f55cc01ba8024dc82c12f2695",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/revision_audit/workbook_inventory.csv",
+      "source_sha256": "f1f1d574075f174fb1e4157b88d1b62499509cdc9b50eb6e58e4e6d812f018f5",
+      "published": "research/market_sentiment/phase2/results/revision_audit/workbook_inventory.csv",
+      "published_sha256": "f1f1d574075f174fb1e4157b88d1b62499509cdc9b50eb6e58e4e6d812f018f5",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/revision_audit/published_version_comparison.csv",
+      "source_sha256": "61dcfe1a6f45f4f65d511efb65ee23e87e808a75482b9a9a685d892036005f89",
+      "published": "research/market_sentiment/phase2/results/revision_audit/published_version_comparison.csv",
+      "published_sha256": "61dcfe1a6f45f4f65d511efb65ee23e87e808a75482b9a9a685d892036005f89",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/revision_audit/summary.json",
+      "source_sha256": "67398e7e1c6a678bc7e94d815e1b0aa9f199964aa0b5766d1f3157b106659e1b",
+      "published": "research/market_sentiment/phase2/results/revision_audit/summary.json",
+      "published_sha256": "67398e7e1c6a678bc7e94d815e1b0aa9f199964aa0b5766d1f3157b106659e1b",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/news_field_pilot/events.json",
+      "source_sha256": "98c546a90440544bd1d3cd5c627d64a8cd3dc238927bbd53985193131d8b640b",
+      "published": "research/market_sentiment/phase2/results/news_field_pilot/events.json",
+      "published_sha256": "98c546a90440544bd1d3cd5c627d64a8cd3dc238927bbd53985193131d8b640b",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/news_field_pilot/events.csv",
+      "source_sha256": "45227f6a467e9704c3f5dbb6486b1a79362d5ff8b94a12fb1be90be748b486db",
+      "published": "research/market_sentiment/phase2/results/news_field_pilot/events.csv",
+      "published_sha256": "45227f6a467e9704c3f5dbb6486b1a79362d5ff8b94a12fb1be90be748b486db",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    },
+    {
+      "source": "sentiment_phase2_20261119/results/news_field_pilot/summary.json",
+      "source_sha256": "7da952d1567fced5c168527e30c678dc7cb339ebff2b2c653cbab0003da6d8c8",
+      "published": "research/market_sentiment/phase2/results/news_field_pilot/summary.json",
+      "published_sha256": "7da952d1567fced5c168527e30c678dc7cb339ebff2b2c653cbab0003da6d8c8",
+      "adaptation": "NONE; original third-party inputs and per-month diagnostic rows remain private"
+    }
+  ]
+}

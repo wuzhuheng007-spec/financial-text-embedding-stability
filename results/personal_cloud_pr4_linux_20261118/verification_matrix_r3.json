@@ -1,0 +1,851 @@
+[
+ {
+  "id": "PRE-disk",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "host free disk >= 5 GiB (no image rebuild this round)",
+  "command": "",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": null,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/PRE-disk.log",
+  "detail": {
+   "free_gib": 23.53
+  }
+ },
+ {
+  "id": "PRE-engine",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "Docker Linux engine reachable",
+  "command": "docker info",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 0.86,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/PRE-engine.log",
+  "detail": {
+   "engine": "linux 29.6.2"
+  }
+ },
+ {
+  "id": "PRE-images",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "test images present (identity recorded)",
+  "command": "",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": null,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/PRE-images.log",
+  "detail": {
+   "image_ids": {
+    "quant-personal-app:pr4test": "sha256:9039b37631abd4decb9b3731b7413f5d51c19c2808958c8a5cf697b902530bea",
+    "quant-personal-research:pr4test": "sha256:3b4d0b54c780ab03b8e5aba04965278d347441c3a083cb97b77185fb19a0d6bb"
+   },
+   "code": "working tree bind-mounted via compose.devmount.yaml",
+   "git_head": "d710addf970f850530b9d859e413263c1f8764ac",
+   "git_dirty": true
+  }
+ },
+ {
+  "id": "PRE-state",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "test env and passwords available (recreated if missing)",
+  "command": "",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": null,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/PRE-state.log",
+  "detail": {
+   "recreated": false,
+   "state_dir": "scratch (not in Git)"
+  }
+ },
+ {
+  "id": "PRE-model",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "model volume present and hash-checked",
+  "command": "docker run ... quant_pr4test_model_v41 sha256 vs input_manifest",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": false,
+  "seconds": 2.48,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/PRE-model.log",
+  "detail": {
+   "files": 6,
+   "mismatch": []
+  }
+ },
+ {
+  "id": "PRE-up",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "isolated stack up with current code (devmount)",
+  "command": "compose up -d --wait db migrate web proxy feed research",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 22.08,
+  "config": "configs/quant_portal_personal_feeds_linux_test_v1.json",
+  "input_type": "test volumes",
+  "log": "logs_r3/PRE-up.log",
+  "detail": null
+ },
+ {
+  "id": "PRE-users",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "test accounts exist (idempotent create)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env run --rm --no-deps -e TEST_OWNER_PASSWORD -e TEST_OTHER_PASSWORD -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/acceptance_synthetic.py:/accept/a.py:ro --entrypoint python web /accept/a.py create-users",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 2.56,
+  "config": "",
+  "input_type": "synthetic accounts",
+  "log": "logs_r3/PRE-users.log",
+  "detail": {
+   "owner@local.invalid": {
+    "id": 1,
+    "created": false
+   },
+   "other@local.invalid": {
+    "id": 2,
+    "created": false
+   }
+  }
+ },
+ {
+  "id": "PRE-seed",
+  "group": "PRE",
+  "category": "PRECONDITION",
+  "check": "synthetic seed data present (idempotent)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env run --rm --no-deps -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/acceptance_synthetic.py:/accept/a.py:ro --entrypoint python feed /accept/a.py seed-feed",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 2.52,
+  "config": "",
+  "input_type": "marked SYNTHETIC rows",
+  "log": "logs_r3/PRE-seed.log",
+  "detail": {
+   "news_items": 3,
+   "news_versions": 4,
+   "quotes": 4
+  }
+ },
+ {
+  "id": "CFG-1",
+  "group": "CFG",
+  "category": "SYNTHETIC",
+  "check": "moomoo-only compose renders without any Jin10 secret; auth port loopback-only",
+  "command": "docker compose -f deploy/linux/compose.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth config --format json",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 0.31,
+  "config": "compose.yaml",
+  "input_type": "",
+  "log": "logs_r3/CFG-1.log",
+  "detail": {
+   "feed_secrets": [
+    {
+     "source": "moomoo_token_key",
+     "target": "/run/secrets/moomoo_token_key"
+    }
+   ],
+   "auth_ports": [
+    {
+     "mode": "ingress",
+     "host_ip": "127.0.0.1",
+     "target": 8790,
+     "published": "8790",
+     "protocol": "tcp"
+    }
+   ],
+   "top_level_secrets": [
+    "moomoo_token_key"
+   ]
+  }
+ },
+ {
+  "id": "CFG-2",
+  "group": "CFG",
+  "category": "SYNTHETIC",
+  "check": "Jin10 overlay refuses to render without an explicit token path",
+  "command": "docker compose -f deploy/linux/compose.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env -f deploy/linux/compose.jin10.yaml config --quiet",
+  "exit_code": 1,
+  "expected_exit": 1,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 0.28,
+  "config": "compose.yaml + compose.jin10.yaml",
+  "input_type": "",
+  "log": "logs_r3/CFG-2.log",
+  "detail": null
+ },
+ {
+  "id": "S2",
+  "group": "S2",
+  "category": "SYNTHETIC",
+  "check": "production flags inside web container (asserted)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env exec -T web python -c import os,sys,json;sys.path.insert(0,'/app/apps/quant_portal');os.environ.setdefault('DJANGO_SETTINGS_MODULE','portal.settings');import django;django.setup();from django.conf import settings as s;print(json.dumps({k:getattr(s,k) for k in ['DEBUG','PERSONAL_MODE','TRUSTED_REVERSE_PROXY','PUBLIC_MARKET_DATA_ENABLED','SECURE_SSL_REDIRECT','SESSION_COOKIE_SECURE','CSRF_COOKIE_SECURE']}|{'db':s.DATABASES['default']['ENGINE']}))",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 1.7,
+  "config": "compose app-env",
+  "input_type": "runtime environment",
+  "log": "logs_r3/S2.log",
+  "detail": {
+   "observed": {
+    "DEBUG": false,
+    "PERSONAL_MODE": true,
+    "TRUSTED_REVERSE_PROXY": true,
+    "PUBLIC_MARKET_DATA_ENABLED": false,
+    "SECURE_SSL_REDIRECT": true,
+    "SESSION_COOKIE_SECURE": true,
+    "CSRF_COOKIE_SECURE": true,
+    "db": "django.db.backends.postgresql"
+   },
+   "mismatches": {}
+  }
+ },
+ {
+  "id": "S8",
+  "group": "S8",
+  "category": "REAL_SUPPLIER",
+  "check": "moomoo Linux credential status -> real supplier test",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env run --rm --no-deps feed moomoo-auth status",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "BLOCKED",
+  "required": false,
+  "seconds": 1.84,
+  "config": "MOOMOO_TOKEN_STORE=server",
+  "input_type": "no real credential installed",
+  "log": "logs_r3/S8.log",
+  "detail": {
+   "status": {
+    "credential_state": "NOT_INSTALLED",
+    "key_file_present": true,
+    "storage": "SERVER_AES256GCM_KEYFILE"
+   },
+   "meaning": "status query works; real supplier connectivity NOT tested (no Linux authorization)"
+  }
+ },
+ {
+  "id": "REC-1",
+  "group": "REC",
+  "category": "SYNTHETIC",
+  "check": "research child SIGKILL -> supervisor backoff restart -> healthy",
+  "command": "docker exec research kill -9 <v42 child>; poll health research",
+  "exit_code": 137,
+  "expected_exit": 0,
+  "command_status": "FAILED",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 8.7,
+  "config": "SUPERVISOR_INITIAL_BACKOFF=5 SUPERVISOR_POLL=2",
+  "input_type": "",
+  "log": "logs_r3/REC-1.log",
+  "detail": {
+   "total_seconds_signal_to_healthy": 8.7,
+   "includes": "poll 2 s + backoff 5 s + model reload",
+   "container_restart_count_before_after": [
+    "0",
+    "0"
+   ],
+   "supervisor": {
+    "role": "research",
+    "state": "RUNNING",
+    "reason": "child started",
+    "updated_at_utc": "2026-11-18T01:13:32.777270Z",
+    "child_pid": 44,
+    "restarts_last_hour": 1,
+    "next_backoff_s": 5.0
+   }
+  }
+ },
+ {
+  "id": "REC-2",
+  "group": "REC",
+  "category": "SYNTHETIC",
+  "check": "web PID 1 SIGTERM -> Docker restart policy -> healthcheck healthy",
+  "command": "docker exec web kill -TERM 1; poll RestartCount and Health.Status",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 7.2,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/REC-2.log",
+  "detail": {
+   "signal_to_restart_s": 1.3,
+   "signal_to_docker_healthy_s": 7.2,
+   "note": "healthy needs the next healthcheck (interval 30 s)",
+   "correction": "round-2 S9 reported 3.2 s measured from 5 s after the signal and excluded that fixed wait; it is kept as the original observation and superseded by this row"
+  }
+ },
+ {
+  "id": "REC-3",
+  "group": "REC",
+  "category": "SYNTHETIC",
+  "check": "observation: docker kill -s KILL and restart policy",
+  "command": "docker kill -s KILL research; wait 20 s",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": false,
+  "seconds": 20,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/REC-3.log",
+  "detail": {
+   "state_after_20s": "exited",
+   "restart_count": [
+    "0",
+    "0"
+   ],
+   "scope": "observed only on Docker Desktop with Engine 29.6.2; not a general rule"
+  }
+ },
+ {
+  "id": "HOLD-ERROR",
+  "group": "HOLD",
+  "category": "RUNNER",
+  "check": "group HOLD raised",
+  "command": "",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "FAIL",
+  "required": true,
+  "seconds": null,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/HOLD-ERROR.log",
+  "detail": {
+   "error": "TypeError: dict() got multiple values for keyword argument 'SUPERVISOR_POLL'"
+  }
+ },
+ {
+  "id": "DBU-1",
+  "group": "DBU",
+  "category": "SYNTHETIC",
+  "check": "PostgreSQL stopped ~20 s: readyz fails, no restart, recovers by reconnect",
+  "command": "compose stop db; wait 20 s; compose start db; poll health web",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 27.0,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/DBU-1.log",
+  "detail": {
+   "health_exit_while_down": 1,
+   "docker_health_while_down": "healthy",
+   "web_restart_count": [
+    "1",
+    "1"
+   ]
+  }
+ },
+ {
+  "id": "DBU-2",
+  "group": "DBU",
+  "category": "SYNTHETIC",
+  "check": "SQLite queue exclusively locked 25 s during new work -> backlog drains after release",
+  "command": "seed-bulk 5; BEGIN EXCLUSIVE on queue for 25 s; poll health research",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 35.4,
+  "config": "",
+  "input_type": "5 marked synthetic items",
+  "log": "logs_r3/DBU-2.log",
+  "detail": {
+   "locker": [
+    "locked",
+    "released"
+   ],
+   "after": {
+    "state": "RUNNING",
+    "backlog": 0,
+    "supervisor": {
+     "role": "research",
+     "state": "RUNNING",
+     "reason": "running",
+     "updated_at_utc": "2026-11-18T01:15:13.937207Z",
+     "child_pid": 7,
+     "restarts_last_hour": 0,
+     "next_backoff_s": 0.0
+    }
+   }
+  }
+ },
+ {
+  "id": "B1",
+  "group": "BKP",
+  "category": "SYNTHETIC",
+  "check": "pg_dump of test database (custom format)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env exec -T db sh -c pg_dump -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" -Fc > pg_r3.dump",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 0.7,
+  "config": "test project",
+  "input_type": "test PostgreSQL",
+  "log": "logs_r3/B1.log",
+  "detail": {
+   "bytes": 52788
+  }
+ },
+ {
+  "id": "B7",
+  "group": "BKP",
+  "category": "SYNTHETIC",
+  "check": "pg_restore into separate restore project; users counted",
+  "command": "docker compose -p quant-pr4-restore -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env exec -T db sh -c pg_restore -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" --no-owner --exit-on-error < pg_r3.dump",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 0.75,
+  "config": "quant-pr4-restore",
+  "input_type": "pg_r3.dump",
+  "log": "logs_r3/B7.log",
+  "detail": {
+   "restored_auth_users": "2"
+  }
+ },
+ {
+  "id": "OAUTH-ok",
+  "group": "OAUTH",
+  "category": "MOCK_PROVIDER",
+  "check": "callback via host 127.0.0.1:8790 -> container (ok)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case ok --port 8790 --bind 0.0.0.0",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 5.4,
+  "config": "compose --profile auth; ports 127.0.0.1:8790:8790",
+  "input_type": "mock provider in container",
+  "log": "logs_r3/OAUTH-ok.log",
+  "detail": {
+   "consent": {
+    "event": "consent",
+    "redirect_uri": "http://127.0.0.1:8790/callback",
+    "callback_query": "code=DFZskpiPAfgre99V9CaZTA&state=KZRKb5IcYLlU96I_khdZ4rHCO0b7YCgQ",
+    "registered_matches": true,
+    "scope": "quote:read",
+    "pkce_method": "S256"
+   },
+   "browser": {
+    "http": 200
+   },
+   "result": {
+    "event": "result",
+    "case": "ok",
+    "ok": true,
+    "client_error": null,
+    "stored_state": "QUOTE_READ_AUTHORIZED",
+    "storage": "SERVER_AES256GCM_KEYFILE",
+    "token_requests": [
+     {
+      "grant_type": "authorization_code",
+      "redirect_uri": "http://127.0.0.1:8790/callback"
+     }
+    ],
+    "mock_only": true
+   },
+   "port_released": true,
+   "container_left": false,
+   "meaning": "plumbing only; moomoo authorization itself NOT tested"
+  }
+ },
+ {
+  "id": "OAUTH-bad_state",
+  "group": "OAUTH",
+  "category": "MOCK_PROVIDER",
+  "check": "callback via host 127.0.0.1:8790 -> container (bad_state)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case bad_state --port 8790 --bind 0.0.0.0",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 5.2,
+  "config": "compose --profile auth; ports 127.0.0.1:8790:8790",
+  "input_type": "mock provider in container",
+  "log": "logs_r3/OAUTH-bad_state.log",
+  "detail": {
+   "consent": {
+    "event": "consent",
+    "redirect_uri": "http://127.0.0.1:8790/callback",
+    "callback_query": "code=WKa31WOiMhIdzYWH8vms8w&state=WRONG",
+    "registered_matches": true,
+    "scope": "quote:read",
+    "pkce_method": "S256"
+   },
+   "browser": {
+    "http": 200
+   },
+   "result": {
+    "event": "result",
+    "case": "bad_state",
+    "ok": true,
+    "client_error": "OAuthError: OAuth callback state mismatch",
+    "stored_state": "NOT_INSTALLED",
+    "storage": null,
+    "token_requests": [],
+    "mock_only": true
+   },
+   "port_released": true,
+   "container_left": false,
+   "meaning": "plumbing only; moomoo authorization itself NOT tested"
+  }
+ },
+ {
+  "id": "OAUTH-provider_error",
+  "group": "OAUTH",
+  "category": "MOCK_PROVIDER",
+  "check": "callback via host 127.0.0.1:8790 -> container (provider_error)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case provider_error --port 8790 --bind 0.0.0.0",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 5.1,
+  "config": "compose --profile auth; ports 127.0.0.1:8790:8790",
+  "input_type": "mock provider in container",
+  "log": "logs_r3/OAUTH-provider_error.log",
+  "detail": {
+   "consent": {
+    "event": "consent",
+    "redirect_uri": "http://127.0.0.1:8790/callback",
+    "callback_query": "error=access_denied&state=xNKDBY2ugg5fGbVpBw_2I4Z7ietkGUtu",
+    "registered_matches": true,
+    "scope": "quote:read",
+    "pkce_method": "S256"
+   },
+   "browser": {
+    "http": 400
+   },
+   "result": {
+    "event": "result",
+    "case": "provider_error",
+    "ok": true,
+    "client_error": "OAuthError: authorization refused by provider: access_denied",
+    "stored_state": "NOT_INSTALLED",
+    "storage": null,
+    "token_requests": [],
+    "mock_only": true
+   },
+   "port_released": true,
+   "container_left": false,
+   "meaning": "plumbing only; moomoo authorization itself NOT tested"
+  }
+ },
+ {
+  "id": "OAUTH-redirect_mismatch",
+  "group": "OAUTH",
+  "category": "MOCK_PROVIDER",
+  "check": "callback via host 127.0.0.1:8790 -> container (redirect_mismatch)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case redirect_mismatch --port 8790 --bind 0.0.0.0",
+  "exit_code": 0,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 5.2,
+  "config": "compose --profile auth; ports 127.0.0.1:8790:8790",
+  "input_type": "mock provider in container",
+  "log": "logs_r3/OAUTH-redirect_mismatch.log",
+  "detail": {
+   "consent": {
+    "event": "consent",
+    "redirect_uri": "http://127.0.0.1:8790/callback",
+    "callback_query": "code=-RrW6-FS2ruwSqTdfGxJsw&state=Mue9T1pNW0IvgNIerkUgQ6lsEzG0Bfch",
+    "registered_matches": true,
+    "scope": "quote:read",
+    "pkce_method": "S256"
+   },
+   "browser": {
+    "http": 200
+   },
+   "result": {
+    "event": "result",
+    "case": "redirect_mismatch",
+    "ok": true,
+    "client_error": "OAuthError: OAuth endpoint returned HTTP 400",
+    "stored_state": "NOT_INSTALLED",
+    "storage": null,
+    "token_requests": [
+     {
+      "grant_type": "authorization_code",
+      "redirect_uri": "http://127.0.0.1:8790/callback"
+     }
+    ],
+    "mock_only": true
+   },
+   "port_released": true,
+   "container_left": false,
+   "meaning": "plumbing only; moomoo authorization itself NOT tested"
+  }
+ },
+ {
+  "id": "OAUTH-bind_loopback_only",
+  "group": "OAUTH",
+  "category": "MOCK_PROVIDER",
+  "check": "callback via host 127.0.0.1:8790 -> container (bind_loopback_only)",
+  "command": "docker compose -p quant-pr4-test -f deploy/linux/compose.yaml -f deploy/linux/compose.test.yaml -f deploy/linux/compose.devmount.yaml --env-file C:\\Users\\ROG\\AppData\\Local\\Temp\\claude\\2e3b692b00f2c257\\56a273db-320e-46ff-9eb6-5ba8952f42cf\\scratchpad\\pr4test\\test.env --profile auth run --rm --service-ports -v C:/Users/ROG/Documents/ChatGPT/quant/worktrees/personal_cloud_pr4_20261118/deploy/linux/oauth_mock_check.py:/x/oauth_mock_check.py:ro --entrypoint python moomoo-auth /x/oauth_mock_check.py serve --case ok --port 8790 --bind 127.0.0.1",
+  "exit_code": 1,
+  "expected_exit": 1,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": 65.2,
+  "config": "compose --profile auth; ports 127.0.0.1:8790:8790",
+  "input_type": "mock provider in container",
+  "log": "logs_r3/OAUTH-bind_loopback_only.log",
+  "detail": {
+   "consent": {
+    "event": "consent",
+    "redirect_uri": "http://127.0.0.1:8790/callback",
+    "callback_query": "code=hX1EL8W47st4Da2nyO21Nw&state=FqAJXr6qucYdVy7sSvDkVRQjWbNrm54i",
+    "registered_matches": true,
+    "scope": "quote:read",
+    "pkce_method": "S256"
+   },
+   "browser": {
+    "error": "RemoteDisconnected"
+   },
+   "result": {
+    "event": "result",
+    "case": "ok",
+    "ok": false,
+    "client_error": "OAuthError: browser consent callback was not received before timeout",
+    "stored_state": "NOT_INSTALLED",
+    "storage": null,
+    "token_requests": [],
+    "mock_only": true
+   },
+   "port_released": true,
+   "container_left": false,
+   "meaning": "plumbing only; moomoo authorization itself NOT tested"
+  }
+ },
+ {
+  "id": "LOAD-1",
+  "group": "LOAD",
+  "category": "REAL_MODEL_SYNTHETIC_INPUT",
+  "check": "parallel scoring + SQLite backup: CPU, peak memory, time, backlog",
+  "command": "seed-bulk 200; docker run backup; sample docker stats",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": false,
+  "seconds": 58.3,
+  "config": "",
+  "input_type": "synthetic text, real model",
+  "log": "logs_r3/LOAD-1.log",
+  "detail": {
+   "load": "200 marked synthetic Chinese items + one online backup of a 326.4 MiB feed copy",
+   "scoring_drain_seconds": 6.1,
+   "backlog_series": [
+    [
+     2.0,
+     0
+    ],
+    [
+     4.1,
+     0
+    ],
+    [
+     6.1,
+     0
+    ],
+    [
+     8.2,
+     196
+    ],
+    [
+     10.3,
+     188
+    ],
+    [
+     12.4,
+     179
+    ],
+    [
+     15.5,
+     167
+    ],
+    [
+     17.6,
+     159
+    ],
+    [
+     19.6,
+     150
+    ],
+    [
+     21.7,
+     142
+    ],
+    [
+     24.8,
+     130
+    ],
+    [
+     26.9,
+     122
+    ],
+    [
+     28.9,
+     115
+    ],
+    [
+     31.0,
+     106
+    ],
+    [
+     34.1,
+     94
+    ],
+    [
+     36.1,
+     86
+    ],
+    [
+     38.4,
+     78
+    ],
+    [
+     40.5,
+     69
+    ],
+    [
+     42.6,
+     60
+    ],
+    [
+     46.0,
+     46
+    ],
+    [
+     48.2,
+     38
+    ],
+    [
+     50.2,
+     29
+    ],
+    [
+     52.2,
+     21
+    ],
+    [
+     54.3,
+     12
+    ],
+    [
+     56.3,
+     4
+    ],
+    [
+     58.3,
+     0
+    ]
+   ],
+   "research": {
+    "cpu_pct_peak": null,
+    "mem_mib_peak": 0,
+    "samples": 0
+   },
+   "backup": {
+    "cpu_pct_peak": null,
+    "mem_mib_peak": 0,
+    "samples": 0
+   },
+   "backup_output": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nsqlite3.OperationalError: unable to open database file",
+   "host": {
+    "cpus": 32
+   },
+   "sampling": "docker stats ~1-2 s; peak values are sampled, not exact",
+   "limit": "one test on Docker Desktop (WSL2, 32 logical CPUs, 15.2 GiB VM); not a capacity proof for a 4 vCPU server"
+  }
+ },
+ {
+  "id": "Z-stop",
+  "group": "Z",
+  "category": "SYNTHETIC",
+  "check": "all test containers stopped (volumes kept)",
+  "command": "",
+  "exit_code": null,
+  "expected_exit": 0,
+  "command_status": "OK",
+  "assertion": "PASS",
+  "required": true,
+  "seconds": null,
+  "config": "",
+  "input_type": "",
+  "log": "logs_r3/Z-stop.log",
+  "detail": {
+   "remaining_containers": []
+  }
+ }
+]

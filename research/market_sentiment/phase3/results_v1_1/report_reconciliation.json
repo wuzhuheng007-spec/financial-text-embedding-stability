@@ -1,0 +1,14 @@
+{
+  "status": "PASS_SAME_AUTHOR_RECONCILIATION",
+  "checks": {
+    "all_primary_events_have_one_card": 139,
+    "model_summary_rows_reconciled": 225,
+    "paired_model_contrast_rows_reconciled": 159,
+    "all_alert_summary_denominators_reconciled": 756,
+    "aggregate_curve_rows_from_event_input_windows": 968,
+    "overlap_association_rows_recomputed": 60,
+    "primary_model_display_cells": 12
+  },
+  "independent_validation": false,
+  "code_sha256": "b09d2065b9f99dd6a87d674e3d85aad23714ae7858ac0acbd0a925b27468c40e"
+}

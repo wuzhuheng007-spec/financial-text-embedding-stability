@@ -1,0 +1,4 @@
+$ C:\Users\ROG\AppData\Local\Programs\Python\Python311\python.exe -m pytest -q -p no:cacheprovider tests/test_server_token_store.py tests/test_personal_feed_push_batching.py tests/test_quant_personal_feed.py tests/test_personal_feed_lock_recovery.py
+# exit=0 expected=0 seconds=1.8
+....s...............                                                     [100%]
+19 passed, 1 skipped in 0.80s

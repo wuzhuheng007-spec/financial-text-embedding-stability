@@ -1,5 +1,10 @@
 # Financial text embedding stability
 
+## 中期市场情绪研究 / Medium-term market sentiment
+
+[研究总入口](research/market_sentiment/README.md) · [每一步记录](research/market_sentiment/JOURNAL.md) · [结论状态](research/market_sentiment/claims.json)。QQQ、上证综指、科创50和SOX的价格基线、历史拐点及BW数据审核在独立目录持续记录；研究状态不与下列UCLA和个人平台实验混合。
+
+
 The separate [Chinese news tone v4.1 development run](reports/2026-11-17_news_sentiment_factor_v41.en.md) ([中文](reports/2026-11-17_news_sentiment_factor_v41.zh.md), [plan–actual](results/news_sentiment_factor_v41_20261117/plan_execution.csv)) scored 1,101 real local-cache title/body units from 230 existing Chinese moomoo/Jin10 article versions with a pinned local classifier. Twelve same-team source-review units yielded seven matching labels among eight three-class-comparable items, with four mixed or unresolved; this is not a general accuracy result. A completed five-minute bounded new-version observation scored zero prospective items; the later continuous worker scored one genuinely new Jin10 version, unreviewed and without a company association. The owner-only worker has a daily 500-version cap, and the portal shows its candidates apart from English v4. N1/N2 are incomplete-cache development proxies; no return fit, IC, prediction, trading, or financial v2.5 promotion occurred.
 
 The [WRDS RavenPack entitlement follow-up](reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.en.md) ([中文](reports/2026-11-17_news_sentiment_factor_v4_wrds_followup.zh.md), [receipt](results/news_sentiment_factor_v4_wrds_followup_20261117/access_receipt_redacted.json)) found that the logged-in account could view but not submit the RPA 1.0 Dow Jones and PR Equities query form; it listed `ravenpack_dj` as required. No article query or new score ran. This addendum preserves the original v4 result and does not claim other RavenPack editions were tested.

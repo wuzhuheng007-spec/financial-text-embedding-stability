@@ -9,6 +9,7 @@ import signal
 import sqlite3
 import threading
 import time
+import traceback
 from pathlib import Path
 
 from .collector import ROOT, owner_id, run_jin10, run_moomoo, under_root
@@ -31,9 +32,14 @@ def recover_snapshot_sqlite(config: dict, owner: int, stop: threading.Event) -> 
 
 
 def recover_jin10_sqlite(config: dict, owner: int, stop: threading.Event) -> None:
-    """Reopen the Jin10 cache connection after a transient SQLite failure."""
+    """Recover lock contention without restarting the independent quote feed.
+
+    Retry only SQLITE_BUSY/LOCKED, with >=60s spacing. Non-lock database errors
+    fail closed. Supplier budgets are persisted by run_jin10 before requests.
+    """
     diagnostic = ROOT / "apps/quant_portal/var/personal_feed_sqlite_errors.log"
-    for failure in range(3):
+    failure = 0
+    while not stop.is_set():
         if stop.is_set():
             return
         try:
@@ -45,11 +51,18 @@ def recover_jin10_sqlite(config: dict, owner: int, stop: threading.Event) -> Non
                 diagnostic.replace(diagnostic.with_name(
                     diagnostic.name + "." + utc_now().replace(":", "-")))
             with diagnostic.open("a", encoding="utf-8") as handle:
-                handle.write(f"{utc_now()} jin10 SQLite OperationalError: "
-                             f"{str(exc).replace(chr(10), ' ')[:160]}\n")
-            if failure == 2:
+                # Stack locations only: no SQL values, source news, or locals.
+                handle.write(f"{utc_now()} jin10 SQLite error code="
+                             f"{getattr(exc, 'sqlite_errorcode', None)}\n")
+                for frame in traceback.extract_tb(exc.__traceback__):
+                    handle.write(f"  {Path(frame.filename).name}:{frame.lineno} {frame.name}\n")
+            code = getattr(exc, "sqlite_errorcode", None)
+            locked = ((code is not None and (code & 255) in (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
+                      or str(exc).lower() in {"database is locked", "database table is locked"})
+            if not locked:
                 raise
-            stop.wait(2 ** (failure + 1))
+            failure = min(failure + 1, 4)
+            stop.wait(min(300, 60 * 2 ** (failure - 1)))
 
 
 def load_config(path: Path) -> dict:
@@ -63,6 +76,8 @@ def load_config(path: Path) -> dict:
         under_root(config[key])
     if not str(under_root(config["cache_db"])).startswith(str((ROOT / "apps/quant_portal/var").resolve())):
         raise ValueError("Private feed cache must stay under ignored personal var")
+    if not isinstance(config["moomoo"].get("snapshot_enabled", True), bool):
+        raise ValueError("moomoo.snapshot_enabled must be a boolean")
     return config
 
 
@@ -136,7 +151,18 @@ def run(config_path: Path) -> None:
     try:
         if config["moomoo"]["enabled"]:
             launch("moomoo",run_moomoo)
-            launch("moomoo_snapshot",recover_snapshot_sqlite)
+            if config["moomoo"].get("snapshot_enabled", True):
+                launch("moomoo_snapshot",recover_snapshot_sqlite)
+            else:
+                # A previous HTTP 439 is a policy block. Keep this decision in
+                # configuration so an unrelated SQLite error cannot erase it.
+                db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
+                try:
+                    db.state("moomoo_snapshot","SECURITY_POLICY_BLOCKED",
+                             error_class="WEBAPI_SECURITY_POLICY_BLOCKED")
+                    db.provider_metric("moomoo_snapshot",worker_alive=0)
+                finally:
+                    db.close()
         if config["jin10"]["enabled"]:
             launch("jin10",recover_jin10_sqlite)
         while not stop.is_set():

@@ -1,0 +1,27 @@
+{
+  "mode": "READ_ONLY_SAVED_ARTIFACT_REVIEW_NO_ESTIMATOR_FIT",
+  "status": "PASS_FOR_IDENTITY_AND_LISTED_METADATA_CHECKS",
+  "finished_utc": "2026-11-19T03:50:37.991096+00:00",
+  "config_sha256": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+  "run_manifest_sha256": "540089f8d2acc32c5d5c5ea3bc1f861d8145d0d42de6db204006543169169b03",
+  "previous_self_check_status": "PASS_SAME_AUTHOR_SELF_CHECK",
+  "previous_self_check_not_rerun": true,
+  "saved_fits_metadata_checked": 1200,
+  "primary_comparison_rows_checked": 12,
+  "primary_rows_adjusted_p_lt_005_and_negative_delta": 0,
+  "original_output_hashes_checked": 12,
+  "source_file_hashes": {
+    "sentiment_phase4_20261119/config.json": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+    "sentiment_phase4_20261119/freeze_receipt.json": "fc1ee32e21a6c9fd65b7e2462c94333155ee17d8d1eccb53bf2d6738868be28c",
+    "sentiment_phase4_20261119/input_manifest.json": "4e78f636fe3df45776663d7e117b7db39344495d7f458017d5f613eb2542fe02",
+    "sentiment_phase4_20261119/analyze.py": "6ce02d74c482ece4b27546b00a06596375ff776bf114be7a6b881baabb2ffa1f",
+    "sentiment_phase4_20261119/check.py": "51649ddace711fb9df3529bec93939e003cc6e91c5de7c0846e0874f2c36e307",
+    "sentiment_phase4_20261119/results/run_manifest.json": "540089f8d2acc32c5d5c5ea3bc1f861d8145d0d42de6db204006543169169b03",
+    "sentiment_phase4_20261119/results/self_check.json": "f2613e32605db13c97031ae54a34b8f3f2ca725d637a4b16410567a3339c9be8",
+    "sentiment_phase4_20261119/results/model_contrasts.csv": "b2cef82f94f7058ea55fad74be6cc884759d114425e6bd3939894c57f3459150",
+    "sentiment_phase4_20261119/private/fits.json": "d7afea0ae667d1d760b2989adc22aa8fd3d5cf1ce228a725533187e64002c693"
+  },
+  "readiness_items": 10,
+  "independent_validation": false,
+  "review_code_sha256": "3f80b685481d733075a3ecfe35ce0eccb9d94f34aa2ab5cc7762df014c2c7aa3"
+}

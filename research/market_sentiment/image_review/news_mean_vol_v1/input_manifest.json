@@ -1,0 +1,97 @@
+{
+  "source": "User-provided social-media screenshots, pages 3/13 through 12/13",
+  "image_files": [
+    {
+      "name": "IMG_1583.png",
+      "sha256": "3c82e2c317e1c474f04beb1a029a9e57cd4afded6ba385d2ba5b0ead1480623b",
+      "size_bytes": 969012,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1584.png",
+      "sha256": "ea5247dfbff6a7caacfa5df0d5bbb1f205a8735b379cea329c7f16f686c0df1a",
+      "size_bytes": 420371,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1585.png",
+      "sha256": "22bb9ecf1bd2f4c1ffaab75ae41b63b9d7fd8c26a1a11dcae72f6508b69c9bc9",
+      "size_bytes": 841274,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1586.png",
+      "sha256": "cc7960e5f924905a7c878d3fdc8e4b3aae390fce399679f20b5254d05afe8cbb",
+      "size_bytes": 820155,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1587.jpeg",
+      "sha256": "7230bcead42a2098794516cf2db4f1036d58964c69d79c05f5a88235081a89be",
+      "size_bytes": 243788,
+      "pixels": [
+        707,
+        1536
+      ]
+    },
+    {
+      "name": "IMG_1588.png",
+      "sha256": "cace7e5de1547deacae9b6a4450aea3daa2e186a7f10c1846387af35364afadf",
+      "size_bytes": 886274,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1589.png",
+      "sha256": "0417d24d737a358ac2792f5a4f34bcdde31955043201823f410ef63e1c5b3c5e",
+      "size_bytes": 786634,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1590.png",
+      "sha256": "682f979f1cdff0e1d4b72fba5e29478deedfd18495edc1f9bb0e474d5ff82c97",
+      "size_bytes": 599644,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1591.png",
+      "sha256": "20f2083c20636c9fa78c72412b2c66316686311fd69045384363cf7d9add7f39",
+      "size_bytes": 861481,
+      "pixels": [
+        1320,
+        2868
+      ]
+    },
+    {
+      "name": "IMG_1592.png",
+      "sha256": "156cc885e70c63bfa4defe9829e1b623677af552e7a7df557fdc69a747171334",
+      "size_bytes": 916650,
+      "pixels": [
+        1320,
+        2868
+      ]
+    }
+  ],
+  "raw_images_published": false,
+  "empirical_values": "USER_REPORTED_NOT_VERIFIED"
+}

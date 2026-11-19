@@ -1,0 +1,8 @@
+{
+  "frozen_utc": "2026-11-19T01:41:55.706038+00:00",
+  "financial_results_calculated_before_freeze": false,
+  "config_sha256": "25e61a04814e95ae19d63b35fe2dbfdc24341c0636741d03f5f453c9f4de9a40",
+  "input_manifest_sha256": "91a882ddb99aa57b85d1ea4509c85efd54736117adbfbbea9f8731acc8bbaad3",
+  "price_database_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "method_choice": "Fixed operational candidate definitions; not a known universal market law"
+}

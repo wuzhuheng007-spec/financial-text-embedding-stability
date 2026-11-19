@@ -1,0 +1,6 @@
+$
+# exit=None expected=0 seconds=None
+# assertion=PASS
+{
+ "free_gib": 23.53
+}

@@ -1,0 +1,15 @@
+{
+  "status": "METADATA_PILOT_ONLY",
+  "events": 3,
+  "official_declared_release_times": 2,
+  "conference_start_only": 1,
+  "captured_current_source_pages": 3,
+  "actual_historical_first_public_times_observed": 0,
+  "expectation_pairs": 0,
+  "good_bad_labels": 0,
+  "news_reaction_scores": 0,
+  "financial_estimator_fits": 0,
+  "pilot_selection": "Three illustrative sources fixed before field pilot; no representative sample or efficacy claim",
+  "code_sha256": "ebff2061faa250fcbeb124c3dbac46984ae0672ee9c86bc3bb7524bc46d5ae03",
+  "timestamp_utc": "2026-11-19T00:13:51.355654+00:00"
+}

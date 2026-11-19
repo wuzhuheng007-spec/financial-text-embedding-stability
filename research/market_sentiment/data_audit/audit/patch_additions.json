@@ -1,0 +1,27 @@
+[
+  {
+    "task": "patch_US_QQQ_2024",
+    "rows_added": 252,
+    "source_member": "raw/repair_response_0001.json"
+  },
+  {
+    "task": "patch_US_QQQ_2025",
+    "rows_added": 250,
+    "source_member": "raw/repair_response_0002.json"
+  },
+  {
+    "task": "patch_US_QQQ_2026",
+    "rows_added": 221,
+    "source_member": "raw/repair_response_0003.json"
+  },
+  {
+    "task": "patch_US__SOX_2002",
+    "rows_added": 252,
+    "source_member": "raw/repair_response_0004.json"
+  },
+  {
+    "task": "patch_US__SOX_2003",
+    "rows_added": 252,
+    "source_member": "raw/repair_response_0005.json"
+  }
+]

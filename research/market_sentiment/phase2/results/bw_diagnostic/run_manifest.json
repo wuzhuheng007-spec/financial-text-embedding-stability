@@ -1,0 +1,30 @@
+{
+  "run_id": "bw-construction-diagnostic-20261119-v1",
+  "timestamp_utc": "2026-11-19T00:10:57.399598+00:00",
+  "command": [
+    "sentiment_phase2_20261119/diagnose_bw.py",
+    "--workbook",
+    "sentiment_phase1_20261119/external_input_probe/BW_SENTIMENT.xlsx",
+    "--author-workbook",
+    "sentiment_phase2_20261119/source_audit/SENTIMENT_github.xlsx",
+    "--out",
+    "sentiment_phase2_20261119/results/bw_diagnostic"
+  ],
+  "code_sha256": "12b97d4572fb5c22bc83cd3557fa4895616976ed56b62922409e2d1dc6f65a1f",
+  "plan_sha256": "ad61a1310086276afad27e8634434f315233b1a30272c1b008b4cc6eaaa558ab",
+  "NYU_workbook_sha256": "3580398aaba6b72ad988844416c7b0ac9caca24fd2ab1d9149a983ec63b9f7a2",
+  "author_workbook_sha256": "786bb263ce5827628915482485911c3ed0f78fa4f4225585402a5cd99aed68dc",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "seed": null,
+  "seed_reason": "Deterministic eigendecomposition; no stochastic estimator or bootstrap",
+  "outputs": {
+    "private_prefix_scores.csv": "9124d82a40c888f7d7995cc774981cea2ed720448f49a45316c6d1f068367d9c",
+    "fit_details.json": "db22fa14c347337e0e58c80aa1cc82a79f4e3249c738df8ef88377b550495c1d",
+    "prefix_sensitivity.csv": "df231f77acb207489a1b1eca8acc653eb7d4ab01bb99872f832894da875e5bf6",
+    "summary.json": "c4b565da4849cf19a8b9fe3fe2d189032510825af25888a9d577c2526a5aea23",
+    "published_comparison.json": "833a8908ecc6f98d0d3f681da05c9390e7e2421a26955ce88ef29980df2f54bc",
+    "private_published_comparison.csv": "27808e7528e090790a2a35a29463b77c9d59ebaa94a958a6c51b8c59fc161e8a"
+  },
+  "claim_scope": "Construction/window sensitivity only, not financial prediction"
+}

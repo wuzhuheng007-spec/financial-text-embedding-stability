@@ -49,6 +49,7 @@ TEMPLATES = [{
         "django.template.context_processors.request",
         "django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
+        "core.context_processors.deployment",
     ]},
 }]
 WSGI_APPLICATION = "portal.wsgi.application"
@@ -109,10 +110,29 @@ SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
 TRUSTED_REVERSE_PROXY = os.getenv("TRUSTED_REVERSE_PROXY", "0") == "1"
 PUBLIC_MARKET_DATA_ENABLED = os.getenv("PUBLIC_MARKET_DATA_ENABLED", "0") == "1"
-PERSONAL_MODE = DEBUG and os.getenv("PERSONAL_MODE", "0") == "1"
+PERSONAL_MODE = os.getenv("PERSONAL_MODE", "0") == "1"
+if PERSONAL_MODE and not DEBUG and not TRUSTED_REVERSE_PROXY:
+    raise ImproperlyConfigured("Production personal mode requires a trusted HTTPS reverse proxy")
+if PERSONAL_MODE and PUBLIC_MARKET_DATA_ENABLED:
+    raise ImproperlyConfigured("Personal mode cannot enable public market-data display")
 PERSONAL_FEED_OWNER_USERNAME = "owner@local.invalid"
 PERSONAL_FEED_DB_PATH = BASE_DIR / "var" / "personal_feeds.sqlite3"
+OFFICIAL_FILINGS_DB_PATH = BASE_DIR / "var" / "official_filings.sqlite3"
+# Where this portal runs, shown on the page. "local" keeps the original
+# Windows label; the cloud deployment sets DEPLOYMENT_KIND=cloud_private.
+DEPLOYMENT_KIND = os.getenv("DEPLOYMENT_KIND", "local")
+if DEPLOYMENT_KIND not in {"local", "cloud_private"}:
+    raise ImproperlyConfigured("DEPLOYMENT_KIND must be local or cloud_private")
+# A provider whose collection is deliberately not started on this deployment
+# (an authorization or permission condition is still open). Empty = no gate.
+PROVIDER_GATE_CODES = {"PENDING_SUPPORT_REPLY", "PENDING_WRITTEN_PERMISSION", "UNREACHABLE_FROM_DEPLOYMENT"}
+PROVIDER_GATES = {name: os.getenv(f"PROVIDER_GATE_{name.upper()}", "") for name in ("moomoo", "jin10")}
+if any(code and code not in PROVIDER_GATE_CODES for code in PROVIDER_GATES.values()):
+    raise ImproperlyConfigured("Unknown PROVIDER_GATE_* code")
 if TRUSTED_REVERSE_PROXY:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = not DEBUG
+    # Container health probes call the app directly on its private port; only
+    # these two bodyless status endpoints skip the HTTPS redirect.
+    SECURE_REDIRECT_EXEMPT = [r"^healthz/$", r"^readyz/$"]
     SECURE_HSTS_SECONDS = 3600 if not DEBUG else 0

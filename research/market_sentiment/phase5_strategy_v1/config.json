@@ -1,0 +1,23 @@
+{
+  "study_id": "phase5_strategy_v1",
+  "design_status": "EXPLORATORY_PRE_RUN_LOCK_NOT_UNSEEN_PREREGISTRATION",
+  "expected_db_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "data_end": "2026-11-17",
+  "series": {"US.QQQ": 1, "US..SOX": 0, "SH.000001": 0, "SH.000688": 0},
+  "warmup_closes": 252,
+  "trend": {"momentum_bars": 60, "entry_ma": 120, "exit_ma": 60, "vol_bars": 20, "entry_score": 0.5, "exit_score": 0.0},
+  "recovery": {"drawdown_bars": 252, "drawdown_threshold": -0.15, "stress_return_bars": 20, "stress_return_threshold": -0.08, "stress_memory_bars": 20, "confirmation_return_bars": 5, "confirmation_ma": 20, "maximum_hold_bars": 40, "close_trailing_stop": 0.08},
+  "risk_budget": {"annual_target_vol": 0.10, "max_exposure": 1.0, "annual_bars": 252},
+  "strategies": ["BUY_HOLD", "MA200", "P1_TREND", "P2_RECOVERY", "P3_RISK_BUDGET"],
+  "cost_bps_one_way": [0, 10, 25],
+  "primary_cost_bps": 10,
+  "cash_return": 0.0,
+  "periods": {"full": ["1996-01-01", "2026-11-17"], "development": ["1996-01-01", "2014-12-31"], "check": ["2015-01-01", "2019-12-31"], "late_check": ["2020-01-01", "2025-12-31"], "monitor": ["2026-01-01", "2026-11-17"], "primary": ["2015-01-01", "2025-12-31"]},
+  "execution": "Close t signal, next observed eligible open t+1 execution; mark at open t+2; no short, leverage, intraday stops or real orders; fractional theoretical units",
+  "gap_rule": "Split before first accepted observation after each listed unresolved missing day; reset all rolling/state history. End prior episode at last observed open and restart after warmup. This is ex-post sample-boundary censoring, not an implementable pre-gap exit signal.",
+  "statistics": {"replicates": 1999, "primary_block": 126, "block_sensitivity": [63, 252], "seed": 20261119, "secondary_seed": 20261120, "confidence": 0.95, "primary_family": "12 market-by-candidate primary-period net mean daily return differences versus MA200, cost10, one-sided positive, Holm", "acceptance": "Positive paired mean with lower 95% block CI above zero and Holm p<=0.05, positive paired mean also at cost25; report per-market and require subsequent independent validation. P3 drawdown control reported separately from alpha gate."},
+  "factor_diagnostics": {"forward_calendar_weeks": 8, "fields": ["trend_score", "recovery_score", "inverse_vol_budget"], "metric": "Within-market time-series Spearman correlation; ties retained; descriptive only, no IID significance claims; labels must end within evaluation period"},
+  "blocked_text_candidates": ["T1 centered news mean times temporal news std", "T2 negative-news price-response resilience"],
+  "excluded_inputs": ["unverified index volume/turnover", "invented news sentiment", "future turning point labels as features", "currently known constituents backfilled to history"],
+  "known_limits": ["History already seen and prior variants studied", "Current-vintage OHLC, QQQ a1 not certified total return", "Three non-investible indices simulated as theoretical units", "Costs and cash return are assumptions, no tax/borrow/fill model", "Full exchange-calendar audit absent", "Correlated markets and short STAR50 history", "Not a news sentiment factor replication"]
+}
