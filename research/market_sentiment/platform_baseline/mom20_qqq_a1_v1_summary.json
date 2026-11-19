@@ -1,0 +1,416 @@
+{
+ "schema": "platform_baseline_summary_v1",
+ "note": "Aggregate metrics only. No price rows; the licensed vendor data and per-day ledgers stay private.",
+ "run_ids": [
+  "run-20261119T012943Z-6ee999",
+  "run-20261119T013414Z-62e709"
+ ],
+ "results_digest_both_runs": "ac604975da2615ebcb2fa06d2f5ebcc87f4c0f1d28e3176035d9591e3722c1a7",
+ "dataset": {
+  "dataset_id": "moomoo_qqq_day_a1",
+  "dataset_version": "0.1-20261117",
+  "content_sha256": "9eca17d55fd0b7d00f95f4f4dcfb5e2625cdb1d7ebc6b65d2bb81168d7da7212",
+  "start_date": "1999-03-10",
+  "end_date": "2026-11-17"
+ },
+ "factor": {
+  "factor_id": "mom20",
+  "factor_version": "1",
+  "params": {
+   "lookback_days": 20
+  }
+ },
+ "protocol": {
+  "protocol_id": "mom20-daily-long-cash",
+  "protocol_version": "1",
+  "config_sha256": "63a8993d006211981bb6baccc8ca58eeaee9347cef167dda4808fbe147fc3825"
+ },
+ "protocol_file_sha256": "2ae178f0cdc81cb9647c5cc729e19885e81859e01268ca86f82ed598b15580f7",
+ "code_version": "47e3d31a9346269ca5fb52196f713b0cb0279e99",
+ "return_label": "前复权价格收益（a1）",
+ "execution": "signal at close t, trade at open t+1; cash earns 0; costs one-way bps x turnover",
+ "scenarios": [
+  {
+   "cost_bps": 0,
+   "first_trade_date": "1999-04-09",
+   "last_date": "2026-11-17",
+   "rows": 6946,
+   "segments": [
+    {
+     "name": "development",
+     "start": "1999-04-09",
+     "end": "2012-12-31",
+     "strategy": {
+      "days": 3455,
+      "trades": 326,
+      "turnover_sum": 326,
+      "exposure": 0.5722141823444283,
+      "total_return": 0.4454895054800099,
+      "cagr": 0.027238134122141044,
+      "ann_vol": 0.18969539338494718,
+      "sharpe_rf0": 0.23679970808680822,
+      "max_drawdown": -0.7253762071227456,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 3455,
+      "trades": 1,
+      "turnover_sum": 1,
+      "exposure": 1,
+      "total_return": 0.2487051939284779,
+      "cagr": 0.016331933449447167,
+      "ann_vol": 0.32360823727270493,
+      "sharpe_rf0": 0.21124683300270955,
+      "max_drawdown": -0.8359551746870189,
+      "reason": null
+     }
+    },
+    {
+     "name": "validation",
+     "start": "2013-01-02",
+     "end": "2019-12-31",
+     "strategy": {
+      "days": 1762,
+      "trades": 167,
+      "turnover_sum": 167,
+      "exposure": 0.7048808172531215,
+      "total_return": 0.9550426532050489,
+      "cagr": 0.10062902136282492,
+      "ann_vol": 0.10104348677685153,
+      "sharpe_rf0": 0.9996951430169984,
+      "max_drawdown": -0.16602903320572415,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1762,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.545989512216691,
+      "cagr": 0.19845867330518496,
+      "ann_vol": 0.16191459557513174,
+      "sharpe_rf0": 1.1995826196885233,
+      "max_drawdown": -0.22891249571057248,
+      "reason": null
+     }
+    },
+    {
+     "name": "holdout",
+     "start": "2020-01-02",
+     "end": "2026-11-17",
+     "strategy": {
+      "days": 1729,
+      "trades": 129,
+      "turnover_sum": 129,
+      "exposure": 0.6512434933487565,
+      "total_return": 1.6786089416756376,
+      "cagr": 0.1544293228785225,
+      "ann_vol": 0.15753563874030171,
+      "sharpe_rf0": 0.99062950164359,
+      "max_drawdown": -0.2364130428656963,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1729,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.2229420910889024,
+      "cagr": 0.1859797883690799,
+      "ann_vol": 0.24965012596598035,
+      "sharpe_rf0": 0.8084874457697062,
+      "max_drawdown": -0.3511878472922261,
+      "reason": null
+     }
+    }
+   ],
+   "full_period": {
+    "strategy": {
+     "days": 6946,
+     "trades": 622,
+     "turnover_sum": 622,
+     "exposure": 0.625539879067089,
+     "total_return": 6.569731827794822,
+     "cagr": 0.07619985439505039,
+     "ann_vol": 0.1633047495392402,
+     "sharpe_rf0": 0.5316064821139374,
+     "max_drawdown": -0.7253762071227456,
+     "reason": null
+    },
+    "benchmark": {
+     "days": 6946,
+     "trades": 1,
+     "turnover_sum": 1,
+     "exposure": 1,
+     "total_return": 13.270850851253805,
+     "cagr": 0.10124333995632662,
+     "ann_vol": 0.27249525240105826,
+     "sharpe_rf0": 0.48997478311246817,
+     "max_drawdown": -0.8359551746870189,
+     "reason": null
+    }
+   }
+  },
+  {
+   "cost_bps": 5,
+   "first_trade_date": "1999-04-09",
+   "last_date": "2026-11-17",
+   "rows": 6946,
+   "segments": [
+    {
+     "name": "development",
+     "start": "1999-04-09",
+     "end": "2012-12-31",
+     "strategy": {
+      "days": 3455,
+      "trades": 326,
+      "turnover_sum": 326,
+      "exposure": 0.5722141823444283,
+      "total_return": 0.22802508707204927,
+      "cagr": 0.015094739624981646,
+      "ann_vol": 0.18973092177267342,
+      "sharpe_rf0": 0.17411571202420462,
+      "max_drawdown": -0.7362789259868818,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 3455,
+      "trades": 1,
+      "turnover_sum": 1,
+      "exposure": 1,
+      "total_return": 0.24808084133150654,
+      "cagr": 0.016294860363327057,
+      "ann_vol": 0.32360738470681033,
+      "sharpe_rf0": 0.21113379020021122,
+      "max_drawdown": -0.8359551746870189,
+      "reason": null
+     }
+    },
+    {
+     "name": "validation",
+     "start": "2013-01-02",
+     "end": "2019-12-31",
+     "strategy": {
+      "days": 1762,
+      "trades": 167,
+      "turnover_sum": 167,
+      "exposure": 0.7048808172531215,
+      "total_return": 0.7983887564695504,
+      "cagr": 0.08756011021000054,
+      "ann_vol": 0.10115323836592827,
+      "sharpe_rf0": 0.8805933098702439,
+      "max_drawdown": -0.1768031658960305,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1762,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.545989512216689,
+      "cagr": 0.19845867330518496,
+      "ann_vol": 0.16191459557513174,
+      "sharpe_rf0": 1.19958261968852,
+      "max_drawdown": -0.2289124957105737,
+      "reason": null
+     }
+    },
+    {
+     "name": "holdout",
+     "start": "2020-01-02",
+     "end": "2026-11-17",
+     "strategy": {
+      "days": 1729,
+      "trades": 129,
+      "turnover_sum": 129,
+      "exposure": 0.6512434933487565,
+      "total_return": 1.5112521110361388,
+      "cagr": 0.1436249158332763,
+      "ann_vol": 0.15762715048655151,
+      "sharpe_rf0": 0.9304619245448889,
+      "max_drawdown": -0.24098198639874535,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1729,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.2229420910888984,
+      "cagr": 0.1859797883690797,
+      "ann_vol": 0.24965012596598019,
+      "sharpe_rf0": 0.8084874457697065,
+      "max_drawdown": -0.3511878472922244,
+      "reason": null
+     }
+    }
+   ],
+   "full_period": {
+    "strategy": {
+     "days": 6946,
+     "trades": 622,
+     "turnover_sum": 622,
+     "exposure": 0.625539879067089,
+     "total_return": 4.546016183513968,
+     "cagr": 0.06412229207772624,
+     "ann_vol": 0.1633655180111728,
+     "sharpe_rf0": 0.46237319705710755,
+     "max_drawdown": -0.7362789259868818,
+     "reason": null
+    },
+    "benchmark": {
+     "days": 6946,
+     "trades": 1,
+     "turnover_sum": 1,
+     "exposure": 1,
+     "total_return": 13.263715425828114,
+     "cagr": 0.10122335865738807,
+     "ann_vol": 0.27249476621055113,
+     "sharpe_rf0": 0.4899085531872917,
+     "max_drawdown": -0.8359551746870189,
+     "reason": null
+    }
+   }
+  },
+  {
+   "cost_bps": 10,
+   "first_trade_date": "1999-04-09",
+   "last_date": "2026-11-17",
+   "rows": 6946,
+   "segments": [
+    {
+     "name": "development",
+     "start": "1999-04-09",
+     "end": "2012-12-31",
+     "strategy": {
+      "days": 3455,
+      "trades": 326,
+      "turnover_sum": 326,
+      "exposure": 0.5722141823444283,
+      "total_return": 0.043191655870870704,
+      "cagr": 0.003088928294613824,
+      "ann_vol": 0.18979480485715253,
+      "sharpe_rf0": 0.11143853653878269,
+      "max_drawdown": -0.7467539342044199,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 3455,
+      "trades": 1,
+      "turnover_sum": 1,
+      "exposure": 1,
+      "total_return": 0.24745648873454473,
+      "cagr": 0.01625777008009366,
+      "ann_vol": 0.3236065893943683,
+      "sharpe_rf0": 0.21102070946764948,
+      "max_drawdown": -0.8359551746870186,
+      "reason": null
+     }
+    },
+    {
+     "name": "validation",
+     "start": "2013-01-02",
+     "end": "2019-12-31",
+     "strategy": {
+      "days": 1762,
+      "trades": 167,
+      "turnover_sum": 167,
+      "exposure": 0.7048808172531215,
+      "total_return": 0.6542181081490983,
+      "cagr": 0.07463995663222778,
+      "ann_vol": 0.10131622944731733,
+      "sharpe_rf0": 0.7613493653480187,
+      "max_drawdown": -0.18744339368948315,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1762,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.5459895122166816,
+      "cagr": 0.19845867330518452,
+      "ann_vol": 0.16191459557513174,
+      "sharpe_rf0": 1.1995826196885206,
+      "max_drawdown": -0.22891249571057282,
+      "reason": null
+     }
+    },
+    {
+     "name": "holdout",
+     "start": "2020-01-02",
+     "end": "2026-11-17",
+     "strategy": {
+      "days": 1729,
+      "trades": 129,
+      "turnover_sum": 129,
+      "exposure": 0.6512434933487565,
+      "total_return": 1.3542755666227815,
+      "cagr": 0.13291629769002822,
+      "ann_vol": 0.15774616121158117,
+      "sharpe_rf0": 0.8702124429129825,
+      "max_drawdown": -0.2455258572238963,
+      "reason": null
+     },
+     "benchmark": {
+      "days": 1729,
+      "trades": 0,
+      "turnover_sum": 0,
+      "exposure": 1,
+      "total_return": 2.2229420910889,
+      "cagr": 0.1859797883690797,
+      "ann_vol": 0.24965012596598024,
+      "sharpe_rf0": 0.8084874457697038,
+      "max_drawdown": -0.3511878472922264,
+      "reason": null
+     }
+    }
+   ],
+   "full_period": {
+    "strategy": {
+     "days": 6946,
+     "trades": 622,
+     "turnover_sum": 622,
+     "exposure": 0.625539879067089,
+     "total_return": 3.062694541623948,
+     "cagr": 0.05217432736666683,
+     "ann_vol": 0.16345767123248048,
+     "sharpe_rf0": 0.3931159045878326,
+     "max_drawdown": -0.7467539342044199,
+     "reason": null
+    },
+    "benchmark": {
+     "days": 6946,
+     "trades": 1,
+     "turnover_sum": 1,
+     "exposure": 1,
+     "total_return": 13.256580000402483,
+     "cagr": 0.10120336772312011,
+     "ann_vol": 0.27249431384059913,
+     "sharpe_rf0": 0.48984226222913685,
+     "max_drawdown": -0.8359551746870186,
+     "reason": null
+    }
+   }
+  }
+ ],
+ "independent_recompute": {
+  "rows": 6946,
+  "timing_or_value_problems": 0,
+  "segments": {
+   "development": {
+    "strategy_total_return_api": 0.043191655870870704,
+    "recomputed": 0.043191655870882695
+   },
+   "validation": {
+    "strategy_total_return_api": 0.6542181081490983,
+    "recomputed": 0.6542181081491092
+   },
+   "holdout": {
+    "strategy_total_return_api": 1.3542755666227815,
+    "recomputed": 1.3542755666227801
+   }
+  },
+  "max_abs_difference_across_metrics": 2.930988785010413e-14
+ }
+}

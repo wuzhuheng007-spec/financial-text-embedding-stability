@@ -85,3 +85,17 @@
 **限制：** 手工选取的三条事件不代表完整新闻库；没有预期差、反应残差、金融拟合或效力结论。
 
 证据：[phase2/results/news_field_pilot/events.json](phase2/results/news_field_pilot/events.json)、[phase2/results/news_field_pilot/summary.json](phase2/results/news_field_pilot/summary.json)、[phase2/news_field_pilot.py](phase2/news_field_pilot.py)
+
+## R006 · 平台工程基线：QQQ a1 日线 20 日动量多/现金（mom20@1）
+
+**状态：** ENGINEERING_BASELINE_COMPLETE_NOT_EVIDENCE_OF_EFFICACY；记录UTC：2026-11-19T01:38:27.937616+00:00
+
+**计划：** 用已审计的 moomoo 研究数据集 v0.1（从两个原始 ZIP 按仓库代码重建，哈希与回执一致，自检 PASS）冻结 QQQ a1 日线快照；在计算前提交冻结协议 configs/quant_research_mom20_v1.json：20 日动量>0 持有否则现金，收盘信号次日开盘执行，0/5/10 bps 单边成本，开发 1999–2012 / 验证 2013–2019 / 留出 2020–2026 分段报告，持有基准同口径。
+
+**实际：** 通过平台网页提交两次相同实验，由无网络、限 CPU/内存的作业容器执行；两次 results_digest 相同；独立复算程序从下载账本重算 0 处时序/数值问题，指标最大差 3e-14。三种成本、三个区间全部保存。留出段 5 bps：策略总收益 +151.1%，持有基准 +222.3%；策略最大回撤 -24.1%，基准 -35.1%。
+
+**结论：** 仅支持：在声明的数据版本、协议和成本假设下，该规则的历史回放数值如汇总所列；三个区间均未超过持有基准的总收益，回撤较小。
+
+**限制：** 单标的、单因子、单一参数，不推出普遍有效性；a1 为供应商前复权价格收益，分红处理方法未经文档确认，不称总收益；非 point-in-time 数据；现金收益按 0；成本为工程假设；开盘价可成交性未验证；同团队自检，非独立审计。
+
+证据：[platform_baseline/mom20_qqq_a1_v1_summary.json](platform_baseline/mom20_qqq_a1_v1_summary.json)
