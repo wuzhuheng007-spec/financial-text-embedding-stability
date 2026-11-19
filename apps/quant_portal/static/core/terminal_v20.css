@@ -293,3 +293,16 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .rw-limits p{margin:4px 0 0;color:var(--text-2)}
 .rw-actions{white-space:nowrap}.rw-actions .button{margin-right:4px}
 .rw-runs-table td{vertical-align:middle}
+/* Research workbench on phones: selects stay inside the card; runs become stacked cards with reachable actions. */
+.rw-create .watch-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:end}
+.rw-create .form-field{min-width:0}
+.rw-create select{width:100%;min-width:0;text-overflow:ellipsis}
+@media (max-width:640px){
+  .rw-create .watch-form{grid-template-columns:1fr}
+  .rw-runs-table,.rw-runs-table tbody,.rw-runs-table tr,.rw-runs-table td{display:block;width:100%}
+  .rw-runs-table tr:first-child{display:none}
+  .rw-runs-table tr{border-bottom:1px solid var(--line);padding:10px 0}
+  .rw-runs-table td{border:0;padding:2px 0}
+  .rw-runs-table td:empty{display:none}
+  .rw-actions .button{margin-top:6px;min-height:36px}
+}

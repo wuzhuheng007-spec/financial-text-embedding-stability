@@ -215,6 +215,16 @@ class JobLifecycleTests(Base):
         self.assertEqual(p.wait(timeout=30), 1)
         self.assertEqual(self.status(rid)[:2], ("FAILED", "TIMEOUT"))
 
+    @unittest.skipIf(os.name == "nt", "SIGTERM delivery to a Python handler needs POSIX; verified in a container with docker stop")
+    def test_sigterm_records_a_clean_terminal_state(self):
+        import signal as _signal
+        rid = registry.create_run(self.db, ("syn", "1"), ("mom20", "1"), self.cfg)
+        p = self.spawn({"QUANT_RESEARCH_TEST_DELAY": "30", "QUANT_RESEARCH_HEARTBEAT_SECONDS": "0.3"})
+        self.wait_status(rid, ("RUNNING",)); time.sleep(0.5)
+        p.send_signal(_signal.SIGTERM)
+        self.assertEqual(p.wait(timeout=20), 143)
+        self.assertEqual(self.status(rid), ("FAILED", "TERMINATED_BY_SIGNAL", "TERMINATED"))
+
     def test_cancel_racing_success_commit_ends_cancelled(self):
         rid = registry.create_run(self.db, ("syn", "1"), ("mom20", "1"), self.cfg)
         registry.claim_next(self.db, "w:1")

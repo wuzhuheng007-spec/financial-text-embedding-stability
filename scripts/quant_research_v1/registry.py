@@ -207,6 +207,15 @@ def claim_next(db, worker_id: str = "unknown") -> sqlite3.Row | None:
     return db.execute("SELECT * FROM runs WHERE run_id=?", (row[0],)).fetchone()
 
 
+def claim_run(db, run_id: str, worker_id: str = "unknown") -> sqlite3.Row | None:
+    """Claim exactly this QUEUED run (used by restore checks: never takes another queued request)."""
+    db.execute("BEGIN IMMEDIATE")
+    cur = db.execute("UPDATE runs SET status='RUNNING', started_at=?, worker_id=?, heartbeat_at=?, lease_expires_at=? WHERE run_id=? AND status='QUEUED'",
+                     (utcnow(), worker_id, utcnow(), _ts(LEASE_SECONDS), run_id))
+    db.execute("COMMIT")
+    return db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone() if cur.rowcount else None
+
+
 def finish(db, run_id: str, status: str, **fields) -> str:
     """Terminal transition from RUNNING only. SUCCEEDED is refused if a cancel was requested first
     (the run becomes CANCELLED_BEFORE_COMMIT); returns the status actually recorded."""

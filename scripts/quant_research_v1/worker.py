@@ -40,6 +40,10 @@ class RunCancelled(Exception):
     pass
 
 
+class RunTerminated(Exception):
+    """SIGTERM (e.g. docker stop): stop at once, record a clean terminal state, keep partial files."""
+
+
 def results_digest(scenarios: list[dict], ledgers: dict[str, str]) -> str:
     """Content digest excluding timestamps and run ids: metrics + exact ledger text."""
     h = hashlib.sha256()
@@ -182,6 +186,7 @@ def _execute(db, run, research_root, ds, fac, spec, cfg, out, log, hb) -> dict:
 
 
 def run_once(max_seconds: int) -> int:
+    """Normal queue processing: recover confirmed-lost runs, then claim the oldest QUEUED run."""
     research_root = registry.root()
     db = registry.connect()
     lost = registry.recover_lost(db, live_workers(), max_seconds)
@@ -194,12 +199,31 @@ def run_once(max_seconds: int) -> int:
     run = registry.claim_next(db, wid)
     if run is None:
         db.close(); print("no queued run"); return 0
+    return _run_claimed(db, run, research_root, wid, max_seconds)
+
+
+def run_specific(run_id: str, max_seconds: int) -> int:
+    """Execute exactly one QUEUED run by id (restore checks). No recovery pass, no other run is touched."""
+    research_root = registry.root()
+    db = registry.connect()
+    wid = worker_identity()
+    run = registry.claim_run(db, run_id, wid)
+    if run is None:
+        db.close(); print(f"{run_id} not claimable (not QUEUED)"); return 2
+    return _run_claimed(db, run, research_root, wid, max_seconds)
+
+
+def _run_claimed(db, run, research_root: Path, wid: str, max_seconds: int) -> int:
     hb = Heartbeat(run["run_id"], wid, max_seconds); hb.start()
 
     def on_alarm(*_):
         raise RunTimeout()
+
+    def on_term(*_):
+        raise RunTerminated()
     if hasattr(signal, "SIGALRM"):
         signal.signal(signal.SIGALRM, on_alarm); signal.alarm(max_seconds)
+    old_term = signal.signal(signal.SIGTERM, on_term) if threading.current_thread() is threading.main_thread() else None
     try:
         fields = execute(db, run, research_root, hb)
         final = registry.finish(db, run["run_id"], "SUCCEEDED", **fields)
@@ -211,6 +235,10 @@ def run_once(max_seconds: int) -> int:
     except RunTimeout:
         registry.finish(db, run["run_id"], "FAILED", error_class="TIMEOUT", exit_reason="TIMEOUT",
                         error_detail=f"exceeded {max_seconds}s", artifact_dir=f"runs/{run['run_id']}"); return 1
+    except RunTerminated:
+        registry.finish(db, run["run_id"], "FAILED", error_class="TERMINATED", exit_reason="TERMINATED_BY_SIGNAL",
+                        error_detail="SIGTERM received (container stop); partial files kept", artifact_dir=f"runs/{run['run_id']}")
+        print(f"{run['run_id']} FAILED/TERMINATED_BY_SIGNAL"); return 143
     except Exception as exc:  # noqa: BLE001 - a failed run is recorded, never crashes collection
         registry.finish(db, run["run_id"], "FAILED", error_class=type(exc).__name__, error_detail=str(exc)[:500],
                         exit_reason="ERROR", artifact_dir=f"runs/{run['run_id']}")
@@ -218,6 +246,8 @@ def run_once(max_seconds: int) -> int:
     finally:
         if hasattr(signal, "SIGALRM"):
             signal.alarm(0)
+        if old_term is not None:
+            signal.signal(signal.SIGTERM, old_term)
         hb.stop.set(); hb.join(timeout=10)
         db.close()
 

@@ -39,14 +39,15 @@ done
 # Research: restore registry + files from the backup copy only (production volume NOT mounted),
 # verify hashes and table digests, and re-run completed runs under new run ids in isolation.
 RESEARCH_OK=true
-if [ -d "$B/research_backup/research" ]; then
-  scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX)
-  cp -a "$B/research_backup" "$scratch/b"; mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
-  REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
-  IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
-  if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60 -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"        -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro        "$APP_IMAGE" /x/r.py verify /b /r </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
-  rm -rf "$scratch"
-fi
+# The scope file (not the presence of a directory) decides whether research backup is required.
+# A missing research_backup directory is restored as an empty copy so the check FAILS when required.
+scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX)
+if [ -d "$B/research_backup" ]; then cp -a "$B/research_backup" "$scratch/b"; else mkdir "$scratch/b"; fi
+mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
+REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
+IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
+if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60      -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"      -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro      -v /srv/quant/app/deploy/linux/host/backup_scope.json:/x/scope.json:ro      "$APP_IMAGE" /x/r.py verify /b /r --scope /x/scope.json </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+rm -rf "$scratch"
 
 python3 - "$B" "$OWNER" "$SQLITE_OK" "$RESEARCH_OK" <<'PY'
 import csv, json, sys, pathlib, datetime

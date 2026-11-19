@@ -46,7 +46,7 @@ flock -w 900 8 || { echo "research lock busy for 15 min; backup skipped" >&2; ex
 mkdir -p "$DIR/research_backup"; chown 10001:10001 "$DIR/research_backup"
 REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
 IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
-docker run --rm --network none --user 10001:10001 --entrypoint python   -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"   -v quant-personal_personal_var:/src -v "$DIR/research_backup:/out" -v "$HOST_TOOLS/quant_research_backup.py:/x/quant_research_backup.py:ro"   "$APP_IMAGE" /x/quant_research_backup.py backup /src /out </dev/null > "$DIR/research_backup.log"
+docker run --rm --network none --user 10001:10001 --entrypoint python   -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"   -v quant-personal_personal_var:/src -v "$DIR/research_backup:/out" -v "$HOST_TOOLS/quant_research_backup.py:/x/quant_research_backup.py:ro" -v "$HOST_TOOLS/backup_scope.json:/x/scope.json:ro"   "$APP_IMAGE" /x/quant_research_backup.py backup /src /out --scope /x/scope.json </dev/null > "$DIR/research_backup.log"
 exec 8>&-
 chown -R root:root "$DIR/research_backup"; chmod -R go-rwx "$DIR/research_backup"
 

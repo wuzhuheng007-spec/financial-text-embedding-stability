@@ -621,7 +621,9 @@ def research_run_json(request, run_id):
         if er.is_file() and rows[0]["protocol_id"] == "mom20-daily-long-cash":
             e = json.loads(er.read_text(encoding="utf-8"))
             if run_id in e["applies_to"]["runs"] or rows[0].get("config_sha256") == e["applies_to"]["config_sha256"]:
-                data["errata"] = {"erratum_id": e["erratum_id"], "corrections": [c["correct"] for c in e["corrections"]]}
+                data["errata"] = {"erratum_id": e["erratum_id"],
+                                  "corrections": e.get("corrections_zh") or [c["correct"] for c in e["corrections"]],
+                                  "corrections_en": [c["correct"] for c in e["corrections"]]}
         log = path / "run.log"
         data["log_tail"] = log.read_text(encoding="utf-8").splitlines()[-30:] if log.is_file() else []
     return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
