@@ -53,7 +53,7 @@ button{cursor:pointer}
 .page-title{font-size:15px;font-weight:650;margin:0;white-space:nowrap}
 .top-spacer{flex:1}
 .search{position:relative;width:min(260px,32vw)}
-.search input{width:100%;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);padding:0 10px 0 30px;outline:none}
+.search input,.search input[type=search]{width:100%;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);padding:0 10px 0 32px;outline:none}
 .search input:focus{border-color:var(--accent)}
 .search svg{position:absolute;left:9px;top:8px;width:16px;height:16px;color:var(--text-3)}
 .icon-btn{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text-2)}

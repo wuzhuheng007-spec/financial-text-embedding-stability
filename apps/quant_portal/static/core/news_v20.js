@@ -36,7 +36,7 @@
   }
   function stateLine() {
     const c = data?.connection || {label: '新闻源未连接', kind: 'off'};
-    if (c.kind === 'ok' && !(data.items || []).length) return null;
+    if (c.kind === 'ok') return null;  // a working source needs no status line
     const row = h('div', `compact-empty nv-state nv-${c.kind}`);
     row.append(h('span', null, c.label));
     if (c.kind !== 'ok') { const a = h('a', 'button button-outline', c.kind === 'off' ? '连接新闻源' : '查看数据源'); a.href = '#settings/sources'; row.append(a); }
