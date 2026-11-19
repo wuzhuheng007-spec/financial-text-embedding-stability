@@ -1,0 +1,39 @@
+{
+  "final_status": "PARTIALLY_SUPPORTED",
+  "plan_execution_gate": "PASS",
+  "experimental_sufficiency_gate": "LIMITED",
+  "result_provenance_gate": "PASS",
+  "citation_verification_gate": "PASS",
+  "gate_scope": "PASS applies only to completed measurement review, directly opened method citations and traceable deterministic math diagnostics. Financial replication and original-study numeric verification remain NOT_VERIFIED, not passed.",
+  "commands_actually_run": [
+    "python formula_audit.py"
+  ],
+  "authoritative_artifacts_inspected": {
+    "user_images": 10,
+    "primary_method_sources": 3,
+    "artificial_configuration": "toy_config.json",
+    "math_output": "formula_results.json",
+    "run_manifest": "formula_run_manifest.json"
+  },
+  "independent_validation": false,
+  "financial_model_fits": 0,
+  "unresolved_blockers": [
+    "Original study identity and original numeric evidence missing",
+    "Qualified historical article availability and scoring-vintage data missing",
+    "Target-specific market timing study not frozen or executed",
+    "Independent empirical replication and costed execution not performed"
+  ],
+  "claims_authorized": [
+    "Definition of mean/std/product and its algebraic limitations",
+    "The saved artificial-array counterexamples",
+    "Candidate design proposed with explicit missing-input status"
+  ],
+  "claims_not_authorized": [
+    "Screenshot IC numbers reproduced or independently verified",
+    "Sentiment volatility universally bearish",
+    "Product predicts market turning points or net strategy profit",
+    "PIT-qualified data or independent validation"
+  ],
+  "worktree_user_data_preserved": "YES",
+  "publication_verification": "Tracked separately in the subsequent step and sync receipt; not implied by this methodological audit"
+}

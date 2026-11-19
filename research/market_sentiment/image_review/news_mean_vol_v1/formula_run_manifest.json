@@ -1,0 +1,22 @@
+{
+  "started_at_utc": "2026-11-19T04:05:25.191171+00:00",
+  "finished_at_utc": "2026-11-19T04:05:25.192874+00:00",
+  "command": "python formula_audit.py",
+  "inputs_sha256": {
+    "PLAN_zh.md": "5bb220c0e0b9872a78b32c492d1453d9c57a76bfc2b7dabdc875f694793b63ea",
+    "toy_config.json": "6e4a41e14a11b549b00808dcee201f9cba6d819e058c027c28a44898f6d3addb",
+    "formula_audit.py": "aef10471f868c52700535778dabe63e84a9b91160692ebc71b67de4784f2226a"
+  },
+  "output_sha256": {
+    "formula_results.json": "16408a399e43e1c6ed548b00dad7d00d43ab130d0c33dd5596cf9777ccdfac27"
+  },
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "model": null,
+  "seed": null,
+  "randomness": "None",
+  "dtype": "float64",
+  "independent_validation": false,
+  "financial_fit_count": 0,
+  "warning_handling": "All-NaN warning intentionally captured and asserted"
+}

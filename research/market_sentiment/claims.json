@@ -173,5 +173,27 @@
       "image_review/factor_acceptance_v1/REVIEW_zh.md",
       "image_review/factor_acceptance_v1/readiness.json"
     ]
+  },
+  {
+    "id": "C020",
+    "claim": "新闻情绪均值、时间标准差、同日文章离散度、关注度和方向变化应分别定义；乘积是待输入的候选，截图IC及市场择时功效尚未验证",
+    "status": "MATH_CHECKED_MEASUREMENT_LIMITS_EMPIRICAL_EFFICACY_NOT_VERIFIED",
+    "evidence": [
+      "image_review/news_mean_vol_v1/REVIEW_zh.md",
+      "image_review/news_mean_vol_v1/formula_results.json",
+      "image_review/news_mean_vol_v1/source_audit.json",
+      "image_review/news_mean_vol_v1/CANDIDATE_CONTRACT_zh.md"
+    ]
+  },
+  {
+    "id": "C021",
+    "claim": "五篇相关论文已完成有版本和页码依据的主要正文学习；文献支持区分测量、对象与期限，但不替代本项目市场中期拐点效果的实证验收",
+    "status": "LITERATURE_IDENTITIES_VERIFIED_FOCUSED_READING_NOT_NEW_EFFICACY_RESULT",
+    "evidence": [
+      "literature/five_papers_v1/REVIEW_zh.md",
+      "literature/five_papers_v1/source_audit.json",
+      "literature/five_papers_v1/reading_ledger.json",
+      "literature/five_papers_v1/self_check.json"
+    ]
   }
 ]

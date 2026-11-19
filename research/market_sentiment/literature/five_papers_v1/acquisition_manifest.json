@@ -1,0 +1,67 @@
+{
+  "operation": "Public-document retrieval and text extraction, not empirical replication",
+  "script_sha256": "bb87bda26835f3ab092ad7adf42814f1239eb6313de710fd90a6c8302a1f3bab",
+  "pymupdf_version": "1.26.6",
+  "papers": [
+    {
+      "id": "BW2007",
+      "url": "https://pages.stern.nyu.edu/~jwurgler/papers/wurgler_baker_investor_sentiment.pdf",
+      "retrieved_at_utc": "2026-11-19T04:16:36.728286+00:00",
+      "resolved_url": "https://pages.stern.nyu.edu/~jwurgler/papers/wurgler_baker_investor_sentiment.pdf",
+      "status": "DOWNLOADED_AND_TEXT_EXTRACTED",
+      "pdf_sha256": "252f253432d96c5fc9bb4457ba1e9777e4f00ec5625ce6136e729bf3a933f366",
+      "bytes": 266704,
+      "pdf_pages": 23,
+      "text_sha256": "597bc44abbb08cf0b30ec0292ce7898b32351d871151992f4382a1a48db4f482",
+      "raw_published": false
+    },
+    {
+      "id": "T2007",
+      "url": "https://www.uts.edu.au/globalassets/sites/default/files/adg_cons2015_tetlock-journal-of-finance-2007.pdf",
+      "retrieved_at_utc": "2026-11-19T04:16:36.729136+00:00",
+      "resolved_url": "https://www.uts.edu.au/globalassets/sites/default/files/adg_cons2015_tetlock-journal-of-finance-2007.pdf",
+      "status": "DOWNLOADED_AND_TEXT_EXTRACTED",
+      "pdf_sha256": "299278d85dad61e518be8753ce25f289112666cd4b31867ac4f68829798be7c2",
+      "bytes": 185347,
+      "pdf_pages": 30,
+      "text_sha256": "5cdb0b374d5d40e53e469ed9e286397d193f142594eb3421cf3cd449d488e397",
+      "raw_published": false
+    },
+    {
+      "id": "HS2016",
+      "url": "https://www.federalreserve.gov/econresdata/feds/2016/files/2016048pap.pdf",
+      "retrieved_at_utc": "2026-11-19T04:16:36.729990+00:00",
+      "resolved_url": "https://www.federalreserve.gov/econresdata/feds/2016/files/2016048pap.pdf",
+      "status": "DOWNLOADED_AND_TEXT_EXTRACTED",
+      "pdf_sha256": "1bba428e22229769eff8cd54f68c4344f08c2517ec34c7994ba818214e2a4551",
+      "bytes": 650468,
+      "pdf_pages": 36,
+      "text_sha256": "e6635f610bf8dc4195275b6bbbf6c1f8b29305c651ef3cc10bac164d00f7cc59",
+      "raw_published": false
+    },
+    {
+      "id": "DEG2015",
+      "url": "https://academicweb.nd.edu/~zda/FEARS.pdf",
+      "retrieved_at_utc": "2026-11-19T04:16:36.730477+00:00",
+      "resolved_url": "https://academicweb.nd.edu/~zda/FEARS.pdf",
+      "status": "DOWNLOADED_AND_TEXT_EXTRACTED",
+      "pdf_sha256": "0f7335dfcf0b4986b91dfb5b4754c63bd19b9fe88c33eb32995c452970dcd4bf",
+      "bytes": 573263,
+      "pdf_pages": 33,
+      "text_sha256": "122602f878ccc7b12d94f482c1948b2df86845ed231cfefe1afeeb17d401c065",
+      "raw_published": false
+    },
+    {
+      "id": "LL2025",
+      "url": "https://link.springer.com/content/pdf/10.1007/s11142-025-09897-1.pdf",
+      "retrieved_at_utc": "2026-11-19T04:16:36.731236+00:00",
+      "resolved_url": "https://link.springer.com/content/pdf/10.1007/s11142-025-09897-1.pdf?error=cookies_not_supported&code=466ca5ac-13aa-443d-814c-a372f1dda7a4",
+      "status": "DOWNLOADED_AND_TEXT_EXTRACTED",
+      "pdf_sha256": "494ad19795bc9ed83cfbc723c9327a2f53abc5d5aeb57fc8340d4c1cbb28c8ae",
+      "bytes": 2206621,
+      "pdf_pages": 64,
+      "text_sha256": "38cb78af769ef8a514c487e7a4b52e468778d6e4997938fe89c1dc1632754d4a",
+      "raw_published": false
+    }
+  ]
+}

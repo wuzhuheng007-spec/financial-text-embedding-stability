@@ -1,0 +1,119 @@
+{
+  "question": "Measurement meaning and transfer from stock-relative sentiment ranking to medium-term market turning points",
+  "claim_scope": "Method review and deterministic artificial-array diagnostics only",
+  "claims": [
+    {
+      "id": "N001",
+      "claim": "Screenshot code uses standard deviation with default ddof=0 rather than variance",
+      "status": "VERIFIED",
+      "evidence": [
+        "input_manifest.json",
+        "source_audit.json"
+      ],
+      "type": "User-provided image code and official API semantics"
+    },
+    {
+      "id": "N002",
+      "claim": "Mean, std and their product are invariant to reversing observations while a directional change may reverse",
+      "status": "VERIFIED_IN_DETERMINISTIC_MATH_SCOPE",
+      "evidence": [
+        "toy_config.json",
+        "formula_audit.py",
+        "formula_results.json",
+        "formula_run_manifest.json"
+      ],
+      "result_path": "cases.order_invariance",
+      "not_authorized": "Empirical financial prediction"
+    },
+    {
+      "id": "N003",
+      "claim": "A neutral-origin shift can change uncentered product rankings",
+      "status": "VERIFIED_IN_DETERMINISTIC_MATH_SCOPE",
+      "evidence": [
+        "toy_config.json",
+        "formula_results.json"
+      ],
+      "result_path": "cases.origin_sensitive_rank"
+    },
+    {
+      "id": "N004",
+      "claim": "A single observed day yields zero population std but cannot establish temporal calm",
+      "status": "VERIFIED_IN_DETERMINISTIC_MATH_SCOPE",
+      "evidence": [
+        "toy_config.json",
+        "formula_results.json",
+        "source_audit.json"
+      ],
+      "result_path": "cases.missing_day_false_calm"
+    },
+    {
+      "id": "N005",
+      "claim": "Time std of daily mean need not measure simultaneous article disagreement",
+      "status": "VERIFIED_IN_DETERMINISTIC_MATH_SCOPE",
+      "evidence": [
+        "toy_config.json",
+        "formula_results.json"
+      ],
+      "result_path": "cases.cross_article_vs_time"
+    },
+    {
+      "id": "N006",
+      "claim": "The screenshot's reported IC and later-period result are empirically valid",
+      "status": "NOT_VERIFIED",
+      "evidence": [
+        "input_manifest.json",
+        "source_audit.json"
+      ],
+      "blocker": "No uniquely identified original study, raw inputs/config/code/results; no replication performed"
+    },
+    {
+      "id": "N007",
+      "claim": "The product predicts the project's four-market medium-term turning points or net returns",
+      "status": "NOT_ESTABLISHED",
+      "evidence": [
+        "CANDIDATE_CONTRACT_zh.md"
+      ],
+      "blocker": "No qualified real news panel or frozen target-specific study"
+    },
+    {
+      "id": "N008",
+      "claim": "Separate mean, temporal variability, within-day dispersion, attention and directional changes before testing interactions",
+      "status": "PROPOSED_DESIGN",
+      "evidence": [
+        "CANDIDATE_CONTRACT_zh.md"
+      ],
+      "not_authorized": "Already tested factor selection or universal superiority"
+    }
+  ],
+  "plan_actual": [
+    {
+      "id": "P1",
+      "actual": "Ten provided screenshots inspected and hashed; bounded search saved; original not identified",
+      "status": "PARTIALLY_SUPPORTED",
+      "deviation": "Original numeric verification unresolved, no substitute attribution"
+    },
+    {
+      "id": "P2",
+      "actual": "Three official documentation pages directly opened; definitions matched to code",
+      "status": "PASS"
+    },
+    {
+      "id": "P3",
+      "actual": "formula_audit.py executed successfully with saved artificial input and run identity; five diagnostic cases",
+      "status": "PASS_MATH_ONLY",
+      "financial_model_fits": 0,
+      "independent_validation": false
+    },
+    {
+      "id": "P4",
+      "actual": "Review, candidate contract and evidence records prepared; existing publication and new math provenance checked successfully. Append-only research registration and full publication hash check are executed during commit preparation; remote readback is a later operation.",
+      "status": "LOCAL_REVIEW_PREPARED_REMOTE_RECEIPT_SEPARATE",
+      "remote_success_claimed_in_this_file": false
+    }
+  ],
+  "numerical_reconciliation": {
+    "synthetic_cells": "formula_results.json -> formula_audit.py -> toy_config.json; identities in formula_run_manifest.json",
+    "rounding": "Full machine precision saved; prose uses qualitative implications",
+    "screenshot_numbers": "Transcribed approximate values only in source_audit.json; not counted as reproduced research outputs"
+  }
+}
