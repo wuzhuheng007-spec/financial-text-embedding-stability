@@ -4,6 +4,9 @@
 
 ## 当前入口
 
+- [第四阶段实际检验报告](phase4/Phase4_Participation_Real_Rates_Report_zh.md)：等权参与结构与TIPS利率，强基线增量比较及完整负面结果。
+- [第四阶段冻结计划](phase4/PLAN_zh.md)、[模型全对照](phase4/results/model_contrasts.csv)与[同作者复核](phase4/results/self_check.json)。
+
 - [第三阶段完整报告](phase3/Phase3_Event_Atlas_Report_zh.md)：全样本20%/10%行情、候选信号误报、风险代理与价格增量比较。
 - [全部139条主要事件卡](phase3/ALL_EVENTS_20pct_zh.md)及[656条双阈值事件CSV](phase3/results_v1_1/events_all_thresholds.csv)。
 - [第三阶段冻结口径](phase3/PROTOCOL_zh.md)、[边界修正](phase3/AMENDMENT_v1_1.json)与[同作者自查](phase3/results_v1_1/self_check.json)。

@@ -1,0 +1,46 @@
+{
+  "final_status": "PARTIALLY_SUPPORTED",
+  "plan_execution_gate": "PASS_FOR_P40_TO_P43_P44_REQUIRES_REMOTE_ACK",
+  "experimental_sufficiency_gate": "LIMITED",
+  "result_provenance_gate": "PASS_SAME_AUTHOR",
+  "citation_verification_gate": "PASS_FOR_STATED_7_SOURCE_CLAIMS",
+  "commands_actually_run": [
+    "python freeze.py",
+    "python analyze.py",
+    "python check.py",
+    "python report.py"
+  ],
+  "commands_actually_run_count": 4,
+  "count_scope": "Top-level scientific scripts only; source retrieval, read-only inspection, editing, packaging and synchronization excluded",
+  "authoritative_artifacts_inspected": [
+    "input_manifest.json",
+    "config.json",
+    "freeze_receipt.json",
+    "results/run_manifest.json",
+    "results/self_check.json",
+    "results/state_summary.csv",
+    "results/state_contrasts.csv",
+    "results/model_summary.csv",
+    "results/model_contrasts.csv",
+    "citation_audit.json"
+  ],
+  "authoritative_artifacts_inspected_count": 10,
+  "unresolved_blockers": [
+    "China local historical breadth",
+    "news first availability and surprise/expectations panel",
+    "historical earnings expectations",
+    "PIT vintages and independent replication"
+  ],
+  "unresolved_blockers_count": 4,
+  "claims_authorized": [
+    "Within-config descriptive cohorts and fixed-model diagnostic results",
+    "No robust incremental efficacy established in this comparison"
+  ],
+  "claims_not_authorized": [
+    "Universal reversal rule",
+    "Pure sentiment identification",
+    "No effect for every model or market",
+    "Strategy profit, causal news effect or PIT certification"
+  ],
+  "worktree_user_data_preserved": "YES"
+}

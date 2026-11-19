@@ -289,9 +289,153 @@
   },
   {
     "id": "R012",
-    "title": "R006 勘误：分段比较、协议时间与口径表述",
+    "title": "历史牛熊复盘图片学习与局部事实审核",
+    "plan": "读取用户材料，核对可见矛盾，登记可检验机制，不直接采纳图示统计或因果。",
+    "actual": "打开四个一手来源，核对四日本地OHLC；登记极值/收盘口径、1996详情复制错误、政策日期及纳指周期内部不一致；提出六组候选变量，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_IMAGE_REVIEW_AND_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Historical_Images_Review_zh.md"
+    ],
+    "claims": "图片提供机制线索；只有局部事实已核验，新因子效力和图中未注明口径的统计均未确立。",
+    "limits": "行业/个股涨幅、开户与宏观实时版本未完整核验；未获得新广度/资金数据库；没有独立验证。",
+    "evidence_sha256": {
+      "image_review/Historical_Images_Review_zh.md": "d12b75b5167a9310b77a9de93c2db4616182c7e1b4f05d7ace74777c4139ae33"
+    },
+    "recorded_at_utc": "2026-11-19T02:59:03.931763+00:00"
+  },
+  {
+    "id": "R013",
+    "title": "纳指补充图与盈利利率预期机制登记",
+    "plan": "核对新增图片中的政策时序，区分盈利、利率、情绪与成分变化。",
+    "actual": "实际打开2020-03-15和2022-03-16美联储声明；指出实际加息与预期重定价不能混同；登记盈利修订、叙事兑现差与广度等候选模块，未运行新金融实验。",
+    "status": "PARTIALLY_SUPPORTED_HYPOTHESES_ONLY",
+    "evidence": [
+      "image_review/Nasdaq_Supplement_Review_zh.md"
+    ],
+    "claims": "两条具体政策事实已核验，其余机制作为待检验假说，尚无新预测效力结论。",
+    "limits": "没有新增历史盈利预期/成分/新闻数据；非独立验证。",
+    "evidence_sha256": {
+      "image_review/Nasdaq_Supplement_Review_zh.md": "b5b0759ae3e053392a797e37676d27049aecec3cbe49a0ed6f092582d9a7c082"
+    },
+    "recorded_at_utc": "2026-11-19T03:03:02.416763+00:00"
+  },
+  {
+    "id": "R014",
+    "title": "参与结构与实际利率检验冻结",
+    "plan": "先核对新增数据覆盖，再固定广度代理、利率变量、强基线和完整比较，计算前记录。",
+    "actual": "实际下载NASDAQNDXE、NASDAQ100、DFII10当前版本；阅读Nasdaq官方方法及变更说明；冻结三个新增模块和alpha敏感性、同样本时序检验及多重比较规则。尚未计算第四阶段收益对照或模型。",
+    "status": "PROTOCOL_FROZEN_BEFORE_PHASE4_FINANCIAL_ANALYSIS",
+    "evidence": [
+      "phase4/PLAN_zh.md",
+      "phase4/config.json",
+      "phase4/freeze_receipt.json",
+      "phase4/input_manifest.json"
+    ],
+    "claims": "取得可追溯的等权/市值指数与TIPS输入，可开展有限覆盖检验；新闻和中国本土广度未取得。",
+    "limits": "等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。",
+    "evidence_sha256": {
+      "phase4/PLAN_zh.md": "07465e874fdbfd0297bfdbb61c152717417548e2acc0a87099bb570eef8fc0b5",
+      "phase4/config.json": "e64c0495a2e74a11c91daafedeeab145d219900c9618e90bddf5d3ab65ef264d",
+      "phase4/freeze_receipt.json": "fc1ee32e21a6c9fd65b7e2462c94333155ee17d8d1eccb53bf2d6738868be28c",
+      "phase4/input_manifest.json": "4e78f636fe3df45776663d7e117b7db39344495d7f458017d5f613eb2542fe02"
+    },
+    "recorded_at_utc": "2026-11-19T03:13:49.795444+00:00"
+  },
+  {
+    "id": "R015",
+    "title": "参与结构与实际利率全比较实际执行",
+    "plan": "按R014冻结规则计算新增代理、状态关联与强基线增量检验，保存全部敏感性和失败样本。",
+    "actual": "完成1200个拟合和70082行预测，覆盖两个alpha、三个期限、所有预定市场；等权/市值源的两个单边不一致日期拆成三段，禁止补价；保存360行模型汇总、318行对照、180行状态汇总及60行状态对照。",
+    "status": "EXECUTED_CURRENT_VINTAGE_LIMITED_DIAGNOSTIC",
+    "evidence": [
+      "phase4/analyze.py",
+      "phase4/results/run_manifest.json",
+      "phase4/results/coverage.json",
+      "phase4/results/model_coverage.csv",
+      "phase4/results/model_summary.csv",
+      "phase4/results/model_contrasts.csv",
+      "phase4/results/state_summary.csv",
+      "phase4/results/state_contrasts.csv"
+    ],
+    "claims": "固定规则内QQQ/SOX缩窄队列未来均值较低，但多重比较后未建立稳健效应；强基线之外没有确立新增模块的预测改善。",
+    "limits": "当前版本，纳指内部结构代理，不是完整广度或心理情绪；中国仅外部环境；独立危机数有限；一个确定性模型族。",
+    "evidence_sha256": {
+      "phase4/analyze.py": "6ce02d74c482ece4b27546b00a06596375ff776bf114be7a6b881baabb2ffa1f",
+      "phase4/results/run_manifest.json": "540089f8d2acc32c5d5c5ea3bc1f861d8145d0d42de6db204006543169169b03",
+      "phase4/results/coverage.json": "74ff3955b9fd5f0675de16ee84ec8f86bedc462f867f3775a6bfa36b5f75844f",
+      "phase4/results/model_coverage.csv": "feedb991da1f3a684e77c2715cb1b0dd26eba73fbd8d93cc3b66cb82e0f12659",
+      "phase4/results/model_summary.csv": "dbfd65935633f1d108e2e962949f5d3f583543464f6f811f51b9d4efc6390041",
+      "phase4/results/model_contrasts.csv": "b2cef82f94f7058ea55fad74be6cc884759d114425e6bd3939894c57f3459150",
+      "phase4/results/state_summary.csv": "d6a7f4036af62ab392c53a620acd89b46b0d9ae369cf013754f4994063ea67f9",
+      "phase4/results/state_contrasts.csv": "0d6ec469937336658b2adb477a083b02a544065442d3a813106985ee228b26c1"
+    },
+    "recorded_at_utc": "2026-11-19T03:21:30.904119+00:00"
+  },
+  {
+    "id": "R016",
+    "title": "原始输入复核与第四阶段结果报告",
+    "plan": "从源重算代理及日期，重拟合全部模型，核对所有汇总；记录新结论边界和未取得数据。",
+    "actual": "核对23749行前阶段输入保持不变、47498个来源日期、118745个新特征、68993个未来路径最小值；增广系统重拟合1200个模型，核对280328个预测单元及全部汇总；完整报告和7条一手来源审核已保存，24个主展示结果单元另与原表核对。",
+    "status": "PARTIALLY_SUPPORTED_SAME_AUTHOR_SELF_CHECKED",
+    "evidence": [
+      "phase4/check.py",
+      "phase4/results/self_check.json",
+      "phase4/Phase4_Participation_Real_Rates_Report_zh.md",
+      "phase4/results/display_cells.json",
+      "phase4/citation_audit.json",
+      "phase4/evidence_ledger.json",
+      "phase4/AUDIT_FINAL.json"
+    ],
+    "claims": "数据及结果在本轮口径下可追溯；未形成可靠反转标准，未开展新闻预期差效力检验。",
+    "limits": "独立复核和PIT版本未取得；A股本土广度、新闻首次时间/市场预期和历史盈利预测仍缺。",
+    "evidence_sha256": {
+      "phase4/check.py": "51649ddace711fb9df3529bec93939e003cc6e91c5de7c0846e0874f2c36e307",
+      "phase4/results/self_check.json": "f2613e32605db13c97031ae54a34b8f3f2ca725d637a4b16410567a3339c9be8",
+      "phase4/Phase4_Participation_Real_Rates_Report_zh.md": "f425929cebce0e5af9a6db6e531b4e34306db6cf0363658e3d9d96e9136a2ac1",
+      "phase4/results/display_cells.json": "b769abbbfbea568b47229560caba3ec7f9bc6e887721183ca51c9119f7b7dcd7",
+      "phase4/citation_audit.json": "a251c5428d4277a854b8bb8a0e963347d9deb7cbcd6d6c634f87109377819e84",
+      "phase4/evidence_ledger.json": "42f84ef18df95cc6af335b8490b55447493210ea8d04172f960f304ed6a83cb8",
+      "phase4/AUDIT_FINAL.json": "f273cd5fdd75edbe221fcd7d83ad8b74ed375a9b9af108613e1c08f8b8ab10ca"
+    },
+    "recorded_at_utc": "2026-11-19T03:21:30.905962+00:00"
+  },
+  {
+    "id": "R017",
+    "title": "第四阶段同步与远端核对",
+    "plan": "校验公开载荷后带预期父提交非强制同步，读回关键文件。",
+    "actual": "结果提交3a68e0b3非强制更新成功；报告、主展示原数值、自查、日志和公开清单5项内容逐字节读回一致。",
+    "status": "SYNCED_REMOTE_READBACK_VERIFIED",
+    "evidence": [
+      "phase4/PUBLICATION_ACK.json"
+    ],
+    "claims": "P44公开同步验收通过，第四阶段结果可在研究分支读回。",
+    "limits": "发布一致性核对不是独立科学验证；商业原始序列和逐行面板/预测不公开。",
+    "evidence_sha256": {
+      "phase4/PUBLICATION_ACK.json": "43b021a4b0f4c307c64c5865f28aa1c5375120ba7bbef47c75b478156894e68d"
+    },
+    "recorded_at_utc": "2026-11-19T03:23:05.571535+00:00"
+  },
+  {
+    "id": "R018",
+    "title": "熊市机制与九步因子清单适用性审核",
+    "plan": "阅读新增六图，核对关键时序/口径，将横截面清单适配为市场择时检查项。",
+    "actual": "实际打开三篇官方历史/政策分析，核对QQQ同区间24个报价观测和23个收益区间；保留失败论文访问；登记多标签危机机制，逐项辨别九步流程适用性。未运行新因子或策略实验。",
+    "status": "PARTIALLY_SUPPORTED_REVIEW_ONLY",
+    "evidence": [
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md"
+    ],
+    "claims": "图片提供机制与流程线索，统计阈值及因果不能直接采纳；时间序列择时与横截面选股分开评价。",
+    "limits": "历史图具体数据仅局部核验；三篇来源不认证所有图片；尚无新金融效力或独立验证。",
+    "evidence_sha256": {
+      "image_review/Bear_Markets_and_Factor_Checklist_zh.md": "3f317bb9d1da73da52a33462327bbf66cd884a7ea3aa1423150cfb17e00913d0"
+    },
+    "recorded_at_utc": "2026-11-19T03:43:43.263193+00:00"
+  },
+  {
+    "id": "R019",
+    "title": "R006 勘误：分段比较、协议时间与口径表述（原拟 R012，并发提交已占用该编号，改记 R019）",
     "status": "ERRATUM_APPENDED_ORIGINAL_RECORDS_UNCHANGED",
-    "plan": "按外部审查意见，从原运行结果文件重新生成比较，核对首次真实计算、代码提交、入队/开始/结束时间，纠正分红、日历与留出段表述；不修改原配置与原记录。",
+    "plan": "按外部审查意见，从原运行结果文件重新生成比较，核对首次真实计算、代码提交、入队/开始/结束时间，纠正分红、日历与后段表述；不修改原配置与原记录。",
     "actual": "由结果文件生成：9 个分段格中策略高于基准 1 格（0 bps 开发段 44.55% 对 24.87%），低于 8 格；R006 的“全部低于”表述错误。首次真实计算为本机演练 01:16:08Z，早于配置首次 Git 提交 01:25:31Z，且演练结果在提交前已被查看；frozen_at_utc=01:40:00Z 为手填错误值。配置内容各次一致（哈希 63a8993d…），但不能证明在首次计算前冻结，运行不属于预注册。",
     "evidence": [
       "platform_baseline/R006_errata_E001.json"
@@ -301,6 +445,6 @@
     "evidence_sha256": {
       "platform_baseline/R006_errata_E001.json": "efe396f75805f510068c84d594eb4b70b936be3db01591b1b958db61cac4898e"
     },
-    "recorded_at_utc": "2026-11-19T02:38:58.914515+00:00"
+    "recorded_at_utc": "2026-11-19T03:45:17.980723+00:00"
   }
 ]

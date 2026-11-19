@@ -136,5 +136,33 @@
       "phase3/results_v1_1/self_check.json",
       "phase3/results_v1_1/report_reconciliation.json"
     ]
+  },
+  {
+    "id": "C016",
+    "claim": "在本轮当前版本状态定义中QQQ/SOX缩窄队列未来8周均值较低；多重比较后未确立稳健差异",
+    "status": "DESCRIPTIVE_ONLY_EFFECT_INCONCLUSIVE",
+    "evidence": [
+      "phase4/results/state_summary.csv",
+      "phase4/results/state_contrasts.csv"
+    ]
+  },
+  {
+    "id": "C017",
+    "claim": "固定强基线外新增参与结构与实际利率未建立稳健预测改善；不排除其他数据或模型作用",
+    "status": "INCONCLUSIVE_NOT_ESTABLISHED",
+    "evidence": [
+      "phase4/results/model_contrasts.csv",
+      "phase4/results/model_summary.csv",
+      "phase4/results/model_coverage.csv"
+    ]
+  },
+  {
+    "id": "C018",
+    "claim": "第四阶段输入和全部汇总已作同作者原源重算及模型重拟合，不是独立复制",
+    "status": "VERIFIED_SAME_AUTHOR_ONLY",
+    "evidence": [
+      "phase4/results/self_check.json",
+      "phase4/results/run_manifest.json"
+    ]
   }
 ]

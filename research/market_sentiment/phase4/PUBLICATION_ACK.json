@@ -1,0 +1,16 @@
+{
+  "status": "REMOTE_READBACK_VERIFIED",
+  "result_commit": "3a68e0b32211fe3ce40ac3a2d930276c66ae8585",
+  "freeze_commit": "f2ce5829e6c75a7980c21c90c8734373a6264dd6",
+  "verified_files": [
+    "phase4/Phase4_Participation_Real_Rates_Report_zh.md",
+    "phase4/results/display_cells.json",
+    "phase4/results/self_check.json",
+    "steps.json",
+    "PUBLICATION_MANIFEST.json"
+  ],
+  "non_force_update": true,
+  "publication_scope": "Own code, aggregates and source identity only; raw market rows and predictions remain private",
+  "meaning": "Resolves P44 local-ready marker; publication verification is not independent scientific validation",
+  "observed_utc": "2026-11-19T03:23:05.257Z"
+}

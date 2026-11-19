@@ -1,0 +1,79 @@
+{
+  "run_id": "phase4_20261119_v1",
+  "claims": [
+    {
+      "id": "P4-1",
+      "claim": "QQQ/SOX narrowing cohort lower forward mean under frozen current-vintage state definition",
+      "status": "VERIFIED_DESCRIPTIVE_ONLY",
+      "evidence": [
+        "results/state_summary.csv",
+        "results/state_contrasts.csv"
+      ]
+    },
+    {
+      "id": "P4-2",
+      "claim": "Robust incremental prediction beyond strong base",
+      "status": "INCONCLUSIVE_NOT_ESTABLISHED",
+      "evidence": [
+        "results/model_contrasts.csv",
+        "results/model_summary.csv"
+      ]
+    },
+    {
+      "id": "P4-3",
+      "claim": "China local breadth or news reaction effect",
+      "status": "BLOCKED_NOT_TESTED",
+      "evidence": [
+        "PLAN_zh.md"
+      ]
+    }
+  ],
+  "plan_execution": [
+    {
+      "id": "P40",
+      "status": "PASS",
+      "evidence": [
+        "config.json",
+        "input_manifest.json",
+        "freeze_receipt.json",
+        "citation_audit.json"
+      ]
+    },
+    {
+      "id": "P41",
+      "status": "PASS",
+      "evidence": [
+        "results/run_manifest.json",
+        "results/model_coverage.csv"
+      ]
+    },
+    {
+      "id": "P42",
+      "status": "PASS_SAME_AUTHOR",
+      "evidence": [
+        "results/self_check.json"
+      ]
+    },
+    {
+      "id": "P43",
+      "status": "PASS",
+      "evidence": [
+        "Phase4_Participation_Real_Rates_Report_zh.md",
+        "results/display_cells.json"
+      ]
+    },
+    {
+      "id": "P44",
+      "status": "LOCAL_READY_REMOTE_READBACK_REQUIRED",
+      "evidence": []
+    }
+  ],
+  "numeric_provenance": "display cells -> complete result tables -> run manifest private result hashes -> config/input/parent hashes",
+  "code_and_report_hashes": {
+    "analyze.py": "6ce02d74c482ece4b27546b00a06596375ff776bf114be7a6b881baabb2ffa1f",
+    "check.py": "51649ddace711fb9df3529bec93939e003cc6e91c5de7c0846e0874f2c36e307",
+    "report.py": "c32a929f641fd737896dda893dcac6a7f7708f058185c8477d5d2635743fd670",
+    "Phase4_Participation_Real_Rates_Report_zh.md": "f425929cebce0e5af9a6db6e531b4e34306db6cf0363658e3d9d96e9136a2ac1"
+  },
+  "no_independent_replication": true
+}

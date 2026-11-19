@@ -170,11 +170,109 @@
 
 证据：[phase3/PUBLICATION_ACK_20261119.json](phase3/PUBLICATION_ACK_20261119.json)
 
-## R012 · R006 勘误：分段比较、协议时间与口径表述
+## R012 · 历史牛熊复盘图片学习与局部事实审核
 
-**状态：** ERRATUM_APPENDED_ORIGINAL_RECORDS_UNCHANGED；记录UTC：2026-11-19T02:38:58.914515+00:00
+**状态：** PARTIALLY_SUPPORTED_IMAGE_REVIEW_AND_HYPOTHESES_ONLY；记录UTC：2026-11-19T02:59:03.931763+00:00
 
-**计划：** 按外部审查意见，从原运行结果文件重新生成比较，核对首次真实计算、代码提交、入队/开始/结束时间，纠正分红、日历与留出段表述；不修改原配置与原记录。
+**计划：** 读取用户材料，核对可见矛盾，登记可检验机制，不直接采纳图示统计或因果。
+
+**实际：** 打开四个一手来源，核对四日本地OHLC；登记极值/收盘口径、1996详情复制错误、政策日期及纳指周期内部不一致；提出六组候选变量，未运行新金融实验。
+
+**结论：** 图片提供机制线索；只有局部事实已核验，新因子效力和图中未注明口径的统计均未确立。
+
+**限制：** 行业/个股涨幅、开户与宏观实时版本未完整核验；未获得新广度/资金数据库；没有独立验证。
+
+证据：[image_review/Historical_Images_Review_zh.md](image_review/Historical_Images_Review_zh.md)
+
+## R013 · 纳指补充图与盈利利率预期机制登记
+
+**状态：** PARTIALLY_SUPPORTED_HYPOTHESES_ONLY；记录UTC：2026-11-19T03:03:02.416763+00:00
+
+**计划：** 核对新增图片中的政策时序，区分盈利、利率、情绪与成分变化。
+
+**实际：** 实际打开2020-03-15和2022-03-16美联储声明；指出实际加息与预期重定价不能混同；登记盈利修订、叙事兑现差与广度等候选模块，未运行新金融实验。
+
+**结论：** 两条具体政策事实已核验，其余机制作为待检验假说，尚无新预测效力结论。
+
+**限制：** 没有新增历史盈利预期/成分/新闻数据；非独立验证。
+
+证据：[image_review/Nasdaq_Supplement_Review_zh.md](image_review/Nasdaq_Supplement_Review_zh.md)
+
+## R014 · 参与结构与实际利率检验冻结
+
+**状态：** PROTOCOL_FROZEN_BEFORE_PHASE4_FINANCIAL_ANALYSIS；记录UTC：2026-11-19T03:13:49.795444+00:00
+
+**计划：** 先核对新增数据覆盖，再固定广度代理、利率变量、强基线和完整比较，计算前记录。
+
+**实际：** 实际下载NASDAQNDXE、NASDAQ100、DFII10当前版本；阅读Nasdaq官方方法及变更说明；冻结三个新增模块和alpha敏感性、同样本时序检验及多重比较规则。尚未计算第四阶段收益对照或模型。
+
+**结论：** 取得可追溯的等权/市值指数与TIPS输入，可开展有限覆盖检验；新闻和中国本土广度未取得。
+
+**限制：** 等权相对表现不是全市场广度；当前版本非历史PIT，指数编制变化存在；不支持预测效力声明。
+
+证据：[phase4/PLAN_zh.md](phase4/PLAN_zh.md)、[phase4/config.json](phase4/config.json)、[phase4/freeze_receipt.json](phase4/freeze_receipt.json)、[phase4/input_manifest.json](phase4/input_manifest.json)
+
+## R015 · 参与结构与实际利率全比较实际执行
+
+**状态：** EXECUTED_CURRENT_VINTAGE_LIMITED_DIAGNOSTIC；记录UTC：2026-11-19T03:21:30.904119+00:00
+
+**计划：** 按R014冻结规则计算新增代理、状态关联与强基线增量检验，保存全部敏感性和失败样本。
+
+**实际：** 完成1200个拟合和70082行预测，覆盖两个alpha、三个期限、所有预定市场；等权/市值源的两个单边不一致日期拆成三段，禁止补价；保存360行模型汇总、318行对照、180行状态汇总及60行状态对照。
+
+**结论：** 固定规则内QQQ/SOX缩窄队列未来均值较低，但多重比较后未建立稳健效应；强基线之外没有确立新增模块的预测改善。
+
+**限制：** 当前版本，纳指内部结构代理，不是完整广度或心理情绪；中国仅外部环境；独立危机数有限；一个确定性模型族。
+
+证据：[phase4/analyze.py](phase4/analyze.py)、[phase4/results/run_manifest.json](phase4/results/run_manifest.json)、[phase4/results/coverage.json](phase4/results/coverage.json)、[phase4/results/model_coverage.csv](phase4/results/model_coverage.csv)、[phase4/results/model_summary.csv](phase4/results/model_summary.csv)、[phase4/results/model_contrasts.csv](phase4/results/model_contrasts.csv)、[phase4/results/state_summary.csv](phase4/results/state_summary.csv)、[phase4/results/state_contrasts.csv](phase4/results/state_contrasts.csv)
+
+## R016 · 原始输入复核与第四阶段结果报告
+
+**状态：** PARTIALLY_SUPPORTED_SAME_AUTHOR_SELF_CHECKED；记录UTC：2026-11-19T03:21:30.905962+00:00
+
+**计划：** 从源重算代理及日期，重拟合全部模型，核对所有汇总；记录新结论边界和未取得数据。
+
+**实际：** 核对23749行前阶段输入保持不变、47498个来源日期、118745个新特征、68993个未来路径最小值；增广系统重拟合1200个模型，核对280328个预测单元及全部汇总；完整报告和7条一手来源审核已保存，24个主展示结果单元另与原表核对。
+
+**结论：** 数据及结果在本轮口径下可追溯；未形成可靠反转标准，未开展新闻预期差效力检验。
+
+**限制：** 独立复核和PIT版本未取得；A股本土广度、新闻首次时间/市场预期和历史盈利预测仍缺。
+
+证据：[phase4/check.py](phase4/check.py)、[phase4/results/self_check.json](phase4/results/self_check.json)、[phase4/Phase4_Participation_Real_Rates_Report_zh.md](phase4/Phase4_Participation_Real_Rates_Report_zh.md)、[phase4/results/display_cells.json](phase4/results/display_cells.json)、[phase4/citation_audit.json](phase4/citation_audit.json)、[phase4/evidence_ledger.json](phase4/evidence_ledger.json)、[phase4/AUDIT_FINAL.json](phase4/AUDIT_FINAL.json)
+
+## R017 · 第四阶段同步与远端核对
+
+**状态：** SYNCED_REMOTE_READBACK_VERIFIED；记录UTC：2026-11-19T03:23:05.571535+00:00
+
+**计划：** 校验公开载荷后带预期父提交非强制同步，读回关键文件。
+
+**实际：** 结果提交3a68e0b3非强制更新成功；报告、主展示原数值、自查、日志和公开清单5项内容逐字节读回一致。
+
+**结论：** P44公开同步验收通过，第四阶段结果可在研究分支读回。
+
+**限制：** 发布一致性核对不是独立科学验证；商业原始序列和逐行面板/预测不公开。
+
+证据：[phase4/PUBLICATION_ACK.json](phase4/PUBLICATION_ACK.json)
+
+## R018 · 熊市机制与九步因子清单适用性审核
+
+**状态：** PARTIALLY_SUPPORTED_REVIEW_ONLY；记录UTC：2026-11-19T03:43:43.263193+00:00
+
+**计划：** 阅读新增六图，核对关键时序/口径，将横截面清单适配为市场择时检查项。
+
+**实际：** 实际打开三篇官方历史/政策分析，核对QQQ同区间24个报价观测和23个收益区间；保留失败论文访问；登记多标签危机机制，逐项辨别九步流程适用性。未运行新因子或策略实验。
+
+**结论：** 图片提供机制与流程线索，统计阈值及因果不能直接采纳；时间序列择时与横截面选股分开评价。
+
+**限制：** 历史图具体数据仅局部核验；三篇来源不认证所有图片；尚无新金融效力或独立验证。
+
+证据：[image_review/Bear_Markets_and_Factor_Checklist_zh.md](image_review/Bear_Markets_and_Factor_Checklist_zh.md)
+
+## R019 · R006 勘误：分段比较、协议时间与口径表述（原拟 R012，并发提交已占用该编号，改记 R019）
+
+**状态：** ERRATUM_APPENDED_ORIGINAL_RECORDS_UNCHANGED；记录UTC：2026-11-19T03:45:17.980723+00:00
+
+**计划：** 按外部审查意见，从原运行结果文件重新生成比较，核对首次真实计算、代码提交、入队/开始/结束时间，纠正分红、日历与后段表述；不修改原配置与原记录。
 
 **实际：** 由结果文件生成：9 个分段格中策略高于基准 1 格（0 bps 开发段 44.55% 对 24.87%），低于 8 格；R006 的“全部低于”表述错误。首次真实计算为本机演练 01:16:08Z，早于配置首次 Git 提交 01:25:31Z，且演练结果在提交前已被查看；frozen_at_utc=01:40:00Z 为手填错误值。配置内容各次一致（哈希 63a8993d…），但不能证明在首次计算前冻结，运行不属于预注册。
 
