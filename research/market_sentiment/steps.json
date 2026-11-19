@@ -398,5 +398,21 @@
       "phase4/AUDIT_FINAL.json": "f273cd5fdd75edbe221fcd7d83ad8b74ed375a9b9af108613e1c08f8b8ab10ca"
     },
     "recorded_at_utc": "2026-11-19T03:21:30.905962+00:00"
+  },
+  {
+    "id": "R017",
+    "title": "第四阶段同步与远端核对",
+    "plan": "校验公开载荷后带预期父提交非强制同步，读回关键文件。",
+    "actual": "结果提交3a68e0b3非强制更新成功；报告、主展示原数值、自查、日志和公开清单5项内容逐字节读回一致。",
+    "status": "SYNCED_REMOTE_READBACK_VERIFIED",
+    "evidence": [
+      "phase4/PUBLICATION_ACK.json"
+    ],
+    "claims": "P44公开同步验收通过，第四阶段结果可在研究分支读回。",
+    "limits": "发布一致性核对不是独立科学验证；商业原始序列和逐行面板/预测不公开。",
+    "evidence_sha256": {
+      "phase4/PUBLICATION_ACK.json": "43b021a4b0f4c307c64c5865f28aa1c5375120ba7bbef47c75b478156894e68d"
+    },
+    "recorded_at_utc": "2026-11-19T03:23:05.571535+00:00"
   }
 ]

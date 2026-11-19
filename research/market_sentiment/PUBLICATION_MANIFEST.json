@@ -1,9 +1,9 @@
 {
   "AGENTS.md": "c159b61acbc106958d01de20d118950bbd827c916aecb314b45f2984d5cac3be",
-  "JOURNAL.md": "4cf3046a641a9cfd91524d8e032dc9ef2992087aaccf17659c3efbe397a92da4",
+  "JOURNAL.md": "80694fbf79292369fca8e42b8e22367301fe6e628b08df2924679aa8397507b0",
   "PUBLICATION_ADAPTATIONS.json": "e6fe194973c1e74e5a6d9de29383a19b2b049e9e317526c17447f843e0dcbfd0",
   "README.md": "2c67e88fdcd4867812d3b4ae9171bcbea5d0c6bb3df2844a3b773329630be891",
-  "STATUS.json": "54140b784903112c6a1dc16b1654c13c8981c49745c1bbc836d7bc7306826e7e",
+  "STATUS.json": "81ca99d52dc0585139f9734261b76147f930adb5a209ea61a1075940782693c1",
   "claims.json": "0728f1176ab0bfd9ca463d6cf6c18c9057698a2c14943db0176facc04439f99c",
   "data_audit/README_zh.md": "c262d74e9859ed2a28f46937ebb538bd51900ddc1656ceb333904826e3651cd8",
   "data_audit/audit/anchor_dates.json": "9b5db0a104f314c6047064a5a85a61250c647e74b0d1a299b090749308b5a63d",
@@ -137,6 +137,7 @@
   "phase3/verify_report.py": "b09d2065b9f99dd6a87d674e3d85aad23714ae7858ac0acbd0a925b27468c40e",
   "phase4/AUDIT_FINAL.json": "f273cd5fdd75edbe221fcd7d83ad8b74ed375a9b9af108613e1c08f8b8ab10ca",
   "phase4/PLAN_zh.md": "07465e874fdbfd0297bfdbb61c152717417548e2acc0a87099bb570eef8fc0b5",
+  "phase4/PUBLICATION_ACK.json": "43b021a4b0f4c307c64c5865f28aa1c5375120ba7bbef47c75b478156894e68d",
   "phase4/Phase4_Participation_Real_Rates_Report_zh.md": "f425929cebce0e5af9a6db6e531b4e34306db6cf0363658e3d9d96e9136a2ac1",
   "phase4/RUN_zh.md": "a6462589f825f72573d0054b6c2b6f536761f7c2efff4f7e400d33425aa12c19",
   "phase4/analyze.py": "6ce02d74c482ece4b27546b00a06596375ff776bf114be7a6b881baabb2ffa1f",
@@ -160,6 +161,6 @@
   "phase4/results/state_contrasts.csv": "0d6ec469937336658b2adb477a083b02a544065442d3a813106985ee228b26c1",
   "phase4/results/state_summary.csv": "d6a7f4036af62ab392c53a620acd89b46b0d9ae369cf013754f4994063ea67f9",
   "record_step.py": "889bc07e9c3e2aac3a82056a4e042bf702dd3d7e844407f3da3e99715ad8d98c",
-  "steps.json": "18eedc283c47af36a3af7d30e6ae0437e8bcce87e77ee8bc4d8e9c6cc7469af4",
+  "steps.json": "0d30b12d7bd8d3ee001ab639036bbd9cb65ac83f3128de7fcf3665a686f9cfb2",
   "verify_publication.py": "8d23bbfa9b68a090ebb2202430b8e2bcb9f22f34702c9849361ebdc62b5b2baf"
 }

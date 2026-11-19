@@ -239,3 +239,17 @@
 **限制：** 独立复核和PIT版本未取得；A股本土广度、新闻首次时间/市场预期和历史盈利预测仍缺。
 
 证据：[phase4/check.py](phase4/check.py)、[phase4/results/self_check.json](phase4/results/self_check.json)、[phase4/Phase4_Participation_Real_Rates_Report_zh.md](phase4/Phase4_Participation_Real_Rates_Report_zh.md)、[phase4/results/display_cells.json](phase4/results/display_cells.json)、[phase4/citation_audit.json](phase4/citation_audit.json)、[phase4/evidence_ledger.json](phase4/evidence_ledger.json)、[phase4/AUDIT_FINAL.json](phase4/AUDIT_FINAL.json)
+
+## R017 · 第四阶段同步与远端核对
+
+**状态：** SYNCED_REMOTE_READBACK_VERIFIED；记录UTC：2026-11-19T03:23:05.571535+00:00
+
+**计划：** 校验公开载荷后带预期父提交非强制同步，读回关键文件。
+
+**实际：** 结果提交3a68e0b3非强制更新成功；报告、主展示原数值、自查、日志和公开清单5项内容逐字节读回一致。
+
+**结论：** P44公开同步验收通过，第四阶段结果可在研究分支读回。
+
+**限制：** 发布一致性核对不是独立科学验证；商业原始序列和逐行面板/预测不公开。
+
+证据：[phase4/PUBLICATION_ACK.json](phase4/PUBLICATION_ACK.json)
