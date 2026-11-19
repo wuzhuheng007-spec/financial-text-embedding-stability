@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import csv
+import datetime as _dt
 import hashlib
+import inspect
 import io
 import json
 import math
@@ -52,12 +54,29 @@ def load_snapshot(snapshot_dir: Path, expected_sha256: str) -> list[dict]:
     if hashlib.sha256(data).hexdigest() != expected_sha256:
         raise ValueError("snapshot content hash mismatch")
     out = []
-    for r in csv.DictReader(io.StringIO(data.decode("utf-8"))):
-        out.append({"date": r["date"], **{k: float(r[k]) for k in ("open", "high", "low", "close")}})
+    reader = csv.DictReader(io.StringIO(data.decode("utf-8")))
+    if tuple(reader.fieldnames or ()) != SNAPSHOT_FIELDS:
+        raise ValueError("snapshot columns differ from the expected schema")
+    for r in reader:
+        try:
+            _dt.date.fromisoformat(r["date"])
+        except (TypeError, ValueError):
+            raise ValueError(f"invalid date {r.get('date')!r}") from None
+        o, h, l, c = (float(r[k]) for k in ("open", "high", "low", "close"))
+        if not all(math.isfinite(x) and x > 0 for x in (o, h, l, c)):
+            raise ValueError(f"non-finite or non-positive price on {r['date']}")
+        if l > min(o, c) or h < max(o, c):
+            raise ValueError(f"inconsistent OHLC on {r['date']}")
+        out.append({"date": r["date"], "open": o, "high": h, "low": l, "close": c})
     dates = [r["date"] for r in out]
-    if dates != sorted(dates) or len(set(dates)) != len(dates):
+    if not out or any(a >= b for a, b in zip(dates, dates[1:])):
         raise ValueError("snapshot dates not strictly increasing")
     return out
+
+
+def impl_fingerprint(fn) -> str:
+    """SHA-256 of the factor function's source: binds a run to the code that computed it."""
+    return hashlib.sha256(inspect.getsource(fn).encode("utf-8")).hexdigest()
 
 
 # ---------- factors (only registered entries can run; no user code) ----------
@@ -101,7 +120,7 @@ def _metrics(net: list[float], positions: list[float], turnovers: list[float], c
             "sharpe_rf0": (mean / sd * math.sqrt(ann)) if sd > 0 else None, "max_drawdown": mdd, "reason": None}
 
 
-def backtest(bars: list[dict], factor: list[float | None], cfg: dict, cost_bps: float) -> dict:
+def backtest(bars: list[dict], factor: list[float | None], cfg: dict, cost_bps: float, should_stop=None) -> dict:
     """Signal at close t -> trade at open t+1. Returns ledger rows and per-segment metrics."""
     warm = cfg["warmup_trading_days"]
     first = warm + 1  # first day whose open can execute a signal formed at a close with a factor
@@ -111,6 +130,8 @@ def backtest(bars: list[dict], factor: list[float | None], cfg: dict, cost_bps: 
     ledger, nav, bnav = [], 1.0, 1.0
     p_old, b_old = 0.0, 0.0
     for i in range(first, len(bars)):
+        if should_stop is not None and i % 256 == 0 and should_stop():
+            raise InterruptedError("cancel requested")
         prev, bar = bars[i - 1], bars[i]
         f_prev = factor[i - 1]
         signal_prev = 1.0 if (f_prev is not None and f_prev > 0) else 0.0

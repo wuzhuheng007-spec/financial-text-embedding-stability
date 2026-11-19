@@ -36,9 +36,19 @@ for man in $(find "$B/sqlite" -name MANIFEST.json 2>/dev/null | sort); do
   rm -rf "$scratch" "$scratch.out"
 done
 
-python3 - "$B" "$OWNER" "$SQLITE_OK" <<'PY'
+# Research: restore registry + files from the backup copy only (production volume NOT mounted),
+# verify hashes and table digests, and re-run completed runs under new run ids in isolation.
+RESEARCH_OK=true
+if [ -d "$B/research_backup/research" ]; then
+  scratch=$(mktemp -d /srv/quant/backup/restore-scratch.XXXX)
+  cp -a "$B/research_backup" "$scratch/b"; mkdir "$scratch/r"; chown -R 10001:10001 "$scratch"
+  if docker run --rm --network none --user 10001:10001 --entrypoint python -e QUANT_RESEARCH_LEASE_SECONDS=60        -v "$scratch/b:/b:ro" -v "$scratch/r:/r" -v /srv/quant/app/deploy/linux/host/quant_research_backup.py:/x/r.py:ro        "$APP_IMAGE" /x/r.py verify /b /r </dev/null > "$B/research_restore_check.json"; then :; else RESEARCH_OK=false; fi
+  rm -rf "$scratch"
+fi
+
+python3 - "$B" "$OWNER" "$SQLITE_OK" "$RESEARCH_OK" <<'PY'
 import csv, json, sys, pathlib, datetime
-b, owner, sqlite_ok = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3] == "true"
+b, owner, sqlite_ok, research_ok = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3] == "true", sys.argv[4] == "true"
 live = dict(csv.reader(open(b / "postgres.rowcounts.live.csv")))
 rest = dict(csv.reader(open(b / "postgres.rowcounts.restored.csv")))
 diff = {t: [live.get(t), rest.get(t)] for t in sorted(set(live) | set(rest)) if live.get(t) != rest.get(t)}
@@ -50,7 +60,10 @@ result = {"checked_at_utc": datetime.datetime.now(datetime.timezone.utc).isoform
           "key_tables": {t: rest.get(t) for t in ("auth_user", "core_userpreferences", "core_watchlistitem", "core_publicfactcard", "django_migrations")}}
 sq = b / "sqlite_restore_check.jsonl"
 result["sqlite"] = [json.loads(l) for l in sq.read_text().splitlines() if l.strip()] if sq.exists() else []
-result["ok"] = not hard and owner.startswith("1:owner@local.invalid:t") and sqlite_ok and len(rest) > 0
+rr = b / "research_restore_check.json"
+result["research"] = json.loads(rr.read_text()) if rr.exists() and rr.read_text().strip() else None
+result["research_ok"] = research_ok
+result["ok"] = not hard and owner.startswith("1:owner@local.invalid:t") and sqlite_ok and research_ok and len(rest) > 0
 (b / "RESTORE_CHECK.json").write_text(json.dumps(result, indent=1))
 print(json.dumps(result))
 sys.exit(0 if result["ok"] else 1)

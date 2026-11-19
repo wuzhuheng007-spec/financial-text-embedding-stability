@@ -161,7 +161,7 @@
     const state=document.createElement('p');
     state.textContent=signal ? (en()?`Daily tone available for ${signal.n1_valid_company_count ?? 0} companies. This is text tone, not a return forecast.`:
       `日度语气覆盖 ${signal.n1_valid_company_count ?? 0} 家公司；这表示文字语气，不是涨跌预测。`) :
-      (en()?'No published daily snapshot yet; see the schedule and collection gaps below.':'尚无已发布的日度快照；计划时间与采集缺口见下方记录。');
+      (en()?'No published daily snapshot yet; see the schedule and collection gaps below.':'新闻情绪评分的日度快照：尚无已发布（与研究工作台的价格数据快照无关）；计划时间与采集缺口见下方记录。');
     summary.append(text,state);
     const companies=(signal?.companies||[]).filter(x=>x.n1!==null&&x.n1!==undefined);
     if(companies.length){const list=document.createElement('ul');companies.forEach(x=>{

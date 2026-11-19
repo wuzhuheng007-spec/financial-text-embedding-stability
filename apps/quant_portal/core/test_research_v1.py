@@ -75,3 +75,24 @@ class ResearchEndpointTests(TestCase):
         self.assertEqual(self.client.post(reverse("research_run_cancel", args=[q["run_id"]])).json()["result"], "CANCELLED")
         self.assertEqual(self.client.get("/research/runs/..%2Fetc.json").status_code, 404)
         self.assertEqual(self.client.get("/research/runs/not-a-run/ledger.csv?bps=0").status_code, 404)
+
+
+@override_settings(PERSONAL_MODE=True, PERSONAL_FEED_OWNER_USERNAME=OWNER)
+class ResearchRerunTests(ResearchEndpointTests):
+    def test_rerun_links_retries_and_reports_audit(self):
+        self.seed(); self.client.force_login(self.user)
+        from scripts.quant_research_v1.worker import run_once
+        r = self.client.post(reverse("research_run_create"), {"dataset": "syn@1", "factor": "mom20@1", "protocol": "mom20-daily-long-cash"}).json()
+        run_once(60)
+        runs = self.client.get(reverse("research_registry_json")).json()["runs"]
+        self.assertTrue(runs[0]["latest_audit"]["ok"]); self.assertEqual(runs[0]["latest_audit"]["verifier_version"], "audit-v2.0")
+        again = self.client.post(reverse("research_run_rerun", args=[r["run_id"]])).json()
+        self.assertEqual(again["result"], "QUEUED")
+        db = registry.connect()
+        self.assertIsNone(db.execute("select attempt_of from runs where run_id=?", (again["run_id"],)).fetchone()[0])  # succeeded -> plain rerun
+        registry.request_cancel(db, again["run_id"]); db.close()
+        retry = self.client.post(reverse("research_run_rerun", args=[again["run_id"]])).json()
+        db = registry.connect()
+        self.assertEqual(db.execute("select attempt_of from runs where run_id=?", (retry["run_id"],)).fetchone()[0], again["run_id"]); db.close()
+        detail = self.client.get(reverse("research_run_json", args=[r["run_id"]])).json()
+        self.assertTrue(detail["latest_audit"]["ok"])

@@ -513,7 +513,7 @@
       selectSymbol(sym); requestAnimationFrame(drawChart);
     }
     if (view === 'settings' && arg === 'sources') { const d = $('sources'); if (d) { d.open = true; d.scrollIntoView({block: 'start'}); } }
-    else if (view === 'research' && arg === 'sec') $('official-filings-root')?.scrollIntoView({block: 'start'});
+    else if (view === 'research' && arg === 'sec') { const d = $('rs-sec'); if (d) d.open = true; $('official-filings-root')?.scrollIntoView({block: 'start'}); }
     else window.scrollTo(0, 0);
     renderCards(connState().state === 'down');
   }

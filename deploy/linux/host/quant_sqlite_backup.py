@@ -14,7 +14,8 @@ verify BACKUP_DIR RESTORE_DIR
 """
 import hashlib, json, pathlib, shutil, sqlite3, sys
 
-DIGEST_ROW_LIMIT = 200_000
+# No row limit: every table is digested in full, streaming. (Until 2026-11-19 a 200,000-row cap
+# left larger tables with a NULL digest that could not be checked.)
 
 
 def summarize(path: pathlib.Path, *, uri_ro: bool) -> dict:
@@ -23,15 +24,12 @@ def summarize(path: pathlib.Path, *, uri_ro: bool) -> dict:
     try:
         out = {}
         for (name,) in con.execute("select name from sqlite_master where type='table' and name not like 'sqlite_%' order by name"):
-            n = con.execute(f'select count(*) from "{name}"').fetchone()[0]
-            digest = None
-            if n <= DIGEST_ROW_LIMIT:
-                h = hashlib.sha256()
-                cols = [r[1] for r in con.execute(f'pragma table_info("{name}")')]
-                for row in con.execute(f'select {",".join(chr(34) + c + chr(34) for c in cols)} from "{name}" order by {",".join(chr(34) + c + chr(34) for c in cols)}'):
-                    h.update(json.dumps(row, default=str).encode()); h.update(b"\n")
-                digest = h.hexdigest()
-            out[name] = {"rows": n, "sha256": digest}
+            h, n = hashlib.sha256(), 0
+            cols = [r[1] for r in con.execute(f'pragma table_info("{name}")')]
+            q = ",".join(chr(34) + c + chr(34) for c in cols)
+            for row in con.execute(f'select {q} from "{name}" order by {q}'):
+                h.update(json.dumps(row, default=str).encode()); h.update(b"\n"); n += 1
+            out[name] = {"rows": n, "sha256": h.hexdigest()}
         return out
     finally:
         con.close()
@@ -43,8 +41,11 @@ def backup(src: pathlib.Path, out: pathlib.Path) -> dict:
         rel = db.relative_to(src).as_posix()
         target = out / rel
         target.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(db, timeout=60) as s, sqlite3.connect(target) as d:
+        s, d = sqlite3.connect(db, timeout=60), sqlite3.connect(target)
+        try:
             s.backup(d)
+        finally:
+            s.close(); d.close()
         con = sqlite3.connect(target)
         con.execute("pragma journal_mode=DELETE")
         check = con.execute("pragma quick_check").fetchone()[0]
@@ -69,11 +70,13 @@ def verify(backup_dir: pathlib.Path, restore_dir: pathlib.Path) -> dict:
         check = con.execute("pragma quick_check").fetchone()[0]
         con.close()
         now = summarize(restored, uri_ro=False)
-        same_copy = now == m["copy"]
+        # A missing (NULL) digest is never a match: it means the table was not checked.
+        no_digest = sorted({t for t, v in list(m["copy"].items()) + list(now.items()) if not v.get("sha256")})
+        same_copy = now == m["copy"] and not no_digest
         source_diff = {t: [m["source_rows_at_backup"].get(t), now.get(t, {}).get("rows")]
                        for t in set(m["source_rows_at_backup"]) | set(now)
                        if m["source_rows_at_backup"].get(t) != now.get(t, {}).get("rows")}
-        entry = {"quick_check": check, "matches_backup_manifest": same_copy,
+        entry = {"quick_check": check, "matches_backup_manifest": same_copy, "tables_without_digest": no_digest,
                  "row_count_differences_vs_source_at_backup": source_diff,
                  "rows": {t: v["rows"] for t, v in now.items()}}
         if rel.endswith("official_filings.sqlite3"):

@@ -9,5 +9,9 @@ REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.op
 # Own lock: one research job at a time; does not wait on the backup/SEC data lock.
 exec 9>/run/lock/quant-research.lock
 flock -n 9 || { echo "a research job is already running"; exit 0; }
+IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
+# Research job containers already running (normally none, since this lock is held): lets the worker
+# confirm that a RUNNING row whose lease expired really has no live worker before marking it lost.
+LIVE=$(docker ps --filter label=com.docker.compose.service=research-runner --format '{{.ID}}' | paste -sd, -)
 exec docker compose -f compose.yaml --env-file "$ENV" --profile jobs run --rm --no-deps -T \
-  -e QUANT_CODE_VERSION="$REV" research-runner
+  -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG" -e QUANT_LIVE_WORKERS="$LIVE" research-runner

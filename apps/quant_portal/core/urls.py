@@ -11,6 +11,7 @@ urlpatterns = [
     path("research/runs/", views.research_run_create, name="research_run_create"),
     path("research/runs/<str:run_id>.json", views.research_run_json, name="research_run_json"),
     path("research/runs/<str:run_id>/cancel/", views.research_run_cancel, name="research_run_cancel"),
+    path("research/runs/<str:run_id>/rerun/", views.research_run_rerun, name="research_run_rerun"),
     path("research/runs/<str:run_id>/ledger.csv", views.research_run_ledger, name="research_run_ledger"),
     path("personal-feed/timeline.json", views.personal_timeline_json, name="personal_timeline_json"),
     path("personal-feed/quote-selection/", views.personal_quote_selection, name="personal_quote_selection"),

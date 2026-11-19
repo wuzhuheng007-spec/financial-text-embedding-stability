@@ -1,7 +1,7 @@
 /* Quant terminal v20: dark-first, compact. Tokens first; components below. */
 :root{
   --bg:#080d16;--bg-2:#0c1320;--card:#111a29;--card-2:#152033;--hover:#18253a;
-  --line:#1d2a3e;--line-2:#2a3b55;--text:#e6edf6;--text-2:#a3b3c7;--text-3:#6f819a;
+  --line:#1d2a3e;--line-2:#2a3b55;--text:#eef3f9;--text-2:#b8c5d6;--text-3:#8a9bb2;
   --accent:#22c3e6;--accent-2:#0ea5c6;--accent-bg:rgba(34,195,230,.12);
   --rise:#f0525f;--fall:#1fbf75;--warn:#f2b247;--danger:#f0525f;--ok:#1fbf75;
   --s-pre:#a78bfa;--s-reg:#38bdf8;--s-after:#f59e0b;--s-night:#94a3b8;
@@ -24,7 +24,7 @@
 
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text)}
-body{font:14px/1.5 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font:15px/1.55 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -286,3 +286,10 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .run-succeeded{color:var(--ok)}.run-failed{color:var(--danger)}.run-running,.run-queued{color:var(--accent)}
 .q-basis{font-size:11px;color:var(--text-3);white-space:nowrap}
 .mk-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.rs-more-title{font-size:13px;color:var(--text-2);margin:22px 0 6px;font-weight:600}
+.rw-new{outline:2px solid var(--accent);outline-offset:-2px}
+.rw-status{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.rw-limits{margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg-2);font-size:13px}
+.rw-limits p{margin:4px 0 0;color:var(--text-2)}
+.rw-actions{white-space:nowrap}.rw-actions .button{margin-right:4px}
+.rw-runs-table td{vertical-align:middle}

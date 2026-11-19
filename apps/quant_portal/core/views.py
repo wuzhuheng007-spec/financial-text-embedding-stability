@@ -483,6 +483,26 @@ def _research_owner(request):
     return registry, REPO_ROOT
 
 
+def _latest_audit(root, run_id):
+    """Most recent independent audit for a run: written by the run itself (audit_*.json) or a later
+    re-audit kept under research/audits/<run_id>/. Older files are never modified."""
+    import json
+    if not _RUN_ID.match(run_id):
+        return None
+    found = list((root / "runs" / run_id).glob("audit_*.json")) + list((root / "audits" / run_id).glob("*.json"))
+    best = None
+    for f in found:
+        try:
+            a = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        item = {"verifier_version": a.get("verifier_version"), "ok": bool(a.get("ok")), "audited_at_utc": a.get("audited_at_utc"),
+                "problems": (a.get("problems") or [])[:3], "file": f.relative_to(root).as_posix()}
+        if best is None or (item["audited_at_utc"] or "") > (best["audited_at_utc"] or ""):
+            best = item
+    return best
+
+
 def _no_store(response):
     response["Cache-Control"] = "private, no-store"
     return response
@@ -504,7 +524,34 @@ def research_registry_json(request):
                           "segments": cfg["segments"], "execution": cfg["execution"]["price"],
                           "return_label": cfg["price_series"]["return_label"]})
     data["protocols"] = protocols
+    for r in data.get("runs", []):
+        r["latest_audit"] = _latest_audit(registry.root(), r["run_id"])
     return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
+@require_POST
+def research_run_rerun(request, run_id):
+    """New run with the same dataset, factor and frozen config; linked as a retry if the original failed or was cancelled."""
+    registry, _ = _research_owner(request)
+    import json
+    if not _RUN_ID.match(run_id):
+        raise Http404()
+    db = registry.connect()
+    try:
+        row = db.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
+        if row is None:
+            raise Http404()
+        if row["status"] in ("QUEUED", "RUNNING"):
+            return JsonResponse({"result": "REJECTED", "reason": "run still active"}, status=400)
+        new_id = registry.create_run(db, (row["dataset_id"], row["dataset_version"]), (row["factor_id"], row["factor_version"]),
+                                     json.loads(row["config_json"]), requested_by=request.user.username,
+                                     attempt_of=run_id if row["status"] in ("FAILED", "CANCELLED") else None)
+    except (LookupError, ValueError) as exc:
+        return JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400)
+    finally:
+        db.close()
+    return _no_store(JsonResponse({"result": "QUEUED", "run_id": new_id, "attempt_of": run_id}))
 
 
 @login_required
@@ -566,6 +613,14 @@ def research_run_json(request, run_id):
         for name in ("metrics", "curves", "verify"):
             f = path / f"{name}.json"
             data[name] = json.loads(f.read_text(encoding="utf-8")) if f.is_file() else None
+        data["latest_audit"] = _latest_audit(registry.root(), run_id)
+        data["errata"] = None
+        from .personal_feed_cache import REPO_ROOT
+        er = REPO_ROOT / "configs/quant_research_mom20_v1.ERRATA.json"
+        if er.is_file() and rows[0]["protocol_id"] == "mom20-daily-long-cash":
+            e = json.loads(er.read_text(encoding="utf-8"))
+            if run_id in e["applies_to"]["runs"] or rows[0].get("config_sha256") == e["applies_to"]["config_sha256"]:
+                data["errata"] = {"erratum_id": e["erratum_id"], "corrections": [c["correct"] for c in e["corrections"]]}
         log = path / "run.log"
         data["log_tail"] = log.read_text(encoding="utf-8").splitlines()[-30:] if log.is_file() else []
     return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))

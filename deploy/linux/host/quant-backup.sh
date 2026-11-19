@@ -39,6 +39,17 @@ for vol in personal_var private_artifacts; do
 done
 chown -R root:root "$DIR/sqlite"; chmod -R go-rwx "$DIR/sqlite"
 
+# 2b. Research registry + files at ONE checkpoint: hold the research lock so no research job
+#     (quant-research-runner uses flock -n on the same lock) can write while they are copied.
+exec 8>/run/lock/quant-research.lock
+flock -w 900 8 || { echo "research lock busy for 15 min; backup skipped" >&2; exit 75; }
+mkdir -p "$DIR/research_backup"; chown 10001:10001 "$DIR/research_backup"
+REV=$(docker image inspect "$APP_IMAGE" --format '{{index .Config.Labels "org.opencontainers.image.revision"}}')
+IMG=$(docker image inspect "$APP_IMAGE" --format '{{.Id}}')
+docker run --rm --network none --user 10001:10001 --entrypoint python   -e QUANT_CODE_VERSION="$REV" -e QUANT_IMAGE_ID="$IMG"   -v quant-personal_personal_var:/src -v "$DIR/research_backup:/out" -v "$HOST_TOOLS/quant_research_backup.py:/x/quant_research_backup.py:ro"   "$APP_IMAGE" /x/quant_research_backup.py backup /src /out </dev/null > "$DIR/research_backup.log"
+exec 8>&-
+chown -R root:root "$DIR/research_backup"; chmod -R go-rwx "$DIR/research_backup"
+
 # 3. Manifest, then publish atomically
 ( cd "$DIR" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS )
 mv "$DIR" "$ROOT/$STAMP"

@@ -118,20 +118,24 @@
       <details class="disclosure section"><summary>实验详情</summary><div class="disclosure-body" id="rw-d-tech"></div></details>
     </section>
   </section>
+  <h2 class="rs-more-title">其他研究资料</h2>
+  <details class="disclosure section" id="rs-old-sentiment"><summary>旧研究：新闻情绪评分（英文 v4 / 中文 v4.1）</summary><div class="disclosure-body">
   <section id="panel-research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no" aria-labelledby="research-sentiment-heading">
     <div class="section-head"><h2 id="research-sentiment-heading">研究情绪</h2><span class="count" id="research-sentiment-count"></span></div>
     <p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的研究候选；文字语气不代表报道属实或预测收益。</p>
     <div id="research-sentiment-content" aria-live="polite"></div>
-  </section>
-  <section class="section card" id="official-filings-root" data-anchor="sec" data-url="{% url 'official_filings_json' %}" data-research-url="{% url 'research_sentiment_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="official-title">
+  </section></div></details>
+  <details class="disclosure section" id="rs-sec"><summary>官方公告 · SEC EDGAR（申报资料，非新闻）</summary><div class="disclosure-body">
+  <section id="official-filings-root" data-anchor="sec" data-url="{% url 'official_filings_json' %}" data-research-url="{% url 'research_sentiment_json' %}" data-time-zone="{{ display_timezone }}" aria-labelledby="official-title">
     <div class="section-head"><h2 id="official-title">官方公告 · SEC EDGAR</h2><span class="count" id="official-count"></span></div>
     <p class="muted" id="official-source-state" role="status">读取中…</p>
     <div id="official-instruments" class="table-scroll"></div>
     <div id="official-filings" aria-live="polite"></div>
     <p class="fine-print">基金类（TQQQ、SOXX、QQQ）在 SEC 只能定位到发行信托，标“信托层级 · 非本 ETF 专属”的申报可能只涉及同信托下的其他基金；SPY 标为基金信托层级，未逐只核对基金归属。</p>
-  </section>
+  </section></div></details>
   {% endif %}
-  <section class="section" aria-labelledby="facts-title">
+  <details class="disclosure section" id="rs-facts"><summary>历史财报事实卡（{{ fact_cards|length }}）</summary><div class="disclosure-body">
+  <section aria-labelledby="facts-title">
     <div class="section-head"><h2 id="facts-title">历史财报事实卡</h2><span class="count">{{ fact_cards|length }}</span></div>
     {% if fact_cards %}
       <p class="fine-print">历史训练期材料 · 非最新财报。{% if personal_mode %}历史事实摘要由 Codex 回读官方材料后形成，仍待独立核验。{% endif %}</p>
@@ -145,7 +149,7 @@
     {% else %}
       <div class="empty-state">暂无事实卡</div>
     {% endif %}
-  </section>
+  </section></div></details>
 </section>
 
 {# ===================== 设置 ===================== #}
