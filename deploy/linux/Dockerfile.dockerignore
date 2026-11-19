@@ -15,6 +15,7 @@
 !scripts/market_observer_v1/**
 !scripts/quant_personal_feed/**
 !scripts/quant_cloud_official/**
+!scripts/quant_research_v1/**
 !scripts/news_sentiment_factor_v41/**
 !scripts/news_sentiment_factor_v42/**
 !scripts/news_sentiment_factor_v43/**
