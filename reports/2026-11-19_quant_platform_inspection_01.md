@@ -69,3 +69,6 @@ No Django suite, real browser product session, throughput benchmark, model train
 - Backtests use chronological splits, appropriate separation for overlapping future labels, explicit next executable time and costs; out-of-sample results remain separate from development results.
 - Jobs expose state, logs, cancellation, resource limits and output artifact IDs; start with a simple queue and avoid premature distributed infrastructure.
 - Failure/empty states remain concise in UI; detailed diagnostics stay in Settings/logs.
+
+## Concurrent branch update
+Before PR delivery, the base branch advanced to 0e6afda40337143c55be6e0710e530e7bdd51258. The inspected UI file has the same blob SHA at that commit. The audit branch incorporates that base commit and retains its new research records; this patch does not overwrite them.

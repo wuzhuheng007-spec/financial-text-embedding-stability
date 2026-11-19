@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "validation_type": "Same-author saved-source readback and timezone check",
+  "events_checked": [
+    {
+      "event_id": "US_FOMC_20190130",
+      "source_hash_matches": true,
+      "declared_time_marker_in_saved_html": true,
+      "timezone_conversion_verified": true,
+      "missing_expectation_preserved": true
+    },
+    {
+      "event_id": "US_FOMC_20200323",
+      "source_hash_matches": true,
+      "declared_time_marker_in_saved_html": true,
+      "timezone_conversion_verified": true,
+      "missing_expectation_preserved": true
+    },
+    {
+      "event_id": "CN_POLICY_20240924",
+      "source_hash_matches": true,
+      "declared_time_marker_in_saved_html": true,
+      "timezone_conversion_verified": true,
+      "missing_expectation_preserved": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+id,fact,status,source,lines,interpretation
+BW01,当前维护版本使用五个情绪代理，已去掉NYSE成交量换手代理,VERIFIED_VERSION_SPECIFIC,README.md,24;36-37,不是直接复现2006论文原始六代理版本
+BW02,作者明确不建议以发布序列相邻期差分衡量情绪变化,VERIFIED_RESTRICTION,README.md,27-28,本研究不把SENT(t)-SENT(t-1)当作拐点因子
+BW03,当前脚本在196507至202512范围估计标准化、正交化回归及PCA,VERIFIED_CODE_WINDOW,StataCode/1. Create Baker-Wurgler Sentiment.do,28-29;137-160;196,历史日期的发布分数使用了更晚的拟合样本；本轮未估计其对预测表现的影响
+BW04,2026修订正交化宏观处理为移动平均去趋势偏离,VERIFIED_SOURCE_AND_MEMO,StataCode/1. Create Baker-Wurgler Sentiment.do; BW INDEX DETREND.pdf,"58-98; memo pp1,3-4",不能只根据README旧宏观列的同比说明重造新版本SENT_ORTH
+BW05,工作簿只有月份归属，没有逐期首发/修订可用时刻,MISSING_PUBLICATION_CALENDAR,SENTIMENT.xlsx,DATA schema and README,往后平移一个月并不能证明当时可得性
+BW06,宏观获取脚本直接导入FRED序列，未记录逐次历史vintage参数,VINTAGE_NOT_RECONSTRUCTED,StataCode/0. Download Macro Data.do,import fred and output block,当前工作簿不能自动充当ALFRED历史发布存档
+BW07,GitHub版本中包括无DATA页和截断DATA页的中间文件,VERIFIED_FILE_INVENTORY,SENTIMENT.xlsx commit history,results/revision_audit/workbook_inventory.csv,提交日期不是首次公开时间；不能默认每个文件版本都有完整历史
