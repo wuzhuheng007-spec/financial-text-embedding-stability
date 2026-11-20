@@ -226,8 +226,10 @@
     '研究':'Research','研究工作台':'Research workbench','数据集':'Datasets','策略与因子':'Strategies and factors',
     '实验任务':'Experiments','结果':'Results','创建实验':'New experiment','协议':'Protocol','策略 / 因子':'Strategy / factor',
     '提交到后台':'Submit to background','实验列表':'Experiment list','查看':'View','取消':'Cancel',
-    '年化':'Annualized','最大回撤':'Max drawdown','平均暴露':'Average exposure','累计费用':'Cumulative cost',
-    'Sharpe（描述）':'Sharpe (descriptive)','买入持有':'Buy and hold','MA200 基准':'MA200 benchmark'
+    '年化':'Annualized','最大回撤':'Max drawdown','平均暴露':'Avg. exposure','累计费用':'Cumulative cost',
+    'Sharpe（描述）':'Sharpe (desc.)','买入持有':'Buy and hold','MA200 基准':'MA200 benchmark',
+    // main navigation (sidebar and compact tab bar), so the bar is not half Chinese / half English
+    '总览':'Overview','行情':'Markets','新闻':'News','设置':'Settings','折叠':'Collapse'
   };
   function t(key) { return language==='en' ? (catalog[key]||null) : key; }
   window.quantI18n={language,t,catalog};
