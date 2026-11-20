@@ -356,11 +356,11 @@
     if (!rows.length) { topBox.replaceChildren(node('div','empty-state','暂无重点事件')); return; }
     topBox.replaceChildren(...rows.map((row,index)=>{
       const button=node('button','top10-row'); button.type='button';
-      const title=language==='en' ? (row.headline_en || `Translation pending — ${row.title}`) : (row.headline_zh || row.title);
+      const title=language==='en' ? (row.headline_en || row.title) : (row.headline_zh || row.title);
       const why=row.scope==='DIRECT_SUBJECT' ? bilingual(['直接涉及关注对象','Directly concerns a followed entity']) :
         row.scope==='INDUSTRY' ? bilingual(['涉及科技产业链','Technology industry chain']) : bilingual(['相关宏观事件','Relevant macro event']);
       const phrase=row.evidence_phrase || bilingual(['匹配依据未知','Match unknown']);
-      const evidence=language==='en' && /[\u3400-\u9fff]/.test(phrase) ? `Translation pending — ${phrase}` : phrase;
+      const evidence=phrase;
       button.append(node('span','top10-rank',`#${index+1} · ${title}`),
         node('span','news-meta',`${why} · ${evidence} · ${stamp(row.published_at_utc || row.received_at)}`),
         node('span','analysis-status',bilingual(['供应商报道 · 点击查看来源','Supplier report · open source details']) +
@@ -493,7 +493,7 @@
       wrap.append(node('p','muted',`${bilingual(['后续观察','What to watch'])}: ${a[`watch_${language}`] || bilingual(sourceHint)}`));
       return wrap;
     }
-    const value=(stem)=>a[`${stem}_${language}`] || (language==='en' ? `Translation pending — ${a[`${stem}_zh`]||''}` : '证据不足');
+    const value=(stem)=>a[`${stem}_${language}`] || a[`${stem}_zh`] || (language==='en' ? 'Insufficient evidence' : '证据不足');
     wrap.append(node('p','analysis-status',item.analysis_display_kind === 'CODEX_REVIEWED' ?
       bilingual(['同团队核对通过 · 新闻主张仍待来源核实','Same-team review accepted · supplier claim remains unverified']) :
       bilingual(['机器生成翻译与分析 · 新闻仍待核实','Machine-generated translation and analysis · report unverified'])),
@@ -506,7 +506,7 @@
       quote.append(originalQuote); wrap.append(quote);
     }
     wrap.append(node('p',null,`${bilingual(['模型推断','Model inference'])}: ${value('analysis')}`));
-    for (const target of a.impacts||[]) wrap.append(node('p',null,`${bilingual(['条件性影响','Conditional impact'])} · ${target.name} · ${bilingual(toneLabels[target.direction]||toneLabels.UNKNOWN)}: ${target[`why_${language}`] || `Translation pending — ${target.why_zh}`}`));
+    for (const target of a.impacts||[]) wrap.append(node('p',null,`${bilingual(['条件性影响','Conditional impact'])} · ${target.name} · ${bilingual(toneLabels[target.direction]||toneLabels.UNKNOWN)}: ${target[`why_${language}`] || (target.why_zh || '')}`));
     wrap.append(node('p','muted',bilingual(['行情观察：未与该新闻建立可比因果关系','Market observation: no comparable causal attribution established'])));
     return wrap;
   }
@@ -522,7 +522,7 @@
     const reviewedTranslation=['MACHINE_TRANSLATION_CODEX_REVIEWED','MACHINE_TRANSLATION_CODEX_CORRECTED'].includes(item.source_translation_status) ? item.source_translation_en : null;
     const translationTitle=reviewedTranslation?.split(/[.!?。！？\n]/,1)[0]?.trim();
     const headline=node('h3', null, language==='en' && translationTitle ? translationTitle :
-      modelTitle || (language==='en' ? `Translation pending — ${sourceTitle}` : sourceTitle));
+      modelTitle || sourceTitle);
     if (language==='en' && reviewedTranslation) headline.setAttribute('translate','no');
     article.append(headline);
     if (item.display_title_kind === 'SOURCE_FIRST_SENTENCE') article.append(node('p','news-meta',bilingual(['原文首句摘录标题','Title excerpted from the original first sentence'])));
