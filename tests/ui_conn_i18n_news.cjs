@@ -102,6 +102,16 @@ function strings(src) {
       let j = i + 1, s = '';
       while (j < src.length && src[j] !== c) { if (src[j] === BS) { s += src[j] + src[j + 1]; j += 2; } else { s += src[j]; j++; } }
       res.push(s); i = j + 1;
+      // a template literal can hold further string literals inside its ${ } expressions (a conditional suffix, a
+      // fallback word): those are separate pieces of UI text and must be checked too
+      if (c === '`') {
+        let k = 0;
+        while ((k = s.indexOf('${', k)) >= 0) {
+          let depth = 1, e = k + 2;
+          while (e < s.length && depth) { if (s[e] === '{') depth++; else if (s[e] === '}') depth--; e++; }
+          res.push(...strings(s.slice(k + 2, e - 1))); k = e;
+        }
+      }
     } else i++;
   }
   return res;
@@ -123,7 +133,11 @@ test('every Chinese string in the UI sources has a complete English rendering', 
   const missing = [];
   for (const [lit, file] of uiLiterals()) {
     if (allowed.has(lit)) continue;
-    const sample = lit.replace(/\$\{[^}]*\}/g, '7');
+    let sample = '', k = 0;                                           // replace each ${ } expression (nested braces included) by a number
+    while (k < lit.length) {
+      if (lit[k] === '$' && lit[k + 1] === '{') { let depth = 1, e = k + 2; while (e < lit.length && depth) { if (lit[e] === '{') depth++; else if (lit[e] === '}') depth--; e++; } sample += '7'; k = e; }
+      else sample += lit[k++];
+    }
     if (han.test(i18n.translate(sample))) missing.push(`${file}: ${lit}`);
   }
   assert.deepEqual(missing, []);
