@@ -72,20 +72,65 @@
   const currencyOf = sym => quoteOf(sym)?.currency || metaOf(sym)?.currency || null;
 
   // ---------- connection ----------
-  function connState() {
-    if (!feed && !feedError) return {state: 'idle', text: ''};
-    if ((feed || feedError) && Date.now() - lastFeedOk > 15e3) return {state: 'down', text: '连接中断'};
-    if (feed?.provider_gates?.moomoo) return {state: 'idle', text: '行情未启用'};
-    const m = (feed?.states || []).find(x => x.provider === 'moomoo');
-    if (!m) return {state: 'idle', text: ''};
-    if (m.state === 'AUTH_EXPIRED') return {state: 'down', text: '授权已过期'};
-    if (m.worker_alive !== 1 || m.state === 'DISCONNECTED' || m.heartbeat_stale) return {state: 'down', text: '连接中断'};
-    return {state: 'ok', text: '行情已连接'};
+  // Four separate things can be wrong, and each gets its own short label and its own row in Settings:
+  //   page      this browser's polling of the site (no successful read for 15 s)
+  //   collector the quote collector process on the server (not alive, or its heartbeat is stale)
+  //   provider  the collector's connection to the quote supplier (disconnected / reconnecting)
+  //   auth      the supplier authorization
+  // A closed market is none of these. "ok" needs the provider to have stayed connected for SETTLE_MS, so a
+  // connect-then-drop loop reads as "reconnecting", never as a healthy connection.
+  const SETTLE_MS = 30e3;
+  let providerUnsettledAt = 0;
+  function connLayers() {
+    const m = (feed?.states || []).find(x => x.provider === 'moomoo') || null;
+    const page = !feed && !feedError ? 'idle' : (Date.now() - lastFeedOk > 15e3 ? 'down' : 'ok');
+    const collector = !m ? 'unknown' : (m.worker_alive !== 1 || m.heartbeat_stale ? 'down' : 'ok');
+    const raw = m?.state || null;
+    let provider = !m ? 'unknown' : raw === 'AUTH_EXPIRED' ? 'auth' : raw === 'DISCONNECTED' ? 'down' : raw === 'CONNECTING' ? 'connecting' : 'ok';
+    if (page === 'ok' && (provider === 'down' || provider === 'connecting')) providerUnsettledAt = lastFeedOk;
+    if (provider === 'ok' && providerUnsettledAt && Date.now() - providerUnsettledAt < SETTLE_MS) provider = 'connecting';
+    return {page, collector, provider, gate: feed?.provider_gates?.moomoo || null, m};
   }
+  function connState() {
+    const L = connLayers();
+    if (L.page === 'idle') return {state: 'idle', text: '', layer: null};
+    if (L.page === 'down') return {state: 'down', text: '页面连接中断', layer: 'page'};
+    if (L.gate) return {state: 'idle', text: '行情未启用', layer: null};
+    if (!L.m) return {state: 'idle', text: '', layer: null};
+    if (L.provider === 'auth') return {state: 'down', text: '授权已过期', layer: 'auth'};
+    if (L.collector === 'down') return {state: 'down', text: '采集进程中断', layer: 'collector'};
+    if (L.provider === 'down') return {state: 'down', text: '行情连接中断', layer: 'provider'};
+    if (L.provider === 'connecting') return {state: 'down', text: '重新连接中', layer: 'provider'};
+    return {state: 'ok', text: '行情已连接', layer: null};
+  }
+  const when = iso => { const t = ms(iso); return t == null ? '无记录' : fmtMDHMS.format(t); };
+  function connDetail(c) {
+    const L = connLayers(), m = L.m;
+    const rows = [
+      ['页面读取', L.page === 'ok' ? '正常' : L.page === 'down' ? '中断' : '未开始', lastFeedOk ? `最近成功读取 ${fmtMDHMS.format(lastFeedOk)}` : ''],
+      ['采集进程', L.collector === 'ok' ? '运行中' : L.collector === 'down' ? '已停止或心跳过期' : '无记录', m ? `心跳 ${when(m.heartbeat_at)}` : ''],
+      ['供应商连接', L.provider === 'ok' ? '已连接' : L.provider === 'connecting' ? '重新连接中' : L.provider === 'down' ? '已断开' : L.provider === 'auth' ? '授权已过期' : '无记录',
+        m ? `最近收到行情 ${when(m.last_received_at || m.last_push_at)}${m.last_error_class ? ` · 原因 ${m.last_error_class}` : ''}` : ''],
+    ];
+    const action = {page: '检查本机到网站的连接（SSH 隧道是否仍在运行），页面会自动重试。', collector: '采集进程需要在服务器上恢复；页面保留最后报价。',
+      provider: '采集器会自动重连；若长时间不恢复，查看上面的原因。页面保留最后报价。', auth: '需要在 moomoo 重新授权；页面保留最后报价。'}[c.layer] || '';
+    return {rows, action};
+  }
+  let connDetailSig = '';
   function renderConn() {
     const c = connState();
     const el = $('conn');
-    if (el) { el.dataset.state = c.state; el.querySelector('.conn-text').textContent = c.text; el.title = c.text; }
+    if (el) { el.dataset.state = c.state; el.dataset.layer = c.layer || ''; el.querySelector('.conn-text').textContent = c.text; el.title = c.text; }
+    const box = $('conn-detail');
+    if (box && (feed || feedError)) {       // also when the state is idle (quotes not enabled / no record): never leave an older reason on screen
+      const d = connDetail(c), sig = JSON.stringify(d);
+      if (sig !== connDetailSig) {
+        connDetailSig = sig;
+        const dl = h('dl', 'conn-rows');
+        for (const [k, v, extra] of d.rows) { const row = h('div'); row.append(h('dt', null, k), h('dd', null, v), h('dd', 'muted num', extra)); dl.append(row); }
+        box.replaceChildren(dl, ...(d.action ? [h('p', 'fine-print', d.action)] : []));
+      }
+    }
     return c;
   }
 
@@ -95,7 +140,7 @@
     const id = h('div', 'q-id'); const symEl = h('span', 'q-sym', sym); const nameEl = h('span', 'q-name'); id.append(symEl, nameEl);
     const row = h('div', 'q-price-row'); const price = h('span', 'q-price', '—'); const chg = h('span', 'q-change'); const basis = h('span', 'q-basis'); row.append(price, chg, basis);
     const sp = s('svg', {class: 'q-spark', viewBox: '0 0 112 46', preserveAspectRatio: 'none', 'aria-hidden': 'true'});
-    const meta = h('div', 'q-meta'); const sess = h('span', 'sess'); const stale = h('span', 'stale-tag', '连接中断'); stale.hidden = true;
+    const meta = h('div', 'q-meta'); const sess = h('span', 'sess'); const stale = h('span', 'stale-tag', '未在更新'); stale.hidden = true;
     const time = h('span', 'q-time'); meta.append(sess, stale, time);
     card.append(id, row, sp, meta);
     card.addEventListener('click', () => { location.hash = `#markets/${sym}`; });
@@ -125,8 +170,9 @@
     } else { setText(ref.chg, ''); ref.chg.title = ''; setText(ref.basis, ''); }
     const sess = q?.session;
     if (SESS[sess]) { ref.sess.hidden = false; ref.sess.dataset.s = sess; setText(ref.sess, SESS[sess]); } else ref.sess.hidden = true;
-    setText(ref.time, q?.source_at ? `更新 ${timeOf(q.source_at)}` : '');
-    ref.stale.hidden = !down;
+    // a quote from an earlier day shows its date: a bare HH:mm:ss from days ago must not read as a fresh update
+    setText(ref.time, q?.source_at ? `更新 ${fmtD.format(ms(q.source_at)) === fmtD.format(Date.now()) ? timeOf(q.source_at) : fmtMDHMS.format(ms(q.source_at))}` : '');
+    ref.stale.hidden = !down; if (down) setText(ref.stale, $('conn')?.querySelector('.conn-text')?.textContent || '未在更新');
     ref.card.classList.toggle('is-stale', down);
     ref.card.classList.toggle('is-selected', currentView === 'markets' && sym === selected);
     ref.card.setAttribute('aria-label', `${sym} ${priceText} ${c ? signed(c.change_pct_text) + '%' : ''}`);

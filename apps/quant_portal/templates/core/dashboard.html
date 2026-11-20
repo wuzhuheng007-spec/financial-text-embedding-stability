@@ -144,7 +144,7 @@
   </section>
   <h2 class="rs-more-title">其他研究资料</h2>
   <details class="disclosure section" id="rs-old-sentiment"><summary>旧研究：新闻情绪评分（英文 v4 / 中文 v4.1）</summary><div class="disclosure-body">
-  <section id="panel-research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" translate="no" aria-labelledby="research-sentiment-heading">
+  <section id="panel-research-sentiment" data-research-url="{% url 'research_sentiment_json' %}" aria-labelledby="research-sentiment-heading">
     <div class="section-head"><h2 id="research-sentiment-heading">研究情绪</h2><span class="count" id="research-sentiment-count"></span></div>
     <p class="muted" id="research-sentiment-explain">英文 v4 与中文 v4.1 的研究候选；文字语气不代表报道属实或预测收益。</p>
     <div id="research-sentiment-content" aria-live="polite"></div>
@@ -220,7 +220,8 @@
         </ul>
         {% endif %}
         {% if personal_feed_enabled %}
-        <div id="source-status-strip" class="feed-health-summary" role="status" translate="no" aria-label="其他数据源状态"></div>
+        <section class="status-card card section" id="conn-card" aria-labelledby="conn-card-title"><div class="card-top"><h2 id="conn-card-title">行情连接</h2></div><div id="conn-detail" role="status"><p class="muted">读取中…</p></div></section>
+        <div id="source-status-strip" class="feed-health-summary" role="status" aria-label="其他数据源状态"></div>
         <section class="status-card card section" id="news-src-card" data-news-url="{% url 'news_json' %}" aria-labelledby="news-src-title"><div class="card-top"><h2 id="news-src-title">新闻源</h2><span class="tag">读取中</span></div><div class="nv-card-body"><p class="muted">读取中…</p></div></section>
         <div class="status-grid section" aria-label="数据来源状态">
           <section class="status-card card"><div class="card-top"><h2>moomoo 行情</h2><span class="tag" id="moomoo-state">{{ provider_states.moomoo.state|default:'NOT_CONNECTED' }}</span></div><p class="muted" id="moomoo-times"></p></section>
@@ -238,9 +239,10 @@
 {% if personal_feed_enabled %}
 <script defer charset="utf-8" src="{% static 'core/personal_feed.js' %}?v=20-2"></script>
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
-<script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v4"></script>
+<script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v5"></script>
 <script defer charset="utf-8" src="{% static 'core/research_v1.js' %}?v=m1-2"></script>
-<script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=22-1"></script>
+<script defer charset="utf-8" src="{% static 'core/news_text_v1.js' %}?v=1"></script>
+<script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=23-1"></script>
 {% endif %}
-<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=21-2"></script>
+<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=22-2"></script>
 {% endblock %}

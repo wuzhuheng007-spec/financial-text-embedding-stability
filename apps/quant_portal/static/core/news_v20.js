@@ -15,6 +15,9 @@
   const fmtS = new Intl.DateTimeFormat('zh-CN', {timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false});
   const t = (iso, sec) => { const v = Date.parse(iso || ''); return Number.isFinite(v) ? (sec ? fmtS : fmt).format(v) : '—'; };
   const key = it => `${it.upstream}:${it.upstream_id}`;
+  // Titles arrive with HTML entities (&#39; &amp;). Decode once for display; the stored text is not changed and the
+  // result is only ever assigned through textContent.
+  const title = it => window.quantNewsText.decodeEntities(it.title || '(无标题)');
   const store = {get: k => { try { return localStorage.getItem(k); } catch (_) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} }};
   const safeUrl = u => { try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch (_) { return null; } };
   let data = null, shown = new Set(), pending = 0, selected = store.get('quant.news.selected');
@@ -53,7 +56,7 @@
     ov.replaceChildren(...items.map(it => {
       const a = h('a', 'list-row'); a.href = '#news'; a.addEventListener('click', () => { selected = key(it); store.set('quant.news.selected', selected); });
       const m = h('span', 'm'); m.append(h('span', null, it.source || ''), h('span', 'num', t(it.provider_created_at || it.first_seen_at)), tags(it));
-      a.append(h('span', 't', it.title || '(无标题)'), m); return a;
+      a.append(h('span', 't', title(it)), m); return a;
     }));
   }
 
@@ -62,7 +65,7 @@
     const r = $('nv-reader'); if (!r) return;
     if (!it) { r.replaceChildren(h('div', 'nv-reader-empty', data?.items?.length ? '选择左侧一条新闻阅读' : '')); return; }
     const head = h('header', 'nv-r-head');
-    head.append(h('h2', null, it.title || '(无标题)'));
+    head.append(h('h2', null, title(it)));
     const meta = h('div', 'nv-r-meta');
     meta.append(h('span', null, it.source || ''), h('span', 'num', `发布 ${t(it.provider_created_at, true)}`));
     if (it.provider_updated_at && it.provider_updated_at !== it.provider_created_at) meta.append(h('span', 'num', `更新 ${t(it.provider_updated_at, true)}`));
@@ -100,7 +103,7 @@
       const b = h('button', 'nv-item'); b.type = 'button'; b.dataset.key = key(it);
       b.setAttribute('aria-selected', String(key(it) === selected));
       const m = h('span', 'm'); m.append(h('span', 'num', t(it.provider_created_at || it.first_seen_at)), h('span', null, it.source || ''), tags(it));
-      b.append(h('span', 't', it.title || '(无标题)'), m);
+      b.append(h('span', 't', title(it)), m);
       b.addEventListener('click', () => { selected = key(it); store.set('quant.news.selected', selected);
         list.querySelectorAll('.nv-item').forEach(x => x.setAttribute('aria-selected', String(x === b))); readerFor(it);
         if (window.matchMedia('(max-width: 900px)').matches) $('nv-reader').scrollIntoView({block: 'start'}); });
@@ -162,7 +165,9 @@
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       data = await r.json();
     } catch (e) {
-      data = data || {items: [], providers: [], connection: {label: `新闻读取失败：${e.message}`, kind: 'down'}};
+      // keep what is already on screen, but never keep the old "connected" state after a failed read
+      const previous = data || {items: [], providers: []};
+      data = {...previous, connection: {...(previous.connection || {}), label: `新闻读取失败：${e.message}`, kind: 'down'}, stale_since: previous.stale_since || Date.now()};
     }
     fillSymbols(); renderOverview(); renderList(false); renderCard();
   }
