@@ -18,6 +18,7 @@ from scripts.market_observer_v1.moomoo_webapi_oauth import token_store
 from scripts.market_observer_v1.moomoo_ws import MoomooWebSocketPush, PROVIDER_NAME, WS_URL, validate_live_config
 from scripts.market_observer_v1.service import AuthorizationError, QuotaError
 
+from . import incidents
 from .store import PersonalFeedStore, published_utc, utc_now
 from .session_quotes import parse_push_children
 
@@ -99,6 +100,17 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
     store = PersonalFeedStore(cache, user_id)
     max_attempts = config["moomoo"]["max_reconnect_attempts"]
     attempt = 0
+    # What the loop was doing when something failed, and since when it has been failing: written into the
+    # sanitized incident record so a disconnect can be traced afterwards (phase, reason code, code location).
+    phase = "SELECT_SUBSCRIPTIONS"
+    failing_since: str | None = None
+    failures = 0
+
+    def incident(exc: BaseException, recorded_state: str) -> None:
+        nonlocal failing_since, failures
+        record = incidents.describe(exc, provider="moomoo", phase=phase, recorded_state=recorded_state, attempt=attempt)
+        failing_since = failing_since or record["at_utc"]; failures += 1
+        incidents.emit(record, store)
     try:
         store.ensure_selection(config["moomoo"]["priority_symbols"])
         store.provider_metric("moomoo", worker_alive=1)
@@ -117,8 +129,10 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                 live=live, token_store=token_store(TOKEN_FILE),
                 status_path=under_root(config["moomoo"]["status_path"]))
             try:
+                phase = "AUTHORIZE_AND_CONNECT"
                 store.state("moomoo","CONNECTING")
                 adapter.connect()
+                phase = "SUBSCRIBE_ACK"
                 accepted = {r["provider_code"] for r in adapter._ever_acknowledged}
                 skipped = {r["provider_code"]: r.get("reason", "SERVER_REJECTED")
                            for r in adapter._skipped}
@@ -131,6 +145,9 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                 state = adapter.connection_state
                 store.state("moomoo",state,success=True)
                 attempt = 0
+                if failures:
+                    incidents.emit(incidents.recovery(provider="moomoo", state=state, since_utc=failing_since, failures=failures), store)
+                    failing_since, failures = None, 0
                 # Closed-market pushes often repeat an identical quote. Keep
                 # changed source-time/price values, and batch liveness writes.
                 last_parent: dict[str, tuple[str, str]] = {}
@@ -147,9 +164,11 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                             if old not in new_desired:
                                 store.symbol_state(user_id,old,"STOPPED","USER_UNSUBSCRIBED")
                         break
+                    phase = "RECEIVE"
                     event = adapter.next_message(timeout_seconds=2)
                     state = adapter.connection_state
                     if event and event.get("kind") == "QUOTE":
+                        phase = "STORE_QUOTE"
                         quote = event["quote"]
                         code = quote["instrument_id"]
                         symbol = next((r["requested_symbol"] for r in live["subscriptions"]
@@ -172,6 +191,7 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                                 digest = hashlib.sha256(raw_push.encode("utf-8")).hexdigest()
                                 raw_key = (digest, quote["provider_time"])
                                 if last_raw.get(symbol) != raw_key:
+                                    phase = "STORE_SESSION_QUOTES"
                                     children = parse_push_children(quote,raw_sha256=digest)
                                     if children:
                                         store.put_session_quotes(user_id,children,
@@ -215,14 +235,17 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                                 pending_received = pending_source = None
                             last_activity_write = time.monotonic()
                             last_written_state = state
-            except AuthorizationError:
+            except AuthorizationError as exc:
+                incident(exc, "AUTH_EXPIRED")
                 store.state("moomoo","AUTH_EXPIRED",error_class="AUTHORIZATION")
                 return
-            except QuotaError:
+            except QuotaError as exc:
+                incident(exc, "RATE_LIMITED")
                 store.state("moomoo","RATE_LIMITED",error_class="SUBSCRIPTION_QUOTA")
                 return
             except Exception as exc:
                 attempt += 1
+                incident(exc, "DISCONNECTED")
                 store.state("moomoo","DISCONNECTED",error_class=type(exc).__name__)
                 if attempt >= max_attempts:
                     return

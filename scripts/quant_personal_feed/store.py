@@ -108,6 +108,11 @@ class PersonalFeedStore:
           CREATE TABLE IF NOT EXISTS provider_state_events (
             id INTEGER PRIMARY KEY, provider TEXT NOT NULL, state TEXT NOT NULL, at_utc TEXT NOT NULL);
           CREATE INDEX IF NOT EXISTS provider_state_events_time ON provider_state_events(provider,at_utc);
+          CREATE TABLE IF NOT EXISTS provider_incidents (
+            id INTEGER PRIMARY KEY, provider TEXT NOT NULL, at_utc TEXT NOT NULL, kind TEXT NOT NULL,
+            phase TEXT NOT NULL, recorded_state TEXT, error_class TEXT, reason_code TEXT NOT NULL,
+            detail_json TEXT NOT NULL);
+          CREATE INDEX IF NOT EXISTS provider_incidents_time ON provider_incidents(provider,at_utc);
           CREATE TABLE IF NOT EXISTS quotes (
             id INTEGER PRIMARY KEY, owner_id INTEGER NOT NULL, provider TEXT NOT NULL,
             symbol TEXT NOT NULL, provider_code TEXT NOT NULL, display_name TEXT,
@@ -263,6 +268,22 @@ class PersonalFeedStore:
         row = self.db.execute("SELECT business_attempts_today,business_day_utc FROM provider_state WHERE provider=?",
                               (provider,)).fetchone()
         return row["business_attempts_today"] if row and row["business_day_utc"] == utc_now()[:10] else 0
+
+    INCIDENT_ROWS_KEPT = 500
+
+    def record_incident(self, record: dict) -> None:
+        """Store one sanitized incident / recovery record (see incidents.py). Only the newest INCIDENT_ROWS_KEPT
+        rows per provider are kept, so a failure loop cannot grow the table without bound."""
+        provider = str(record["provider"])
+        self.db.execute("""INSERT INTO provider_incidents(provider,at_utc,kind,phase,recorded_state,error_class,reason_code,detail_json)
+          VALUES(?,?,?,?,?,?,?,?)""", (provider, record["at_utc"], record["kind"], record["phase"], record.get("recorded_state"),
+                                     record.get("error_class"), record["reason_code"], json.dumps(record, ensure_ascii=True, sort_keys=True)))
+        self.db.execute("""DELETE FROM provider_incidents WHERE provider=? AND id NOT IN (
+          SELECT id FROM provider_incidents WHERE provider=? ORDER BY id DESC LIMIT ?)""", (provider, provider, self.INCIDENT_ROWS_KEPT))
+
+    def incidents(self, provider: str, limit: int = 50) -> list[dict]:
+        return [json.loads(r[0]) for r in self.db.execute(
+            "SELECT detail_json FROM provider_incidents WHERE provider=? ORDER BY id DESC LIMIT ?", (provider, int(limit)))]
 
     def provider_metric(self, provider: str, **changes: object) -> None:
         allowed = {"last_push_at", "last_quote_saved_at", "duplicate_quote_packets",

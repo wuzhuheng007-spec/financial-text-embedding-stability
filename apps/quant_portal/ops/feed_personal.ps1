@@ -108,8 +108,17 @@ for ($i=0; $i -lt 40; $i++) {
     Start-Sleep -Milliseconds 500
     $Running = Get-VerifiedFeed
     if ($Running) {
-        $Collector = Get-CimInstance Win32_Process -Filter "ProcessId=$($Running.pid)" -ErrorAction SilentlyContinue
-        if ($Collector -and [int]$Collector.ParentProcessId -eq $LauncherPid) {
+        # The collector must descend from the launcher this call created. It is not always a direct child: a
+        # virtual-environment python.exe on Windows is a redirector that starts the base interpreter as its own
+        # child (launcher -> venv python.exe -> python.exe), so walk up a few parents instead of comparing one.
+        $Ancestor = [int]$Running.pid; $Descends = $false
+        for ($hop = 0; $hop -lt 4 -and $Ancestor -gt 0; $hop++) {
+            $Proc = Get-CimInstance Win32_Process -Filter "ProcessId=$Ancestor" -ErrorAction SilentlyContinue
+            if (-not $Proc) { break }
+            $Ancestor = [int]$Proc.ParentProcessId
+            if ($Ancestor -eq $LauncherPid) { $Descends = $true; break }
+        }
+        if ($Descends) {
             Write-LatestLogs ([int]$Running.pid)
             Write-Output "FEED_STARTED pid=$($Running.pid) profile=$FeedProfile"; exit 0
         }

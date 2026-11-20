@@ -12,6 +12,7 @@ import time
 import traceback
 from pathlib import Path
 
+from . import incidents
 from .collector import ROOT, owner_id, run_jin10, run_moomoo, under_root
 from .session_poll import run_moomoo_snapshot
 from .store import PersonalFeedStore, read_personal_cache, utc_now
@@ -135,6 +136,7 @@ def run(config_path: Path) -> None:
             except Exception as exc:
                 db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
                 try:
+                    incidents.emit(incidents.describe(exc, provider=name, phase="THREAD", recorded_state="DISCONNECTED"), db)
                     db.state(name,"DISCONNECTED",error_class=type(exc).__name__)
                 finally:
                     db.close()

@@ -12,6 +12,15 @@ class LockRecoveryTests(unittest.TestCase):
     def test_failed_schema_initialization_closes_connection(self):
         connection=Mock()
         connection.executescript.side_effect=sqlite3.OperationalError('database is locked')
+        # The schema has been created one statement at a time through execute() since the first-open migration was
+        # made safe for concurrent openers (64632d8), so the failure is injected there too. Without this the mock
+        # never raised the intended error and the test failed on an unrelated TypeError.
+        def execute(sql, *args):
+            if 'CREATE' in sql.upper():
+                raise sqlite3.OperationalError('database is locked')
+            return Mock()
+        connection.execute.side_effect=execute
+        connection.in_transaction=True
         with tempfile.TemporaryDirectory() as directory, patch.object(store.sqlite3, 'connect', return_value=connection):
             with self.assertRaises(sqlite3.OperationalError):
                 store.PersonalFeedStore(Path(directory)/'cache.sqlite3', 1)

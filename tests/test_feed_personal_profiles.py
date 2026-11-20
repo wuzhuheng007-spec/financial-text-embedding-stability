@@ -259,6 +259,11 @@ def test_cli_lock_refuses_second_instance_whatever_its_config(tmp_path: Path) ->
                 cli.run(ROOT / JIN10_ONLY)
         assert touched == []  # refused before owner lookup or any cache write
     finally:
+        # Under a Windows virtual environment sys.executable is a redirector whose child is the real interpreter and
+        # the lock holder; killing only the redirector left the lock held and the last step below failed. End the
+        # holder's own process tree (this test's child only).
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/PID", str(holder.pid), "/T", "/F"], capture_output=True, timeout=30)
         holder.kill(); holder.wait(30)
     handle = cli.lock_file(lock)  # released once the holder is gone
     handle.close()
