@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+import sys
 import time
 from contextlib import closing
 from datetime import datetime, timedelta, timezone
@@ -77,6 +78,7 @@ class PersonalFeedStore:
         self.raw_response_recent_hours = int(retention.get("raw_response_recent_hours", 48))
         self.raw_response_extra_count = int(retention.get("raw_response_extra_count", 100))
         self._next_raw_retention_monotonic = 0.0
+        self.raw_retention_last_error: str | None = None
         if not 1 <= self.raw_response_recent_hours <= 168 or not 0 <= self.raw_response_extra_count <= 1000:
             raise ValueError("Invalid personal raw-response retention limits")
         # The web workers, the feed process and one-off commands can all open
@@ -449,9 +451,82 @@ class PersonalFeedStore:
             self.db.rollback()
             raise
         if time.monotonic() >= self._next_raw_retention_monotonic:
-            self._prune_raw_responses()
+            # Retention is housekeeping. The quote above is already committed, so a
+            # housekeeping failure must not surface as a provider disconnect (it did:
+            # the old window query spilled its sort to a small tmpfs, raised "database
+            # or disk is full" after every reconnect, and the collector looped). The
+            # failure is recorded and logged with its class and SQLite message only,
+            # and retried on the normal five-minute cadence.
             self._next_raw_retention_monotonic = time.monotonic() + 300
+            try:
+                self._prune_raw_responses()
+                self.raw_retention_last_error = None
+            except sqlite3.Error as exc:
+                if self.db.in_transaction:
+                    self.db.rollback()
+                self.raw_retention_last_error = f"{type(exc).__name__}: {str(exc)[:120]}"
+                print(f"personal_feed raw retention failed, will retry: {self.raw_retention_last_error}",
+                      file=sys.stderr, flush=True)
         return {"inserted": inserted, "duplicate": duplicate}
+
+    def _stale_raw_hashes(self) -> list[str]:
+        """Hashes the v1.4 retention rule allows deleting, newest first.
+
+        Same rule as before: a raw response is kept while a session quote
+        received inside the recent window refers to it, or while it backs the
+        latest quote of any (owner, symbol, session) cell; of the rest the
+        newest `raw_response_extra_count` are kept too. What changed is the
+        cost. The old statement ranked every session quote with a window
+        function, so SQLite sorted the whole, never-pruned table and spilled to
+        its temporary directory. Here the per-cell latest row is a LIMIT 1
+        pair of indexed lookups per cell, "referred to recently" is an index probe per raw row,
+        and the final ordering only ever holds LIMIT + OFFSET rows.
+        """
+        cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
+                  ).isoformat().replace("+00:00", "Z")
+        self._ensure_raw_reference_index()
+        keep: set[str] = set()
+        cells = self.db.execute("SELECT DISTINCT owner_id,symbol,session FROM session_quotes").fetchall()
+        for cell in cells:
+            # Latest row of the cell under the unchanged ordering
+            #   (source_at IS NOT NULL) DESC, source_at DESC, parent_source_at_hint DESC, received_at DESC, id DESC
+            # taken in two indexed steps, so no step sorts more than the rows sharing one source time
+            # (or, for a cell that never had a source time, its untimed rows).
+            cell = tuple(cell)
+            top = self.db.execute("""SELECT source_at FROM session_quotes
+              WHERE owner_id=? AND symbol=? AND session=? AND source_at IS NOT NULL
+              ORDER BY source_at DESC LIMIT 1""", cell).fetchone()
+            row = self.db.execute(f"""SELECT raw_sha256 FROM session_quotes
+              WHERE owner_id=? AND symbol=? AND session=? AND source_at {"=?" if top else "IS NULL"}
+              ORDER BY parent_source_at_hint DESC,received_at DESC,id DESC LIMIT 1""",
+              cell + ((top[0],) if top else ())).fetchone()
+            if row:
+                keep.add(row[0])
+        latest = sorted(keep)
+        placeholders = ",".join("?" for _ in latest) or "NULL"
+        rows = self.db.execute(f"""SELECT r.sha256 FROM session_raw_responses r
+          WHERE NOT EXISTS (SELECT 1 FROM session_quotes q INDEXED BY session_quotes_raw_ref
+                            WHERE q.raw_sha256=r.sha256 AND q.received_at>=?)
+            AND r.sha256 NOT IN ({placeholders})
+          ORDER BY r.received_at DESC,r.sha256 DESC LIMIT 10000 OFFSET ?""",
+            (cutoff, *latest, self.raw_response_extra_count)).fetchall()
+        return [row[0] for row in rows]
+
+    def _ensure_raw_reference_index(self) -> None:
+        """Create the (raw_sha256, received_at) index the retention probe uses.
+
+        Built here, by the only pruner (the collector), not in the shared
+        migration every web worker runs. Building it sorts the table once, so
+        that one statement keeps its sort in memory instead of the small tmpfs.
+        """
+        if self.db.execute("SELECT 1 FROM sqlite_master WHERE type='index' AND name='session_quotes_raw_ref'").fetchone():
+            return
+        previous = self.db.execute("PRAGMA temp_store").fetchone()[0]
+        self.db.execute("PRAGMA temp_store=MEMORY")
+        try:
+            self.db.execute("CREATE INDEX IF NOT EXISTS session_quotes_raw_ref ON session_quotes(raw_sha256,received_at)")
+        finally:
+            self.db.execute(f"PRAGMA temp_store={int(previous)}")
 
     def _prune_raw_responses(self) -> None:
         """Select stale hashes without a writer lock; delete in short batches.
@@ -460,23 +535,7 @@ class PersonalFeedStore:
         REST snapshot endpoint is disabled. This preserves the v1.4 retention
         rule but avoids holding SQLite's writer slot for the full window scan.
         """
-        cutoff = (datetime.now(timezone.utc)-timedelta(hours=self.raw_response_recent_hours)
-                  ).isoformat().replace("+00:00", "Z")
-        rows = self.db.execute("""WITH latest AS (
-          SELECT raw_sha256, ROW_NUMBER() OVER (
-            PARTITION BY owner_id,symbol,session
-            ORDER BY (source_at IS NOT NULL) DESC,source_at DESC,
-              parent_source_at_hint DESC,received_at DESC,id DESC
-          ) AS rank_in_cell FROM session_quotes
-        ), referenced AS (
-          SELECT raw_sha256 FROM session_quotes WHERE received_at>=?
-          UNION SELECT raw_sha256 FROM latest WHERE rank_in_cell=1
-        )
-        SELECT sha256 FROM session_raw_responses WHERE sha256 NOT IN (
-          SELECT raw_sha256 FROM referenced
-        ) ORDER BY received_at DESC,sha256 DESC LIMIT 10000 OFFSET ?""",
-            (cutoff, self.raw_response_extra_count)).fetchall()
-        hashes = [row[0] for row in rows]
+        hashes = self._stale_raw_hashes()
         for offset in range(0, len(hashes), 400):
             batch = hashes[offset:offset + 400]
             placeholders = ",".join("?" for _ in batch)
