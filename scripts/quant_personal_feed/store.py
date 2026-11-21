@@ -485,7 +485,9 @@ class PersonalFeedStore:
             except sqlite3.Error as exc:
                 if self.db.in_transaction:
                     self.db.rollback()
-                self.raw_retention_last_error = f"{type(exc).__name__}: {str(exc)[:120]}"
+                # class name and the engine's result code only: exception text is never written to a log
+                from .incidents import safe_message
+                self.raw_retention_last_error = f"{type(exc).__name__}: {safe_message(exc)}"
                 print(f"personal_feed raw retention failed, will retry: {self.raw_retention_last_error}",
                       file=sys.stderr, flush=True)
         return {"inserted": inserted, "duplicate": duplicate}

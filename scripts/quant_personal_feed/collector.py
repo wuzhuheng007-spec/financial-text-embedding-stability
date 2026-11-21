@@ -108,9 +108,9 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
 
     def incident(exc: BaseException, recorded_state: str) -> None:
         nonlocal failing_since, failures
-        record = incidents.describe(exc, provider="moomoo", phase=phase, recorded_state=recorded_state, attempt=attempt)
-        failing_since = failing_since or record["at_utc"]; failures += 1
-        incidents.emit(record, store)
+        # never raises: a failure to describe or store the incident must not become a second disconnect
+        rec = incidents.record(exc, store, provider="moomoo", phase=phase, recorded_state=recorded_state, attempt=attempt)
+        failing_since = failing_since or (rec or {}).get("at_utc") or utc_now(); failures += 1
     try:
         store.ensure_selection(config["moomoo"]["priority_symbols"])
         store.provider_metric("moomoo", worker_alive=1)
@@ -146,7 +146,10 @@ def run_moomoo(config: dict, user_id: int, stop: threading.Event) -> None:
                 store.state("moomoo",state,success=True)
                 attempt = 0
                 if failures:
-                    incidents.emit(incidents.recovery(provider="moomoo", state=state, since_utc=failing_since, failures=failures), store)
+                    try:
+                        incidents.emit(incidents.recovery(provider="moomoo", state=state, since_utc=failing_since, failures=failures), store)
+                    except Exception:
+                        pass
                     failing_since, failures = None, 0
                 # Closed-market pushes often repeat an identical quote. Keep
                 # changed source-time/price values, and batch liveness writes.

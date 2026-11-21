@@ -136,7 +136,7 @@ def run(config_path: Path) -> None:
             except Exception as exc:
                 db = PersonalFeedStore(under_root(config["cache_db"]),user_id)
                 try:
-                    incidents.emit(incidents.describe(exc, provider=name, phase="THREAD", recorded_state="DISCONNECTED"), db)
+                    incidents.record(exc, db, provider=name, phase="THREAD", recorded_state="DISCONNECTED")
                     db.state(name,"DISCONNECTED",error_class=type(exc).__name__)
                 finally:
                     db.close()

@@ -93,13 +93,15 @@ def test_a_retention_failure_does_not_escape_the_quote_write_and_is_retried_late
         calls = []
 
         def full_disk():
-            calls.append(1); raise sqlite3.OperationalError("database or disk is full")
+            calls.append(1); exc = sqlite3.OperationalError("database or disk is full"); exc.sqlite_errorcode = 13   # what the engine sets (SQLITE_FULL)
+            raise exc
         store._prune_raw_responses = full_disk
         now = iso(datetime.now(timezone.utc))
         out = store.put_session_quotes(1, [row(now)], states={"AAA": {"REGULAR": "HAS_SOURCE_TIME"}}, checked_at=now, raw_json="{}",
                                        raw_sha256=hashlib.sha256(b"{}").hexdigest(), source_channel="WS_QUOTE")
         assert out == {"inserted": 1, "duplicate": 0} and calls == [1]                   # before the fix this raised and the collector marked the provider DISCONNECTED
-        assert store.raw_retention_last_error == "OperationalError: database or disk is full" and not store.db.in_transaction
+        # the record names the class and the engine code; the exception text itself is no longer written anywhere
+        assert store.raw_retention_last_error == "OperationalError: SQLITE_FULL (code 13)" and not store.db.in_transaction
         assert "raw retention failed" in capsys.readouterr().err
         assert store.db.execute("SELECT COUNT(*) FROM session_quotes").fetchone()[0] == 1
         store.put_session_quotes(1, [row(now)], states={}, checked_at=now, source_channel="WS_QUOTE")
