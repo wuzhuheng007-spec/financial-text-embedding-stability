@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080d16">
   <title>{% block title %}Quant{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'core/favicon.svg' %}">
   <script>
     /* Apply saved display preferences before first paint (no flash). */
     (function(){try{var d=document.documentElement,t=localStorage.getItem('quant.theme'),s=localStorage.getItem('quant.side'),u=localStorage.getItem('quant.updown');
@@ -37,7 +38,7 @@
         <div class="top-spacer"></div>
         <div class="search" role="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>
-          <input id="symbol-search" type="search" placeholder="搜索标的" aria-label="搜索标的" list="symbol-options" autocomplete="off" spellcheck="false" data-home="{{ home }}">
+          <input id="symbol-search" type="search" placeholder="{% if request.display_language == 'en' %}Search{% else %}搜索标的{% endif %}" aria-label="搜索标的" list="symbol-options" autocomplete="off" spellcheck="false" data-home="{{ home }}">
           <datalist id="symbol-options"></datalist>
         </div>
         <span class="conn" id="conn" data-state="idle" role="status" aria-live="polite"><span class="dot"></span><span class="conn-text"></span></span>
@@ -72,7 +73,7 @@
     {% block anon_content %}{% endblock %}
   </main>
   {% endif %}
-  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v20-5"></script>
+  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v20-6"></script>
   <script defer charset="utf-8" src="{% static 'core/shell_v20.js' %}?v=21-1"></script>
 </body>
 </html>

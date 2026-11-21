@@ -120,10 +120,13 @@ function uiLiterals() {
   const out = new Map(), add = (s, f) => { s = s.trim(); if (s && han.test(s)) out.set(s, f); };
   for (const f of fs.readdirSync(core).filter(f => f.endsWith('.js') && f !== 'i18n_v15.js'))
     for (const s of strings(stripComments(fs.readFileSync(path.join(core, f), 'utf8')))) add(s, f);
-  for (const f of [...fs.readdirSync(path.join(tpl, 'core')).map(f => 'core/' + f), ...fs.readdirSync(tpl).filter(f => f.endsWith('.html'))]) {
+  const templates = [];                                                 // every template directory (core, registration, ...), not only core
+  (function walk(dir, rel) { for (const e of fs.readdirSync(dir, {withFileTypes: true})) { if (e.isDirectory()) walk(path.join(dir, e.name), rel + e.name + '/'); else if (e.name.endsWith('.html')) templates.push(rel + e.name); } })(tpl, '');
+  for (const f of templates) {
     const src = fs.readFileSync(path.join(tpl, f), 'utf8').replace(/{#[^]*?#}/g, '').replace(/<script[^]*?<\/script>/g, '').replace(/<style[^]*?<\/style>/g, '').replace(/<!--[^]*?-->/g, '');
     for (const m of src.matchAll(/>([^<>]*)</g)) for (const piece of m[1].split(/{%[^%]*%}|{{[^}]*}}/)) add(piece.replace(/[ \t\r\n]+/g, ' '), f);
     for (const m of src.matchAll(/(?:placeholder|title|aria-label|alt)="([^"]*)"/g)) for (const piece of m[1].split(/{%[^%]*%}|{{[^}]*}}/)) add(piece, f);
+    for (const m of src.matchAll(/{% block title %}([^{]*){% endblock %}/g)) add(m[1], f);          // page titles are product text too
   }
   return out;
 }
