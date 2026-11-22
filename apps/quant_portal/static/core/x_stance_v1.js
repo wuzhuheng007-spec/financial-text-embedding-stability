@@ -47,7 +47,7 @@
   function renderSettings(d) {
     const p = panel('settings'), st = d.settings, c = d.collection;
     const kw = t => { const n = h('span', null, t.keywords.join(' · ')); n.setAttribute('translate', 'no'); return n; };   // keywords are data, shown as configured
-    const topics = table(['主题', '关键词', '对照标的'], st.topics.map(t => [TOPIC[t.id] || t.id, kw(t), t.comparison_asset || '未配置（仅统计行业观点）']));
+    const topics = table(['关键词主题', '关键词', '对照标的'], st.topics.map(t => [TOPIC[t.id] || t.id, kw(t), t.comparison_asset || '未配置（仅统计行业观点）']));
     const card = h('div', 'card');
     card.append(row('供应商（单一主源）', st.provider), row('自动切换到其他付费源', '否'), row('语言', st.languages.join(' / ')), row('词表版本', st.vocabulary_version),
       row('每日预算（美元）', st.budget.daily_usd == null ? '未设定' : st.budget.daily_usd), row('总预算（美元）', st.budget.total_usd == null ? '未设定' : st.budget.total_usd),
@@ -55,7 +55,7 @@
       row('费用估算（美元，非账单）', c.estimated_cost_usd), row('数据盘空闲（GiB）', c.disk_free_gib));
     const gate = h('div', 'card');
     gate.append(h('h3', null, '付费采集'), chip(st.acquisition_gate.allowed ? '已满足条件' : '未开启', st.acquisition_gate.allowed ? 'run-succeeded' : 'tag-dim'));
-    const gl = h('ul', 'xs-missing'); st.acquisition_gate.reasons.forEach(r => gl.append(h('li', null, why(r)))); gate.append(gl);
+    const gl = h('ul', 'xs-missing'); [...new Set(st.acquisition_gate.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
     gate.append(h('h3', null, '立场分类模型'), chip(st.classifier_gate.allowed ? '已固定版本' : '未固定版本，不运行', st.classifier_gate.allowed ? 'run-succeeded' : 'tag-dim'));
     p.replaceChildren(h('p', 'fine-print', '词表通过带版本的配置文件修改；更换词表后的占比不能与旧版本直接相接。'), topics, card, gate);
   }
@@ -136,14 +136,14 @@
     const p = panel('history');
     if (!d.has_data) { p.replaceChildren(missingBox(d, '还没有历史对照。需要以下输入：')); return; }
     const out = [];
-    const eps = table(['主题', '状态', '起始交易日', '最后观察交易日', '交易日数', '自然日数', '起点未观察到', '结束未观察到'], d.episodes.slice(0, 60).map(e =>
+    const eps = table(['关键词主题', '状态', '起始交易日', '最后观察交易日', '交易日数', '自然日数', '起点未观察到', '结束未观察到'], d.episodes.slice(0, 60).map(e =>
       [TOPIC[e.topic_id] || e.topic_id, STATE[e.state] || e.state, e.start_session, e.end_session, e.sessions, e.calendar_days, e.left_censored ? '是' : '否', e.right_censored ? '是' : '否']));
     const s1 = h('section', 'card section'); s1.append(h('h3', null, '情绪事件'), eps, h('p', 'fine-print', '起点或结束未观察到的事件，长度只是下限。'));
     out.push(s1);
     const cells = (d.conditional || []).filter(c => c.kind === 'desc_return');
     const s2 = h('section', 'card section'); s2.append(h('h3', null, '六个期限的条件收益（收盘对收盘，描述性，不是可成交收益）'));
     if (!cells.length) s2.append(h('p', 'muted', '没有可配对的行情或样本，条件收益表为空。'));
-    else s2.append(table(['主题', '状态', '期限（交易日）', '日期数', '平均', '中位数', '上涨比例', '同期无条件平均', '95% 区间', '结论'], cells.map(c =>
+    else s2.append(table(['关键词主题', '状态', '期限（交易日）', '日期数', '平均', '中位数', '上涨比例', '同期无条件平均', '95% 区间', '结论'], cells.map(c =>
       [TOPIC[c.topic_id] || c.topic_id, STATE[c.state], c.h, c.n_dates, pct(c.mean), pct(c.median), pct(c.up_share), pct(c.unconditional.mean),
         c.mean_ci95 ? `${pct(c.mean_ci95[0])} ~ ${pct(c.mean_ci95[1])}` : '—', c.status === 'INCONCLUSIVE' ? '样本不足，无结论' : '已估计'])));
     s2.append(h('p', 'fine-print', '历史回填只说明现在还能取到的帖子，不证明当时系统能同样收到。这里没有预测，也没有策略收益。'));

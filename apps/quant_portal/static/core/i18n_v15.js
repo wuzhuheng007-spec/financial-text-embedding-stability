@@ -1277,7 +1277,8 @@
     "样本主要观点": "Main views in the sample",
     "历史对照": "History",
     "采集状态": "Collection status",
-    "行情输入版本": "Price input version"
+    "行情输入版本": "Price input version",
+    "关键词主题": "Topic"
   };
   const han = /[㐀-鿿]/;
   const entries = Object.entries(catalog).sort((a, b) => b[0].length - a[0].length);
