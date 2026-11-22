@@ -108,8 +108,11 @@ def _fill(db, cfg: dict, out: dict) -> None:
     for r in db.execute("SELECT ingest_mode, count(*) n FROM x_posts GROUP BY ingest_mode"):
         out["data_kinds"]["live" if r["ingest_mode"] == "LIVE" else "batch" if r["ingest_mode"] == "BATCH_AFTER_CLOSE" else "retrospective"] += r["n"]
     ver = cfg["topic_vocabulary_version"]
+    from . import snapshots
+    act = snapshots.activation(cfg)                              # only labels of the classifier that is active now count as "classified"
     r = db.execute("SELECT COUNT(*), COUNT(DISTINCT p.author_id), SUM(CASE WHEN t.quality!='PENDING' OR EXISTS(SELECT 1 FROM x_stance_labels l WHERE l.provider=t.provider AND l.post_id=t.post_id "
-                   "AND l.topic_id=t.topic_id AND l.target_id=t.target_id) THEN 1 ELSE 0 END) FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (ver,)).fetchone()
+                   "AND l.topic_id=t.topic_id AND l.target_id=t.target_id AND l.model_id IS ? AND l.model_revision IS ? AND l.prompt_hash IS ?) THEN 1 ELSE 0 END) "
+                   "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (act["model_id"], act["model_revision"], act["prompt_hash"], ver)).fetchone()
     total, done = r[0] or 0, r[2] or 0
     c["sample_accounts"] = r[1] or 0
     out["classification"] = {"matched_pairs": total, "classified_or_prefiltered": done, "pending": total - done, "share_done": (done / total) if total else None}

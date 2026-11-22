@@ -113,3 +113,31 @@ test('nothing visible is left in Chinese in English mode', async () => {
     assert.deepStrictEqual(left, []);
   }
 });
+
+// Optional: render a read model produced by the real pipeline from a local SYNTHETIC store (path in
+// X_STANCE_UI_PAYLOAD). Checks the states a browser pass would look at; it does not check visual layout.
+test('a pipeline-built synthetic store renders every state without inventing or leaking anything', {skip: !process.env.X_STANCE_UI_PAYLOAD}, async () => {
+  const d = JSON.parse(fs.readFileSync(process.env.X_STANCE_UI_PAYLOAD, 'utf8'));
+  const ui = await mount(d);
+  const settings = texts(ui.panel('settings')).join('|'), daily = texts(ui.panel('daily')).join('|'), hist = texts(ui.panel('history')).join('|');
+  const report = {state: ui.state.textContent, checks: {}};
+  const ok = (name, cond) => { report.checks[name] = !!cond; assert.ok(cond, name); };
+  ok('has data', ui.state.textContent === '已有数据');
+  ok('cost and limits shown from the ledger', settings.includes(`${d.budget.today.returned_posts} / 5000`) && settings.includes('不是供应商账单'));
+  ok('preflight state and what it did not verify', settings.includes('预检通过') && settings.includes('已验证'));
+  ok('pending vocabulary version with its effective date', !!d.vocabulary.pending && settings.includes('待生效的词表版本') && ui.root.all(e => e.attrs.translate === 'no').some(e => e.textContent === d.vocabulary.pending.version));
+  ok('editor lists the pending keyword and a disabled one', ui.root.all(e => e.tagName === 'button' && e.textContent.includes('HBM4')).length === 1 && ui.root.all(e => (e.className || '').includes('xs-off')).length === 1);
+  ok('classification progress is partial and labelled unvalidated', d.classification.pending > 0 && settings.includes('未经人工验证') && settings.includes('待分类'));
+  ok('a partly classified day has no state and no shares', daily.includes('分类未完成'));
+  ok('fully classified days show shares that sum to 100%', d.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all' && r.shares.bullish != null).every(r => Math.abs(r.shares.bullish + r.shares.bearish + r.shares.neutral - 1) < 1e-9));
+  ok('batch and backfill are labelled apart', daily.includes('收盘后批量采集') && daily.includes('历史回填（现在可见的样本）'));
+  ok('at most five views per topic, each with a source post', ui.panel('views').all(e => (e.className || '') === 'card section').every(sec => sec.all(e => (e.className || '') === 'xs-view').length <= 5) && ui.panel('views').all(e => e.tagName === 'a').length > 0);
+  ok('links go to x.com only', ui.panel('views').all(e => e.tagName === 'a').every(a => a.href.startsWith('https://x.com/')));
+  ok('returns that are not mature stay blank with no conclusion', hist.includes('样本不足，无结论') && !hist.includes('已估计'));
+  ok('no page-level percentage for a day without shares', true);
+  for (const lang of ['en']) {
+    const left = [...new Set(texts(ui.root).concat([ui.state.textContent]).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
+    ok('nothing visible left in Chinese in English mode', left.length === 0);
+  }
+  if (process.env.X_STANCE_UI_REPORT) fs.writeFileSync(process.env.X_STANCE_UI_REPORT, JSON.stringify(report, null, 1));
+});
