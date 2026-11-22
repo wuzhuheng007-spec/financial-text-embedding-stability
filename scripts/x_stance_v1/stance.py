@@ -46,6 +46,10 @@ class ClassifierNotPinned(RuntimeError):
     pass
 
 
+class ClassifierUnavailable(RuntimeError):
+    """The model worker cannot answer (not running, out of memory, timeout). Items stay PENDING; nothing is guessed."""
+
+
 def prompt_hash(version: str) -> str:
     return store.sha(PROMPTS[version])
 
@@ -136,18 +140,23 @@ def cache_key(post: dict, target_id: str, topic_id: str, cfg: dict) -> str:
                                prompt_hash(c["prompt_version"]), str(c["temperature"])]))
 
 
-def run(db, cfg: dict, classifier, *, now=None) -> dict:
-    """classifier: callable(prompt: str) -> str. Called once per (post, topic, target) not in the cache."""
+def run(db, cfg: dict, classifier, *, now=None, limit: int | None = None) -> dict:
+    """classifier: callable(prompt: str) -> str, called once per (post, topic, target) that has no label from the
+    ACTIVE classifier and is not in the inference cache. `limit` bounds the number of model calls, so a long queue
+    is worked off in resumable batches. The inference time recorded is never earlier than the time the post was
+    really received."""
     gate = cfgmod.classifier_gate(cfg)
     if not gate["allowed"]:
         raise ClassifierNotPinned(", ".join(gate["reasons"]))
     c, ver = cfg["classifier"], cfg["topic_vocabulary_version"]
     if c["prompt_version"] not in PROMPTS:
         raise ClassifierNotPinned("unknown prompt_version")
-    ph, out = prompt_hash(c["prompt_version"]), {"model_calls": 0, "cache_hits": 0, "by_quality": {}, "prefiltered": 0}
-    rows = db.execute("SELECT t.topic_id, t.target_id, t.quality pre, p.* FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (ver,)).fetchall()
+    ph, out = prompt_hash(c["prompt_version"]), {"model_calls": 0, "cache_hits": 0, "by_quality": {}, "prefiltered": 0, "remaining": 0, "stopped": None}
+    rows = db.execute("SELECT t.topic_id, t.target_id, t.quality pre, p.* FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=? "
+                      "ORDER BY p.created_at_utc, p.post_id, t.topic_id", (ver,)).fetchall()
     for r in rows:
-        post, when = dict(r), now or store.utcnow()
+        post = dict(r)
+        when = max(now or store.utcnow(), post["fetched_at_utc"])
         key = cache_key(post, r["target_id"], r["topic_id"], cfg)
         if db.execute("SELECT 1 FROM x_stance_labels WHERE provider=? AND post_id=? AND topic_id=? AND target_id=? AND cache_key=?",
                       (r["provider"], r["post_id"], r["topic_id"], r["target_id"], key)).fetchone():
@@ -161,8 +170,16 @@ def run(db, cfg: dict, classifier, *, now=None) -> dict:
             if hit:
                 raw, raw_hash = hit["raw_output"], hit["raw_output_hash"]; out["cache_hits"] += 1
             else:
-                raw = classifier(PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
-                                                                     parent_available=bool(r["parent_available"]), text=r["author_text"]))
+                if limit is not None and out["model_calls"] >= limit:
+                    out["remaining"] += 1
+                    continue
+                try:
+                    raw = classifier(PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
+                                                                         parent_available=bool(r["parent_available"]), text=r["author_text"]))
+                except ClassifierUnavailable as ex:          # the worker is down or out of memory: stop, keep everything else PENDING
+                    out["stopped"] = str(ex)[:120]
+                    out["remaining"] += 1
+                    break
                 raw = raw if isinstance(raw, str) else ""
                 raw_hash = store.sha(raw); out["model_calls"] += 1
                 db.execute("INSERT OR REPLACE INTO x_inference_cache VALUES(?,?,?,?)", (key, raw, raw_hash, when))
@@ -172,6 +189,7 @@ def run(db, cfg: dict, classifier, *, now=None) -> dict:
                     None if lab["is_relevant"] is None else int(lab["is_relevant"]), lab["evidence_text"], lab["reason_short"],
                     c["model_id"], c["immutable_revision"], ph, when, raw_hash, key))
         out["by_quality"][lab["quality_status"]] = out["by_quality"].get(lab["quality_status"], 0) + 1
+        db.commit()                                          # each item is its own checkpoint
     db.commit()
     return out
 

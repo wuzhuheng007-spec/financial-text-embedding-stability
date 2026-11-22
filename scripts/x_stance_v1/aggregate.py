@@ -38,17 +38,30 @@ def _state(counts: dict, *, collection_status: str, threshold: int, pending: int
     return (leaders[0] if len(leaders) == 1 else "neutral"), (None if len(leaders) == 1 else "TIE_RESOLVED_TO_NEUTRAL")
 
 
-def rows_for_window(db, *, topic_id: str, target_id: str, start: datetime, end: datetime, mode: str, model_revision: str | None = None) -> tuple[list, dict]:
-    """Posts of the window with their newest label row. LIVE keeps only posts both created before `end` AND first
-    received by `end`; a late arrival is counted and left out. RETROSPECTIVE groups by creation time only."""
+def _act_sql(act: dict | None, alias: str = "l") -> tuple[str, tuple]:
+    """SQL for "labels of the active classifier only". None = no restriction (unit tests of the arithmetic)."""
+    if act is None:
+        return "", ()
+    if not (act.get("model_id") and act.get("model_revision") and act.get("prompt_hash")):
+        return f" AND {alias}.post_id IS NULL AND 0 ", ()          # nothing is pinned: no label counts
+    return f" AND {alias}.model_id=? AND {alias}.model_revision=? AND {alias}.prompt_hash=? ", (act["model_id"], act["model_revision"], act["prompt_hash"])
+
+
+def rows_for_window(db, *, topic_id: str, target_id: str, start: datetime, end: datetime, mode: str, model_revision: str | None = None, act: dict | None = None) -> tuple[list, dict]:
+    """Posts of the window with their newest label row FROM THE ACTIVE CLASSIFIER (model, revision and prompt all
+    match `act`); labels of any other model are not mixed in. LIVE keeps only posts both created before `end` AND
+    first received by `end`; a late arrival is counted and left out. The other modes group by creation time."""
     s, e = store.iso(start), store.iso(end)
+    extra, args = _act_sql(act)
+    if act is not None and not args:
+        return [], {"late_arrival": 0, "retrospective_rows_in_live": 0}
     rows = db.execute(
         "SELECT p.provider, p.post_id, p.author_id, p.created_at_utc, p.first_seen_at_utc, p.ingest_mode, p.lang, p.text_hash, p.kind, p.source_url,"
         " p.author_text, l.label, l.quality_status, l.inferred_at_utc, l.model_revision, l.reason_short, l.evidence_text "
         "FROM x_stance_labels l JOIN x_posts p USING(provider, post_id) "
         "WHERE l.topic_id=? AND l.target_id=? AND p.created_at_utc>=? AND p.created_at_utc<? "
-        + ("AND l.model_revision=? " if model_revision else "") + "ORDER BY l.inferred_at_utc",
-        (topic_id, target_id, s, e) + ((model_revision,) if model_revision else ())).fetchall()
+        + ("AND l.model_revision=? " if model_revision else "") + extra + "ORDER BY l.inferred_at_utc",
+        (topic_id, target_id, s, e) + ((model_revision,) if model_revision else ()) + args).fetchall()
     latest = {}
     for r in rows:                                          # one label row per post: the most recently inferred
         latest[(r["provider"], r["post_id"])] = r
@@ -63,16 +76,18 @@ def rows_for_window(db, *, topic_id: str, target_id: str, start: datetime, end: 
     return kept, dropped
 
 
-def progress(db, *, topic_id: str, target_id: str, start: datetime, end: datetime, vocab_version: str) -> dict:
-    """How much of the window's matched sample has a label at all. Counted on post/topic pairs and on accounts."""
+def progress(db, *, topic_id: str, target_id: str, start: datetime, end: datetime, vocab_version: str, act: dict | None = None) -> dict:
+    """How much of the window's matched sample has a label from the active classifier (or was settled without a
+    model: retweet, link only). Counted on post/topic pairs and on accounts."""
     s, e = store.iso(start), store.iso(end)
+    extra, args = _act_sql(act, "x")
+    inner = "SELECT DISTINCT x.provider, x.post_id, x.topic_id, x.target_id FROM x_stance_labels x WHERE 1=1" + (extra if (act is None or args) else " AND 0")
     r = db.execute(
-        "SELECT COUNT(*), COUNT(DISTINCT p.author_id), SUM(CASE WHEN l.post_id IS NOT NULL OR t.quality!='PENDING' THEN 1 ELSE 0 END), COUNT(DISTINCT p.lang) "
+        "SELECT COUNT(*), COUNT(DISTINCT p.author_id), SUM(CASE WHEN l.post_id IS NOT NULL OR t.quality!='PENDING' THEN 1 ELSE 0 END) "
         "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) "
-        "LEFT JOIN (SELECT DISTINCT provider, post_id, topic_id, target_id FROM x_stance_labels) l "
-        "  ON l.provider=t.provider AND l.post_id=t.post_id AND l.topic_id=t.topic_id AND l.target_id=t.target_id "
+        f"LEFT JOIN ({inner}) l ON l.provider=t.provider AND l.post_id=t.post_id AND l.topic_id=t.topic_id AND l.target_id=t.target_id "
         "WHERE t.topic_version=? AND t.topic_id=? AND t.target_id=? AND p.created_at_utc>=? AND p.created_at_utc<?",
-        (vocab_version, topic_id, target_id, s, e)).fetchone()
+        args + (vocab_version, topic_id, target_id, s, e)).fetchone()
     total, done = r[0] or 0, r[2] or 0
     return {"matched_posts": total, "sample_accounts": r[1] or 0, "classified_or_prefiltered": done, "pending": total - done,
             "share_done": (done / total) if total else None}
@@ -122,19 +137,9 @@ def votes(rows: list, lang_scope: str = "all") -> list:
 
 
 def commit(db, *, window_kind: str, window_label: str, start: datetime, end: datetime, topic_id: str, target_id: str, mode: str,
-           result: dict, rows: list, now: datetime) -> dict:
-    """signal_committed_at is when this aggregate was actually written. For a live window it is also never earlier
-    than the window end or the last inference it used. A retrospective aggregate keeps the REAL commit time and
-    carries the window end only as `assumed_available_at_utc`, flagged hypothetical."""
-    used = [r["inferred_at_utc"] for r in rows if r["post_id"] in set(result["vote_post_ids"])]
-    observed = mode in ("LIVE", "BATCH_AFTER_CLOSE")
-    committed = max([store.iso(now), store.iso(end)] + used) if observed else store.iso(now)
-    payload = {**result, "window_start_utc": store.iso(start), "window_end_utc": store.iso(end), "mode": mode,
-               "signal_committed_at_utc": committed,
-               "source_window_end_utc": store.iso(end),
-               "assumed_available_at_utc": None if observed else store.iso(end),
-               "availability": {"LIVE": "OBSERVED", "BATCH_AFTER_CLOSE": "OBSERVED_AFTER_CLOSE_BATCH"}.get(mode, "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL")}
-    db.execute("INSERT OR REPLACE INTO x_daily_sentiment VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-               (window_kind, window_label, payload["window_start_utc"], payload["window_end_utc"], topic_id, target_id, result["lang_scope"], mode,
-                store.json.dumps(payload, sort_keys=True, ensure_ascii=False), result["state"], committed))
-    return payload
+           result: dict, rows: list, now: datetime, act: dict | None = None) -> dict:
+    """Appends an immutable snapshot revision when the evidence changed, or returns the existing one unchanged.
+    The commit time of a revision is set once and is never moved by a rebuild. See snapshots.py."""
+    from . import snapshots
+    return snapshots.commit(db, window_kind=window_kind, window_label=window_label, start=start, end=end, topic_id=topic_id, target_id=target_id,
+                            mode=mode, result=result, rows=rows, now=now, act=act)

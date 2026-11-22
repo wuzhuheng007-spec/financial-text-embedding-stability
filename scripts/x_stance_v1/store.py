@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS x_event_returns(
   event_id TEXT NOT NULL, event_kind TEXT NOT NULL, topic_id TEXT NOT NULL, target_id TEXT NOT NULL, h INTEGER NOT NULL,
   payload_json TEXT NOT NULL, PRIMARY KEY(event_id, event_kind, h));
 CREATE TABLE IF NOT EXISTS x_run_manifest(manifest_id TEXT PRIMARY KEY, created_at_utc TEXT NOT NULL, payload_json TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS x_migrations(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, applied_at_utc TEXT NOT NULL, detail_json TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS x_meta(key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at_utc TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS x_sample_plans(plan_id TEXT PRIMARY KEY, job TEXT NOT NULL, plan_key TEXT NOT NULL, frozen_at_utc TEXT NOT NULL,
   sha256 TEXT NOT NULL, plan_json TEXT NOT NULL, UNIQUE(job, plan_key));

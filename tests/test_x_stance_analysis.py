@@ -63,7 +63,7 @@ def post(db, pid, author, created, text="$QQQ view", *, lang="en", kind="origina
 
 def label(db, pid, lab, *, quality="OK", topic="qqq", target="QQQ", inferred="2031-01-01T00:00:00Z", reason=None):
     db.execute("INSERT INTO x_stance_labels VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-               ("t", str(pid), topic, target, lab, quality, 1, None, reason, "m", "r", "ph", inferred, "raw", f"k{pid}{inferred}"))
+               ("t", str(pid), topic, target, lab, quality, 1, None, reason, "test-double-not-a-model", "rev-0", stance.prompt_hash("x-stance-prompt-v1-20261122"), inferred, "raw", f"k{pid}{inferred}"))
 
 
 def window_rows(db, a="2030-01-07T00:00:00Z", b="2030-01-08T00:00:00Z", mode=provider.RETRO):

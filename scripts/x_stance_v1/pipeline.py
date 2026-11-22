@@ -10,7 +10,7 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from . import aggregate, config as cfgmod, cost, episodes, narratives, returns, stance, stats, store
+from . import aggregate, config as cfgmod, cost, episodes, narratives, returns, snapshots, stance, stats, store
 from .sessions import NY, Calendar, calendar_window
 
 LANG_SCOPES = ("all", "en", "zh")
@@ -27,6 +27,8 @@ def _range(db, topic_id: str, target_id: str):
 def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     thr, ver = cfg["aggregation"]["proposed_low_sample_author_threshold"], cfg["topic_vocabulary_version"]
+    act = snapshots.activation(cfg)
+    snapshots.migrate_legacy(db)
     out = {"session_windows": 0, "calendar_windows": 0, "narratives": 0, "outside_calendar_posts_ranges": []}
     auto, boundary = mode == "AUTO", None
     if auto:                                                 # windows after the frozen historical range were sampled by the daily batch
@@ -52,14 +54,14 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                         break
                     a, b = cal.session_window(i)
                     wmode = pick(b)
-                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode)
+                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode, act=act)
                     cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
-                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver)
+                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver, act=act)
                     for scope in LANG_SCOPES:
                         res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, lang_scope=scope, pending=prog["pending"])
                         res["dropped"], res["collection_gaps"], res["classification"] = dropped, len(cov["gaps"]), prog
                         aggregate.commit(db, window_kind="session", window_label=cal.dates[i], start=a, end=b, topic_id=t["id"], target_id=target,
-                                         mode=wmode, result=res, rows=rows, now=now)
+                                         mode=wmode, result=res, rows=rows, now=now, act=act)
                     out["session_windows"] += 1
                     db.execute("DELETE FROM x_narratives WHERE window_kind='session' AND window_label=? AND topic_id=? AND target_id=?", (cal.dates[i], t["id"], target))
                     for nar in narratives.build(aggregate.votes(rows), cfg=cfg, window_label=cal.dates[i], window_kind="session", data_quality=cov["status"]):
@@ -70,22 +72,31 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                 a, b = calendar_window(d)
                 if now >= b:
                     wmode = pick(b)
-                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode)
+                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode, act=act)
                     cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
-                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver)
+                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver, act=act)
                     res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, pending=prog["pending"])
                     res["dropped"], res["classification"], res["note"] = dropped, prog, "reading summary of a New York calendar date; not the session signal"
-                    aggregate.commit(db, window_kind="calendar_day", window_label=d.isoformat(), start=a, end=b, topic_id=t["id"], target_id=target, mode=wmode, result=res, rows=rows, now=now)
+                    aggregate.commit(db, window_kind="calendar_day", window_label=d.isoformat(), start=a, end=b, topic_id=t["id"], target_id=target, mode=wmode, result=res, rows=rows, now=now, act=act)
                     out["calendar_windows"] += 1
                 d += timedelta(days=1)
     db.commit()
     return out
 
 
-def _series(db, topic_id, target_id, mode):
-    return [(r["window_label"], r["state"], json.loads(r["payload_json"])) for r in db.execute(
-        "SELECT window_label, state, payload_json FROM x_daily_sentiment WHERE window_kind='session' AND topic_id=? AND target_id=? AND lang_scope='all' AND (mode=? OR ?='AUTO') ORDER BY window_label",
-        (topic_id, target_id, mode, mode))]
+def _series(db, topic_id, target_id, mode, vocab_version=None):
+    """One row per session: the FIRST revision that carried a usable state (what was actually known first), or,
+    if the series never had one, its latest revision. A later revision never replaces an earlier formal one here."""
+    out = {}
+    q = ("SELECT series_key, window_label, revision, formal, timing_status, state, payload_json FROM x_signal_snapshots WHERE window_kind='session' AND topic_id=? AND target_id=? "
+         "AND lang_scope='all' AND (mode=? OR ?='AUTO')" + (" AND vocab_version=?" if vocab_version else "") + " ORDER BY window_label, revision")
+    for r in db.execute(q, (topic_id, target_id, mode, mode) + ((vocab_version,) if vocab_version else ())):
+        cur = out.get(r["window_label"])
+        usable = bool(r["formal"]) and r["timing_status"] == "RECORDED"
+        if cur is None or (not cur[3] and (usable or True)):
+            if cur is None or not cur[3]:
+                out[r["window_label"]] = (r["window_label"], r["state"] if r["timing_status"] == "RECORDED" else "UNKNOWN", json.loads(r["payload_json"]), usable)
+    return [(d, s_, p_) for d, s_, p_, _ in (out[k] for k in sorted(out))]
 
 
 def build_research(db, cfg: dict, cal: Calendar, prices: dict, *, mode: str) -> dict:
@@ -94,7 +105,7 @@ def build_research(db, cfg: dict, cal: Calendar, prices: dict, *, mode: str) -> 
     v, out = cfg["validation"], {"topics": []}
     for t in cfg["topics"]:
         for target in cfgmod.targets(t):
-            ser = _series(db, t["id"], target, mode)
+            ser = _series(db, t["id"], target, mode, cfg["topic_vocabulary_version"])
             if not ser:
                 continue
             i0, i1 = cal.index(ser[0][0]), cal.index(ser[-1][0])
@@ -107,14 +118,16 @@ def build_research(db, cfg: dict, cal: Calendar, prices: dict, *, mode: str) -> 
             px, rows = prices.get(target), []
             for d in sessions:
                 s, p = by_date.get(d, (None, None))
-                avail = None if p is None else store.parse(p["assumed_available_at_utc"] or p["signal_committed_at_utc"])
+                when = None if p is None or p.get("timing_status") != "RECORDED" else (p.get("assumed_available_at_utc") or p.get("first_committed_at_utc"))
+                avail = store.parse(when) if when else None
                 row = {"session_date": d, "state": s, "is_episode_start": d in starts, "desc_return": {}, "next_open_return": {},
                        "controls": returns.controls(cal, px, d) if px else {}}
                 for h in cfgmod.HORIZONS:
                     pr = returns.pair(cal, px, session_date=d, h=h, available_at=avail, availability=(p or {}).get("availability") or "NO_SIGNAL")
                     row["desc_return"][h], row["next_open_return"][h] = pr["desc_return"], pr["next_open_return"]
                     if p is not None:
-                        db.execute("INSERT OR REPLACE INTO x_event_returns VALUES(?,?,?,?,?,?)", (f"{t['id']}|{target}|{d}", "daily", t["id"], target, h, json.dumps({**pr, "state": s, "episode_id": starts.get(d)}, sort_keys=True)))
+                        db.execute("INSERT OR REPLACE INTO x_event_returns VALUES(?,?,?,?,?,?)", (f"{t['id']}|{target}|{d}", "daily", t["id"], target, h, json.dumps({**pr, "state": s, "episode_id": starts.get(d), "snapshot_id": p.get("snapshot_id"), "snapshot_revision": p.get("revision"),
+                                                                                                        "signal_first_committed_at_utc": p.get("first_committed_at_utc"), "timing_status": p.get("timing_status")}, sort_keys=True)))
                 rows.append(row)
             sp = stats.split(rows, holdout_start=v["holdout_start"], purge_sessions=max(cfgmod.HORIZONS))
             kw = dict(block=v["proposed_block_length_sessions"], reps=v["proposed_bootstrap_repetitions"], seed=v["proposed_seed"], min_state_days=v["proposed_min_state_days"])

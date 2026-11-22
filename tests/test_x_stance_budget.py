@@ -35,6 +35,15 @@ def clock(t):
     return box, (lambda: box["t"])
 
 
+KEY = {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}
+
+
+def unlock(db, cfg, env=KEY, history=True):
+    """A stored PASS receipt bound to the current configuration and key, as a strict preflight would leave it."""
+    return batch._store_receipt(db, {"finished_at_utc": store.iso(NOW), "verdict": "PASS", "binding": batch.binding(db, cfg, env),
+                                     "checks": {"history_search_verified": history}, "fail_reasons": []})
+
+
 def tweet(i, ts, author=None, text=None):
     return {"id": str(i), "url": f"https://x.com/u/status/{i}", "text": text or f"$QQQ note {i}", "lang": "en",
             "createdAt": ts.strftime("%a %b %d %H:%M:%S +0000 %Y"), "author": {"id": str(author or 9000 + i)}}
@@ -233,22 +242,49 @@ def test_recent_plan_is_frozen_breadth_first_and_inside_the_pool(cfg, db):
 
 def test_daily_job_stays_inside_every_cap_and_reports_the_limit(cfg, db):
     f = Fake()
-    out = batch.run_daily(db, cfg, {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}, lambda: f, NOW)
-    assert out == {"status": "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": out["gate"]} and "PREFLIGHT_NOT_PASSED" in out["gate"]["reasons"] and f.requests == []
-    set_meta(db, "preflight_passed", json.dumps({"at_utc": "x"})); db.commit()
-    out = batch.run_daily(db, cfg, {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}, lambda: f, NOW)
+    out = batch.run_daily(db, cfg, KEY, lambda: f, NOW, clock=lambda: NOW)
+    assert out["status"] == "REFUSED_FAIL_CLOSED" and out["requests_sent"] == 0 and "PREFLIGHT_NOT_PASSED" in out["gate"]["reasons"] and f.requests == []
+    set_meta(db, "preflight_passed", json.dumps({"at_utc": "x"})); db.commit()        # the old bare marker opens nothing any more
+    out = batch.run_daily(db, cfg, KEY, lambda: f, NOW, clock=lambda: NOW)
+    assert out["status"] == "REFUSED_FAIL_CLOSED" and out["gate"]["preflight"] == {"state": "STALE", "reasons": ["RECEIPT_FROM_LENIENT_VALIDATOR"], "history_unlocked": False} and f.requests == []
+    unlock(db, cfg)
+    out = batch.run_daily(db, cfg, KEY, lambda: f, NOW, clock=lambda: NOW)
     u = out["usage"]
     assert out["recent"]["stopped"] is None and out["recent"]["requests"] == 128                      # the frozen plan ran to its end: 32 groups x 4 pages
     assert out["historical"]["stopped"] == "LIMIT_REACHED:POOL_HISTORICAL_POSTS" and out["historical"]["requests"] == 100
     assert u["pools"]["recent"]["returned_posts"] == 2560 and u["pools"]["historical"]["returned_posts"] == 2000
     assert u["today"]["returned_posts"] == 4560 <= 5000 and Decimal(u["today"]["usd"]) == Decimal("0.684") <= Decimal("0.75")
     n = len(f.requests)
-    again = batch.run_daily(db, cfg, {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}, lambda: f, NOW + timedelta(hours=1))
+    again = batch.run_daily(db, cfg, KEY, lambda: f, NOW + timedelta(hours=1), clock=lambda: NOW + timedelta(hours=1))
     assert len(f.requests) == n and again["historical"]["stopped"].startswith("LIMIT_REACHED")         # same budget day: nothing more is bought
     statuses = {r[0] for r in db.execute("SELECT DISTINCT status FROM x_query_runs")}
     assert statuses <= {"PLANNED_SAMPLE", "NOT_RUN"} and "COMPLETE" not in statuses
     modes = dict(db.execute("SELECT ingest_mode, count(*) FROM x_posts GROUP BY ingest_mode").fetchall())
     assert set(modes) == {"BATCH_AFTER_CLOSE", "RETROSPECTIVE_VISIBLE_NOW"}
+
+
+def test_history_stays_locked_when_the_preflight_did_not_verify_a_historical_window(cfg, db):
+    f = Fake()
+    unlock(db, cfg, history=False)
+    out = batch.run_daily(db, cfg, KEY, lambda: f, NOW, clock=lambda: NOW)
+    assert out["recent"]["requests"] == 128 and out["historical"] == {"job": "historical", "status": "SKIPPED_HISTORY_SEARCH_NOT_VERIFIED", "requests": 0}
+    assert db.execute("SELECT count(*) FROM x_cost_ledger WHERE pool='historical'").fetchone()[0] == 0
+
+
+def test_a_receipt_is_bound_to_key_config_and_validator(cfg, db):
+    unlock(db, cfg)
+    assert batch.preflight_state(db, cfg, KEY)["state"] == "PASSED" and batch.preflight_passed(db, cfg, KEY)
+    assert not batch.preflight_passed(db)                                           # a caller that cannot say what it is bound to gets no
+    other = batch.preflight_state(db, cfg, {"TWITTERAPI_IO_API_KEY": "tw-FAKE-another-key-111"})
+    assert (other["state"], other["reasons"], other["recent_unlocked"]) == ("STALE", ["BINDING_CHANGED:credential_fingerprint"], False)
+    c2 = copy.deepcopy(cfg); c2["allocation"]["recent"]["max_returned_posts_per_day"] = 2000
+    assert batch.preflight_state(db, c2, KEY)["reasons"] == ["BINDING_CHANGED:config_sha256"]
+    raw = get_meta(db, batch.RECEIPT_KEY)
+    assert "tw-FAKE" not in raw and len(batch.key_fingerprint(KEY, cfg)) == 16     # a fingerprint, never the key
+    batch._store_receipt(db, {"finished_at_utc": store.iso(NOW + timedelta(hours=1)), "verdict": "FAIL", "binding": batch.binding(db, cfg, KEY), "checks": {}, "fail_reasons": ["STOPPED:ERROR:HTTP_401"]})
+    st = batch.preflight_state(db, cfg, KEY)
+    assert (st["state"], st["recent_unlocked"]) == ("FAILED", False)               # a newer failure closes the gate an older pass had opened
+    assert db.execute("SELECT count(*) FROM x_preflight_receipts").fetchone()[0] == 2   # both receipts are kept
 
 
 def test_history_range_is_frozen_once_and_walked_date_first(cfg, db):
@@ -259,12 +295,12 @@ def test_history_range_is_frozen_once_and_walked_date_first(cfg, db):
     set_meta(db, "preflight_passed", "{}"); db.commit()
     f = Fake()
     led = Ledger(db, cfg, clock=lambda: NOW)
-    out = batch.run_history(db, cfg, f, NOW, ledger=led)
+    out = batch.run_history(db, cfg, f, NOW, clock=lambda: NOW, ledger=led)
     assert out["requests"] == 100 and out["stopped"] == "LIMIT_REACHED:POOL_HISTORICAL_POSTS"
     rows = db.execute("SELECT substr(window_start_utc,1,10) d, COUNT(*) n, MAX(pages) p FROM x_query_runs WHERE pages>0 GROUP BY d ORDER BY d").fetchall()
     assert len(rows) >= 89 and max(r["p"] for r in rows) == 1                        # the first day's budget touches ~90 dates one page deep, not one date deeply
     day2 = NOW + timedelta(days=1)
-    out2 = batch.run_history(db, cfg, f, day2, ledger=Ledger(db, cfg, clock=lambda: day2))
+    out2 = batch.run_history(db, cfg, f, day2, clock=lambda: day2, ledger=Ledger(db, cfg, clock=lambda: day2))
     assert out2["requests"] == 100 and out2["progress"]["units_with_any_page"] == 200 and out2["progress"]["units_planned"] == 90 * 2 * 8
     assert db.execute("SELECT MAX(pages) FROM x_query_runs").fetchone()[0] == 1        # still breadth before depth
 
@@ -273,34 +309,44 @@ def test_history_range_is_frozen_once_and_walked_date_first(cfg, db):
 def test_preflight_is_bounded_charged_to_the_pools_and_reused_by_the_jobs(cfg, db):
     f = Fake(per_page=20)
     led = Ledger(db, cfg, clock=lambda: NOW)
-    rec = batch.run_preflight(db, cfg, f, NOW, ledger=led)
-    assert rec["verdict"] == "PASS" and len(rec["requests"]) == 9 and rec["returned_total"] == 180 <= 200
+    rec = batch.run_preflight(db, cfg, f, NOW, env=KEY, clock=lambda: NOW, ledger=led)
+    first = [r for r in rec["requests"] if r["kind"] == "first_page"]
+    assert rec["verdict"] == "PASS" and len(first) == 9 and rec["continuation"]["state"] == "VERIFIED" and len(rec["requests"]) == 10
+    assert rec["returned_total"] == 200 and rec["network_requests_total"] == 10 and rec["cache_hits_total"] == 0
+    assert rec["checks"] == {"all_planned_requests_answered": True, "schema_valid_on_every_page": True, "every_returned_post_parsed": True,
+                             "recent_content_verified": True, "history_search_verified": True, "continuation_verified": True}
     u = rec["usage_after"]
-    assert u["preflight_cumulative"] == {"credits": 2700, "usd": "0.027", "returned_posts": 180, "cap_usd": "0.03", "cap_posts": 200}
-    assert u["pools"]["recent"]["returned_posts"] == 160 and u["pools"]["historical"]["returned_posts"] == 20 and u["today"]["returned_posts"] == 180
-    assert {(r["topic_id"], r["lang"]) for r in rec["requests"][:8]} == {(t, lang) for t in ("memory", "technology", "market", "qqq") for lang in ("en", "zh")}
-    older = rec["requests"][-1]
-    assert older["pool"] == "historical" and older["window_start_utc"] < "2026-10-01" and batch.preflight_passed(db)
+    assert u["preflight_cumulative"] == {"credits": 3000, "usd": "0.03", "returned_posts": 200, "cap_usd": "0.03", "cap_posts": 200}
+    assert u["pools"]["recent"]["returned_posts"] == 180 and u["pools"]["historical"]["returned_posts"] == 20 and u["today"]["returned_posts"] == 200
+    assert {(r["topic_id"], r["lang"]) for r in first[:8]} == {(t, lang) for t in ("memory", "technology", "market", "qqq") for lang in ("en", "zh")}
+    older = first[-1]
+    assert older["pool"] == "historical" and older["window_start_utc"] < "2026-10-01" and batch.preflight_passed(db, cfg, KEY)
+    assert all(r["schema_valid"] and r["in_window"] == r["returned"] and r["parse_failures"] == 0 for r in rec["requests"])
     assert all("since_time:" in r["query"] and r["queryType"] == "Latest" for r in f.requests)
-    again = batch.run_preflight(db, cfg, f, NOW, ledger=led)                          # a second preflight finds its pages already stored
-    assert len(f.requests) == 9 and again["usage_after"]["preflight_cumulative"]["returned_posts"] == 180
-    set_meta(db, "x", "y"); db.commit()
-    out = batch.run_recent(db, cfg, f, NOW, ledger=led)                               # the daily job continues from those pages
-    assert out["requests"] == 128 - 8
+    again = batch.run_preflight(db, cfg, f, NOW + timedelta(minutes=1), env=KEY, clock=lambda: NOW + timedelta(minutes=1), ledger=led)   # everything is already stored
+    assert len(f.requests) == 10 and again["network_requests_total"] == 0 and again["usage_after"]["preflight_cumulative"]["returned_posts"] == 200 and again["verdict"] == "PASS"
+    fetched = {r[0] for r in db.execute("SELECT DISTINCT fetched_at_utc FROM x_posts")}
+    assert fetched == {store.iso(NOW)}                                              # stored pages keep the time they were really received
+    out = batch.run_recent(db, cfg, f, NOW, clock=lambda: NOW, ledger=led)          # the daily job continues from those pages
+    assert out["requests"] == 128 - 9
 
 
 def test_preflight_fails_closed_on_errors_and_never_exceeds_its_allowance(cfg, db):
     led = Ledger(db, cfg, clock=lambda: NOW)
-    rec = batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(401, "HTTP_401")), NOW, ledger=led)
-    assert rec["verdict"] == "FAIL" and rec["stopped"] == "ERROR:HTTP_401" and not batch.preflight_passed(db)
+    rec = batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(401, "HTTP_401")), NOW, env=KEY, clock=lambda: NOW, ledger=led)
+    assert rec["verdict"] == "FAIL" and rec["stopped"] == "ERROR:HTTP_401" and not batch.preflight_passed(db, cfg, KEY)
     assert led.usage(NOW)["preflight_cumulative"]["credits"] == 300                   # the one uncertain request stays reserved
-    empty = Fake(per_page=0)
-    rec = batch.run_preflight(db, cfg, empty, NOW + timedelta(seconds=1), ledger=led)
-    assert rec["verdict"] == "FAIL" and rec["returned_total"] == 0 and not batch.preflight_passed(db)       # answers, but nothing to check fields on
-    for _ in range(3):                                         # further attempts cannot pass the cumulative allowance
-        batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(None, "NETWORK")), NOW + timedelta(minutes=5), ledger=led)
+    for kind in ("RATE_LIMITED", "NETWORK"):
+        r = batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(429 if kind == "RATE_LIMITED" else None, kind)), NOW + timedelta(seconds=2), env=KEY, clock=lambda: NOW + timedelta(seconds=2), ledger=led)
+        assert r["verdict"] == "FAIL" and len(r["requests"]) == 1                    # one attempt, no retry loop
+    r = batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(503, "HTTP_503_NOT_CHARGED")), NOW + timedelta(seconds=3), env=KEY, clock=lambda: NOW + timedelta(seconds=3), ledger=led)
+    assert r["verdict"] == "FAIL" and led.usage(NOW)["preflight_cumulative"]["credits"] == 900        # 401, 429 and the timeout are held; the documented-free 503 is not
+    for _ in range(12):                                        # further attempts cannot pass the cumulative allowance
+        batch.run_preflight(db, cfg, Fake(fail=provider.ProviderHTTPError(None, "NETWORK")), NOW + timedelta(minutes=5), env=KEY, clock=lambda: NOW + timedelta(minutes=5), ledger=led)
     u = led.usage(NOW + timedelta(minutes=5))["preflight_cumulative"]
-    assert u["credits"] <= 3000 and u["returned_posts"] <= 200
+    assert u["credits"] == 3000 and u["returned_posts"] == 200 and not batch.preflight_passed(db, cfg, KEY)
+    last = batch.run_preflight(db, cfg, Fake(), NOW + timedelta(minutes=6), env=KEY, clock=lambda: NOW + timedelta(minutes=6), ledger=led)
+    assert last["verdict"] == "FAIL" and last["stopped"] == "LIMIT_REACHED:PREFLIGHT_POSTS" and last["network_requests_total"] == 0
 
 
 # ---------- after-close batch timing and pending classification ----------
@@ -308,7 +354,7 @@ def test_batch_signal_uses_the_real_commit_time_and_unclassified_days_have_no_st
     c = cfg["time"]["exchange_calendar"]
     cal = Calendar.load(store.REPO_ROOT / c["path"], c["sha256"])
     set_meta(db, "preflight_passed", "{}"); db.commit()
-    batch.run_recent(db, cfg, Fake(), NOW)
+    batch.run_recent(db, cfg, Fake(), NOW, clock=lambda: NOW)
     stance.map_topics(db, cfg)
     run_at = datetime(2026, 11, 20, 4, 0, tzinfo=UTC)
     out = pipeline.build_daily(db, cfg, cal, mode="AUTO", now=run_at)

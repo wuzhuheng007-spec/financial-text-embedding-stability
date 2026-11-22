@@ -247,7 +247,7 @@ class Collector:
         self.min_slice = acq["proposed_min_slice_seconds"]
         self.max_dup = acq["proposed_max_duplicate_share_per_page"]
         self.provider = "twitterapi_io"
-        self.parse_failures = 0
+        self.parse_failures, self.protocol_anomalies, self.last = 0, 0, None
         self.page_max = ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
         self.min_free_gib = acq["proposed_min_free_disk_gib"]
         self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
@@ -278,9 +278,13 @@ class Collector:
         run_id = self._run_id(q["query_hash"], s, e)
         prev = self.db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (run_id,)).fetchone()
         if planned_pages is not None and prev and prev["status"] == "PLANNED_SAMPLE" and prev["pages"] >= planned_pages:
-            return [{"run_id": run_id, "status": "PLANNED_SAMPLE", "from_checkpoint": True, "requests": 0, "pages": prev["pages"]}]
+            return [{"run_id": run_id, "status": "PLANNED_SAMPLE", "stop_reason": prev["stop_reason"], "from_checkpoint": True, "requests": 0, "network_requests": 0,
+                     "cache_hits": 0, "pages": prev["pages"], "returned": prev["returned"], "in_window": prev["in_window"], "out_of_window": prev["out_of_window"],
+                     "duplicates": prev["duplicates"], "new_posts": prev["new_posts"], "parse_failures": 0, "cost_estimate_usd": prev["cost_estimate_usd"]}]
         if prev and prev["status"] == "COMPLETE":
-            return [{"run_id": run_id, "status": "COMPLETE", "from_checkpoint": True, "requests": 0}]
+            return [{"run_id": run_id, "status": "COMPLETE", "stop_reason": prev["stop_reason"], "from_checkpoint": True, "requests": 0, "network_requests": 0, "cache_hits": 0,
+                     "pages": prev["pages"], "returned": prev["returned"], "in_window": prev["in_window"], "out_of_window": prev["out_of_window"],
+                     "duplicates": prev["duplicates"], "new_posts": prev["new_posts"], "parse_failures": 0, "cost_estimate_usd": prev["cost_estimate_usd"]}]
         if prev and prev["status"] == "SPLIT":
             mid = (s + e) // 2
             return self._slice(q, s, mid, run_id) + self._slice(q, mid, e, run_id)
@@ -294,7 +298,8 @@ class Collector:
             for k in ("cursor", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "earliest_utc", "latest_utc", "cost_estimate_usd", "started_at_utc"):
                 run[k] = prev[k]
         seen_ids = {r["post_id"] for r in self.db.execute("SELECT post_id FROM x_run_posts WHERE run_id=?", (run_id,))}
-        seen_cursors, cursor, prev_oldest, needs_split, stop, over_page = set(), run["cursor"] or "", None, None, None, False
+        seen_cursors, cursor, prev_oldest, needs_split, stop, over_page, protocol = set(), run["cursor"] or "", None, None, None, False, None
+        net, hits, fails = 0, 0, 0
         query = f"{q['query']} since_time:{s} until_time:{e}"
         while True:
             if cursor in seen_cursors:
@@ -304,11 +309,11 @@ class Collector:
             if run["pages"] >= self.max_pages:
                 needs_split = "PAGE_CAP"; break
             seen_cursors.add(cursor)
-            cached = self.db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
+            cached = self.db.execute("SELECT response_json, fetched_at_utc FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
                                      (self.provider, q["query_hash"], ws, we, cursor)).fetchone()
-            now = store.iso(self.clock())
-            if cached:
-                page = json.loads(cached["response_json"])
+            if cached:                                       # a stored page costs nothing and keeps the time it was really received
+                page, now = json.loads(cached["response_json"]), cached["fetched_at_utc"]
+                hits += 1
             else:
                 if isinstance(self.transport, RefusingTransport):
                     stop = "DRY_RUN_NO_REQUEST"; break          # nothing is reserved for a request that cannot be sent
@@ -329,19 +334,21 @@ class Collector:
                 except PaidRequestBlocked:
                     stop = "DRY_RUN_NO_REQUEST"; break
                 except ProviderHTTPError as ex:
-                    run["error_class"] = ex.kind
+                    run["error_class"] = ex.kind; net += 1
                     if led:                                  # keep the reservation unless the provider documents no charge
                         if ex.kind == "HTTP_503_NOT_CHARGED":
                             self.budget.not_charged("provider documents HTTP 503 as not charged")
                         else:
                             self.budget.unknown(ex.kind)
                     stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
+                now = store.iso(self.clock())                # the moment the response was actually received
+                net += 1
                 tweets = page.get("tweets") if isinstance(page, dict) else None
-                if not isinstance(tweets, list):
+                if not isinstance(tweets, list):             # how many posts came back is not knowable: the reservation stays
                     run["error_class"] = "BAD_SHAPE"
                     if led:
-                        self.budget.unknown("BAD_SHAPE")
-                    stop = "ERROR:BAD_SHAPE"; break
+                        self.budget.unknown("PROTOCOL:TWEETS_NOT_A_LIST")
+                    protocol = "PROTOCOL:TWEETS_NOT_A_LIST"; break
                 ids = {str(t.get("id")) for t in tweets if isinstance(t, dict) and t.get("id")}
                 cost = self.budget.charge(len(tweets), self.clock(), len(ids)) if led else self.budget.charge(len(tweets), self.clock())
                 if len(tweets) > self.page_max:
@@ -350,14 +357,19 @@ class Collector:
                 run["cost_estimate_usd"] = str(store_decimal(run["cost_estimate_usd"]) + cost)
                 body = json.dumps(page, sort_keys=True, ensure_ascii=False)
                 self.db.execute("INSERT OR REPLACE INTO x_page_cache VALUES(?,?,?,?,?,?,?,?)", (self.provider, q["query_hash"], ws, we, cursor, store.sha(body), body, now))
-            tweets = page.get("tweets") or []
+            bad = page_schema_error(page)
+            if bad:                                          # paid for and kept for inspection, but not read as a result and never an end of results
+                run["error_class"] = bad
+                run["updated_at_utc"] = now
+                protocol = f"PROTOCOL:{bad}"; break
+            tweets = page["tweets"]
             run["pages"] += 1; run["returned"] += len(tweets)
             times, dup_here = [], 0
             for t in tweets:
                 try:
                     p = normalize_twitterapi_io(t, now=now, batch=f"run:{run_id}", mode=self.mode)
-                except (KeyError, ValueError, TypeError):
-                    self.parse_failures += 1; run["out_of_window"] += 1; continue
+                except (KeyError, ValueError, TypeError, AttributeError):
+                    self.parse_failures += 1; fails += 1; run["out_of_window"] += 1; continue
                 ts = int(store.parse(p["created_at_utc"]).timestamp()); times.append(ts)
                 if p["post_id"] in seen_ids:
                     dup_here += 1; continue
@@ -371,7 +383,16 @@ class Collector:
                 run["earliest_utc"] = min(run["earliest_utc"] or p["created_at_utc"], p["created_at_utc"])
                 run["latest_utc"] = max(run["latest_utc"] or p["created_at_utc"], p["created_at_utc"])
             run["duplicates"] += dup_here
-            cursor = page.get("next_cursor") or ""
+            has_next, nxt = page["has_next_page"], page["next_cursor"]
+            if has_next and not nxt:                         # "more results" without a way to ask for them
+                run["updated_at_utc"] = now
+                store.upsert_run(self.db, run); self.db.commit()
+                protocol = "PROTOCOL:NEXT_PAGE_WITHOUT_CURSOR"; break
+            if has_next and nxt == cursor and planned_pages is not None:
+                run["updated_at_utc"] = now
+                store.upsert_run(self.db, run); self.db.commit()
+                protocol = "PROTOCOL:CURSOR_NOT_ADVANCING"; break
+            cursor = nxt if has_next else ""
             run["cursor"], run["updated_at_utc"] = cursor, now
             store.upsert_run(self.db, run); self.db.commit()   # checkpoint after every page
             if over_page:
@@ -382,8 +403,9 @@ class Collector:
                 needs_split = "EXCESS_DUPLICATES"; break
             if times:
                 prev_oldest = min(times)
-            if not page.get("has_next_page") or not cursor:
-                run["status"], run["stop_reason"] = "COMPLETE", "END_OF_RESULTS"; break
+            if has_next is False:                            # only an explicit boolean false ends a window
+                run["status"], run["stop_reason"] = "COMPLETE", ("END_OF_RESULTS" if run["returned"] else "END_OF_RESULTS_EMPTY"); break
+        extra = {"network_requests": net, "cache_hits": hits, "parse_failures": fails}
         if stop:
             limit = stop.startswith("LIMIT_REACHED") or stop.startswith("PAUSED:")
             if stop == "DRY_RUN_NO_REQUEST" or (limit and run["pages"] == 0):
@@ -394,7 +416,16 @@ class Collector:
                 run["status"] = "LIMIT_REACHED" if limit else "PARTIAL"
             run["stop_reason"] = stop
             store.upsert_run(self.db, run); self.db.commit()
+            self.last = {**{k: run[k] for k in SUMMARY}, **extra}
             raise StopAll(stop)
+        if protocol:                                         # this unit stops here; it is never COMPLETE and is not retried blindly
+            run["status"], run["stop_reason"] = "PARTIAL", protocol
+            self.protocol_anomalies += 1
+            store.upsert_run(self.db, run); self.db.commit()
+            self.last = {**{k: run[k] for k in SUMMARY}, **extra}
+            if self.protocol_anomalies >= 3:
+                raise StopAll("PROTOCOL_ANOMALY_REPEATED")
+            return [self.last]
         if needs_split and planned_pages is not None:
             run["status"], run["stop_reason"] = "PARTIAL", needs_split      # a planned window is never re-cut: it is reported as it is
         elif needs_split:
@@ -405,7 +436,65 @@ class Collector:
                 return self._slice(q, s, mid, run_id) + self._slice(q, mid, e, run_id)
             run["status"], run["stop_reason"] = "PARTIAL", needs_split
         store.upsert_run(self.db, run); self.db.commit()
-        return [{k: run[k] for k in ("run_id", "status", "stop_reason", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "cost_estimate_usd")}]
+        self.last = {**{k: run[k] for k in SUMMARY}, **extra}
+        return [self.last]
+
+
+SUMMARY = ("run_id", "status", "stop_reason", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "cost_estimate_usd")
+PROTOCOL_VALIDATOR = "x-protocol-v2-20261122"
+
+
+def page_schema_error(page) -> str | None:
+    """The provider documents `tweets` (array), `has_next_page` (boolean) and `next_cursor` (string) as required.
+    Anything else is a protocol error: a missing field, null, the string "false" or the number 0 is never read
+    as "no more pages"."""
+    if not isinstance(page, dict):
+        return "RESPONSE_NOT_AN_OBJECT"
+    if not isinstance(page.get("tweets"), list):
+        return "TWEETS_NOT_A_LIST"
+    if "has_next_page" not in page:
+        return "HAS_NEXT_PAGE_MISSING"
+    if not isinstance(page["has_next_page"], bool):
+        return "HAS_NEXT_PAGE_NOT_BOOLEAN"
+    if "next_cursor" not in page:
+        return "NEXT_CURSOR_MISSING"
+    if not isinstance(page["next_cursor"], str):
+        return "NEXT_CURSOR_NOT_STRING"
+    if any(not isinstance(t, dict) for t in page["tweets"]):
+        return "TWEET_NOT_AN_OBJECT"
+    return None
+
+
+def migrate_checkpoints(db) -> dict:
+    """Re-reads every stored page with the strict validator. A run that the earlier, lenient reader marked COMPLETE
+    although its last stored page does not say `has_next_page: false` (or any stored page is malformed) is demoted
+    to PARTIAL so it is not skipped for ever. Nothing is deleted, no cost is touched, no request is sent.
+    Idempotent; each application is logged in x_migrations."""
+    db.execute("CREATE TABLE IF NOT EXISTS x_migrations(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, applied_at_utc TEXT NOT NULL, detail_json TEXT NOT NULL)")
+    done = db.execute("SELECT detail_json FROM x_migrations WHERE name=? ORDER BY id DESC LIMIT 1", (PROTOCOL_VALIDATOR,)).fetchone()
+    demoted, checked = [], 0
+    for r in db.execute("SELECT run_id, query_hash, window_start_utc, window_end_utc, stop_reason FROM x_query_runs WHERE provider='twitterapi_io' AND status='COMPLETE'").fetchall():
+        pages = db.execute("SELECT cursor, response_json FROM x_page_cache WHERE provider='twitterapi_io' AND query_hash=? AND window_start_utc=? AND window_end_utc=? ORDER BY fetched_at_utc, rowid",
+                           (r["query_hash"], r["window_start_utc"], r["window_end_utc"])).fetchall()
+        checked += 1
+        why = None
+        if not pages:
+            why = "NO_STORED_PAGE"
+        else:
+            parsed = [json.loads(p["response_json"]) for p in pages]
+            errs = [page_schema_error(x) for x in parsed]
+            if any(errs):
+                why = next(e for e in errs if e)
+            elif not any(x["has_next_page"] is False for x in parsed):
+                why = "NO_PAGE_WITH_EXPLICIT_END"
+        if why:
+            db.execute("UPDATE x_query_runs SET status='PARTIAL', stop_reason=? WHERE run_id=?", (f"MIGRATED_FROM_LENIENT_COMPLETE:{why}", r["run_id"]))
+            demoted.append({"run_id": r["run_id"], "reason": why, "previous_stop_reason": r["stop_reason"]})
+    detail = {"validator": PROTOCOL_VALIDATOR, "complete_runs_checked": checked, "demoted": demoted, "first_application": done is None}
+    if done is None or demoted:
+        db.execute("INSERT INTO x_migrations(name, applied_at_utc, detail_json) VALUES(?,?,?)", (PROTOCOL_VALIDATOR, store.utcnow(), json.dumps(detail, sort_keys=True)))
+    db.commit()
+    return detail
 
 
 def store_decimal(s):
