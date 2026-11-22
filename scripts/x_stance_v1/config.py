@@ -9,13 +9,11 @@ from pathlib import Path
 
 LABELS = ("bullish", "bearish", "neutral")
 HORIZONS = (1, 3, 5, 10, 20, 30)
-KEY_ENV = {"twitterapi_io": "X_STANCE_TWITTERAPI_IO_KEY", "socialdata": "X_STANCE_SOCIALDATA_KEY"}
-DEFAULT_PATH = Path(__file__).resolve().parents[2] / "research" / "x_stance_v1" / "config" / "x_stance_v1_frozen_20261122.json"
+KEY_ENV = {"twitterapi_io": "TWITTERAPI_IO_API_KEY"}
+DEFAULT_PATH = Path(__file__).resolve().parents[2] / "research" / "x_stance_v1" / "config" / "x_stance_v2_twitterapiio_5000_20261122.json"
 
 # (path into the config, why it matters). A null here is reported, never replaced by a default.
 MUST_FREEZE = (
-    ("acquisition.history_start", "acquisition"), ("acquisition.history_end_exclusive", "acquisition"),
-    ("acquisition.daily_budget_usd", "acquisition"), ("acquisition.total_budget_usd", "acquisition"),
     ("classifier.model_id", "classifier"), ("classifier.immutable_revision", "classifier"),
     ("classifier.prompt_version", "classifier"), ("classifier.temperature", "classifier"),
     ("market.input_version", "market"), ("market.adjustment_semantics", "market"),
@@ -67,6 +65,27 @@ def validate(cfg: dict) -> None:
         kws = t.get("keywords") or []
         if not kws or len(kws) != len(set(kws)):
             raise ConfigError(f"topic {t.get('id')}: keywords must be non-empty and unique")
+    b, al, pf, q = cfg.get("budget") or {}, cfg.get("allocation") or {}, cfg.get("preflight") or {}, cfg.get("quote") or {}
+    try:
+        day_posts, day_usd = int(b["daily_all_jobs_returned_post_cap"]), Decimal(b["daily_all_jobs_cost_cap_usd"])
+        pools_posts = sum(int(al[k]["max_returned_posts_per_day"]) for k in ("recent", "historical"))
+        pools_usd = sum(Decimal(al[k]["cost_cap_usd_per_day"]) for k in ("recent", "historical"))
+        roll = Decimal(b["rolling_all_jobs_cost_cap_usd"])
+        per_post = Decimal(q["credits_per_post"]) / Decimal(q["credits_per_usd"])
+    except (KeyError, TypeError, ValueError, ArithmeticError):
+        raise ConfigError("budget, allocation and quote must be complete: no budget, no request") from None
+    if day_posts <= 0 or day_usd <= 0 or roll <= 0:
+        raise ConfigError("budget caps must be positive")
+    if pools_posts > day_posts or pools_usd > day_usd:
+        raise ConfigError("the recent and historical pools together must fit inside the daily cap")
+    if al.get("automatic_reallocation") is not False:
+        raise ConfigError("pools do not borrow from each other")
+    if per_post != Decimal(q["per_post"]) or Decimal(day_posts) * per_post > day_usd:
+        raise ConfigError("quote and daily caps are inconsistent")
+    if int(pf.get("max_returned_posts", 0)) > day_posts or pf.get("included_in_daily_and_rolling_caps") is not True:
+        raise ConfigError("the preflight allowance is part of the daily caps, never extra")
+    if (cfg.get("authorization") or {}).get("auto_topup") is not False or (cfg.get("authorization") or {}).get("purchase_subscription") is not False:
+        raise ConfigError("automatic top-up and subscription purchase must stay off")
     if (cfg.get("narratives") or {}).get("max_clusters_to_display", 99) > 5:
         raise ConfigError("at most 5 narratives are displayed")
     for name, rate in (cfg.get("quoted_standard_rates_usd_per_returned_post") or {}).items():
@@ -82,28 +101,15 @@ def unfrozen(cfg: dict) -> list[dict]:
     return out
 
 
-def acquisition_gate(cfg: dict, env: dict) -> dict:
-    """Paid requests are allowed only when every reason list entry is absent. The key is looked up by name;
-    its value is never returned or logged."""
-    acq, provider = cfg["acquisition"], cfg["provider_candidate"]
+def acquisition_gate(cfg: dict, env: dict, *, preflight_passed: bool = False, for_preflight: bool = False) -> dict:
+    """Metered requests need the provider key in the environment (looked up by name; its value is never returned
+    or logged). The scheduled jobs additionally need a passed preflight. Budgets are part of the validated config."""
+    provider = cfg["provider_candidate"]
     reasons = []
-    if acq.get("dry_run") is not False:
-        reasons.append("DRY_RUN")
-    if acq.get("live_enabled") is not True:
-        reasons.append("LIVE_NOT_ENABLED")
     if not (env.get(KEY_ENV[provider]) or "").strip():
         reasons.append("PROVIDER_KEY_MISSING")
-    for f in ("daily_budget_usd", "total_budget_usd"):
-        v = acq.get(f)
-        try:
-            ok = v is not None and Decimal(str(v)) > 0
-        except Exception:  # noqa: BLE001
-            ok = False
-        if not ok:
-            reasons.append(f"BUDGET_MISSING:{f}")
-    for f in ("history_start", "history_end_exclusive"):
-        if acq.get(f) is None:
-            reasons.append(f"WINDOW_NOT_FROZEN:{f}")
+    if not for_preflight and cfg["preflight"]["required_for_metered_job_activation"] and not preflight_passed:
+        reasons.append("PREFLIGHT_NOT_PASSED")
     return {"allowed": not reasons, "provider": provider, "key_env_name": KEY_ENV[provider], "reasons": reasons}
 
 

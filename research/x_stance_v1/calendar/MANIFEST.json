@@ -1,0 +1,34 @@
+{
+ "extension_part": {
+  "closures": {
+   "2026-04-03": "Good Friday",
+   "2026-05-25": "Memorial Day",
+   "2026-06-19": "Juneteenth National Independence Day",
+   "2026-07-03": "Independence Day (observed)",
+   "2026-09-07": "Labor Day",
+   "2026-11-26": "Thanksgiving Day",
+   "2026-12-25": "Christmas Day"
+  },
+  "early_closes_13_00": {
+   "2026-11-27": "day after Thanksgiving",
+   "2026-12-24": "Christmas Eve"
+  },
+  "evidence": "page read, not archived; the official announcement PDF could not be text-extracted in this run",
+  "first_session": "2026-03-02",
+  "last_session": "2026-12-31",
+  "sessions": 212,
+  "source": "https://www.nyse.com/markets/hours-calendars read on 2026-11-22",
+  "source_id": "nyse_hours_page_read_20261122",
+  "unscheduled_closures": "none can be known in advance; a later unscheduled closure would need a new version"
+ },
+ "file": "sessions_xnys_20191101_20261231.csv",
+ "registered_part": {
+  "evidence": "archived official announcements (round9 builder)",
+  "last_session": "2026-02-27",
+  "sessions": 1588,
+  "sha256": "2072e81065f8749fb41f531f8c62338d0ff478a2965e00ced18ee324d995489c",
+  "source": "results/calendar_round9/sessions.csv"
+ },
+ "sessions": 1800,
+ "sha256": "b14e9f02fc19a50b9232f7340e1cc3ed074a17f91b5e645e5be0242176f1c0c0"
+}

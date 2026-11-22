@@ -54,9 +54,10 @@ function filled() {
   const d = JSON.parse(JSON.stringify(EMPTY));
   d.has_data = true; d.collection.state = 'HAS_GAPS'; d.collection.posts = 120; d.data_kinds = {live: 0, retrospective: 120};
   const day = (label, sh, state, reason) => ({window_kind: 'session', window_label: label, topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'RETROSPECTIVE_VISIBLE_NOW',
-    shares: sh, accounts_total: sh.bullish == null ? 0 : 40, posts_total: 55, unjudged_total: 3, state, state_reason: reason});
+    shares: sh, accounts_total: sh.bullish == null ? 0 : 40, posts_total: 55, unjudged_total: 3, state, state_reason: reason,
+    classification: {sample_accounts: 60, share_done: reason === 'CLASSIFICATION_INCOMPLETE' ? 0 : 1, pending: 0, matched_posts: 80}});
   d.daily = [day('2025-06-02', {bullish: 0.5, bearish: 0.25, neutral: 0.25}, 'bullish', null), day('2025-06-03', {bullish: null, bearish: null, neutral: null}, 'UNKNOWN', 'COLLECTION_PARTIAL'),
-    day('2025-06-04', {bullish: 0.2, bearish: 0.2, neutral: 0.6}, 'UNKNOWN', 'LOW_SAMPLE')];
+    day('2025-06-04', {bullish: 0.2, bearish: 0.2, neutral: 0.6}, 'UNKNOWN', 'LOW_SAMPLE'), day('2025-06-05', {bullish: null, bearish: null, neutral: null}, 'UNKNOWN', 'CLASSIFICATION_INCOMPLETE')];
   d.returns = [{topic_id: 'qqq', session_date: '2025-06-02', h: 1, anchor_close: 100}, {topic_id: 'qqq', session_date: '2025-06-04', h: 1, anchor_close: 103}];
   d.narratives = Array.from({length: 7}, (_, i) => ({topic_id: 'qqq', target_id: 'QQQ', window_label: '2025-06-02', rank: i + 1, title: `降息会抬高估值 sample view ${i}`,
     supporting_accounts: 9 - i, share_of_sample_accounts: 0.1, stance_composition: {bullish: 5, bearish: 2, neutral: 2 - 0},
@@ -73,11 +74,11 @@ test('with no store every data panel names the missing inputs and shows no rows'
   for (const p of ['daily', 'views', 'history']) {
     const t = texts(ui.panel(p)).join('|');
     assert.strictEqual(rowsOf(ui.panel(p)), 0, p);
-    for (const need of ['供应商密钥', '每日预算', '总预算', '分类模型的固定版本', '行情输入版本', '留出期起点']) assert.ok(t.includes(need), `${p} lacks ${need}`);
+    for (const need of ['供应商密钥', '实采预检', '分类模型的固定版本', '行情输入版本', '留出期起点']) assert.ok(t.includes(need), `${p} lacks ${need}`);
     assert.ok(!/\d+(\.\d+)?%/.test(t), `${p} shows a percentage without data`);
   }
   const s = texts(ui.panel('settings')).join('|');
-  for (const need of ['未设定', '尚未采集', '未开启', '未固定版本，不运行', '离线演练模式', '缺少供应商密钥', '预算未设定', '未配置（仅统计行业观点）']) assert.ok(s.includes(need), need);
+  for (const need of ['尚未采集', '未开启', '未固定版本，不运行', '缺少供应商密钥', '尚未通过实采预检', '未配置（仅统计行业观点）', '计划抽样，不是全量', '0 / 5000', '0 / 0.75', '0 / 3000', '0 / 2000', '0 / 22.5', '0 / 200', '未运行', '不是供应商账单']) assert.ok(s.includes(need), need);
   assert.strictEqual(rowsOf(ui.panel('settings')), 1 + 4);                       // header + the four configured topics
 });
 
@@ -91,10 +92,12 @@ test('filled panels: backfill label, null shares stay blank, five views at most,
   const ui = await mount(filled());
   const daily = texts(ui.panel('daily')).join('|');
   assert.ok(daily.includes('历史回填（现在可见的样本）') && !daily.includes('实时留档'));
-  assert.ok(daily.includes('采集不完整') && daily.includes('样本账号过少') && daily.includes('未判定'));
+  assert.ok(daily.includes('采集不完整') && daily.includes('样本账号过少') && daily.includes('未判定') && daily.includes('分类未完成') && daily.includes('本次采集样本中的账号比例'));
+  const pendingCells = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2025-06-05')).all(e => e.tagName === 'td').map(c => c.textContent);
+  assert.deepStrictEqual(pendingCells.slice(2, 8), ['—', '—', '—', '0', '60', '0.0%']);      // shares blank, sample accounts shown, progress 0 %: nothing invented
   const unknownRow = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2025-06-03'));
-  assert.ok(unknownRow.textContent.includes('—') && !/%/.test(unknownRow.textContent));          // no 0 %, no neutral, for a day without a sample
-  assert.strictEqual(ui.panel('daily').all(e => (e.className || '').includes('xs-bar-empty')).length, 1);
+  assert.deepStrictEqual(unknownRow.all(e => e.tagName === 'td').map(c => c.textContent).slice(2, 5), ['—', '—', '—']);   // no 0 %, no neutral, for a day without a sample
+  assert.strictEqual(ui.panel('daily').all(e => (e.className || '').includes('xs-bar-empty')).length, 2);
   assert.strictEqual(ui.panel('views').all(e => (e.className || '') === 'xs-view').length, 5);
   const links = ui.panel('views').all(e => e.tagName === 'a');
   assert.ok(links.length === 5 && links.every(a => a.href.startsWith('https://x.com/') && a.rel === 'noopener noreferrer'));

@@ -23,7 +23,7 @@ class XStanceJsonTests(TestCase):
         self.other = users.create_user(username="other@example.org", email="other@example.org", password=PASSWORD)
 
     def tearDown(self):
-        os.environ.pop("QUANT_X_STANCE_DB", None); os.environ.pop("X_STANCE_TWITTERAPI_IO_KEY", None); self.tmp.cleanup()
+        os.environ.pop("QUANT_X_STANCE_DB", None); os.environ.pop("TWITTERAPI_IO_API_KEY", None); self.tmp.cleanup()
 
     def get(self):
         self.client.force_login(self.owner)
@@ -44,19 +44,21 @@ class XStanceJsonTests(TestCase):
             self.assertEqual(d[k], [])
         self.assertFalse(self.db.exists())                                         # reading does not create a store
         missing = {m["input"] for m in d["missing_inputs"]}
-        self.assertTrue({"PROVIDER_KEY", "acquisition.daily_budget_usd", "acquisition.total_budget_usd", "classifier.immutable_revision",
-                         "market.input_version", "validation.holdout_start"} <= missing)
+        self.assertTrue({"PROVIDER_KEY", "PREFLIGHT", "classifier.immutable_revision", "market.input_version", "validation.holdout_start"} <= missing)
+        self.assertEqual((d["budget"]["today"]["cap_posts"], d["budget"]["today"]["cap_usd"], d["budget"]["rolling"]["cap_usd"], d["budget"]["today"]["returned_posts"]), (5000, "0.75", "22.5", 0))
+        self.assertEqual(d["settings"]["key_env_name"], "TWITTERAPI_IO_API_KEY")
+        self.assertEqual((d["preflight"]["state"], d["history_queue"]["state"]), ("NOT_RUN", "NOT_STARTED"))
         self.assertEqual(d["collection"]["state"], "NOT_STARTED")
         self.assertFalse(d["settings"]["acquisition_gate"]["allowed"])
         self.assertEqual([t["id"] for t in d["settings"]["topics"]], ["memory", "technology", "market", "qqq"])
         self.assertFalse(d["settings"]["automatic_paid_fallback"])
 
     def test_a_configured_key_is_never_echoed(self):
-        os.environ["X_STANCE_TWITTERAPI_IO_KEY"] = "tw-FAKE-not-a-real-key-000"
+        os.environ["TWITTERAPI_IO_API_KEY"] = "tw-FAKE-not-a-real-key-000"
         body = self.get().content.decode()
         self.assertNotIn("tw-FAKE", body)
         self.assertNotIn("PROVIDER_KEY_MISSING", body)
-        self.assertFalse(json.loads(body)["settings"]["acquisition_gate"]["allowed"])   # a key alone opens nothing
+        self.assertEqual(json.loads(body)["settings"]["acquisition_gate"]["reasons"], ["PREFLIGHT_NOT_PASSED"])   # a key alone starts nothing
 
     def test_stored_rows_are_served_with_their_mode_and_without_post_id_lists(self):
         from scripts.x_stance_v1 import store

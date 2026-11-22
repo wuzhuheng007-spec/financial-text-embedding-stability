@@ -23,8 +23,10 @@ def _shares(counts: dict) -> dict:
     return {k: (counts[k] / a if a else None) for k in LABELS}
 
 
-def _state(counts: dict, *, collection_status: str, threshold: int) -> tuple[str, str | None]:
+def _state(counts: dict, *, collection_status: str, threshold: int, pending: int = 0) -> tuple[str, str | None]:
     a = sum(counts.values())
+    if pending:                                              # a day that is not fully classified has no formal state
+        return "UNKNOWN", "CLASSIFICATION_INCOMPLETE"
     if collection_status not in ("COMPLETE", "COMPLETE_DECLARED", "PLANNED_SAMPLE"):
         return "UNKNOWN", f"COLLECTION_{collection_status}"
     if a == 0:
@@ -61,7 +63,22 @@ def rows_for_window(db, *, topic_id: str, target_id: str, start: datetime, end: 
     return kept, dropped
 
 
-def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope: str = "all") -> dict:
+def progress(db, *, topic_id: str, target_id: str, start: datetime, end: datetime, vocab_version: str) -> dict:
+    """How much of the window's matched sample has a label at all. Counted on post/topic pairs and on accounts."""
+    s, e = store.iso(start), store.iso(end)
+    r = db.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT p.author_id), SUM(CASE WHEN l.post_id IS NOT NULL OR t.quality!='PENDING' THEN 1 ELSE 0 END), COUNT(DISTINCT p.lang) "
+        "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) "
+        "LEFT JOIN (SELECT DISTINCT provider, post_id, topic_id, target_id FROM x_stance_labels) l "
+        "  ON l.provider=t.provider AND l.post_id=t.post_id AND l.topic_id=t.topic_id AND l.target_id=t.target_id "
+        "WHERE t.topic_version=? AND t.topic_id=? AND t.target_id=? AND p.created_at_utc>=? AND p.created_at_utc<?",
+        (vocab_version, topic_id, target_id, s, e)).fetchone()
+    total, done = r[0] or 0, r[2] or 0
+    return {"matched_posts": total, "sample_accounts": r[1] or 0, "classified_or_prefiltered": done, "pending": total - done,
+            "share_done": (done / total) if total else None}
+
+
+def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope: str = "all", pending: int = 0) -> dict:
     rows = [r for r in rows if lang_scope == "all" or (r["lang"] or "") == lang_scope]
     valid = [r for r in rows if r["label"] in LABELS and r["quality_status"] == "OK"]
     excluded, ok = {}, {(r["provider"], r["post_id"]) for r in valid}
@@ -82,7 +99,7 @@ def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope:
     langs = {}
     for r in last.values():
         langs[r["lang"] or "und"] = langs.get(r["lang"] or "und", 0) + 1
-    state, why = _state(by_author, collection_status=collection_status, threshold=threshold)
+    state, why = _state(by_author, collection_status=collection_status, threshold=threshold, pending=pending)
     a = sum(by_author.values())
     return {"lang_scope": lang_scope, "accounts": by_author, "accounts_total": a, "shares": _shares(by_author),
             "posts": by_post, "posts_total": sum(by_post.values()), "shares_by_post": _shares(by_post),
@@ -110,11 +127,13 @@ def commit(db, *, window_kind: str, window_label: str, start: datetime, end: dat
     than the window end or the last inference it used. A retrospective aggregate keeps the REAL commit time and
     carries the window end only as `assumed_available_at_utc`, flagged hypothetical."""
     used = [r["inferred_at_utc"] for r in rows if r["post_id"] in set(result["vote_post_ids"])]
-    committed = max([store.iso(now), store.iso(end)] + used) if mode == "LIVE" else store.iso(now)
+    observed = mode in ("LIVE", "BATCH_AFTER_CLOSE")
+    committed = max([store.iso(now), store.iso(end)] + used) if observed else store.iso(now)
     payload = {**result, "window_start_utc": store.iso(start), "window_end_utc": store.iso(end), "mode": mode,
                "signal_committed_at_utc": committed,
-               "assumed_available_at_utc": None if mode == "LIVE" else store.iso(end),
-               "availability": "OBSERVED" if mode == "LIVE" else "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL"}
+               "source_window_end_utc": store.iso(end),
+               "assumed_available_at_utc": None if observed else store.iso(end),
+               "availability": {"LIVE": "OBSERVED", "BATCH_AFTER_CLOSE": "OBSERVED_AFTER_CLOSE_BATCH"}.get(mode, "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL")}
     db.execute("INSERT OR REPLACE INTO x_daily_sentiment VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                (window_kind, window_label, payload["window_start_utc"], payload["window_end_utc"], topic_id, target_id, result["lang_scope"], mode,
                 store.json.dumps(payload, sort_keys=True, ensure_ascii=False), result["state"], committed))

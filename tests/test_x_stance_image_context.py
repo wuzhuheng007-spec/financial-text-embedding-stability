@@ -6,7 +6,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-FILES = ["scripts/x_stance_v1/__init__.py", "scripts/x_stance_v1/config.py", "scripts/x_stance_v1/store.py", "scripts/x_stance_v1/portal_read.py"]
+FILES = ["scripts/x_stance_v1/__init__.py", "scripts/x_stance_v1/config.py", "scripts/x_stance_v1/store.py", "scripts/x_stance_v1/portal_read.py",
+         "scripts/x_stance_v1/ledger.py"]     # what the web view imports: standard library only
 CODE = "\n".join([
     "import sys",
     "sys.path.insert(0, '.')",
@@ -18,14 +19,17 @@ CODE = "\n".join([
 ])
 
 
-def test_the_allowlist_carries_the_read_model_and_its_config_only():
+def test_the_allowlist_carries_the_package_its_config_and_calendar():
+    """The same image runs the web view and the scheduled X job, so the whole package is allowed in; the image has
+    numpy but no scipy, and nothing in the package may need scipy."""
     allow = (REPO / "deploy" / "linux" / "Dockerfile.dockerignore").read_text(encoding="utf-8").splitlines()
-    for f in FILES:
-        assert f"!{f}" in allow
-    assert "!research/x_stance_v1/config/*.json" in allow
-    assert "!scripts/x_stance_v1/**" not in allow                                  # the collector and the numpy code stay out of the web image
+    for line in ("!scripts/x_stance_v1/**", "!research/x_stance_v1/config/*.json", "!research/x_stance_v1/calendar/*"):
+        assert line in allow
     docker = (REPO / "deploy" / "linux" / "Dockerfile").read_text(encoding="utf-8")
-    assert "COPY research/x_stance_v1/config /app/research/x_stance_v1/config" in docker
+    assert "COPY research/x_stance_v1/config /app/research/x_stance_v1/config" in docker and "COPY research/x_stance_v1/calendar /app/research/x_stance_v1/calendar" in docker
+    for f in (REPO / "scripts" / "x_stance_v1").glob("*.py"):
+        src = f.read_text(encoding="utf-8")
+        assert "import scipy" not in src and "from scipy" not in src, f.name
 
 
 def test_the_read_model_runs_from_those_files_alone(tmp_path):

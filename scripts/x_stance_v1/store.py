@@ -59,6 +59,16 @@ CREATE TABLE IF NOT EXISTS x_event_returns(
   event_id TEXT NOT NULL, event_kind TEXT NOT NULL, topic_id TEXT NOT NULL, target_id TEXT NOT NULL, h INTEGER NOT NULL,
   payload_json TEXT NOT NULL, PRIMARY KEY(event_id, event_kind, h));
 CREATE TABLE IF NOT EXISTS x_run_manifest(manifest_id TEXT PRIMARY KEY, created_at_utc TEXT NOT NULL, payload_json TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS x_meta(key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at_utc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS x_sample_plans(plan_id TEXT PRIMARY KEY, job TEXT NOT NULL, plan_key TEXT NOT NULL, frozen_at_utc TEXT NOT NULL,
+  sha256 TEXT NOT NULL, plan_json TEXT NOT NULL, UNIQUE(job, plan_key));
+CREATE TABLE IF NOT EXISTS x_cost_ledger(
+  request_id TEXT PRIMARY KEY, job_type TEXT NOT NULL, pool TEXT NOT NULL, is_preflight INTEGER NOT NULL,
+  run_id TEXT, window_start_utc TEXT, window_end_utc TEXT, cursor TEXT, attempt INTEGER NOT NULL,
+  reserved_credits INTEGER NOT NULL, reserved_posts INTEGER NOT NULL, settled_credits INTEGER, returned INTEGER, unique_ids INTEGER,
+  status TEXT NOT NULL, cost_source TEXT NOT NULL, note TEXT, budget_day TEXT NOT NULL, created_at_utc TEXT NOT NULL, settled_at_utc TEXT);
+CREATE INDEX IF NOT EXISTS x_cost_ledger_day ON x_cost_ledger(budget_day);
+CREATE INDEX IF NOT EXISTS x_cost_ledger_created ON x_cost_ledger(created_at_utc);
 """
 
 
@@ -75,7 +85,12 @@ def parse(s: str) -> datetime:
 
 
 def db_path() -> Path:
-    return Path(os.environ.get("QUANT_X_STANCE_DB") or REPO_ROOT / "local_only" / "x_stance_v1" / "x_stance.sqlite3")
+    """QUANT_X_STANCE_DB wins. Otherwise the portal's private state directory when it exists (on the server that is
+    the persistent volume the web service already reads), else the ignored local_only folder."""
+    if os.environ.get("QUANT_X_STANCE_DB"):
+        return Path(os.environ["QUANT_X_STANCE_DB"])
+    var = REPO_ROOT / "apps" / "quant_portal" / "var"
+    return (var / "x_stance" if var.is_dir() else REPO_ROOT / "local_only" / "x_stance_v1") / "x_stance.sqlite3"
 
 
 def connect(path: str | Path | None = None, *, readonly: bool = False) -> sqlite3.Connection:

@@ -1,49 +1,96 @@
 {
+ "budget": {
+  "billing_source": "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill",
+  "budget_day": null,
+  "paused": null,
+  "pools": {
+   "historical": {
+    "cap_posts": 2000,
+    "cap_usd": "0.3",
+    "credits": 0,
+    "returned_posts": 0,
+    "usd": "0"
+   },
+   "recent": {
+    "cap_posts": 3000,
+    "cap_usd": "0.45",
+    "credits": 0,
+    "returned_posts": 0,
+    "usd": "0"
+   }
+  },
+  "preflight_cumulative": {
+   "cap_posts": 200,
+   "cap_usd": "0.03",
+   "credits": 0,
+   "returned_posts": 0,
+   "usd": "0"
+  },
+  "rolling": {
+   "cap_usd": "22.5",
+   "credits": 0,
+   "hours": 720,
+   "usd": "0"
+  },
+  "timezone": "Asia/Shanghai",
+  "today": {
+   "cap_posts": 5000,
+   "cap_usd": "0.75",
+   "credits": 0,
+   "returned_posts": 0,
+   "usd": "0"
+  },
+  "unknown_held": {
+   "requests": 0,
+   "usd": "0"
+  }
+ },
+ "classification": {
+  "classified_or_prefiltered": 0,
+  "matched_pairs": 0,
+  "pending": 0,
+  "share_done": null
+ },
  "collection": {
-  "billing_source": "NONE",
   "by_status": {},
   "disk_free_gib": null,
-  "estimated_cost_usd": "0",
+  "last_fetch_at_utc": null,
+  "last_post_created_at_utc": null,
   "posts": 0,
   "runs": 0,
+  "sample_accounts": 0,
   "state": "NOT_STARTED"
  },
  "conditional": [],
- "config_sha256": "f9ce09dc20e91cc4ffd9c88695a463c9d4dada979c700094d3d3d5895d81da3b",
- "config_version": "x-stance-v1-params-20261122-a",
+ "config_sha256": "f150c996f04195e15618623e253c59d2fc58d002c5ae4f903fd739d8df76f986",
+ "config_version": "x-sentiment-twitterapiio-5000-next-20261122",
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "daily": [],
  "data_kinds": {
+  "batch": 0,
   "live": 0,
   "retrospective": 0
  },
  "episodes": [],
  "has_data": false,
+ "history_queue": {
+  "range": null,
+  "state": "NOT_STARTED"
+ },
  "limits": [
   "accounts in the retrieved sample only",
+  "planned sample, not all of X",
   "not a prediction",
   "labels not validated by human review"
  ],
  "missing_inputs": [
   {
-   "detail": "X_STANCE_TWITTERAPI_IO_KEY",
+   "detail": "TWITTERAPI_IO_API_KEY",
    "input": "PROVIDER_KEY"
   },
   {
-   "detail": "acquisition",
-   "input": "acquisition.history_start"
-  },
-  {
-   "detail": "acquisition",
-   "input": "acquisition.history_end_exclusive"
-  },
-  {
-   "detail": "acquisition",
-   "input": "acquisition.daily_budget_usd"
-  },
-  {
-   "detail": "acquisition",
-   "input": "acquisition.total_budget_usd"
+   "detail": "bounded live check",
+   "input": "PREFLIGHT"
   },
   {
    "detail": "classifier",
@@ -87,28 +134,25 @@
   }
  ],
  "narratives": [],
+ "preflight": {
+  "at_utc": null,
+  "returned_total": null,
+  "state": "NOT_RUN",
+  "verdict": null
+ },
  "returns": [],
  "settings": {
   "acquisition_gate": {
    "allowed": false,
-   "key_env_name": "X_STANCE_TWITTERAPI_IO_KEY",
+   "key_env_name": "TWITTERAPI_IO_API_KEY",
    "provider": "twitterapi_io",
    "reasons": [
-    "DRY_RUN",
-    "LIVE_NOT_ENABLED",
     "PROVIDER_KEY_MISSING",
-    "BUDGET_MISSING:daily_budget_usd",
-    "BUDGET_MISSING:total_budget_usd",
-    "WINDOW_NOT_FROZEN:history_start",
-    "WINDOW_NOT_FROZEN:history_end_exclusive"
+    "PREFLIGHT_NOT_PASSED"
    ]
   },
+  "auto_topup": false,
   "automatic_paid_fallback": false,
-  "budget": {
-   "daily_usd": null,
-   "proposed_daily_post_cap": 10000,
-   "total_usd": null
-  },
   "classifier_gate": {
    "allowed": false,
    "reasons": [
@@ -119,12 +163,13 @@
    ]
   },
   "editing": "READ_ONLY_VERSIONED_FILE",
+  "key_env_name": "TWITTERAPI_IO_API_KEY",
   "languages": [
    "en",
    "zh"
   ],
   "provider": "twitterapi_io",
-  "provider_fallback_candidate": "socialdata",
+  "sampling_mode": "PLANNED_SAMPLE",
   "topics": [
    {
     "comparison_asset": null,
@@ -200,6 +245,7 @@
     ]
    }
   ],
+  "update_mode": "daily_batch",
   "vocabulary_version": "vocab-20261122-a"
  }
 }

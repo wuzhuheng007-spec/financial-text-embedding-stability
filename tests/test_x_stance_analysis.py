@@ -468,14 +468,16 @@ def test_pipeline_traces_every_number_to_posts_model_and_price_version(db, pinne
     ret = json.loads(db.execute("SELECT payload_json FROM x_event_returns WHERE event_id='qqq|QQQ|2025-06-02' AND h=1").fetchone()[0])
     assert ret["price_input_sha256"] == "f" * 64 and ret["entry_availability"] == "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL" and ret["entry_date"] == "2025-06-03"
     view = pipeline.read_for_portal(c, Path(db.execute("PRAGMA database_list").fetchone()[2]))
-    assert view["has_data"] and view["data_kinds"] == {"live": 0, "retrospective": 16} and all("vote_post_ids" not in x for x in view["daily"])
+    assert view["has_data"] and view["data_kinds"] == {"live": 0, "batch": 0, "retrospective": 16} and all("vote_post_ids" not in x for x in view["daily"])
 
 
 def test_portal_read_model_without_data_names_what_is_missing(tmp_path, cfg):
     v = pipeline.read_for_portal(cfg, tmp_path / "absent.sqlite3", env={})
     assert not v["has_data"] and v["daily"] == [] and v["narratives"] == [] and v["episodes"] == [] and v["returns"] == []
     missing = {m["input"] for m in v["missing_inputs"]}
-    assert {"PROVIDER_KEY", "acquisition.daily_budget_usd", "classifier.immutable_revision", "market.input_version", "validation.holdout_start"} <= missing
+    assert {"PROVIDER_KEY", "PREFLIGHT", "classifier.immutable_revision", "market.input_version", "validation.holdout_start"} <= missing
+    assert v["budget"]["today"] == {"credits": 0, "usd": "0", "returned_posts": 0, "cap_usd": "0.75", "cap_posts": 5000} and v["budget"]["rolling"]["cap_usd"] == "22.5"
+    assert v["preflight"]["state"] == "NOT_RUN" and v["history_queue"]["state"] == "NOT_STARTED" and v["classification"]["share_done"] is None
     assert v["collection"]["state"] == "NOT_STARTED" and v["settings"]["acquisition_gate"]["allowed"] is False and not (tmp_path / "absent.sqlite3").exists()
 
 
@@ -488,5 +490,5 @@ def test_manifest_records_versions_and_null_model(cfg):
 def test_the_ui_fixture_is_the_real_empty_read_model(cfg):
     """tests/x_stance_ui.cjs renders this file; it must stay identical to what the read model returns with no store."""
     v = pipeline.read_for_portal(cfg, Path("does/not/exist.sqlite3"), env={})
-    v["collection"]["disk_free_gib"] = None
+    v["collection"]["disk_free_gib"] = None; v["budget"]["budget_day"] = None
     assert json.loads((REPO / "tests" / "fixtures" / "x_stance_view_empty.json").read_text(encoding="utf-8")) == json.loads(json.dumps(v))

@@ -1,5 +1,5 @@
 """Main views in the sample: at most five clusters of the window's vote posts (one post per account, so an
-account supports exactly one cluster). Hashed TF-IDF and spherical k-means on sparse rows, fixed seed; no pairwise
+account supports exactly one cluster). Hashed TF-IDF and spherical k-means, fixed seed; no pairwise
 similarity matrix is built. Titles are an exact excerpt of the most central post, not generated text, and every
 cluster carries the post ids and links it was built from. A cluster below the minimum support is not shown, and
 nothing is invented to reach five. Clustering a claim does not check whether the claim is true.
@@ -10,11 +10,10 @@ import hashlib
 import re
 
 import numpy as np
-from scipy import sparse
 
 from .config import LABELS
 
-DIM = 1 << 15
+DIM = 1 << 12
 _WORD = re.compile(r"[$#]?[a-z0-9][a-z0-9'&\-]*")
 _CJK = re.compile(r"[㐀-鿿]+")
 _URL = re.compile(r"https?://\S+|@\w+")
@@ -35,24 +34,24 @@ def _h(tok: str) -> int:
     return int.from_bytes(hashlib.blake2b(tok.encode("utf-8"), digest_size=4).digest(), "little") % DIM
 
 
-def vectorize(texts: list[str]) -> sparse.csr_matrix:
-    rows, cols, vals = [], [], []
+def vectorize(texts: list[str]) -> np.ndarray:
+    """Dense, L2-normalised hashed TF-IDF rows (numpy only: the service image has no scipy)."""
+    m = np.zeros((len(texts), DIM), dtype=np.float32)
     for i, t in enumerate(texts):
         counts = {}
         for tok in tokens(t):
             j = _h(tok); counts[j] = counts.get(j, 0) + 1
         for j, c in counts.items():
-            rows.append(i); cols.append(j); vals.append(1.0 + np.log(c))
-    m = sparse.csr_matrix((vals, (rows, cols)), shape=(len(texts), DIM), dtype=np.float64)
-    df = np.asarray((m > 0).sum(axis=0)).ravel()
-    m = m @ sparse.diags(np.log((1 + len(texts)) / (1 + df)) + 1.0)
-    norm = np.sqrt(np.asarray(m.multiply(m).sum(axis=1)).ravel()); norm[norm == 0] = 1.0
-    return (sparse.diags(1.0 / norm) @ m).tocsr()
+            m[i, j] = 1.0 + np.log(c)
+    df = (m > 0).sum(axis=0)
+    m *= (np.log((1 + len(texts)) / (1 + df)) + 1.0).astype(np.float32)
+    norm = np.sqrt((m * m).sum(axis=1)); norm[norm == 0] = 1.0
+    return m / norm[:, None]
 
 
-def _kmeans(m: sparse.csr_matrix, k: int, seed: int, iters: int = 25) -> tuple[np.ndarray, np.ndarray]:
+def _kmeans(m: np.ndarray, k: int, seed: int, iters: int = 25) -> tuple[np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
-    centers = m[np.sort(rng.choice(m.shape[0], size=k, replace=False))].toarray()
+    centers = m[np.sort(rng.choice(m.shape[0], size=k, replace=False))].copy()
     assign = np.full(m.shape[0], -1)
     for _ in range(iters):
         sim = m @ centers.T

@@ -17,8 +17,10 @@ LANG_SCOPES = ("all", "en", "zh")
 
 
 def _range(db, topic_id: str, target_id: str):
-    r = db.execute("SELECT min(p.created_at_utc) a, max(p.created_at_utc) b FROM x_stance_labels l JOIN x_posts p USING(provider, post_id) WHERE l.topic_id=? AND l.target_id=?",
-                   (topic_id, target_id)).fetchone()
+    r = db.execute("SELECT min(a), max(b) FROM (SELECT min(p.created_at_utc) a, max(p.created_at_utc) b FROM x_stance_labels l JOIN x_posts p USING(provider, post_id) WHERE l.topic_id=? AND l.target_id=? "
+                   "UNION ALL SELECT min(p.created_at_utc), max(p.created_at_utc) FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_id=? AND t.target_id=?)",
+                   (topic_id, target_id, topic_id, target_id)).fetchone()
+    r = {"a": r[0], "b": r[1]}
     return (store.parse(r["a"]), store.parse(r["b"])) if r and r["a"] else None
 
 
@@ -26,6 +28,14 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
     now = now or datetime.now(timezone.utc)
     thr, ver = cfg["aggregation"]["proposed_low_sample_author_threshold"], cfg["topic_vocabulary_version"]
     out = {"session_windows": 0, "calendar_windows": 0, "narratives": 0, "outside_calendar_posts_ranges": []}
+    auto, boundary = mode == "AUTO", None
+    if auto:                                                 # windows after the frozen historical range were sampled by the daily batch
+        try:
+            hr = db.execute("SELECT value FROM x_meta WHERE key='history_range'").fetchone()
+            boundary = store.parse(json.loads(hr[0])["end_utc_exclusive"]) if hr else None
+        except Exception:  # noqa: BLE001
+            boundary = None
+    pick = lambda end: mode if not auto else ("BATCH_AFTER_CLOSE" if boundary is not None and end > boundary else "RETROSPECTIVE_VISIBLE_NOW")
     for t in cfg["topics"]:
         for target in cfgmod.targets(t):
             rng = _range(db, t["id"], target)
@@ -41,13 +51,15 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                     if now < cal.closes[i]:                 # the window has not ended: no session signal yet
                         break
                     a, b = cal.session_window(i)
-                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=mode)
+                    wmode = pick(b)
+                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode)
                     cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
+                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver)
                     for scope in LANG_SCOPES:
-                        res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, lang_scope=scope)
-                        res["dropped"], res["collection_gaps"] = dropped, len(cov["gaps"])
+                        res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, lang_scope=scope, pending=prog["pending"])
+                        res["dropped"], res["collection_gaps"], res["classification"] = dropped, len(cov["gaps"]), prog
                         aggregate.commit(db, window_kind="session", window_label=cal.dates[i], start=a, end=b, topic_id=t["id"], target_id=target,
-                                         mode=mode, result=res, rows=rows, now=now)
+                                         mode=wmode, result=res, rows=rows, now=now)
                     out["session_windows"] += 1
                     db.execute("DELETE FROM x_narratives WHERE window_kind='session' AND window_label=? AND topic_id=? AND target_id=?", (cal.dates[i], t["id"], target))
                     for nar in narratives.build(aggregate.votes(rows), cfg=cfg, window_label=cal.dates[i], window_kind="session", data_quality=cov["status"]):
@@ -57,11 +69,13 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
             while d <= last:
                 a, b = calendar_window(d)
                 if now >= b:
-                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=mode)
+                    wmode = pick(b)
+                    rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode)
                     cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
-                    res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr)
-                    res["dropped"], res["note"] = dropped, "reading summary of a New York calendar date; not the session signal"
-                    aggregate.commit(db, window_kind="calendar_day", window_label=d.isoformat(), start=a, end=b, topic_id=t["id"], target_id=target, mode=mode, result=res, rows=rows, now=now)
+                    prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=ver)
+                    res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, pending=prog["pending"])
+                    res["dropped"], res["classification"], res["note"] = dropped, prog, "reading summary of a New York calendar date; not the session signal"
+                    aggregate.commit(db, window_kind="calendar_day", window_label=d.isoformat(), start=a, end=b, topic_id=t["id"], target_id=target, mode=wmode, result=res, rows=rows, now=now)
                     out["calendar_windows"] += 1
                 d += timedelta(days=1)
     db.commit()
@@ -70,8 +84,8 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
 
 def _series(db, topic_id, target_id, mode):
     return [(r["window_label"], r["state"], json.loads(r["payload_json"])) for r in db.execute(
-        "SELECT window_label, state, payload_json FROM x_daily_sentiment WHERE window_kind='session' AND topic_id=? AND target_id=? AND lang_scope='all' AND mode=? ORDER BY window_label",
-        (topic_id, target_id, mode))]
+        "SELECT window_label, state, payload_json FROM x_daily_sentiment WHERE window_kind='session' AND topic_id=? AND target_id=? AND lang_scope='all' AND (mode=? OR ?='AUTO') ORDER BY window_label",
+        (topic_id, target_id, mode, mode))]
 
 
 def build_research(db, cfg: dict, cal: Calendar, prices: dict, *, mode: str) -> dict:
@@ -93,11 +107,11 @@ def build_research(db, cfg: dict, cal: Calendar, prices: dict, *, mode: str) -> 
             px, rows = prices.get(target), []
             for d in sessions:
                 s, p = by_date.get(d, (None, None))
-                avail = None if p is None else store.parse(p["signal_committed_at_utc"] if mode == "LIVE" else p["assumed_available_at_utc"])
+                avail = None if p is None else store.parse(p["assumed_available_at_utc"] or p["signal_committed_at_utc"])
                 row = {"session_date": d, "state": s, "is_episode_start": d in starts, "desc_return": {}, "next_open_return": {},
                        "controls": returns.controls(cal, px, d) if px else {}}
                 for h in cfgmod.HORIZONS:
-                    pr = returns.pair(cal, px, session_date=d, h=h, available_at=avail, availability=("OBSERVED" if mode == "LIVE" else "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL"))
+                    pr = returns.pair(cal, px, session_date=d, h=h, available_at=avail, availability=(p or {}).get("availability") or "NO_SIGNAL")
                     row["desc_return"][h], row["next_open_return"][h] = pr["desc_return"], pr["next_open_return"]
                     if p is not None:
                         db.execute("INSERT OR REPLACE INTO x_event_returns VALUES(?,?,?,?,?,?)", (f"{t['id']}|{target}|{d}", "daily", t["id"], target, h, json.dumps({**pr, "state": s, "episode_id": starts.get(d)}, sort_keys=True)))

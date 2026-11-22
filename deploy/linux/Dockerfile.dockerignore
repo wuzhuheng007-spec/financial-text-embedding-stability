@@ -22,11 +22,8 @@
 !scripts/news_sentiment_factor_v43/**
 !scripts/news_sentiment_factor_v44/**
 !scripts/news_sentiment_factor_v45/**
-# X stance study: only the standard-library read model the portal imports (no collector, no numpy code).
-!scripts/x_stance_v1/__init__.py
-!scripts/x_stance_v1/config.py
-!scripts/x_stance_v1/store.py
-!scripts/x_stance_v1/portal_read.py
+# X stance study: the web view (standard library only) and the scheduled X job share this image.
+!scripts/x_stance_v1/**
 
 !configs/*.json
 
@@ -44,6 +41,7 @@
 
 # X stance study parameters (no posts, no keys).
 !research/x_stance_v1/config/*.json
+!research/x_stance_v1/calendar/*
 
 # Git-tracked redacted receipts that runtime code verifies or displays.
 !results/watchlist_live_20261115/*_redacted.json

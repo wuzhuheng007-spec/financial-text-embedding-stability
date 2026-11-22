@@ -1,0 +1,10 @@
+[Unit]
+Description=X stance daily batch at 13:30 server time (Asia/Shanghai), after the New York calendar date has ended
+
+[Timer]
+OnCalendar=*-*-* 13:30:00
+RandomizedDelaySec=300
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -61,27 +61,30 @@ def reg(db, q=Q):
 # ---------- parameters and gates ----------
 def test_unknown_values_stay_null_and_are_listed(cfg):
     names = {u["field"] for u in C.unfrozen(cfg)}
-    assert {"acquisition.history_start", "acquisition.daily_budget_usd", "acquisition.total_budget_usd", "classifier.model_id",
-            "classifier.immutable_revision", "market.input_version", "validation.holdout_start", "topics[memory].comparison_asset"} <= names
-    assert "topics[qqq].comparison_asset" not in names
+    assert {"classifier.model_id", "classifier.immutable_revision", "market.input_version", "validation.holdout_start", "topics[memory].comparison_asset"} <= names
+    assert "topics[qqq].comparison_asset" not in names and not any(n.startswith("acquisition.") for n in names)      # provider, budget and cadence are now fixed
     assert tuple(cfg["horizons_trading_sessions"]) == (1, 3, 5, 10, 20, 30) and tuple(cfg["stance_labels"]) == ("bullish", "bearish", "neutral")
+    assert "proposed_total_returned_post_cap_per_day" not in cfg["acquisition"] and cfg["budget"]["daily_all_jobs_returned_post_cap"] == 5000
 
 
-def test_acquisition_fails_closed_without_key_budget_or_dates(cfg):
+def test_acquisition_fails_closed_without_key_or_preflight(cfg):
     g = C.acquisition_gate(cfg, {})
-    assert not g["allowed"] and {"DRY_RUN", "LIVE_NOT_ENABLED", "PROVIDER_KEY_MISSING", "BUDGET_MISSING:daily_budget_usd", "BUDGET_MISSING:total_budget_usd"} <= set(g["reasons"])
+    assert not g["allowed"] and g["reasons"] == ["PROVIDER_KEY_MISSING", "PREFLIGHT_NOT_PASSED"] and g["key_env_name"] == "TWITTERAPI_IO_API_KEY"
     secret = "tw-FAKE-not-a-real-key-000"
-    g = C.acquisition_gate(cfg, {"X_STANCE_TWITTERAPI_IO_KEY": secret})          # a key alone opens nothing
-    assert not g["allowed"] and "PROVIDER_KEY_MISSING" not in g["reasons"] and secret not in json.dumps(g)
-    c = copy.deepcopy(cfg); c["acquisition"].update(dry_run=False, live_enabled=True, history_start="2026-01-05T00:00:00Z", history_end_exclusive="2026-01-06T00:00:00Z")
-    assert any(r.startswith("BUDGET_MISSING") for r in C.acquisition_gate(c, {"X_STANCE_TWITTERAPI_IO_KEY": secret})["reasons"])
-    c["acquisition"].update(daily_budget_usd="1", total_budget_usd="2")
-    assert C.acquisition_gate(c, {"X_STANCE_TWITTERAPI_IO_KEY": secret})["allowed"]
+    g = C.acquisition_gate(cfg, {"TWITTERAPI_IO_API_KEY": secret})                 # a key alone does not start the scheduled jobs
+    assert not g["allowed"] and g["reasons"] == ["PREFLIGHT_NOT_PASSED"] and secret not in json.dumps(g)
+    assert C.acquisition_gate(cfg, {"TWITTERAPI_IO_API_KEY": secret}, for_preflight=True)["allowed"]
+    assert C.acquisition_gate(cfg, {"TWITTERAPI_IO_API_KEY": secret}, preflight_passed=True)["allowed"]
+    assert not C.acquisition_gate(cfg, {"TWITTERAPI_IO_API_KEY": "  "}, preflight_passed=True)["allowed"]
+    assert not C.acquisition_gate(cfg, {"X_STANCE_TWITTERAPI_IO_KEY": secret}, preflight_passed=True)["allowed"]   # only the agreed variable name counts
 
 
 @pytest.mark.parametrize("path,value", [("automatic_paid_fallback", True), ("acquisition.sort", "Top"), ("acquisition.historical_min_likes_filter", 10),
                                         ("aggregation.engagement_weighting", True), ("stance_labels", ["bullish", "bearish", "neutral", "mixed"]),
-                                        ("horizons_trading_sessions", [1, 3, 5, 10, 20]), ("narratives.max_clusters_to_display", 6)])
+                                        ("horizons_trading_sessions", [1, 3, 5, 10, 20]), ("narratives.max_clusters_to_display", 6),
+                                        ("authorization.auto_topup", True), ("authorization.purchase_subscription", True), ("allocation.automatic_reallocation", True),
+                                        ("allocation.recent.max_returned_posts_per_day", 4000), ("budget.daily_all_jobs_cost_cap_usd", "0.50"),
+                                        ("preflight.included_in_daily_and_rolling_caps", False), ("budget.rolling_all_jobs_cost_cap_usd", None)])
 def test_config_rejects_what_the_contract_forbids(cfg, path, value):
     cur = cfg
     *head, last = path.split(".")
@@ -92,12 +95,17 @@ def test_config_rejects_what_the_contract_forbids(cfg, path, value):
         C.validate(cfg)
 
 
-def test_cli_acquire_refuses_and_sends_nothing(tmp_path, capsys, monkeypatch):
+@pytest.mark.parametrize("cmd", ["preflight", "daily"])
+def test_cli_metered_commands_refuse_and_send_nothing_without_a_key(tmp_path, capsys, monkeypatch, cmd):
     from scripts.x_stance_v1 import cli
+    monkeypatch.delenv("TWITTERAPI_IO_API_KEY", raising=False)
     monkeypatch.setattr(provider.UrllibTransport, "get", lambda *a, **k: pytest.fail("a request was attempted"))
-    assert cli.main(["--db", str(tmp_path / "x.sqlite3"), "acquire", "--start", "2026-01-05T00:00:00Z", "--end", "2026-01-06T00:00:00Z"]) == 2
+    assert cli.main(["--db", str(tmp_path / "x.sqlite3"), cmd]) == 2
     out = json.loads(capsys.readouterr().out)
-    assert out["status"] == "REFUSED_FAIL_CLOSED" and out["requests_sent"] == 0
+    assert out["status"] == "REFUSED_FAIL_CLOSED" and out["requests_sent"] == 0 and "PROVIDER_KEY_MISSING" in out["gate"]["reasons"]
+    db = store.connect(tmp_path / "x.sqlite3")
+    assert db.execute("SELECT count(*) FROM x_cost_ledger").fetchone()[0] == 0     # nothing reserved, nothing spent
+    db.close()
 
 
 # ---------- cost ----------

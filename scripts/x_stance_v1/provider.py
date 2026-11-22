@@ -22,10 +22,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import store
-from .cost import Budget, BudgetExhausted
+from .cost import BudgetExhausted
+from .ledger import LimitReached, Paused
 
 ENDPOINT = "https://api.twitterapi.io/twitter/tweet/advanced_search"
-RETRO, LIVE = "RETROSPECTIVE_VISIBLE_NOW", "LIVE"
+RETRO, LIVE, BATCH = "RETROSPECTIVE_VISIBLE_NOW", "LIVE", "BATCH_AFTER_CLOSE"
 _CJK = re.compile(r"[㐀-鿿]")
 _URL = re.compile(r"https?://\S+")
 _SECRETS: set[str] = set()
@@ -75,7 +76,7 @@ class UrllibTransport:
             with urllib.request.urlopen(req, timeout=self.timeout) as r:  # noqa: S310 - fixed https endpoint
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            raise ProviderHTTPError(e.code, "RATE_LIMITED" if e.code == 429 else f"HTTP_{e.code}") from None
+            raise ProviderHTTPError(e.code, "RATE_LIMITED" if e.code == 429 else "HTTP_503_NOT_CHARGED" if e.code == 503 else f"HTTP_{e.code}") from None
         except (urllib.error.URLError, TimeoutError, OSError):
             raise ProviderHTTPError(None, "NETWORK") from None
         except ValueError:
@@ -237,7 +238,7 @@ class StopAll(Exception):
 
 
 class Collector:
-    def __init__(self, db, cfg: dict, *, budget: Budget, transport=None, mode: str = RETRO, clock=None, free_gib=None):
+    def __init__(self, db, cfg: dict, *, budget, transport=None, mode: str = RETRO, clock=None, free_gib=None):
         acq = cfg["acquisition"]
         self.db, self.cfg, self.budget, self.mode = db, cfg, budget, mode
         self.transport = transport or RefusingTransport()
@@ -246,6 +247,8 @@ class Collector:
         self.min_slice = acq["proposed_min_slice_seconds"]
         self.max_dup = acq["proposed_max_duplicate_share_per_page"]
         self.provider = "twitterapi_io"
+        self.parse_failures = 0
+        self.page_max = ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
         self.min_free_gib = acq["proposed_min_free_disk_gib"]
         self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
 
@@ -265,9 +268,17 @@ class Collector:
             out.append({"stopped": stop.reason})
         return out
 
-    def _slice(self, q: dict, s: int, e: int, parent: str | None) -> list[dict]:
+    def collect_pages(self, q: dict, s: int, e: int, upto_pages: int) -> dict:
+        """Planned sample: read one window up to a frozen number of pages, resuming where the last call stopped.
+        Never splits or widens. The result is PLANNED_SAMPLE (page limit reached, more may exist) or COMPLETE (the
+        provider reported the end). Raises StopAll when the whole job must stop."""
+        return self._slice(q, s, e, None, planned_pages=upto_pages)[0]
+
+    def _slice(self, q: dict, s: int, e: int, parent: str | None, planned_pages: int | None = None) -> list[dict]:
         run_id = self._run_id(q["query_hash"], s, e)
         prev = self.db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (run_id,)).fetchone()
+        if planned_pages is not None and prev and prev["status"] == "PLANNED_SAMPLE" and prev["pages"] >= planned_pages:
+            return [{"run_id": run_id, "status": "PLANNED_SAMPLE", "from_checkpoint": True, "requests": 0, "pages": prev["pages"]}]
         if prev and prev["status"] == "COMPLETE":
             return [{"run_id": run_id, "status": "COMPLETE", "from_checkpoint": True, "requests": 0}]
         if prev and prev["status"] == "SPLIT":
@@ -283,11 +294,13 @@ class Collector:
             for k in ("cursor", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "earliest_utc", "latest_utc", "cost_estimate_usd", "started_at_utc"):
                 run[k] = prev[k]
         seen_ids = {r["post_id"] for r in self.db.execute("SELECT post_id FROM x_run_posts WHERE run_id=?", (run_id,))}
-        seen_cursors, cursor, prev_oldest, needs_split, stop = set(), run["cursor"] or "", None, None, None
+        seen_cursors, cursor, prev_oldest, needs_split, stop, over_page = set(), run["cursor"] or "", None, None, None, False
         query = f"{q['query']} since_time:{s} until_time:{e}"
         while True:
             if cursor in seen_cursors:
                 needs_split = "DUPLICATE_CURSOR"; break
+            if planned_pages is not None and run["pages"] >= planned_pages:
+                run["status"], run["stop_reason"] = "PLANNED_SAMPLE", "PLANNED_PAGE_LIMIT"; break
             if run["pages"] >= self.max_pages:
                 needs_split = "PAGE_CAP"; break
             seen_cursors.add(cursor)
@@ -297,21 +310,42 @@ class Collector:
             if cached:
                 page = json.loads(cached["response_json"])
             else:
+                if isinstance(self.transport, RefusingTransport):
+                    stop = "DRY_RUN_NO_REQUEST"; break          # nothing is reserved for a request that cannot be sent
+                led = hasattr(self.budget, "context")
+                if led:
+                    retry = bool(prev and prev["cursor"] == cursor and prev["status"] == "PARTIAL")
+                    self.budget.context = {"run_id": run_id, "ws": ws, "we": we, "cursor": cursor, "attempt": 2 if retry else 1}
                 try:
                     self.budget.reserve_next_page(self.clock())
                 except BudgetExhausted as ex:
                     stop = f"BUDGET_TRUNCATED:{ex.limit_kind}"; break
+                except LimitReached as ex:
+                    stop = f"LIMIT_REACHED:{ex.limit_kind}"; break
+                except Paused as ex:
+                    stop = f"PAUSED:{ex}"; break
                 try:
                     page = self.transport.get({"query": query, "queryType": "Latest", "cursor": cursor})
                 except PaidRequestBlocked:
                     stop = "DRY_RUN_NO_REQUEST"; break
                 except ProviderHTTPError as ex:
                     run["error_class"] = ex.kind
+                    if led:                                  # keep the reservation unless the provider documents no charge
+                        if ex.kind == "HTTP_503_NOT_CHARGED":
+                            self.budget.not_charged("provider documents HTTP 503 as not charged")
+                        else:
+                            self.budget.unknown(ex.kind)
                     stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
                 tweets = page.get("tweets") if isinstance(page, dict) else None
                 if not isinstance(tweets, list):
-                    run["error_class"] = "BAD_SHAPE"; stop = "ERROR:BAD_SHAPE"; break
-                cost = self.budget.charge(len(tweets), self.clock())
+                    run["error_class"] = "BAD_SHAPE"
+                    if led:
+                        self.budget.unknown("BAD_SHAPE")
+                    stop = "ERROR:BAD_SHAPE"; break
+                ids = {str(t.get("id")) for t in tweets if isinstance(t, dict) and t.get("id")}
+                cost = self.budget.charge(len(tweets), self.clock(), len(ids)) if led else self.budget.charge(len(tweets), self.clock())
+                if len(tweets) > self.page_max:
+                    over_page = True
                 run["requests"] += 1
                 run["cost_estimate_usd"] = str(store_decimal(run["cost_estimate_usd"]) + cost)
                 body = json.dumps(page, sort_keys=True, ensure_ascii=False)
@@ -323,7 +357,7 @@ class Collector:
                 try:
                     p = normalize_twitterapi_io(t, now=now, batch=f"run:{run_id}", mode=self.mode)
                 except (KeyError, ValueError, TypeError):
-                    run["out_of_window"] += 1; continue
+                    self.parse_failures += 1; run["out_of_window"] += 1; continue
                 ts = int(store.parse(p["created_at_utc"]).timestamp()); times.append(ts)
                 if p["post_id"] in seen_ids:
                     dup_here += 1; continue
@@ -340,6 +374,8 @@ class Collector:
             cursor = page.get("next_cursor") or ""
             run["cursor"], run["updated_at_utc"] = cursor, now
             store.upsert_run(self.db, run); self.db.commit()   # checkpoint after every page
+            if over_page:
+                stop = "PAUSED:PAGE_OVER_DOCUMENTED_MAX"; break
             if times and prev_oldest is not None and max(times) > prev_oldest:
                 needs_split = "ORDER_ANOMALY"; break
             if tweets and dup_here / len(tweets) > self.max_dup:
@@ -349,10 +385,19 @@ class Collector:
             if not page.get("has_next_page") or not cursor:
                 run["status"], run["stop_reason"] = "COMPLETE", "END_OF_RESULTS"; break
         if stop:
-            run["status"], run["stop_reason"] = ("NOT_RUN" if stop == "DRY_RUN_NO_REQUEST" else "PARTIAL"), stop
+            limit = stop.startswith("LIMIT_REACHED") or stop.startswith("PAUSED:")
+            if stop == "DRY_RUN_NO_REQUEST" or (limit and run["pages"] == 0):
+                run["status"] = "NOT_RUN"
+            elif limit and planned_pages is not None and not over_page:
+                run["status"] = "PLANNED_SAMPLE"             # what was read so far stands; the queue continues after the cap resets
+            else:
+                run["status"] = "LIMIT_REACHED" if limit else "PARTIAL"
+            run["stop_reason"] = stop
             store.upsert_run(self.db, run); self.db.commit()
             raise StopAll(stop)
-        if needs_split:
+        if needs_split and planned_pages is not None:
+            run["status"], run["stop_reason"] = "PARTIAL", needs_split      # a planned window is never re-cut: it is reported as it is
+        elif needs_split:
             if e - s > self.min_slice:                      # narrow the window instead of walking the oldest second back
                 run["status"], run["stop_reason"] = "SPLIT", needs_split
                 store.upsert_run(self.db, run); self.db.commit()

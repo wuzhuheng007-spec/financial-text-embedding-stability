@@ -12,14 +12,14 @@
   const TABS = ['settings', 'daily', 'views', 'history'];
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
   const STATE = {bullish: '看多', bearish: '看空', neutral: '中性', UNKNOWN: '未判定'};
-  const MODE = {LIVE: '实时留档', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
+  const MODE = {LIVE: '实时留档', BATCH_AFTER_CLOSE: '收盘后批量采集', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
   const WHY = {LOW_SAMPLE: '样本账号过少', NO_VALID_ACCOUNTS: '没有已判定的账号', COLLECTION_PARTIAL: '采集不完整', COLLECTION_MISSING: '没有采集记录',
-    TIE_RESOLVED_TO_NEUTRAL: '并列，记为中性', DRY_RUN: '离线演练模式', LIVE_NOT_ENABLED: '实采未启用', PROVIDER_KEY_MISSING: '缺少供应商密钥'};
-  const MISSING = {PROVIDER_KEY: '供应商密钥', 'acquisition.history_start': '回填起始日期', 'acquisition.history_end_exclusive': '回填结束日期',
-    'acquisition.daily_budget_usd': '每日预算', 'acquisition.total_budget_usd': '总预算', 'classifier.model_id': '分类模型',
+    TIE_RESOLVED_TO_NEUTRAL: '并列，记为中性', PROVIDER_KEY_MISSING: '缺少供应商密钥', PREFLIGHT_NOT_PASSED: '尚未通过实采预检',
+    CLASSIFICATION_INCOMPLETE: '分类未完成', COLLECTION_PLANNED_SAMPLE: '计划抽样'};
+  const MISSING = {PROVIDER_KEY: '供应商密钥', PREFLIGHT: '实采预检', 'classifier.model_id': '分类模型',
     'classifier.immutable_revision': '分类模型的固定版本', 'classifier.prompt_version': '提示词版本', 'classifier.temperature': '模型温度',
     'market.input_version': '行情输入版本', 'market.adjustment_semantics': '复权口径说明', 'validation.holdout_start': '留出期起点'};
-  const why = c => WHY[c] || (c && c.startsWith('BUDGET_MISSING') ? '预算未设定' : c && c.startsWith('WINDOW_NOT_FROZEN') ? '采集日期未设定' : c || '');
+  const why = c => WHY[c] || c || '';
   const chip = (text, cls) => h('span', `tag ${cls || ''}`, text);
   const row = (k, v) => { const r = h('div', 'setting-row'); r.append(h('span', 'label', k), v instanceof Node ? v : h('span', 'num', v == null ? '—' : String(v))); return r; };
   const table = (heads, rows) => { const t = h('table', 'official-table'); const hr = h('tr'); heads.forEach(x => hr.append(h('th', null, x))); t.append(hr);
@@ -44,20 +44,41 @@
     return box;
   }
 
+  const data = v => { const n = h('span', 'num', v == null ? '—' : String(v)); n.setAttribute('translate', 'no'); return n; };
+  const used = (a, b) => `${a} / ${b}`;
+
   function renderSettings(d) {
-    const p = panel('settings'), st = d.settings, c = d.collection;
+    const p = panel('settings'), st = d.settings, c = d.collection, b = d.budget, cl = d.classification;
     const kw = t => { const n = h('span', null, t.keywords.join(' · ')); n.setAttribute('translate', 'no'); return n; };   // keywords are data, shown as configured
     const topics = table(['关键词主题', '关键词', '对照标的'], st.topics.map(t => [TOPIC[t.id] || t.id, kw(t), t.comparison_asset || '未配置（仅统计行业观点）']));
     const card = h('div', 'card');
-    card.append(row('供应商（单一主源）', st.provider), row('自动切换到其他付费源', '否'), row('语言', st.languages.join(' / ')), row('词表版本', st.vocabulary_version),
-      row('每日预算（美元）', st.budget.daily_usd == null ? '未设定' : st.budget.daily_usd), row('总预算（美元）', st.budget.total_usd == null ? '未设定' : st.budget.total_usd),
-      row('采集状态', {NOT_STARTED: '尚未采集', HAS_GAPS: '有缺口', COLLECTED: '已采集'}[c.state] || c.state), row('已保存帖子', c.posts),
-      row('费用估算（美元，非账单）', c.estimated_cost_usd), row('数据盘空闲（GiB）', c.disk_free_gib));
+    card.append(h('h3', null, '采集概况'), row('供应商（单一主源）', data(st.provider)), row('自动切换到其他付费源', '否'), row('自动充值', '否'),
+      row('更新方式', '每日批量'), row('抽样方式', '计划抽样，不是全量'), row('语言', st.languages.join(' / ')), row('词表版本', data(st.vocabulary_version)),
+      row('密钥的环境变量名', data(st.key_env_name)),
+      row('采集状态', {NOT_STARTED: '尚未采集', HAS_GAPS: '有缺口', COLLECTED: '已采集'}[c.state] || c.state), row('已保存帖子', c.posts), row('样本账号数', c.sample_accounts),
+      row('最新帖子时间（UTC）', data(c.last_post_created_at_utc)), row('最后采集时间（UTC）', data(c.last_fetch_at_utc)), row('数据盘空闲（GiB）', c.disk_free_gib));
+    const cost = h('div', 'card');
+    cost.append(h('h3', null, '费用与额度'),
+      row('今日返回条数（含重复）', used(b.today.returned_posts, b.today.cap_posts)), row('今日费用（美元）', used(b.today.usd, b.today.cap_usd)),
+      row('近期采集：条数', used(b.pools.recent.returned_posts, b.pools.recent.cap_posts)), row('近期采集：费用（美元）', used(b.pools.recent.usd, b.pools.recent.cap_usd)),
+      row('历史回填：条数', used(b.pools.historical.returned_posts, b.pools.historical.cap_posts)), row('历史回填：费用（美元）', used(b.pools.historical.usd, b.pools.historical.cap_usd)),
+      row('滚动 30 天费用（美元）', used(b.rolling.usd, b.rolling.cap_usd)), row('预检累计：条数', used(b.preflight_cumulative.returned_posts, b.preflight_cumulative.cap_posts)),
+      row('结果未知而保留额度的请求', b.unknown_held.requests),
+      h('p', 'fine-print', '额度按上海自然日计算。费用按公开单价估算，不是供应商账单；条数或金额任一触顶就停止新请求。'));
+    if (b.paused) cost.append(chip('已暂停，待人工核对', 'tag-dim'));
+    const pre = d.preflight, hq = d.history_queue;
+    const prog = h('div', 'card');
+    prog.append(h('h3', null, '进度'),
+      row('实采预检', pre.state === 'NOT_RUN' ? '未运行' : pre.verdict === 'PASS' ? '预检通过' : '预检未通过'), row('预检返回条数', pre.returned_total),
+      row('历史回填范围（纽约日期）', data(hq.range ? `${hq.range.first_ny_date} ~ ${hq.range.last_ny_date}` : null)),
+      row('历史回填：已采到的时间片', hq.units_with_any_page == null ? '—' : hq.units_with_any_page),
+      row('已匹配主题的帖子', cl.matched_pairs), row('已分类', cl.classified_or_prefiltered), row('待分类', cl.pending),
+      row('分类进度', cl.share_done == null ? '—' : pct(cl.share_done)));
     const gate = h('div', 'card');
     gate.append(h('h3', null, '付费采集'), chip(st.acquisition_gate.allowed ? '已满足条件' : '未开启', st.acquisition_gate.allowed ? 'run-succeeded' : 'tag-dim'));
     const gl = h('ul', 'xs-missing'); [...new Set(st.acquisition_gate.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
     gate.append(h('h3', null, '立场分类模型'), chip(st.classifier_gate.allowed ? '已固定版本' : '未固定版本，不运行', st.classifier_gate.allowed ? 'run-succeeded' : 'tag-dim'));
-    p.replaceChildren(h('p', 'fine-print', '词表通过带版本的配置文件修改；更换词表后的占比不能与旧版本直接相接。'), topics, card, gate);
+    p.replaceChildren(h('p', 'fine-print', '词表通过带版本的配置文件修改；更换词表后的占比不能与旧版本直接相接。'), topics, card, cost, prog, gate);
   }
 
   function shareBar(sh) {
@@ -100,11 +121,12 @@
       [...new Set(rows.map(r => r.mode))].forEach(m => head.append(chip(MODE[m] || m, m === 'LIVE' ? 'run-succeeded' : 'tag-dim'))); sec.append(head);
       const cl = {}; rows.forEach(r => { cl[r.window_label] = closes[`${tid}|${r.window_label}`]; });
       sec.append(chart(rows.slice(-60), cl));
-      sec.append(table(['交易日', '占比', '看多', '中性', '看空', '账号数', '帖子数', '未判定', '主导状态', '说明'], rows.slice(-20).reverse().map(r =>
-        [r.window_label, shareBar(r.shares), pct(r.shares.bullish), pct(r.shares.neutral), pct(r.shares.bearish), r.accounts_total, r.posts_total, r.unjudged_total, STATE[r.state] || r.state, why(r.state_reason)])));
+      sec.append(table(['交易日', '占比', '看多', '中性', '看空', '已判定账号', '样本账号数', '分类进度', '未判定', '主导状态', '说明'], rows.slice(-20).reverse().map(r =>
+        [r.window_label, shareBar(r.shares), pct(r.shares.bullish), pct(r.shares.neutral), pct(r.shares.bearish), r.accounts_total, (r.classification || {}).sample_accounts,
+          (r.classification || {}).share_done == null ? '—' : pct(r.classification.share_done), r.unjudged_total, STATE[r.state] || r.state, why(r.state_reason)])));
       out.push(sec);
     }
-    out.push(h('p', 'fine-print', '占比按样本内可识别账号计算（每个账号取窗口内最后一条有效帖子），不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘。'));
+    out.push(h('p', 'fine-print', '这是本次采集样本中的账号比例（每个账号取窗口内最后一条有效帖子），不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘；信号在收盘后批量生成，以实际完成时间为准。分类没有完成的日期不给出主导状态。'));
     p.replaceChildren(...out);
   }
 
