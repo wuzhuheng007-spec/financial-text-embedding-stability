@@ -9,7 +9,7 @@ import sqlite3
 from decimal import Decimal
 from pathlib import Path
 
-from . import batch, config as cfgmod, store, vocab
+from . import batch, config as cfgmod, sample, store, vocab
 from .ledger import Ledger
 
 
@@ -47,7 +47,8 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
            "history_queue": {"state": "NOT_STARTED", "range": None},
            "collection": {"state": "NOT_STARTED", "runs": 0, "posts": 0, "sample_accounts": 0, "last_post_created_at_utc": None, "last_fetch_at_utc": None,
                           "by_status": {}, "disk_free_gib": None},
-           "classification": {"matched_pairs": 0, "classified_or_prefiltered": 0, "pending": 0, "share_done": None},
+           "classification": {"matched_pairs": 0, "classified_or_prefiltered": 0, "pending": 0, "share_done": None, "filtered_low_likes": 0, "filtered_likes_unknown": 0},
+           "account_rules": sample.summary(cfg), "queues": None, "other_sample_versions": [],
            "daily": [], "narratives": [], "episodes": [], "returns": [], "conditional": [], "has_data": False,
            "data_kinds": {"live": 0, "batch": 0, "retrospective": 0},
            "limits": ["accounts in the retrieved sample only", "planned sample, not all of X", "not a prediction", "labels not validated by human review"]}
@@ -107,28 +108,51 @@ def _fill(db, cfg: dict, out: dict) -> None:
     c["state"] = "NOT_STARTED" if not c["posts"] else ("HAS_GAPS" if any(k in c["by_status"] for k in ("PARTIAL", "LIMIT_REACHED")) else "COLLECTED")
     for r in db.execute("SELECT ingest_mode, count(*) n FROM x_posts GROUP BY ingest_mode"):
         out["data_kinds"]["live" if r["ingest_mode"] == "LIVE" else "batch" if r["ingest_mode"] == "BATCH_AFTER_CLOSE" else "retrospective"] += r["n"]
-    ver = cfg["topic_vocabulary_version"]
-    from . import snapshots
-    act = snapshots.activation(cfg)                              # only labels of the classifier that is active now count as "classified"
-    r = db.execute("SELECT COUNT(*), COUNT(DISTINCT p.author_id), SUM(CASE WHEN t.quality!='PENDING' OR EXISTS(SELECT 1 FROM x_stance_labels l WHERE l.provider=t.provider AND l.post_id=t.post_id "
-                   "AND l.topic_id=t.topic_id AND l.target_id=t.target_id AND l.model_id IS ? AND l.model_revision IS ? AND l.prompt_hash IS ?) THEN 1 ELSE 0 END) "
-                   "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (act["model_id"], act["model_revision"], act["prompt_hash"], ver)).fetchone()
+    ver = sample.sample_version(cfg)                             # membership key: vocabulary + account rules
+    from . import snapshots, stance
+    act = snapshots.activation(cfg)                              # only labels of the inference identity that is active now count as "classified"
+    out["classifier"]["inference_identity"] = act["identity"]
+    out["settings"]["sample_version"] = ver
+    try:
+        r = db.execute("SELECT SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN 1 ELSE 0 END), COUNT(DISTINCT CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN p.author_id END), "
+                       "SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' AND (t.quality!='PENDING' OR EXISTS(SELECT 1 FROM x_stance_labels l WHERE l.provider=t.provider AND l.post_id=t.post_id "
+                       "AND l.topic_id=t.topic_id AND l.target_id=t.target_id AND l.inference_identity IS ?)) THEN 1 ELSE 0 END), "
+                       "SUM(CASE WHEN t.quality='FILTERED_LOW_LIKES' THEN 1 ELSE 0 END), SUM(CASE WHEN t.quality='FILTERED_LIKES_UNKNOWN' THEN 1 ELSE 0 END) "
+                       "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (act["identity"] or "", ver)).fetchone()
+        legacy = db.execute("SELECT count(*) FROM x_stance_labels WHERE inference_identity IS NULL").fetchone()[0]
+        out["queues"] = stance.queue_status(db, cfg, versions=[sample.sample_version(c_) for c_ in sample.live_configs(db, cfg)]) if act["identity"] else None
+    except sqlite3.OperationalError:                             # a store written by an earlier release that no job has upgraded yet
+        r, legacy = (0, 0, 0, 0, 0), None
+        out["store_needs_upgrade"] = True
     total, done = r[0] or 0, r[2] or 0
     c["sample_accounts"] = r[1] or 0
-    out["classification"] = {"matched_pairs": total, "classified_or_prefiltered": done, "pending": total - done, "share_done": (done / total) if total else None}
+    out["classification"] = {"matched_pairs": total, "classified_or_prefiltered": done, "pending": total - done, "share_done": (done / total) if total else None,
+                             "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0, "legacy_identity_labels": legacy}
     for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_daily_sentiment ORDER BY window_label DESC LIMIT 600"):
         p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None)
         out["daily"].append({"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
     for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_narratives ORDER BY window_label DESC, rank LIMIT 100"):
         out["narratives"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **json.loads(r["payload_json"])})
+    # research rows of the sample version in force now; other versions are their own series and are only counted here
+    mine, others = (lambda p_: p_.get("sample_version") in (None, ver)), {}
     for r in db.execute("SELECT payload_json FROM x_sentiment_episodes"):
-        out["episodes"].append(json.loads(r["payload_json"]))
+        e = json.loads(r["payload_json"])
+        if mine(e):
+            out["episodes"].append(e)
+        else:
+            others.setdefault(e["sample_version"], {"episodes": 0, "sessions_with_a_signal": 0})["episodes"] += 1
     out["episodes"].sort(key=lambda e: e["start_session"], reverse=True)
-    for r in db.execute("SELECT topic_id, target_id, h, payload_json FROM x_event_returns ORDER BY event_id DESC LIMIT 1200"):
-        out["returns"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **json.loads(r["payload_json"])})
+    for r in db.execute("SELECT topic_id, target_id, h, payload_json FROM x_event_returns ORDER BY event_id DESC LIMIT 2400"):
+        p_ = json.loads(r["payload_json"])
+        if mine(p_) and len(out["returns"]) < 1200:
+            out["returns"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
     for r in db.execute("SELECT payload_json FROM x_run_manifest WHERE manifest_id LIKE 'research_summary:%'"):
         for t in json.loads(r["payload_json"])["topics"]:
-            out["conditional"] += [{"topic_id": t["topic_id"], "target_id": t["target_id"], "mode": t["mode"], "split": t["split"]["label"], **c_} for c_ in t["conditional_dev"]]
+            if mine(t):
+                out["conditional"] += [{"topic_id": t["topic_id"], "target_id": t["target_id"], "mode": t["mode"], "split": t["split"]["label"], **c_} for c_ in t["conditional_dev"]]
+            else:
+                others.setdefault(t["sample_version"], {"episodes": 0, "sessions_with_a_signal": 0})["sessions_with_a_signal"] += t["sessions"]
+    out["other_sample_versions"] = [{"sample_version": k, **v_} for k, v_ in sorted(others.items())]
     out["has_data"] = bool(out["daily"])
 
 

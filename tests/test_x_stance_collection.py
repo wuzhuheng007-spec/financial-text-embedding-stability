@@ -17,7 +17,9 @@ T0 = datetime(2026, 1, 5, tzinfo=UTC)
 
 @pytest.fixture()
 def cfg():
-    return C.load()
+    c = C.load()
+    c["aggregation"]["account_rules"]["enabled"] = False     # these modules pre-date the account rules (tests/test_x_stance_r3.py covers them)
+    return c
 
 
 @pytest.fixture()

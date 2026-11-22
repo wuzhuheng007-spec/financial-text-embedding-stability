@@ -1,11 +1,18 @@
 #!/bin/bash
 # X stance study jobs (one-off containers; the quote collector is NOT started and is not touched).
-# Usage: quant-x-stance.sh status|usage|plan|migrate|preflight|daily|classify [N]|smoke-model|build|pipeline|vocab ...
+# Usage: quant-x-stance.sh status|usage|plan|migrate|queue|preflight|daily|classify [N] [auto|recent|history] [SECONDS]|
+#                          classify-recent|classify-history|smoke-model|build|pipeline|vocab ...|export-pending FILE|import-results FILE
 #   preflight    bounded live check: at most 200 returned posts / USD 0.03 in total, charged to the normal pools
 #   daily        collection only (recent sample + historical queue); refuses until a current preflight receipt passes
-#   classify N   local CPU model on up to N pending items; starts the worker, stops it afterwards
+#   classify N [QUEUE] [SECONDS]  local CPU model on up to N pending items within a time budget; starts the worker, stops it afterwards
+#   classify-recent    the recent queue only (newest sample day first)
+#   classify-history   the historical queue only; does nothing while the recent queue still has work
+#   queue        backlog of both queues, age of the oldest pending item, completion per sample day
 #   build        derived tables (shares, snapshots, views, episodes, QQQ pairing)
-#   pipeline     daily -> classify -> build, each step on its own; what the timer runs
+#   pipeline     daily -> build -> classify RECENT -> build; what the daily timer runs. The historical queue is
+#                NOT part of it: it has its own unit (quant-x-stance-history) and only uses what recent leaves.
+#   export-pending / import-results   hashed work file for the local GPU worker, and the checked import of its answers.
+#                The file holds post text: it lives in /srv/quant/x_offload (root only) and travels over SSH only.
 # Collection and build take the data lock (shared with the backup) only for their own short step. The CPU model
 # step does NOT hold that lock, so a long inference run cannot block backups, quotes or news.
 # Every provider request goes through the ledger in the persistent volume. The key comes from
@@ -27,17 +34,27 @@ local_job() { docker run --rm --network "${X_NET:-none}" --memory 1g --cpus 1 -v
                 --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
 model_step() { /usr/local/sbin/quant-x-llm.sh start >&2 || return 4; local rc=0; X_NET=quant-x-llm local_job "$@" || rc=$?; /usr/local/sbin/quant-x-llm.sh stop >&2; return $rc; }
 
+OFF=/srv/quant/x_offload
+offload_job() { install -d -m 700 "$OFF"; docker run --rm --network none --memory 1g --cpus 1 -v "$VOL":/app/apps/quant_portal/var -v "$OFF":/offload                 --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
+RECENT_LIMIT=${X_CLASSIFY_LIMIT:-2000}; RECENT_SECONDS=${X_RECENT_SECONDS:-9000}
+HISTORY_LIMIT=${X_HISTORY_LIMIT:-2000}; HISTORY_SECONDS=${X_HISTORY_SECONDS:-10800}
+
 case "$CMD" in
-  status|usage|plan|migrate) with_lock local_job "$CMD" ;;
+  status|usage|plan|migrate|queue) with_lock local_job "$CMD" ;;
+  export-pending)            f=$(basename "${1:?file name}"); shift; with_lock offload_job export-pending "/offload/$f" "$@" ;;
+  import-results)            f=$(basename "${1:?file name}"); with_lock offload_job import-results "/offload/$f" ;;
+  classify-recent)           model_step classify --queue recent --limit "${1:-$RECENT_LIMIT}" --max-seconds "${2:-$RECENT_SECONDS}" ;;
+  classify-history)          model_step classify --queue history --limit "${1:-$HISTORY_LIMIT}" --max-seconds "${2:-$HISTORY_SECONDS}" ;;
   vocab)                     with_lock local_job vocab "$@" ;;
   build)                     with_lock local_job build ;;
   preflight|daily)           with_lock net_job "$CMD" ;;
-  classify)                  model_step classify --limit "${1:-50}" ;;
+  classify)                  model_step classify --limit "${1:-50}" --queue "${2:-auto}" --max-seconds "${3:-3600}" ;;
   smoke-model)               model_step smoke-model ;;
   pipeline)
     rc=0; with_lock net_job daily || rc=$?
     if [ "$rc" -ne 0 ]; then echo "collection step ended with $rc; later steps skipped" >&2; exit "$rc"; fi
-    model_step classify --limit "${X_CLASSIFY_LIMIT:-400}" || echo "classify step ended with $?; items stay PENDING" >&2
+    with_lock local_job build || echo "first build step ended with $?" >&2          # memberships and the day's rows exist before any inference
+    model_step classify --queue recent --limit "$RECENT_LIMIT" --max-seconds "$RECENT_SECONDS" || echo "recent classify step ended with $?; items stay PENDING" >&2
     with_lock local_job build ;;
   *) echo "unknown command" >&2; exit 2 ;;
 esac

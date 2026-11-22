@@ -1,167 +1,18 @@
 {
- "budget": {
-  "billing_source": "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill",
-  "budget_day": null,
-  "paused": null,
-  "pools": {
-   "historical": {
-    "cap_posts": 2000,
-    "cap_usd": "0.3",
-    "credits": 0,
-    "returned_posts": 0,
-    "usd": "0"
-   },
-   "recent": {
-    "cap_posts": 3000,
-    "cap_usd": "0.45",
-    "credits": 0,
-    "returned_posts": 0,
-    "usd": "0"
-   }
-  },
-  "preflight_cumulative": {
-   "cap_posts": 200,
-   "cap_usd": "0.03",
-   "credits": 0,
-   "returned_posts": 0,
-   "usd": "0"
-  },
-  "rolling": {
-   "cap_usd": "22.5",
-   "credits": 0,
-   "hours": 720,
-   "usd": "0"
-  },
-  "timezone": "Asia/Shanghai",
-  "today": {
-   "cap_posts": 5000,
-   "cap_usd": "0.75",
-   "credits": 0,
-   "returned_posts": 0,
-   "usd": "0"
-  },
-  "unknown_held": {
-   "requests": 0,
-   "usd": "0"
-  }
- },
- "classification": {
-  "classified_or_prefiltered": 0,
-  "matched_pairs": 0,
-  "pending": 0,
-  "share_done": null
- },
- "classifier": {
-  "model_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF:qwen2.5-1.5b-instruct-q4_k_m.gguf",
-  "prompt_version": "x-stance-prompt-v2-20261122",
-  "quality": "UNVALIDATED",
-  "revision": "hf:91cad51170dc346986eccefdc2dd33a9da36ead9|gguf-sha256:6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e|llama.cpp:225a5345bbb0e0c70859af5441ba922beb666fcf",
-  "runs_in": "separate CPU worker, not in the web process"
- },
- "collection": {
-  "by_status": {},
-  "disk_free_gib": null,
-  "last_fetch_at_utc": null,
-  "last_post_created_at_utc": null,
-  "posts": 0,
-  "runs": 0,
-  "sample_accounts": 0,
-  "state": "NOT_STARTED"
- },
- "conditional": [],
- "config_sha256": "028c8ceed876ebd892eb6be87ad9aa2faf50118ae82eb4074556c4a770c50c9f",
- "config_version": "x-sentiment-twitterapiio-5000-fix-20261122",
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
- "daily": [],
- "data_kinds": {
-  "batch": 0,
-  "live": 0,
-  "retrospective": 0
- },
- "episodes": [],
- "has_data": false,
- "history_queue": {
-  "range": null,
-  "state": "NOT_STARTED"
- },
- "limits": [
-  "accounts in the retrieved sample only",
-  "planned sample, not all of X",
-  "not a prediction",
-  "labels not validated by human review"
- ],
- "market": {
-  "branch": "market-regime description, not the alpha target",
-  "input_version": "phase5_bundle/c5b5ec22",
-  "last_date": "2026-11-17",
-  "series": {
-   "QQQ": "US.QQQ|DAY|a1"
-  }
- },
- "missing_inputs": [
-  {
-   "detail": "TWITTERAPI_IO_API_KEY",
-   "input": "PROVIDER_KEY"
-  },
-  {
-   "detail": "bounded live check",
-   "input": "PREFLIGHT"
-  },
-  {
-   "detail": "relationship_study",
-   "input": "validation.holdout_start"
-  },
-  {
-   "detail": "market_pairing_for_this_topic",
-   "input": "topics[memory].comparison_asset"
-  },
-  {
-   "detail": "market_pairing_for_this_topic",
-   "input": "topics[technology].comparison_asset"
-  },
-  {
-   "detail": "market_pairing_for_this_topic",
-   "input": "topics[market].comparison_asset"
-  }
- ],
- "narratives": [],
- "preflight": {
-  "at_utc": null,
-  "continuation": null,
-  "history_unlocked": false,
-  "reasons": [],
-  "returned_total": null,
-  "state": "NOT_RUN",
-  "verdict": null
- },
- "returns": [],
+ "config_version": "x-sentiment-twitterapiio-5000-r3-20261123",
+ "config_sha256": "5f4339591fd51879f813ede2ed4211751d4b17e88415110ebf27419e2bd25a09",
  "settings": {
-  "acquisition_gate": {
-   "allowed": false,
-   "key_env_name": "TWITTERAPI_IO_API_KEY",
-   "provider": "twitterapi_io",
-   "reasons": [
-    "PROVIDER_KEY_MISSING",
-    "PREFLIGHT_NOT_PASSED"
-   ]
-  },
-  "auto_topup": false,
+  "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
-  "classifier_gate": {
-   "allowed": true,
-   "reasons": []
-  },
-  "editing": "VERSIONED_EDITS_EFFECTIVE_NEXT_BATCH",
-  "key_env_name": "TWITTERAPI_IO_API_KEY",
+  "auto_topup": false,
   "languages": [
    "en",
    "zh"
   ],
-  "provider": "twitterapi_io",
-  "sampling_mode": "PLANNED_SAMPLE",
+  "vocabulary_version": "vocab-20261122-a",
   "topics": [
    {
-    "comparison_asset": null,
     "id": "memory",
     "keywords": [
      "DRAM",
@@ -177,12 +28,12 @@
      "内存价格",
      "闪存价格"
     ],
+    "comparison_asset": null,
     "targets": [
      "industry:memory"
     ]
    },
    {
-    "comparison_asset": null,
     "id": "technology",
     "keywords": [
      "technology stocks",
@@ -196,12 +47,12 @@
      "人工智能",
      "AI资本开支"
     ],
+    "comparison_asset": null,
     "targets": [
      "industry:technology"
     ]
    },
    {
-    "comparison_asset": null,
     "id": "market",
     "keywords": [
      "stock market",
@@ -215,12 +66,12 @@
      "降息",
      "关税"
     ],
+    "comparison_asset": null,
     "targets": [
      "industry:market"
     ]
    },
    {
-    "comparison_asset": "QQQ",
     "id": "qqq",
     "keywords": [
      "$QQQ",
@@ -229,35 +80,53 @@
      "纳斯达克100",
      "纳指100"
     ],
+    "comparison_asset": "QQQ",
     "targets": [
      "QQQ"
     ]
    }
   ],
   "update_mode": "daily_batch",
-  "vocabulary_version": "vocab-20261122-a"
+  "sampling_mode": "PLANNED_SAMPLE",
+  "key_env_name": "TWITTERAPI_IO_API_KEY",
+  "classifier_gate": {
+   "allowed": true,
+   "reasons": []
+  },
+  "editing": "VERSIONED_EDITS_EFFECTIVE_NEXT_BATCH",
+  "acquisition_gate": {
+   "allowed": false,
+   "provider": "twitterapi_io",
+   "key_env_name": "TWITTERAPI_IO_API_KEY",
+   "reasons": [
+    "PROVIDER_KEY_MISSING",
+    "PREFLIGHT_NOT_PASSED"
+   ]
+  }
+ },
+ "classifier": {
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF:qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "revision": "hf:91cad51170dc346986eccefdc2dd33a9da36ead9|gguf-sha256:6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e|llama.cpp:225a5345bbb0e0c70859af5441ba922beb666fcf",
+  "prompt_version": "x-stance-prompt-v2-20261122",
+  "quality": "UNVALIDATED",
+  "runs_in": "separate CPU worker, not in the web process"
+ },
+ "market": {
+  "input_version": "phase5_bundle/c5b5ec22",
+  "series": {
+   "QQQ": "US.QQQ|DAY|a1"
+  },
+  "last_date": "2026-11-17",
+  "branch": "market-regime description, not the alpha target"
  },
  "vocabulary": {
   "active": {
-   "effective_from_ny_date": null,
-   "impact": {
-    "budget_changed": false,
-    "daily_cap_posts": 5000,
-    "daily_cap_usd": "0.75",
-    "max_query_chars_with_time_operators": 138,
-    "over_pool": false,
-    "queries": 8,
-    "query_char_limit": 512,
-    "recent_pages_per_unit": 4,
-    "recent_pool_cap_posts": 3000,
-    "recent_posts_if_every_page_is_full": 2560,
-    "recent_units_per_day": 32
-   },
+   "version": "vocab-20261122-a",
    "parent": null,
+   "effective_from_ny_date": null,
    "status": "BASE_CONFIG",
    "topics": [
     {
-     "disabled_keywords": [],
      "id": "memory",
      "keywords": [
       "DRAM",
@@ -272,10 +141,10 @@
       "存储降价",
       "内存价格",
       "闪存价格"
-     ]
+     ],
+     "disabled_keywords": []
     },
     {
-     "disabled_keywords": [],
      "id": "technology",
      "keywords": [
       "technology stocks",
@@ -288,10 +157,10 @@
       "半导体",
       "人工智能",
       "AI资本开支"
-     ]
+     ],
+     "disabled_keywords": []
     },
     {
-     "disabled_keywords": [],
      "id": "market",
      "keywords": [
       "stock market",
@@ -304,10 +173,10 @@
       "加息",
       "降息",
       "关税"
-     ]
+     ],
+     "disabled_keywords": []
     },
     {
-     "disabled_keywords": [],
      "id": "qqq",
      "keywords": [
       "$QQQ",
@@ -315,16 +184,190 @@
       "Nasdaq-100",
       "纳斯达克100",
       "纳指100"
-     ]
+     ],
+     "disabled_keywords": []
     }
    ],
-   "version": "vocab-20261122-a"
+   "impact": {
+    "queries": 8,
+    "max_query_chars_with_time_operators": 138,
+    "query_char_limit": 512,
+    "recent_units_per_day": 32,
+    "recent_pages_per_unit": 4,
+    "recent_posts_if_every_page_is_full": 2560,
+    "recent_pool_cap_posts": 3000,
+    "daily_cap_posts": 5000,
+    "daily_cap_usd": "0.75",
+    "budget_changed": false,
+    "over_pool": false
+   }
   },
+  "pending": null,
   "history": [],
   "limits": {
    "max_keyword_chars": 60,
    "max_query_chars": 512
+  }
+ },
+ "budget": {
+  "budget_day": null,
+  "timezone": "Asia/Shanghai",
+  "today": {
+   "credits": 0,
+   "usd": "0",
+   "returned_posts": 0,
+   "cap_usd": "0.75",
+   "cap_posts": 5000
   },
-  "pending": null
- }
+  "rolling": {
+   "hours": 720,
+   "credits": 0,
+   "usd": "0",
+   "cap_usd": "22.5"
+  },
+  "preflight_cumulative": {
+   "credits": 0,
+   "usd": "0",
+   "returned_posts": 0,
+   "cap_usd": "0.03",
+   "cap_posts": 200
+  },
+  "pools": {
+   "recent": {
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.45",
+    "cap_posts": 3000
+   },
+   "historical": {
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.3",
+    "cap_posts": 2000
+   }
+  },
+  "unknown_held": {
+   "requests": 0,
+   "usd": "0"
+  },
+  "billing_source": "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill",
+  "paused": null
+ },
+ "preflight": {
+  "state": "NOT_RUN",
+  "verdict": null,
+  "at_utc": null,
+  "returned_total": null,
+  "reasons": [],
+  "history_unlocked": false,
+  "continuation": null
+ },
+ "history_queue": {
+  "state": "NOT_STARTED",
+  "range": null
+ },
+ "collection": {
+  "state": "NOT_STARTED",
+  "runs": 0,
+  "posts": 0,
+  "sample_accounts": 0,
+  "last_post_created_at_utc": null,
+  "last_fetch_at_utc": null,
+  "by_status": {},
+  "disk_free_gib": null
+ },
+ "classification": {
+  "matched_pairs": 0,
+  "classified_or_prefiltered": 0,
+  "pending": 0,
+  "share_done": null,
+  "filtered_low_likes": 0,
+  "filtered_likes_unknown": 0
+ },
+ "account_rules": {
+  "enabled": true,
+  "version": "account-rules-v1-20261123-80ddbfd1",
+  "min_likes": 20,
+  "unknown_likes": "exclude",
+  "follower_tiers": [
+   {
+    "min_followers": 1000000,
+    "weight": 5
+   },
+   {
+    "min_followers": 100000,
+    "weight": 3
+   },
+   {
+    "min_followers": 10000,
+    "weight": 2
+   },
+   {
+    "min_followers": 0,
+    "weight": 1
+   }
+  ],
+  "unknown_followers_weight": 1,
+  "named_accounts": [
+   {
+    "label": "口罩哥",
+    "weight": 5,
+    "identified": false
+   },
+   {
+    "label": "白毛女",
+    "weight": 5,
+    "identified": false
+   }
+  ],
+  "named_accounts_not_identified": 2,
+  "basis": "like and follower counts as reported when the post was first fetched; not historical values"
+ },
+ "queues": null,
+ "other_sample_versions": [],
+ "daily": [],
+ "narratives": [],
+ "episodes": [],
+ "returns": [],
+ "conditional": [],
+ "has_data": false,
+ "data_kinds": {
+  "live": 0,
+  "batch": 0,
+  "retrospective": 0
+ },
+ "limits": [
+  "accounts in the retrieved sample only",
+  "planned sample, not all of X",
+  "not a prediction",
+  "labels not validated by human review"
+ ],
+ "missing_inputs": [
+  {
+   "input": "PROVIDER_KEY",
+   "detail": "TWITTERAPI_IO_API_KEY"
+  },
+  {
+   "input": "PREFLIGHT",
+   "detail": "bounded live check"
+  },
+  {
+   "input": "validation.holdout_start",
+   "detail": "relationship_study"
+  },
+  {
+   "input": "topics[memory].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  },
+  {
+   "input": "topics[technology].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  },
+  {
+   "input": "topics[market].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  }
+ ]
 }

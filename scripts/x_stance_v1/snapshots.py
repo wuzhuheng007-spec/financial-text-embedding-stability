@@ -32,20 +32,23 @@ CREATE TABLE IF NOT EXISTS x_signal_snapshots(
   supersedes TEXT, change_reason TEXT NOT NULL, timing_status TEXT NOT NULL, payload_json TEXT NOT NULL, UNIQUE(series_key, revision));
 CREATE INDEX IF NOT EXISTS x_signal_snapshots_series ON x_signal_snapshots(series_key, revision);
 """
-EMPTY_ACTIVATION = {"model_id": None, "model_revision": None, "prompt_hash": None, "config_hash": None, "vocab_version": None}
+EMPTY_ACTIVATION = {"model_id": None, "model_revision": None, "prompt_hash": None, "config_hash": None, "vocab_version": None,
+                    "identity": None, "sample_version": None, "rules_version": None}
 OBSERVED = ("LIVE", "BATCH_AFTER_CLOSE")
 
 
 def activation(cfg: dict) -> dict:
     """The one classifier configuration whose labels count. Labels from any other model, revision or prompt are
     ignored by aggregation and by the progress figures."""
-    from . import stance
+    from . import sample, stance
     c = cfg["classifier"]
     pv = c.get("prompt_version")
+    pinned = bool(c.get("model_id") and c.get("immutable_revision") and pv in stance.PROMPTS)
     return {"model_id": c.get("model_id"), "model_revision": c.get("immutable_revision"),
             "prompt_hash": stance.prompt_hash(pv) if pv in stance.PROMPTS else None,
             "config_hash": store.sha(json.dumps({k: c.get(k) for k in ("model_id", "immutable_revision", "prompt_version", "temperature", "generation", "schema_version")}, sort_keys=True)),
-            "vocab_version": cfg["topic_vocabulary_version"]}
+            "identity": stance.identity_hash(cfg) if pinned else None,          # the complete inference identity; labels are matched on this
+            "vocab_version": cfg["topic_vocabulary_version"], "sample_version": sample.sample_version(cfg), "rules_version": sample.rules_version(cfg)}
 
 
 def series_key(window_kind, window_label, topic_id, target_id, lang_scope, mode, vocab_version) -> str:
@@ -67,10 +70,14 @@ def commit(db, *, window_kind: str, window_label: str, start: datetime, end: dat
            result: dict, rows: list, now: datetime, act: dict | None = None) -> dict:
     db.executescript(SCHEMA)
     act = {**EMPTY_ACTIVATION, **(act or {})}
-    key = series_key(window_kind, window_label, topic_id, target_id, result["lang_scope"], mode, act["vocab_version"])
+    sv = act["sample_version"] or act["vocab_version"]         # the series is one SAMPLE version: vocabulary + account rules
+    key = series_key(window_kind, window_label, topic_id, target_id, result["lang_scope"], mode, sv)
     votes = set(result["vote_post_ids"])
-    used = sorted((r["post_id"], r["label"], r["author_id"]) for r in rows if r["post_id"] in votes)
+    wts = result.get("vote_weights") or {}
+    used = sorted((r["post_id"], r["label"], r["author_id"]) + ((wts[r["post_id"]],) if r["post_id"] in wts else ()) for r in rows if r["post_id"] in votes)
     cls = result.get("classification") or {}
+    if not act["identity"] and not act["sample_version"] and not act["rules_version"]:     # callers that predate these fields hash exactly as before
+        act = {k: v for k, v in act.items() if k not in ("identity", "sample_version", "rules_version")}
     material = {"activation": act, "votes": used, "accounts": result["accounts"], "posts": result["posts"], "excluded": result["excluded_or_unjudged"],
                 "collection_status": result["collection_status"], "state": result["state"], "state_reason": result["state_reason"],
                 "pending": cls.get("pending"), "matched_posts": cls.get("matched_posts"), "window": [store.iso(start), store.iso(end)]}
@@ -83,13 +90,16 @@ def commit(db, *, window_kind: str, window_label: str, start: datetime, end: dat
         return {**payload, "snapshot_reused": True, "last_checked_at_utc": now_iso}
     formal = result["state"] in LABELS
     observed = mode in OBSERVED
-    received = [t for r in rows if r["post_id"] in votes for t in (_g(r, "inferred_at_utc"), _g(r, "first_seen_at_utc")) if t]
+    # never earlier than the material was received, than the inference behind each vote was completed, or than this commit
+    received = [t for r in rows if r["post_id"] in votes for t in (_g(r, "inferred_at_utc"), _g(r, "inference_completed_at_utc"), _g(r, "first_seen_at_utc")) if t]
     committed = max([now_iso, store.iso(end)] + received) if observed else now_iso
     revision = (last["revision"] + 1) if last is not None else 1
     if last is None:
         reason = "FIRST_BUILD"
-    elif any(last[k] != act[k] for k in ("model_id", "model_revision", "prompt_hash")):
+    elif any(last[k] != act.get(k) for k in ("model_id", "model_revision", "prompt_hash")):
         reason = "MODEL_OR_PROMPT_CHANGED"
+    elif (json.loads(last["payload_json"]).get("activation") or {}).get("identity") != act.get("identity"):
+        reason = "INFERENCE_IDENTITY_CHANGED"
     elif last["state"] not in LABELS and formal:
         reason = "CLASSIFICATION_OR_SAMPLE_COMPLETED"
     else:
@@ -102,7 +112,7 @@ def commit(db, *, window_kind: str, window_label: str, start: datetime, end: dat
                "availability": {"LIVE": "OBSERVED", "BATCH_AFTER_CLOSE": "OBSERVED_AFTER_CLOSE_BATCH"}.get(mode, "RETROSPECTIVE_VISIBLE_NOW_HYPOTHETICAL"),
                "activation": act, "input_hash": input_hash}
     db.execute("INSERT INTO x_signal_snapshots VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-               (sid, key, revision, window_kind, window_label, topic_id, target_id, result["lang_scope"], mode, act["vocab_version"], act["model_id"], act["model_revision"],
+               (sid, key, revision, window_kind, window_label, topic_id, target_id, result["lang_scope"], mode, sv, act["model_id"], act["model_revision"],
                 act["prompt_hash"], act["config_hash"], input_hash, result["state"], int(formal), committed, now_iso, payload["supersedes"], reason, "RECORDED",
                 json.dumps(payload, sort_keys=True, ensure_ascii=False)))
     _materialize(db, payload, None, now_iso)
@@ -120,10 +130,17 @@ def revisions(db, key: str) -> list[dict]:
     return [json.loads(r["payload_json"]) for r in db.execute("SELECT payload_json FROM x_signal_snapshots WHERE series_key=? ORDER BY revision", (key,))]
 
 
-def first_formal(db, key: str) -> dict | None:
-    """The first revision of a series that carried a usable state and a recorded commit time."""
-    r = db.execute("SELECT payload_json FROM x_signal_snapshots WHERE series_key=? AND formal=1 AND timing_status='RECORDED' ORDER BY revision LIMIT 1", (key,)).fetchone()
-    return json.loads(r[0]) if r else None
+def first_formal(db, key: str, *, identity: str | None = None) -> dict | None:
+    """The first revision of a series that carried a usable state and a recorded commit time.
+
+    Without `identity` this is the production question "what was known first", whichever model produced it.
+    A fixed-model study must pass its own inference identity: it then gets the first formal revision OF THAT
+    MODEL, and never another model's earlier revision presented as its result."""
+    for r in db.execute("SELECT payload_json FROM x_signal_snapshots WHERE series_key=? AND formal=1 AND timing_status='RECORDED' ORDER BY revision", (key,)):
+        p = json.loads(r[0])
+        if identity is None or (p.get("activation") or {}).get("identity") == identity:
+            return p
+    return None
 
 
 def as_of(db, key: str, at_utc: str) -> dict | None:

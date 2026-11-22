@@ -74,7 +74,8 @@
       row('历史回填范围（纽约日期）', data(hq.range ? `${hq.range.first_ny_date} ~ ${hq.range.last_ny_date}` : null)),
       row('历史回填：已采到的时间片', hq.units_with_any_page == null ? '—' : hq.units_with_any_page),
       row('已匹配主题的帖子', cl.matched_pairs), row('已分类', cl.classified_or_prefiltered), row('待分类', cl.pending),
-      row('分类进度', cl.share_done == null ? '—' : pct(cl.share_done)));
+      row('分类进度', cl.share_done == null ? '—' : pct(cl.share_done)),
+      row('点赞不足，未计入样本', cl.filtered_low_likes), row('点赞数未知，未计入样本', cl.filtered_likes_unknown));
     const gate = h('div', 'card');
     gate.append(h('h3', null, '付费采集'), chip(st.acquisition_gate.allowed ? '已满足条件' : '未开启', st.acquisition_gate.allowed ? 'run-succeeded' : 'tag-dim'));
     const gl = h('ul', 'xs-missing'); [...new Set(st.acquisition_gate.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
@@ -83,7 +84,36 @@
     model.append(h('h3', null, '分类与行情'), row('立场模型', data(d.classifier.model_id)), row('标签质量', d.classifier.quality === 'UNVALIDATED' ? '未经人工验证' : d.classifier.quality),
       row('行情版本', data(d.market.input_version)), row('行情最后日期', data(d.market.last_date)));
     p.replaceChildren(h('p', 'fine-print', '关键词的修改会生成新的词表版本，从下一批次开始生效；已经冻结的采集计划不会被替换。不同词表版本的占比不能直接相接。'),
-      topics, editor(d), card, cost, prog, model, gate);
+      topics, editor(d), rulesCard(d), card, cost, prog, queueCard(d), model, gate);
+  }
+
+  // ---------- account rules (like floor, follower-tier and named-account weights) ----------
+  function rulesCard(d) {
+    const r = d.account_rules || {}, box = h('div', 'card');
+    box.append(h('h3', null, '账号权重与点赞过滤'));
+    if (!r.enabled) { box.append(h('p', 'muted', '未启用，每个账号按一票计算。')); return box; }
+    box.append(row('规则版本', data(r.version)), row('点赞下限（低于此数的帖子不计入样本）', r.min_likes), row('点赞数未知的帖子', r.unknown_likes === 'exclude' ? '不计入样本' : '计入样本'),
+      row('粉丝数未知的账号权重', r.unknown_followers_weight));
+    box.append(table(['粉丝数下限', '权重'], r.follower_tiers.map(t => [data(t.min_followers.toLocaleString('en-US')), t.weight])));
+    if (r.named_accounts.length) box.append(table(['指定账号', '权重', '是否已填账号名'], r.named_accounts.map(n => [data(n.label), n.weight, n.identified ? '已填写' : '未填写，暂按粉丝数分档'])));
+    box.append(h('p', 'fine-print', '点赞数和粉丝数取自帖子被采集到的那一刻，不是历史数值；发帖后很快被采到的帖子点赞偏少，更容易被过滤。权重只影响占比的计算，分类模型看不到这些数字。'));
+    return box;
+  }
+
+  // ---------- classification queues ----------
+  function queueCard(d) {
+    const q = d.queues, box = h('div', 'card');
+    box.append(h('h3', null, '分类队列'));
+    if (!q) { box.append(h('p', 'muted', '还没有待分类的帖子。')); return box; }
+    const hrs = v => v == null ? '—' : v;
+    box.append(row('近期队列：待分类', used(q.recent.pending, q.recent.pairs)), row('近期队列：已完成的采样日', used(q.recent.sample_days_complete, q.recent.sample_days)),
+      row('近期队列：最早待分类材料已等待（小时）', hrs(q.recent.oldest_pending_age_hours)),
+      row('历史队列：待分类', used(q.history.pending, q.history.pairs)), row('历史队列：最早待分类材料已等待（小时）', hrs(q.history.oldest_pending_age_hours)),
+      row('近 7 天平均每天收到的帖子', q.rates_last_7_days.posts_received_per_day), row('近 7 天平均每天完成的推理', q.rates_last_7_days.model_inferences_per_day));
+    const days = Object.entries(q.recent.by_sample_day).slice(0, 7);
+    if (days.length) box.append(table(['采样日（纽约）', '已分类', '分类进度'], days.map(([day, v]) => [data(day), used(v.done, v.pairs), pct(v.share_done)])));
+    box.append(h('p', 'fine-print', '近期队列先处理，历史队列只使用剩余的计算时间。待分类的帖子不会被当作中性。'));
+    return box;
   }
 
   // ---------- keyword editing (versioned; effective with the next batch) ----------
@@ -166,11 +196,13 @@
       [...new Set(rows.map(r => r.mode))].forEach(m => head.append(chip(MODE[m] || m, m === 'LIVE' ? 'run-succeeded' : 'tag-dim'))); sec.append(head);
       const cl = {}; rows.forEach(r => { cl[r.window_label] = closes[`${tid}|${r.window_label}`]; });
       sec.append(chart(rows.slice(-60), cl));
-      sec.append(table(['交易日', '占比', '看多', '中性', '看空', '已判定账号', '样本账号数', '分类进度', '未判定', '主导状态', '说明'], rows.slice(-20).reverse().map(r =>
+      const eq = r => { const e = r.shares_equal_weight; return !e || e.bullish == null ? '—' : `${pct(e.bullish)} / ${pct(e.neutral)} / ${pct(e.bearish)}`; };
+      sec.append(table(['交易日', '占比', '看多', '中性', '看空', '已判定账号', '样本账号数', '分类进度', '未判定', '主导状态', '说明', '等权占比（多 / 中 / 空）', '点赞不足未计入'], rows.slice(-20).reverse().map(r =>
         [r.window_label, shareBar(r.shares), pct(r.shares.bullish), pct(r.shares.neutral), pct(r.shares.bearish), r.accounts_total, (r.classification || {}).sample_accounts,
-          (r.classification || {}).share_done == null ? '—' : pct(r.classification.share_done), r.unjudged_total, STATE[r.state] || r.state, why(r.state_reason)])));
+          (r.classification || {}).share_done == null ? '—' : pct(r.classification.share_done), r.unjudged_total, STATE[r.state] || r.state, why(r.state_reason), data(eq(r)), (r.classification || {}).filtered_low_likes])));
       out.push(sec);
     }
+    if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '占比按账号权重计算（粉丝数分档或指定账号），“等权占比”一栏是每个账号一票的结果，供对照。点赞数低于下限的帖子不在样本内。'));
     out.push(h('p', 'fine-print', '这是本次采集样本中的账号比例（每个账号取窗口内最后一条有效帖子），不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘；信号在收盘后批量生成，以实际完成时间为准。分类没有完成的日期不给出主导状态。'));
     p.replaceChildren(...out);
   }

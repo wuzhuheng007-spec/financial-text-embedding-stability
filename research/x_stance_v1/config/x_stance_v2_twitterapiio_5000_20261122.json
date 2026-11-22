@@ -1,6 +1,6 @@
 {
   "contract_version": "x-keyword-stance-v1-proposed-20261122",
-  "config_version": "x-sentiment-twitterapiio-5000-fix-20261122",
+  "config_version": "x-sentiment-twitterapiio-5000-r3-20261123",
   "status": "ENGINEERING_READY_AWAITING_PROVIDER_KEY",
   "status_note": "Provider, budgets and cadence are fixed by the 5,000-posts-per-day instruction. No provider call has been made. Parameters marked null are not frozen.",
   "languages": [
@@ -54,17 +54,63 @@
     "history_anchor": "last completed America/New_York calendar date at first run; exact UTC range persisted in the store",
     "proposed_recent_slices_per_day": 4,
     "proposed_history_slices_per_day": 2,
-    "proposed_recent_days_per_run": 1
+    "proposed_recent_days_per_run": 1,
+    "query_min_faves": null,
+    "query_min_faves_note": "the like floor is applied after collection. A min_faves: operator in the query would cut paid volume, but the provider does not document it; not used until a bounded live check shows it works"
   },
   "aggregation": {
-    "primary": "latest_valid_labeled_post_per_author_topic_target_window",
+    "primary": "latest_valid_labeled_post_per_author_topic_target_window, weighted by account rules; equal-weight shares reported alongside",
     "secondary": "per_post_shares",
     "tie_state": "neutral",
     "missing_state": "UNKNOWN",
     "proposed_low_sample_author_threshold": 30,
     "denominator": "bullish+bearish+neutral valid author votes",
     "population_claim": "retrieved sample accounts only",
-    "engagement_weighting": false
+    "engagement_weighting": false,
+    "account_weighting": true,
+    "account_rules": {
+      "enabled": true,
+      "version": "account-rules-v1-20261123",
+      "set_by": "owner instruction of 2026-11-23",
+      "min_likes": 20,
+      "unknown_likes": "exclude",
+      "follower_tiers": [
+        {
+          "min_followers": 1000000,
+          "weight": 5
+        },
+        {
+          "min_followers": 100000,
+          "weight": 3
+        },
+        {
+          "min_followers": 10000,
+          "weight": 2
+        },
+        {
+          "min_followers": 0,
+          "weight": 1
+        }
+      ],
+      "unknown_followers_weight": 1,
+      "named_accounts": [
+        {
+          "label": "口罩哥",
+          "handle": null,
+          "author_id": null,
+          "weight": 5
+        },
+        {
+          "label": "白毛女",
+          "handle": null,
+          "author_id": null,
+          "weight": 5
+        }
+      ],
+      "status": "PROPOSED_NUMBERS: the owner asked for higher weights for very large accounts and a 20-like floor; the tier cut-offs and weights are a first proposal and the two named accounts have no handle yet, so they are matched by follower tier only",
+      "basis": "likeCount and author.followers as returned by the provider when the post was first fetched; not historical values",
+      "known_bias": "a post fetched soon after it was written has had little time to collect likes, so the floor removes late-in-the-day posts more often than early ones, and it is not comparable between the daily batch and the historical back-fill"
+    }
   },
   "time": {
     "storage": "UTC",
@@ -175,7 +221,8 @@
       "image": "ghcr.io/ggml-org/llama.cpp@sha256:c2cf6c72d913b6c89a5f0929f2a866e6161e09e7dc187e0f3b0f21e923e26db3",
       "build": "b12627",
       "memory_limit": "3g",
-      "network": "internal, no route out"
+      "network": "internal, no route out",
+      "chat_template_sha256": "4e9918361c284a93880606d182d64da6a9fe97cdc1f5c5a78c1c8840444246fc"
     },
     "selection_basis": "engineering candidate chosen for free local CPU inference on a 4-core / 7 GiB server; not claimed to be the best financial model",
     "classification_quality": "UNVALIDATED",
@@ -191,7 +238,17 @@
         "retired": "2026-11-22",
         "why": "real-model smoke on hand-written texts: the model filled the id fields with placeholders and gave inconsistent status/stance pairs; every output was rejected by the validator. No stored post was ever labelled with it."
       }
-    ]
+    ],
+    "adapter_version": "x-stance-adapter-v2-20261123",
+    "identity_note": "labels are matched on the hash of the full inference identity (model, revision, prompt, schema, every generation parameter, chat template, engine build, adapter); see stance.inference_identity",
+    "queues": {
+      "recent_ingest_modes": [
+        "LIVE",
+        "BATCH_AFTER_CLOSE"
+      ],
+      "order": "recent: newest sample day first; history: oldest first; then topic, target, sha256(post id)",
+      "history_yields_to_recent": true
+    }
   },
   "narratives": {
     "max_clusters_to_display": 5,

@@ -18,7 +18,9 @@ KEY = {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}
 
 @pytest.fixture()
 def cfg():
-    return C.load()
+    c = C.load()
+    c["aggregation"]["account_rules"]["enabled"] = False     # these modules pre-date the account rules (tests/test_x_stance_r3.py covers them)
+    return c
 
 
 @pytest.fixture()
@@ -213,7 +215,8 @@ def test_f2_only_the_active_classifier_counts(cfg, db):
     p = provider.normalize_twitterapi_io(tweet(1, store.parse("2026-11-16T15:00:00Z")), now="2026-11-16T22:00:00Z", batch="b", mode=provider.BATCH)
     store.put_post(db, p); stance.map_topics(db, c)
     for model, rev, lab, at in (("model-a", "rev-a", "bullish", "2026-11-16T22:10:00Z"), ("model-b", "rev-b", "bearish", "2026-11-16T22:20:00Z")):
-        db.execute("INSERT INTO x_stance_labels VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", ("twitterapi_io", "1", "qqq", "QQQ", lab, "OK", 1, None, None, model, rev, act["prompt_hash"], at, "raw", f"k{model}"))
+        ident = act["identity"] if model == "model-a" else "identity-of-another-model"       # R3: a label belongs to one complete inference identity
+        db.execute(f"INSERT INTO x_stance_labels({','.join(store.LABEL_COLUMNS[:16])}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", ("twitterapi_io", "1", "qqq", "QQQ", lab, "OK", 1, None, None, model, rev, act["prompt_hash"], at, "raw", f"k{model}", ident))
     rows, _ = aggregate.rows_for_window(db, topic_id="qqq", target_id="QQQ", start=START, end=END, mode="BATCH_AFTER_CLOSE", act=act)
     assert [r["label"] for r in rows] == ["bullish"]                                     # the later label from another model is not mixed in
     other = copy.deepcopy(c); other["classifier"].update(model_id="model-c", immutable_revision="rev-c")

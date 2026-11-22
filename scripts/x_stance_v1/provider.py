@@ -114,6 +114,12 @@ def normalize_twitterapi_io(t: dict, *, now: str, batch: str, mode: str) -> dict
     is_rt = bool(t.get("isRetweet") or t.get("retweeted_tweet"))
     is_reply = bool(t.get("isReply") or t.get("inReplyToId"))
     eng = {k: t[k] for k in ("retweetCount", "replyCount", "likeCount", "quoteCount", "viewCount") if isinstance(t.get(k), int)}
+    # what the provider said about the account when this post was fetched (documented fields `followers`, `userName`);
+    # used only for the owner's account-weight rules, never shown to the stance model
+    if isinstance(author.get("followers"), int) and not isinstance(author.get("followers"), bool):
+        eng["authorFollowers"] = author["followers"]
+    if isinstance(author.get("userName"), str) and author["userName"]:
+        eng["authorUserName"] = author["userName"]
     return _post(provider="twitterapi_io", post_id=t["id"], author_id=author["id"], created_at=created, text=t.get("text") or "",
                  lang=t.get("lang"), url=t.get("url"), kind=_kind(is_rt, bool(t.get("isQuote") or t.get("quoted_tweet")), is_reply),
                  parent_available=(False if is_reply else None), now=now, batch=batch, mode=mode, engagement=eng)

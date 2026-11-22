@@ -1,0 +1,12 @@
+[Unit]
+Description=X stance historical classification, twice a day, away from the daily batch (explicit zone)
+
+[Timer]
+# Not enabled by the installer. Enable only after the recent queue has been seen to finish every day.
+OnCalendar=*-*-* 19:00:00 Asia/Shanghai
+OnCalendar=*-*-* 01:00:00 Asia/Shanghai
+RandomizedDelaySec=300
+Persistent=false
+
+[Install]
+WantedBy=timers.target

@@ -1,5 +1,5 @@
 [Unit]
-Description=X stance study: collect (within the shared ledger), classify locally, build derived tables
+Description=X stance study: collect (within the shared ledger), classify the RECENT queue locally, build derived tables
 Requires=docker.service
 After=docker.service
 StartLimitIntervalSec=1d

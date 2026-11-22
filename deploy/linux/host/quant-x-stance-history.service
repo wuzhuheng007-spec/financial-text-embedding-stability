@@ -1,0 +1,17 @@
+[Unit]
+Description=X stance study: historical classification queue (only what the recent queue leaves over), then rebuild
+Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=1d
+StartLimitBurst=4
+
+[Service]
+Type=oneshot
+# does nothing (exit 0) while the recent queue still has pending work
+ExecStart=/usr/local/sbin/quant-x-stance.sh classify-history
+ExecStartPost=/usr/local/sbin/quant-x-stance.sh build
+TimeoutStartSec=4h
+SuccessExitStatus=1 4 75
+Nice=15
+CPUWeight=10
+IOWeight=10

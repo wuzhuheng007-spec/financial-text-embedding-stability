@@ -48,6 +48,10 @@ def _as_dict(r) -> dict:
 
 
 def base(cfg: dict) -> dict:
+    """The vocabulary written in the config file. A config that already had another version applied to it
+    (with_topics) still carries this one, so "the base version" never silently becomes the current one."""
+    if cfg.get("_base_vocabulary"):
+        return copy.deepcopy(cfg["_base_vocabulary"])
     return {"version": cfg["topic_vocabulary_version"], "parent": None, "effective_from_ny_date": None, "status": "BASE_CONFIG",
             "topics": [{"id": t["id"], "keywords": list(t["keywords"]), "disabled_keywords": list(t.get("disabled_keywords") or [])} for t in cfg["topics"]]}
 
@@ -58,6 +62,14 @@ def active(db, cfg: dict, on: date | None = None) -> dict:
     return _as_dict(rows[0]) if rows else base(cfg)
 
 
+def get(db, cfg: dict, version: str) -> dict | None:
+    """One version by name (any status), or the base config's own."""
+    rows = _rows(db, "version=?", (version,))
+    if rows:
+        return _as_dict(rows[0])
+    return base(cfg) if version == base(cfg)["version"] else None
+
+
 def pending(db) -> dict | None:
     rows = _rows(db, "status='PENDING' ORDER BY created_at_utc DESC LIMIT 1")
     return _as_dict(rows[0]) if rows else None
@@ -65,6 +77,7 @@ def pending(db) -> dict | None:
 
 def with_topics(cfg: dict, v: dict) -> dict:
     out = copy.deepcopy(cfg)
+    out["_base_vocabulary"] = base(cfg)
     by_id = {t["id"]: t for t in v["topics"]}
     for t in out["topics"]:
         if t["id"] in by_id:

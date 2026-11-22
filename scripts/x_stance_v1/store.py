@@ -70,7 +70,34 @@ CREATE TABLE IF NOT EXISTS x_cost_ledger(
   status TEXT NOT NULL, cost_source TEXT NOT NULL, note TEXT, budget_day TEXT NOT NULL, created_at_utc TEXT NOT NULL, settled_at_utc TEXT);
 CREATE INDEX IF NOT EXISTS x_cost_ledger_day ON x_cost_ledger(budget_day);
 CREATE INDEX IF NOT EXISTS x_cost_ledger_created ON x_cost_ledger(created_at_utc);
+CREATE TABLE IF NOT EXISTS x_inference_identities(identity TEXT PRIMARY KEY, first_used_at_utc TEXT NOT NULL, payload_json TEXT NOT NULL);
 """
+# Columns added after the first release. Old rows keep NULL here: a label without an inference identity is a
+# legacy label and is never presented as the output of a current configuration.
+ADDED_COLUMNS = {
+    "x_stance_labels": (("inference_identity", "TEXT"), ("identity_status", "TEXT"), ("inference_started_at_utc", "TEXT"),
+                        ("inference_completed_at_utc", "TEXT"), ("label_written_at_utc", "TEXT")),
+    "x_inference_cache": (("inference_identity", "TEXT"), ("started_at_utc", "TEXT"), ("completed_at_utc", "TEXT")),
+}
+LABEL_COLUMNS = ("provider", "post_id", "topic_id", "target_id", "label", "quality_status", "is_relevant", "evidence_text", "reason_short", "model_id", "model_revision",
+                 "prompt_hash", "inferred_at_utc", "raw_output_hash", "cache_key", "inference_identity", "identity_status", "inference_started_at_utc",
+                 "inference_completed_at_utc", "label_written_at_utc")
+
+
+def upgrade(db) -> list[str]:
+    """Adds the later columns to a store created by an earlier release. Additive and idempotent."""
+    added = []
+    for table, cols in ADDED_COLUMNS.items():
+        have = {r[1] for r in db.execute(f"PRAGMA table_info({table})")}
+        for name, kind in cols:
+            if name not in have:
+                db.execute(f"ALTER TABLE {table} ADD COLUMN {name} {kind}")
+                added.append(f"{table}.{name}")
+    return added
+
+
+def put_label(db, row: dict) -> None:
+    db.execute(f"INSERT INTO x_stance_labels({','.join(LABEL_COLUMNS)}) VALUES({','.join('?' * len(LABEL_COLUMNS))})", [row.get(c) for c in LABEL_COLUMNS])
 
 
 def utcnow() -> str:
@@ -102,6 +129,7 @@ def connect(path: str | Path | None = None, *, readonly: bool = False) -> sqlite
         p.parent.mkdir(parents=True, exist_ok=True)
         db = sqlite3.connect(p, timeout=30)
         db.executescript(SCHEMA)
+        upgrade(db)
     db.row_factory = sqlite3.Row
     return db
 

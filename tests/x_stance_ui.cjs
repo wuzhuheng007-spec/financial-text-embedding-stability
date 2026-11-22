@@ -79,7 +79,7 @@ test('with no store every data panel names the missing inputs and shows no rows'
   }
   const s = texts(ui.panel('settings')).join('|');
   for (const need of ['尚未采集', '未开启', '已固定版本', '未经人工验证', '编辑关键词', '停用', '缺少供应商密钥', '尚未通过实采预检', '未配置（仅统计行业观点）', '计划抽样，不是全量', '0 / 5000', '0 / 0.75', '0 / 3000', '0 / 2000', '0 / 22.5', '0 / 200', '未运行', '不是供应商账单']) assert.ok(s.includes(need), need);
-  assert.strictEqual(rowsOf(ui.panel('settings')), 1 + 4);                       // header + the four configured topics
+  assert.strictEqual(rowsOf(ui.panel('settings')), (1 + 4) + (1 + 4) + (1 + 2));     // header + the four configured topics; R3: header + four follower tiers; header + two named accounts
 });
 
 test('keywords and quoted post text are marked as data, not interface text', async () => {
@@ -140,4 +140,35 @@ test('a pipeline-built synthetic store renders every state without inventing or 
     ok('nothing visible left in Chinese in English mode', left.length === 0);
   }
   if (process.env.X_STANCE_UI_REPORT) fs.writeFileSync(process.env.X_STANCE_UI_REPORT, JSON.stringify(report, null, 1));
+});
+
+// R3: account rules, both queues and weighted shares. The payload is synthetic.
+test('account rules, the two queues and weighted next to equal-weight shares are shown as stored', async () => {
+  const d = JSON.parse(JSON.stringify(EMPTY));
+  let ui = await mount(d);
+  let s = texts(ui.panel('settings')).join('|');
+  for (const need of ['账号权重与点赞过滤', '点赞下限（低于此数的帖子不计入样本）', '不计入样本', '粉丝数下限', '未填写，暂按粉丝数分档', '不是历史数值', '分类队列', '还没有待分类的帖子。',
+    '点赞不足，未计入样本', '点赞数未知，未计入样本']) assert.ok(s.includes(need), need);
+  const marked = ui.root.all(e => e.attrs.translate === 'no').map(e => e.textContent);
+  assert.ok(marked.includes('1,000,000') && marked.includes('口罩哥') && marked.some(t => t.startsWith('account-rules-v1-20261123-')));     // numbers and names are data
+  d.classification = {matched_pairs: 40, classified_or_prefiltered: 30, pending: 10, share_done: 0.75, filtered_low_likes: 3210, filtered_likes_unknown: 4};
+  d.queues = {recent: {pairs: 40, pending: 10, sample_days: 2, sample_days_complete: 1, oldest_pending_age_hours: 12.5, by_sample_day: {'2026-11-19': {pairs: 20, done: 20, share_done: 1}, '2026-11-18': {pairs: 20, done: 10, share_done: 0.5}}},
+    history: {pairs: 900, pending: 900, sample_days: 90, sample_days_complete: 0, oldest_pending_age_hours: 30, by_sample_day: {}},
+    rates_last_7_days: {posts_received_per_day: 714.3, model_inferences_per_day: 4.3}};
+  d.has_data = true;
+  d.daily = [{window_kind: 'session', window_label: '2026-11-19', topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE', shares: {bullish: 0.5, bearish: 0.2, neutral: 0.3},
+    shares_equal_weight: {bullish: 0.25, bearish: 0.5, neutral: 0.25}, accounts_total: 40, unjudged_total: 2, state: 'bullish', state_reason: null,
+    classification: {sample_accounts: 44, share_done: 1, filtered_low_likes: 3210}}];
+  ui = await mount(d);
+  s = texts(ui.panel('settings')).join('|');
+  for (const need of ['10 / 40', '1 / 2', '12.5', '900 / 900', '714.3', '4.3', '3210', '20 / 20', '10 / 20', '50.0%', '近期队列先处理']) assert.ok(s.includes(need), need);
+  const cells = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-19')).all(e => e.tagName === 'td').map(c => c.textContent);
+  assert.deepStrictEqual(cells.slice(2, 5), ['50.0%', '30.0%', '20.0%']);                    // headline: weighted
+  assert.deepStrictEqual(cells.slice(-2), ['25.0% / 25.0% / 50.0%', '3210']);                // beside it: one account one vote, and what the like floor left out
+  assert.ok(texts(ui.panel('daily')).join('|').includes('占比按账号权重计算'));
+  const left = [...new Set(texts(ui.root).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
+  assert.deepStrictEqual(left, []);                                                           // nothing of the new cards is left in Chinese in English mode
+  d.account_rules = {enabled: false, version: null};
+  ui = await mount(d);
+  assert.ok(texts(ui.panel('settings')).join('|').includes('未启用，每个账号按一票计算。') && !texts(ui.panel('daily')).join('|').includes('占比按账号权重计算'));
 });

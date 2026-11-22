@@ -5,7 +5,12 @@
   import-local FILE [--declare ...]                      offline import
   preflight                                              bounded live check (needs TWITTERAPI_IO_API_KEY)
   daily                                                  collection only: recent sample + historical queue
-  classify --limit N                                     local model, resumable; items stay PENDING if the worker is down
+  classify --limit N [--queue auto|recent|history] [--max-seconds S]
+                                                         local model, resumable; the recent queue goes first and the
+                                                         historical queue only uses what is left; items stay PENDING if the worker is down
+  queue                                                  backlog of both queues for the active inference identity
+  export-pending FILE [--queue Q] [--limit N]            hashed work file for an off-server (local GPU) worker
+  import-results FILE                                    checked, idempotent import of that worker's answers
   smoke-model                                            real local model on hand-written texts, in a throwaway store
   build                                                  derived tables: shares, snapshots, views, episodes, QQQ pairing
 
@@ -22,7 +27,9 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import batch, config as cfgmod, cost, provider, snapshots, stance, store, vocab
+import time
+
+from . import batch, config as cfgmod, cost, provider, sample, snapshots, stance, store, vocab
 from .ledger import Ledger
 
 
@@ -49,7 +56,7 @@ def _derive(db, cfg, prices_db=None) -> dict:
     from . import pipeline
     cal = _cal(cfg)
     prices, info = _prices(cfg, prices_db)
-    return {"topics_mapped": stance.map_topics(db, cfg), "daily": pipeline.build_daily(db, cfg, cal, mode="AUTO"),
+    return {"topics_mapped": stance.map_all(db, cfg), "daily": pipeline.build_daily(db, cfg, cal, mode="AUTO"),
             "price_input": info, "research": pipeline.build_research(db, cfg, cal, prices, mode="AUTO")}
 
 
@@ -84,10 +91,13 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="x_stance_v1")
     ap.add_argument("--config"); ap.add_argument("--db")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("status", "cost-table", "usage", "plan", "preflight", "migrate", "smoke-model", "daily"):
+    for name in ("status", "cost-table", "usage", "plan", "preflight", "migrate", "smoke-model", "daily", "queue"):
         sub.add_parser(name)
+    s = sub.add_parser("export-pending"); s.add_argument("file"); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"]); s.add_argument("--limit", type=int)
+    s = sub.add_parser("import-results"); s.add_argument("file")
     s = sub.add_parser("import-local"); s.add_argument("file"); s.add_argument("--declare", nargs=5, metavar=("TOPIC", "LANG", "START", "END", "STATUS"))
-    s = sub.add_parser("classify"); s.add_argument("--limit", type=int, default=50)
+    s = sub.add_parser("classify"); s.add_argument("--limit", type=int, default=50); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"])
+    s.add_argument("--max-seconds", type=float)
     s = sub.add_parser("build"); s.add_argument("--prices-db"); s.add_argument("--out")
     s = sub.add_parser("vocab"); s.add_argument("action", choices=["show", "add", "disable", "enable", "edit"]); s.add_argument("args", nargs="*")
     a = ap.parse_args(argv)
@@ -111,7 +121,7 @@ def main(argv=None) -> int:
         elif a.cmd == "usage":
             out = {"usage": ledger.usage(), "ledger": ledger.summary()}
         elif a.cmd == "migrate":
-            out = {"checkpoints": provider.migrate_checkpoints(db), "snapshots": snapshots.migrate_legacy(db),
+            out = {"checkpoints": provider.migrate_checkpoints(db), "snapshots": snapshots.migrate_legacy(db), "inference_identity": stance.migrate_identity(db),
                    "log": [dict(r) for r in db.execute("SELECT id, name, applied_at_utc, detail_json FROM x_migrations ORDER BY id")]}
         elif a.cmd == "plan":                                    # shows what the next run would ask for; freezes nothing, sends nothing
             d = batch.last_completed_ny_date(now)
@@ -147,19 +157,33 @@ def main(argv=None) -> int:
             if out["status"] == "REFUSED_FAIL_CLOSED":
                 code = 2
             else:
-                out["topics_mapped"] = stance.map_topics(db, vocab.with_topics(base, vocab.active(db, base)))
+                out["topics_mapped"] = stance.map_all(db, base)
         elif a.cmd == "classify":
             gate = cfgmod.classifier_gate(cfg)
             if not gate["allowed"]:
                 out, code = {"status": "REFUSED_CLASSIFIER_NOT_PINNED", "gate": gate, "model_calls": 0}, 2
             else:
                 worker = _llm(cfg)
-                stance.map_topics(db, cfg)
-                res = stance.run(db, cfg, worker, limit=a.limit)
-                out = {"status": "RAN" if not res["stopped"] else "WORKER_UNAVAILABLE_ITEMS_LEFT_PENDING", **res, "throughput": worker.summary(),
-                       "post_topic_target_pairs": db.execute("SELECT count(*) FROM x_post_topics WHERE topic_version=?", (cfg["topic_vocabulary_version"],)).fetchone()[0],
-                       "classification_quality": "UNVALIDATED"}
-                code = 0 if not res["stopped"] else 1
+                stance.map_all(db, base)
+                t0 = time.monotonic()
+                stop = (lambda: time.monotonic() - t0 >= a.max_seconds) if a.max_seconds else None
+                res = stance.run(db, cfg, worker, limit=a.limit, queue=a.queue, versions=_live(db, base), should_stop=stop)   # real clock for every reading
+                yielded = res["stopped"] == "YIELDED_TO_RECENT_QUEUE"
+                out = {"status": "RAN" if not res["stopped"] else ("HISTORY_YIELDED_TO_RECENT" if yielded else "WORKER_UNAVAILABLE_ITEMS_LEFT_PENDING"), **res, "throughput": worker.summary(),
+                       "queues": stance.queue_status(db, cfg, versions=_live(db, base)), "classification_quality": "UNVALIDATED"}
+                code = 0 if (not res["stopped"] or yielded) else 1
+        elif a.cmd == "queue":
+            out = stance.queue_status(db, cfg, versions=_live(db, base)) if cfgmod.classifier_gate(cfg)["allowed"] else {"status": "CLASSIFIER_NOT_PINNED"}
+        elif a.cmd == "export-pending":
+            from . import offload
+            stance.map_all(db, base)
+            out = offload.export_pending(db, cfg, Path(a.file), versions=_live(db, base), queue=a.queue, limit=a.limit)
+        elif a.cmd == "import-results":
+            from . import offload
+            try:
+                out = offload.import_results(db, cfg, Path(a.file), versions=_live(db, base))
+            except offload.OffloadError as ex:
+                out, code = {"status": "REJECTED", "reason": str(ex), "labels_written": 0}, 1
         else:
             out = _derive(db, cfg, a.prices_db)
         if getattr(a, "out", None):
@@ -167,6 +191,10 @@ def main(argv=None) -> int:
         db.close()
     print(provider.redact(json.dumps(out, indent=1, ensure_ascii=False, default=str)))
     return code
+
+
+def _live(db, base: dict) -> list[str]:
+    return [sample.sample_version(c) for c in sample.live_configs(db, base)]
 
 
 def _has(db, table: str) -> bool:

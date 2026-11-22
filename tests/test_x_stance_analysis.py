@@ -20,7 +20,9 @@ REPO = Path(__file__).resolve().parents[1]
 
 @pytest.fixture()
 def cfg():
-    return C.load()
+    c = C.load()
+    c["aggregation"]["account_rules"]["enabled"] = False     # these modules pre-date the account rules (tests/test_x_stance_r3.py covers them)
+    return c
 
 
 @pytest.fixture()
@@ -62,7 +64,7 @@ def post(db, pid, author, created, text="$QQQ view", *, lang="en", kind="origina
 
 
 def label(db, pid, lab, *, quality="OK", topic="qqq", target="QQQ", inferred="2031-01-01T00:00:00Z", reason=None):
-    db.execute("INSERT INTO x_stance_labels VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    db.execute(f"INSERT INTO x_stance_labels({','.join(store.LABEL_COLUMNS[:15])}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                ("t", str(pid), topic, target, lab, quality, 1, None, reason, "test-double-not-a-model", "rev-0", stance.prompt_hash("x-stance-prompt-v1-20261122"), inferred, "raw", f"k{pid}{inferred}"))
 
 
@@ -456,6 +458,8 @@ def test_pipeline_traces_every_number_to_posts_model_and_price_version(db, pinne
     reg(db, topic_id="qqq", lang="en", vocab_version=pinned["topic_vocabulary_version"], start_utc=store.iso(w0), end_utc=store.iso(cal.session_window(i0 + 2)[1]), status="COMPLETE_DECLARED", batch="b")
     reg(db, topic_id="qqq", lang="zh", vocab_version=pinned["topic_vocabulary_version"], start_utc=store.iso(w0), end_utc=store.iso(w1), status="COMPLETE_DECLARED", batch="b")
     c = copy.deepcopy(pinned); c["aggregation"]["proposed_low_sample_author_threshold"] = 3
+    # R3 setup: a label only counts for a post that is a member of the sample version, under one complete inference identity
+    stance.map_topics(db, c); db.execute("UPDATE x_stance_labels SET inference_identity=?", (stance.identity_hash(c),)); db.commit()
     d = pipeline.build_daily(db, c, cal, mode=provider.RETRO, now=datetime(2026, 11, 22, tzinfo=UTC))
     assert d["session_windows"] == 4 and d["calendar_windows"] >= 4
     states = [r[0] for r in db.execute("SELECT state FROM x_daily_sentiment WHERE window_kind='session' AND lang_scope='all' ORDER BY window_label")]
@@ -493,6 +497,6 @@ def test_manifest_records_versions_and_null_model(cfg):
 
 def test_the_ui_fixture_is_the_real_empty_read_model(cfg):
     """tests/x_stance_ui.cjs renders this file; it must stay identical to what the read model returns with no store."""
-    v = pipeline.read_for_portal(cfg, Path("does/not/exist.sqlite3"), env={})
+    v = pipeline.read_for_portal(C.load(), Path("does/not/exist.sqlite3"), env={})
     v["collection"]["disk_free_gib"] = None; v["budget"]["budget_day"] = None
     assert json.loads((REPO / "tests" / "fixtures" / "x_stance_view_empty.json").read_text(encoding="utf-8")) == json.loads(json.dumps(v))

@@ -14,7 +14,10 @@ NOW = datetime(2026, 11, 20, 3, 0, tzinfo=UTC)               # last completed Ne
 
 @pytest.fixture()
 def cfg():
-    return C.load()
+    c = C.load()
+    c["aggregation"]["account_rules"]["enabled"] = False     # these modules pre-date the account rules (tests/test_x_stance_r3.py covers them)
+    c["classifier"]["runtime"]["chat_template_sha256"] = store.sha("<tpl>")      # what the stub worker below reports; R3 checks the running template against the pinned one
+    return c
 
 
 @pytest.fixture()
