@@ -805,6 +805,43 @@ def x_stance_json(request):
     return _no_store(JsonResponse(data))
 
 
+@login_required
+@require_POST
+def x_stance_vocabulary(request):
+    """Owner-only keyword edit. Creates a new immutable vocabulary version that takes effect with the next batch;
+    it never changes a frozen plan, never changes the budget and sends nothing to any provider."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("X stance unavailable")
+    import json
+    import sys
+    from datetime import datetime, timezone as dt_timezone
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    try:
+        body = json.loads(request.body.decode("utf-8") or "{}")
+        changes = body.get("changes")
+        if not isinstance(changes, list) or not (1 <= len(changes) <= 20) or not all(isinstance(c, dict) for c in changes):
+            raise ValueError
+    except (ValueError, UnicodeDecodeError):
+        return _no_store(JsonResponse({"result": "REJECTED", "reason": "BAD_REQUEST"}, status=400))
+    from scripts.x_stance_v1 import config as x_config, store as x_store, vocab as x_vocab
+    clean = [{k: c.get(k) for k in ("action", "topic_id", "keyword", "new_keyword") if c.get(k) is not None} for c in changes]
+    try:
+        db = x_store.connect()
+        try:
+            version = x_vocab.propose(db, x_config.load(), clean, datetime.now(dt_timezone.utc))
+            overview = x_vocab.overview(db, x_config.load())
+        finally:
+            db.close()
+    except x_vocab.VocabError as exc:
+        return _no_store(JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400))
+    except Exception as exc:  # noqa: BLE001 - a store that cannot be written is a status, not a page error
+        return _no_store(JsonResponse({"result": "ERROR", "error_class": type(exc).__name__}, status=503))
+    return _no_store(JsonResponse({"result": "PENDING_VERSION_CREATED", "version": version["version"], "effective_from_ny_date": version["effective_from_ny_date"],
+                                   "impact": version["impact"], "vocabulary": overview}))
+
+
 # ---------- real-time news v1 (owner only; reads the collector's cache, never calls a provider) ----------
 _MACRO_CHANNELS = {"economics", "economic data", "macro economic events", "federal reserve", "fed", "treasuries", "bonds",
                    "government", "politics", "global", "commodities", "forex", "inflation", "interest rates"}

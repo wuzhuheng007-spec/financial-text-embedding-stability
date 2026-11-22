@@ -116,6 +116,8 @@ def acquisition_gate(cfg: dict, env: dict, *, preflight_passed: bool = False, fo
 def classifier_gate(cfg: dict) -> dict:
     c = cfg["classifier"]
     reasons = [f"CLASSIFIER_NOT_PINNED:{f}" for f in ("model_id", "immutable_revision", "prompt_version", "temperature") if c.get(f) is None]
+    if not reasons and not isinstance(c.get("generation"), dict):
+        reasons.append("CLASSIFIER_NOT_PINNED:generation")
     return {"allowed": not reasons, "reasons": reasons}
 
 

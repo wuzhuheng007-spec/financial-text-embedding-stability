@@ -1,6 +1,6 @@
 {
   "contract_version": "x-keyword-stance-v1-proposed-20261122",
-  "config_version": "x-sentiment-twitterapiio-5000-next-20261122",
+  "config_version": "x-sentiment-twitterapiio-5000-fix-20261122",
   "status": "ENGINEERING_READY_AWAITING_PROVIDER_KEY",
   "status_note": "Provider, budgets and cadence are fixed by the 5,000-posts-per-day instruction. No provider call has been made. Parameters marked null are not frozen.",
   "languages": [
@@ -81,7 +81,12 @@
       "last_session": "2026-12-31",
       "note": "Registered round9 XNYS sessions through 2026-02-27, extended to 2026-12-31 from the closures and early closes on the NYSE hours page read on 2026-11-22. See calendar/MANIFEST.json."
     },
-    "signal_availability": "actual signal_committed_at, distinct from source_window_end"
+    "signal_availability": "actual signal_committed_at, distinct from source_window_end",
+    "timer": {
+      "on_calendar": "*-*-* 13:30:00 Asia/Shanghai",
+      "verified_with": "systemd-analyze calendar on systemd 255",
+      "enabled": false
+    }
   },
   "topics": [
     {
@@ -150,15 +155,36 @@
   ],
   "topic_vocabulary_version": "vocab-20261122-a",
   "classifier": {
-    "model_id": null,
-    "immutable_revision": null,
-    "prompt_version": null,
-    "proposed_prompt_version": "x-stance-prompt-v1-20261122",
-    "temperature": null,
+    "model_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF:qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "immutable_revision": "hf:91cad51170dc346986eccefdc2dd33a9da36ead9|gguf-sha256:6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e|llama.cpp:225a5345bbb0e0c70859af5441ba922beb666fcf",
+    "prompt_version": "x-stance-prompt-v1-20261122",
+    "temperature": 0,
+    "schema_version": "x-stance-output-schema-v1",
+    "generation": {
+      "temperature": 0,
+      "seed": 42,
+      "max_output_tokens": 192,
+      "top_k": 1,
+      "top_p": 1.0,
+      "context_tokens": 2048,
+      "threads": 2,
+      "parallel_slots": 1
+    },
+    "runtime": {
+      "engine": "llama.cpp server, CPU",
+      "image": "ghcr.io/ggml-org/llama.cpp@sha256:c2cf6c72d913b6c89a5f0929f2a866e6161e09e7dc187e0f3b0f21e923e26db3",
+      "build": "b12627",
+      "memory_limit": "3g",
+      "network": "internal, no route out"
+    },
+    "selection_basis": "engineering candidate chosen for free local CPU inference on a 4-core / 7 GiB server; not claimed to be the best financial model",
+    "classification_quality": "UNVALIDATED",
+    "quality_note": "no human-labelled sample exists; no accuracy, precision, recall or F1 is reported until one does",
+    "determinism_note": "temperature 0 and a fixed seed; byte-identical output across hardware is not promised",
     "use_future_returns": false,
     "use_current_engagement_for_history": false,
     "cloud_model_calls_default": false,
-    "status_note": "No generative stance model exists on the server. Until one is pinned, collected posts stay PENDING and no formal state is produced."
+    "proposed_prompt_version": "x-stance-prompt-v1-20261122"
   },
   "narratives": {
     "max_clusters_to_display": 5,
@@ -171,8 +197,8 @@
   },
   "market": {
     "provider": "existing_authorized_moomoo_data_only",
-    "input_version": null,
-    "adjustment_semantics": null,
+    "input_version": "phase5_bundle/c5b5ec22",
+    "adjustment_semantics": "moomoo daily bars with autype=1 (the vendor's adjusted series, as supplied when the bundle was built). Open and close come from the same adjusted series, so both ends of a return are treated alike. Whether cash dividends are folded into the adjustment has NOT been verified here: every figure is a price return of this adjusted series and is not called a total return.",
     "candidate_input": {
       "snapshot_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
       "series": {
@@ -184,7 +210,21 @@
     "descriptive_return": "adj_close[t+h]/adj_close[t]-1",
     "execution_return": "adj_close[k+h-1]/adj_open[k]-1; k first open after committed signal",
     "missing_future_value": null,
-    "first_target": "QQQ"
+    "first_target": "QQQ",
+    "input": {
+      "path": "apps/quant_portal/var/research/datasets/phase5_bundle/c5b5ec22/market_research.sqlite",
+      "sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+      "series": {
+        "QQQ": "US.QQQ|DAY|a1"
+      },
+      "first_date": "1999-03-10",
+      "last_date": "2026-11-17",
+      "rows_eligible": 6967,
+      "kind": "registered immutable research bundle (a consistent copy, not the live quote store)",
+      "session_alignment": "one price row for each of the 1,800 registered sessions from 2019-11-01 through 2026-11-17: none missing, none extra"
+    },
+    "branch": "market-regime description (QQQ absolute path). Not the factor-residual / alpha target; QQQ is never regressed on itself.",
+    "after_last_date": "sessions after 2026-11-17 have no price in this bundle: returns are null with the reason until a new bundle is registered"
   },
   "validation": {
     "history_is_retrospective_visible_now": true,
@@ -212,7 +252,7 @@
     ],
     "calendar_days_per_month_assumption": 30
   },
-  "supersedes": "x-stance-v1-params-20261122-a",
+  "supersedes": "x-sentiment-twitterapiio-5000-next-20261122",
   "base_contract": {
     "file": "X_Sentiment_Research_Claude_20261122.md",
     "sha256": "765b46198da9408059638484668c115b63ff5aa621cc7621cdf90510526507a7"

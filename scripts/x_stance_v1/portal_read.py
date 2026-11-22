@@ -9,7 +9,7 @@ import sqlite3
 from decimal import Decimal
 from pathlib import Path
 
-from . import config as cfgmod, store
+from . import batch, config as cfgmod, store, vocab
 from .ledger import Ledger
 
 
@@ -37,8 +37,13 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
                         "languages": cfg["languages"], "vocabulary_version": cfg["topic_vocabulary_version"],
                         "topics": [{"id": t["id"], "keywords": t["keywords"], "comparison_asset": t.get("comparison_asset"), "targets": cfgmod.targets(t)} for t in cfg["topics"]],
                         "update_mode": cfg["acquisition"]["update_mode"], "sampling_mode": cfg["acquisition"]["collection_mode"],
-                        "key_env_name": cfgmod.KEY_ENV[cfg["provider_candidate"]], "classifier_gate": cgate, "editing": "READ_ONLY_VERSIONED_FILE"},
-           "budget": _empty_usage(cfg), "preflight": {"state": "NOT_RUN", "verdict": None, "at_utc": None, "returned_total": None},
+                        "key_env_name": cfgmod.KEY_ENV[cfg["provider_candidate"]], "classifier_gate": cgate, "editing": "VERSIONED_EDITS_EFFECTIVE_NEXT_BATCH"},
+           "classifier": {"model_id": cfg["classifier"].get("model_id"), "revision": cfg["classifier"].get("immutable_revision"), "prompt_version": cfg["classifier"].get("prompt_version"),
+                          "quality": cfg["classifier"].get("classification_quality") or "UNVALIDATED", "runs_in": "separate CPU worker, not in the web process"},
+           "market": {"input_version": cfg["market"].get("input_version"), "series": (cfg["market"].get("input") or {}).get("series"), "last_date": (cfg["market"].get("input") or {}).get("last_date"),
+                      "branch": "market-regime description, not the alpha target"},
+           "vocabulary": None,
+           "budget": _empty_usage(cfg), "preflight": {"state": "NOT_RUN", "verdict": None, "at_utc": None, "returned_total": None, "reasons": [], "history_unlocked": False, "continuation": None},
            "history_queue": {"state": "NOT_STARTED", "range": None},
            "collection": {"state": "NOT_STARTED", "runs": 0, "posts": 0, "sample_accounts": 0, "last_post_created_at_utc": None, "last_fetch_at_utc": None,
                           "by_status": {}, "disk_free_gib": None},
@@ -55,10 +60,25 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
     if p.exists():
         db = store.connect(p, readonly=True)
         try:
-            passed = bool(_meta(db, "preflight_passed"))
+            try:
+                st = batch.preflight_state(db, cfg, env)
+            except sqlite3.OperationalError:
+                st = {"state": "NOT_RUN", "recent_unlocked": False, "history_unlocked": False, "reasons": [], "at_utc": None}
+            passed = st["recent_unlocked"]
+            rec = _meta(db, batch.RECEIPT_KEY) or {}
+            out["preflight"] = {"state": st["state"], "verdict": rec.get("verdict"), "at_utc": st.get("at_utc"), "returned_total": rec.get("returned_total"),
+                                "in_window_total": rec.get("in_window_total"), "reasons": st["reasons"], "history_unlocked": st["history_unlocked"],
+                                "continuation": (rec.get("continuation") or {}).get("state"), "receipt_sha256": st.get("receipt_sha256")}
+            out["vocabulary"] = vocab.overview(db, cfg)
+            cfg = vocab.with_topics(cfg, vocab.active(db, cfg))
+            out["settings"]["vocabulary_version"] = cfg["topic_vocabulary_version"]
+            out["settings"]["topics"] = [{"id": t["id"], "keywords": t["keywords"], "disabled_keywords": t.get("disabled_keywords") or [], "comparison_asset": t.get("comparison_asset"), "targets": cfgmod.targets(t)} for t in cfg["topics"]]
             _fill(db, cfg, out)
         finally:
             db.close()
+    if out["vocabulary"] is None:
+        mem = sqlite3.connect(":memory:")
+        out["vocabulary"] = vocab.overview(mem, cfg); mem.close()
     gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=passed)
     out["settings"]["acquisition_gate"] = gate
     missing = [{"input": "PROVIDER_KEY", "detail": gate["key_env_name"]}] if "PROVIDER_KEY_MISSING" in gate["reasons"] else []
@@ -73,10 +93,6 @@ def _fill(db, cfg: dict, out: dict) -> None:
         out["budget"] = Ledger(db, cfg, readonly=True).usage()
     except sqlite3.OperationalError:
         pass                                                 # no ledger table yet: nothing was ever reserved
-    last = _meta(db, "preflight_last")
-    if last:
-        out["preflight"] = {"state": "RAN", "verdict": last.get("verdict"), "at_utc": last.get("started_at_utc"), "returned_total": last.get("returned_total"),
-                            "requests": len(last.get("requests") or []), "receipt_sha256": last.get("sha256")}
     hr = _meta(db, "history_range")
     if hr:
         r = db.execute("SELECT COUNT(DISTINCT substr(window_start_utc,1,10)), COUNT(*), COALESCE(SUM(returned),0) FROM x_query_runs WHERE window_start_utc>=? AND window_end_utc<=? AND pages>0",

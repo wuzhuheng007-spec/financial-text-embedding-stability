@@ -44,7 +44,9 @@ class XStanceJsonTests(TestCase):
             self.assertEqual(d[k], [])
         self.assertFalse(self.db.exists())                                         # reading does not create a store
         missing = {m["input"] for m in d["missing_inputs"]}
-        self.assertTrue({"PROVIDER_KEY", "PREFLIGHT", "classifier.immutable_revision", "market.input_version", "validation.holdout_start"} <= missing)
+        self.assertTrue({"PROVIDER_KEY", "PREFLIGHT", "validation.holdout_start"} <= missing)
+        self.assertFalse(any(m.startswith(("classifier.", "market.")) for m in missing))           # the model and the price bundle are pinned
+        self.assertEqual((d["classifier"]["quality"], d["market"]["input_version"]), ("UNVALIDATED", "phase5_bundle/c5b5ec22"))
         self.assertEqual((d["budget"]["today"]["cap_posts"], d["budget"]["today"]["cap_usd"], d["budget"]["rolling"]["cap_usd"], d["budget"]["today"]["returned_posts"]), (5000, "0.75", "22.5", 0))
         self.assertEqual(d["settings"]["key_env_name"], "TWITTERAPI_IO_API_KEY")
         self.assertEqual((d["preflight"]["state"], d["history_queue"]["state"]), ("NOT_RUN", "NOT_STARTED"))
@@ -80,3 +82,39 @@ class XStanceJsonTests(TestCase):
         self.assertIn('id="x-stance"', html); self.assertIn("core/x_stance_v1.js", html)
         for tab in ("settings", "daily", "views", "history"):
             self.assertIn(f'data-xtab="{tab}"', html)
+
+    # ---------- keyword editing ----------
+    def post(self, changes, user=None, csrf=False):
+        from django.test import Client
+        c = Client(enforce_csrf_checks=csrf)
+        c.force_login(user or self.owner)
+        return c.post(reverse("x_stance_vocabulary"), data=json.dumps({"changes": changes}), content_type="application/json")
+
+    def test_keyword_edit_is_owner_only_post_only_and_needs_csrf(self):
+        self.assertEqual(self.post([{"action": "add", "topic_id": "qqq", "keyword": "QQQM"}], user=self.other).status_code, 404)
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.get(reverse("x_stance_vocabulary")).status_code, 405)
+        self.assertEqual(self.post([{"action": "add", "topic_id": "qqq", "keyword": "QQQM"}], csrf=True).status_code, 403)
+        self.assertFalse(self.db.exists())                                         # none of the refused requests wrote anything
+
+    def test_keyword_edit_creates_a_pending_version_that_the_page_then_shows(self):
+        r = self.post([{"action": "add", "topic_id": "memory", "keyword": "HBM4"}, {"action": "disable", "topic_id": "market", "keyword": "关税"}])
+        self.assertEqual(r.status_code, 200)
+        d = r.json()
+        self.assertEqual(d["result"], "PENDING_VERSION_CREATED")
+        self.assertTrue(d["version"].startswith("vocab-"))
+        self.assertFalse(d["impact"]["budget_changed"])
+        view = self.get().json()
+        self.assertEqual(view["vocabulary"]["pending"]["version"], d["version"])
+        self.assertEqual(view["vocabulary"]["active"]["version"], "vocab-20261122-a")                # still the old one until the next batch
+        self.assertEqual(view["settings"]["vocabulary_version"], "vocab-20261122-a")
+        self.assertIn("HBM4", next(t for t in view["vocabulary"]["pending"]["topics"] if t["id"] == "memory")["keywords"])
+
+    def test_keyword_edit_rejects_query_syntax_and_bad_requests(self):
+        for changes, reason in (([{"action": "add", "topic_id": "qqq", "keyword": "QQQ) OR (bitcoin"}], "KEYWORD_HAS_QUERY_SYNTAX"),
+                                ([{"action": "add", "topic_id": "qqq", "keyword": "$QQQ"}], "KEYWORD_EXISTS"), ([], "BAD_REQUEST"), ("x", "BAD_REQUEST")):
+            r = self.post(changes)
+            self.assertEqual(r.status_code, 400)
+            self.assertEqual(r.json()["reason"], reason)
+        self.client.force_login(self.owner)
+        self.assertIsNone(self.client.get(reverse("x_stance_json")).json()["vocabulary"]["pending"])

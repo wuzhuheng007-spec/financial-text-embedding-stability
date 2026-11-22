@@ -1,5 +1,5 @@
 [Unit]
-Description=X stance study: daily planned sample (recent + historical queue) within the shared spending ledger
+Description=X stance study: collect (within the shared ledger), classify locally, build derived tables
 Requires=docker.service
 After=docker.service
 StartLimitIntervalSec=1d
@@ -7,9 +7,10 @@ StartLimitBurst=2
 
 [Service]
 Type=oneshot
-EnvironmentFile=/srv/quant/secrets/x_stance.env
-ExecStart=/usr/local/sbin/quant-x-stance.sh daily
-TimeoutStartSec=90min
-# 2 = gate closed (no key or no preflight), 75 = data lock busy: reported, never retried in a loop
+ExecStart=/usr/local/sbin/quant-x-stance.sh pipeline
+TimeoutStartSec=4h
+# 2 = gate closed (no key or no current preflight receipt), 75 = data lock busy: reported, never retried in a loop
 SuccessExitStatus=2 75
 Nice=10
+CPUWeight=20
+IOWeight=20

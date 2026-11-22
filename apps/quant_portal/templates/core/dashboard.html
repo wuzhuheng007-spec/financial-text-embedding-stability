@@ -142,7 +142,7 @@
       </section>
     </div>
   </section>
-  <section id="x-stance" class="rw section" data-url="{% url 'x_stance_json' %}" aria-labelledby="x-stance-title">
+  <section id="x-stance" class="rw section" data-url="{% url 'x_stance_json' %}" data-vocab-url="{% url 'x_stance_vocabulary' %}" aria-labelledby="x-stance-title">
     <div class="section-head"><h2 id="x-stance-title">X 关键词情绪</h2><span class="fine-print" id="x-stance-state" role="status">读取中…</span></div>
     <div class="seg rw-tabs" role="tablist" aria-label="X 关键词情绪">
       <button type="button" role="tab" data-xtab="settings" aria-selected="true">关键词设置</button><button type="button" role="tab" data-xtab="daily" aria-selected="false">每日情绪</button><button type="button" role="tab" data-xtab="views" aria-selected="false">样本主要观点</button><button type="button" role="tab" data-xtab="history" aria-selected="false">历史对照</button>
@@ -251,7 +251,7 @@
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v5"></script>
 <script defer charset="utf-8" src="{% static 'core/research_v1.js' %}?v=m1-2"></script>
-<script defer charset="utf-8" src="{% static 'core/x_stance_v1.js' %}?v=3"></script>
+<script defer charset="utf-8" src="{% static 'core/x_stance_v1.js' %}?v=4"></script>
 <script defer charset="utf-8" src="{% static 'core/news_text_v1.js' %}?v=1"></script>
 <script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=23-1"></script>
 {% endif %}

@@ -1,8 +1,10 @@
 [Unit]
-Description=X stance daily batch at 13:30 server time (Asia/Shanghai), after the New York calendar date has ended
+Description=X stance daily batch at 13:30 Asia/Shanghai (explicit zone), after the New York calendar date has ended
 
 [Timer]
-OnCalendar=*-*-* 13:30:00
+# The zone is written out: the schedule does not depend on the host's local time zone setting.
+# Check on the host with: systemd-analyze calendar "*-*-* 13:30:00 Asia/Shanghai"
+OnCalendar=*-*-* 13:30:00 Asia/Shanghai
 RandomizedDelaySec=300
 Persistent=true
 

@@ -126,8 +126,12 @@ def test_evidence_must_be_the_authors_own_words():
 
 
 def test_classifier_refuses_until_model_revision_and_prompt_are_pinned(db, cfg):
-    with pytest.raises(stance.ClassifierNotPinned):
-        stance.run(db, cfg, lambda prompt: pytest.fail("a model was called"))
+    for field in ("model_id", "immutable_revision", "prompt_version", "temperature", "generation"):
+        c = copy.deepcopy(cfg); c["classifier"][field] = None
+        assert not C.classifier_gate(c)["allowed"]
+        with pytest.raises(stance.ClassifierNotPinned):
+            stance.run(db, c, lambda prompt: pytest.fail("a model was called"))
+    assert C.classifier_gate(cfg)["allowed"] and cfg["classifier"]["classification_quality"] == "UNVALIDATED"
 
 
 def test_inference_cache_prefilter_and_text_is_delimited_data(db, pinned):
@@ -475,7 +479,7 @@ def test_portal_read_model_without_data_names_what_is_missing(tmp_path, cfg):
     v = pipeline.read_for_portal(cfg, tmp_path / "absent.sqlite3", env={})
     assert not v["has_data"] and v["daily"] == [] and v["narratives"] == [] and v["episodes"] == [] and v["returns"] == []
     missing = {m["input"] for m in v["missing_inputs"]}
-    assert {"PROVIDER_KEY", "PREFLIGHT", "classifier.immutable_revision", "market.input_version", "validation.holdout_start"} <= missing
+    assert {"PROVIDER_KEY", "PREFLIGHT", "validation.holdout_start"} <= missing and not any(m.startswith(("classifier.", "market.")) for m in missing)
     assert v["budget"]["today"] == {"credits": 0, "usd": "0", "returned_posts": 0, "cap_usd": "0.75", "cap_posts": 5000} and v["budget"]["rolling"]["cap_usd"] == "22.5"
     assert v["preflight"]["state"] == "NOT_RUN" and v["history_queue"]["state"] == "NOT_STARTED" and v["classification"]["share_done"] is None
     assert v["collection"]["state"] == "NOT_STARTED" and v["settings"]["acquisition_gate"]["allowed"] is False and not (tmp_path / "absent.sqlite3").exists()
@@ -483,7 +487,7 @@ def test_portal_read_model_without_data_names_what_is_missing(tmp_path, cfg):
 
 def test_manifest_records_versions_and_null_model(cfg):
     m = pipeline.manifest(cfg, command="test", inputs={}, outputs={}, status="OFFLINE_ENGINEERING_ONLY")
-    assert m["model_revision"] is None and m["config_sha256"] == C.config_hash(cfg) and m["seed"] == 42 and m["split"] == {"holdout_start": None}
+    assert m["model_revision"].startswith("hf:91cad511") and "gguf-sha256:6a1a2eb6" in m["model_revision"] and "llama.cpp:225a5345" in m["model_revision"] and m["config_sha256"] == C.config_hash(cfg) and m["seed"] == 42 and m["split"] == {"holdout_start": None}
     assert len(m["cost_table"]) == 3 and m["proposed_prompt_sha256"] == stance.prompt_hash("x-stance-prompt-v1-20261122")
 
 

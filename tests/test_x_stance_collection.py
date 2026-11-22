@@ -61,7 +61,8 @@ def reg(db, q=Q):
 # ---------- parameters and gates ----------
 def test_unknown_values_stay_null_and_are_listed(cfg):
     names = {u["field"] for u in C.unfrozen(cfg)}
-    assert {"classifier.model_id", "classifier.immutable_revision", "market.input_version", "validation.holdout_start", "topics[memory].comparison_asset"} <= names
+    assert {"validation.holdout_start", "topics[memory].comparison_asset"} <= names
+    assert not any(n.startswith(("classifier.", "market.")) for n in names)          # the model and the price bundle are pinned now
     assert "topics[qqq].comparison_asset" not in names and not any(n.startswith("acquisition.") for n in names)      # provider, budget and cadence are now fixed
     assert tuple(cfg["horizons_trading_sessions"]) == (1, 3, 5, 10, 20, 30) and tuple(cfg["stance_labels"]) == ("bullish", "bearish", "neutral")
     assert "proposed_total_returned_post_cap_per_day" not in cfg["acquisition"] and cfg["budget"]["daily_all_jobs_returned_post_cap"] == 5000
@@ -102,7 +103,7 @@ def test_cli_metered_commands_refuse_and_send_nothing_without_a_key(tmp_path, ca
     monkeypatch.setattr(provider.UrllibTransport, "get", lambda *a, **k: pytest.fail("a request was attempted"))
     assert cli.main(["--db", str(tmp_path / "x.sqlite3"), cmd]) == 2
     out = json.loads(capsys.readouterr().out)
-    assert out["status"] == "REFUSED_FAIL_CLOSED" and out["requests_sent"] == 0 and "PROVIDER_KEY_MISSING" in out["gate"]["reasons"]
+    assert out["status"] == ("BLOCKED_CREDENTIAL" if cmd == "preflight" else "REFUSED_FAIL_CLOSED") and out["requests_sent"] == 0 and "PROVIDER_KEY_MISSING" in out["gate"]["reasons"]
     db = store.connect(tmp_path / "x.sqlite3")
     assert db.execute("SELECT count(*) FROM x_cost_ledger").fetchone()[0] == 0     # nothing reserved, nothing spent
     db.close()

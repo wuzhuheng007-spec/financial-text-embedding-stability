@@ -419,3 +419,8 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .xs-c-price{stroke:var(--text);stroke-width:1.5}
 .xs-figure{margin:8px 0}.xs-chart{width:100%;height:auto;max-height:240px}
 .xs-view{padding:10px 0;border-top:1px solid var(--line-2)}.xs-view-title{margin:0 0 4px;overflow-wrap:anywhere}
+.xs-edit-topic{padding:10px 0;border-top:1px solid var(--line-2)}
+.xs-chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.xs-chips .tag{height:auto;min-height:24px;gap:6px;cursor:pointer;white-space:normal;text-align:left}
+.xs-chip-act{opacity:.65;font-weight:400}.xs-off span:first-child{text-decoration:line-through}
+.xs-add{display:flex;gap:6px;max-width:360px}.xs-add input{flex:1;min-width:0}

@@ -1,0 +1,118 @@
+"""Callable adapter for a local llama.cpp server (CPU, one request at a time).
+
+The model sees the prompt built by stance.py - the post text and the named target - and nothing else: no price,
+no engagement count, no later information, no web search. Output is constrained to the stance schema by the
+server's grammar; that guarantees the SHAPE only. Whether a label is right is a separate question that only a
+human review can answer, and until one exists classification_quality stays UNVALIDATED.
+
+The worker is a separate, memory-limited container on an internal network. It is never loaded into the web
+process, and when it is down, out of memory or too slow the caller gets ClassifierUnavailable: items stay PENDING
+and nothing is guessed. Standard library only.
+"""
+from __future__ import annotations
+
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+
+from . import store
+from .stance import LABELS, OUTPUT_KEYS, QUALITY, ClassifierUnavailable
+
+SCHEMA_VERSION = "x-stance-output-schema-v1"
+OUTPUT_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": list(OUTPUT_KEYS),
+    "properties": {
+        "post_id": {"type": "string"}, "topic_id": {"type": "string"}, "target_id": {"type": "string"}, "is_relevant": {"type": "boolean"},
+        "quality_status": {"type": "string", "enum": [q for q in QUALITY if q not in ("JSON_INVALID", "RETWEET_NO_NEW_TEXT", "EVIDENCE_NOT_IN_TEXT", "NOT_CLASSIFIED")]},
+        "stance": {"anyOf": [{"type": "string", "enum": list(LABELS)}, {"type": "null"}]},
+        "evidence_text": {"anyOf": [{"type": "string", "maxLength": 280}, {"type": "null"}]},
+        "reason_short": {"anyOf": [{"type": "string", "maxLength": 200}, {"type": "null"}]}}}
+
+
+def schema_hash() -> str:
+    return store.sha(json.dumps(OUTPUT_SCHEMA, sort_keys=True))
+
+
+def default_url() -> str:
+    return os.environ.get("X_STANCE_LLM_URL", "http://quant-x-llm:8080")
+
+
+class LlamaServer:
+    """callable(prompt) -> raw JSON text. Keeps a per-call record (latency, token counts) for the throughput receipt."""
+
+    def __init__(self, url: str | None = None, *, generation: dict, timeout: float = 180.0):
+        self.url, self.gen, self.timeout, self.calls = (url or default_url()).rstrip("/"), generation, timeout, []
+
+    def _req(self, path: str, body: dict | None = None, timeout: float | None = None):
+        data = None if body is None else json.dumps(body).encode("utf-8")
+        req = urllib.request.Request(self.url + path, data=data, headers={"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout or self.timeout) as r:  # noqa: S310 - local worker on an internal network
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            raise ClassifierUnavailable(f"HTTP_{e.code}") from None
+        except (urllib.error.URLError, TimeoutError, OSError):
+            raise ClassifierUnavailable("WORKER_NOT_REACHABLE_OR_TIMEOUT") from None
+        except ValueError:
+            raise ClassifierUnavailable("WORKER_BAD_JSON") from None
+
+    def health(self) -> dict:
+        return self._req("/health", timeout=10)
+
+    def props(self) -> dict:
+        """What the running server reports about itself: build, model file, context size, chat template."""
+        p = self._req("/props", timeout=20)
+        tpl = p.get("chat_template") or ""
+        gen = p.get("default_generation_settings") or {}
+        return {"build_info": p.get("build_info"), "model_path": p.get("model_path"), "n_ctx": gen.get("n_ctx"), "total_slots": p.get("total_slots"),
+                "chat_template_sha256": store.sha(tpl) if tpl else None, "chat_template_chars": len(tpl)}
+
+    def __call__(self, prompt: str) -> str:
+        g = self.gen
+        body = {"messages": [{"role": "user", "content": prompt}], "temperature": g["temperature"], "seed": g["seed"], "max_tokens": g["max_output_tokens"],
+                "top_k": g.get("top_k", 1), "top_p": g.get("top_p", 1.0), "cache_prompt": False, "stream": False,
+                "response_format": {"type": "json_schema", "json_schema": {"name": "stance", "strict": True, "schema": OUTPUT_SCHEMA}}}
+        t0 = time.monotonic()
+        out = self._req("/v1/chat/completions", body)
+        dt = time.monotonic() - t0
+        try:
+            choice = out["choices"][0]
+            text = choice["message"]["content"]
+        except (KeyError, IndexError, TypeError):
+            raise ClassifierUnavailable("WORKER_UNEXPECTED_RESPONSE") from None
+        u = out.get("usage") or {}
+        self.calls.append({"seconds": round(dt, 3), "prompt_tokens": u.get("prompt_tokens"), "completion_tokens": u.get("completion_tokens"),
+                           "finish_reason": choice.get("finish_reason")})
+        if choice.get("finish_reason") == "length":            # cut off by the output limit: not a complete answer
+            return ""
+        return text if isinstance(text, str) else ""
+
+    def summary(self) -> dict:
+        n = len(self.calls)
+        if not n:
+            return {"calls": 0}
+        sec = sorted(c["seconds"] for c in self.calls)
+        tok = lambda k: sum(c[k] or 0 for c in self.calls)
+        return {"calls": n, "seconds_total": round(sum(sec), 2), "seconds_median": sec[n // 2], "seconds_max": sec[-1], "prompt_tokens": tok("prompt_tokens"),
+                "completion_tokens": tok("completion_tokens"), "truncated_by_output_limit": sum(1 for c in self.calls if c["finish_reason"] == "length"),
+                "calls_per_minute": round(60 * n / sum(sec), 2) if sum(sec) else None}
+
+
+# Hand-written texts for an engineering smoke test of the real model. They are NOT market data, NOT labelled by a
+# human reviewer and NOT evidence of accuracy; expected labels are deliberately not attached.
+SMOKE_TEXTS = [
+    ("en", "original", "Adding to my $QQQ position here, I think the Nasdaq 100 grinds higher into year end."),
+    ("en", "original", "Sold all my $QQQ this morning. This rally looks exhausted and I expect a pullback."),
+    ("en", "original", "$QQQ closed flat today. No strong view either way, waiting for the CPI print."),
+    ("en", "original", "Great weather in Austin today, went for a long run by the lake. $QQQ"),
+    ("en", "quote", "I disagree with this. People calling for a crash in the Nasdaq 100 have been wrong all year."),
+    ("en", "reply", "Exactly, that is what I said last week."),
+    ("en", "original", "If the Fed cuts in December $QQQ could run, but if they hold I would not want to be long."),
+    ("en", "original", "Oh sure, $QQQ can only go up forever, what could possibly go wrong."),
+    ("zh", "original", "纳指100这个位置我继续加仓，年底前看新高。"),
+    ("zh", "original", "纳斯达克100涨太多了，我已经清仓，等回调。"),
+    ("zh", "original", "纳指100今天横盘，没什么方向，先观望。"),
+    ("zh", "original", "今天去吃了火锅，味道不错。纳指100"),
+]

@@ -74,11 +74,11 @@ test('with no store every data panel names the missing inputs and shows no rows'
   for (const p of ['daily', 'views', 'history']) {
     const t = texts(ui.panel(p)).join('|');
     assert.strictEqual(rowsOf(ui.panel(p)), 0, p);
-    for (const need of ['供应商密钥', '实采预检', '分类模型的固定版本', '行情输入版本', '留出期起点']) assert.ok(t.includes(need), `${p} lacks ${need}`);
+    for (const need of ['供应商密钥', '实采预检', '留出期起点']) assert.ok(t.includes(need), `${p} lacks ${need}`);
     assert.ok(!/\d+(\.\d+)?%/.test(t), `${p} shows a percentage without data`);
   }
   const s = texts(ui.panel('settings')).join('|');
-  for (const need of ['尚未采集', '未开启', '未固定版本，不运行', '缺少供应商密钥', '尚未通过实采预检', '未配置（仅统计行业观点）', '计划抽样，不是全量', '0 / 5000', '0 / 0.75', '0 / 3000', '0 / 2000', '0 / 22.5', '0 / 200', '未运行', '不是供应商账单']) assert.ok(s.includes(need), need);
+  for (const need of ['尚未采集', '未开启', '已固定版本', '未经人工验证', '编辑关键词', '停用', '缺少供应商密钥', '尚未通过实采预检', '未配置（仅统计行业观点）', '计划抽样，不是全量', '0 / 5000', '0 / 0.75', '0 / 3000', '0 / 2000', '0 / 22.5', '0 / 200', '未运行', '不是供应商账单']) assert.ok(s.includes(need), need);
   assert.strictEqual(rowsOf(ui.panel('settings')), 1 + 4);                       // header + the four configured topics
 });
 

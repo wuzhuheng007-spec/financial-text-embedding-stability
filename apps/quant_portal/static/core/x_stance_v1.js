@@ -13,7 +13,7 @@
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
   const STATE = {bullish: '看多', bearish: '看空', neutral: '中性', UNKNOWN: '未判定'};
   const MODE = {LIVE: '实时留档', BATCH_AFTER_CLOSE: '收盘后批量采集', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
-  const WHY = {LOW_SAMPLE: '样本账号过少', NO_VALID_ACCOUNTS: '没有已判定的账号', COLLECTION_PARTIAL: '采集不完整', COLLECTION_MISSING: '没有采集记录',
+  const WHY = {HISTORY_SEARCH_NOT_VERIFIED: '历史检索未验证', RECEIPT_FROM_LENIENT_VALIDATOR: '旧预检回执已失效', LOW_SAMPLE: '样本账号过少', NO_VALID_ACCOUNTS: '没有已判定的账号', COLLECTION_PARTIAL: '采集不完整', COLLECTION_MISSING: '没有采集记录',
     TIE_RESOLVED_TO_NEUTRAL: '并列，记为中性', PROVIDER_KEY_MISSING: '缺少供应商密钥', PREFLIGHT_NOT_PASSED: '尚未通过实采预检',
     CLASSIFICATION_INCOMPLETE: '分类未完成', COLLECTION_PLANNED_SAMPLE: '计划抽样'};
   const MISSING = {PROVIDER_KEY: '供应商密钥', PREFLIGHT: '实采预检', 'classifier.model_id': '分类模型',
@@ -69,7 +69,8 @@
     const pre = d.preflight, hq = d.history_queue;
     const prog = h('div', 'card');
     prog.append(h('h3', null, '进度'),
-      row('实采预检', pre.state === 'NOT_RUN' ? '未运行' : pre.verdict === 'PASS' ? '预检通过' : '预检未通过'), row('预检返回条数', pre.returned_total),
+      row('实采预检', {NOT_RUN: '未运行', PASSED: '预检通过', FAILED: '预检未通过', STALE: '预检回执已失效'}[pre.state] || pre.state), row('历史回填是否已解锁', pre.history_unlocked ? '是' : '否'),
+      row('翻页是否已验证', {VERIFIED: '已验证', NOT_OBSERVED: '未观察到', FAILED: '失败'}[pre.continuation] || '—'), row('预检返回条数', pre.returned_total),
       row('历史回填范围（纽约日期）', data(hq.range ? `${hq.range.first_ny_date} ~ ${hq.range.last_ny_date}` : null)),
       row('历史回填：已采到的时间片', hq.units_with_any_page == null ? '—' : hq.units_with_any_page),
       row('已匹配主题的帖子', cl.matched_pairs), row('已分类', cl.classified_or_prefiltered), row('待分类', cl.pending),
@@ -78,7 +79,51 @@
     gate.append(h('h3', null, '付费采集'), chip(st.acquisition_gate.allowed ? '已满足条件' : '未开启', st.acquisition_gate.allowed ? 'run-succeeded' : 'tag-dim'));
     const gl = h('ul', 'xs-missing'); [...new Set(st.acquisition_gate.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
     gate.append(h('h3', null, '立场分类模型'), chip(st.classifier_gate.allowed ? '已固定版本' : '未固定版本，不运行', st.classifier_gate.allowed ? 'run-succeeded' : 'tag-dim'));
-    p.replaceChildren(h('p', 'fine-print', '词表通过带版本的配置文件修改；更换词表后的占比不能与旧版本直接相接。'), topics, card, cost, prog, gate);
+    const model = h('div', 'card');
+    model.append(h('h3', null, '分类与行情'), row('立场模型', data(d.classifier.model_id)), row('标签质量', d.classifier.quality === 'UNVALIDATED' ? '未经人工验证' : d.classifier.quality),
+      row('行情版本', data(d.market.input_version)), row('行情最后日期', data(d.market.last_date)));
+    p.replaceChildren(h('p', 'fine-print', '关键词的修改会生成新的词表版本，从下一批次开始生效；已经冻结的采集计划不会被替换。不同词表版本的占比不能直接相接。'),
+      topics, editor(d), card, cost, prog, model, gate);
+  }
+
+  // ---------- keyword editing (versioned; effective with the next batch) ----------
+  const REJECT = {KEYWORD_EXISTS: '这个关键词已经存在', KEYWORD_LENGTH: '关键词长度需在 1 到 60 个字符之间', KEYWORD_HAS_QUERY_SYNTAX: '关键词里不能包含查询语法或引号括号',
+    KEYWORD_NOT_FOUND: '没有找到这个关键词', TOPIC_WOULD_HAVE_NO_KEYWORD: '每个主题至少要保留一个关键词', TOO_MANY_QUERIES_FOR_THE_DAILY_POOL: '关键词太多，超出每日额度能覆盖的查询数',
+    NO_EFFECTIVE_CHANGE: '没有实际变化', NO_CHANGES: '没有实际变化', BAD_REQUEST: '请求格式不正确', UNKNOWN_ACTION_OR_TOPIC: '请求格式不正确'};
+  const csrf = () => document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || '';
+  function send(changes, msg) {
+    msg.textContent = '保存中…';
+    fetch(root.dataset.vocabUrl, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf()}, body: JSON.stringify({changes})})
+      .then(async r => { const j = await r.json().catch(() => ({})); if (!r.ok) { msg.textContent = REJECT[j.reason] || '保存失败'; return; } load(); })
+      .catch(() => { msg.textContent = '保存失败'; });
+  }
+  function editor(d) {
+    const v = d.vocabulary, base = v.pending || v.active, box = h('div', 'card xs-editor');
+    const msg = h('p', 'fine-print'); msg.setAttribute('role', 'status');
+    box.append(h('h3', null, '编辑关键词'));
+    box.append(row('当前生效的词表版本', data(v.active.version)));
+    if (v.pending) box.append(row('待生效的词表版本', data(v.pending.version)), row('生效日期（纽约）', data(v.pending.effective_from_ny_date)));
+    const imp = base.impact;
+    box.append(row('查询条数', imp.queries), row('最长查询（上限 512 字符）', imp.max_query_chars_with_time_operators), row('每日时间片数', imp.recent_units_per_day), row('每个时间片的页数', imp.recent_pages_per_unit));
+    for (const t of base.topics) {
+      const off = new Set(t.disabled_keywords || []);
+      const line = h('div', 'xs-edit-topic'); line.append(h('strong', null, TOPIC[t.id] || t.id));
+      const chips = h('div', 'xs-chips');
+      t.keywords.forEach(k => {
+        const b = h('button', `tag ${off.has(k) ? 'tag-dim xs-off' : ''}`); b.type = 'button';
+        const label = h('span', null, k); label.setAttribute('translate', 'no');
+        b.append(label, h('span', 'xs-chip-act', off.has(k) ? '启用' : '停用'));
+        b.addEventListener('click', () => send([{action: off.has(k) ? 'enable' : 'disable', topic_id: t.id, keyword: k}], msg));
+        chips.append(b);
+      });
+      const form = h('form', 'xs-add'); const input = h('input'); input.type = 'text'; input.maxLength = 60; input.setAttribute('aria-label', '新关键词'); input.placeholder = '新关键词';
+      const add = h('button', 'button', '添加'); add.type = 'submit';
+      form.append(input, add);
+      form.addEventListener('submit', e => { e.preventDefault(); const k = input.value.trim(); if (k) send([{action: 'add', topic_id: t.id, keyword: k}], msg); });
+      line.append(chips, form); box.append(line);
+    }
+    box.append(msg, h('p', 'fine-print', '修改不会改变每日额度和总预算，也不会立刻发起采集。'));
+    return box;
   }
 
   function shareBar(sh) {
@@ -173,10 +218,11 @@
     p.replaceChildren(...out);
   }
 
-  fetch(root.dataset.url, {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {
+  const load = () => fetch(root.dataset.url, {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {
     const state = document.getElementById('x-stance-state');
     if (d.state === 'READ_ERROR') { state.textContent = '读取失败'; return; }
     state.textContent = d.has_data ? '已有数据' : '尚无数据';
     renderSettings(d); renderDaily(d); renderViews(d); renderHistory(d);
   }).catch(() => { document.getElementById('x-stance-state').textContent = '读取失败'; });
+  load();
 })();

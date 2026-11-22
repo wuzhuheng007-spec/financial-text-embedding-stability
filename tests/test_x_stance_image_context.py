@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-FILES = ["scripts/x_stance_v1/__init__.py", "scripts/x_stance_v1/config.py", "scripts/x_stance_v1/store.py", "scripts/x_stance_v1/portal_read.py",
-         "scripts/x_stance_v1/ledger.py"]     # what the web view imports: standard library only
+FILES = [f"scripts/x_stance_v1/{n}.py" for n in ("__init__", "config", "store", "portal_read", "ledger", "batch", "provider", "cost", "sessions", "vocab")]
+# what the web view imports (reading the page, and saving a keyword edit): standard library only
 CODE = "\n".join([
     "import sys",
     "sys.path.insert(0, '.')",
