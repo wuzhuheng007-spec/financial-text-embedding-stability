@@ -6,3 +6,6 @@ __pycache__/
 .cache/
 artifacts/
 
+
+# X stance study: the private store, raw posts and price snapshots never enter the repository
+local_only/

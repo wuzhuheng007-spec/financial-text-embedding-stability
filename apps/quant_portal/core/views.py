@@ -787,6 +787,24 @@ def research_run_ledger(request, run_id):
     return _no_store(response)
 
 
+# ---------- X keyword stance (owner only; reads the study's private store, never calls a provider or a model) ----------
+@login_required
+def x_stance_json(request):
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("X stance unavailable")
+    import os
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    try:
+        from scripts.x_stance_v1 import config as x_config, portal_read
+        data = portal_read.read_for_portal(x_config.load(), env=dict(os.environ))
+    except Exception as exc:  # noqa: BLE001 - an unreadable store is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "has_data": False}
+    return _no_store(JsonResponse(data))
+
+
 # ---------- real-time news v1 (owner only; reads the collector's cache, never calls a provider) ----------
 _MACRO_CHANNELS = {"economics", "economic data", "macro economic events", "federal reserve", "fed", "treasuries", "bonds",
                    "government", "politics", "global", "commodities", "forex", "inflation", "interest rates"}

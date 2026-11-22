@@ -12,7 +12,7 @@
     (function(){try{var d=document.documentElement,t=localStorage.getItem('quant.theme'),s=localStorage.getItem('quant.side'),u=localStorage.getItem('quant.updown');
       if(t==='light'||t==='dark')d.dataset.theme=t;if(s==='collapsed'||s==='open')d.dataset.side=s;if(u==='us')d.dataset.updown='us';}catch(e){}})();
   </script>
-  <link rel="stylesheet" href="{% static 'core/terminal_v20.css' %}?v=m1-2">
+  <link rel="stylesheet" href="{% static 'core/terminal_v20.css' %}?v=m1-3">
 </head>
 <body>
   <a class="skip-link" href="#main">跳转到主要内容</a>
@@ -73,7 +73,7 @@
     {% block anon_content %}{% endblock %}
   </main>
   {% endif %}
-  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v20-6"></script>
+  <script defer charset="utf-8" src="{% static 'core/i18n_v15.js' %}?v=personal-v20-7"></script>
   <script defer charset="utf-8" src="{% static 'core/shell_v20.js' %}?v=21-1"></script>
 </body>
 </html>

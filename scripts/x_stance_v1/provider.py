@@ -1,0 +1,382 @@
+"""X providers: normalized post fields, query construction, local JSONL/CSV import, and the TwitterAPI.io date
+search collector (time slices, cursor pagination, budget reservation, page cache, checkpoints, gap marking).
+
+No paid request can leave this module unless the caller hands in a real transport, and the CLI only builds one when
+`config.acquisition_gate` passes. The default transport refuses.
+
+Provider facts used here were read from the provider's own documentation on 2026-11-22 (endpoint, `X-API-Key`,
+`query` up to 512 characters, `queryType`, `cursor`, time operators `since_time:` / `until_time:` in Unix seconds
+inside the query, up to 20 posts per page, `tweets` / `has_next_page` / `next_cursor`). Whether the time operators
+are inclusive is not documented, so every returned post is filtered again by its own timestamp against [start, end).
+"""
+from __future__ import annotations
+
+import csv
+import json
+import re
+import shutil
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+from . import store
+from .cost import Budget, BudgetExhausted
+
+ENDPOINT = "https://api.twitterapi.io/twitter/tweet/advanced_search"
+RETRO, LIVE = "RETROSPECTIVE_VISIBLE_NOW", "LIVE"
+_CJK = re.compile(r"[㐀-鿿]")
+_URL = re.compile(r"https?://\S+")
+_SECRETS: set[str] = set()
+
+
+def register_secret(value: str | None) -> None:
+    if value and len(value) >= 6:
+        _SECRETS.add(value)
+
+
+def redact(text) -> str:
+    s = str(text)
+    for v in _SECRETS:
+        s = s.replace(v, "[REDACTED]")
+    return re.sub(r"(?i)(x-api-key|authorization|cookie)\s*[:=]\s*\S+", r"\1: [REDACTED]", s)
+
+
+class ProviderHTTPError(Exception):
+    def __init__(self, status: int | None, kind: str):
+        super().__init__(kind)
+        self.status, self.kind = status, kind
+
+
+class PaidRequestBlocked(RuntimeError):
+    """Raised by the default transport: a dry run never sends a request."""
+
+
+class RefusingTransport:
+    calls = 0
+
+    def get(self, params: dict) -> dict:
+        raise PaidRequestBlocked("dry run: no request is sent")
+
+
+class UrllibTransport:
+    """The only code path that reaches the provider. Built by the CLI after the gate passes; TLS verification is
+    the interpreter default and is never switched off. One attempt per call: no retry loop, a 429 stops the run."""
+
+    def __init__(self, api_key: str, timeout: float = 30.0):
+        register_secret(api_key)
+        self._key, self.timeout, self.calls = api_key, timeout, 0
+
+    def get(self, params: dict) -> dict:
+        self.calls += 1
+        req = urllib.request.Request(ENDPOINT + "?" + urllib.parse.urlencode(params), headers={"X-API-Key": self._key, "Accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as r:  # noqa: S310 - fixed https endpoint
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            raise ProviderHTTPError(e.code, "RATE_LIMITED" if e.code == 429 else f"HTTP_{e.code}") from None
+        except (urllib.error.URLError, TimeoutError, OSError):
+            raise ProviderHTTPError(None, "NETWORK") from None
+        except ValueError:
+            raise ProviderHTTPError(None, "BAD_JSON") from None
+
+
+# ---------- normalized fields ----------
+def keyword_lang(keyword: str) -> str:
+    return "zh" if _CJK.search(keyword) else "en"
+
+
+def text_hash(text: str) -> str:
+    return store.sha(" ".join(text.split()).lower())
+
+
+def _kind(is_retweet: bool, is_quote: bool, is_reply: bool) -> str:
+    return "retweet" if is_retweet else "quote" if is_quote else "reply" if is_reply else "original"
+
+
+def _post(*, provider, post_id, author_id, created_at, text, lang, url, kind, parent_available, now, batch, mode, engagement=None) -> dict:
+    author_text = "" if kind == "retweet" else text
+    return {"provider": provider, "post_id": str(post_id), "author_id": str(author_id), "created_at_utc": store.iso(created_at),
+            "first_seen_at_utc": now, "fetched_at_utc": now, "ingest_mode": mode, "source_url": url, "text": text,
+            "author_text": author_text, "lang": (lang or None), "text_hash": text_hash(author_text or text),
+            "edit_status": "VERSION_UNKNOWN", "kind": kind, "parent_available": parent_available, "raw_batch": batch,
+            "engagement_snapshot": ({"snapshot_at_utc": now, "note": "counts at fetch time, never a historical value", **engagement} if engagement else None)}
+
+
+def normalize_twitterapi_io(t: dict, *, now: str, batch: str, mode: str) -> dict:
+    """Raises ValueError/KeyError on a record without id, author id or a parseable timestamp."""
+    created = datetime.strptime(t["createdAt"], "%a %b %d %H:%M:%S %z %Y")
+    author = t.get("author") or {}
+    if not t.get("id") or not author.get("id"):
+        raise ValueError("missing id")
+    is_rt = bool(t.get("isRetweet") or t.get("retweeted_tweet"))
+    is_reply = bool(t.get("isReply") or t.get("inReplyToId"))
+    eng = {k: t[k] for k in ("retweetCount", "replyCount", "likeCount", "quoteCount", "viewCount") if isinstance(t.get(k), int)}
+    return _post(provider="twitterapi_io", post_id=t["id"], author_id=author["id"], created_at=created, text=t.get("text") or "",
+                 lang=t.get("lang"), url=t.get("url"), kind=_kind(is_rt, bool(t.get("isQuote") or t.get("quoted_tweet")), is_reply),
+                 parent_available=(False if is_reply else None), now=now, batch=batch, mode=mode, engagement=eng)
+
+
+# ---------- local import ----------
+_TRUE = {"1", "true", "yes", "y", "t"}
+
+
+def _b(v) -> bool:
+    return v is True or str(v).strip().lower() in _TRUE
+
+
+def import_local(db, path: str | Path, *, provider: str = "local_import", now: str | None = None) -> dict:
+    """JSONL or CSV with post_id, author_id, created_at_utc, text (optional: lang, source_url, is_retweet, is_quote,
+    is_reply, parent_text). Imported rows are RETROSPECTIVE_VISIBLE_NOW: first_seen_at_utc is the import time, whatever
+    the file claims; a first_seen column in the file is counted and ignored."""
+    path, now = Path(path), now or store.utcnow()
+    raw = path.read_bytes()
+    batch = f"import:{store.hashlib.sha256(raw).hexdigest()[:16]}"
+    text = raw.decode("utf-8-sig")
+    rows = [json.loads(line) for line in text.splitlines() if line.strip()] if path.suffix.lower() in (".jsonl", ".ndjson") else list(csv.DictReader(text.splitlines()))
+    out = {"batch": batch, "rows": len(rows), "inserted": 0, "duplicates": 0, "rejected": {}, "first_seen_claims_ignored": 0, "ingest_mode": RETRO}
+    for r in rows:
+        try:
+            if not (str(r.get("post_id") or "").strip() and str(r.get("author_id") or "").strip()):
+                raise ValueError("MISSING_ID")
+            if r.get("text") is None:
+                raise ValueError("MISSING_TEXT")
+            try:
+                created = store.parse(str(r["created_at_utc"]))
+            except Exception:  # noqa: BLE001
+                raise ValueError("BAD_CREATED_AT") from None
+            if "+" not in str(r["created_at_utc"]) and not str(r["created_at_utc"]).endswith("Z"):
+                raise ValueError("CREATED_AT_WITHOUT_UTC_OFFSET")
+        except ValueError as e:
+            out["rejected"][str(e)] = out["rejected"].get(str(e), 0) + 1
+            continue
+        if r.get("first_seen_at_utc"):
+            out["first_seen_claims_ignored"] += 1
+        kind = _kind(_b(r.get("is_retweet")), _b(r.get("is_quote")), _b(r.get("is_reply")))
+        p = _post(provider=provider, post_id=str(r["post_id"]).strip(), author_id=str(r["author_id"]).strip(), created_at=created,
+                  text=str(r["text"]), lang=r.get("lang"), url=r.get("source_url"), kind=kind,
+                  parent_available=(bool(r.get("parent_text")) if kind == "reply" else None), now=now, batch=batch, mode=RETRO)
+        if store.put_post(db, p):
+            out["inserted"] += 1
+        else:
+            out["duplicates"] += 1
+    db.commit()
+    return out
+
+
+def declare_import_coverage(db, *, topic_id: str, lang: str, vocab_version: str, start_utc: str, end_utc: str, status: str, batch: str, provider: str = "local_import") -> str:
+    """An import cannot prove what its collector did. The declared status is stored as a declaration
+    (COMPLETE_DECLARED / PLANNED_SAMPLE / PARTIAL), never as COMPLETE."""
+    if status not in ("COMPLETE_DECLARED", "PLANNED_SAMPLE", "PARTIAL"):
+        raise ValueError("status must be COMPLETE_DECLARED, PLANNED_SAMPLE or PARTIAL")
+    qh = store.sha(f"{provider}|{vocab_version}|{topic_id}|{lang}|IMPORT")
+    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, provider, topic_id, lang, vocab_version, "(imported file; query unknown)"))
+    run_id = store.sha(f"{qh}|{start_utc}|{end_utc}|{batch}")[:24]
+    store.upsert_run(db, {"run_id": run_id, "provider": provider, "query_hash": qh, "topic_id": topic_id, "lang": lang,
+                          "window_start_utc": start_utc, "window_end_utc": end_utc, "status": status, "stop_reason": "DECLARED_BY_IMPORT",
+                          "billing_source": "NOT_APPLICABLE", "started_at_utc": store.utcnow(), "updated_at_utc": store.utcnow()})
+    db.commit()
+    return run_id
+
+
+# ---------- queries ----------
+TIME_SUFFIX_RESERVE = len(" since_time:9999999999 until_time:9999999999")
+
+
+def term(keyword: str) -> str:
+    k = keyword.strip()
+    return f'"{k}"' if re.search(r"[\s\-&]", k) else k
+
+
+def build_queries(topic: dict, lang: str, *, max_chars: int = 512) -> list[str]:
+    """OR groups of the topic's keywords in one language, packed greedily under the provider's query limit (room
+    for the time operators reserved). Keyword order is the configured order, so the split is deterministic."""
+    kws = [k for k in topic["keywords"] if keyword_lang(k) == lang and k not in set(topic.get("disabled_keywords") or [])]
+    tail = f" lang:{lang}"
+    room = max_chars - TIME_SUFFIX_RESERVE - len(tail) - 2
+    out, cur = [], []
+    for k in kws:
+        t = term(k)
+        if len(t) > room:
+            raise ValueError(f"keyword longer than the query limit: {k[:20]}")
+        if cur and len(" OR ".join(cur + [t])) > room:
+            out.append(cur); cur = []
+        cur.append(t)
+    if cur:
+        out.append(cur)
+    return [f"({' OR '.join(g)}){tail}" for g in out]
+
+
+def register_queries(db, cfg: dict, *, provider: str | None = None) -> list[dict]:
+    provider = provider or cfg["provider_candidate"]
+    limit = ((cfg["acquisition"].get("provider_documented") or {}).get(provider) or {}).get("max_query_chars") or 512
+    out = []
+    for t in cfg["topics"]:
+        for lang in cfg["languages"]:
+            for q in build_queries(t, lang, max_chars=limit):
+                qh = store.sha(f"{provider}|{cfg['topic_vocabulary_version']}|{q}")
+                db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, provider, t["id"], lang, cfg["topic_vocabulary_version"], q))
+                out.append({"query_hash": qh, "topic_id": t["id"], "lang": lang, "query": q})
+    db.commit()
+    return out
+
+
+def slices(start: datetime, end: datetime, step_seconds: int) -> list[tuple[int, int]]:
+    s, e = int(start.timestamp()), int(end.timestamp())
+    if e <= s:
+        raise ValueError("empty window")
+    return [(a, min(a + step_seconds, e)) for a in range(s, e, step_seconds)]
+
+
+# ---------- collector ----------
+class StopAll(Exception):
+    def __init__(self, reason: str):
+        super().__init__(reason)
+        self.reason = reason
+
+
+class Collector:
+    def __init__(self, db, cfg: dict, *, budget: Budget, transport=None, mode: str = RETRO, clock=None, free_gib=None):
+        acq = cfg["acquisition"]
+        self.db, self.cfg, self.budget, self.mode = db, cfg, budget, mode
+        self.transport = transport or RefusingTransport()
+        self.clock = clock or (lambda: datetime.now(timezone.utc))
+        self.max_pages = acq["proposed_max_pages_per_slice"]
+        self.min_slice = acq["proposed_min_slice_seconds"]
+        self.max_dup = acq["proposed_max_duplicate_share_per_page"]
+        self.provider = "twitterapi_io"
+        self.min_free_gib = acq["proposed_min_free_disk_gib"]
+        self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
+
+    def _run_id(self, qh: str, s: int, e: int) -> str:
+        return store.sha(f"{self.provider}|{qh}|{s}|{e}")[:24]
+
+    def collect(self, q: dict, start: datetime, end: datetime) -> list[dict]:
+        """Top-level slices of [start, end) for one registered query. Returns one summary per leaf run. Stops the
+        whole call (remaining slices stay NOT_RUN) on budget exhaustion, a 429 or a blocked dry run."""
+        out = []
+        try:
+            for s, e in slices(start, end, self.cfg["acquisition"]["proposed_first_slice_seconds"]):
+                if self.free_gib() < self.min_free_gib:     # pause new collection; stored evidence is never deleted to make room
+                    raise StopAll("DISK_LOW_COLLECTION_PAUSED")
+                out.extend(self._slice(q, s, e, None))
+        except StopAll as stop:
+            out.append({"stopped": stop.reason})
+        return out
+
+    def _slice(self, q: dict, s: int, e: int, parent: str | None) -> list[dict]:
+        run_id = self._run_id(q["query_hash"], s, e)
+        prev = self.db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (run_id,)).fetchone()
+        if prev and prev["status"] == "COMPLETE":
+            return [{"run_id": run_id, "status": "COMPLETE", "from_checkpoint": True, "requests": 0}]
+        if prev and prev["status"] == "SPLIT":
+            mid = (s + e) // 2
+            return self._slice(q, s, mid, run_id) + self._slice(q, mid, e, run_id)
+        ws, we = store.iso(datetime.fromtimestamp(s, timezone.utc)), store.iso(datetime.fromtimestamp(e, timezone.utc))
+        run = {"run_id": run_id, "provider": self.provider, "query_hash": q["query_hash"], "topic_id": q["topic_id"], "lang": q["lang"],
+               "window_start_utc": ws, "window_end_utc": we, "parent_run_id": parent, "status": "IN_PROGRESS", "stop_reason": None,
+               "cursor": "", "pages": 0, "requests": 0, "returned": 0, "in_window": 0, "out_of_window": 0, "duplicates": 0, "new_posts": 0,
+               "earliest_utc": None, "latest_utc": None, "cost_estimate_usd": "0", "error_class": None,
+               "started_at_utc": store.iso(self.clock()), "updated_at_utc": store.iso(self.clock())}
+        if prev:                                           # resume an interrupted or failed slice from its checkpoint
+            for k in ("cursor", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "earliest_utc", "latest_utc", "cost_estimate_usd", "started_at_utc"):
+                run[k] = prev[k]
+        seen_ids = {r["post_id"] for r in self.db.execute("SELECT post_id FROM x_run_posts WHERE run_id=?", (run_id,))}
+        seen_cursors, cursor, prev_oldest, needs_split, stop = set(), run["cursor"] or "", None, None, None
+        query = f"{q['query']} since_time:{s} until_time:{e}"
+        while True:
+            if cursor in seen_cursors:
+                needs_split = "DUPLICATE_CURSOR"; break
+            if run["pages"] >= self.max_pages:
+                needs_split = "PAGE_CAP"; break
+            seen_cursors.add(cursor)
+            cached = self.db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
+                                     (self.provider, q["query_hash"], ws, we, cursor)).fetchone()
+            now = store.iso(self.clock())
+            if cached:
+                page = json.loads(cached["response_json"])
+            else:
+                try:
+                    self.budget.reserve_next_page(self.clock())
+                except BudgetExhausted as ex:
+                    stop = f"BUDGET_TRUNCATED:{ex.limit_kind}"; break
+                try:
+                    page = self.transport.get({"query": query, "queryType": "Latest", "cursor": cursor})
+                except PaidRequestBlocked:
+                    stop = "DRY_RUN_NO_REQUEST"; break
+                except ProviderHTTPError as ex:
+                    run["error_class"] = ex.kind
+                    stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
+                tweets = page.get("tweets") if isinstance(page, dict) else None
+                if not isinstance(tweets, list):
+                    run["error_class"] = "BAD_SHAPE"; stop = "ERROR:BAD_SHAPE"; break
+                cost = self.budget.charge(len(tweets), self.clock())
+                run["requests"] += 1
+                run["cost_estimate_usd"] = str(store_decimal(run["cost_estimate_usd"]) + cost)
+                body = json.dumps(page, sort_keys=True, ensure_ascii=False)
+                self.db.execute("INSERT OR REPLACE INTO x_page_cache VALUES(?,?,?,?,?,?,?,?)", (self.provider, q["query_hash"], ws, we, cursor, store.sha(body), body, now))
+            tweets = page.get("tweets") or []
+            run["pages"] += 1; run["returned"] += len(tweets)
+            times, dup_here = [], 0
+            for t in tweets:
+                try:
+                    p = normalize_twitterapi_io(t, now=now, batch=f"run:{run_id}", mode=self.mode)
+                except (KeyError, ValueError, TypeError):
+                    run["out_of_window"] += 1; continue
+                ts = int(store.parse(p["created_at_utc"]).timestamp()); times.append(ts)
+                if p["post_id"] in seen_ids:
+                    dup_here += 1; continue
+                seen_ids.add(p["post_id"])
+                if not (s <= ts < e):                       # the operators' edges are undocumented: filter again, half-open
+                    run["out_of_window"] += 1; continue
+                run["in_window"] += 1
+                if store.put_post(self.db, p):
+                    run["new_posts"] += 1
+                self.db.execute("INSERT OR IGNORE INTO x_run_posts VALUES(?,?,?)", (run_id, self.provider, p["post_id"]))
+                run["earliest_utc"] = min(run["earliest_utc"] or p["created_at_utc"], p["created_at_utc"])
+                run["latest_utc"] = max(run["latest_utc"] or p["created_at_utc"], p["created_at_utc"])
+            run["duplicates"] += dup_here
+            cursor = page.get("next_cursor") or ""
+            run["cursor"], run["updated_at_utc"] = cursor, now
+            store.upsert_run(self.db, run); self.db.commit()   # checkpoint after every page
+            if times and prev_oldest is not None and max(times) > prev_oldest:
+                needs_split = "ORDER_ANOMALY"; break
+            if tweets and dup_here / len(tweets) > self.max_dup:
+                needs_split = "EXCESS_DUPLICATES"; break
+            if times:
+                prev_oldest = min(times)
+            if not page.get("has_next_page") or not cursor:
+                run["status"], run["stop_reason"] = "COMPLETE", "END_OF_RESULTS"; break
+        if stop:
+            run["status"], run["stop_reason"] = ("NOT_RUN" if stop == "DRY_RUN_NO_REQUEST" else "PARTIAL"), stop
+            store.upsert_run(self.db, run); self.db.commit()
+            raise StopAll(stop)
+        if needs_split:
+            if e - s > self.min_slice:                      # narrow the window instead of walking the oldest second back
+                run["status"], run["stop_reason"] = "SPLIT", needs_split
+                store.upsert_run(self.db, run); self.db.commit()
+                mid = (s + e) // 2
+                return self._slice(q, s, mid, run_id) + self._slice(q, mid, e, run_id)
+            run["status"], run["stop_reason"] = "PARTIAL", needs_split
+        store.upsert_run(self.db, run); self.db.commit()
+        return [{k: run[k] for k in ("run_id", "status", "stop_reason", "pages", "requests", "returned", "in_window", "out_of_window", "duplicates", "new_posts", "cost_estimate_usd")}]
+
+
+def store_decimal(s):
+    from decimal import Decimal
+    return Decimal(str(s or "0"))
+
+
+def plan(cfg: dict, queries: list[dict], start: datetime, end: datetime) -> dict:
+    """What a run WOULD ask for, with no request sent: slices, minimum cost if every slice is empty, and the
+    cost if every day returned the proposed cap. Not a forecast of how many posts exist."""
+    from decimal import Decimal
+    provider = cfg["provider_candidate"]
+    rate = Decimal(cfg["quoted_standard_rates_usd_per_returned_post"][provider]); minimum = Decimal(cfg["minimum_charge_usd_per_request"][provider])
+    sl = slices(start, end, cfg["acquisition"]["proposed_first_slice_seconds"])
+    days = Decimal(int(end.timestamp()) - int(start.timestamp())) / Decimal(86400)
+    return {"provider": provider, "requests_sent": 0, "queries": len(queries), "top_level_slices": len(sl) * len(queries),
+            "minimum_cost_if_every_slice_is_empty_usd": str(minimum * len(sl) * len(queries)),
+            "cost_at_proposed_daily_cap_usd": str((Decimal(cfg["acquisition"]["proposed_total_returned_post_cap_per_day"]) * days * rate).quantize(Decimal("0.0001"))),
+            "basis": "quoted standard rate; excludes retries, tax and plan differences; not a bill"}

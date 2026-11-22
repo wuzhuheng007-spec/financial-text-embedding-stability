@@ -1,0 +1,205 @@
+{
+ "collection": {
+  "billing_source": "NONE",
+  "by_status": {},
+  "disk_free_gib": null,
+  "estimated_cost_usd": "0",
+  "posts": 0,
+  "runs": 0,
+  "state": "NOT_STARTED"
+ },
+ "conditional": [],
+ "config_sha256": "f9ce09dc20e91cc4ffd9c88695a463c9d4dada979c700094d3d3d5895d81da3b",
+ "config_version": "x-stance-v1-params-20261122-a",
+ "contract_version": "x-keyword-stance-v1-proposed-20261122",
+ "daily": [],
+ "data_kinds": {
+  "live": 0,
+  "retrospective": 0
+ },
+ "episodes": [],
+ "has_data": false,
+ "limits": [
+  "accounts in the retrieved sample only",
+  "not a prediction",
+  "labels not validated by human review"
+ ],
+ "missing_inputs": [
+  {
+   "detail": "X_STANCE_TWITTERAPI_IO_KEY",
+   "input": "PROVIDER_KEY"
+  },
+  {
+   "detail": "acquisition",
+   "input": "acquisition.history_start"
+  },
+  {
+   "detail": "acquisition",
+   "input": "acquisition.history_end_exclusive"
+  },
+  {
+   "detail": "acquisition",
+   "input": "acquisition.daily_budget_usd"
+  },
+  {
+   "detail": "acquisition",
+   "input": "acquisition.total_budget_usd"
+  },
+  {
+   "detail": "classifier",
+   "input": "classifier.model_id"
+  },
+  {
+   "detail": "classifier",
+   "input": "classifier.immutable_revision"
+  },
+  {
+   "detail": "classifier",
+   "input": "classifier.prompt_version"
+  },
+  {
+   "detail": "classifier",
+   "input": "classifier.temperature"
+  },
+  {
+   "detail": "market",
+   "input": "market.input_version"
+  },
+  {
+   "detail": "market",
+   "input": "market.adjustment_semantics"
+  },
+  {
+   "detail": "relationship_study",
+   "input": "validation.holdout_start"
+  },
+  {
+   "detail": "market_pairing_for_this_topic",
+   "input": "topics[memory].comparison_asset"
+  },
+  {
+   "detail": "market_pairing_for_this_topic",
+   "input": "topics[technology].comparison_asset"
+  },
+  {
+   "detail": "market_pairing_for_this_topic",
+   "input": "topics[market].comparison_asset"
+  }
+ ],
+ "narratives": [],
+ "returns": [],
+ "settings": {
+  "acquisition_gate": {
+   "allowed": false,
+   "key_env_name": "X_STANCE_TWITTERAPI_IO_KEY",
+   "provider": "twitterapi_io",
+   "reasons": [
+    "DRY_RUN",
+    "LIVE_NOT_ENABLED",
+    "PROVIDER_KEY_MISSING",
+    "BUDGET_MISSING:daily_budget_usd",
+    "BUDGET_MISSING:total_budget_usd",
+    "WINDOW_NOT_FROZEN:history_start",
+    "WINDOW_NOT_FROZEN:history_end_exclusive"
+   ]
+  },
+  "automatic_paid_fallback": false,
+  "budget": {
+   "daily_usd": null,
+   "proposed_daily_post_cap": 10000,
+   "total_usd": null
+  },
+  "classifier_gate": {
+   "allowed": false,
+   "reasons": [
+    "CLASSIFIER_NOT_PINNED:model_id",
+    "CLASSIFIER_NOT_PINNED:immutable_revision",
+    "CLASSIFIER_NOT_PINNED:prompt_version",
+    "CLASSIFIER_NOT_PINNED:temperature"
+   ]
+  },
+  "editing": "READ_ONLY_VERSIONED_FILE",
+  "languages": [
+   "en",
+   "zh"
+  ],
+  "provider": "twitterapi_io",
+  "provider_fallback_candidate": "socialdata",
+  "topics": [
+   {
+    "comparison_asset": null,
+    "id": "memory",
+    "keywords": [
+     "DRAM",
+     "NAND",
+     "HBM",
+     "memory chip",
+     "memory chips",
+     "$MU",
+     "$SNDK",
+     "存储芯片",
+     "存储涨价",
+     "存储降价",
+     "内存价格",
+     "闪存价格"
+    ],
+    "targets": [
+     "industry:memory"
+    ]
+   },
+   {
+    "comparison_asset": null,
+    "id": "technology",
+    "keywords": [
+     "technology stocks",
+     "tech stocks",
+     "semiconductor",
+     "AI capex",
+     "$NVDA",
+     "$AMD",
+     "科技股",
+     "半导体",
+     "人工智能",
+     "AI资本开支"
+    ],
+    "targets": [
+     "industry:technology"
+    ]
+   },
+   {
+    "comparison_asset": null,
+    "id": "market",
+    "keywords": [
+     "stock market",
+     "US stocks",
+     "S&P 500",
+     "Nasdaq",
+     "$SPY",
+     "美股",
+     "股市",
+     "加息",
+     "降息",
+     "关税"
+    ],
+    "targets": [
+     "industry:market"
+    ]
+   },
+   {
+    "comparison_asset": "QQQ",
+    "id": "qqq",
+    "keywords": [
+     "$QQQ",
+     "Nasdaq 100",
+     "Nasdaq-100",
+     "纳斯达克100",
+     "纳指100"
+    ],
+    "targets": [
+     "QQQ"
+    ]
+   }
+  ],
+  "vocabulary_version": "vocab-20261122-a"
+ }
+}
