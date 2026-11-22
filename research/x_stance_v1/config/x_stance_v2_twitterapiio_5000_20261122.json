@@ -157,13 +157,13 @@
   "classifier": {
     "model_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF:qwen2.5-1.5b-instruct-q4_k_m.gguf",
     "immutable_revision": "hf:91cad51170dc346986eccefdc2dd33a9da36ead9|gguf-sha256:6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e|llama.cpp:225a5345bbb0e0c70859af5441ba922beb666fcf",
-    "prompt_version": "x-stance-prompt-v1-20261122",
+    "prompt_version": "x-stance-prompt-v2-20261122",
     "temperature": 0,
-    "schema_version": "x-stance-output-schema-v1",
+    "schema_version": "x-stance-output-schema-v2",
     "generation": {
       "temperature": 0,
       "seed": 42,
-      "max_output_tokens": 192,
+      "max_output_tokens": 96,
       "top_k": 1,
       "top_p": 1.0,
       "context_tokens": 2048,
@@ -184,7 +184,14 @@
     "use_future_returns": false,
     "use_current_engagement_for_history": false,
     "cloud_model_calls_default": false,
-    "proposed_prompt_version": "x-stance-prompt-v1-20261122"
+    "proposed_prompt_version": "x-stance-prompt-v2-20261122",
+    "prompt_history": [
+      {
+        "version": "x-stance-prompt-v1-20261122",
+        "retired": "2026-11-22",
+        "why": "real-model smoke on hand-written texts: the model filled the id fields with placeholders and gave inconsistent status/stance pairs; every output was rejected by the validator. No stored post was ever labelled with it."
+      }
+    ]
   },
   "narratives": {
     "max_clusters_to_display": 5,

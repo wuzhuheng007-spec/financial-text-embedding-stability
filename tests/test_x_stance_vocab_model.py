@@ -103,14 +103,13 @@ def seed(db, cfg, n=6):
 
 
 def reply(post_id, stance_="bullish", evidence="buying more $QQQ"):
-    return json.dumps({"post_id": str(post_id), "topic_id": "qqq", "target_id": "QQQ", "is_relevant": True, "quality_status": "OK", "stance": stance_,
-                       "evidence_text": evidence, "reason_short": "says so"})
+    return json.dumps({"is_relevant": True, "quality_status": "OK", "stance": stance_, "evidence_text": evidence})    # what the model writes: no ids
 
 
 def stub(worker, answers):
     def _req(path, body=None, timeout=None):
         if path == "/v1/chat/completions":
-            pid = body["messages"][0]["content"].split("post_id: ")[1].split()[0]
+            pid = body["messages"][0]["content"].split(", note ")[1].split()[0]
             a = answers(pid, body)
             if isinstance(a, Exception):
                 raise a
@@ -127,8 +126,11 @@ def test_adapter_sends_only_the_prompt_with_the_pinned_generation_and_schema(cfg
     out = stance.run(db, pinned(cfg), w)
     b = seen[0]
     assert out["model_calls"] == 1 and out["by_quality"] == {"OK": 1}
-    assert (b["temperature"], b["seed"], b["max_tokens"], b["stream"]) == (0, 42, 192, False) and len(b["messages"]) == 1
-    assert b["response_format"]["json_schema"]["schema"] == llm.OUTPUT_SCHEMA and set(llm.OUTPUT_SCHEMA["properties"]["stance"]["anyOf"][0]["enum"]) == {"bullish", "bearish", "neutral"}
+    assert (b["temperature"], b["seed"], b["max_tokens"], b["stream"]) == (0, 42, 96, False) and len(b["messages"]) == 1
+    ok_shape, unjudged = llm.OUTPUT_SCHEMA["oneOf"]
+    assert b["response_format"]["json_schema"]["schema"] == llm.OUTPUT_SCHEMA and set(ok_shape["properties"]["stance"]["enum"]) == {"bullish", "bearish", "neutral"}
+    assert ok_shape["properties"]["quality_status"] == {"const": "OK"} and unjudged["properties"]["stance"] == {"type": "null"}        # a stance and "OK" can only occur together
+    assert "post_id" not in ok_shape["properties"] and "post_id: " not in b["messages"][0]["content"]                              # the model is not asked to repeat ids
     text = b["messages"][0]["content"]
     assert "<post>" in text and "Target: QQQ" in text and not any(k in text.lower() for k in ("likecount", "price was", "return over"))
     row = db.execute("SELECT model_id, model_revision, label, inferred_at_utc FROM x_stance_labels").fetchone()

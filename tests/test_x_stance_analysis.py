@@ -488,7 +488,7 @@ def test_portal_read_model_without_data_names_what_is_missing(tmp_path, cfg):
 def test_manifest_records_versions_and_null_model(cfg):
     m = pipeline.manifest(cfg, command="test", inputs={}, outputs={}, status="OFFLINE_ENGINEERING_ONLY")
     assert m["model_revision"].startswith("hf:91cad511") and "gguf-sha256:6a1a2eb6" in m["model_revision"] and "llama.cpp:225a5345" in m["model_revision"] and m["config_sha256"] == C.config_hash(cfg) and m["seed"] == 42 and m["split"] == {"holdout_start": None}
-    assert len(m["cost_table"]) == 3 and m["proposed_prompt_sha256"] == stance.prompt_hash("x-stance-prompt-v1-20261122")
+    assert len(m["cost_table"]) == 3 and m["proposed_prompt_sha256"] == stance.prompt_hash("x-stance-prompt-v2-20261122")
 
 
 def test_the_ui_fixture_is_the_real_empty_read_model(cfg):
