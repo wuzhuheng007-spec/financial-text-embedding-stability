@@ -75,12 +75,15 @@ def _smoke(cfg) -> dict:
         for i, (lang, kind, text) in enumerate(llm.SMOKE_TEXTS, 1):
             store.put_post(db, {"provider": "synthetic_smoke", "post_id": str(i), "author_id": f"s{i}", "created_at_utc": "2026-11-20T15:00:00Z", "first_seen_at_utc": store.utcnow(),
                                 "fetched_at_utc": store.utcnow(), "ingest_mode": "SYNTHETIC_SMOKE", "source_url": None, "text": text, "author_text": text, "lang": lang,
-                                "text_hash": provider.text_hash(text), "edit_status": "SYNTHETIC", "kind": kind, "parent_available": False if kind == "reply" else None, "raw_batch": "smoke"})
+                                "text_hash": provider.text_hash(text), "edit_status": "SYNTHETIC", "kind": kind, "parent_available": False if kind == "reply" else None, "raw_batch": "smoke",
+                                # made-up counts above the like floor, so the account rules admit the smoke texts and the model is really called
+                                "engagement_snapshot": {"likeCount": 1000, "authorFollowers": 1000, "synthetic": True}})
         c = dict(cfg); c["topics"] = [t for t in cfg["topics"] if t["id"] == "qqq"]
         stance.map_topics(db, c)
         res = stance.run(db, c, worker)
         rows = [dict(r) for r in db.execute("SELECT post_id, label, quality_status, is_relevant, (evidence_text IS NOT NULL) has_evidence FROM x_stance_labels ORDER BY CAST(post_id AS INTEGER)")]
-        again = stance.run(db, c, lambda p: (_ for _ in ()).throw(RuntimeError("cache missed")))
+        # second pass must find every label already there; skipped when the first pass could not run at all
+        again = stance.run(db, c, lambda p: (_ for _ in ()).throw(RuntimeError("cache missed"))) if not res["stopped"] else {"model_calls": None}
         db.close()
     return {"kind": "REAL_MODEL_INFERENCE_ON_HAND_WRITTEN_TEXT", "texts": len(llm.SMOKE_TEXTS), "matched_to_topic": sum(1 for _ in rows), "run": res, "labels": rows,
             "second_run_model_calls": again["model_calls"], "worker": worker.props(), "throughput": worker.summary(), "output_schema_sha256": llm.schema_hash(),
@@ -107,6 +110,8 @@ def main(argv=None) -> int:
     elif a.cmd == "smoke-model":
         gate = cfgmod.classifier_gate(base)
         out, code = (_smoke(base), 0) if gate["allowed"] else ({"status": "REFUSED_CLASSIFIER_NOT_PINNED", "gate": gate}, 2)
+        if gate["allowed"] and not out["run"]["model_calls"]:        # a smoke test that called nothing has tested nothing
+            out["status"], code = "NO_MODEL_CALL_" + str(out["run"]["stopped"] or "NOTHING_ADMITTED"), 1
     else:
         db = store.connect(a.db)
         ledger = Ledger(db, base)

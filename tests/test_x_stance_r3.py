@@ -685,3 +685,30 @@ def test_g_each_local_checkpoint_gets_its_own_identity_and_the_adapter_never_rep
     post = {"post_id": "7", "author_text": "$QQQ #7 note"}
     assert stance.validate_output(w(good, ids_, False), post=post, topic_id="qqq", target_id="QQQ")["label"] == "bullish"
     assert stance.validate_output(w('```json\n' + good + '\n```', ids_, False), post=post, topic_id="qqq", target_id="QQQ")["quality_status"] == "JSON_INVALID"
+
+
+def test_the_smoke_command_really_calls_the_model_under_the_shipped_rules_and_says_so_when_it_does_not(monkeypatch, capsys):
+    from scripts.x_stance_v1 import cli
+
+    class Fake(Model):
+        def props(self):
+            return {"chat_template_sha256": C.load()["classifier"]["runtime"]["chat_template_sha256"]}
+
+        def summary(self):
+            return {"calls": len(self.calls)}
+
+        def __call__(self, prompt):
+            self.calls.append(1)
+            return "not json"
+    fake = Fake()
+    monkeypatch.setattr(cli, "_llm", lambda cfg: fake)
+    assert cli.main(["smoke-model"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["run"]["model_calls"] == 11 == len(fake.calls) and out["second_run_model_calls"] == 0 and out["matched_to_topic"] == 11
+
+    class Wrong(Fake):
+        def props(self):
+            return {"chat_template_sha256": "0" * 64}
+    monkeypatch.setattr(cli, "_llm", lambda cfg: Wrong())
+    assert cli.main(["smoke-model"]) == 1
+    assert json.loads(capsys.readouterr().out)["status"].startswith("NO_MODEL_CALL_RUNTIME_IDENTITY_MISMATCH")
