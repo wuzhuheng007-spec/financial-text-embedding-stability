@@ -22,6 +22,11 @@
 !scripts/news_sentiment_factor_v43/**
 !scripts/news_sentiment_factor_v44/**
 !scripts/news_sentiment_factor_v45/**
+# X stance study: only the standard-library read model the portal imports (no collector, no numpy code).
+!scripts/x_stance_v1/__init__.py
+!scripts/x_stance_v1/config.py
+!scripts/x_stance_v1/store.py
+!scripts/x_stance_v1/portal_read.py
 
 !configs/*.json
 
@@ -36,6 +41,9 @@
 !research/market_sentiment/phase5_strategy_v1/results/*.csv
 !research/market_sentiment/phase5_strategy_v1/results/*.json
 !research/market_sentiment/phase5_strategy_v1/claude_validation_record/*
+
+# X stance study parameters (no posts, no keys).
+!research/x_stance_v1/config/*.json
 
 # Git-tracked redacted receipts that runtime code verifies or displays.
 !results/watchlist_live_20261115/*_redacted.json
