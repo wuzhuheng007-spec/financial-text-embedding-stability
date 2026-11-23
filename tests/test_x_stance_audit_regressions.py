@@ -56,8 +56,10 @@ class Scripted:
             page["has_next_page"] = True
         elif self.case == "string_false":
             page["has_next_page"] = "false"
-        elif self.case == "null_cursor":
+        elif self.case == "null_cursor":                    # what the provider really sends on a last page
             page["next_cursor"] = None
+        elif self.case == "null_cursor_with_more":
+            page["has_next_page"], page["next_cursor"] = True, None
         elif self.case == "multi":
             page["has_next_page"], page["next_cursor"] = True, f"c{self.calls}"
         return page
@@ -65,7 +67,7 @@ class Scripted:
 
 # ---------- F1 ----------
 @pytest.mark.parametrize("case,reason", [("missing_pagination", "PROTOCOL:HAS_NEXT_PAGE_MISSING"), ("true_without_cursor", "PROTOCOL:NEXT_PAGE_WITHOUT_CURSOR"),
-                                         ("string_false", "PROTOCOL:HAS_NEXT_PAGE_NOT_BOOLEAN"), ("null_cursor", "PROTOCOL:NEXT_CURSOR_NOT_STRING")])
+                                         ("string_false", "PROTOCOL:HAS_NEXT_PAGE_NOT_BOOLEAN"), ("null_cursor_with_more", "PROTOCOL:NEXT_CURSOR_NOT_STRING")])
 def test_f1_malformed_pagination_never_passes_and_is_never_complete(cfg, db, case, reason):
     f = Scripted(case)
     rec = batch.run_preflight(db, cfg, f, NOW, env=KEY, clock=lambda: NOW)
@@ -78,6 +80,19 @@ def test_f1_malformed_pagination_never_passes_and_is_never_complete(cfg, db, cas
     assert led["today"]["credits"] == 45 and led["unknown_held"]["requests"] == 0  # the three answered pages are still paid for (one post each)
     out = batch.run_daily(db, cfg, KEY, lambda: pytest.fail("the scheduled job must stay locked"), NOW, clock=lambda: NOW)
     assert out["status"] == "REFUSED_FAIL_CLOSED" and out["gate"]["preflight"]["state"] == "FAILED"
+
+
+def test_f1_a_null_cursor_is_an_end_of_results_only_next_to_an_explicit_false(cfg, db):
+    """The first live collection (2026-11-23) showed that the provider's last page is has_next_page=false with
+    next_cursor=null. Four such pages were read as anomalies and stopped the author walk. The end of results is still
+    decided by the explicit boolean alone; a null cursor next to has_next_page=true stays an anomaly (case above)."""
+    assert provider.page_schema_error({"tweets": [], "has_next_page": False, "next_cursor": None}) is None
+    assert provider.page_schema_error({"tweets": [], "has_next_page": True, "next_cursor": None}) == "NEXT_CURSOR_NOT_STRING"
+    assert provider.page_schema_error({"tweets": [], "has_next_page": False, "next_cursor": 0}) == "NEXT_CURSOR_NOT_STRING"
+    f = Scripted("null_cursor")
+    rec = batch.run_preflight(db, cfg, f, NOW, env=KEY, clock=lambda: NOW)
+    assert f.calls == 9 and all(r["schema_valid"] for r in rec["requests"]) and rec["stopped"] is None
+    assert not any(str(r[0]).startswith("PROTOCOL") for r in db.execute("SELECT DISTINCT stop_reason FROM x_query_runs"))
 
 
 def test_f1_posts_all_outside_the_window_do_not_pass(cfg, db):

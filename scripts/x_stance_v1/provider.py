@@ -273,7 +273,7 @@ class Collector:
         self.max_dup = acq["proposed_max_duplicate_share_per_page"]
         self.provider = "twitterapi_io"
         self.parse_failures, self.protocol_anomalies, self.last = 0, 0, None
-        self.page_max = ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
+        self.page_max = acq.get("tolerated_max_posts_per_page") or ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
         self.min_free_gib = acq["proposed_min_free_disk_gib"]
         self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
 
@@ -483,7 +483,9 @@ def page_schema_error(page) -> str | None:
         return "HAS_NEXT_PAGE_NOT_BOOLEAN"
     if "next_cursor" not in page:
         return "NEXT_CURSOR_MISSING"
-    if not isinstance(page["next_cursor"], str):
+    if page["next_cursor"] is None and page["has_next_page"] is False:
+        pass                                                 # observed on 2026-11-23: the last page carries a null cursor. Only with an explicit false.
+    elif not isinstance(page["next_cursor"], str):
         return "NEXT_CURSOR_NOT_STRING"
     if any(not isinstance(t, dict) for t in page["tweets"]):
         return "TWEET_NOT_AN_OBJECT"

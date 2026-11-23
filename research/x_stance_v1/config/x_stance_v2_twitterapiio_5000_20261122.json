@@ -48,6 +48,8 @@
       }
     },
     "min_request_interval_seconds": 6,
+    "tolerated_max_posts_per_page": 25,
+    "tolerated_max_posts_per_page_note": "the documented page size is 20; a page of 22 was returned on 2026-11-23. Up to 25 a page is charged at its real count and cap checks keep headroom for it; a larger page pauses all requests",
     "endpoint": "https://api.twitterapi.io/twitter/tweet/advanced_search",
     "update_mode": "daily_batch",
     "sampling_plan_freeze_required": true,

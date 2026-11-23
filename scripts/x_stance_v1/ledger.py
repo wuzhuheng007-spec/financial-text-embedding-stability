@@ -14,6 +14,7 @@ other. This limits THIS program's requests; it cannot see other use of the same 
 """
 from __future__ import annotations
 
+import json
 import sqlite3
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -68,6 +69,13 @@ class Ledger:
         self.page_credits = int(q["reserve_page_credits"])
         if self.page_credits != self.per_post * self.page_posts:
             raise ValueError("reserve_page_credits must equal credits_per_post x documented_max_posts_per_page")
+        # A page can come back slightly larger than documented (22 against 20 was observed on 2026-11-23). Up to
+        # `tolerated` it is charged at the real count without a pause, and every cap check keeps headroom for a page
+        # of that size, so a cap is still never exceeded. Anything larger pauses all requests as before.
+        self.tolerated = int(cfg["acquisition"].get("tolerated_max_posts_per_page") or self.page_posts)
+        if self.tolerated < self.page_posts:
+            raise ValueError("tolerated_max_posts_per_page is below the documented page size")
+        self.check_posts, self.check_credits = self.tolerated, self.per_post * self.tolerated
         c = lambda s: int((Decimal(str(s)) * self.per_usd).to_integral_exact())
         self.tz = ZoneInfo(b["timezone"])
         self.day_posts, self.day_credits = int(b["daily_all_jobs_returned_post_cap"]), c(b["daily_all_jobs_cost_cap_usd"])
@@ -115,7 +123,8 @@ class Ledger:
         held = self.db.execute("SELECT COUNT(*), COALESCE(SUM(reserved_credits),0) FROM x_cost_ledger WHERE status='UNKNOWN_HELD'").fetchone()
         out["unknown_held"] = {"requests": held[0], "usd": usd(held[1])}
         out["billing_source"] = "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill"
-        out["paused"] = get_meta(self.db, "paused")
+        out["paused"] = get_meta(self.db, "paused") or None
+        out["tolerated_max_posts_per_page"] = self.tolerated
         return out
 
     def reserve(self, *, pool: str, is_preflight: bool = False, job_type: str | None = None, run_id=None, window=(None, None), cursor=None, attempt: int = 1) -> str:
@@ -132,16 +141,16 @@ class Ledger:
             dc, dp = self._sum("budget_day=?", (d,))
             rc, _ = self._sum("created_at_utc>?", (since,))
             pc, pp = self._sum("budget_day=? AND pool=?", (d, pool))
-            checks = [("DAILY_POSTS", dp + self.page_posts > self.day_posts), ("DAILY_USD", dc + self.page_credits > self.day_credits),
-                      ("ROLLING_USD", rc + self.page_credits > self.roll_credits),
-                      (f"POOL_{pool.upper()}_POSTS", pp + self.page_posts > self.pool[pool][0]), (f"POOL_{pool.upper()}_USD", pc + self.page_credits > self.pool[pool][1])]
+            checks = [("DAILY_POSTS", dp + self.check_posts > self.day_posts), ("DAILY_USD", dc + self.check_credits > self.day_credits),
+                      ("ROLLING_USD", rc + self.check_credits > self.roll_credits),
+                      (f"POOL_{pool.upper()}_POSTS", pp + self.check_posts > self.pool[pool][0]), (f"POOL_{pool.upper()}_USD", pc + self.check_credits > self.pool[pool][1])]
             if not is_preflight and (job_type or pool) in self.sub:
                 job = job_type or pool
                 sc, sp = self._sum("budget_day=? AND job_type=? AND is_preflight=0", (d, job))
-                checks += [(f"SUBPOOL_{job.upper()}_POSTS", sp + self.page_posts > self.sub[job][1]), (f"SUBPOOL_{job.upper()}_USD", sc + self.page_credits > self.sub[job][2])]
+                checks += [(f"SUBPOOL_{job.upper()}_POSTS", sp + self.check_posts > self.sub[job][1]), (f"SUBPOOL_{job.upper()}_USD", sc + self.check_credits > self.sub[job][2])]
             if is_preflight:
                 fc, fp = self._sum("is_preflight=1", ())
-                checks += [("PREFLIGHT_POSTS", fp + self.page_posts > self.pre_posts), ("PREFLIGHT_USD", fc + self.page_credits > self.pre_credits)]
+                checks += [("PREFLIGHT_POSTS", fp + self.check_posts > self.pre_posts), ("PREFLIGHT_USD", fc + self.check_credits > self.pre_credits)]
             for kind, over in checks:
                 if over:
                     raise LimitReached(kind)
@@ -161,10 +170,24 @@ class Ledger:
         credits = self.per_post * max(int(returned), 1)
         self.db.execute("UPDATE x_cost_ledger SET status='SETTLED', settled_credits=?, returned=?, unique_ids=?, settled_at_utc=? WHERE request_id=? AND status IN ('RESERVED','UNKNOWN_HELD')",
                         (credits, int(returned), int(unique_ids), store.iso(self.clock()), request_id))
-        if returned > self.page_posts:
+        if returned > self.tolerated:
             set_meta(self.db, "paused", f"PAGE_OVER_DOCUMENTED_MAX:{returned}")
         self.db.commit()
         return credits
+
+    def resume(self, reason: str) -> dict:
+        """Lifts a pause after someone looked at it. The reason is required and kept, with what was lifted and when."""
+        if not (reason or "").strip():
+            raise ValueError("a resume needs its reason")
+        was = get_meta(self.db, "paused")
+        if not was:
+            return {"status": "NOT_PAUSED", "paused": None}
+        log = json.loads(get_meta(self.db, "pause_log") or "[]")
+        log.append({"paused": was, "resumed_at_utc": store.iso(self.clock()), "reason": reason.strip()[:300]})
+        set_meta(self.db, "pause_log", json.dumps(log, ensure_ascii=False))
+        set_meta(self.db, "paused", "")
+        self.db.commit()
+        return {"status": "RESUMED", "was": was, "tolerated_max_posts_per_page": self.tolerated, "log_entries": len(log)}
 
     def hold_unknown(self, request_id: str, note: str) -> None:
         self.db.execute("UPDATE x_cost_ledger SET status='UNKNOWN_HELD', note=? WHERE request_id=? AND status='RESERVED'", (note[:120], request_id))

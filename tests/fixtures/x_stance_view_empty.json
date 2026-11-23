@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
- "config_sha256": "15c9bb21b714e0be6b55e3622611e582577170c8762fb7c2fbf107d1f37380e0",
+ "config_sha256": "53beb7286770e2f3a4ccc2dec9c66ad7a3ec76512f04e9cecf2524f454cbd5b6",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
@@ -271,7 +271,8 @@
    "usd": "0"
   },
   "billing_source": "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill",
-  "paused": null
+  "paused": null,
+  "tolerated_max_posts_per_page": 25
  },
  "preflight": {
   "state": "NOT_RUN",

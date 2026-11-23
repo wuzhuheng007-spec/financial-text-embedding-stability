@@ -99,6 +99,7 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("status", "cost-table", "usage", "plan", "preflight", "migrate", "smoke-model", "daily", "queue"):
         sub.add_parser(name)
+    s = sub.add_parser("resume"); s.add_argument("reason")
     s = sub.add_parser("export-pending"); s.add_argument("file"); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"]); s.add_argument("--limit", type=int)
     s = sub.add_parser("import-results"); s.add_argument("file")
     s = sub.add_parser("import-local"); s.add_argument("file"); s.add_argument("--declare", nargs=5, metavar=("TOPIC", "LANG", "START", "END", "STATUS"))
@@ -128,6 +129,8 @@ def main(argv=None) -> int:
                    "unfrozen": cfgmod.unfrozen({k: v for k, v in base.items() if not k.startswith("_")}), "acquisition_gate": cfgmod.acquisition_gate(base, env, preflight_passed=pf["recent_unlocked"]), "preflight": pf,
                    "classifier_gate": cfgmod.classifier_gate(base), "vocabulary": {"active": cfg["topic_vocabulary_version"], "pending": (vocab.pending(db) or {}).get("version")},
                    "usage": ledger.usage(), "history": batch.history_progress(db, base), "watchlist": watchlist.summary(db, base), "snapshots": db.execute("SELECT count(*) FROM x_signal_snapshots").fetchone()[0] if _has(db, "x_signal_snapshots") else 0}
+        elif a.cmd == "resume":
+            out = ledger.resume(a.reason)
         elif a.cmd == "usage":
             out = {"usage": ledger.usage(), "ledger": ledger.summary()}
         elif a.cmd == "migrate":

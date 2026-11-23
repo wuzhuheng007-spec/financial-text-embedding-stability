@@ -43,6 +43,7 @@ def cfg():
     c["topics"] = [t for t in c["topics"] if t["id"] == "qqq"]
     c["languages"] = ["en"]
     c["aggregation"]["proposed_low_sample_author_threshold"] = 1
+    c["acquisition"].pop("tolerated_max_posts_per_page", None)   # exact cap edges at the documented page size; the tolerance is covered in tests/test_x_stance_pacing.py
     return c
 
 

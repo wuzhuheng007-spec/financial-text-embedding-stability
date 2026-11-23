@@ -44,6 +44,7 @@ HISTORY_LIMIT=${X_HISTORY_LIMIT:-2000}; HISTORY_SECONDS=${X_HISTORY_SECONDS:-108
 
 case "$CMD" in
   status|usage|plan|migrate|queue) with_lock local_job "$CMD" ;;
+  resume)                    with_lock local_job resume "${1:?reason}" ;;      # lifts a ledger pause; the reason is stored
   watch)                     # the watched-author list. import reads a file from /srv/quant/x_offload (root only); verify-candidate is the only form that can reach the provider
     case "${1:-show}" in
       import)           f=$(basename "${2:?file name}"); with_lock offload_job watch import "/offload/$f" ;;
