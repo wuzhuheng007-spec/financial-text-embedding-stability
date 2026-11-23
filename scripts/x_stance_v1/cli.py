@@ -162,10 +162,10 @@ def main(argv=None) -> int:
                 out, code = {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
             else:
                 ledger.recover_open()
-                out = batch.run_preflight(db, base, provider.UrllibTransport(env[key_env]), now, env=env, ledger=ledger)
+                out = batch.run_preflight(db, base, provider.live_transport(base, env[key_env]), now, env=env, ledger=ledger)
                 code = 0 if out["verdict"] == "PASS" else 1
         elif a.cmd == "daily":
-            out = batch.run_daily(db, base, env, lambda: provider.UrllibTransport(env[key_env]), now)
+            out = batch.run_daily(db, base, env, lambda: provider.live_transport(base, env[key_env]), now)
             if out["status"] == "REFUSED_FAIL_CLOSED":
                 code = 2
             else:
@@ -227,7 +227,7 @@ def _watch_cmd(db, base, env, a, now, ledger, key_env):
             gate = cfgmod.acquisition_gate(base, env, preflight_passed=pf["recent_unlocked"])
             if not gate["allowed"]:
                 return {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
-            return batch.verify_candidates(db, base, provider.UrllibTransport(env[key_env]), a.args[0], now, ledger=ledger), 0
+            return batch.verify_candidates(db, base, provider.live_transport(base, env[key_env]), a.args[0], now, ledger=ledger), 0
     except watchlist.WatchError as ex:
         return {"status": "REJECTED", "reason": str(ex)}, 1
     return {"status": "USAGE", "expected": "import FILE | show | enable ID | disable ID | confirm-handle ID HANDLE | verify-candidate ID"}, 2

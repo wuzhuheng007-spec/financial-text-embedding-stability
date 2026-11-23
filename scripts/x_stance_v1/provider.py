@@ -15,6 +15,7 @@ import csv
 import json
 import re
 import shutil
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -63,13 +64,27 @@ class RefusingTransport:
 
 class UrllibTransport:
     """The only code path that reaches the provider. Built by the CLI after the gate passes; TLS verification is
-    the interpreter default and is never switched off. One attempt per call: no retry loop, a 429 stops the run."""
+    the interpreter default and is never switched off. One attempt per call: no retry loop, a 429 stops the run.
+    Requests are spaced at least `min_interval` seconds apart (the provider's limit is per account, in requests per
+    second); spacing is waiting before a request, never a second attempt at one."""
 
-    def __init__(self, api_key: str, timeout: float = 30.0):
+    def __init__(self, api_key: str, timeout: float = 30.0, min_interval: float = 0.0, sleep=time.sleep, clock=time.monotonic):
         register_secret(api_key)
         self._key, self.timeout, self.calls = api_key, timeout, 0
+        self.min_interval, self._sleep, self._clock, self._last, self.waited_seconds = float(min_interval), sleep, clock, None, 0.0
 
     def get(self, params: dict) -> dict:
+        if self._last is not None and self.min_interval > 0:
+            wait = self._last + self.min_interval - self._clock()
+            if wait > 0:
+                self.waited_seconds += wait
+                self._sleep(wait)
+        try:
+            return self._send(params)
+        finally:
+            self._last = self._clock()                         # measured from the end of the previous request
+
+    def _send(self, params: dict) -> dict:
         self.calls += 1
         req = urllib.request.Request(ENDPOINT + "?" + urllib.parse.urlencode(params), headers={"X-API-Key": self._key, "Accept": "application/json"})
         try:
@@ -81,6 +96,10 @@ class UrllibTransport:
             raise ProviderHTTPError(None, "NETWORK") from None
         except ValueError:
             raise ProviderHTTPError(None, "BAD_JSON") from None
+
+
+def live_transport(cfg: dict, api_key: str) -> UrllibTransport:
+    return UrllibTransport(api_key, min_interval=float(cfg["acquisition"].get("min_request_interval_seconds") or 0))
 
 
 # ---------- normalized fields ----------

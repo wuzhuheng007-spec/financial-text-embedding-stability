@@ -43,10 +43,11 @@
         "max_posts_per_page": 20,
         "time_operators": "since_time:UNIX_SECONDS until_time:UNIX_SECONDS inside the query string",
         "time_operator_inclusivity": null,
-        "rate_limit_qps": null,
-        "status_429_behaviour": null
+        "rate_limit_qps": "checked 2026-11-23 on twitterapi.io/qps-limits: per account; 0.2 (one request per 5 seconds) for an account that never bought credits, 20 after any credit purchase",
+        "status_429_behaviour": "HTTP 429 without Retry-After; observed 2026-11-23 on the second of two back-to-back requests"
       }
     },
+    "min_request_interval_seconds": 6,
     "endpoint": "https://api.twitterapi.io/twitter/tweet/advanced_search",
     "update_mode": "daily_batch",
     "sampling_plan_freeze_required": true,
