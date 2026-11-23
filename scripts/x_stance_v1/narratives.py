@@ -67,6 +67,16 @@ def _kmeans(m: np.ndarray, k: int, seed: int, iters: int = 25) -> tuple[np.ndarr
     return assign, np.asarray(m @ centers.T)
 
 
+def _who(r) -> dict:
+    """Author of an evidence post, as stored with it at fetch time (id always; handle when the provider gave one)."""
+    import json as _json
+    try:
+        e = _json.loads(r["engagement_snapshot_json"] or "{}")
+    except (KeyError, IndexError, ValueError, TypeError):
+        e = {}
+    return {"author_id": str(r["author_id"]), "author_handle": e.get("authorUserName")}
+
+
 def build(votes: list, *, cfg: dict, window_label: str, window_kind: str, data_quality: str) -> list[dict]:
     """votes: one row per account (aggregate.votes). Returns 0..5 narratives ranked by supporting accounts."""
     n = cfg["narratives"]
@@ -88,7 +98,8 @@ def build(votes: list, *, cfg: dict, window_label: str, window_kind: str, data_q
         title = " ".join(_URL.sub(" ", rep[0]["author_text"]).split())
         out.append({"title": title[:140], "title_method": "EXACT_EXCERPT_OF_MOST_CENTRAL_POST", "supporting_accounts": int(len(idx)),
                     "share_of_sample_accounts": len(idx) / len(votes), "stance_composition": comp,
-                    "evidence": [{"post_id": r["post_id"], "url": r["source_url"], "stance": r["label"]} for r in rep],
+                    "evidence": [{"post_id": r["post_id"], "url": r["source_url"], "stance": r["label"], **_who(r)} for r in rep],
+                    "supporting_author_ids": sorted({str(votes[i]["author_id"]) for i in idx}),
                     "window_label": window_label, "window_kind": window_kind, "data_quality": data_quality,
                     "fact_check_status": "NOT_CHECKED", "scope": "views in this retrieved sample, not a ranking of all X",
                     "cluster_version": n["cluster_version"], "seed": n["proposed_seed"]})

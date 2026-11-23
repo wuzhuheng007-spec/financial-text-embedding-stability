@@ -32,6 +32,9 @@ def load(path: str | Path | None = None) -> dict:
 
 
 def config_hash(cfg: dict) -> str:
+    """Hash of the config FILE content. Keys starting with "_" are run-time attachments (vocabulary in force,
+    panel scope, identities from the private watch list) and are not part of it."""
+    cfg = {k: v for k, v in cfg.items() if not k.startswith("_")}
     return hashlib.sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 

@@ -9,7 +9,9 @@
   const svgNS = 'http://www.w3.org/2000/svg';
   const s = (tag, a) => { const n = document.createElementNS(svgNS, tag); for (const k in a || {}) n.setAttribute(k, a[k]); return n; };
   const pct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
-  const TABS = ['settings', 'daily', 'views', 'history'];
+  const TABS = ['settings', 'authors', 'daily', 'views', 'history'];
+  const PANEL = {keyword: '关键词样本', watchlist: '重点作者', combined: '合并去重'};
+  let scope = 'keyword', last = null;
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
   const STATE = {bullish: '看多', bearish: '看空', neutral: '中性', UNKNOWN: '未判定'};
   const MODE = {LIVE: '实时留档', BATCH_AFTER_CLOSE: '收盘后批量采集', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
@@ -61,6 +63,8 @@
     cost.append(h('h3', null, '费用与额度'),
       row('今日返回条数（含重复）', used(b.today.returned_posts, b.today.cap_posts)), row('今日费用（美元）', used(b.today.usd, b.today.cap_usd)),
       row('近期采集：条数', used(b.pools.recent.returned_posts, b.pools.recent.cap_posts)), row('近期采集：费用（美元）', used(b.pools.recent.usd, b.pools.recent.cap_usd)),
+      ...(b.sub_pools && b.sub_pools.watchlist ? [row('其中重点作者：条数', used(b.sub_pools.watchlist.returned_posts, b.sub_pools.watchlist.cap_posts)), row('其中重点作者：费用（美元）', used(b.sub_pools.watchlist.usd, b.sub_pools.watchlist.cap_usd)),
+        row('其中关键词检索：条数', used(b.sub_pools.recent.returned_posts, b.sub_pools.recent.cap_posts)), row('其中关键词检索：费用（美元）', used(b.sub_pools.recent.usd, b.sub_pools.recent.cap_usd))] : []),
       row('历史回填：条数', used(b.pools.historical.returned_posts, b.pools.historical.cap_posts)), row('历史回填：费用（美元）', used(b.pools.historical.usd, b.pools.historical.cap_usd)),
       row('滚动 30 天费用（美元）', used(b.rolling.usd, b.rolling.cap_usd)), row('预检累计：条数', used(b.preflight_cumulative.returned_posts, b.preflight_cumulative.cap_posts)),
       row('结果未知而保留额度的请求', b.unknown_held.requests),
@@ -95,9 +99,70 @@
     box.append(row('规则版本', data(r.version)), row('点赞下限（低于此数的帖子不计入样本）', r.min_likes), row('点赞数未知的帖子', r.unknown_likes === 'exclude' ? '不计入样本' : '计入样本'),
       row('粉丝数未知的账号权重', r.unknown_followers_weight));
     box.append(table(['粉丝数下限', '权重'], r.follower_tiers.map(t => [data(t.min_followers.toLocaleString('en-US')), t.weight])));
-    if (r.named_accounts.length) box.append(table(['指定账号', '权重', '是否已填账号名'], r.named_accounts.map(n => [data(n.label), n.weight, n.identified ? '已填写' : '未填写，暂按粉丝数分档'])));
+    if (r.named_accounts.length) box.append(table(['指定账号', '权重', '是否已填账号名'], r.named_accounts.map(n => [data(n.label), n.weight, n.identified ? (n.handle ? data(`@${n.handle}`) : '已填写') : '未填写，暂按粉丝数分档'])));
     box.append(h('p', 'fine-print', '点赞数和粉丝数取自帖子被采集到的那一刻，不是历史数值；发帖后很快被采到的帖子点赞偏少，更容易被过滤。权重只影响占比的计算，分类模型看不到这些数字。'));
     return box;
+  }
+
+  // ---------- watched authors (platform-side monitoring; nothing is followed on X) ----------
+  const IDENT = {SCREENSHOT_HANDLE_PENDING_PROVIDER_ID: '用户名来自截图，稳定编号待首次采集绑定', RESOLVED_FROM_PROVIDER: '已由采集结果绑定稳定编号', AMBIGUOUS_HANDLE_BLOCKED: '用户名有歧义，暂不查询',
+    AUTHOR_MISMATCH: '返回的账号不符，未计入', OWNER_CONFIRMED_HANDLE_PENDING_PROVIDER_ID: '用户名已由你确认，稳定编号待绑定'};
+  const avail = (a, gate) => { const v = a.availability || '';
+    if (v === 'WAITING_FOR_FIRST_COLLECTION') return a.identity_status === 'AMBIGUOUS_HANDLE_BLOCKED' ? '待身份核对' : (gate ? '等待首次采集' : '等待凭据');
+    if (v === 'COLLECTED') return '已采集'; if (v === 'NO_VISIBLE_POSTS_IN_WINDOW') return '该日没有可见帖子';
+    if (v.startsWith('NOT_REACHED')) return '额度或计划未轮到'; if (v.startsWith('QUERY_FAILED')) return '查询失败';
+    if (v.startsWith('AUTHOR_MISMATCH')) return '返回的账号不符'; if (v === 'RETURNED_WITHOUT_USERNAME_ID_NOT_BOUND') return '返回中没有用户名，未绑定'; return v; };
+  const WHYNOT = {BELOW_LIKE_FLOOR: '未计入：点赞低于下限', LIKE_COUNT_UNKNOWN: '未计入：点赞数未知', NO_TARGET_KEYWORD_IN_TEXT: '未计入：正文没有提到任何标的关键词', IRRELEVANT: '未计入：模型判为无关',
+    RETWEET_NO_NEW_TEXT: '未计入：纯转发', IMAGE_OR_LINK_ONLY: '未计入：只有图片或链接'};
+  const COUNTED = {bullish: '已计入：看多', bearish: '已计入：看空', neutral: '已计入：中性'};
+  const counted = x => x.state === 'IN_ANALYSIS' ? COUNTED[x.stance] : x.state === 'WAITING_FOR_CLASSIFICATION' ? '待分类' : (WHYNOT[x.reason] || '未计入：无法判定');
+  function sendWatch(id, enabled, msg) {
+    msg.textContent = '保存中…';
+    fetch(root.dataset.watchUrl, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf()}, body: JSON.stringify({watch_id: id, enabled})})
+      .then(r => { if (!r.ok) { msg.textContent = '保存失败'; return; } load(); }).catch(() => { msg.textContent = '保存失败'; });
+  }
+  function renderAuthors(d) {
+    const p = panel('authors'); if (!p) return;
+    const w = d.watchlist || {}, s = w.summary || {}, gate = d.settings.acquisition_gate.allowed;
+    if (!s.imported) { p.replaceChildren(h('p', 'muted', '还没有导入重点作者名单。')); return; }
+    const msg = h('p', 'fine-print'); msg.setAttribute('role', 'status');
+    const sum = h('div', 'card');
+    sum.append(h('h3', null, '重点作者名单'), row('逻辑作者', s.logical_authors), row('已有用户名', s.with_handle), row('待身份核对', s.blocked_ambiguous), row('可以查询', s.ready_for_queries),
+      row('已绑定稳定编号', s.stable_ids_bound), row('至少采集成功一次', s.collected_at_least_once), row('名单选定时间（UTC）', data(s.selected_at_utc)),
+      h('p', 'fine-print', '这是平台内的只读监测名单：不会在 X 上关注任何人，也不需要你的 X 密码。打开主页链接不等于关注。'),
+      h('p', 'fine-print', '名单在导入当天选定；更早日期的结果属于事后选定的作者面板，不能当作当时已确定的名单。'));
+    const b = d.budget.sub_pools || {}, plan = w.plan, bud = h('div', 'card');
+    bud.append(h('h3', null, '额度分配（近期额度内的划分，不是新增额度）'));
+    if (b.watchlist) bud.append(row('重点作者：今日条数', used(b.watchlist.returned_posts, b.watchlist.cap_posts)), row('关键词检索：今日条数', used(b.recent.returned_posts, b.recent.cap_posts)),
+      row('历史回填：今日条数', used(d.budget.pools.historical.returned_posts, d.budget.pools.historical.cap_posts)));
+    if (plan) bud.append(row('当前冻结计划（纽约日期）', data(plan.ny_date)), row('计划内作者数', plan.authors), row('每位作者最多页数', plan.max_pages_per_author), row('未列入查询的作者', plan.not_asked.length));
+    else bud.append(h('p', 'muted', '还没有冻结的采集计划；以上只是计划分配，不是进度。'));
+    bud.append(h('p', 'fine-print', '每位作者先各取一页，再用剩余额度轮流加深；额度不足时是计划抽样，不代表读到了作者当天的全部发言。'));
+    const name = a => { const box = h('span'); box.append(data(a.display_name)); a.aliases.forEach(x => { const c = chip(x, 'tag-dim'); c.setAttribute('translate', 'no'); box.append(c); }); return box; };
+    const handle = a => { if (a.profile_url) { const l = h('a', 'num', `@${a.handle}`); l.href = a.profile_url; l.target = '_blank'; l.rel = 'noopener noreferrer'; l.setAttribute('translate', 'no'); return l; }
+      const box = h('span'); box.append(h('span', null, '图片上的写法'), data(` ${a.handle_text_in_image || '—'} `), h('span', null, '候选写法'), data(` ${a.handle_candidates.map(c => c.handle).join(' / ') || '—'}`)); return box; };
+    const toggle = a => { const t = h('button', `tag ${a.enabled ? '' : 'tag-dim xs-off'}`, a.enabled ? '监测中' : '已停用'); t.type = 'button'; t.setAttribute('aria-pressed', String(a.enabled));
+      t.addEventListener('click', () => sendWatch(a.watch_id, !a.enabled, msg)); return t; };
+    const lists = a => { const n = h('span', null, a.source_lists.join(' · ')); n.setAttribute('translate', 'no'); return n; };
+    const tbl = table(['作者', '用户名', '来源', '调度优先级', '身份状态', '最近采集结果', '最近发帖时间（UTC）', '已存帖子', '监测'], w.authors.map(a =>
+      [name(a), handle(a), lists(a), a.scheduling_priority, IDENT[a.identity_status] || a.identity_status, avail(a, gate), data(a.last_post_created_at_utc), a.stored_posts, toggle(a)]));
+    const out = [sum, bud, tbl, msg, h('p', 'fine-print', '调度优先级只决定查询的先后，不是统计权重；上榜不会自动获得权重。')];
+    const by = {}; (w.reading || []).forEach(r => { (by[r.watch_id] = by[r.watch_id] || []).push(r); });
+    const read = h('section', 'card section'); read.append(h('h3', null, '作者原文（含未计入分析的帖子）'));
+    if (!Object.keys(by).length) read.append(h('p', 'muted', gate ? '还没有采集到重点作者的帖子。' : '还没有采集到重点作者的帖子：正在等待凭据。'));
+    w.authors.filter(a => by[a.watch_id]).forEach(a => {
+      const posts = by[a.watch_id], any = posts.some(r => r.analysis.some(x => x.state === 'IN_ANALYSIS'));
+      const head = h('div', 'section-head'); head.append(name(a), chip(any ? '有已计入的观点' : '无达标样本', any ? 'run-succeeded' : 'tag-dim')); read.append(head);
+      posts.slice(0, 5).forEach(r => { const item = h('div', 'xs-view'); const t = h('p', 'xs-view-title', r.text); t.setAttribute('translate', 'no'); item.append(t);
+        const meta = h('div', 'fine-print'); meta.append(data(`${r.created_at_utc} `), h('span', null, '采集时点赞'), data(` ${r.likes_at_fetch == null ? '—' : r.likes_at_fetch} `));
+        if (/^https:\/\/(x|twitter)\.com\//.test(r.url || '')) { const l = h('a', 'num', '原帖'); l.href = r.url; l.target = '_blank'; l.rel = 'noopener noreferrer'; meta.append(l); }
+        item.append(meta);
+        r.analysis.forEach(x => { const line = h('div', 'fine-print'); if (x.target_id) line.append(data(`${x.target_id} `)); line.append(h('span', null, counted(x))); item.append(line); });
+        read.append(item); });
+    });
+    read.append(h('p', 'fine-print', '这里显示作者被采集到的原文，不论是否进入占比。未计入、待分类和无关都不算中性；谈别的标的不会被算成对 QQQ 的看法。'));
+    out.push(read);
+    p.replaceChildren(...out);
   }
 
   // ---------- classification queues ----------
@@ -184,11 +249,23 @@
     return wrap;
   }
 
+  function scopeBar() {
+    const bar = h('div', 'xs-chips');
+    Object.keys(PANEL).forEach(k => { const b = h('button', `tag ${k === scope ? '' : 'tag-dim'}`, PANEL[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === scope));
+      b.addEventListener('click', () => { scope = k; if (last) { renderDaily(last); renderViews(last); } }); bar.append(b); });
+    return bar;
+  }
+  const NOTE = {keyword: '关键词样本：由关键词检索采到、且命中词表的帖子。', watchlist: '重点作者：名单内已确认身份的作者的帖子，同样要求正文提到标的并达到点赞下限。',
+    combined: '合并去重：以上两类合并，同一条帖子只算一次，同一个账号只投一票。这是独立的样本版本，不改变另外两个面板的统计口径。'};
   function renderDaily(d) {
     const p = panel('daily');
-    if (!d.has_data) { p.replaceChildren(missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return; }
-    const out = [];
-    const sess = d.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all');
+    const pn = {...((d.panels || {})[scope] || {available: true}), ...(scope === 'keyword' ? {daily: d.daily} : {})};      // the keyword panel's rows are the top-level ones
+    const head = [scopeBar(), h('p', 'fine-print', NOTE[scope])];
+    if (scope !== 'keyword' && !pn.available) { p.replaceChildren(...head, h('p', 'muted', '还没有导入重点作者名单。')); return; }
+    if (scope === 'keyword' ? !d.has_data : !pn.daily.length) { p.replaceChildren(...head, missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return; }
+    const out = head;
+    if (pn.sample_version) { const v = h('p', 'fine-print'); v.append(h('span', null, '样本版本'), data(` ${pn.sample_version}`)); out.push(v); }
+    const sess = pn.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all');
     const closes = {}; d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
     for (const tid of [...new Set(sess.map(r => r.topic_id))]) {
       const rows = sess.filter(r => r.topic_id === tid).sort((a, b) => a.window_label < b.window_label ? -1 : 1);
@@ -209,7 +286,9 @@
 
   function renderViews(d) {
     const p = panel('views');
-    if (!d.narratives.length) { p.replaceChildren(d.has_data ? h('p', 'muted', '当前窗口的证据不足，没有可列出的主要观点。') : missingBox(d, '还没有可归纳的观点。需要以下输入：')); return; }
+    const nar = scope === 'keyword' ? d.narratives : (((d.panels || {})[scope] || {}).narratives || []);
+    if (!nar.length) { p.replaceChildren(h('p', 'fine-print', NOTE[scope]), d.has_data ? h('p', 'muted', '当前窗口的证据不足，没有可列出的主要观点。') : missingBox(d, '还没有可归纳的观点。需要以下输入：')); return; }
+    d = {...d, narratives: nar};
     const latest = {}; d.narratives.forEach(n => { const k = `${n.topic_id}`; if (!latest[k] || n.window_label > latest[k]) latest[k] = n.window_label; });
     const out = [];
     for (const tid of Object.keys(latest)) {
@@ -222,7 +301,7 @@
           h('span', null, STATE.bearish), h('span', 'num', ` ${n.stance_composition.bearish} `));
         item.append(meta);
         const links = h('div', 'fine-print'); links.append(h('span', null, '原帖'));
-        n.evidence.forEach(e => { if (/^https:\/\/(x|twitter)\.com\//.test(e.url || '')) { const a = h('a', 'num', ` ${e.post_id} `); a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; links.append(a); } else links.append(h('span', 'num', ` ${e.post_id} `)); });
+        n.evidence.forEach(e => { if (e.author_handle) links.append(data(` @${e.author_handle}`)); if (/^https:\/\/(x|twitter)\.com\//.test(e.url || '')) { const a = h('a', 'num', ` ${e.post_id} `); a.href = e.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; links.append(a); } else links.append(h('span', 'num', ` ${e.post_id} `)); });
         item.append(links); sec.append(item);
       });
       out.push(sec);
@@ -254,7 +333,8 @@
     const state = document.getElementById('x-stance-state');
     if (d.state === 'READ_ERROR') { state.textContent = '读取失败'; return; }
     state.textContent = d.has_data ? '已有数据' : '尚无数据';
-    renderSettings(d); renderDaily(d); renderViews(d); renderHistory(d);
+    last = d;
+    renderSettings(d); renderAuthors(d); renderDaily(d); renderViews(d); renderHistory(d);
   }).catch(() => { document.getElementById('x-stance-state').textContent = '读取失败'; });
   load();
 })();

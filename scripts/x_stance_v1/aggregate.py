@@ -145,6 +145,13 @@ def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope:
     by_weight = {k: sum(w[r["post_id"]][0] for r in last.values() if r["label"] == k) for k in LABELS} if weighted_on else None
     lead = by_weight if weighted_on else by_author
     state, why = _state(lead, collection_status=collection_status, threshold=threshold, pending=pending, accounts=a)
+    without_top = None
+    if weighted_on and len(last) > 1:                          # sensitivity: drop the single heaviest vote and count again
+        top = max(sorted(last.values(), key=_order), key=lambda r: w[r["post_id"]][0])
+        rest = {k: sum(w[r["post_id"]][0] for r in last.values() if r["label"] == k and r is not top) for k in LABELS}
+        lead_rest = [k for k in LABELS if rest[k] == max(rest.values())]
+        without_top = {"removed_weight": w[top["post_id"]][0], "removed_vote": top["label"], "weighted_votes": rest, "shares": _shares(rest),
+                       "leader": lead_rest[0] if len(lead_rest) == 1 else "TIE", "leader_changes": (lead_rest[0] if len(lead_rest) == 1 else "TIE") != (state if state in LABELS else None) if state in LABELS else None}
     basis = {}
     for wt, b in w.values():
         key = b if b.startswith("NAMED:") or b.startswith("FOLLOWERS") else b
@@ -162,6 +169,7 @@ def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope:
                          "weighted_votes": by_weight, "weight_total": sum(by_weight.values()) if weighted_on else None, "by_basis": basis,
                          "share_difference_weighted_minus_equal": ({k: (None if not a else _shares(by_weight)[k] - _shares(by_author)[k]) for k in LABELS} if weighted_on else None),
                          "largest_single_account_share_of_weight": (max((x[0] for x in w.values()), default=0) / sum(by_weight.values()) if weighted_on and sum(by_weight.values()) else None),
+                         "voting_accounts": a, "without_heaviest_account": without_top,
                          "note": "weights use follower counts as reported at fetch time; the equal-weight shares are in shares_equal_weight"},
            "vote_weights": {pid: x[0] for pid, x in sorted(w.items())}}
     return out

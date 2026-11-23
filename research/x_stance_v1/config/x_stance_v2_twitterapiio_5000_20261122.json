@@ -1,6 +1,6 @@
 {
   "contract_version": "x-keyword-stance-v1-proposed-20261122",
-  "config_version": "x-sentiment-twitterapiio-5000-r3-20261123",
+  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
   "status": "ENGINEERING_READY_AWAITING_PROVIDER_KEY",
   "status_note": "Provider, budgets and cadence are fixed by the 5,000-posts-per-day instruction. No provider call has been made. Parameters marked null are not frozen.",
   "languages": [
@@ -98,16 +98,18 @@
           "label": "口罩哥",
           "handle": null,
           "author_id": null,
-          "weight": 5
+          "weight": 5,
+          "identity_from": "the private watch list: the watched author that carries this label as an alias"
         },
         {
           "label": "白毛女",
           "handle": null,
           "author_id": null,
-          "weight": 5
+          "weight": 5,
+          "identity_from": "the private watch list: the watched author that carries this label as an alias"
         }
       ],
-      "status": "PROPOSED_NUMBERS: the owner asked for higher weights for very large accounts and a 20-like floor; the tier cut-offs and weights are a first proposal and the two named accounts have no handle yet, so they are matched by follower tier only",
+      "status": "PROPOSED_NUMBERS: the owner asked for higher weights for very large accounts and a 20-like floor; the tier cut-offs and weights are a first proposal and are NOT changed by the watch-list import. The two named accounts are identified through the private watch list (identity mapping only).",
       "basis": "likeCount and author.followers as returned by the provider when the post was first fetched; not historical values",
       "known_bias": "a post fetched soon after it was written has had little time to collect likes, so the floor removes late-in-the-day posts more often than early ones, and it is not comparable between the daily batch and the historical back-fill"
     }
@@ -359,7 +361,18 @@
   "allocation": {
     "recent": {
       "max_returned_posts_per_day": 3000,
-      "cost_cap_usd_per_day": "0.45"
+      "cost_cap_usd_per_day": "0.45",
+      "sub_pools": {
+        "watchlist": {
+          "max_returned_posts_per_day": 600,
+          "cost_cap_usd_per_day": "0.09"
+        },
+        "recent": {
+          "max_returned_posts_per_day": 2400,
+          "cost_cap_usd_per_day": "0.36"
+        }
+      },
+      "sub_pools_note": "shares of the same 3,000-post / USD 0.45 recent pool by job type: watched authors 600 / 0.09, keyword search 2,400 / 0.36. They add no allowance. The preflight is charged to the pool and to the daily and rolling caps, not to either share."
     },
     "historical": {
       "max_returned_posts_per_day": 2000,
@@ -373,5 +386,21 @@
     "included_in_daily_and_rolling_caps": true,
     "required_for_metered_job_activation": true,
     "proposed_older_window_days_back": 60
+  },
+  "watchlist": {
+    "enabled": true,
+    "max_pages_per_author": 3,
+    "query": "from:<handle> since_time:<s> until_time:<e>, queryType Latest, one New York calendar date",
+    "keyword_independent_acquisition": true,
+    "analysis_still_requires": [
+      "target keyword in the author's own text",
+      "the like floor",
+      "a label under the active inference identity"
+    ],
+    "identity": "stable author id only from a provider response whose author.userName equals the handle; never from the seed",
+    "extra_profile_endpoint": null,
+    "extra_profile_endpoint_note": "not used; its price would have to be verified and added to the ledger first",
+    "selection": "owner screenshots, imported 2026-11-23; earlier dates are a panel of authors selected afterwards",
+    "seed": "kept in the private store, not in this repository; imported with: cli watch import FILE"
   }
 }

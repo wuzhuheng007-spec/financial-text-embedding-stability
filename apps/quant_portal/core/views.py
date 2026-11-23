@@ -820,6 +820,8 @@ def x_stance_vocabulary(request):
         sys.path.insert(0, str(REPO_ROOT))
     try:
         body = json.loads(request.body.decode("utf-8") or "{}")
+        if not isinstance(body, dict):                       # a JSON list or string is a bad request, not a server error
+            raise ValueError
         changes = body.get("changes")
         if not isinstance(changes, list) or not (1 <= len(changes) <= 20) or not all(isinstance(c, dict) for c in changes):
             raise ValueError
@@ -916,3 +918,39 @@ def news_json(request):
     response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
     response["Cache-Control"] = "private, no-store"
     return response
+
+
+@login_required
+@require_POST
+def x_stance_watch(request):
+    """Owner-only switch for one watched author. It changes the platform's monitoring list only: nothing is followed
+    or unfollowed on X, no provider is contacted, and a plan that is already frozen keeps the authors it has."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("X stance unavailable")
+    import json
+    import sys
+    from datetime import datetime, timezone as dt_timezone
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    try:
+        body = json.loads(request.body.decode("utf-8") or "{}")
+        if not isinstance(body, dict):
+            raise ValueError
+        watch_id, enabled = body.get("watch_id"), body.get("enabled")
+        if not isinstance(watch_id, str) or not (1 <= len(watch_id) <= 40) or not isinstance(enabled, bool):
+            raise ValueError
+    except (ValueError, UnicodeDecodeError):
+        return _no_store(JsonResponse({"result": "REJECTED", "reason": "BAD_REQUEST"}, status=400))
+    from scripts.x_stance_v1 import store as x_store, watchlist as x_watch
+    try:
+        db = x_store.connect()
+        try:
+            row = x_watch.set_enabled(db, watch_id, enabled, datetime.now(dt_timezone.utc))
+        finally:
+            db.close()
+    except x_watch.WatchError as exc:
+        return _no_store(JsonResponse({"result": "REJECTED", "reason": str(exc)}, status=400))
+    except Exception as exc:  # noqa: BLE001 - a store that cannot be written is a status, not a page error
+        return _no_store(JsonResponse({"result": "ERROR", "error_class": type(exc).__name__}, status=503))
+    return _no_store(JsonResponse({"result": "UPDATED", "watch_id": row["watch_id"], "enabled": row["enabled"]}))

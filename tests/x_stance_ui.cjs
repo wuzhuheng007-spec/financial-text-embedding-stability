@@ -27,14 +27,16 @@ class Text { constructor(t) { this.textContent = String(t); } }
 function mount(payload) {
   const root = new El('section'); root.dataset.url = '/x-stance.json';
   const state = new El('span');
-  for (const t of ['settings', 'daily', 'views', 'history']) {
+  root.dataset.watchUrl = '/x-stance/watch/';
+  for (const t of ['settings', 'authors', 'daily', 'views', 'history']) {
     const b = new El('button'); b.dataset.xtab = t; root.append(b);
     const p = new El('div'); p.dataset.xpanel = t; p.hidden = t !== 'settings'; root.append(p);
   }
-  const document = {getElementById: id => id === 'x-stance' ? root : id === 'x-stance-state' ? state : null, createElement: t => new El(t),
+  const document = {getElementById: id => id === 'x-stance' ? root : id === 'x-stance-state' ? state : null, createElement: t => new El(t), querySelector: () => ({value: 'csrf-token-of-the-page'}),
     createElementNS: (_, t) => new El(t), createTextNode: t => new Text(t)};
   const done = new Promise(res => {
-    const fetch = async () => ({ok: true, json: async () => { setTimeout(res, 0); return payload; }});
+    const fetch = async (url, opt) => { if (opt && opt.method === 'POST') { (payload.__posts = payload.__posts || []).push({url, body: JSON.parse(opt.body), headers: opt.headers}); return {ok: true, json: async () => ({})}; }
+      return {ok: true, json: async () => { setTimeout(res, 0); return payload; }}; };
     vm.runInNewContext(src, {document, fetch, Node: El, Set, Math, Object, String, console});
   });
   return done.then(() => ({root, state, panel: n => root.querySelector(`[data-xpanel="${n}"]`)}));
@@ -171,4 +173,84 @@ test('account rules, the two queues and weighted next to equal-weight shares are
   d.account_rules = {enabled: false, version: null};
   ui = await mount(d);
   assert.ok(texts(ui.panel('settings')).join('|').includes('未启用，每个账号按一票计算。') && !texts(ui.panel('daily')).join('|').includes('占比按账号权重计算'));
+});
+
+// Watched authors. The payload is synthetic: invented handles, invented posts.
+function watchPayload() {
+  const d = JSON.parse(JSON.stringify(EMPTY));
+  const author = (id, name, handle, over) => ({watch_id: id, display_name: name, handle, profile_url: handle ? `https://x.com/${handle}` : null, aliases: [], source_lists: ['总榜'], scheduling_priority: 2,
+    enabled: true, identity_status: 'SCREENSHOT_HANDLE_PENDING_PROVIDER_ID', availability: 'WAITING_FOR_FIRST_COLLECTION', last_success_at_utc: null, last_post_created_at_utc: null, last_checked_ny_date: null,
+    handle_candidates: [], handle_history: [], id_bound: false, ready_for_queries: true, handle_text_in_image: null, stored_posts: 0, weight_override: null, ...over});
+  d.watchlist = {summary: {imported: true, logical_authors: 4, with_handle: 3, blocked_ambiguous: 1, ready_for_queries: 3, stable_ids_bound: 1, collected_at_least_once: 1, enabled: 4,
+      selected_at_utc: '2026-11-23T00:10:00Z', suballocation: {}}, plan: null, reading: [],
+    authors: [author('watch-01', '作者甲', 'Synth_One', {aliases: ['口罩哥'], scheduling_priority: 1, identity_status: 'RESOLVED_FROM_PROVIDER', availability: 'COLLECTED', id_bound: true, stored_posts: 3,
+        last_post_created_at_utc: '2026-11-22T15:00:00Z'}),
+      author('watch-02', '作者乙', 'Synth_Two', {availability: 'NO_VISIBLE_POSTS_IN_WINDOW'}), author('watch-03', '作者丙', 'Synth_Three', {enabled: false}),
+      author('watch-90', '作者丁', null, {identity_status: 'AMBIGUOUS_HANDLE_BLOCKED', ready_for_queries: false, handle_text_in_image: 'AmbigCandidate', handle_candidates: [{handle: 'AmbigCandidat'}]})]};
+  return d;
+}
+
+test('watched authors: list, ambiguous author, switches and the three panels with no data', async () => {
+  const d = watchPayload();
+  const ui = await mount(d);
+  const t = texts(ui.panel('authors')).join('|');
+  for (const need of ['重点作者名单', '不会在 X 上关注任何人', '事后选定的作者面板', '额度分配（近期额度内的划分，不是新增额度）', '0 / 600', '0 / 2400', '0 / 2000', '还没有冻结的采集计划；以上只是计划分配，不是进度。',
+    '已由采集结果绑定稳定编号', '用户名来自截图，稳定编号待首次采集绑定', '用户名有歧义，暂不查询', '已采集', '该日没有可见帖子', '等待凭据', '待身份核对', '图片上的写法', '候选写法', '监测中', '已停用',
+    '调度优先级只决定查询的先后，不是统计权重', '还没有采集到重点作者的帖子：正在等待凭据。']) assert.ok(t.includes(need), need);
+  assert.ok(!t.includes('已关注') && !/\d+(\.\d+)?%/.test(t));                                 // nothing claims a follow, and no share is shown for authors without data
+  const links = ui.panel('authors').all(e => e.tagName === 'a');
+  assert.deepStrictEqual(links.map(a => a.href), ['https://x.com/Synth_One', 'https://x.com/Synth_Two', 'https://x.com/Synth_Three']);     // the ambiguous author has no link to open
+  const marked = ui.panel('authors').all(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
+  for (const need of ['作者甲', '@Synth_One', 'AmbigCandidate', 'AmbigCandidat', '总榜']) assert.ok(marked.includes(need), need);        // names, handles and list names are data
+  assert.ok(ui.panel('authors').all(e => (e.className || '').includes('tag-dim') && e.textContent === '口罩哥').length === 1);             // the alias is shown with its author
+  const off = ui.panel('authors').all(e => e.tagName === 'button' && e.textContent === '已停用')[0];
+  off.listeners.click();
+  await new Promise(r => setTimeout(r, 5));
+  assert.deepStrictEqual(d.__posts.map(x => [x.url, x.body]), [['/x-stance/watch/', {watch_id: 'watch-03', enabled: true}]]);
+  // panel switch on the daily tab: no list data yet -> the missing inputs, never rows
+  const btn = name => ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === name)[0];
+  assert.ok(btn('关键词样本') && btn('重点作者') && btn('合并去重') && btn('关键词样本').attrs['aria-pressed'] === 'true');
+  btn('重点作者').listeners.click();
+  const dt = texts(ui.panel('daily')).join('|');
+  assert.ok(dt.includes('还没有导入重点作者名单。') && rowsOf(ui.panel('daily')) === 0);          // the EMPTY fixture has no list: the panel says so
+  const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
+  assert.deepStrictEqual(left, []);
+});
+
+test('watched authors: raw posts with the reason each is or is not counted, and separate panel rows', async () => {
+  const d = watchPayload();
+  d.settings.acquisition_gate = {allowed: true, reasons: [], key_env_name: 'TWITTERAPI_IO_API_KEY'};
+  d.watchlist.plan = {ny_date: '2026-11-22', frozen_at_utc: '2026-11-23T05:30:00Z', authors: 3, not_asked: ['watch-90'], max_pages_per_author: 3, posts_budget: 600, first_round_max_posts: 60};
+  const post = (id, text, likes, analysis) => ({watch_id: 'watch-01', post_id: id, created_at_utc: '2026-11-22T15:00:00Z', first_seen_at_utc: '2026-11-23T05:31:00Z', kind: 'original', lang: 'zh', text,
+    url: `https://x.com/Synth_One/status/${id}`, likes_at_fetch: likes, sources: ['watch:watch-01'], analysis});
+  const A = (state, reason, stance) => [{topic_id: reason === 'NO_TARGET_KEYWORD_IN_TEXT' ? null : 'qqq', target_id: reason === 'NO_TARGET_KEYWORD_IN_TEXT' ? null : 'QQQ', state, reason, stance}];
+  d.watchlist.reading = [post('11', '纳指100这里我继续加仓', 240, A('IN_ANALYSIS', null, 'bullish')), post('12', '随口一说 纳指100', 3, A('NOT_IN_ANALYSIS', 'BELOW_LIKE_FLOOR', null)),
+    post('13', 'BTC 今天很强', 900, A('NOT_IN_ANALYSIS', 'NO_TARGET_KEYWORD_IN_TEXT', null)), post('14', '纳指100 怎么看', 80, A('WAITING_FOR_CLASSIFICATION', null, null)),
+    post('15', '纳指100 今天吃了火锅', 50, A('NOT_IN_ANALYSIS', 'IRRELEVANT', null)), post('16', '第六条不显示', 50, A('WAITING_FOR_CLASSIFICATION', null, null))];
+  const dayRow = (acc, sh) => ({window_kind: 'session', window_label: '2026-11-20', topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE', shares: sh, shares_equal_weight: sh,
+    accounts_total: acc, unjudged_total: 0, state: acc ? 'bullish' : 'UNKNOWN', state_reason: acc ? null : 'NO_VALID_ACCOUNTS', classification: {sample_accounts: acc, share_done: 1, filtered_low_likes: 1}});
+  d.has_data = true;
+  d.daily = [dayRow(40, {bullish: 0.5, bearish: 0.25, neutral: 0.25})];
+  d.panels.watchlist = {sample_version: 'vocab-x@rules-y+watchlist:list-1', available: true, classification: {matched_pairs: 4}, narratives: [], daily: [dayRow(3, {bullish: 1, bearish: 0, neutral: 0})]};
+  d.panels.combined = {sample_version: 'vocab-x@rules-y+combined:list-1', available: true, classification: {matched_pairs: 44}, narratives: [], daily: [dayRow(42, {bullish: 0.6, bearish: 0.2, neutral: 0.2})]};
+  const ui = await mount(d);
+  const t = texts(ui.panel('authors')).join('|');
+  for (const need of ['已计入：看多', '未计入：点赞低于下限', '未计入：正文没有提到任何标的关键词', '待分类', '未计入：模型判为无关', '有已计入的观点', '未计入、待分类和无关都不算中性', '等待首次采集']) assert.ok(t.includes(need), need);
+  assert.ok(!t.includes('等待凭据') && !t.includes('未计入：中性'));
+  const shown = ui.panel('authors').all(e => (e.className || '') === 'xs-view-title').map(e => e.textContent);
+  assert.deepStrictEqual(shown, ['纳指100这里我继续加仓', '随口一说 纳指100', 'BTC 今天很强', '纳指100 怎么看', '纳指100 今天吃了火锅']);      // five at most; the low-like post and the BTC post are still readable
+  assert.ok(ui.panel('authors').all(e => e.tagName === 'a').every(a => a.href.startsWith('https://x.com/')));
+  const cells = () => ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-20')).all(e => e.tagName === 'td').map(c => c.textContent);
+  const click = name => ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === name)[0].listeners.click();
+  assert.deepStrictEqual([cells()[2], cells()[5]], ['50.0%', '40']);
+  click('重点作者');
+  assert.deepStrictEqual([cells()[2], cells()[5]], ['100.0%', '3']);
+  assert.ok(ui.root.all(e => e.attrs.translate === 'no').some(e => e.textContent.includes('+watchlist:list-1')));
+  click('合并去重');
+  assert.deepStrictEqual([cells()[2], cells()[5]], ['60.0%', '42']);                              // each panel shows its own denominator
+  d.watchlist.reading = d.watchlist.reading.filter(r => r.post_id !== '11');
+  const ui2 = await mount(d);
+  assert.ok(texts(ui2.panel('authors')).join('|').includes('无达标样本') && !texts(ui2.panel('authors')).join('|').includes('有已计入的观点'));    // "no qualifying sample", never "neutral"
+  const left = [...new Set(texts(ui2.root).concat(texts(ui.root)).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
+  assert.deepStrictEqual(left, []);
 });

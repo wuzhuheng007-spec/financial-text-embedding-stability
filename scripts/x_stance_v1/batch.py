@@ -22,7 +22,7 @@ import hashlib
 import json
 from datetime import date, datetime, timedelta, timezone
 
-from . import config as cfgmod, provider, store, vocab
+from . import config as cfgmod, provider, store, vocab, watchlist
 from .ledger import JobBudget, Ledger, get_meta, set_meta
 from .sessions import NY, calendar_window
 
@@ -67,10 +67,39 @@ def plan_recent(db, cfg: dict, d: date, now: datetime) -> dict:
     n, page = cfg["acquisition"]["proposed_recent_slices_per_day"], cfg["quote"]["documented_max_posts_per_page"]
     units = [{"query_hash": q["query_hash"], "topic_id": q["topic_id"], "lang": q["lang"], "slice": i, "start": s, "end": e}
              for i, (s, e) in enumerate(day_slices(d, n)) for q in queries]
-    depth = max(1, cfg["allocation"]["recent"]["max_returned_posts_per_day"] // page // max(1, len(units)))
-    return _freeze(db, "recent", d.isoformat(), {"job": "recent", "ny_date": d.isoformat(), "vocab_version": cfg["topic_vocabulary_version"], "slices": n,
-                                                 "pages_per_unit": depth, "order": "depth, slice, query", "units": units,
-                                                 "sampling_mode": "PLANNED_SAMPLE", "max_posts_if_every_page_is_full": depth * len(units) * page}, now)
+    sub_pools = cfg["allocation"]["recent"].get("sub_pools") or {}
+    kw_posts = (sub_pools.get("recent") or {}).get("max_returned_posts_per_day") or cfg["allocation"]["recent"]["max_returned_posts_per_day"]
+    depth = max(1, kw_posts // page // max(1, len(units)))
+    plan = {"job": "recent", "ny_date": d.isoformat(), "vocab_version": cfg["topic_vocabulary_version"], "slices": n,
+            "pages_per_unit": depth, "order": "depth, slice, query", "units": units,
+            "sampling_mode": "PLANNED_SAMPLE", "max_posts_if_every_page_is_full": depth * len(units) * page}
+    w = watch_plan(db, cfg, d)
+    if w:                                                         # frozen with the same plan: who is asked, in what order, how deep
+        plan["watch"] = w
+        plan["keyword_posts_budget"] = kw_posts
+    return _freeze(db, "recent", d.isoformat(), plan, now)
+
+
+def watch_plan(db, cfg: dict, d: date) -> dict | None:
+    """Author queries of one New York date: one whole-day window per author that may be asked, in scheduling order
+    (priority, then watch id). The walk is breadth first - every author gets a first page before anyone gets a
+    second - and the watched-author share of the recent pool stops it. Not a promise that everything an author
+    wrote that day is read."""
+    wl = (cfg.get("watchlist") or {})
+    if not wl.get("enabled", True) or not watchlist.exists(db):
+        return None
+    queries = watchlist.register_queries(db, cfg)
+    if not queries:
+        return None
+    a, b = (int(x.timestamp()) for x in calendar_window(d))
+    page = cfg["quote"]["documented_max_posts_per_page"]
+    share = ((cfg["allocation"]["recent"].get("sub_pools") or {}).get("watchlist") or {}).get("max_returned_posts_per_day")
+    blocked = [x["watch_id"] for x in watchlist.authors(db) if x["enabled"] and not watchlist.ready(x)]
+    return {"job_type": "watchlist", "watchlist_version_tag": watchlist.version_tag(db), "window": [a, b], "max_pages_per_author": int(wl.get("max_pages_per_author", 3)),
+            "order": "depth, priority, watch id", "posts_budget": share, "first_round_max_posts": len(queries) * page,
+            "units": [{"query_hash": q["query_hash"], "topic_id": q["topic_id"], "lang": "any", "watch_id": q["watch_id"], "handle": q["handle"],
+                       "scheduling_priority": q["scheduling_priority"], "start": a, "end": b, "ny_date": d.isoformat()} for q in queries],
+            "not_asked": blocked, "sampling_mode": "PLANNED_SAMPLE", "keyword_independent": True}
 
 
 def history_range(db, cfg: dict, anchor: datetime) -> dict:
@@ -151,9 +180,60 @@ def run_recent(db, cfg: dict, transport, anchor: datetime, *, clock=None, ledger
     d = last_completed_ny_date(anchor)
     plan = plan_recent(db, cfg, d, anchor)
     history_range(db, cfg, anchor)                             # freezes the historical range the first time anything runs
+    out = {"job": "recent", "ny_date": d.isoformat(), "vocab_version": plan["vocab_version"], "plan_sha256": plan["sha256"], "plan_reused": plan["reused"]}
+    w = plan.get("watch")
+    if w:                                                         # the watched authors first: a small, bounded share of the same pool
+        wcol = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent", job_type="watchlist"), transport=transport, mode=provider.BATCH, clock=clock)
+        wsteps = ((depth, u) for depth in range(1, w["max_pages_per_author"] + 1) for u in w["units"])
+        res = _walk(wcol, db, wsteps)
+        units = [{**u, "run_id": wcol._run_id(u["query_hash"], u["start"], u["end"])} for u in w["units"]]
+        out["watch"] = {**res, "authors_asked": len(units), "not_asked": w["not_asked"], "identity": watchlist.resolve(db, units, clock())}
     col = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent"), transport=transport, mode=provider.BATCH, clock=clock)
     steps = ((depth, u) for depth in range(1, plan["pages_per_unit"] + 1) for u in plan["units"])
-    return {"job": "recent", "ny_date": d.isoformat(), "vocab_version": plan["vocab_version"], "plan_sha256": plan["sha256"], "plan_reused": plan["reused"], **_walk(col, db, steps)}
+    return {**out, **_walk(col, db, steps)}
+
+
+def verify_candidates(db, cfg: dict, transport, watch_id: str, anchor: datetime, *, clock=None, ledger: Ledger | None = None, days: int = 7) -> dict:
+    """For an author whose handle is ambiguous: ONE page per recorded spelling over the last `days` completed New
+    York dates, charged to the watched-author share like any other author query. What each spelling returned
+    (author id, user name, display name, profile text) is stored as evidence. Nothing is decided here: the handle
+    stays blocked until the owner confirms one spelling. A similar display name alone settles nothing."""
+    clock = clock or utc_now
+    ledger = ledger or Ledger(db, cfg, clock=clock)
+    a = watchlist.get(db, watch_id)
+    if a["identity_status"] not in watchlist.BLOCKED:
+        raise watchlist.WatchError("NOT_AMBIGUOUS")
+    last = last_completed_ny_date(anchor)
+    s, e = int(calendar_window(last - timedelta(days=days - 1))[0].timestamp()), int(calendar_window(last)[1].timestamp())
+    spellings = [c["handle"] for c in a["handle_candidates"]] + ([a["provenance"]["handle_text_in_image"]] if (a["provenance"] or {}).get("handle_text_in_image") else [])
+    col = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent", job_type="watchlist"), transport=transport, mode=provider.BATCH, clock=clock)
+    evidence, requests = [], 0
+    for h in dict.fromkeys(spellings):
+        qh = store.sha(f"{cfg['provider_candidate']}|watchcheck|{watch_id}|from:{h}")
+        db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, cfg["provider_candidate"], "watchcheck:" + watch_id, "any", "watchcheck", f"from:{h}"))
+        item = {"spelling": h, "status": None, "returned": 0, "authors": []}
+        try:
+            res = col.collect_pages({"query_hash": qh, "topic_id": "watchcheck:" + watch_id, "lang": "any", "query": f"from:{h}"}, s, e, 1)
+            item["status"], item["returned"] = res["status"], res["returned"]
+        except provider.StopAll as stop:
+            item["status"] = "STOPPED:" + stop.reason
+            evidence.append(item); break
+        ws, we = store.iso(datetime.fromtimestamp(s, timezone.utc)), store.iso(datetime.fromtimestamp(e, timezone.utc))
+        page = db.execute("SELECT response_json FROM x_page_cache WHERE query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=''", (qh, ws, we)).fetchone()
+        seen = {}
+        for t in (json.loads(page[0]).get("tweets") or []) if page else []:
+            au = t.get("author") or {}
+            if au.get("id") and str(au["id"]) not in seen:
+                seen[str(au["id"])] = {"author_id": str(au["id"]), "user_name": au.get("userName"), "display_name": au.get("name"), "profile_text": (au.get("description") or "")[:300],
+                                       "user_name_equals_spelling": watchlist.norm(au.get("userName")) == watchlist.norm(h)}
+        item["authors"] = list(seen.values())
+        evidence.append(item)
+    requests = col.budget.requests
+    db.execute("UPDATE x_watch_authors SET candidate_evidence_json=?, updated_at_utc=? WHERE watch_id=?",
+               (json.dumps({"checked_at_utc": store.iso(clock()), "window_days": days, "spellings": evidence}, ensure_ascii=False), store.iso(clock()), watch_id))
+    db.commit()
+    return {"status": "EVIDENCE_STORED_HANDLE_STILL_BLOCKED", "watch_id": watch_id, "requests": requests, "spellings": evidence, "identity_status": watchlist.get(db, watch_id)["identity_status"],
+            "next": "the owner confirms one spelling with: watch confirm-handle ID HANDLE", "usage": ledger.usage(clock())}
 
 
 def run_history(db, cfg: dict, transport, anchor: datetime, *, clock=None, ledger: Ledger | None = None) -> dict:

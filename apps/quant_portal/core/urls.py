@@ -10,6 +10,7 @@ urlpatterns = [
     path("news.json", views.news_json, name="news_json"),
     path("x-stance.json", views.x_stance_json, name="x_stance_json"),
     path("x-stance/vocabulary/", views.x_stance_vocabulary, name="x_stance_vocabulary"),
+    path("x-stance/watch/", views.x_stance_watch, name="x_stance_watch"),
     path("research/registry.json", views.research_registry_json, name="research_registry_json"),
     path("research/runs/", views.research_run_create, name="research_run_create"),
     path("research/runs/<str:run_id>.json", views.research_run_json, name="research_run_json"),

@@ -113,9 +113,18 @@ def map_sample(db, cfg: dict) -> dict:
     """Fill x_post_topics for this config's SAMPLE version (vocabulary + account rules). A post the account rules
     leave out still gets a row, marked FILTERED_*, so the page can say how many were left out and why; such a row
     is never classified and never reaches an aggregate."""
-    from . import sample
-    ver, n = sample.sample_version(cfg), {"posts": 0, "pairs": 0, "no_topic": 0, "filtered": 0, "sample_version": sample.sample_version(cfg)}
-    for p in db.execute("SELECT provider, post_id, author_text, kind, engagement_snapshot_json FROM x_posts").fetchall():
+    from . import sample, watchlist
+    scope = sample.scope_of(cfg)
+    ver, n = sample.sample_version(cfg), {"posts": 0, "pairs": 0, "no_topic": 0, "filtered": 0, "sample_version": sample.sample_version(cfg), "scope": scope, "outside_scope": 0}
+    have_list = watchlist.exists(db)
+    only_watch = watchlist.watch_only_posts(db) if have_list else set()      # in the store only because an author query returned them
+    watched = set(watchlist.bound_ids(db)) if have_list else set()           # authors whose id a provider response has confirmed
+    for p in db.execute("SELECT provider, post_id, author_id, author_text, kind, engagement_snapshot_json FROM x_posts").fetchall():
+        key = (p["provider"], p["post_id"])
+        in_kw, in_watch = key not in only_watch, p["author_id"] in watched
+        if (scope == "keyword" and not in_kw) or (scope == "watchlist" and not in_watch) or (scope == "combined" and not (in_kw or in_watch)):
+            n["outside_scope"] += 1
+            continue
         n["posts"] += 1
         hits = match_topics(p["author_text"], cfg)
         if not hits:

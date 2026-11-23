@@ -1,9 +1,11 @@
 #!/bin/bash
 # X stance study jobs (one-off containers; the quote collector is NOT started and is not touched).
 # Usage: quant-x-stance.sh status|usage|plan|migrate|queue|preflight|daily|classify [N] [auto|recent|history] [SECONDS]|
+#                          watch show|import FILE|enable ID|disable ID|confirm-handle ID HANDLE|verify-candidate ID|
 #                          classify-recent|classify-history|smoke-model|build|pipeline|vocab ...|export-pending FILE|import-results FILE
 #   preflight    bounded live check: at most 200 returned posts / USD 0.03 in total, charged to the normal pools
-#   daily        collection only (recent sample + historical queue); refuses until a current preflight receipt passes
+#   daily        collection only (watched authors, then keyword sample, then historical queue); refuses until a current
+#                preflight receipt passes. Watched authors and keywords SHARE the recent pool (600 + 2,400 of 3,000).
 #   classify N [QUEUE] [SECONDS]  local CPU model on up to N pending items within a time budget; starts the worker, stops it afterwards
 #   classify-recent    the recent queue only (newest sample day first)
 #   classify-history   the historical queue only; does nothing while the recent queue still has work
@@ -41,6 +43,12 @@ HISTORY_LIMIT=${X_HISTORY_LIMIT:-2000}; HISTORY_SECONDS=${X_HISTORY_SECONDS:-108
 
 case "$CMD" in
   status|usage|plan|migrate|queue) with_lock local_job "$CMD" ;;
+  watch)                     # the watched-author list. import reads a file from /srv/quant/x_offload (root only); verify-candidate is the only form that can reach the provider
+    case "${1:-show}" in
+      import)           f=$(basename "${2:?file name}"); with_lock offload_job watch import "/offload/$f" ;;
+      verify-candidate) with_lock net_job watch verify-candidate "${2:?watch id}" ;;
+      *)                with_lock local_job watch "$@" ;;
+    esac ;;
   export-pending)            f=$(basename "${1:?file name}"); shift; with_lock offload_job export-pending "/offload/$f" "$@" ;;
   import-results)            f=$(basename "${1:?file name}"); with_lock offload_job import-results "/offload/$f" ;;
   classify-recent)           model_step classify --queue recent --limit "${1:-$RECENT_LIMIT}" --max-seconds "${2:-$RECENT_SECONDS}" ;;

@@ -31,6 +31,14 @@ CREATE TABLE IF NOT EXISTS x_signal_snapshots(
   input_hash TEXT NOT NULL, state TEXT NOT NULL, formal INTEGER NOT NULL, first_committed_at_utc TEXT, observed_at_utc TEXT NOT NULL,
   supersedes TEXT, change_reason TEXT NOT NULL, timing_status TEXT NOT NULL, payload_json TEXT NOT NULL, UNIQUE(series_key, revision));
 CREATE INDEX IF NOT EXISTS x_signal_snapshots_series ON x_signal_snapshots(series_key, revision);
+CREATE TABLE IF NOT EXISTS x_panel_sentiment(
+  scope TEXT NOT NULL, window_kind TEXT NOT NULL, window_label TEXT NOT NULL, window_start_utc TEXT NOT NULL, window_end_utc TEXT NOT NULL,
+  topic_id TEXT NOT NULL, target_id TEXT NOT NULL, lang_scope TEXT NOT NULL, mode TEXT NOT NULL, payload_json TEXT NOT NULL,
+  state TEXT NOT NULL, signal_committed_at_utc TEXT NOT NULL,
+  PRIMARY KEY(scope, window_kind, window_label, topic_id, target_id, lang_scope, mode));
+CREATE TABLE IF NOT EXISTS x_panel_narratives(
+  scope TEXT NOT NULL, window_kind TEXT NOT NULL, window_label TEXT NOT NULL, topic_id TEXT NOT NULL, target_id TEXT NOT NULL,
+  rank INTEGER NOT NULL, payload_json TEXT NOT NULL, PRIMARY KEY(scope, window_kind, window_label, topic_id, target_id, rank));
 """
 EMPTY_ACTIVATION = {"model_id": None, "model_revision": None, "prompt_hash": None, "config_hash": None, "vocab_version": None,
                     "identity": None, "sample_version": None, "rules_version": None}
@@ -44,11 +52,14 @@ def activation(cfg: dict) -> dict:
     c = cfg["classifier"]
     pv = c.get("prompt_version")
     pinned = bool(c.get("model_id") and c.get("immutable_revision") and pv in stance.PROMPTS)
-    return {"model_id": c.get("model_id"), "model_revision": c.get("immutable_revision"),
-            "prompt_hash": stance.prompt_hash(pv) if pv in stance.PROMPTS else None,
-            "config_hash": store.sha(json.dumps({k: c.get(k) for k in ("model_id", "immutable_revision", "prompt_version", "temperature", "generation", "schema_version")}, sort_keys=True)),
-            "identity": stance.identity_hash(cfg) if pinned else None,          # the complete inference identity; labels are matched on this
-            "vocab_version": cfg["topic_vocabulary_version"], "sample_version": sample.sample_version(cfg), "rules_version": sample.rules_version(cfg)}
+    act = {"model_id": c.get("model_id"), "model_revision": c.get("immutable_revision"),
+           "prompt_hash": stance.prompt_hash(pv) if pv in stance.PROMPTS else None,
+           "config_hash": store.sha(json.dumps({k: c.get(k) for k in ("model_id", "immutable_revision", "prompt_version", "temperature", "generation", "schema_version")}, sort_keys=True)),
+           "identity": stance.identity_hash(cfg) if pinned else None,          # the complete inference identity; labels are matched on this
+           "vocab_version": cfg["topic_vocabulary_version"], "sample_version": sample.sample_version(cfg), "rules_version": sample.rules_version(cfg)}
+    if sample.scope_of(cfg) != "keyword":                          # watched-author and combined panels say which panel they are
+        act["scope"] = sample.scope_of(cfg)
+    return act
 
 
 def series_key(window_kind, window_label, topic_id, target_id, lang_scope, mode, vocab_version) -> str:
@@ -121,6 +132,12 @@ def commit(db, *, window_kind: str, window_label: str, start: datetime, end: dat
 
 def _materialize(db, payload: dict, row, now_iso: str) -> None:
     view = {**payload, "materialized_at_utc": now_iso, "last_checked_at_utc": now_iso}
+    scope = (payload.get("activation") or {}).get("scope")
+    if scope:                                                      # the keyword panel keeps x_daily_sentiment to itself
+        db.execute("INSERT OR REPLACE INTO x_panel_sentiment VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                   (scope, payload["window_kind"], payload["window_label"], payload["window_start_utc"], payload["window_end_utc"], payload["topic_id"], payload["target_id"],
+                    payload["lang_scope"], payload["mode"], json.dumps(view, sort_keys=True, ensure_ascii=False), payload["state"], payload["first_committed_at_utc"] or ""))
+        return
     db.execute("INSERT OR REPLACE INTO x_daily_sentiment VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                (payload["window_kind"], payload["window_label"], payload["window_start_utc"], payload["window_end_utc"], payload["topic_id"], payload["target_id"],
                 payload["lang_scope"], payload["mode"], json.dumps(view, sort_keys=True, ensure_ascii=False), payload["state"], payload["first_committed_at_utc"] or ""))

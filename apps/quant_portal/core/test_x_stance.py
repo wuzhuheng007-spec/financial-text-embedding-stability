@@ -80,6 +80,7 @@ class XStanceJsonTests(TestCase):
         self.client.force_login(self.owner)
         html = self.client.get(reverse("dashboard")).content.decode()
         self.assertIn('id="x-stance"', html); self.assertIn("core/x_stance_v1.js", html)
+        self.assertIn('data-xtab="authors"', html); self.assertIn('data-xpanel="authors"', html); self.assertIn(reverse("x_stance_watch"), html)
         for tab in ("settings", "daily", "views", "history"):
             self.assertIn(f'data-xtab="{tab}"', html)
 
@@ -118,3 +119,58 @@ class XStanceJsonTests(TestCase):
             self.assertEqual(r.json()["reason"], reason)
         self.client.force_login(self.owner)
         self.assertIsNone(self.client.get(reverse("x_stance_json")).json()["vocabulary"]["pending"])
+
+    # ---------- watched authors ----------
+    def watch(self, body, user=None, csrf=False):
+        from django.test import Client
+        c = Client(enforce_csrf_checks=csrf)
+        c.force_login(user or self.owner)
+        return c.post(reverse("x_stance_watch"), data=json.dumps(body), content_type="application/json")
+
+    def seed_list(self):
+        from datetime import datetime, timezone
+        from scripts.x_stance_v1 import store, watchlist
+        acc = [{"watch_id": f"watch-{i:02d}", "display_name_from_image": f"Author {i}", "handle": f"Synth_User{i}", "source_lists": ["list-a"], "requested_monitoring": True,
+                "source_type": "USER_PROVIDED_SCREENSHOT", "stable_author_id": None, "identity_status": "SCREENSHOT_HANDLE_PENDING_PROVIDER_ID", "scheduling_priority": 2, "aliases": [], "handle_candidates": []}
+               for i in (1, 2)]
+        acc.append({"watch_id": "watch-90", "display_name_from_image": "Ambiguous Person", "handle": None, "source_lists": ["list-b"], "requested_monitoring": True, "source_type": "USER_PROVIDED_SCREENSHOT",
+                    "stable_author_id": None, "identity_status": "AMBIGUOUS_HANDLE_BLOCKED", "scheduling_priority": 2, "aliases": [], "handle_candidates": [{"handle": "AmbigCandidat"}], "handle_text_in_image": "AmbigCandidate"})
+        db = store.connect(self.db)
+        watchlist.import_seed(db, {"schema_version": "x-platform-watchlist-seed-v1", "watchlist_version": "synthetic-list-1", "accounts": acc}, datetime(2026, 11, 23, tzinfo=timezone.utc))
+        db.close()
+
+    def test_watch_switch_is_owner_only_post_only_and_needs_csrf(self):
+        self.seed_list()
+        self.assertEqual(self.watch({"watch_id": "watch-01", "enabled": False}, user=self.other).status_code, 404)
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.get(reverse("x_stance_watch")).status_code, 405)
+        self.assertEqual(self.watch({"watch_id": "watch-01", "enabled": False}, csrf=True).status_code, 403)
+        self.assertTrue(all(a["enabled"] for a in self.get().json()["watchlist"]["authors"]))      # none of the refused requests changed anything
+
+    def test_the_page_lists_the_authors_and_a_switch_changes_only_the_platform_list(self):
+        self.seed_list()
+        d = self.get().json()
+        s = d["watchlist"]["summary"]
+        self.assertEqual((s["logical_authors"], s["ready_for_queries"], s["blocked_ambiguous"], s["stable_ids_bound"], s["collected_at_least_once"]), (3, 2, 1, 0, 0))
+        blocked = [a for a in d["watchlist"]["authors"] if a["identity_status"] == "AMBIGUOUS_HANDLE_BLOCKED"][0]
+        self.assertIsNone(blocked["profile_url"]); self.assertEqual(blocked["handle_text_in_image"], "AmbigCandidate")
+        self.assertEqual(d["budget"]["sub_pools"]["watchlist"]["cap_posts"], 600); self.assertEqual(d["budget"]["sub_pools"]["recent"]["cap_posts"], 2400)
+        self.assertTrue(d["panels"]["watchlist"]["available"]); self.assertEqual(d["panels"]["watchlist"]["daily"], []); self.assertEqual(d["watchlist"]["reading"], [])
+        r = self.watch({"watch_id": "watch-02", "enabled": False})
+        self.assertEqual((r.status_code, r.json()["result"], r.json()["enabled"], r["Cache-Control"]), (200, "UPDATED", False, "private, no-store"))
+        d = self.get().json()
+        self.assertEqual({a["watch_id"]: a["enabled"] for a in d["watchlist"]["authors"]}, {"watch-01": True, "watch-02": False, "watch-90": True})
+        self.assertEqual(d["watchlist"]["summary"]["ready_for_queries"], 1)
+        from scripts.x_stance_v1 import store
+        db = store.connect(self.db, readonly=True)
+        self.assertEqual(db.execute("SELECT count(*) FROM x_cost_ledger").fetchone()[0], 0)          # no provider was contacted
+        db.close()
+
+    def test_watch_switch_rejects_unknown_authors_and_bad_requests(self):
+        self.seed_list()
+        self.assertEqual(self.watch({"watch_id": "watch-55", "enabled": False}).json()["reason"], "UNKNOWN_WATCH_ID")
+        for body in ({"watch_id": "watch-01"}, {"watch_id": "watch-01", "enabled": "no"}, {"watch_id": 7, "enabled": True}, {"watch_id": "x" * 60, "enabled": True}, []):
+            self.assertEqual(self.watch(body).status_code, 400, body)
+        from django.test import Client
+        c = Client(); c.force_login(self.owner)
+        self.assertEqual(c.post(reverse("x_stance_vocabulary"), data="[]", content_type="application/json").status_code, 400)      # the keyword endpoint answered 500 to a JSON list before

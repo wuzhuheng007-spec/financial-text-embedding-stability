@@ -9,6 +9,9 @@
                                                          local model, resumable; the recent queue goes first and the
                                                          historical queue only uses what is left; items stay PENDING if the worker is down
   queue                                                  backlog of both queues for the active inference identity
+  watch import FILE | show | enable ID | disable ID | confirm-handle ID HANDLE
+                                                         the watched-author list (platform-side monitoring; nothing is followed on X)
+  watch verify-candidate ID                              one bounded, ledgered page per recorded candidate spelling (needs the key)
   export-pending FILE [--queue Q] [--limit N]            hashed work file for an off-server (local GPU) worker
   import-results FILE                                    checked, idempotent import of that worker's answers
   smoke-model                                            real local model on hand-written texts, in a throwaway store
@@ -29,7 +32,7 @@ from pathlib import Path
 
 import time
 
-from . import batch, config as cfgmod, cost, provider, sample, snapshots, stance, store, vocab
+from . import batch, config as cfgmod, cost, provider, sample, snapshots, stance, store, vocab, watchlist
 from .ledger import Ledger
 
 
@@ -103,6 +106,7 @@ def main(argv=None) -> int:
     s.add_argument("--max-seconds", type=float)
     s = sub.add_parser("build"); s.add_argument("--prices-db"); s.add_argument("--out")
     s = sub.add_parser("vocab"); s.add_argument("action", choices=["show", "add", "disable", "enable", "edit"]); s.add_argument("args", nargs="*")
+    s = sub.add_parser("watch"); s.add_argument("action", choices=["import", "show", "enable", "disable", "confirm-handle", "verify-candidate"]); s.add_argument("args", nargs="*")
     a = ap.parse_args(argv)
     base, env, now, code = cfgmod.load(a.config), dict(os.environ), datetime.now(timezone.utc), 0
     if a.cmd == "cost-table":
@@ -115,14 +119,15 @@ def main(argv=None) -> int:
     else:
         db = store.connect(a.db)
         ledger = Ledger(db, base)
+        base = sample.attach_named(db, base)                           # named accounts take their identity from the private watch list
         cfg = vocab.with_topics(base, vocab.active(db, base))          # the vocabulary in force now; plans freeze their own
         key_env = cfgmod.KEY_ENV[base["provider_candidate"]]
         if a.cmd == "status":
             pf = batch.preflight_state(db, base, env)
             out = {"config_sha256": cfgmod.config_hash(base), "config_version": base["config_version"], "store": str(Path(a.db or store.db_path())),
-                   "unfrozen": cfgmod.unfrozen(base), "acquisition_gate": cfgmod.acquisition_gate(base, env, preflight_passed=pf["recent_unlocked"]), "preflight": pf,
+                   "unfrozen": cfgmod.unfrozen({k: v for k, v in base.items() if not k.startswith("_")}), "acquisition_gate": cfgmod.acquisition_gate(base, env, preflight_passed=pf["recent_unlocked"]), "preflight": pf,
                    "classifier_gate": cfgmod.classifier_gate(base), "vocabulary": {"active": cfg["topic_vocabulary_version"], "pending": (vocab.pending(db) or {}).get("version")},
-                   "usage": ledger.usage(), "history": batch.history_progress(db, base), "snapshots": db.execute("SELECT count(*) FROM x_signal_snapshots").fetchone()[0] if _has(db, "x_signal_snapshots") else 0}
+                   "usage": ledger.usage(), "history": batch.history_progress(db, base), "watchlist": watchlist.summary(db, base), "snapshots": db.execute("SELECT count(*) FROM x_signal_snapshots").fetchone()[0] if _has(db, "x_signal_snapshots") else 0}
         elif a.cmd == "usage":
             out = {"usage": ledger.usage(), "ledger": ledger.summary()}
         elif a.cmd == "migrate":
@@ -144,6 +149,8 @@ def main(argv=None) -> int:
                         out = vocab.propose(db, base, [ch], now)
                     except vocab.VocabError as ex:
                         out, code = {"status": "REJECTED", "reason": str(ex)}, 1
+        elif a.cmd == "watch":
+            out, code = _watch_cmd(db, base, env, a, now, ledger, key_env)
         elif a.cmd == "import-local":
             out = provider.import_local(db, a.file)
             if a.declare:
@@ -196,6 +203,34 @@ def main(argv=None) -> int:
         db.close()
     print(provider.redact(json.dumps(out, indent=1, ensure_ascii=False, default=str)))
     return code
+
+
+def _watch_cmd(db, base, env, a, now, ledger, key_env):
+    try:
+        if a.action == "show":
+            return {"summary": watchlist.summary(db, base), "authors": [{k: x[k] for k in ("watch_id", "display_name", "handle", "aliases", "identity_status", "enabled", "scheduling_priority",
+                                                                                           "availability", "source_lists", "handle_candidates")} | {"id_bound": bool(x["stable_author_id"])}
+                                                                         for x in watchlist.authors(db)]}, 0
+        if a.action == "import" and len(a.args) == 1:
+            seed = json.loads(Path(a.args[0]).read_text(encoding="utf-8"))
+            before = len(watchlist.authors(db))
+            res = watchlist.import_seed(db, seed, now)
+            return {"status": "IMPORTED", "authors_before": before, **res, "summary": watchlist.summary(db, base), "requests_sent": 0}, 0
+        if a.action in ("enable", "disable") and len(a.args) == 1:
+            x = watchlist.set_enabled(db, a.args[0], a.action == "enable", now)
+            return {"status": "UPDATED", "watch_id": x["watch_id"], "enabled": x["enabled"], "takes_effect": "next plan that is not frozen yet"}, 0
+        if a.action == "confirm-handle" and len(a.args) == 2:
+            x = watchlist.confirm_handle(db, a.args[0], a.args[1], now)
+            return {"status": "HANDLE_CONFIRMED_BY_OWNER", "watch_id": x["watch_id"], "handle": x["handle"], "identity_status": x["identity_status"]}, 0
+        if a.action == "verify-candidate" and len(a.args) == 1:
+            pf = batch.preflight_state(db, base, env)
+            gate = cfgmod.acquisition_gate(base, env, preflight_passed=pf["recent_unlocked"])
+            if not gate["allowed"]:
+                return {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
+            return batch.verify_candidates(db, base, provider.UrllibTransport(env[key_env]), a.args[0], now, ledger=ledger), 0
+    except watchlist.WatchError as ex:
+        return {"status": "REJECTED", "reason": str(ex)}, 1
+    return {"status": "USAGE", "expected": "import FILE | show | enable ID | disable ID | confirm-handle ID HANDLE | verify-candidate ID"}, 2
 
 
 def _live(db, base: dict) -> list[str]:

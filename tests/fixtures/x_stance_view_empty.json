@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
- "config_version": "x-sentiment-twitterapiio-5000-r3-20261123",
- "config_sha256": "5f4339591fd51879f813ede2ed4211751d4b17e88415110ebf27419e2bd25a09",
+ "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
+ "config_sha256": "6540d679e0b13858293b327c229c2895a85ab152d8203e5a98a90bc317a2a7db",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
@@ -248,6 +248,24 @@
     "cap_posts": 2000
    }
   },
+  "sub_pools": {
+   "watchlist": {
+    "pool": "recent",
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.09",
+    "cap_posts": 600
+   },
+   "recent": {
+    "pool": "recent",
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.36",
+    "cap_posts": 2400
+   }
+  },
   "unknown_held": {
    "requests": 0,
    "usd": "0"
@@ -288,7 +306,7 @@
  },
  "account_rules": {
   "enabled": true,
-  "version": "account-rules-v1-20261123-80ddbfd1",
+  "version": "account-rules-v1-20261123-e21233ec",
   "min_likes": 20,
   "unknown_likes": "exclude",
   "follower_tiers": [
@@ -314,12 +332,18 @@
    {
     "label": "口罩哥",
     "weight": 5,
-    "identified": false
+    "identified": false,
+    "handle": null,
+    "id_bound": false,
+    "identity_from": null
    },
    {
     "label": "白毛女",
     "weight": 5,
-    "identified": false
+    "identified": false,
+    "handle": null,
+    "id_bound": false,
+    "identity_from": null
    }
   ],
   "named_accounts_not_identified": 2,
@@ -327,6 +351,58 @@
  },
  "queues": null,
  "other_sample_versions": [],
+ "watchlist": {
+  "summary": {
+   "imported": false,
+   "versions": [],
+   "selected_at_utc": null,
+   "version_tag": null,
+   "logical_authors": 0,
+   "with_handle": 0,
+   "blocked_ambiguous": 0,
+   "mismatch": 0,
+   "enabled": 0,
+   "ready_for_queries": 0,
+   "stable_ids_bound": 0,
+   "collected_at_least_once": 0,
+   "scope": "PLATFORM_READ_ONLY_MONITORING: nothing is followed on X; no X password is used",
+   "selection_note": "the list was chosen on its import date; results for earlier dates are a panel of authors selected afterwards",
+   "suballocation": {
+    "watchlist": {
+     "max_returned_posts_per_day": 600,
+     "cost_cap_usd_per_day": "0.09"
+    },
+    "recent": {
+     "max_returned_posts_per_day": 2400,
+     "cost_cap_usd_per_day": "0.36"
+    }
+   }
+  },
+  "authors": [],
+  "reading": [],
+  "plan": null
+ },
+ "panels": {
+  "keyword": {
+   "sample_version": "vocab-20261122-a@account-rules-v1-20261123-e21233ec",
+   "available": true,
+   "rows": "top-level daily / narratives / classification"
+  },
+  "watchlist": {
+   "sample_version": null,
+   "available": false,
+   "daily": [],
+   "narratives": [],
+   "classification": null
+  },
+  "combined": {
+   "sample_version": null,
+   "available": false,
+   "daily": [],
+   "narratives": [],
+   "classification": null
+  }
+ },
  "daily": [],
  "narratives": [],
  "episodes": [],

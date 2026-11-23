@@ -22,6 +22,7 @@ NOW = datetime(2026, 11, 20, 3, 0, tzinfo=UTC)               # 11:00 in Shanghai
 def cfg():
     c = C.load()
     c["aggregation"]["account_rules"]["enabled"] = False     # these modules pre-date the account rules (tests/test_x_stance_r3.py covers them)
+    c["allocation"]["recent"].pop("sub_pools", None)         # ... and the split of the recent pool between watched authors and keywords (tests/test_x_stance_watchlist.py)
     return c
 
 

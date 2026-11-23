@@ -74,6 +74,15 @@ class Ledger:
         self.roll_hours, self.roll_credits = int(b["rolling_window_hours"]), c(b["rolling_all_jobs_cost_cap_usd"])
         self.pool = {k: (int(a[k]["max_returned_posts_per_day"]), c(a[k]["cost_cap_usd_per_day"])) for k in POOLS}
         self.pre_posts, self.pre_credits = int(p["max_returned_posts"]), c(p["cost_cap_usd"])
+        # Shares of ONE pool by job type (e.g. recent = watched authors + keyword search). They split the pool; they
+        # add no allowance, and the pool cap still binds everything in it, the preflight included.
+        self.sub = {}
+        for pool in POOLS:
+            parts = a[pool].get("sub_pools") or {}
+            for job, v in parts.items():
+                self.sub[job] = (pool, int(v["max_returned_posts_per_day"]), c(v["cost_cap_usd_per_day"]))
+            if parts and (sum(int(v["max_returned_posts_per_day"]) for v in parts.values()) > self.pool[pool][0] or sum(c(v["cost_cap_usd_per_day"]) for v in parts.values()) > self.pool[pool][1]):
+                raise ValueError("sub-allocations exceed their pool")
         self.clock = clock or (lambda: datetime.now(timezone.utc))
 
     def day(self, now: datetime) -> str:
@@ -99,6 +108,10 @@ class Ledger:
         for k in POOLS:
             c_, p_ = self._sum("budget_day=? AND pool=?", (d, k))
             out["pools"][k] = {"credits": c_, "usd": usd(c_), "returned_posts": p_, "cap_usd": usd(self.pool[k][1]), "cap_posts": self.pool[k][0]}
+        out["sub_pools"] = {}
+        for job, (pool, posts, credits) in self.sub.items():
+            c_, p_ = self._sum("budget_day=? AND job_type=? AND is_preflight=0", (d, job))
+            out["sub_pools"][job] = {"pool": pool, "credits": c_, "usd": usd(c_), "returned_posts": p_, "cap_usd": usd(credits), "cap_posts": posts}
         held = self.db.execute("SELECT COUNT(*), COALESCE(SUM(reserved_credits),0) FROM x_cost_ledger WHERE status='UNKNOWN_HELD'").fetchone()
         out["unknown_held"] = {"requests": held[0], "usd": usd(held[1])}
         out["billing_source"] = "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill"
@@ -122,6 +135,10 @@ class Ledger:
             checks = [("DAILY_POSTS", dp + self.page_posts > self.day_posts), ("DAILY_USD", dc + self.page_credits > self.day_credits),
                       ("ROLLING_USD", rc + self.page_credits > self.roll_credits),
                       (f"POOL_{pool.upper()}_POSTS", pp + self.page_posts > self.pool[pool][0]), (f"POOL_{pool.upper()}_USD", pc + self.page_credits > self.pool[pool][1])]
+            if not is_preflight and (job_type or pool) in self.sub:
+                job = job_type or pool
+                sc, sp = self._sum("budget_day=? AND job_type=? AND is_preflight=0", (d, job))
+                checks += [(f"SUBPOOL_{job.upper()}_POSTS", sp + self.page_posts > self.sub[job][1]), (f"SUBPOOL_{job.upper()}_USD", sc + self.page_credits > self.sub[job][2])]
             if is_preflight:
                 fc, fp = self._sum("is_preflight=1", ())
                 checks += [("PREFLIGHT_POSTS", fp + self.page_posts > self.pre_posts), ("PREFLIGHT_USD", fc + self.page_credits > self.pre_credits)]

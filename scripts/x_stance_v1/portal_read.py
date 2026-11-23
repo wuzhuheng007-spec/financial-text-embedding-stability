@@ -9,7 +9,7 @@ import sqlite3
 from decimal import Decimal
 from pathlib import Path
 
-from . import batch, config as cfgmod, sample, store, vocab
+from . import batch, config as cfgmod, sample, store, vocab, watchlist
 from .ledger import Ledger
 
 
@@ -49,6 +49,8 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
                           "by_status": {}, "disk_free_gib": None},
            "classification": {"matched_pairs": 0, "classified_or_prefiltered": 0, "pending": 0, "share_done": None, "filtered_low_likes": 0, "filtered_likes_unknown": 0},
            "account_rules": sample.summary(cfg), "queues": None, "other_sample_versions": [],
+           "watchlist": {"summary": None, "authors": [], "reading": [], "plan": None},
+           "panels": {s: {"sample_version": None, "available": s == "keyword", "daily": [], "narratives": [], "classification": None} for s in sample.SCOPES},
            "daily": [], "narratives": [], "episodes": [], "returns": [], "conditional": [], "has_data": False,
            "data_kinds": {"live": 0, "batch": 0, "retrospective": 0},
            "limits": ["accounts in the retrieved sample only", "planned sample, not all of X", "not a prediction", "labels not validated by human review"]}
@@ -71,6 +73,8 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
                                 "in_window_total": rec.get("in_window_total"), "reasons": st["reasons"], "history_unlocked": st["history_unlocked"],
                                 "continuation": (rec.get("continuation") or {}).get("state"), "receipt_sha256": st.get("receipt_sha256")}
             out["vocabulary"] = vocab.overview(db, cfg)
+            cfg = sample.attach_named(db, cfg)
+            out["account_rules"] = sample.summary(cfg)
             cfg = vocab.with_topics(cfg, vocab.active(db, cfg))
             out["settings"]["vocabulary_version"] = cfg["topic_vocabulary_version"]
             out["settings"]["topics"] = [{"id": t["id"], "keywords": t["keywords"], "disabled_keywords": t.get("disabled_keywords") or [], "comparison_asset": t.get("comparison_asset"), "targets": cfgmod.targets(t)} for t in cfg["topics"]]
@@ -80,6 +84,11 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
     if out["vocabulary"] is None:
         mem = sqlite3.connect(":memory:")
         out["vocabulary"] = vocab.overview(mem, cfg); mem.close()
+    if out["watchlist"]["summary"] is None:
+        mem = sqlite3.connect(":memory:"); mem.row_factory = sqlite3.Row
+        out["watchlist"]["summary"] = watchlist.summary(mem, cfg); mem.close()
+    # the keyword panel's rows are the top-level `daily` / `narratives` / `classification`; they are not sent twice
+    out["panels"]["keyword"] = {"sample_version": out["settings"].get("sample_version") or sample.sample_version(cfg), "available": True, "rows": "top-level daily / narratives / classification"}
     gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=passed)
     out["settings"]["acquisition_gate"] = gate
     missing = [{"input": "PROVIDER_KEY", "detail": gate["key_env_name"]}] if "PROVIDER_KEY_MISSING" in gate["reasons"] else []
@@ -128,6 +137,10 @@ def _fill(db, cfg: dict, out: dict) -> None:
     c["sample_accounts"] = r[1] or 0
     out["classification"] = {"matched_pairs": total, "classified_or_prefiltered": done, "pending": total - done, "share_done": (done / total) if total else None,
                              "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0, "legacy_identity_labels": legacy}
+    try:
+        _watch(db, cfg, out, act)
+    except sqlite3.OperationalError:
+        out["store_needs_upgrade"] = True
     for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_daily_sentiment ORDER BY window_label DESC LIMIT 600"):
         p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None)
         out["daily"].append({"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
@@ -154,6 +167,79 @@ def _fill(db, cfg: dict, out: dict) -> None:
                 others.setdefault(t["sample_version"], {"episodes": 0, "sessions_with_a_signal": 0})["sessions_with_a_signal"] += t["sessions"]
     out["other_sample_versions"] = [{"sample_version": k, **v_} for k, v_ in sorted(others.items())]
     out["has_data"] = bool(out["daily"])
+
+
+def _progress(db, ver: str, identity) -> dict:
+    r = db.execute("SELECT SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN 1 ELSE 0 END), COUNT(DISTINCT CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN p.author_id END), "
+                   "SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' AND (t.quality!='PENDING' OR EXISTS(SELECT 1 FROM x_stance_labels l WHERE l.provider=t.provider AND l.post_id=t.post_id "
+                   "AND l.topic_id=t.topic_id AND l.target_id=t.target_id AND l.inference_identity IS ?)) THEN 1 ELSE 0 END), "
+                   "SUM(CASE WHEN t.quality='FILTERED_LOW_LIKES' THEN 1 ELSE 0 END), SUM(CASE WHEN t.quality='FILTERED_LIKES_UNKNOWN' THEN 1 ELSE 0 END) "
+                   "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) WHERE t.topic_version=?", (identity or "", ver)).fetchone()
+    total, done = r[0] or 0, r[2] or 0
+    return {"matched_pairs": total, "sample_accounts": r[1] or 0, "classified_or_prefiltered": done, "pending": total - done, "share_done": (done / total) if total else None,
+            "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0}
+
+
+WHY_NOT = {"FILTERED_LOW_LIKES": "BELOW_LIKE_FLOOR", "FILTERED_LIKES_UNKNOWN": "LIKE_COUNT_UNKNOWN"}
+
+
+def _watch(db, cfg: dict, out: dict, act: dict) -> None:
+    """The watch list, what each author query last did, the raw posts of watched authors with the reason each one
+    is or is not in the analysis, and the two extra panels. Raw material is shown whether or not it is counted."""
+    w = out["watchlist"]
+    w["summary"] = watchlist.summary(db, cfg)
+    if not watchlist.exists(db):
+        return
+    rows = watchlist.authors(db)
+    plan = db.execute("SELECT plan_key, plan_json, frozen_at_utc FROM x_sample_plans WHERE job='recent' ORDER BY plan_key DESC LIMIT 1").fetchone()
+    if plan:
+        pw = json.loads(plan["plan_json"]).get("watch")
+        w["plan"] = None if not pw else {"ny_date": plan["plan_key"], "frozen_at_utc": plan["frozen_at_utc"], "authors": len(pw["units"]), "not_asked": pw["not_asked"],
+                                         "max_pages_per_author": pw["max_pages_per_author"], "posts_budget": pw["posts_budget"], "first_round_max_posts": pw["first_round_max_posts"]}
+    scoped = {sample.scope_of(c_): c_ for c_ in sample.scoped_configs(db, cfg)}
+    wver = sample.sample_version(scoped["watchlist"]) if "watchlist" in scoped else None
+    by_id = watchlist.bound_ids(db)
+    for a in rows:
+        n = db.execute("SELECT count(*), max(created_at_utc) FROM x_posts WHERE author_id=?", (a["stable_author_id"],)).fetchone() if a["stable_author_id"] else (0, None)
+        w["authors"].append({k: a[k] for k in ("watch_id", "display_name", "handle", "profile_url", "aliases", "source_lists", "scheduling_priority", "enabled", "identity_status",
+                                               "availability", "last_success_at_utc", "last_post_created_at_utc", "last_checked_ny_date", "handle_candidates", "handle_history")}
+                            | {"id_bound": bool(a["stable_author_id"]), "ready_for_queries": watchlist.ready(a), "handle_text_in_image": (a["provenance"] or {}).get("handle_text_in_image"),
+                               "stored_posts": n[0], "weight_override": None})
+    if by_id:
+        marks = ",".join("?" * len(by_id))
+        for p in db.execute(f"SELECT provider, post_id, author_id, created_at_utc, first_seen_at_utc, author_text, kind, lang, source_url, engagement_snapshot_json FROM x_posts WHERE author_id IN ({marks}) "
+                            "ORDER BY created_at_utc DESC LIMIT 150", list(by_id)):
+            e = sample.engagement(p)
+            pairs = db.execute("SELECT topic_id, target_id, quality FROM x_post_topics WHERE provider=? AND post_id=? AND topic_version=?", (p["provider"], p["post_id"], wver)).fetchall() if wver else []
+            analysis = []
+            for t in pairs:
+                lab = db.execute("SELECT label, quality_status FROM x_stance_labels WHERE provider=? AND post_id=? AND topic_id=? AND target_id=? AND inference_identity IS ? ORDER BY label_written_at_utc DESC LIMIT 1",
+                                 (p["provider"], p["post_id"], t["topic_id"], t["target_id"], act["identity"] or "")).fetchone()
+                if t["quality"].startswith("FILTERED_"):
+                    state, why = "NOT_IN_ANALYSIS", WHY_NOT[t["quality"]]
+                elif lab is None:
+                    state, why = ("NOT_IN_ANALYSIS", t["quality"]) if t["quality"] != "PENDING" else ("WAITING_FOR_CLASSIFICATION", None)
+                elif lab["label"]:
+                    state, why = "IN_ANALYSIS", None
+                else:
+                    state, why = "NOT_IN_ANALYSIS", lab["quality_status"]
+                analysis.append({"topic_id": t["topic_id"], "target_id": t["target_id"], "state": state, "reason": why, "stance": lab["label"] if lab else None})
+            if not pairs:
+                analysis = [{"topic_id": None, "target_id": None, "state": "NOT_IN_ANALYSIS", "reason": "NO_TARGET_KEYWORD_IN_TEXT", "stance": None}]
+            w["reading"].append({"watch_id": by_id[p["author_id"]], "post_id": p["post_id"], "created_at_utc": p["created_at_utc"], "first_seen_at_utc": p["first_seen_at_utc"], "kind": p["kind"],
+                                 "lang": p["lang"], "text": p["author_text"], "url": p["source_url"], "likes_at_fetch": e.get("likeCount"), "sources": watchlist.post_sources(db, p["provider"], p["post_id"]),
+                                 "analysis": analysis})
+    for scope in ("watchlist", "combined"):
+        if scope not in scoped:
+            continue
+        ver = sample.sample_version(scoped[scope])
+        pn = out["panels"][scope]
+        pn.update({"sample_version": ver, "available": True, "classification": _progress(db, ver, act["identity"])})
+        for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_panel_sentiment WHERE scope=? ORDER BY window_label DESC LIMIT 600", (scope,)):
+            p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None)
+            pn["daily"].append({"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
+        for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_panel_narratives WHERE scope=? ORDER BY window_label DESC, rank LIMIT 100", (scope,)):
+            pn["narratives"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **json.loads(r["payload_json"])})
 
 
 def store_dec(v):

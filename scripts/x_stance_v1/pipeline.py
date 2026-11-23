@@ -25,9 +25,39 @@ def _range(db, topic_id: str, target_id: str):
 
 
 def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None = None) -> dict:
+    """Keyword panel (as before), and - while a watch list exists - the watched-author panel and the combined,
+    de-duplicated panel. Each is its own sample version and series; none changes how another is counted."""
     now = now or datetime.now(timezone.utc)
-    thr = cfg["aggregation"]["proposed_low_sample_author_threshold"]
     snapshots.migrate_legacy(db)
+    out = None
+    for scfg in sample.scoped_configs(db, cfg):
+        res = _build_daily_scope(db, scfg, cal, mode=mode, now=now)
+        if out is None:
+            out = res                                              # the keyword panel's figures stay at the top level
+            out["panels"] = {}
+        else:
+            out["panels"][sample.scope_of(scfg)] = {k: res[k] for k in ("session_windows", "calendar_windows", "narratives", "sample_versions")}
+    return out
+
+
+def _coverage(db, cfg: dict, topic_id: str, a, b, ver: str) -> dict:
+    """Collection status behind a window, per panel: keyword queries, author queries, or both."""
+    scope = sample.scope_of(cfg)
+    kw = store.coverage(db, topic_id, store.iso(a), store.iso(b), vocab_version=ver) if scope != "watchlist" else None
+    if scope == "keyword":
+        return kw
+    from . import watchlist
+    w = watchlist.coverage(db, cfg, store.iso(a), store.iso(b))
+    if scope == "watchlist":
+        return w
+    rank = {"MISSING": 0, "PARTIAL": 1, "LIMIT_REACHED": 1, "PLANNED_SAMPLE": 2, "COMPLETE_DECLARED": 3, "COMPLETE": 4}
+    worst = min((kw, w), key=lambda c: rank.get(c["status"], 1))
+    return {"status": worst["status"], "reason": worst["reason"], "gaps": kw["gaps"] + w["gaps"], "parts": {"keyword": kw["status"], "watchlist": w["status"]}}
+
+
+def _build_daily_scope(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime) -> dict:
+    thr = cfg["aggregation"]["proposed_low_sample_author_threshold"]
+    panel = sample.scope_of(cfg)
     out = {"session_windows": 0, "calendar_windows": 0, "narratives": 0, "outside_calendar_posts_ranges": [], "sample_versions": {}}
     per_date = {}
 
@@ -65,7 +95,7 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                     wmode = pick(b)
                     wcfg, act, ver, sver = for_date(cal.dates[i])
                     rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode, act=act)
-                    cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
+                    cov = _coverage(db, wcfg, t["id"], a, b, ver)
                     prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=sver, act=act)
                     for scope in LANG_SCOPES:
                         res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, lang_scope=scope, pending=prog["pending"], cfg=wcfg)
@@ -73,9 +103,17 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                         aggregate.commit(db, window_kind="session", window_label=cal.dates[i], start=a, end=b, topic_id=t["id"], target_id=target,
                                          mode=wmode, result=res, rows=rows, now=now, act=act)
                     out["session_windows"] += 1
-                    db.execute("DELETE FROM x_narratives WHERE window_kind='session' AND window_label=? AND topic_id=? AND target_id=?", (cal.dates[i], t["id"], target))
+                    if panel == "keyword":
+                        db.execute("DELETE FROM x_narratives WHERE window_kind='session' AND window_label=? AND topic_id=? AND target_id=?", (cal.dates[i], t["id"], target))
+                    else:
+                        db.execute("DELETE FROM x_panel_narratives WHERE scope=? AND window_kind='session' AND window_label=? AND topic_id=? AND target_id=?", (panel, cal.dates[i], t["id"], target))
                     for nar in narratives.build(aggregate.votes(rows), cfg=cfg, window_label=cal.dates[i], window_kind="session", data_quality=cov["status"]):
                         nar["sample_version"] = sver
+                        if panel != "keyword":
+                            nar["panel"] = panel
+                            db.execute("INSERT OR REPLACE INTO x_panel_narratives VALUES(?,?,?,?,?,?,?)", (panel, "session", cal.dates[i], t["id"], target, nar["rank"], json.dumps(nar, ensure_ascii=False, sort_keys=True)))
+                            out["narratives"] += 1
+                            continue
                         db.execute("INSERT OR REPLACE INTO x_narratives VALUES(?,?,?,?,?,?,?)", ("session", cal.dates[i], t["id"], target, nar["cluster_version"], nar["rank"], json.dumps(nar, ensure_ascii=False, sort_keys=True)))
                         out["narratives"] += 1
             d, last = rng[0].astimezone(NY).date(), rng[1].astimezone(NY).date()
@@ -85,7 +123,7 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
                     wmode = pick(b)
                     wcfg, act, ver, sver = for_date(d.isoformat())
                     rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode, act=act)
-                    cov = store.coverage(db, t["id"], store.iso(a), store.iso(b), vocab_version=ver)
+                    cov = _coverage(db, wcfg, t["id"], a, b, ver)
                     prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=sver, act=act)
                     res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, pending=prog["pending"], cfg=wcfg)
                     res["dropped"], res["classification"], res["note"] = dropped, prog, "reading summary of a New York calendar date; not the session signal"

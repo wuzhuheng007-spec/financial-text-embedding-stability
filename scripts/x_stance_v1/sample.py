@@ -35,12 +35,61 @@ def rules_version(cfg: dict) -> str | None:
     if not r:
         return None
     body = {k: r.get(k) for k in ("min_likes", "unknown_likes", "follower_tiers", "named_accounts", "unknown_followers_weight")}
+    if cfg.get("_named_bindings"):                               # which account a label points at is part of the rule set
+        body["named_bindings"] = {k: v.get("handle") for k, v in sorted(cfg["_named_bindings"].items())}
     return f"{r['version']}-{store.sha(json.dumps(body, sort_keys=True, ensure_ascii=False))[:8]}"
 
 
+SCOPES = ("keyword", "watchlist", "combined")
+
+
+def attach_named(db, cfg: dict) -> dict:
+    """Gives the named accounts of the rule set their identity from the watch list: the watched author that carries
+    the label as an alias. Handle always; the stable id once a provider response has bound it. The weight numbers
+    are not touched."""
+    from . import watchlist
+    if not watchlist.exists(db):
+        return cfg
+    labels = {n.get("label") for n in ((cfg.get("aggregation") or {}).get("account_rules") or {}).get("named_accounts") or []}
+    bound = {}
+    for a in watchlist.authors(db):
+        for alias in a["aliases"]:
+            if alias in labels and a["handle"] and a["identity_status"] not in watchlist.NOT_COUNTED:
+                bound[alias] = {"handle": a["handle"], "author_id": a["stable_author_id"], "watch_id": a["watch_id"]}
+    if not bound:
+        return cfg
+    out = dict(cfg)
+    out["_named_bindings"] = bound
+    return out
+
+
 def sample_version(cfg: dict) -> str:
+    """keyword scope: vocabulary@rules (unchanged). The watched-author and combined scopes append their own tag, so
+    each of the three panels is its own sample version and its own series."""
     rv = rules_version(cfg)
-    return cfg["topic_vocabulary_version"] + (f"@{rv}" if rv else "")
+    base = cfg["topic_vocabulary_version"] + (f"@{rv}" if rv else "")
+    sc = cfg.get("_sample_scope") or {}
+    return base if sc.get("scope", "keyword") == "keyword" else f"{base}+{sc['scope']}:{sc['tag']}"
+
+
+def scope_of(cfg: dict) -> str:
+    return (cfg.get("_sample_scope") or {}).get("scope", "keyword")
+
+
+def with_scope(cfg: dict, scope: str, tag: str | None) -> dict:
+    out = dict(cfg)
+    out["_sample_scope"] = {"scope": scope, "tag": tag}
+    return out
+
+
+def scoped_configs(db, cfg: dict) -> list[dict]:
+    """The config once per panel: keyword always; watched authors and combined only while a watch list exists."""
+    from . import watchlist
+    tag = watchlist.version_tag(db) if watchlist.exists(db) else None
+    out = [with_scope(cfg, "keyword", None)]
+    if tag:
+        out += [with_scope(cfg, "watchlist", tag), with_scope(cfg, "combined", tag)]
+    return out
 
 
 def engagement(row) -> dict:
@@ -74,9 +123,11 @@ def weight(row, cfg: dict) -> tuple[float, str]:
         return 1.0, "EQUAL"
     e = engagement(row)
     handle = str(e.get("authorUserName") or "").lower()
+    bound = cfg.get("_named_bindings") or {}
     for n in r.get("named_accounts") or []:
         if n.get("weight") is None:
             continue
+        n = {**n, **{k: v for k, v in (bound.get(n.get("label")) or {}).items() if v}}        # identity supplied by the private watch list
         if (n.get("author_id") and str(n["author_id"]) == str(row["author_id"])) or (n.get("handle") and handle and str(n["handle"]).lstrip("@").lower() == handle):
             return float(n["weight"]), f"NAMED:{n.get('label') or n.get('handle') or n.get('author_id')}"
     followers = e.get("authorFollowers")
@@ -92,10 +143,12 @@ def summary(cfg: dict) -> dict:
     r = rules(cfg)
     if not r:
         return {"enabled": False, "version": None}
-    named = r.get("named_accounts") or []
+    bound = cfg.get("_named_bindings") or {}
+    named = [{**n, **{k: v for k, v in (bound.get(n.get("label")) or {}).items() if v}} for n in r.get("named_accounts") or []]
     return {"enabled": True, "version": rules_version(cfg), "min_likes": r.get("min_likes"), "unknown_likes": r.get("unknown_likes", "exclude"),
             "follower_tiers": r.get("follower_tiers") or [], "unknown_followers_weight": r.get("unknown_followers_weight", 1),
-            "named_accounts": [{"label": n.get("label"), "weight": n.get("weight"), "identified": bool(n.get("author_id") or n.get("handle"))} for n in named],
+            "named_accounts": [{"label": n.get("label"), "weight": n.get("weight"), "identified": bool(n.get("author_id") or n.get("handle")), "handle": n.get("handle"),
+                                "id_bound": bool(n.get("author_id")), "identity_from": "watch list alias" if n.get("label") in bound else None} for n in named],
             "named_accounts_not_identified": sum(1 for n in named if not (n.get("author_id") or n.get("handle"))),
             "basis": "like and follower counts as reported when the post was first fetched; not historical values"}
 
@@ -127,8 +180,9 @@ def live_configs(db, cfg: dict) -> list[dict]:
     out, seen = [], set()
 
     def add(c):
-        if sample_version(c) not in seen:
-            seen.add(sample_version(c)); out.append(c)
+        for sc in scoped_configs(db, c):
+            if sample_version(sc) not in seen:
+                seen.add(sample_version(sc)); out.append(sc)
     add(vocab.with_topics(cfg, vocab.active(db, cfg)))
     try:
         plans = db.execute("SELECT plan_json FROM x_sample_plans ORDER BY frozen_at_utc DESC").fetchall()
