@@ -365,12 +365,17 @@ def run(db, cfg: dict, classifier, *, now=None, limit: int | None = None, clock=
             out["remaining_by_queue"]["recent"] = waiting
             return out
     runtime_checked = False
+    claimed = store.active_claims(db, tick())                # pairs an off-server worker is holding: not taken a second time here
+    out["claimed_by_another_worker"] = 0
     for r in items:
         if queue in QUEUES and r["queue"] != queue:
             continue
         post = r
         key = cache_key(post, r["target_id"], r["topic_id"], cfg)
         if _has_label(db, r, key):
+            continue
+        if r["pre"] == "PENDING" and (r["provider"], r["post_id"], r["topic_id"], r["target_id"]) in claimed:
+            out["claimed_by_another_worker"] += 1
             continue
         floor = lambda t, p=post: max(t, p["fetched_at_utc"])   # a reading is never reported earlier than the post was received
         raw_hash = started = completed = None

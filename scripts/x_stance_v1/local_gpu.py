@@ -285,12 +285,23 @@ def main(argv=None) -> int:
     s = sub.add_parser("inventory"); s.add_argument("--root", action="append", default=[])
     s = sub.add_parser("bench"); s.add_argument("--model", required=True); s.add_argument("--materials", required=True); s.add_argument("--out", required=True); s.add_argument("--batch", type=int, default=8)
     s = sub.add_parser("work"); s.add_argument("--model", required=True); s.add_argument("--work", required=True); s.add_argument("--results", required=True)
+    s = sub.add_parser("config"); s.add_argument("--model", required=True); s.add_argument("--out", required=True)
     a = ap.parse_args(argv)
     os.environ.setdefault("HF_HUB_OFFLINE", "1"); os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")       # nothing is fetched
     if a.cmd == "inventory":
         out = inventory([Path(r) for r in a.root])
     elif a.cmd == "bench":
         out = bench(Path(a.model), Path(a.materials), Path(a.out), batch=a.batch)
+    elif a.cmd == "config":                                      # the complete candidate configuration for this checkpoint, for the server-side export / import
+        base = cfgmod.load()
+        facts = checkpoint_facts(Path(a.model))
+        clf = HFClassifier(Path(a.model), max_new_tokens=base["classifier"]["generation"]["max_output_tokens"], seed=base["classifier"]["generation"]["seed"])
+        cfg = candidate_config(base, facts, clf.versions, dtype="float16")
+        cfg["classifier"]["classification_quality"] = "UNVALIDATED"
+        Path(a.out).write_text(json.dumps(cfg, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        from . import stance as _st
+        out = {"written": a.out, "inference_identity": _st.identity_hash(cfg), "model_id": cfg["classifier"]["model_id"], "revision": cfg["classifier"]["immutable_revision"],
+               "server_reference_identity": _st.identity_hash(base), "note": "a different identity from the server reference; its labels are never mixed with it"}
     else:
         out = work(Path(a.model), Path(a.work), Path(a.results))
     print(json.dumps(out, indent=1, ensure_ascii=False, default=str))

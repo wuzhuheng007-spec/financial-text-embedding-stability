@@ -193,3 +193,19 @@ def coverage(db, topic_id: str, start_utc: str, end_utc: str, *, vocab_version: 
         return {"status": "MISSING" if only_missing else "PARTIAL", "reason": "GAPS", "gaps": gaps}
     status = "PLANNED_SAMPLE" if "PLANNED_SAMPLE" in kinds else ("COMPLETE_DECLARED" if "COMPLETE_DECLARED" in kinds else "COMPLETE")
     return {"status": status, "reason": None, "gaps": []}
+
+
+# ---------- claims: one pending pair is worked on by one worker at a time ----------
+CLAIMS_SCHEMA = """CREATE TABLE IF NOT EXISTS x_offload_claims(
+  provider TEXT NOT NULL, post_id TEXT NOT NULL, topic_id TEXT NOT NULL, target_id TEXT NOT NULL, inference_identity TEXT NOT NULL, work_sha256 TEXT NOT NULL,
+  claimed_at_utc TEXT NOT NULL, expires_at_utc TEXT NOT NULL, released_at_utc TEXT, PRIMARY KEY(provider, post_id, topic_id, target_id, work_sha256))"""
+
+
+def active_claims(db, now_iso: str) -> dict:
+    """{(provider, post_id, topic_id, target_id): work_sha256} for pairs handed to an off-server worker whose claim
+    has neither been released nor run out. A store that never exported anything has none."""
+    try:
+        rows = db.execute("SELECT provider, post_id, topic_id, target_id, work_sha256 FROM x_offload_claims WHERE released_at_utc IS NULL AND expires_at_utc>?", (now_iso,)).fetchall()
+    except sqlite3.OperationalError:
+        return {}
+    return {(r[0], r[1], r[2], r[3]): r[4] for r in rows}

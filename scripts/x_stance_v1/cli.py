@@ -104,6 +104,7 @@ def main(argv=None) -> int:
     s.add_argument("--rebuild-failed-cursors", action="store_true"); s.add_argument("--pending", action="store_true")
     sub.add_parser("health"); s = sub.add_parser("audit"); s.add_argument("out_dir")
     s = sub.add_parser("export-pending"); s.add_argument("file"); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"]); s.add_argument("--limit", type=int)
+    s.add_argument("--claim-hours", type=float, default=24.0)
     s = sub.add_parser("import-results"); s.add_argument("file")
     s = sub.add_parser("import-local"); s.add_argument("file"); s.add_argument("--declare", nargs=5, metavar=("TOPIC", "LANG", "START", "END", "STATUS"))
     s = sub.add_parser("classify"); s.add_argument("--limit", type=int, default=50); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"])
@@ -221,7 +222,7 @@ def main(argv=None) -> int:
         elif a.cmd == "export-pending":
             from . import offload
             stance.map_all(db, base)
-            out = offload.export_pending(db, cfg, Path(a.file), versions=_live(db, base), queue=a.queue, limit=a.limit)
+            out = offload.export_pending(db, cfg, Path(a.file), versions=_live(db, base), queue=a.queue, limit=a.limit, claim_hours=a.claim_hours or None)
         elif a.cmd == "import-results":
             from . import offload
             try:

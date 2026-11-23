@@ -41,10 +41,16 @@ def _manifest_path(p: Path) -> Path:
     return p.with_name(p.name + ".manifest.json")
 
 
-def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "auto", limit: int | None = None, now: str | None = None) -> dict:
-    """Pending pairs in exactly the order the server worker would take them (recent first)."""
+def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "auto", limit: int | None = None, now: str | None = None, claim_hours: float | None = None) -> dict:
+    """Pending pairs in exactly the order the server worker would take them (recent first).
+
+    With `claim_hours` every exported pair is claimed for that long: the server worker and any other export leave
+    it alone until the answers are imported (which releases the claim) or the claim runs out. A pair another
+    export still holds is not exported again."""
     ident = stance.identity_hash(cfg)
     c, n, by_queue = cfg["classifier"], 0, {q: 0 for q in stance.QUEUES}
+    t0 = now or store.utcnow()
+    held, skipped_claimed, taken = store.active_claims(db, t0), 0, []
     members = {}
     for v in stance._versions(cfg, versions):
         for r in db.execute("SELECT provider, post_id, topic_id, target_id FROM x_post_topics WHERE topic_version=? AND quality='PENDING'", (v,)):
@@ -58,6 +64,11 @@ def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "aut
             key = stance.cache_key(r, r["target_id"], r["topic_id"], cfg)
             if stance._has_label(db, r, key) or db.execute("SELECT 1 FROM x_inference_cache WHERE cache_key=?", (key,)).fetchone():
                 continue
+            pair = (r["provider"], r["post_id"], r["topic_id"], r["target_id"])
+            if pair in held:
+                skipped_claimed += 1
+                continue
+            taken.append(pair)
             prompt = stance.PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
                                                                 parent_available=bool(r["parent_available"]), text=r["author_text"])
             f.write(json.dumps({"provider": r["provider"], "post_id": r["post_id"], "topic_id": r["topic_id"], "target_id": r["target_id"], "queue": r["queue"],
@@ -67,8 +78,17 @@ def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "aut
             n += 1; by_queue[r["queue"]] += 1
     man = {"format": FORMAT, "kind": "PENDING_WORK", "created_at_utc": now or store.utcnow(), "file": out.name, "sha256": _sha_file(out), "items": n, "by_queue": by_queue,
            "inference_identity": ident, "identity": stance.inference_identity(cfg), "contains": "post text (private); do not commit or publish"}
+    man["skipped_claimed_by_another_export"] = skipped_claimed
+    man["content_sha256_per_line"] = "sha256 of each line's text is its text_hash; the whole file is `sha256`"
+    if claim_hours:
+        from datetime import timedelta
+        exp = store.iso(store.parse(t0) + timedelta(hours=float(claim_hours)))
+        db.execute(store.CLAIMS_SCHEMA)
+        db.executemany("INSERT OR REPLACE INTO x_offload_claims VALUES(?,?,?,?,?,?,?,?,NULL)", [(*p, ident, man["sha256"], t0, exp) for p in taken])
+        db.commit()
+        man["claim"] = {"pairs": len(taken), "claimed_at_utc": t0, "expires_at_utc": exp}
     _manifest_path(out).write_text(json.dumps(man, indent=1, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
-    return {k: man[k] for k in ("format", "items", "by_queue", "sha256", "inference_identity")} | {"file": str(out), "manifest": str(_manifest_path(out))}
+    return {k: man[k] for k in ("format", "items", "by_queue", "sha256", "inference_identity", "skipped_claimed_by_another_export")} | {"file": str(out), "manifest": str(_manifest_path(out)), "claim": man.get("claim")}
 
 
 def import_results(db, cfg: dict, results: Path, *, versions=None, now: str | None = None) -> dict:
@@ -129,6 +149,10 @@ def import_results(db, cfg: dict, results: Path, *, versions=None, now: str | No
         out["labels_written"] += 1
         out["by_quality"][lab["quality_status"]] = out["by_quality"].get(lab["quality_status"], 0) + 1
     db.execute("INSERT OR IGNORE INTO x_inference_identities VALUES(?,?,?)", (ident, now or store.utcnow(), json.dumps({"declared": stance.inference_identity(cfg), "runtime_reported": man.get("worker")}, sort_keys=True, ensure_ascii=False)))
+    try:                                                        # the worker is done with this work file: its claims end, whatever each line became
+        out["claims_released"] = db.execute("UPDATE x_offload_claims SET released_at_utc=? WHERE work_sha256=? AND released_at_utc IS NULL", (now or store.utcnow(), man.get("work_sha256"))).rowcount
+    except Exception:  # noqa: BLE001 - a store that never claimed anything
+        out["claims_released"] = 0
     db.commit()
     return out
 

@@ -712,3 +712,58 @@ def test_the_smoke_command_really_calls_the_model_under_the_shipped_rules_and_sa
     monkeypatch.setattr(cli, "_llm", lambda cfg: Wrong())
     assert cli.main(["smoke-model"]) == 1
     assert json.loads(capsys.readouterr().out)["status"].startswith("NO_MODEL_CALL_RUNTIME_IDENTITY_MISMATCH")
+
+
+# ---------- one pending pair, one worker (added 2026-11-23) ----------
+def test_o_an_exported_pair_is_claimed_and_neither_the_server_nor_a_second_export_takes_it(db, plain, tmp_path):
+    seed_queues(db, plain, history_days=1, per_history_day=3, recent_days=("2026-11-19",), per_recent_day=2)
+    work, results = tmp_path / "work.jsonl", tmp_path / "results.jsonl"
+    exp = offload.export_pending(db, plain, work, now="2026-11-20T06:00:00Z", limit=3, claim_hours=24)
+    assert exp["items"] == 3 and exp["claim"] == {"pairs": 3, "claimed_at_utc": "2026-11-20T06:00:00Z", "expires_at_utc": "2026-11-21T06:00:00Z"}
+    again = offload.export_pending(db, plain, tmp_path / "second.jsonl", now="2026-11-20T06:10:00Z", claim_hours=24)
+    assert again["items"] == 2 and again["skipped_claimed_by_another_export"] == 3                     # the other two only
+    cpu = stance.run(db, plain, Model(), now="2026-11-20T06:20:00Z")
+    assert cpu["model_calls"] == 0 and cpu["claimed_by_another_worker"] == 5                           # the server worker leaves all five alone
+    box = {"t": "2026-11-20T07:00:00Z"}
+    offload.write_results(work, results, Model(box=box, seconds=2), plain, clock=lambda: box["t"], worker={"host": "local-gpu"})
+    out = offload.import_results(db, plain, results, now="2026-11-20T08:00:00Z")
+    assert out["labels_written"] == 3 and out["claims_released"] == 3
+    late = stance.run(db, plain, Model(), now="2026-11-21T06:10:01Z")                                  # the second export never came back: its claim ran out
+    assert late["model_calls"] == 2 and late["claimed_by_another_worker"] == 0
+    assert db.execute("SELECT count(*) FROM x_stance_labels").fetchone()[0] == 5
+
+
+def test_o_a_candidate_model_is_another_identity_and_its_answers_never_enter_the_active_one(db, plain, tmp_path):
+    seed_queues(db, plain, history_days=1, per_history_day=2, recent_days=("2026-11-19",), per_recent_day=2)
+    cand = copy.deepcopy(plain)
+    cand["classifier"]["model_id"] = "local/candidate-3b"; cand["classifier"]["immutable_revision"] = "hf:candidate|weights:abc"
+    assert stance.identity_hash(cand) != stance.identity_hash(plain)
+    work, results = tmp_path / "w.jsonl", tmp_path / "r.jsonl"
+    offload.export_pending(db, cand, work, now="2026-11-20T06:00:00Z")
+    box = {"t": "2026-11-20T07:00:00Z"}
+    offload.write_results(work, results, Model(box=box, seconds=1), cand, clock=lambda: box["t"])
+    with pytest.raises(offload.OffloadError):
+        offload.import_results(db, plain, results, now="2026-11-20T08:00:00Z")                         # not the active configuration's answers
+    out = offload.import_results(db, cand, results, now="2026-11-20T08:00:00Z")
+    assert out["labels_written"] == 4 and {r[0] for r in db.execute("SELECT DISTINCT inference_identity FROM x_stance_labels")} == {stance.identity_hash(cand)}
+    span = (store.parse("2026-08-01T00:00:00Z"), store.parse("2026-12-01T00:00:00Z"))
+    assert prog(db, plain, *span)["pending"] == 4 and prog(db, cand, *span)["pending"] == 0            # the active identity still has everything to do
+
+
+def test_r_like_floor_sensitivity_counts_what_each_floor_admits_and_keeps_missing_apart(db, cfg):
+    from scripts.x_stance_v1 import like_sensitivity
+    for i, likes in enumerate([0, 0, 3, 7, 12, 25, 300, None]):
+        put(db, f"s{i}", author=f"acct{i % 5}", likes=likes)
+    stance.map_all(db, cfg)
+    ver = db.execute("SELECT DISTINCT topic_version FROM x_post_topics ORDER BY 1").fetchone()[0]
+    t = like_sensitivity.table(db, ver)
+    f = t["floors"]
+    assert t["matched_pairs_all"] >= 8 and t["floor_in_force"] == 20 and "must not be chosen" in t["warning"]
+    posts = lambda k: f[k]["posts"]
+    assert (posts("0"), posts("5"), posts("10"), posts("20")) == (7, 4, 3, 2) and t["like_count_missing"]["posts"] == 1        # missing is not zero likes
+    assert t["likes_distribution_known"]["0"] >= 2 and f["0"]["accounts"] >= f["20"]["accounts"]
+    chk = t["stored_membership_check"]
+    assert chk["FILTERED_LOW_LIKES"] == chk["known_below_floor_in_force"] and chk["FILTERED_LIKES_UNKNOWN"] == chk["missing"]   # agrees with what the rule in force stored
+    before = db.execute("SELECT count(*), group_concat(quality) FROM x_post_topics").fetchone()
+    like_sensitivity.all_versions(db)
+    assert tuple(db.execute("SELECT count(*), group_concat(quality) FROM x_post_topics").fetchone()) == tuple(before)           # reads only
