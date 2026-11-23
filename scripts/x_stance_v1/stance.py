@@ -12,6 +12,7 @@ import re
 
 from . import config as cfgmod
 from . import store
+from . import simple
 
 LABELS = cfgmod.LABELS
 QUALITY = ("OK", "IRRELEVANT", "CONTEXT_MISSING", "LANGUAGE_UNSUPPORTED", "IMAGE_OR_LINK_ONLY", "CONFLICTING", "TRUNCATED",
@@ -57,7 +58,26 @@ kind: {kind}; parent text available: {parent_available}
 <post>
 {text}
 </post>"""
-PROMPTS = {"x-stance-prompt-v1-20261122": PROMPT_V1, "x-stance-prompt-v2-20261122": PROMPT_V2}
+PROMPTS = {"x-stance-prompt-v1-20261122": PROMPT_V1, "x-stance-prompt-v2-20261122": PROMPT_V2, simple.PROMPT_VERSION: simple.PROMPT}
+
+
+def is_simple(cfg: dict) -> bool:
+    """The simple contract (target / title / text in, relevant / stance / evidence / reason out)."""
+    return cfg["classifier"].get("prompt_version") == simple.PROMPT_VERSION
+
+
+def item_of(cfg: dict, r: dict) -> dict:
+    """The simple contract's input for one (post, topic, target). A post has no title."""
+    return simple.make_item(item_id=f"{r['provider']}:{r['post_id']}", target=simple.target_name(cfg["classifier"], r["target_id"]), title="", text=r["author_text"])
+
+
+def fill_prompt(cfg: dict, r: dict) -> str:
+    """The exact text sent to the model for one work item, for whichever contract the configuration pins."""
+    c = cfg["classifier"]
+    if is_simple(cfg):
+        return simple.fill(item_of(cfg, r))
+    return PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
+                                               parent_available=bool(r["parent_available"]), text=r["author_text"])
 
 
 class ClassifierNotPinned(RuntimeError):
@@ -148,9 +168,12 @@ def map_all(db, cfg: dict) -> list[dict]:
 
 
 # ---------- strict output ----------
-def validate_output(raw: str, *, post: dict, topic_id: str, target_id: str) -> dict:
+def validate_output(raw: str, *, post: dict, topic_id: str, target_id: str, cfg: dict | None = None) -> dict:
     """Never repairs. Anything that is not exactly the contract becomes a quality state with stance None; a failed
-    or irrelevant item is never turned into neutral."""
+    or irrelevant item is never turned into neutral. With a configuration that pins the simple contract, that
+    contract's validator decides."""
+    if cfg is not None and is_simple(cfg):
+        return simple.validate(raw, item=item_of(cfg, {**post, "target_id": target_id, "provider": post.get("provider", "")}))
     bad = {"label": None, "quality_status": "JSON_INVALID", "is_relevant": None, "evidence_text": None, "reason_short": None}
     try:
         o = json.loads(raw)
@@ -191,12 +214,16 @@ def inference_identity(cfg: dict) -> dict:
     from . import llm
     c = cfg["classifier"]
     rt, pv = c.get("runtime") or {}, c.get("prompt_version")
-    return {"model_id": c.get("model_id"), "model_revision": c.get("immutable_revision"), "prompt_version": pv,
-            "prompt_sha256": prompt_hash(pv) if pv in PROMPTS else None, "schema_version": c.get("schema_version"),
-            "output_schema_sha256": llm.schema_hash(), "temperature": c.get("temperature"),
-            "generation": dict(sorted((c.get("generation") or {}).items())), "chat_template_sha256": rt.get("chat_template_sha256"),
-            "engine": rt.get("engine"), "engine_image": rt.get("image"), "engine_build": rt.get("build"),
-            "adapter_version": c.get("adapter_version") or ADAPTER_VERSION, "max_chars": MAX_CHARS}
+    out = {"model_id": c.get("model_id"), "model_revision": c.get("immutable_revision"), "prompt_version": pv,
+           "prompt_sha256": prompt_hash(pv) if pv in PROMPTS else None, "schema_version": c.get("schema_version"),
+           "output_schema_sha256": llm.schema_hash(), "temperature": c.get("temperature"),
+           "generation": dict(sorted((c.get("generation") or {}).items())), "chat_template_sha256": rt.get("chat_template_sha256"),
+           "engine": rt.get("engine"), "engine_image": rt.get("image"), "engine_build": rt.get("build"),
+           "adapter_version": c.get("adapter_version") or ADAPTER_VERSION, "max_chars": MAX_CHARS}
+    if pv == simple.PROMPT_VERSION:                              # the simple contract: its own schema, and the names the targets are asked by
+        out.update(contract=simple.CONTRACT, output_schema_sha256=simple.schema_hash(), max_attempts=simple.MAX_ATTEMPTS,
+                   target_names_sha256=store.sha(json.dumps(simple.target_names(c), sort_keys=True, ensure_ascii=False)))
+    return out
 
 
 def identity_hash(cfg: dict) -> str:
@@ -346,6 +373,10 @@ def run(db, cfg: dict, classifier, *, now=None, limit: int | None = None, clock=
     c = cfg["classifier"]
     if c["prompt_version"] not in PROMPTS:
         raise ClassifierNotPinned("unknown prompt_version")
+    if c.get("offload_only") and not getattr(classifier, "serves_offload_profile", False):
+        # This identity belongs to an off-server worker (the local GPU). A server model answering under it would
+        # put another model's output into this identity.
+        raise ClassifierNotPinned("OFFLOAD_ONLY_PROFILE: this classifier runs on the off-server worker; use export-pending / import-results")
     if queue not in ("auto",) + QUEUES:
         raise ValueError("queue")
     if clock is not None:
@@ -397,8 +428,7 @@ def run(db, cfg: dict, classifier, *, now=None, limit: int | None = None, clock=
                         seen = check_runtime(cfg, classifier); runtime_checked = True
                         db.execute("INSERT OR IGNORE INTO x_inference_identities VALUES(?,?,?)",
                                    (ident, tick(), json.dumps({"declared": inference_identity(cfg), "runtime_reported": seen}, sort_keys=True, ensure_ascii=False)))
-                    prompt = PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
-                                                                 parent_available=bool(r["parent_available"]), text=r["author_text"])
+                    prompt = fill_prompt(cfg, r)
                     started = floor(tick())
                     if getattr(classifier, "wants_ids", False):      # the adapter fills the ids in itself; the model is not asked to repeat them
                         raw = classifier(prompt, {"post_id": r["post_id"], "topic_id": r["topic_id"], "target_id": r["target_id"]})
@@ -411,7 +441,7 @@ def run(db, cfg: dict, classifier, *, now=None, limit: int | None = None, clock=
                 raw = raw if isinstance(raw, str) else ""
                 raw_hash = store.sha(raw); out["model_calls"] += 1; out["model_calls_by_queue"][r["queue"]] += 1
                 status = "RECORDED"
-            lab = validate_output(raw, post=post, topic_id=r["topic_id"], target_id=r["target_id"])
+            lab = validate_output(raw, post=post, topic_id=r["topic_id"], target_id=r["target_id"], cfg=cfg)
             if status == "RECORDED":
                 completed = floor(tick())                    # read only now: the answer is back and has been checked
                 db.execute("INSERT OR REPLACE INTO x_inference_cache(cache_key, raw_output, raw_output_hash, created_at_utc, inference_identity, started_at_utc, completed_at_utc) VALUES(?,?,?,?,?,?,?)",

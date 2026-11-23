@@ -799,7 +799,8 @@ def x_stance_json(request):
         sys.path.insert(0, str(REPO_ROOT))
     try:
         from scripts.x_stance_v1 import config as x_config, portal_read
-        data = portal_read.read_for_portal(x_config.load(), env=dict(os.environ))
+        ident = (request.GET.get("identity") or "").strip()[:64]
+        data = portal_read.read_for_portal(x_config.load(), env=dict(os.environ), simple_identity=ident if ident.isalnum() else None)
     except Exception as exc:  # noqa: BLE001 - an unreadable store is a status, not a page error
         data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "has_data": False}
     return _no_store(JsonResponse(data))

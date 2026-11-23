@@ -20,7 +20,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from . import stance, store
+from . import simple, stance, store
 
 FORMAT = "x-stance-offload-v1"
 
@@ -84,11 +84,11 @@ def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "aut
                 skipped_claimed += 1
                 continue
             taken.append(pair)
-            prompt = stance.PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
-                                                                parent_available=bool(r["parent_available"]), text=r["author_text"])
+            prompt = stance.fill_prompt(cfg, r)
+            extra = {"item": stance.item_of(cfg, r)} if stance.is_simple(cfg) else {}
             f.write(_line({"provider": r["provider"], "post_id": r["post_id"], "topic_id": r["topic_id"], "target_id": r["target_id"], "queue": r["queue"],
                                 "sample_day": r["sample_day"], "text_hash": r["text_hash"], "kind": r["kind"], "parent_available": r["parent_available"],
-                                "member_of": members.get((r["provider"], r["post_id"], r["topic_id"], r["target_id"]), []), "cache_key": key, "prompt": prompt}))
+                                "member_of": members.get((r["provider"], r["post_id"], r["topic_id"], r["target_id"]), []), "cache_key": key, "prompt": prompt, **extra}))
             n += 1; by_queue[r["queue"]] += 1
     man = {"format": FORMAT, "kind": "PENDING_WORK", "created_at_utc": now or store.utcnow(), "file": out.name, "sha256": _sha_file(out), "items": n, "by_queue": by_queue,
            "inference_identity": ident, "identity": stance.inference_identity(cfg), "contains": "post text (private); do not commit or publish"}
@@ -151,7 +151,7 @@ def import_results(db, cfg: dict, results: Path, *, versions=None, now: str | No
             reject("OUTPUT_OR_TIMES_NOT_PLAUSIBLE"); continue
         if db.execute("SELECT 1 FROM x_stance_labels WHERE provider=? AND post_id=? AND topic_id=? AND target_id=? AND cache_key=?", ids + (key,)).fetchone():
             out["already_present"] += 1; continue
-        lab = stance.validate_output(raw, post=post, topic_id=ids[2], target_id=ids[3])
+        lab = stance.validate_output(raw, post=post, topic_id=ids[2], target_id=ids[3], cfg=cfg)
         raw_hash, written = store.sha(raw), max(now or store.utcnow(), completed)
         db.execute("INSERT OR IGNORE INTO x_inference_cache(cache_key, raw_output, raw_output_hash, created_at_utc, inference_identity, started_at_utc, completed_at_utc) VALUES(?,?,?,?,?,?,?)",
                    (key, raw, raw_hash, completed, ident, started, completed))
@@ -181,21 +181,40 @@ def write_results(work: Path, results: Path, classifier, cfg: dict, *, clock=Non
         raise OffloadError("WORKER_CONFIG_IS_NOT_THE_REQUESTED_IDENTITY")
     tick = clock or store.utcnow
     seen = stance.check_runtime(cfg, classifier)
-    n = 0
+    n, failed_in_a_row, stopped, simple_contract = 0, 0, None, stance.is_simple(cfg)
     with open(results, "w", encoding="utf-8", newline="\n") as f:
         for line in _lines(work):
             if limit is not None and n >= limit:
                 break
             o = json.loads(line)
             started = tick()
-            try:
-                raw = classifier(o["prompt"], {"post_id": o["post_id"], "topic_id": o["topic_id"], "target_id": o["target_id"]}) if getattr(classifier, "wants_ids", False) else classifier(o["prompt"])
-            except stance.ClassifierUnavailable:
-                break                                           # the rest simply stays pending on the server
-            f.write(_line({k: o[k] for k in ("provider", "post_id", "topic_id", "target_id", "text_hash", "cache_key")} | {"raw_output": raw if isinstance(raw, str) else "",
-                               "inference_started_at_utc": started, "inference_completed_at_utc": tick()}))
+            ask = lambda: (classifier(o["prompt"], {"post_id": o["post_id"], "topic_id": o["topic_id"], "target_id": o["target_id"]}) if getattr(classifier, "wants_ids", False) else classifier(o["prompt"]))
+            attempts, errors, raw = 0, [], None
+            limit_ = simple.MAX_ATTEMPTS if simple_contract else 1
+            while attempts < limit_:
+                attempts += 1
+                try:
+                    raw = ask()
+                except stance.ClassifierUnavailable as ex:      # time-out or worker failure
+                    errors.append("UNAVAILABLE:" + str(ex)[:60]); raw = None
+                    continue
+                raw = raw if isinstance(raw, str) else ""
+                if not simple_contract or not simple.needs_retry(simple.validate(raw, item=o["item"])):
+                    break
+                errors.append("FORMAT")                           # one more try; with greedy decoding it usually repeats
+            if raw is None:
+                if not simple_contract:
+                    break                                       # the rest simply stays pending on the server
+                failed_in_a_row += 1
+                if failed_in_a_row >= 3:                        # the worker itself is down: stop, leave the rest pending
+                    stopped = "WORKER_UNAVAILABLE"; break
+                raw = ""                                        # recorded as a failed classification, never as neutral
+            else:
+                failed_in_a_row = 0
+            f.write(_line({k: o[k] for k in ("provider", "post_id", "topic_id", "target_id", "text_hash", "cache_key")} | {"raw_output": raw,
+                          "inference_started_at_utc": started, "inference_completed_at_utc": tick(), "attempts": attempts, "attempt_errors": errors}))
             n += 1
     out = {"format": FORMAT, "kind": "RESULTS", "created_at_utc": tick(), "file": results.name, "sha256": _sha_file(results), "items": n, "work_sha256": man["sha256"],
-           "inference_identity": man["inference_identity"], "identity": man["identity"], "worker": {**(worker or {}), "runtime_reported": seen}}
+           "inference_identity": man["inference_identity"], "identity": man["identity"], "worker": {**(worker or {}), "runtime_reported": seen}, "stopped": stopped}
     _manifest_path(results).write_text(json.dumps(out, indent=1, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     return out

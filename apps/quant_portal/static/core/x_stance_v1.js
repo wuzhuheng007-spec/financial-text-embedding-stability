@@ -9,7 +9,7 @@
   const svgNS = 'http://www.w3.org/2000/svg';
   const s = (tag, a) => { const n = document.createElementNS(svgNS, tag); for (const k in a || {}) n.setAttribute(k, a[k]); return n; };
   const pct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
-  const TABS = ['settings', 'authors', 'daily', 'views', 'history'];
+  const TABS = ['settings', 'simple', 'authors', 'daily', 'views', 'history'];
   const PANEL = {keyword: '关键词样本', watchlist: '重点作者', combined: '合并去重'};
   let scope = 'keyword', last = null;
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
@@ -337,12 +337,48 @@
     p.replaceChildren(...out);
   }
 
-  const load = () => fetch(root.dataset.url, {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {
+  const OUT = {bullish: '看多', bearish: '看空', neutral: '中性', irrelevant: '无关', failed: '分类失败', not_judged: '未能判断', cut_by_rule: '按规则未送模型', pending: '待分类'};
+  const spct = v => v == null ? '—' : (v * 100).toFixed(1) + '%';
+  let simpleIdentity = '';
+  function renderSimple(d) {
+    const p = panel('simple'), s = d.simple;
+    if (!s) { p.replaceChildren(h('p', 'muted', '还没有可显示的模型判断。')); return; }
+    const out = [];
+    const head = h('div', 'card');
+    head.append(h('h3', null, '模型判断'), chip(s.note, 'tag-dim'),
+      h('p', 'fine-print', '三类占比的分母是：该标的已成功分类且相关的条目数。无关、分类失败、待分类分别计数，不算中性。'),
+      h('p', 'fine-print', s.sample_rule));
+    const sel = h('select'); sel.setAttribute('aria-label', '分类版本');
+    s.identities.forEach(i => { const o = h('option', null, `${i.identity === s.active_identity ? '* ' : ''}${i.model_id || '—'} · ${i.prompt_version || '—'} · ${i.labels}`); o.value = i.identity; o.setAttribute('translate', 'no'); if (i.identity === s.identity) o.selected = true; sel.append(o); });
+    if (!s.identities.some(i => i.identity === s.identity)) { const o = h('option', null, '当前生效版本（暂无标签）'); o.value = ''; o.selected = true; sel.prepend(o); }
+    sel.addEventListener('change', () => { simpleIdentity = sel.value; load(); });
+    head.append(row('分类版本（可切换对照）', sel), row('当前显示的是否为生效版本', s.identity_is_active ? '是' : '否，仅作对照'),
+      row('样本内条目', s.totals.items_in_sample), row('已处理', `${s.totals.processed} / ${s.totals.items_in_sample}`), row('分类完成进度', spct(s.totals.progress)),
+      row('看多 / 看空 / 中性', `${s.totals.bullish} / ${s.totals.bearish} / ${s.totals.neutral}`), row('无关', s.totals.irrelevant), row('分类失败', s.totals.failed),
+      row('未能判断（旧版约定）', s.totals.not_judged), row('按规则未送模型（如文本过长被截断）', s.totals.cut_by_rule), row('待分类', s.totals.pending));
+    out.push(head);
+    const tc = h('div', 'card'); tc.append(h('h3', null, '各标的：帖子占比与账号占比'));
+    tc.append(table(['标的', '看多', '看空', '中性', '分母（帖子）', '账号：看多', '账号：看空', '账号：中性', '分母（账号）', '无关', '分类失败', '待分类', '进度', '说明'],
+      s.targets.map(t => [t.target, `${t.posts.bullish}（${spct(t.posts.bullish_share)}）`, `${t.posts.bearish}（${spct(t.posts.bearish_share)}）`, `${t.posts.neutral}（${spct(t.posts.neutral_share)}）`, t.posts.n,
+        `${t.accounts.bullish}（${spct(t.accounts.bullish_share)}）`, `${t.accounts.bearish}（${spct(t.accounts.bearish_share)}）`, `${t.accounts.neutral}（${spct(t.accounts.neutral_share)}）`, t.accounts.n,
+        t.irrelevant, t.failed, t.pending, spct(t.progress), t.complete ? '已全部分类' : '已分类样本占比'])));
+    tc.append(h('p', 'fine-print', '帖子占比：每条帖子算一次。账号占比：每个账号只算一次，取它自己帖子里的多数；发帖频繁的账号不会被当成更多人。部分完成时，这只是已分类样本的占比，不是整天或全市场的情绪。'));
+    out.push(tc);
+    const ic = h('div', 'card'); ic.append(h('h3', null, '逐条结果'), row('显示的条数 / 已处理的条数', `${s.items_shown} / ${s.items_total}`));
+    ic.append(table(['标的', '判断', '简短解释', '依据原文', '原文'], s.items.map(x => { const a = h('a', null, '打开原文'); a.href = x.source_url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      const why = h('span', null, x.reason || (x.cut_reason ? '文本过长，已记录为截断，未送模型' : '—')); why.setAttribute('translate', 'no');
+      const ev = h('span', null, x.evidence || '—'); ev.setAttribute('translate', 'no');
+      return [x.target, OUT[x.outcome] || x.outcome, why, ev, x.source_url ? a : '—']; })));
+    out.push(ic);
+    p.replaceChildren(...out);
+  }
+
+  const load = () => fetch(root.dataset.url + (simpleIdentity ? `?identity=${encodeURIComponent(simpleIdentity)}` : ''), {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {
     const state = document.getElementById('x-stance-state');
     if (d.state === 'READ_ERROR') { state.textContent = '读取失败'; return; }
     state.textContent = d.has_data ? '已有数据' : '尚无数据';
     last = d;
-    renderSettings(d); renderAuthors(d); renderDaily(d); renderViews(d); renderHistory(d);
+    renderSettings(d); renderSimple(d); renderAuthors(d); renderDaily(d); renderViews(d); renderHistory(d);
   }).catch(() => { document.getElementById('x-stance-state').textContent = '读取失败'; });
   load();
 })();

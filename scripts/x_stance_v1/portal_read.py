@@ -30,8 +30,18 @@ def _meta(db, key: str):
         return None
 
 
-def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None = None) -> dict:
+def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None = None, simple_identity: str | None = None) -> dict:
     env = env if env is not None else {}
+    try:                                                         # the classification version chosen in this store, before anything is derived from the config
+        p0 = Path(db_path) if db_path else store.db_path()
+        if p0.exists():
+            d0 = store.connect(p0, readonly=True)
+            try:
+                cfg = cfgmod.apply_active(d0, cfg)
+            finally:
+                d0.close()
+    except (OSError, sqlite3.Error):
+        pass
     cgate = cfgmod.classifier_gate(cfg)
     out = {"contract_version": cfg["contract_version"], "config_version": cfg["config_version"], "config_sha256": cfgmod.config_hash(cfg),
            "settings": {"provider": cfg["provider_candidate"], "automatic_paid_fallback": False, "auto_topup": False,
@@ -86,6 +96,12 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
             out["settings"]["vocabulary_version"] = cfg["topic_vocabulary_version"]
             out["settings"]["topics"] = [{"id": t["id"], "keywords": t["keywords"], "disabled_keywords": t.get("disabled_keywords") or [], "comparison_asset": t.get("comparison_asset"), "targets": cfgmod.targets(t)} for t in cfg["topics"]]
             _fill(db, cfg, out)
+            try:
+                from . import simple_view
+                vs = [sample.sample_version(c_) for c_ in sample.live_configs(db, cfg)]
+                out["simple"] = simple_view.view(db, cfg, simple_identity, vs)
+            except sqlite3.OperationalError:
+                out["simple"] = None
         finally:
             db.close()
     if out["vocabulary"] is None:
@@ -97,7 +113,8 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
     # the keyword panel's rows are the top-level `daily` / `narratives` / `classification`; they are not sent twice
     out["panels"]["keyword"] = {"sample_version": out["settings"].get("sample_version") or sample.sample_version(cfg), "available": True, "rows": "top-level daily / narratives / classification"}
     gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=passed)
-    out.setdefault("worker_health", {"state": "NOT_REPORTED"}); out.setdefault("recovery_todo", None)
+    out.setdefault("worker_health", {"state": "NOT_REPORTED"}); out.setdefault("recovery_todo", None); out.setdefault("simple", None)
+    out["classifier"]["profile"] = cfg.get("_classifier_profile") or "default"
     if not batch.key_fingerprint(env, cfg):
         # This process (the web page) holds no key by design. What it shows about the paid collection comes from
         # the receipt the collection worker wrote, never from the absence of a key here. Too old: unknown.

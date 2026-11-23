@@ -43,6 +43,9 @@ APPENDIX = ('\nAnswer with ONE JSON object and nothing else, with exactly these 
             '"stance" ("bullish", "bearish", "neutral", or null when quality_status is not "OK"), '
             '"evidence_text" (the exact phrase copied from the post, or null when quality_status is not "OK").')
 MODEL_KEYS = ("is_relevant", "quality_status", "stance", "evidence_text")
+# The simple contract carries its whole instruction in the prompt: no appendix, and the object is passed through as
+# it is (no ids are added). The assistant turn still starts with "{" and reading stops at the closing brace.
+SIMPLE_ADAPTER_VERSION = "x-stance-adapter-hf-simple-prefill-stop-v1-20261123"
 
 
 def _sha(p: Path) -> str:
@@ -81,11 +84,12 @@ def candidate_config(base: dict, facts: dict, versions: dict, *, dtype: str, max
     c = copy.deepcopy(base)
     g = c["classifier"]["generation"]
     wsha = store.sha("|".join(w["sha256"] or "" for w in facts["weights"]))
+    simple_ = stance.is_simple(c)
     c["classifier"].update(
         model_id=facts["repo"], immutable_revision=f"hf:{facts['hf_snapshot_commit']}|safetensors-sha256-of-list:{wsha}|tokenizer:{facts['tokenizer_json_sha256'][:16]}",
-        adapter_version=ADAPTER_VERSION, temperature=0,
+        adapter_version=SIMPLE_ADAPTER_VERSION if simple_ else ADAPTER_VERSION, temperature=0,
         generation={"temperature": 0, "do_sample": False, "seed": g["seed"], "max_output_tokens": max_new_tokens or g["max_output_tokens"], "dtype": dtype, "batch_size": 1,
-                    "padding_side": "left", "appendix_sha256": store.sha(APPENDIX), "assistant_prefill": PREFILL, "stop": "at the brace closing the first object"},
+                    "padding_side": "left", "appendix_sha256": None if simple_ else store.sha(APPENDIX), "assistant_prefill": PREFILL, "stop": "at the brace closing the first object"},
         runtime={"engine": f"transformers {versions['transformers']} / torch {versions['torch']}", "image": None, "build": versions.get("cuda"),
                  "chat_template_sha256": facts["chat_template_sha256"], "device": versions.get("device")})
     return c
@@ -118,8 +122,10 @@ class HFClassifier:
     """callable(prompt, ids) -> raw JSON text, same contract as the server worker's adapter."""
 
     wants_ids = True
+    serves_offload_profile = True
 
-    def __init__(self, model_dir: Path, *, dtype: str = "float16", max_new_tokens: int = 96, seed: int = 42):
+    def __init__(self, model_dir: Path, *, dtype: str = "float16", max_new_tokens: int = 96, seed: int = 42, simple_contract: bool = False):
+        self.simple_contract = simple_contract
         import torch
         import transformers
         from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -138,7 +144,7 @@ class HFClassifier:
         return {"chat_template_sha256": self.template_sha, "engine": self.versions, "load_seconds": self.load_seconds}
 
     def _encode(self, prompts: list[str]):
-        texts = [self.tok.apply_chat_template([{"role": "user", "content": p + APPENDIX}], tokenize=False, add_generation_prompt=True) + PREFILL for p in prompts]
+        texts = [self.tok.apply_chat_template([{"role": "user", "content": p + ("" if self.simple_contract else APPENDIX)}], tokenize=False, add_generation_prompt=True) + PREFILL for p in prompts]
         return self.tok(texts, return_tensors="pt", padding=True).to("cuda")
 
     def generate(self, prompts: list[str]) -> list[dict]:
@@ -179,6 +185,8 @@ class HFClassifier:
     def __call__(self, prompt: str, ids: dict | None = None) -> str:
         r = self.generate([prompt])[0]
         self.calls.append(r)
+        if self.simple_contract:                                 # the model's object as it is; an answer cut by the output limit is empty
+            return "" if r["hit_output_limit"] else r["text"]
         return self.wrap(r["text"], ids, r["hit_output_limit"])
 
 
@@ -246,12 +254,12 @@ def bench(model_dir: Path, materials: Path, out: Path, *, batch: int = 8, hash_w
     return {k: res[k] for k in ("load_seconds", "single", "outcomes")} | {"inference_identity": res["candidate"]["inference_identity"], "batched_items_per_minute": res["batched"]["items_per_minute"]}
 
 
-def work(model_dir: Path, work_file: Path, results: Path) -> dict:
+def work(model_dir: Path, work_file: Path, results: Path, profile: str | None = None) -> dict:
     """Off-server queue worker. The work file names the identity it wants; this refuses unless the loaded
     checkpoint, template, libraries and parameters give exactly that identity."""
-    base = cfgmod.load()
+    base = cfgmod.with_profile(cfgmod.load(), profile) if profile else cfgmod.load()
     facts = checkpoint_facts(model_dir)
-    clf = HFClassifier(model_dir, max_new_tokens=base["classifier"]["generation"]["max_output_tokens"], seed=base["classifier"]["generation"]["seed"])
+    clf = HFClassifier(model_dir, max_new_tokens=base["classifier"]["generation"]["max_output_tokens"], seed=base["classifier"]["generation"]["seed"], simple_contract=stance.is_simple(base))
     cfg = candidate_config(base, facts, clf.versions, dtype="float16")
 
     class Appended:                                                 # the work file carries the bare prompt; the adapter adds its appendix itself
@@ -284,7 +292,7 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("inventory"); s.add_argument("--root", action="append", default=[])
     s = sub.add_parser("bench"); s.add_argument("--model", required=True); s.add_argument("--materials", required=True); s.add_argument("--out", required=True); s.add_argument("--batch", type=int, default=8)
-    s = sub.add_parser("work"); s.add_argument("--model", required=True); s.add_argument("--work", required=True); s.add_argument("--results", required=True)
+    s = sub.add_parser("work"); s.add_argument("--model", required=True); s.add_argument("--work", required=True); s.add_argument("--results", required=True); s.add_argument("--profile")
     s = sub.add_parser("config"); s.add_argument("--model", required=True); s.add_argument("--out", required=True)
     a = ap.parse_args(argv)
     os.environ.setdefault("HF_HUB_OFFLINE", "1"); os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")       # nothing is fetched
@@ -303,7 +311,7 @@ def main(argv=None) -> int:
         out = {"written": a.out, "inference_identity": _st.identity_hash(cfg), "model_id": cfg["classifier"]["model_id"], "revision": cfg["classifier"]["immutable_revision"],
                "server_reference_identity": _st.identity_hash(base), "note": "a different identity from the server reference; its labels are never mixed with it"}
     else:
-        out = work(Path(a.model), Path(a.work), Path(a.results))
+        out = work(Path(a.model), Path(a.work), Path(a.results), a.profile)
     print(json.dumps(out, indent=1, ensure_ascii=False, default=str))
     return 0
 

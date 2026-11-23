@@ -28,7 +28,7 @@ function mount(payload) {
   const root = new El('section'); root.dataset.url = '/x-stance.json';
   const state = new El('span');
   root.dataset.watchUrl = '/x-stance/watch/';
-  for (const t of ['settings', 'authors', 'daily', 'views', 'history']) {
+  for (const t of ['settings', 'simple', 'authors', 'daily', 'views', 'history']) {
     const b = new El('button'); b.dataset.xtab = t; root.append(b);
     const p = new El('div'); p.dataset.xpanel = t; p.hidden = t !== 'settings'; root.append(p);
   }

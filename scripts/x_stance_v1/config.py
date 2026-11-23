@@ -134,3 +134,40 @@ def topic(cfg: dict, topic_id: str) -> dict:
 def targets(t: dict) -> list[str]:
     """A topic without a configured comparison asset is counted as an industry view only."""
     return [t["comparison_asset"]] if t.get("comparison_asset") else [f"industry:{t['id']}"]
+
+
+# ---------- classifier profiles: independent classification versions one can switch between ----------
+PROFILE_META = "active_classifier_profile"
+
+
+def profiles(cfg: dict) -> dict:
+    return cfg.get("classifier_profiles") or {}
+
+
+def with_profile(cfg: dict, name: str | None) -> dict:
+    """The configuration with its classifier block replaced by a named profile. The file's own block is the
+    profile called "default". Labels are stored per inference identity, so switching never mixes versions and
+    never deletes anything."""
+    import copy
+    if not name or name == "default":
+        return cfg
+    if name not in profiles(cfg):
+        raise ConfigError(f"unknown classifier profile: {name}")
+    out = copy.deepcopy(cfg)
+    out["classifier"] = copy.deepcopy(profiles(cfg)[name])
+    out["_classifier_profile"] = name
+    return out
+
+
+def active_profile(db) -> dict:
+    """{"name", "set_at_utc", "reason"}; name "default" when nothing was chosen in this store."""
+    try:
+        r = db.execute("SELECT value FROM x_meta WHERE key=?", (PROFILE_META,)).fetchone()
+    except Exception:  # noqa: BLE001 - a store without the meta table
+        r = None
+    return json.loads(r[0]) if r else {"name": "default", "set_at_utc": None, "reason": None}
+
+
+def apply_active(db, cfg: dict) -> dict:
+    name = active_profile(db)["name"]
+    return with_profile(cfg, name) if name in profiles(cfg) else cfg

@@ -96,6 +96,7 @@ def _smoke(cfg) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="x_stance_v1")
     ap.add_argument("--config"); ap.add_argument("--db")
+    ap.add_argument("--profile", help="classifier profile for this command only; default: the one chosen in the store")
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("status", "cost-table", "usage", "plan", "preflight", "migrate", "smoke-model", "daily", "queue"):
         sub.add_parser(name)
@@ -103,6 +104,8 @@ def main(argv=None) -> int:
     s = sub.add_parser("recover"); s.add_argument("--sample-date"); s.add_argument("--plan-id"); s.add_argument("--dry-run", action="store_true")
     s.add_argument("--rebuild-failed-cursors", action="store_true"); s.add_argument("--pending", action="store_true")
     sub.add_parser("health"); s = sub.add_parser("audit"); s.add_argument("out_dir")
+    s = sub.add_parser("classifier"); s.add_argument("action", choices=["show", "use"]); s.add_argument("args", nargs="*")
+    s = sub.add_parser("simple-view"); s.add_argument("--identity"); s.add_argument("--items", type=int, default=0)
     s = sub.add_parser("export-pending"); s.add_argument("file"); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"]); s.add_argument("--limit", type=int)
     s.add_argument("--claim-hours", type=float, default=24.0)
     s = sub.add_parser("import-results"); s.add_argument("file")
@@ -124,6 +127,7 @@ def main(argv=None) -> int:
     else:
         db = store.connect(a.db)
         ledger = Ledger(db, base)
+        base = cfgmod.with_profile(base, a.profile) if a.profile else cfgmod.apply_active(db, base)   # the classification version in force
         base = sample.attach_named(db, base)                           # named accounts take their identity from the private watch list
         cfg = vocab.with_topics(base, vocab.active(db, base))          # the vocabulary in force now; plans freeze their own
         key_env = cfgmod.KEY_ENV[base["provider_candidate"]]
@@ -135,6 +139,33 @@ def main(argv=None) -> int:
                    "usage": ledger.usage(), "history": batch.history_progress(db, base), "watchlist": watchlist.summary(db, base), "snapshots": db.execute("SELECT count(*) FROM x_signal_snapshots").fetchone()[0] if _has(db, "x_signal_snapshots") else 0}
         elif a.cmd == "resume":
             out = ledger.resume(a.reason)
+        elif a.cmd == "classifier":                              # which classification version is in force; switching never deletes or mixes labels
+            from . import simple_view
+            raw = cfgmod.load(a.config)
+            if a.action == "use":
+                if len(a.args) < 2 or not a.args[1].strip():
+                    out, code = {"status": "REJECTED", "reason": "usage: classifier use NAME REASON"}, 1
+                elif a.args[0] != "default" and a.args[0] not in cfgmod.profiles(raw):
+                    out, code = {"status": "REJECTED", "reason": "unknown profile", "known": ["default"] + sorted(cfgmod.profiles(raw))}, 1
+                else:
+                    before = cfgmod.active_profile(db)
+                    log = json.loads((db.execute("SELECT value FROM x_meta WHERE key='classifier_profile_log'").fetchone() or ["[]"])[0])
+                    entry = {"name": a.args[0], "set_at_utc": store.iso(now), "reason": a.args[1].strip()[:300], "previous": before["name"]}
+                    from .ledger import set_meta
+                    set_meta(db, cfgmod.PROFILE_META, json.dumps(entry, ensure_ascii=False)); set_meta(db, "classifier_profile_log", json.dumps(log + [entry], ensure_ascii=False)); db.commit()
+                    out = {"status": "SWITCHED", **entry, "note": "labels of every version stay in the store; derived tables follow the version in force after the next build"}
+            if a.action == "show" or code == 0 and a.action == "use":
+                act = cfgmod.active_profile(db)
+                cur = cfgmod.apply_active(db, raw)
+                shown = {"active_profile": act, "active_identity": stance.identity_hash(cur), "model_id": cur["classifier"].get("model_id"), "prompt_version": cur["classifier"].get("prompt_version"),
+                         "offload_only": bool(cur["classifier"].get("offload_only")),
+                         "profiles": {n: {"identity": stance.identity_hash(cfgmod.with_profile(raw, n)), "model_id": (cfgmod.with_profile(raw, n))["classifier"].get("model_id"),
+                                          "prompt_version": cfgmod.with_profile(raw, n)["classifier"].get("prompt_version")} for n in ["default"] + sorted(cfgmod.profiles(raw))},
+                         "versions_with_labels": simple_view.identities(db)}
+                out = {**out, **shown} if a.action == "use" else shown
+        elif a.cmd == "simple-view":
+            from . import simple_view
+            out = simple_view.view(db, cfg, a.identity, _live(db, base), max_items=a.items)
         elif a.cmd == "health":                                  # run by the collection worker (it holds the key); the page reads the result
             out = batch.write_health(db, base, env, now, source="health command")
         elif a.cmd == "audit":

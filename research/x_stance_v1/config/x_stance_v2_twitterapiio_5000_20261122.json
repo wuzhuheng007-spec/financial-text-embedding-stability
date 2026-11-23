@@ -419,5 +419,53 @@
     "extra_profile_endpoint_note": "not used; its price would have to be verified and added to the ledger first",
     "selection": "owner screenshots, imported 2026-11-23; earlier dates are a panel of authors selected afterwards",
     "seed": "kept in the private store, not in this repository; imported with: cli watch import FILE"
+  },
+  "classifier_profiles": {
+    "simple-v1-qwen25-3b-local-gpu": {
+      "prompt_version": "x-stance-simple-v1-20261123",
+      "schema_version": "x-stance-simple-output-v1",
+      "temperature": 0,
+      "generation": {
+        "temperature": 0,
+        "do_sample": false,
+        "seed": 42,
+        "max_output_tokens": 256,
+        "dtype": "float16",
+        "batch_size": 1,
+        "padding_side": "left",
+        "appendix_sha256": null,
+        "assistant_prefill": "{",
+        "stop": "at the brace closing the first object"
+      },
+      "target_names": {
+        "QQQ": "QQQ（纳斯达克100指数ETF）",
+        "industry:memory": "存储芯片板块",
+        "industry:technology": "科技与半导体板块",
+        "industry:market": "美股整体市场"
+      },
+      "offload_only": true,
+      "runs_in": "owner's local GPU through export-pending / import-results; the server CPU worker never answers under this identity",
+      "contract": "simple-v1",
+      "max_attempts": 2,
+      "json_constrained_decoding": false,
+      "json_note": "the transformers backend in use has no grammar-constrained decoding; the assistant turn starts with '{', reading stops at the closing brace, and the object is parsed and validated strictly",
+      "decoding": "deterministic: greedy, do_sample=false, temperature 0, fixed seed",
+      "selection_basis": "the Qwen2.5-3B-Instruct checkpoint already on the owner's machine; no paid model service, nothing downloaded",
+      "classification_quality": "UNVALIDATED",
+      "quality_note": "model judgement, awaiting human verification; no accuracy is claimed",
+      "use_future_returns": false,
+      "use_current_engagement_for_history": false,
+      "cloud_model_calls_default": false,
+      "model_id": "Qwen/Qwen2.5-3B-Instruct",
+      "immutable_revision": "hf:aa8e72537993ba99e69dfaafa59ed015b17504d1|safetensors-sha256-of-list:d821d0d6550359bdd6768a3e629237bf4267a89a09f486acbe6b6a482f4e6ed5|tokenizer:c0382117ea329cdf",
+      "adapter_version": "x-stance-adapter-hf-simple-prefill-stop-v1-20261123",
+      "runtime": {
+        "engine": "transformers 4.57.1 / torch 2.11.0+cu128",
+        "image": null,
+        "build": "12.8",
+        "chat_template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+        "device": "NVIDIA GeForce RTX 5070 Ti Laptop GPU"
+      }
+    }
   }
 }
