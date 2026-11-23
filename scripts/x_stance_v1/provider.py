@@ -182,7 +182,7 @@ def import_local(db, path: str | Path, *, provider: str = "local_import", now: s
     raw = path.read_bytes()
     batch = f"import:{store.hashlib.sha256(raw).hexdigest()[:16]}"
     text = raw.decode("utf-8-sig")
-    rows = [json.loads(line) for line in text.splitlines() if line.strip()] if path.suffix.lower() in (".jsonl", ".ndjson") else list(csv.DictReader(text.splitlines()))
+    rows = [json.loads(line) for line in text.split("\n") if line.strip()] if path.suffix.lower() in (".jsonl", ".ndjson") else list(csv.DictReader(text.splitlines()))
     out = {"batch": batch, "rows": len(rows), "inserted": 0, "duplicates": 0, "rejected": {}, "first_seen_claims_ignored": 0, "ingest_mode": RETRO}
     for r in rows:
         try:

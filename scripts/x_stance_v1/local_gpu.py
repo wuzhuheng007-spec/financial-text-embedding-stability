@@ -183,7 +183,7 @@ class HFClassifier:
 
 
 def _materials(path: Path) -> list[dict]:
-    return [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
+    return [json.loads(x) for x in path.read_text(encoding="utf-8").split("\n") if x.strip()]
 
 
 def bench(model_dir: Path, materials: Path, out: Path, *, batch: int = 8, hash_weights: bool = True) -> dict:

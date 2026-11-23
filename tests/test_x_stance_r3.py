@@ -767,3 +767,22 @@ def test_r_like_floor_sensitivity_counts_what_each_floor_admits_and_keeps_missin
     before = db.execute("SELECT count(*), group_concat(quality) FROM x_post_topics").fetchone()
     like_sensitivity.all_versions(db)
     assert tuple(db.execute("SELECT count(*), group_concat(quality) FROM x_post_topics").fetchone()) == tuple(before)           # reads only
+
+
+def test_o_posts_with_unicode_line_separators_survive_export_work_and_import(db, plain, tmp_path):
+    """The first real work file (2026-11-23) held posts with U+2028; read back with str.splitlines() it broke apart."""
+    ls, ps, nel = chr(0x2028), chr(0x2029), chr(0x85)
+    odd = "$QQQ I expect strong future returns." + ls + "second paragraph" + ps + "third" + nel + "end"
+    put(db, 71, text=odd, fetched="2026-11-19T05:30:00Z", created="2026-11-18T15:00:00Z")
+    put(db, 72, fetched="2026-11-19T05:30:00Z", created="2026-11-18T15:00:00Z")
+    stance.map_all(db, plain)
+    work, results = tmp_path / "w.jsonl", tmp_path / "r.jsonl"
+    exp = offload.export_pending(db, plain, work, now="2026-11-20T06:00:00Z")
+    raw = work.read_bytes().decode("utf-8")
+    assert exp["items"] == 2 and raw.count(chr(10)) == 2 and len(raw.splitlines()) == 2 and ls not in raw and ps not in raw and nel not in raw   # one line per item, even for a naive reader
+    assert any(odd in json.loads(x)["prompt"] for x in raw.split(chr(10)) if x)                         # and the text itself is unchanged
+    box = {"t": "2026-11-20T07:00:00Z"}
+    man = offload.write_results(work, results, Model(box=box, seconds=1), plain, clock=lambda: box["t"])
+    out = offload.import_results(db, plain, results, now="2026-11-20T08:00:00Z")
+    assert man["items"] == 2 and (out["lines"], out["labels_written"], out["rejected"]) == (2, 2, {})
+    assert offload._lines(work) == [x for x in raw.split(chr(10)) if x]

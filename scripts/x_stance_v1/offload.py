@@ -29,6 +29,21 @@ class OffloadError(ValueError):
     pass
 
 
+def _line(obj: dict) -> str:
+    """One JSON line. Real posts contain U+2028 / U+2029 / U+0085, which json leaves as they are and which
+    str.splitlines() treats as line ends: on 2026-11-23 the first real work file could not be read back line by
+    line. They are written escaped, and readers split on the newline character only."""
+    s = json.dumps(obj, ensure_ascii=False, sort_keys=True)
+    for ch in (chr(0x2028), chr(0x2029), chr(0x85)):
+        s = s.replace(ch, "\\u%04x" % ord(ch))
+    return s + chr(10)
+
+
+def _lines(p: Path) -> list[str]:
+    with open(p, encoding="utf-8", newline="") as f:
+        return [x for x in f.read().split(chr(10)) if x.strip()]
+
+
 def _sha_file(p: Path) -> str:
     h = hashlib.sha256()
     with open(p, "rb") as f:
@@ -71,10 +86,9 @@ def export_pending(db, cfg: dict, out: Path, *, versions=None, queue: str = "aut
             taken.append(pair)
             prompt = stance.PROMPTS[c["prompt_version"]].format(topic_id=r["topic_id"], target_id=r["target_id"], post_id=r["post_id"], kind=r["kind"],
                                                                 parent_available=bool(r["parent_available"]), text=r["author_text"])
-            f.write(json.dumps({"provider": r["provider"], "post_id": r["post_id"], "topic_id": r["topic_id"], "target_id": r["target_id"], "queue": r["queue"],
+            f.write(_line({"provider": r["provider"], "post_id": r["post_id"], "topic_id": r["topic_id"], "target_id": r["target_id"], "queue": r["queue"],
                                 "sample_day": r["sample_day"], "text_hash": r["text_hash"], "kind": r["kind"], "parent_available": r["parent_available"],
-                                "member_of": members.get((r["provider"], r["post_id"], r["topic_id"], r["target_id"]), []), "cache_key": key, "prompt": prompt},
-                               ensure_ascii=False, sort_keys=True) + "\n")
+                                "member_of": members.get((r["provider"], r["post_id"], r["topic_id"], r["target_id"]), []), "cache_key": key, "prompt": prompt}))
             n += 1; by_queue[r["queue"]] += 1
     man = {"format": FORMAT, "kind": "PENDING_WORK", "created_at_utc": now or store.utcnow(), "file": out.name, "sha256": _sha_file(out), "items": n, "by_queue": by_queue,
            "inference_identity": ident, "identity": stance.inference_identity(cfg), "contains": "post text (private); do not commit or publish"}
@@ -111,7 +125,7 @@ def import_results(db, cfg: dict, results: Path, *, versions=None, now: str | No
     def reject(why):
         out["rejected"][why] = out["rejected"].get(why, 0) + 1
 
-    for line in results.read_text(encoding="utf-8").splitlines():
+    for line in _lines(results):
         if not line.strip():
             continue
         out["lines"] += 1
@@ -169,7 +183,7 @@ def write_results(work: Path, results: Path, classifier, cfg: dict, *, clock=Non
     seen = stance.check_runtime(cfg, classifier)
     n = 0
     with open(results, "w", encoding="utf-8", newline="\n") as f:
-        for line in work.read_text(encoding="utf-8").splitlines():
+        for line in _lines(work):
             if limit is not None and n >= limit:
                 break
             o = json.loads(line)
@@ -178,8 +192,8 @@ def write_results(work: Path, results: Path, classifier, cfg: dict, *, clock=Non
                 raw = classifier(o["prompt"], {"post_id": o["post_id"], "topic_id": o["topic_id"], "target_id": o["target_id"]}) if getattr(classifier, "wants_ids", False) else classifier(o["prompt"])
             except stance.ClassifierUnavailable:
                 break                                           # the rest simply stays pending on the server
-            f.write(json.dumps({k: o[k] for k in ("provider", "post_id", "topic_id", "target_id", "text_hash", "cache_key")} | {"raw_output": raw if isinstance(raw, str) else "",
-                               "inference_started_at_utc": started, "inference_completed_at_utc": tick()}, ensure_ascii=False, sort_keys=True) + "\n")
+            f.write(_line({k: o[k] for k in ("provider", "post_id", "topic_id", "target_id", "text_hash", "cache_key")} | {"raw_output": raw if isinstance(raw, str) else "",
+                               "inference_started_at_utc": started, "inference_completed_at_utc": tick()}))
             n += 1
     out = {"format": FORMAT, "kind": "RESULTS", "created_at_utc": tick(), "file": results.name, "sha256": _sha_file(results), "items": n, "work_sha256": man["sha256"],
            "inference_identity": man["inference_identity"], "identity": man["identity"], "worker": {**(worker or {}), "runtime_reported": seen}}
