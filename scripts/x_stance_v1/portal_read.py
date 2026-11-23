@@ -64,7 +64,7 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
         db = store.connect(p, readonly=True)
         try:
             try:
-                st = batch.preflight_state(db, cfg, env)
+                st = batch.preflight_state(db, cfg, env, check_credential=bool(batch.key_fingerprint(env, cfg)))
             except sqlite3.OperationalError:
                 st = {"state": "NOT_RUN", "recent_unlocked": False, "history_unlocked": False, "reasons": [], "at_utc": None}
             passed = st["recent_unlocked"]

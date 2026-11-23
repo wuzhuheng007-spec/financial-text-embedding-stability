@@ -273,6 +273,7 @@ class Collector:
         self.max_dup = acq["proposed_max_duplicate_share_per_page"]
         self.provider = "twitterapi_io"
         self.parse_failures, self.protocol_anomalies, self.last = 0, 0, None
+        self.transient_errors = 0                              # HTTP 503 answers in this job (documented as not charged)
         self.page_max = acq.get("tolerated_max_posts_per_page") or ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
         self.min_free_gib = acq["proposed_min_free_disk_gib"]
         self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
@@ -324,6 +325,7 @@ class Collector:
                 run[k] = prev[k]
         seen_ids = {r["post_id"] for r in self.db.execute("SELECT post_id FROM x_run_posts WHERE run_id=?", (run_id,))}
         seen_cursors, cursor, prev_oldest, needs_split, stop, over_page, protocol = set(), run["cursor"] or "", None, None, None, False, None
+        transient = None
         net, hits, fails = 0, 0, 0
         query = f"{q['query']} since_time:{s} until_time:{e}"
         while True:
@@ -365,6 +367,8 @@ class Collector:
                             self.budget.not_charged("provider documents HTTP 503 as not charged")
                         else:
                             self.budget.unknown(ex.kind)
+                    if ex.kind == "HTTP_503_NOT_CHARGED":         # one unit ends here; the job goes on (see below)
+                        transient = f"ERROR:{ex.kind}"; break
                     stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
                 now = store.iso(self.clock())                # the moment the response was actually received
                 net += 1
@@ -443,6 +447,17 @@ class Collector:
             store.upsert_run(self.db, run); self.db.commit()
             self.last = {**{k: run[k] for k in SUMMARY}, **extra}
             raise StopAll(stop)
+        if transient:
+            # Observed 2026-11-23: five 503 answers in about 190 requests, each of which stopped a whole job. A 503
+            # is not charged. The unit ends as PARTIAL and is NOT asked again in this run; the next run resumes it
+            # from its checkpoint (batch.retriable). Three in one job still stop the job: no loop against an outage.
+            run["status"], run["stop_reason"] = "PARTIAL", transient
+            self.transient_errors += 1
+            store.upsert_run(self.db, run); self.db.commit()
+            self.last = {**{k: run[k] for k in SUMMARY}, **extra}
+            if self.transient_errors >= 3:
+                raise StopAll("ERROR:HTTP_503_REPEATED")
+            return [self.last]
         if protocol:                                         # this unit stops here; it is never COMPLETE and is not retried blindly
             run["status"], run["stop_reason"] = "PARTIAL", protocol
             self.protocol_anomalies += 1

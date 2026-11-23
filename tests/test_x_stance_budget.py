@@ -210,8 +210,8 @@ def test_collector_timeout_is_held_and_not_retried_in_a_loop(cfg, db):
         col.collect_pages(Q, 1000, 2000, 3)
     assert len(f.requests) == 1 and led.usage(NOW)["unknown_held"]["requests"] == 1 and led.usage(NOW)["today"]["credits"] == 300
     f.fail = provider.ProviderHTTPError(503, "HTTP_503_NOT_CHARGED")
-    with pytest.raises(provider.StopAll):
-        col.collect_pages(Q, 1000, 2000, 3)
+    r = col.collect_pages(Q, 1000, 2000, 3)                      # since 2026-11-23 a 503 ends the unit, not the job (tests below)
+    assert r["status"] == "PARTIAL" and r["stop_reason"] == "ERROR:HTTP_503_NOT_CHARGED" and len(f.requests) == 2
     row = db.execute("SELECT status, attempt FROM x_cost_ledger ORDER BY created_at_utc, rowid").fetchall()
     assert [tuple(r) for r in row] == [("UNKNOWN_HELD", 1), ("RELEASED", 2)] and led.usage(NOW)["today"]["credits"] == 300
 
@@ -383,3 +383,102 @@ def test_window_mode_follows_the_frozen_history_boundary(cfg, db):
     pipeline.build_daily(db, cfg, cal, mode="AUTO", now=datetime(2026, 11, 20, 4, 0, tzinfo=UTC))
     modes = dict(db.execute("SELECT window_label, mode FROM x_daily_sentiment WHERE window_kind='session' AND topic_id='qqq' AND lang_scope='all' AND window_label IN ('2026-10-01','2026-11-18')").fetchall())
     assert modes == {"2026-10-01": "RETROSPECTIVE_VISIBLE_NOW", "2026-11-18": "BATCH_AFTER_CLOSE"} and hr["end_utc_exclusive"] == "2026-11-18T05:00:00Z"
+
+
+# ---------- HTTP 503 (not charged): first live collection, 2026-11-23 ----------
+class Flaky(Fake):
+    """Answers 503 for the requests whose 1-based ordinal is in `bad`."""
+
+    def __init__(self, bad):
+        super().__init__()
+        self.bad = set(bad)
+
+    def get(self, params):
+        if len(self.requests) + 1 in self.bad:
+            self.requests.append(dict(params))
+            raise provider.ProviderHTTPError(503, "HTTP_503_NOT_CHARGED")
+        return super().get(params)
+
+
+def _units(db, n):
+    out = []
+    for i in range(n):
+        qh = f"qh-u{i}"
+        db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, "twitterapi_io", "qqq", "en", "vocab-20261122-a", f"(u{i}) lang:en"))
+        out.append({"query_hash": qh, "topic_id": "qqq", "lang": "en", "start": 1000, "end": 2000})
+    return out
+
+
+def _col(db, cfg, f):
+    return provider.Collector(db, cfg, budget=JobBudget(Ledger(db, cfg, clock=lambda: NOW), pool="recent"), transport=f, clock=lambda: NOW)
+
+
+def test_one_503_ends_one_unit_and_the_job_goes_on_without_asking_it_again(cfg, db):
+    units = _units(db, 4)
+    f = Flaky({2})
+    out = batch._walk(_col(db, cfg, f), db, ((d, u) for d in (1, 2) for u in units))
+    assert out["stopped"] is None and out["transient_errors"] == 1
+    assert len(f.requests) == 4 + 3                              # depth 1: four requests, the second fails; depth 2: the three others only
+    st = {r["query_hash"]: (r["status"], r["pages"]) for r in db.execute("SELECT * FROM x_query_runs")}
+    assert st["qh-u1"] == ("PARTIAL", 0) and all(st[f"qh-u{i}"] == ("PLANNED_SAMPLE", 2) for i in (0, 2, 3))
+    led = Ledger(db, cfg, clock=lambda: NOW).usage(NOW)
+    assert led["today"]["returned_posts"] == 6 * 20 and led["unknown_held"]["requests"] == 0      # the 503 is released, not charged
+
+
+def test_three_503_in_one_job_stop_it(cfg, db):
+    units = _units(db, 6)
+    f = Flaky({1, 2, 3})
+    out = batch._walk(_col(db, cfg, f), db, ((1, u) for u in units))
+    assert out["stopped"] == "ERROR:HTTP_503_REPEATED" and len(f.requests) == 3
+
+
+def test_the_next_run_resumes_a_unit_that_ended_on_a_503_from_its_checkpoint(cfg, db):
+    units = _units(db, 2)
+    f = Flaky({3})                                               # second page of the first unit
+    batch._walk(_col(db, cfg, f), db, ((d, u) for d in (1, 2) for u in units))
+    r = db.execute("SELECT * FROM x_query_runs WHERE query_hash='qh-u0'").fetchone()
+    assert (r["status"], r["pages"], r["stop_reason"]) == ("PARTIAL", 1, "ERROR:HTTP_503_NOT_CHARGED") and batch.retriable(db, r)
+    n = len(f.requests)
+    out = batch._walk(_col(db, cfg, f), db, ((d, u) for d in (1, 2) for u in units))
+    assert out["resumed_units"] == 1 and len(f.requests) == n + 1 and f.requests[-1]["cursor"] == "1"   # only the missing page, from the stored cursor
+    r = db.execute("SELECT * FROM x_query_runs WHERE query_hash='qh-u0'").fetchone()
+    assert (r["status"], r["pages"], r["returned"]) == ("PLANNED_SAMPLE", 2, 40)
+
+
+def test_other_failures_are_not_resumed_and_a_rejected_page_only_if_the_validator_now_accepts_it(cfg, db):
+    units = _units(db, 3)
+    run = lambda i: db.execute("SELECT * FROM x_query_runs WHERE query_hash=?", (f"qh-u{i}",)).fetchone()
+
+    class Shapes(Fake):
+        def get(self, params):
+            self.requests.append(dict(params))
+            if "(u0)" in params["query"]:
+                raise provider.ProviderHTTPError(None, "NETWORK")
+            if "(u1)" in params["query"]:
+                return {"tweets": [], "has_next_page": True, "next_cursor": None}      # still malformed
+            return {"tweets": [], "has_next_page": False, "next_cursor": None}         # the provider's real last page
+
+    f = Shapes()
+    for u in units[1:]:
+        _col(db, cfg, f).collect_pages(batch._query(db, u["query_hash"]), 1000, 2000, 1)
+    with pytest.raises(provider.StopAll):
+        _col(db, cfg, f).collect_pages(batch._query(db, "qh-u0"), 1000, 2000, 1)
+    assert not batch.retriable(db, run(0)) and not batch.retriable(db, run(1)) and run(2)["status"] == "COMPLETE"
+    # a unit left PARTIAL by the stricter validator of 3299a0a, whose stored page is the real last page
+    db.execute("UPDATE x_query_runs SET status='PARTIAL', stop_reason='PROTOCOL:NEXT_CURSOR_NOT_STRING', error_class='NEXT_CURSOR_NOT_STRING', pages=0 WHERE query_hash='qh-u2'"); db.commit()
+    assert batch.retriable(db, run(2))
+    n = len(f.requests)
+    out = batch._walk(_col(db, cfg, f), db, ((1, u) for u in units))
+    assert out["resumed_units"] == 1 and len(f.requests) == n and run(2)["status"] == "COMPLETE" and run(2)["error_class"] is None   # read again from the stored page: no request
+
+
+def test_a_reader_without_the_key_reports_the_receipt_and_opens_nothing(cfg, db):
+    unlock(db, cfg)
+    full = batch.preflight_state(db, cfg, KEY)
+    assert full["state"] == "PASSED" and full["recent_unlocked"]
+    blind = batch.preflight_state(db, cfg, {})                   # a job without the key: closed, as before
+    assert blind["state"] == "STALE" and blind["reasons"] == ["BINDING_CHANGED:credential_fingerprint"] and not blind["recent_unlocked"]
+    page = batch.preflight_state(db, cfg, {}, check_credential=False)
+    assert page["state"] == "PASSED" and page["credential_checked"] is False and page["recent_unlocked"] is False and page["history_unlocked"] == full["history_unlocked"]
+    out = batch.run_daily(db, cfg, {}, lambda: pytest.fail("no request without the key"), NOW, clock=lambda: NOW)
+    assert out["status"] == "REFUSED_FAIL_CLOSED"

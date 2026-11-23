@@ -149,17 +149,37 @@ def _query(db, query_hash: str) -> dict:
     return {"query_hash": r[0], "topic_id": r[1], "lang": r[2], "query": r[3]}
 
 
+def retriable(db, run) -> bool:
+    """A PARTIAL unit a LATER run may resume from its checkpoint: it ended on an uncharged HTTP 503, or on a page
+    the validator of the time rejected and the current one accepts (the stored page is read again, at no cost).
+    Any other failure stays as it is until someone looks."""
+    if run["status"] != "PARTIAL":
+        return False
+    reason = run["stop_reason"] or ""
+    if reason == "ERROR:HTTP_503_NOT_CHARGED":
+        return True
+    if reason.startswith("PROTOCOL:"):
+        page = db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
+                          (run["provider"], run["query_hash"], run["window_start_utc"], run["window_end_utc"], run["cursor"] or "")).fetchone()
+        return bool(page) and provider.page_schema_error(json.loads(page[0])) is None
+    return False
+
+
 def _walk(col: provider.Collector, db, steps) -> dict:
     """Runs (depth, unit) steps in order until the plan ends or the job must stop. A unit that already ended
-    (COMPLETE) or failed (PARTIAL) is not asked for more pages."""
-    out = {"steps": 0, "requests_before": col.budget.requests, "stopped": None, "units_touched": 0, "protocol_anomalies": 0}
+    (COMPLETE) or failed (PARTIAL) is not asked for more pages - except a failed unit that `retriable` allows,
+    once per run: a unit that fails in this run is not asked again in this run."""
+    out = {"steps": 0, "requests_before": col.budget.requests, "stopped": None, "units_touched": 0, "protocol_anomalies": 0, "resumed_units": 0}
     done = {}
     try:
         for depth, u in steps:
             rid = col._run_id(u["query_hash"], u["start"], u["end"])
             if rid not in done:
-                r = db.execute("SELECT status, pages FROM x_query_runs WHERE run_id=?", (rid,)).fetchone()
-                done[rid] = (r[0], r[1]) if r else (None, 0)
+                r = db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (rid,)).fetchone()
+                if r and retriable(db, r):
+                    done[rid] = ("RESUMABLE", r["pages"]); out["resumed_units"] += 1
+                else:
+                    done[rid] = (r["status"], r["pages"]) if r else (None, 0)
             status, pages = done[rid]
             if status in ("COMPLETE", "PARTIAL") or pages >= depth:
                 continue
@@ -170,6 +190,7 @@ def _walk(col: provider.Collector, db, steps) -> dict:
     except provider.StopAll as stop:
         out["stopped"] = stop.reason
     out["protocol_anomalies"] = col.protocol_anomalies
+    out["transient_errors"] = col.transient_errors
     out["requests"] = col.budget.requests - out.pop("requests_before")
     return out
 
@@ -274,7 +295,7 @@ def binding(db, cfg: dict, env: dict) -> dict:
             "credential_fingerprint": key_fingerprint(env, cfg)}
 
 
-def preflight_state(db, cfg: dict, env: dict) -> dict:
+def preflight_state(db, cfg: dict, env: dict, *, check_credential: bool = True) -> dict:
     """Derived from the LATEST stored receipt and the current binding; never from a bare flag. A receipt written by
     the earlier, lenient preflight has no validator in it and is STALE. A newer failed receipt replaces an older pass."""
     out = {"state": "NOT_RUN", "recent_unlocked": False, "history_unlocked": False, "reasons": [], "receipt_sha256": None, "at_utc": None}
@@ -287,6 +308,9 @@ def preflight_state(db, cfg: dict, env: dict) -> dict:
     out.update(receipt_sha256=rec.get("sha256"), at_utc=rec.get("finished_at_utc"), verdict=rec.get("verdict"))
     now_b, then_b = binding(db, cfg, env), rec.get("binding") or {}
     diff = [k for k in now_b if now_b[k] != then_b.get(k)]
+    if not check_credential:                                     # a reader without the key (the web page) cannot compare fingerprints: it
+        diff = [k for k in diff if k != "credential_fingerprint"]   # reports the receipt as it stands and opens nothing
+        out["credential_checked"] = False
     if rec.get("verdict") != "PASS":
         out.update(state="FAILED", reasons=list(rec.get("fail_reasons") or ["NOT_PASSED"]))
     elif diff:
@@ -294,6 +318,8 @@ def preflight_state(db, cfg: dict, env: dict) -> dict:
     else:
         hist = bool((rec.get("checks") or {}).get("history_search_verified"))
         out.update(state="PASSED", recent_unlocked=True, history_unlocked=hist, reasons=[] if hist else ["HISTORY_SEARCH_NOT_VERIFIED"])
+    if not check_credential:
+        out["recent_unlocked"] = False                           # only a process that holds the key can open the gate
     return out
 
 
