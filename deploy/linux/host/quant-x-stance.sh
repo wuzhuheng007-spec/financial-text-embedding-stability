@@ -37,7 +37,8 @@ local_job() { docker run --rm --network "${X_NET:-none}" --memory 1g --cpus 1 -v
 model_step() { /usr/local/sbin/quant-x-llm.sh start >&2 || return 4; local rc=0; X_NET=quant-x-llm local_job "$@" || rc=$?; /usr/local/sbin/quant-x-llm.sh stop >&2; return $rc; }
 
 OFF=/srv/quant/x_offload
-offload_job() { install -d -m 700 "$OFF"; docker run --rm --network none --memory 1g --cpus 1 -v "$VOL":/app/apps/quant_portal/var -v "$OFF":/offload                 --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
+# the job container runs as uid 10001: the private directory belongs to that uid and to nobody else
+offload_job() { install -d -m 700 -o 10001 -g 10001 "$OFF"; docker run --rm --network none --memory 1g --cpus 1 -v "$VOL":/app/apps/quant_portal/var -v "$OFF":/offload                 --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
 RECENT_LIMIT=${X_CLASSIFY_LIMIT:-2000}; RECENT_SECONDS=${X_RECENT_SECONDS:-9000}
 HISTORY_LIMIT=${X_HISTORY_LIMIT:-2000}; HISTORY_SECONDS=${X_HISTORY_SECONDS:-10800}
 
