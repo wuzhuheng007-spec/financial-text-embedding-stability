@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
- "config_sha256": "53beb7286770e2f3a4ccc2dec9c66ad7a3ec76512f04e9cecf2524f454cbd5b6",
+ "config_sha256": "33138ee8c71435ffc4286085ef5f2af8c616b46566d421a5bf20dd4353aa1a59",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
@@ -95,13 +95,14 @@
   },
   "editing": "VERSIONED_EDITS_EFFECTIVE_NEXT_BATCH",
   "acquisition_gate": {
-   "allowed": false,
+   "allowed": null,
    "provider": "twitterapi_io",
    "key_env_name": "TWITTERAPI_IO_API_KEY",
    "reasons": [
-    "PROVIDER_KEY_MISSING",
-    "PREFLIGHT_NOT_PASSED"
-   ]
+    "WORKER_HEALTH_NOT_REPORTED"
+   ],
+   "source": "WORKER_HEALTH",
+   "checked_at_utc": null
   }
  },
  "classifier": {
@@ -421,14 +422,14 @@
   "not a prediction",
   "labels not validated by human review"
  ],
+ "worker_health": {
+  "state": "NOT_REPORTED"
+ },
+ "recovery_todo": null,
  "missing_inputs": [
   {
-   "input": "PROVIDER_KEY",
-   "detail": "TWITTERAPI_IO_API_KEY"
-  },
-  {
-   "input": "PREFLIGHT",
-   "detail": "bounded live check"
+   "input": "WORKER_HEALTH",
+   "detail": "the collection worker's self-check (quant-x-stance.sh health)"
   },
   {
    "input": "validation.holdout_start",

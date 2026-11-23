@@ -1459,7 +1459,19 @@
     " 原帖 ": " post ",
     "这里显示作者被采集到的原文，不论是否进入占比。未计入、待分类和无关都不算中性；谈别的标的不会被算成对 QQQ 的看法。": "Posts are shown as collected whether or not they enter the shares. Not counted, waiting and not relevant are never neutral; a post about another asset is not turned into a view on QQQ.",
     "样本版本": "Sample version",
-    "采集时点赞": "likes at collection"
+    "采集时点赞": "likes at collection",
+    "采集端还没有上报检查结果": "The collection worker has not reported a self-check yet",
+    "采集端的检查结果已过期，待复检": "The collection worker's self-check is out of date; re-check needed",
+    "未知，待复检": "Unknown, re-check needed",
+    "采集端检查时间（UTC）": "Worker self-check time (UTC)",
+    "检查结果是否仍有效": "Self-check still valid",
+    "尚未上报": "Not reported yet",
+    "已过期，待复检": "Out of date, re-check needed",
+    "采集端凭据可用": "Credential available to the worker",
+    "凭据与预检回执一致": "Credential matches the preflight receipt",
+    "采集端自检结果": "Worker self-check",
+    "待补采的样本日期": "Sample dates waiting for recovery",
+    "网页本身不持有供应商密钥。这里显示的是采集任务最近一次自检写下的结果，不含密钥内容。": "The web page holds no provider key. This shows what the collection job wrote at its latest self-check; it contains no key material."
   };
   const han = /[㐀-鿿]/;
   const entries = Object.entries(catalog).sort((a, b) => b[0].length - a[0].length);

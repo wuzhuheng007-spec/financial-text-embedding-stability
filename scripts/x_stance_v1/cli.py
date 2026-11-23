@@ -27,7 +27,7 @@ import json
 import os
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import time
@@ -100,6 +100,9 @@ def main(argv=None) -> int:
     for name in ("status", "cost-table", "usage", "plan", "preflight", "migrate", "smoke-model", "daily", "queue"):
         sub.add_parser(name)
     s = sub.add_parser("resume"); s.add_argument("reason")
+    s = sub.add_parser("recover"); s.add_argument("--sample-date"); s.add_argument("--plan-id"); s.add_argument("--dry-run", action="store_true")
+    s.add_argument("--rebuild-failed-cursors", action="store_true"); s.add_argument("--pending", action="store_true")
+    sub.add_parser("health"); s = sub.add_parser("audit"); s.add_argument("out_dir")
     s = sub.add_parser("export-pending"); s.add_argument("file"); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"]); s.add_argument("--limit", type=int)
     s = sub.add_parser("import-results"); s.add_argument("file")
     s = sub.add_parser("import-local"); s.add_argument("file"); s.add_argument("--declare", nargs=5, metavar=("TOPIC", "LANG", "START", "END", "STATUS"))
@@ -131,6 +134,30 @@ def main(argv=None) -> int:
                    "usage": ledger.usage(), "history": batch.history_progress(db, base), "watchlist": watchlist.summary(db, base), "snapshots": db.execute("SELECT count(*) FROM x_signal_snapshots").fetchone()[0] if _has(db, "x_signal_snapshots") else 0}
         elif a.cmd == "resume":
             out = ledger.resume(a.reason)
+        elif a.cmd == "health":                                  # run by the collection worker (it holds the key); the page reads the result
+            out = batch.write_health(db, base, env, now, source="health command")
+        elif a.cmd == "audit":
+            from . import audit as auditmod
+            s_ = auditmod.write(db, Path(a.out_dir))
+            out = {"written_to": a.out_dir, "ledger_totals": s_["ledger"]["totals"], "checks": s_["ledger"]["checks"], "open_units": s_["open_units"]}
+        elif a.cmd == "recover":
+            if a.pending or not a.sample_date:                   # list what is open; sends nothing
+                out = {"status": "PENDING_LIST", "requests_sent": 0, "plans": batch.recovery_pending(db, base, batch.last_completed_ny_date(now) + timedelta(days=1), now)}
+            elif a.dry_run:
+                out = batch.recovery_preview(db, base, a.sample_date, a.plan_id, now, ledger)
+            else:
+                state = batch.preflight_state(db, base, env)
+                gate = cfgmod.acquisition_gate(base, env, preflight_passed=state["recent_unlocked"])
+                if not gate["allowed"]:
+                    out, code = {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
+                else:
+                    ledger.recover_open()
+                    out = batch.run_recover(db, base, provider.live_transport(base, env[key_env]), a.sample_date, a.plan_id, now, ledger=ledger, rebuild=a.rebuild_failed_cursors)
+                    if out["status"] == "RAN":
+                        out["topics_mapped"] = stance.map_all(db, base)
+                        batch.write_health(db, base, env, now, source="recover")
+                    else:
+                        code = 1
         elif a.cmd == "usage":
             out = {"usage": ledger.usage(), "ledger": ledger.summary()}
         elif a.cmd == "migrate":
@@ -167,8 +194,10 @@ def main(argv=None) -> int:
                 ledger.recover_open()
                 out = batch.run_preflight(db, base, provider.live_transport(base, env[key_env]), now, env=env, ledger=ledger)
                 code = 0 if out["verdict"] == "PASS" else 1
+                batch.write_health(db, base, env, now, source="preflight")
         elif a.cmd == "daily":
             out = batch.run_daily(db, base, env, lambda: provider.live_transport(base, env[key_env]), now)
+            batch.write_health(db, base, env, now, source="daily")
             if out["status"] == "REFUSED_FAIL_CLOSED":
                 code = 2
             else:

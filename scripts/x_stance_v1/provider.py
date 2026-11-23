@@ -12,14 +12,16 @@ are inclusive is not documented, so every returned post is filtered again by its
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
+import sqlite3
 import re
 import shutil
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import store
@@ -46,9 +48,24 @@ def redact(text) -> str:
 
 
 class ProviderHTTPError(Exception):
-    def __init__(self, status: int | None, kind: str):
+    def __init__(self, status: int | None, kind: str, retry_after: float | None = None, summary: str | None = None):
         super().__init__(kind)
-        self.status, self.kind = status, kind
+        self.status, self.kind, self.retry_after, self.summary = status, kind, retry_after, summary
+
+
+def _retry_after(value) -> float | None:
+    """Seconds from a Retry-After header given as a number. A date form or anything else is ignored."""
+    try:
+        s = float(str(value).strip())
+        return s if 0 <= s <= 86400 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _error_summary(status, body: bytes) -> str:
+    """What is kept of an error answer: status, size, a hash and a short redacted start. Never a header."""
+    text = redact(body[:300].decode("utf-8", "replace")).replace("\n", " ")[:160]
+    return json.dumps({"status": status, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest()[:16], "starts": text}, ensure_ascii=False)
 
 
 class PaidRequestBlocked(RuntimeError):
@@ -91,7 +108,12 @@ class UrllibTransport:
             with urllib.request.urlopen(req, timeout=self.timeout) as r:  # noqa: S310 - fixed https endpoint
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            raise ProviderHTTPError(e.code, "RATE_LIMITED" if e.code == 429 else "HTTP_503_NOT_CHARGED" if e.code == 503 else f"HTTP_{e.code}") from None
+            try:
+                body = e.read(4096) or b""
+            except Exception:  # noqa: BLE001 - the body of an error answer is optional
+                body = b""
+            raise ProviderHTTPError(e.code, "RATE_LIMITED" if e.code == 429 else "HTTP_503_NOT_CHARGED" if e.code == 503 else f"HTTP_{e.code}",
+                                    retry_after=_retry_after(e.headers.get("Retry-After") if e.headers else None), summary=_error_summary(e.code, body)) from None
         except (urllib.error.URLError, TimeoutError, OSError):
             raise ProviderHTTPError(None, "NETWORK") from None
         except ValueError:
@@ -262,8 +284,25 @@ class StopAll(Exception):
         self.reason = reason
 
 
+SLEEP = time.sleep                                             # tests replace this; waits between attempts go through it
+POLICY_503 = ("HTTP 503 on tweet/advanced_search is documented as not charged (docs.twitterapi.io, advanced search, 503 response; read 2026-11-23); "
+              "reservation released under that policy, not reconciled with a bill")
+RETRY_DEFAULTS = {"max_attempts_per_unit_per_round": 3, "backoff_base_seconds": 6, "backoff_factor": 2, "backoff_max_seconds": 60, "retry_after_max_seconds": 120,
+                  "defer_seconds": 900, "breaker_consecutive_failed_units": 4, "breaker_window_requests": 20, "breaker_min_requests": 10, "breaker_failure_rate": 0.5}
+RETRY_SCHEMA = """CREATE TABLE IF NOT EXISTS x_retry_state(
+  run_id TEXT PRIMARY KEY, cursor TEXT, attempts_total INTEGER NOT NULL, attempts_last_round INTEGER NOT NULL, last_error_class TEXT, last_error_summary TEXT,
+  retry_after_seconds REAL, last_attempt_at_utc TEXT, next_retry_at_utc TEXT, state TEXT NOT NULL)"""
+
+
+def retry_state(db, run_id: str):
+    try:
+        return db.execute("SELECT * FROM x_retry_state WHERE run_id=?", (run_id,)).fetchone()
+    except sqlite3.OperationalError:
+        return None
+
+
 class Collector:
-    def __init__(self, db, cfg: dict, *, budget, transport=None, mode: str = RETRO, clock=None, free_gib=None):
+    def __init__(self, db, cfg: dict, *, budget, transport=None, mode: str = RETRO, clock=None, free_gib=None, sleep=None):
         acq = cfg["acquisition"]
         self.db, self.cfg, self.budget, self.mode = db, cfg, budget, mode
         self.transport = transport or RefusingTransport()
@@ -274,9 +313,39 @@ class Collector:
         self.provider = "twitterapi_io"
         self.parse_failures, self.protocol_anomalies, self.last = 0, 0, None
         self.transient_errors = 0                              # HTTP 503 answers in this job (documented as not charged)
+        self.retry = {**RETRY_DEFAULTS, **(acq.get("retry") or {})}
+        self.sleep = sleep or (lambda s: SLEEP(s))
+        self.failed_units_in_a_row, self.deferred_units, self.outcomes = 0, 0, []
+        if not isinstance(self.transport, RefusingTransport):
+            try:
+                db.execute(RETRY_SCHEMA)
+            except sqlite3.OperationalError:                   # a read-only store: nothing is sent from it anyway
+                pass
         self.page_max = acq.get("tolerated_max_posts_per_page") or ((acq.get("provider_documented") or {}).get("twitterapi_io") or {}).get("max_posts_per_page") or 20
         self.min_free_gib = acq["proposed_min_free_disk_gib"]
         self.free_gib = free_gib or (lambda: shutil.disk_usage(Path(db.execute("PRAGMA database_list").fetchone()[2] or ".").parent).free / 2**30)
+
+    def _outcome(self, ok: bool) -> None:
+        self.outcomes = (self.outcomes + [ok])[-int(self.retry["breaker_window_requests"]):]
+        if ok:
+            self.failed_units_in_a_row = 0
+
+    def _breaker(self) -> str | None:
+        """Stops the JOB (never discards the plan) on an outage: N units in a row that used up their attempts, or a
+        failure rate over the last requests. One slow unit alone never trips it."""
+        if self.failed_units_in_a_row >= self.retry["breaker_consecutive_failed_units"]:
+            return "CIRCUIT_OPEN:CONSECUTIVE_FAILED_UNITS"
+        n = len(self.outcomes)
+        if n >= self.retry["breaker_min_requests"] and self.outcomes.count(False) / n >= self.retry["breaker_failure_rate"]:
+            return "CIRCUIT_OPEN:FAILURE_RATE"
+        return None
+
+    def _note_attempt(self, run_id: str, cursor: str, ex, tries: int, due, state: str) -> None:
+        rs = retry_state(self.db, run_id)
+        total = (rs["attempts_total"] if rs and (rs["cursor"] or "") == cursor else 0) + 1
+        self.db.execute("INSERT OR REPLACE INTO x_retry_state VALUES(?,?,?,?,?,?,?,?,?,?)",
+                        (run_id, cursor, total, tries, ex.kind, ex.summary, ex.retry_after, store.iso(self.clock()), store.iso(due) if due else None, state))
+        self.db.commit()
 
     def _run_id(self, qh: str, s: int, e: int) -> str:
         return store.sha(f"{self.provider}|{qh}|{s}|{e}")[:24]
@@ -346,30 +415,54 @@ class Collector:
                     stop = "DRY_RUN_NO_REQUEST"; break          # nothing is reserved for a request that cannot be sent
                 led = hasattr(self.budget, "context")
                 if led:
-                    retry = bool(prev and prev["cursor"] == cursor and prev["status"] == "PARTIAL")
-                    self.budget.context = {"run_id": run_id, "ws": ws, "we": we, "cursor": cursor, "attempt": 2 if retry else 1}
-                try:
-                    self.budget.reserve_next_page(self.clock())
-                except BudgetExhausted as ex:
-                    stop = f"BUDGET_TRUNCATED:{ex.limit_kind}"; break
-                except LimitReached as ex:
-                    stop = f"LIMIT_REACHED:{ex.limit_kind}"; break
-                except Paused as ex:
-                    stop = f"PAUSED:{ex}"; break
-                try:
-                    page = self.transport.get({"query": query, "queryType": "Latest", "cursor": cursor})
-                except PaidRequestBlocked:
-                    stop = "DRY_RUN_NO_REQUEST"; break
-                except ProviderHTTPError as ex:
-                    run["error_class"] = ex.kind; net += 1
-                    if led:                                  # keep the reservation unless the provider documents no charge
-                        if ex.kind == "HTTP_503_NOT_CHARGED":
-                            self.budget.not_charged("provider documents HTTP 503 as not charged")
-                        else:
-                            self.budget.unknown(ex.kind)
-                    if ex.kind == "HTTP_503_NOT_CHARGED":         # one unit ends here; the job goes on (see below)
-                        transient = f"ERROR:{ex.kind}"; break
-                    stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
+                    old_retry = bool(prev and prev["cursor"] == cursor and prev["status"] == "PARTIAL")
+                tries, page = 0, None
+                while True:                                  # bounded attempts at THIS request; every one goes through the ledger
+                    if led:
+                        rs = retry_state(self.db, run_id)
+                        earlier = (rs["attempts_total"] if rs and (rs["cursor"] or "") == cursor else 0)
+                        self.budget.context = {"run_id": run_id, "ws": ws, "we": we, "cursor": cursor, "attempt": max(earlier, 1 if old_retry else 0) + 1}
+                    try:
+                        self.budget.reserve_next_page(self.clock())
+                    except BudgetExhausted as ex:
+                        stop = f"BUDGET_TRUNCATED:{ex.limit_kind}"; break
+                    except LimitReached as ex:
+                        stop = f"LIMIT_REACHED:{ex.limit_kind}"; break
+                    except Paused as ex:
+                        stop = f"PAUSED:{ex}"; break
+                    try:
+                        page = self.transport.get({"query": query, "queryType": "Latest", "cursor": cursor})
+                        self._outcome(True)
+                        break
+                    except PaidRequestBlocked:
+                        stop = "DRY_RUN_NO_REQUEST"; break
+                    except ProviderHTTPError as ex:
+                        run["error_class"] = ex.kind; net += 1
+                        self._outcome(False)
+                        if ex.kind != "HTTP_503_NOT_CHARGED":    # outcome not known or not retriable here: the reservation stays, the job stops
+                            if led:
+                                self.budget.unknown(ex.kind)
+                            self._note_attempt(run_id, cursor, ex, tries + 1, None, "FAILED")
+                            stop = "RATE_LIMITED" if ex.kind == "RATE_LIMITED" else f"ERROR:{ex.kind}"; break
+                        if led:
+                            self.budget.not_charged(POLICY_503)
+                        tries += 1
+                        self.transient_errors += 1
+                        wait = min(self.retry["backoff_base_seconds"] * self.retry["backoff_factor"] ** (tries - 1), self.retry["backoff_max_seconds"])
+                        if ex.retry_after is not None:
+                            wait = max(wait, ex.retry_after)
+                        too_long = ex.retry_after is not None and ex.retry_after > self.retry["retry_after_max_seconds"]
+                        if tries >= self.retry["max_attempts_per_unit_per_round"] or too_long:
+                            due = self.clock() + timedelta(seconds=max(self.retry["defer_seconds"], ex.retry_after or 0))
+                            self._note_attempt(run_id, cursor, ex, tries, due, "DEFERRED")
+                            transient = f"ERROR:{ex.kind}"; break
+                        self._note_attempt(run_id, cursor, ex, tries, self.clock() + timedelta(seconds=wait), "RETRYING")
+                        trip = self._breaker()
+                        if trip:
+                            stop = trip; break
+                        self.sleep(wait)
+                if stop or transient:
+                    break
                 now = store.iso(self.clock())                # the moment the response was actually received
                 net += 1
                 tweets = page.get("tweets") if isinstance(page, dict) else None
@@ -452,11 +545,12 @@ class Collector:
             # is not charged. The unit ends as PARTIAL and is NOT asked again in this run; the next run resumes it
             # from its checkpoint (batch.retriable). Three in one job still stop the job: no loop against an outage.
             run["status"], run["stop_reason"] = "PARTIAL", transient
-            self.transient_errors += 1
+            self.deferred_units += 1; self.failed_units_in_a_row += 1
             store.upsert_run(self.db, run); self.db.commit()
             self.last = {**{k: run[k] for k in SUMMARY}, **extra}
-            if self.transient_errors >= 3:
-                raise StopAll("ERROR:HTTP_503_REPEATED")
+            trip = self._breaker()
+            if trip:                                             # the rest of the plan is not dropped: the next run resumes it
+                raise StopAll(trip)
             return [self.last]
         if protocol:                                         # this unit stops here; it is never COMPLETE and is not retried blindly
             run["status"], run["stop_reason"] = "PARTIAL", protocol

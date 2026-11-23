@@ -44,7 +44,7 @@ class XStanceJsonTests(TestCase):
             self.assertEqual(d[k], [])
         self.assertFalse(self.db.exists())                                         # reading does not create a store
         missing = {m["input"] for m in d["missing_inputs"]}
-        self.assertTrue({"PROVIDER_KEY", "PREFLIGHT", "validation.holdout_start"} <= missing)
+        self.assertTrue({"WORKER_HEALTH", "validation.holdout_start"} <= missing and "PROVIDER_KEY" not in missing)
         self.assertFalse(any(m.startswith(("classifier.", "market.")) for m in missing))           # the model and the price bundle are pinned
         self.assertEqual((d["classifier"]["quality"], d["market"]["input_version"]), ("UNVALIDATED", "phase5_bundle/c5b5ec22"))
         self.assertEqual((d["budget"]["today"]["cap_posts"], d["budget"]["today"]["cap_usd"], d["budget"]["rolling"]["cap_usd"], d["budget"]["today"]["returned_posts"]), (5000, "0.75", "22.5", 0))

@@ -20,9 +20,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from decimal import Decimal
 from datetime import date, datetime, timedelta, timezone
 
-from . import config as cfgmod, provider, store, vocab, watchlist
+from . import audit, config as cfgmod, provider, store, vocab, watchlist
 from .ledger import JobBudget, Ledger, get_meta, set_meta
 from .sessions import NY, calendar_window
 
@@ -149,15 +150,23 @@ def _query(db, query_hash: str) -> dict:
     return {"query_hash": r[0], "topic_id": r[1], "lang": r[2], "query": r[3]}
 
 
-def retriable(db, run) -> bool:
-    """A PARTIAL unit a LATER run may resume from its checkpoint: it ended on an uncharged HTTP 503, or on a page
-    the validator of the time rejected and the current one accepts (the stored page is read again, at no cost).
-    Any other failure stays as it is until someone looks."""
+def stored_page_ok(db, run) -> bool:
+    page = db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
+                      (run["provider"], run["query_hash"], run["window_start_utc"], run["window_end_utc"], run["cursor"] or "")).fetchone()
+    return bool(page) and provider.page_schema_error(json.loads(page[0])) is None
+
+
+def retriable(db, run, now: datetime | None = None) -> bool:
+    """A PARTIAL unit a LATER run may resume from its checkpoint: it ended on an uncharged HTTP 503 and its
+    deferral time has passed, or on a page the validator of the time rejected and the current one accepts (the
+    stored page is read again, at no cost). Any other failure stays as it is until someone looks."""
     if run["status"] != "PARTIAL":
         return False
     reason = run["stop_reason"] or ""
     if reason == "ERROR:HTTP_503_NOT_CHARGED":
-        return True
+        rs = provider.retry_state(db, run["run_id"])
+        due = rs["next_retry_at_utc"] if rs else None
+        return not (due and now is not None and store.parse(due) > now)
     if reason.startswith("PROTOCOL:"):
         page = db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
                           (run["provider"], run["query_hash"], run["window_start_utc"], run["window_end_utc"], run["cursor"] or "")).fetchone()
@@ -176,7 +185,7 @@ def _walk(col: provider.Collector, db, steps) -> dict:
             rid = col._run_id(u["query_hash"], u["start"], u["end"])
             if rid not in done:
                 r = db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (rid,)).fetchone()
-                if r and retriable(db, r):
+                if r and retriable(db, r, col.clock()):
                     done[rid] = ("RESUMABLE", r["pages"]); out["resumed_units"] += 1
                 else:
                     done[rid] = (r["status"], r["pages"]) if r else (None, 0)
@@ -191,6 +200,7 @@ def _walk(col: provider.Collector, db, steps) -> dict:
         out["stopped"] = stop.reason
     out["protocol_anomalies"] = col.protocol_anomalies
     out["transient_errors"] = col.transient_errors
+    out["deferred_units"] = col.deferred_units
     out["requests"] = col.budget.requests - out.pop("requests_before")
     return out
 
@@ -448,9 +458,217 @@ def run_daily(db, cfg: dict, env: dict, transport_factory, anchor: datetime, *, 
     provider.migrate_checkpoints(db)
     held = ledger.recover_open()
     transport = transport_factory()
-    out = {"status": "RAN", "anchor_utc": store.iso(anchor), "started_at_utc": store.iso(clock()), "recovered_open_reservations": held,
-           "recent": run_recent(db, cfg, transport, anchor, clock=clock, ledger=ledger)}
+    out = {"status": "RAN", "anchor_utc": store.iso(anchor), "started_at_utc": store.iso(clock()), "recovered_open_reservations": held}
+    # Earlier sample dates with open units come first, oldest first, inside the same recent pool and its shares.
+    # What does not fit stays on the to-do list for the next budget day.
+    out["recovery"] = [run_recover(db, cfg, transport, p["sample_date_ny"], p["plan_id"], anchor, clock=clock, ledger=ledger)
+                       for p in recovery_pending(db, cfg, last_completed_ny_date(anchor), clock())]
+    out["recent"] = run_recent(db, cfg, transport, anchor, clock=clock, ledger=ledger)
+    out["recovery_todo"] = save_recovery_todo(db, cfg, last_completed_ny_date(anchor), clock())
     out["historical"] = run_history(db, cfg, transport, anchor, clock=clock, ledger=ledger) if state["history_unlocked"] else {"job": "historical", "status": "SKIPPED_HISTORY_SEARCH_NOT_VERIFIED", "requests": 0}
     out["finished_at_utc"] = store.iso(clock())
     out["usage"] = ledger.usage(clock())
     return out
+
+
+# ---------- recovery of one frozen sample date ----------
+RECOVERY_SCHEMA = """
+CREATE TABLE IF NOT EXISTS x_recovery_runs(recovery_id TEXT PRIMARY KEY, plan_id TEXT NOT NULL, sample_date_ny TEXT NOT NULL, started_at_utc TEXT NOT NULL,
+  finished_at_utc TEXT, result_json TEXT);
+CREATE TABLE IF NOT EXISTS x_recovery_attempts(attempt_id TEXT PRIMARY KEY, parent_plan_id TEXT NOT NULL, sample_date_ny TEXT NOT NULL, parent_run_id TEXT NOT NULL,
+  parent_query_hash TEXT NOT NULL, new_query_hash TEXT NOT NULL, new_run_id TEXT NOT NULL, reason TEXT NOT NULL, created_at_utc TEXT NOT NULL,
+  status TEXT, returned INTEGER, new_posts INTEGER, duplicate_returned INTEGER, duplicate_cost_credits INTEGER);
+"""
+
+
+def _plan_row(db, sample_date: str, plan_id: str | None):
+    """(row, error). The plan is found by its sample date; a plan id, if given, must be that plan's."""
+    row = db.execute("SELECT * FROM x_sample_plans WHERE job='recent' AND plan_key=?", (sample_date,)).fetchone()
+    if not row:
+        return None, "PLAN_NOT_FOUND"
+    if plan_id and row["plan_id"] != plan_id and not row["plan_id"].startswith(plan_id):
+        return None, "PLAN_ID_MISMATCH"
+    return row, None
+
+
+def _rebuilt(db, parent_run_id: str):
+    try:
+        return db.execute("SELECT * FROM x_recovery_attempts WHERE parent_run_id=? ORDER BY created_at_utc DESC LIMIT 1", (parent_run_id,)).fetchone()
+    except Exception:  # noqa: BLE001 - the table appears with the first rebuild
+        return None
+
+
+def recovery_units(db, row, now: datetime) -> list[dict]:
+    """Every unit of the frozen plan that has not reached its planned pages, with what a recovery would do.
+    The plan is not re-cut: query, vocabulary, list version, window and page depth are the frozen ones."""
+    out = []
+    for u in audit.plan_units(db, row):
+        if u["state"] == "DONE":
+            continue
+        run = db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (u["run_id"],)).fetchone()
+        rs = provider.retry_state(db, u["run_id"])
+        att = _rebuilt(db, u["run_id"])
+        if not u["query_registered"]:
+            action = "BLOCKED:QUERY_NOT_IN_STORE"                # the frozen query text is gone: nothing is guessed
+        elif att is not None and att["status"] in ("COMPLETE", "PLANNED_SAMPLE"):
+            action = "DONE_BY_REBUILD"
+        elif u["state"] == "PARTIAL" and u["reason"].startswith("PROTOCOL:"):
+            action = "REREAD_STORED_PAGE" if stored_page_ok(db, run) else "BLOCKED:STORED_PAGE_STILL_REJECTED"
+        elif u["state"] == "PARTIAL" and u["reason"] == "ERROR:HTTP_503_NOT_CHARGED":
+            due = rs["next_retry_at_utc"] if rs else None
+            action = f"WAIT_UNTIL:{due}" if due and store.parse(due) > now else ("RESUME_FROM_CURSOR" if u["has_cursor"] else "FIRST_PAGE")
+        elif u["state"] == "PARTIAL":                            # the provider refused the request (e.g. the stored cursor)
+            action = "NEEDS_REBUILD:" + u["reason"] if u["has_cursor"] else "BLOCKED:" + u["reason"]
+        else:
+            action = "RESUME_FROM_CURSOR" if u["has_cursor"] else "FIRST_PAGE"
+        out.append({**u, "action": action, "attempts_so_far": rs["attempts_total"] if rs else 0, "next_retry_at_utc": rs["next_retry_at_utc"] if rs else None,
+                    "pages_to_read": 0 if action.startswith(("BLOCKED", "DONE", "REREAD")) else u["planned_pages"] - u["pages_read"]})
+    return [u for u in out if u["action"] != "DONE_BY_REBUILD"]
+
+
+def recovery_preview(db, cfg: dict, sample_date: str, plan_id: str | None, now: datetime, ledger: Ledger | None = None) -> dict:
+    row, err = _plan_row(db, sample_date, plan_id)
+    if err:
+        return {"status": err, "sample_date_ny": sample_date, "plan_id": plan_id, "requests_sent": 0,
+                "plans_in_store": [{"plan_id": r[0], "sample_date_ny": r[1]} for r in db.execute("SELECT plan_id, plan_key FROM x_sample_plans WHERE job='recent' ORDER BY plan_key")]}
+    plan, units = json.loads(row["plan_json"]), recovery_units(db, row, now)
+    page = cfg["quote"]["documented_max_posts_per_page"]
+    go = [u for u in units if u["pages_to_read"] > 0 and not u["action"].startswith(("WAIT", "NEEDS_REBUILD"))]
+    pages = {k: sum(u["pages_to_read"] for u in go if u["kind"] == k) for k in ("author", "keyword")}
+    out = {"status": "PREVIEW", "sample_date_ny": sample_date, "plan_id": row["plan_id"], "plan_sha256": row["sha256"], "frozen_at_utc": row["frozen_at_utc"],
+           "vocab_version": plan.get("vocab_version"), "watchlist_version_tag": (plan.get("watch") or {}).get("watchlist_version_tag"),
+           "open_units": len(units), "by_action": {}, "free_rereads_of_stored_pages": sum(1 for u in units if u["action"] == "REREAD_STORED_PAGE"),
+           "requests_upper_bound": pages, "posts_upper_bound": {k: v * page for k, v in pages.items()},
+           "cost_upper_bound_usd": str((Decimal(sum(pages.values()) * page * cfg["quote"]["credits_per_post"]) / Decimal(cfg["quote"]["credits_per_usd"])).normalize()),
+           "charged_to": "the recent pool and its author / keyword shares of the budget day in which the requests are actually sent",
+           "ingest_mode_of_new_posts": provider.RETRO, "requests_sent": 0, "units": units,
+           "note": "finishing these units finishes the frozen sampling plan of that date; it does not mean everything posted on X that day was read"}
+    for u in units:
+        k = u["kind"] + ":" + u["action"].split(":")[0]
+        out["by_action"][k] = out["by_action"].get(k, 0) + 1
+    if ledger is not None:
+        us = ledger.usage(now)
+        out["budget_now"] = {"budget_day": us["budget_day"], "recent_pool_left_posts": us["pools"]["recent"]["cap_posts"] - us["pools"]["recent"]["returned_posts"],
+                             "shares_left_posts": {k: v["cap_posts"] - v["returned_posts"] for k, v in us["sub_pools"].items()},
+                             "day_left_posts": us["today"]["cap_posts"] - us["today"]["returned_posts"], "paused": us["paused"]}
+    return out
+
+
+def _rebuild_unit(db, cfg, col: provider.Collector, row, u: dict, now: datetime) -> dict:
+    """A unit whose stored cursor the provider no longer accepts: asked again from its first page under a NEW query
+    record that points at the parent plan and run. Posts already stored are paid for a second time; that is
+    counted and kept."""
+    db.executescript(RECOVERY_SCHEMA)
+    q = _query(db, u["query_hash"])
+    n = db.execute("SELECT COUNT(*) FROM x_recovery_attempts WHERE parent_run_id=?", (u["run_id"],)).fetchone()[0] + 1
+    qh = store.sha(f"{u['query_hash']}|recovery|{row['plan_id']}|{n}")
+    vv = db.execute("SELECT provider, topic_id, lang, vocab_version, query_text FROM x_queries WHERE query_hash=?", (u["query_hash"],)).fetchone()
+    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, vv[0], vv[1], vv[2], vv[3], vv[4]))
+    s, e = int(store.parse(u["window_start_utc"]).timestamp()), int(store.parse(u["window_end_utc"]).timestamp())
+    rid = col._run_id(qh, s, e)
+    aid = store.sha(f"{u['run_id']}|{n}")[:24]
+    db.execute("INSERT INTO x_recovery_attempts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (aid, row["plan_id"], row["plan_key"], u["run_id"], u["query_hash"], qh, rid, u["reason"], store.iso(now), None, None, None, None, None))
+    db.commit()
+    res = col.collect_pages({**q, "query_hash": qh}, s, e, u["planned_pages"])
+    dup = res["returned"] - res["new_posts"]
+    db.execute("UPDATE x_recovery_attempts SET status=?, returned=?, new_posts=?, duplicate_returned=?, duplicate_cost_credits=? WHERE attempt_id=?",
+               (res["status"], res["returned"], res["new_posts"], dup, dup * cfg["quote"]["credits_per_post"], aid))
+    db.commit()
+    return {"attempt_id": aid, "parent_run_id": u["run_id"], "new_run_id": rid, "status": res["status"], "returned": res["returned"], "new_posts": res["new_posts"], "duplicate_returned": dup}
+
+
+def run_recover(db, cfg: dict, transport, sample_date: str, plan_id: str | None, anchor: datetime, *, clock=None, ledger: Ledger | None = None, rebuild: bool = False) -> dict:
+    """Finishes the frozen plan of one earlier sample date as far as today's budget allows: stored pages that an
+    older validator rejected are read again first (no request), then units resume from their stored cursor and
+    page count. Requests are charged at the time they are sent, to the recent pool and its shares - never to the
+    historical pool and never to the sample date. New posts are RETROSPECTIVE_VISIBLE_NOW: obtained later, with the
+    real receive time; nothing already stored (receive time, labels, first signal time) is touched."""
+    clock = clock or utc_now
+    ledger = ledger or Ledger(db, cfg, clock=clock)
+    row, err = _plan_row(db, sample_date, plan_id)
+    if err:
+        return recovery_preview(db, cfg, sample_date, plan_id, clock(), ledger)
+    db.executescript(RECOVERY_SCHEMA)
+    before = recovery_preview(db, cfg, sample_date, plan_id, clock(), ledger)
+    rid = store.sha(f"{row['plan_id']}|{store.iso(clock())}|recover")[:24]
+    db.execute("INSERT OR REPLACE INTO x_recovery_runs VALUES(?,?,?,?,?,?)", (rid, row["plan_id"], sample_date, store.iso(clock()), None, None)); db.commit()
+    units = before["units"]
+    out = {"status": "RAN", "recovery_id": rid, "sample_date_ny": sample_date, "plan_id": row["plan_id"], "open_units_before": len(units), "by_action_before": before["by_action"], "parts": {}, "rebuilt": []}
+    free = [u for u in units if u["action"] == "REREAD_STORED_PAGE"]
+    for kind, job in (("author", "watchlist"), ("keyword", None)):
+        mine = [u for u in units if u["kind"] == kind and not u["action"].startswith(("BLOCKED", "WAIT", "NEEDS_REBUILD"))]
+        redo = [x for x in units if x["kind"] == kind and x["action"].startswith("NEEDS_REBUILD")] if rebuild else []
+        if not mine and not redo:
+            continue
+        col = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent", job_type=job), transport=transport, mode=provider.RETRO, clock=clock)
+        as_step = lambda u: {"query_hash": u["query_hash"], "start": int(store.parse(u["window_start_utc"]).timestamp()), "end": int(store.parse(u["window_end_utc"]).timestamp())}
+        depth = max([u["planned_pages"] for u in mine] or [0])
+        first = [(u["planned_pages"], as_step(u)) for u in mine if u in free]                     # stored pages first: they cost nothing
+        steps = first + [(d, as_step(u)) for d in range(1, depth + 1) for u in mine if d <= u["planned_pages"]]
+        out["parts"][kind] = _walk(col, db, iter(steps))
+        if rebuild and not out["parts"][kind]["stopped"]:
+            for u in redo:
+                try:
+                    out["rebuilt"].append(_rebuild_unit(db, cfg, col, row, u, clock()))
+                except provider.StopAll as stop:
+                    out["parts"][kind]["stopped"] = stop.reason
+                    break
+    plan = json.loads(row["plan_json"])
+    wu = [{**u, "run_id": provider.Collector(db, cfg, budget=None)._run_id(u["query_hash"], u["start"], u["end"])} for u in (plan.get("watch") or {}).get("units", [])]
+    unbound = [u for u in wu if not (watchlist.get(db, u["watch_id"]) or {}).get("stable_author_id")]
+    if unbound and "author" in out["parts"]:                     # only authors with no id yet: a later date's state is not overwritten by an older one
+        out["identity"] = {k: len(v) for k, v in watchlist.resolve(db, unbound, clock()).items()}
+    after = recovery_preview(db, cfg, sample_date, plan_id, clock(), ledger)
+    out.update(open_units_after=after["open_units"], by_action_after=after["by_action"], finished_at_utc=store.iso(clock()),
+               plan_complete=after["open_units"] == 0, usage=ledger.usage(clock()),
+               note="complete means the frozen sampling plan of that date is finished; it does not mean X was read in full")
+    db.execute("UPDATE x_recovery_runs SET finished_at_utc=?, result_json=? WHERE recovery_id=?", (out["finished_at_utc"], json.dumps({k: v for k, v in out.items() if k != "usage"}, ensure_ascii=False), rid))
+    db.commit()
+    return out
+
+
+def recovery_pending(db, cfg: dict, current: date, now: datetime) -> list[dict]:
+    """Earlier sample dates whose frozen plan still has units a recovery can work on, oldest first."""
+    out = []
+    for row in db.execute("SELECT * FROM x_sample_plans WHERE job='recent' AND plan_key<? ORDER BY plan_key", (current.isoformat(),)).fetchall():
+        units = recovery_units(db, row, now)
+        work = [u for u in units if not u["action"].startswith(("BLOCKED", "NEEDS_REBUILD"))]
+        if work:
+            out.append({"plan_id": row["plan_id"], "sample_date_ny": row["plan_key"], "open_units": len(units), "workable_units": len(work),
+                        "pages_to_read": sum(u["pages_to_read"] for u in work), "needs_a_person": len(units) - len(work)})
+    return out
+
+
+def save_recovery_todo(db, cfg: dict, current: date, now: datetime) -> dict:
+    """What is still open after this run, kept in the store so the next budget day (and the page) can see it."""
+    todo = {"saved_at_utc": store.iso(now), "before_sample_date_ny": current.isoformat(), "plans": recovery_pending(db, cfg, current, now)}
+    set_meta(db, "recovery_todo", json.dumps(todo, ensure_ascii=False)); db.commit()
+    return todo
+
+
+# ---------- what the collection worker tells the web page about itself ----------
+HEALTH_KEY = "worker_health"
+
+
+def write_health(db, cfg: dict, env: dict, now: datetime, *, source: str) -> dict:
+    """Written by a process that holds the key. The page has no key and reads this instead. It carries no key and
+    no fingerprint: only whether a credential is present and whether it is the one the preflight receipt was made with."""
+    state = preflight_state(db, cfg, env)
+    gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=state["recent_unlocked"])
+    present = bool(key_fingerprint(env, cfg))
+    h = {"checked_at_utc": store.iso(now), "source": source, "credential_available": present,
+         "credential_matches_preflight_receipt": present and "BINDING_CHANGED:credential_fingerprint" not in state["reasons"] and state["state"] in ("PASSED", "STALE"),
+         "preflight": {k: state.get(k) for k in ("state", "reasons", "history_unlocked", "at_utc")}, "gate": {"allowed": gate["allowed"], "reasons": gate["reasons"]},
+         "ledger_paused": get_meta(db, "paused") or None}
+    set_meta(db, HEALTH_KEY, json.dumps(h, ensure_ascii=False)); db.commit()
+    return h
+
+
+def read_health(db, cfg: dict, now: datetime) -> dict:
+    raw = get_meta(db, HEALTH_KEY)
+    limit = float((cfg["acquisition"].get("worker_health_max_age_hours")) or 36)
+    if not raw:
+        return {"state": "NOT_REPORTED", "max_age_hours": limit}
+    h = json.loads(raw)
+    age = (now - store.parse(h["checked_at_utc"])).total_seconds() / 3600
+    return {**h, "age_hours": round(age, 2), "max_age_hours": limit, "state": "FRESH" if age <= limit else "STALE_RECHECK_NEEDED"}

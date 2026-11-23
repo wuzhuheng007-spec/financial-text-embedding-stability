@@ -4,6 +4,7 @@ never placeholder rows."""
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 import shutil
 import sqlite3
 from decimal import Decimal
@@ -72,6 +73,12 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
             out["preflight"] = {"state": st["state"], "verdict": rec.get("verdict"), "at_utc": st.get("at_utc"), "returned_total": rec.get("returned_total"),
                                 "in_window_total": rec.get("in_window_total"), "reasons": st["reasons"], "history_unlocked": st["history_unlocked"],
                                 "continuation": (rec.get("continuation") or {}).get("state"), "receipt_sha256": st.get("receipt_sha256")}
+            try:
+                out["worker_health"] = batch.read_health(db, cfg, datetime.now(timezone.utc))
+                todo = _meta(db, "recovery_todo")
+                out["recovery_todo"] = {"saved_at_utc": todo.get("saved_at_utc"), "plans": todo.get("plans") or []} if todo else None
+            except sqlite3.OperationalError:
+                pass
             out["vocabulary"] = vocab.overview(db, cfg)
             cfg = sample.attach_named(db, cfg)
             out["account_rules"] = sample.summary(cfg)
@@ -90,10 +97,21 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
     # the keyword panel's rows are the top-level `daily` / `narratives` / `classification`; they are not sent twice
     out["panels"]["keyword"] = {"sample_version": out["settings"].get("sample_version") or sample.sample_version(cfg), "available": True, "rows": "top-level daily / narratives / classification"}
     gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=passed)
+    out.setdefault("worker_health", {"state": "NOT_REPORTED"}); out.setdefault("recovery_todo", None)
+    if not batch.key_fingerprint(env, cfg):
+        # This process (the web page) holds no key by design. What it shows about the paid collection comes from
+        # the receipt the collection worker wrote, never from the absence of a key here. Too old: unknown.
+        h = out["worker_health"]
+        if h["state"] == "FRESH":
+            gate = {**gate, "allowed": bool(h["gate"]["allowed"]), "reasons": list(h["gate"]["reasons"]), "source": "WORKER_HEALTH", "checked_at_utc": h["checked_at_utc"]}
+        else:
+            gate = {**gate, "allowed": None, "reasons": ["WORKER_HEALTH_" + h["state"]], "source": "WORKER_HEALTH", "checked_at_utc": h.get("checked_at_utc")}
     out["settings"]["acquisition_gate"] = gate
     missing = [{"input": "PROVIDER_KEY", "detail": gate["key_env_name"]}] if "PROVIDER_KEY_MISSING" in gate["reasons"] else []
     if "PREFLIGHT_NOT_PASSED" in gate["reasons"]:
         missing.append({"input": "PREFLIGHT", "detail": "bounded live check"})
+    if any(r.startswith("WORKER_HEALTH_") for r in gate["reasons"]):
+        missing.append({"input": "WORKER_HEALTH", "detail": "the collection worker's self-check (quant-x-stance.sh health)"})
     out["missing_inputs"] = missing + [{"input": u["field"], "detail": u["blocks"]} for u in cfgmod.unfrozen(cfg)]
     return out
 

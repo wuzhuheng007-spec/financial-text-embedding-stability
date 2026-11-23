@@ -17,8 +17,9 @@
   const MODE = {LIVE: '实时留档', BATCH_AFTER_CLOSE: '收盘后批量采集', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
   const WHY = {HISTORY_SEARCH_NOT_VERIFIED: '历史检索未验证', RECEIPT_FROM_LENIENT_VALIDATOR: '旧预检回执已失效', LOW_SAMPLE: '样本账号过少', NO_VALID_ACCOUNTS: '没有已判定的账号', COLLECTION_PARTIAL: '采集不完整', COLLECTION_MISSING: '没有采集记录',
     TIE_RESOLVED_TO_NEUTRAL: '并列，记为中性', PROVIDER_KEY_MISSING: '缺少供应商密钥', PREFLIGHT_NOT_PASSED: '尚未通过实采预检',
+    WORKER_HEALTH_NOT_REPORTED: '采集端还没有上报检查结果', WORKER_HEALTH_STALE_RECHECK_NEEDED: '采集端的检查结果已过期，待复检',
     CLASSIFICATION_INCOMPLETE: '分类未完成', COLLECTION_PLANNED_SAMPLE: '计划抽样'};
-  const MISSING = {PROVIDER_KEY: '供应商密钥', PREFLIGHT: '实采预检', 'classifier.model_id': '分类模型',
+  const MISSING = {PROVIDER_KEY: '供应商密钥', PREFLIGHT: '实采预检', WORKER_HEALTH: '采集端自检结果', 'classifier.model_id': '分类模型',
     'classifier.immutable_revision': '分类模型的固定版本', 'classifier.prompt_version': '提示词版本', 'classifier.temperature': '模型温度',
     'market.input_version': '行情输入版本', 'market.adjustment_semantics': '复权口径说明', 'validation.holdout_start': '留出期起点'};
   const why = c => WHY[c] || c || '';
@@ -77,12 +78,19 @@
       row('翻页是否已验证', {VERIFIED: '已验证', NOT_OBSERVED: '未观察到', FAILED: '失败'}[pre.continuation] || '—'), row('预检返回条数', pre.returned_total),
       row('历史回填范围（纽约日期）', data(hq.range ? `${hq.range.first_ny_date} ~ ${hq.range.last_ny_date}` : null)),
       row('历史回填：已采到的时间片', hq.units_with_any_page == null ? '—' : hq.units_with_any_page),
+      row('待补采的样本日期', d.recovery_todo ? (d.recovery_todo.plans.length ? d.recovery_todo.plans.map(x => `${x.sample_date_ny}（${x.workable_units} 个单元）`).join('、') : '无') : '—'),
       row('已匹配主题的帖子', cl.matched_pairs), row('已分类', cl.classified_or_prefiltered), row('待分类', cl.pending),
       row('分类进度', cl.share_done == null ? '—' : pct(cl.share_done)),
       row('点赞不足，未计入样本', cl.filtered_low_likes), row('点赞数未知，未计入样本', cl.filtered_likes_unknown));
     const gate = h('div', 'card');
-    gate.append(h('h3', null, '付费采集'), chip(st.acquisition_gate.allowed ? '已满足条件' : '未开启', st.acquisition_gate.allowed ? 'run-succeeded' : 'tag-dim'));
-    const gl = h('ul', 'xs-missing'); [...new Set(st.acquisition_gate.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
+    const ag = st.acquisition_gate, wh = d.worker_health || {state: 'NOT_REPORTED'};
+    gate.append(h('h3', null, '付费采集'), chip(ag.allowed === true ? '已满足条件' : ag.allowed === false ? '未开启' : '未知，待复检', ag.allowed === true ? 'run-succeeded' : 'tag-dim'));
+    const gl = h('ul', 'xs-missing'); [...new Set(ag.reasons.map(why))].forEach(t => gl.append(h('li', null, t))); gate.append(gl);
+    const yn = v => v === true ? '是' : v === false ? '否' : '未知';
+    const fresh = wh.state === 'FRESH';
+    gate.append(row('采集端检查时间（UTC）', data(wh.checked_at_utc)), row('检查结果是否仍有效', wh.state === 'NOT_REPORTED' ? '尚未上报' : fresh ? '是' : '已过期，待复检'),
+      row('采集端凭据可用', fresh ? yn(wh.credential_available) : '未知'), row('凭据与预检回执一致', fresh ? yn(wh.credential_matches_preflight_receipt) : '未知'),
+      h('p', 'fine-print', '网页本身不持有供应商密钥。这里显示的是采集任务最近一次自检写下的结果，不含密钥内容。'));
     gate.append(h('h3', null, '立场分类模型'), chip(st.classifier_gate.allowed ? '已固定版本' : '未固定版本，不运行', st.classifier_gate.allowed ? 'run-succeeded' : 'tag-dim'));
     const model = h('div', 'card');
     model.append(h('h3', null, '分类与行情'), row('立场模型', data(d.classifier.model_id)), row('标签质量', d.classifier.quality === 'UNVALIDATED' ? '未经人工验证' : d.classifier.quality),

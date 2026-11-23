@@ -45,6 +45,13 @@ HISTORY_LIMIT=${X_HISTORY_LIMIT:-2000}; HISTORY_SECONDS=${X_HISTORY_SECONDS:-108
 case "$CMD" in
   status|usage|plan|migrate|queue) with_lock local_job "$CMD" ;;
   resume)                    with_lock local_job resume "${1:?reason}" ;;      # lifts a ledger pause; the reason is stored
+  health)                    with_lock net_job health ;;                       # the worker (it has the key) writes a redacted receipt the page reads
+  recover)                   # one earlier sample date: `recover DATE [PLAN_ID] [--dry-run] [--rebuild-failed-cursors]`; no date lists what is open
+    if [ $# -eq 0 ]; then with_lock local_job recover --pending
+    else d=$1; shift; pid=(); case "${1:-}" in --*|"") ;; *) pid=(--plan-id "$1"); shift ;; esac
+      case " $* " in *" --dry-run "*) with_lock local_job recover --sample-date "$d" "${pid[@]}" "$@" ;; *) with_lock net_job recover --sample-date "$d" "${pid[@]}" "$@" ;; esac
+    fi ;;
+  audit)                     install -d -m 700 -o 10001 -g 10001 "$OFF/audit"; with_lock offload_job audit /offload/audit ;;   # read-only report into the private directory
   watch)                     # the watched-author list. import reads a file from /srv/quant/x_offload (root only); verify-candidate is the only form that can reach the provider
     case "${1:-show}" in
       import)           f=$(basename "${2:?file name}"); with_lock offload_job watch import "/offload/$f" ;;

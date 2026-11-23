@@ -484,10 +484,12 @@ def test_portal_read_model_without_data_names_what_is_missing(tmp_path, cfg):
     v = pipeline.read_for_portal(cfg, tmp_path / "absent.sqlite3", env={})
     assert not v["has_data"] and v["daily"] == [] and v["narratives"] == [] and v["episodes"] == [] and v["returns"] == []
     missing = {m["input"] for m in v["missing_inputs"]}
-    assert {"PROVIDER_KEY", "PREFLIGHT", "validation.holdout_start"} <= missing and not any(m.startswith(("classifier.", "market.")) for m in missing)
+    # the page holds no key: it names the worker's self-check as missing instead of claiming the key is absent (tests/test_x_stance_recovery.py)
+    assert {"WORKER_HEALTH", "validation.holdout_start"} <= missing and "PROVIDER_KEY" not in missing and not any(m.startswith(("classifier.", "market.")) for m in missing)
+    assert v["settings"]["acquisition_gate"]["allowed"] is None and v["settings"]["acquisition_gate"]["reasons"] == ["WORKER_HEALTH_NOT_REPORTED"]
     assert v["budget"]["today"] == {"credits": 0, "usd": "0", "returned_posts": 0, "cap_usd": "0.75", "cap_posts": 5000} and v["budget"]["rolling"]["cap_usd"] == "22.5"
     assert v["preflight"]["state"] == "NOT_RUN" and v["history_queue"]["state"] == "NOT_STARTED" and v["classification"]["share_done"] is None
-    assert v["collection"]["state"] == "NOT_STARTED" and v["settings"]["acquisition_gate"]["allowed"] is False and not (tmp_path / "absent.sqlite3").exists()
+    assert v["collection"]["state"] == "NOT_STARTED" and v["settings"]["acquisition_gate"]["allowed"] is None and not (tmp_path / "absent.sqlite3").exists()
 
 
 def test_manifest_records_versions_and_null_model(cfg):

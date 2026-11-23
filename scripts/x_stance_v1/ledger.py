@@ -198,7 +198,7 @@ class Ledger:
         if not evidence:
             raise ValueError("a release needs its evidence")
         self.db.execute("UPDATE x_cost_ledger SET status='RELEASED', settled_credits=0, returned=0, unique_ids=0, note=?, settled_at_utc=? WHERE request_id=? AND status IN ('RESERVED','UNKNOWN_HELD')",
-                        (evidence[:120], store.iso(self.clock()), request_id))
+                        (evidence[:400], store.iso(self.clock()), request_id))
         self.db.commit()
 
     def recover_open(self) -> int:
