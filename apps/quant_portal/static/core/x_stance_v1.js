@@ -9,7 +9,7 @@
   const svgNS = 'http://www.w3.org/2000/svg';
   const s = (tag, a) => { const n = document.createElementNS(svgNS, tag); for (const k in a || {}) n.setAttribute(k, a[k]); return n; };
   const pct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
-  const TABS = ['settings', 'simple', 'authors', 'daily', 'views', 'history'];
+  const TABS = ['settings', 'simple', 'news', 'authors', 'daily', 'views', 'history'];
   const PANEL = {keyword: '关键词样本', watchlist: '重点作者', combined: '合并去重'};
   let scope = 'keyword', last = null;
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
@@ -22,6 +22,7 @@
   const MISSING = {PROVIDER_KEY: '供应商密钥', PREFLIGHT: '实采预检', WORKER_HEALTH: '采集端自检结果', 'classifier.model_id': '分类模型',
     'classifier.immutable_revision': '分类模型的固定版本', 'classifier.prompt_version': '提示词版本', 'classifier.temperature': '模型温度',
     'market.input_version': '行情输入版本', 'market.adjustment_semantics': '复权口径说明', 'validation.holdout_start': '留出期起点'};
+  const OUT = {bullish: '看多', bearish: '看空', neutral: '中性', irrelevant: '无关', failed: '分类失败', not_judged: '未能判断', cut_by_rule: '按规则未送模型', pending: '待分类'};
   const why = c => WHY[c] || c || '';
   const chip = (text, cls) => h('span', `tag ${cls || ''}`, text);
   const row = (k, v) => { const r = h('div', 'setting-row'); r.append(h('span', 'label', k), v instanceof Node ? v : h('span', 'num', v == null ? '—' : String(v))); return r; };
@@ -265,13 +266,73 @@
   }
   const NOTE = {keyword: '关键词样本：由关键词检索采到、且命中词表的帖子。', watchlist: '重点作者：名单内已确认身份的作者的帖子，同样要求正文提到标的并达到点赞下限。',
     combined: '合并去重：以上两类合并，同一条帖子只算一次，同一个账号只投一票。这是独立的样本版本，不改变另外两个面板的统计口径。'};
+  const EMPTY = {NO_SAMPLE: '无样本', PENDING: '待分类', NO_VALID_LABEL: '没有有效标签'};
+  const fmtT = v => v ? String(v).replace('T', ' ').replace(/(\.\d+)?Z$/, ' UTC') : '—';
+  const xlink = (url, text) => { if (!/^https:\/\/(x|twitter)\.com\//.test(url || '')) return h('span', 'num', text); const a = h('a', 'num', text); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
+  const quote = t => { const n = h('span', null, t || '—'); n.setAttribute('translate', 'no'); return n; };
+  const cnt = (c, sh) => `${c.bullish} / ${c.bearish} / ${c.neutral}` + (sh && sh.bullish != null ? `（${pct(sh.bullish)} / ${pct(sh.bearish)} / ${pct(sh.neutral)}）` : '');
+  let dayKey = null;
+
+  function renderDay(box, j) {
+    if (j.state !== 'READY') { box.replaceChildren(h('p', 'muted', j.state === 'READ_ERROR' ? '读取失败' : '这一天没有可核对的汇总记录。')); return; }
+    const out = [];
+    const head = h('div', 'section-head'); head.append(h('h3', null, `${j.target} · ${j.window_label} · ${PANEL[j.scope]}`), chip(j.note, 'tag-dim'), chip(MODE[j.mode] || j.mode, 'tag-dim')); out.push(head);
+    out.push(h('p', 'fine-print', j.timing_note));
+    const ex = j.excluded || {}, cl = j.classification || {};
+    const card = h('div', 'card');
+    card.append(row('分类模型', data(j.model_id)), row('是否为当前生效版本', j.identity_is_active ? '是' : '否（这一天的汇总来自另一版本）'),
+      row('帖子：看多 / 看空 / 中性（占比）', cnt(j.posts, j.shares_by_post)), row('分母（有效帖子）', j.posts_total),
+      row('账号：看多 / 看空 / 中性（占比）', cnt(j.accounts, j.shares_by_account)), row('分母（有效账号）', j.accounts_total),
+      row('无关', ex.IRRELEVANT || 0), row('分类失败', (ex.JSON_INVALID || 0) + (ex.EVIDENCE_NOT_IN_TEXT || 0)),
+      row('待分类', cl.pending), row('样本内帖子', cl.matched_posts), row('点赞不足未计入', cl.filtered_low_likes),
+      row('采集状态', why('COLLECTION_' + j.collection_status)),
+      row('逐条判断与每日汇总是否一致', j.check.labels_equal_summary ? '一致' : '不一致，需要重建汇总'),
+      row('主要观点引用的帖子是否都在本日材料内且标签相同', j.narratives.length ? (j.check.views_evidence_in_material ? '是' : '否') : '本日没有主要观点'),
+      row('汇总生成时间', data(fmtT(j.summary_committed_at_utc))));
+    if (j.empty_reason) card.append(row('没有占比的原因', EMPTY[j.empty_reason]));
+    out.push(card);
+    const rep = h('div', 'card'); rep.append(h('h3', null, '代表帖子'));
+    for (const k of ['bullish', 'bearish', 'neutral']) {
+      const list = j.representative[k] || []; const line = h('div', 'xs-view'); line.append(h('p', 'xs-view-title', `${STATE[k]}（${list.length ? '最多 3 条' : '本日没有'}）`));
+      list.forEach(x => { const r = h('div', 'fine-print'); r.append(xlink(x.source_url, x.author_handle ? `@${x.author_handle} ` : `${x.post_id} `), quote(x.reason), h('span', null, ' · 依据：'), quote(x.evidence)); line.append(r); });
+      rep.append(line);
+    }
+    out.push(rep);
+    if (j.narratives.length) {
+      const nc = h('div', 'card'); nc.append(h('h3', null, '本日主要观点'));
+      j.narratives.forEach(n => { const it = h('div', 'xs-view'); const t = h('p', 'xs-view-title', n.title); t.setAttribute('translate', 'no'); it.append(t);
+        const meta = h('div', 'fine-print'); meta.append(h('span', null, `支持账号 ${n.supporting_accounts} · 看多 ${n.stance_composition.bullish} / 看空 ${n.stance_composition.bearish} / 中性 ${n.stance_composition.neutral} · 原帖`));
+        n.evidence.forEach(e => meta.append(xlink(e.url, ` ${e.author_handle ? '@' + e.author_handle : e.post_id} `))); it.append(meta); nc.append(it); });
+      out.push(nc);
+    }
+    const ic = h('div', 'card'); ic.append(h('h3', null, '组成这一天的全部帖子'), row('显示 / 总数', `${j.items.length} / ${j.items_total}`));
+    ic.append(table(['判断', '计入账号票', '简短理由', '依据原文', '原文', '发布时间', '采集时间', '模型完成时间'], j.items.map(x =>
+      [OUT[x.outcome] || x.outcome, x.counts_as_account_vote ? '是' : '否', quote(x.reason), quote(x.evidence), xlink(x.source_url, x.author_handle ? `@${x.author_handle}` : '打开原文'),
+        data(fmtT(x.published_at_utc)), data(fmtT(x.first_received_at_utc)), data(fmtT(x.model_completed_at_utc))])));
+    ic.append(h('p', 'fine-print', '“计入账号票”：同一账号在窗口内只取最后一条有效帖子。发布时间、采集时间、模型完成时间分别记录；历史回填的日期是后来取得并分类的材料。'));
+    out.push(ic);
+    box.replaceChildren(...out);
+  }
+
+  function openDay(box, target, date) {
+    dayKey = `${scope}|${target}|${date}`; const key = dayKey;
+    box.hidden = false; box.replaceChildren(h('p', 'muted', '读取中…'));
+    fetch(`${root.dataset.dayUrl}?scope=${encodeURIComponent(scope)}&target=${encodeURIComponent(target)}&date=${encodeURIComponent(date)}`, {credentials: 'same-origin', cache: 'no-store'})
+      .then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(j => { if (key === dayKey) renderDay(box, j); })
+      .catch(() => { if (key === dayKey) box.replaceChildren(h('p', 'muted', '读取失败')); });
+  }
+
   function renderDaily(d) {
     const p = panel('daily');
-    const pn = {...((d.panels || {})[scope] || {available: true}), ...(scope === 'keyword' ? {daily: d.daily} : {})};      // the keyword panel's rows are the top-level ones
+    const pn = {...((d.panels || {})[scope] || {available: true}), ...(scope === 'keyword' ? {daily: d.daily, daily_summary: d.daily_summary} : {})};      // the keyword panel's rows are the top-level ones
     const head = [scopeBar(), h('p', 'fine-print', NOTE[scope])];
     if (scope !== 'keyword' && !pn.available) { p.replaceChildren(...head, h('p', 'muted', '还没有导入重点作者名单。')); return; }
     if (scope === 'keyword' ? !d.has_data : !pn.daily.length) { p.replaceChildren(...head, missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return; }
     const out = head;
+    const ds = pn.daily_summary;
+    if (ds) { const v = h('p', 'fine-print'); v.append(chip(ds.note, 'tag-dim'), h('span', null, ' 分类模型 '), data((ds.models || []).join(' / ') || '—'),
+      h('span', null, ds.all_rows_from_active_identity ? ' · 汇总来自当前生效版本' : ' · 部分汇总不是当前生效版本生成的，需要重建')); out.push(v); }
     if (pn.sample_version) { const v = h('p', 'fine-print'); v.append(h('span', null, '样本版本'), data(` ${pn.sample_version}`)); out.push(v); }
     const sess = pn.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all');
     const closes = {}; d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
@@ -279,16 +340,31 @@
       const rows = sess.filter(r => r.topic_id === tid).sort((a, b) => a.window_label < b.window_label ? -1 : 1);
       const sec = h('section', 'card section'); const head = h('div', 'section-head'); head.append(h('h3', null, TOPIC[tid] || tid));
       [...new Set(rows.map(r => r.mode))].forEach(m => head.append(chip(MODE[m] || m, m === 'LIVE' ? 'run-succeeded' : 'tag-dim'))); sec.append(head);
-      const cl = {}; rows.forEach(r => { cl[r.window_label] = closes[`${tid}|${r.window_label}`]; });
-      sec.append(chart(rows.slice(-60), cl));
-      const eq = r => { const e = r.shares_equal_weight; return !e || e.bullish == null ? '—' : `${pct(e.bullish)} / ${pct(e.neutral)} / ${pct(e.bearish)}`; };
-      sec.append(table(['交易日', '占比', '看多', '中性', '看空', '已判定账号', '样本账号数', '分类进度', '未判定', '主导状态', '说明', '等权占比（多 / 中 / 空）', '点赞不足未计入'], rows.slice(-20).reverse().map(r =>
-        [r.window_label, shareBar(r.shares), pct(r.shares.bullish), pct(r.shares.neutral), pct(r.shares.bearish), r.accounts_total, (r.classification || {}).sample_accounts,
-          (r.classification || {}).share_done == null ? '—' : pct(r.classification.share_done), r.unjudged_total, STATE[r.state] || r.state, why(r.state_reason), data(eq(r)), (r.classification || {}).filtered_low_likes])));
+      const has = r => { const e = (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : (r.shares || {}); return e.bullish != null; };   // a date has shares only when it has valid labels
+      const withData = rows.filter(has);                 // the chart and the table hold only dates that have valid labels
+      const empty = {}; rows.filter(r => !has(r)).forEach(r => { const c = r.classification || {}; const k = r.empty_reason || (c.pending || r.state_reason === 'CLASSIFICATION_INCOMPLETE' ? 'PENDING' : c.matched_posts ? 'NO_VALID_LABEL' : 'NO_SAMPLE'); empty[k] = (empty[k] || 0) + 1; });
+      if (!withData.length) sec.append(h('p', 'muted', '这个标的还没有带有效标签的日期。'));
+      else {
+        const cl = {}; withData.forEach(r => { cl[r.window_label] = closes[`${tid}|${r.window_label}`]; });
+        sec.append(chart(withData.slice(-60).map(r => ({...r, shares: (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : r.shares})), cl));
+        const box = h('div', 'xs-day'); box.hidden = true;
+        const pick = r => { const b = h('button', 'button', '查看材料'); b.type = 'button'; b.dataset.day = r.window_label; b.addEventListener('click', () => openDay(box, r.target_id, r.window_label)); return b; };
+        sec.append(table(['交易日', '账号占比', '帖子：多 / 空 / 中', '分母（帖子）', '账号：多 / 空 / 中', '分母（账号）', '账号占比：多 / 空 / 中', '帖子占比：多 / 空 / 中', '加权账号占比：多 / 空 / 中', '无关或失败', '待分类', '点赞不足未计入', '来源', '说明', '材料'],
+          withData.slice(-30).reverse().map(r => { const e = r.shares_equal_weight || {}, bp = r.shares_by_post || {}, c = r.classification || {};
+            const three = c => c ? `${c.bullish} / ${c.bearish} / ${c.neutral}` : '—';
+            return [r.window_label, shareBar(e.bullish == null ? r.shares : e), three(r.posts), r.posts_total,
+              three(r.accounts), r.accounts_total,
+              data(e.bullish == null ? '—' : `${pct(e.bullish)} / ${pct(e.bearish)} / ${pct(e.neutral)}`), data(bp.bullish == null ? '—' : `${pct(bp.bullish)} / ${pct(bp.bearish)} / ${pct(bp.neutral)}`),
+              data(r.shares.bullish == null ? '—' : `${pct(r.shares.bullish)} / ${pct(r.shares.bearish)} / ${pct(r.shares.neutral)}`), r.unjudged_total, c.pending, c.filtered_low_likes, MODE[r.mode] || r.mode, [why(r.state_reason), r.low_sample ? '样本账号少于 ' + r.low_sample_threshold : ''].filter(Boolean).join('；'), pick(r)]; })));
+        sec.append(box);
+      }
+      const parts = Object.keys(empty).map(k => (EMPTY[k] || k) + '：' + empty[k]);
+      sec.append(h('p', 'fine-print', ['交易日窗口总数 ' + rows.length, '有有效标签并画入图表 ' + withData.length].concat(parts).join('；')));
       out.push(sec);
     }
-    if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '占比按账号权重计算（粉丝数分档或指定账号），“等权占比”一栏是每个账号一票的结果，供对照。点赞数低于下限的帖子不在样本内。'));
-    out.push(h('p', 'fine-print', '这是本次采集样本中的账号比例（每个账号取窗口内最后一条有效帖子），不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘；信号在收盘后批量生成，以实际完成时间为准。分类没有完成的日期不给出主导状态。'));
+    if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '“加权账号占比”按账号权重计算（粉丝数分档或指定账号）；“账号占比”是每个账号一票的结果，图表画的是后者。点赞数低于下限的帖子不在样本内。'));
+    out.push(h('p', 'fine-print', '图表和表格只包含有有效标签的交易日。占比的分母只含已成功分类且相关的帖子（或账号）；无关、分类失败、待分类单独计数，不算中性。账号占比每个账号一票（取窗口内最后一条有效帖子），帖子占比每条帖子一次。'));
+    out.push(h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘。历史回填的日期是后来取得并分类的材料，不能当作当天可用的信号。采集不完整的日期不给出主导状态。'));
     p.replaceChildren(...out);
   }
 
@@ -337,7 +413,6 @@
     p.replaceChildren(...out);
   }
 
-  const OUT = {bullish: '看多', bearish: '看空', neutral: '中性', irrelevant: '无关', failed: '分类失败', not_judged: '未能判断', cut_by_rule: '按规则未送模型', pending: '待分类'};
   const spct = v => v == null ? '—' : (v * 100).toFixed(1) + '%';
   let simpleIdentity = '';
   function renderSimple(d) {

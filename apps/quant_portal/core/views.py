@@ -819,6 +819,26 @@ def x_stance_json(request):
 
 
 @login_required
+def x_stance_day_json(request):
+    """The posts behind one day of one panel, with the check against the stored daily summary. Owner only, read-only."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("X stance unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    try:
+        from scripts.x_stance_v1 import config as x_config, day_view
+        data = day_view.read_day(x_config.load(), scope=(request.GET.get("scope") or "keyword")[:16], target_id=(request.GET.get("target") or "")[:64],
+                                 window_label=(request.GET.get("date") or "")[:10])
+    except ValueError:
+        return JsonResponse({"error": "INVALID_DAY_REQUEST"}, status=400)
+    except Exception as exc:  # noqa: BLE001 - an unreadable store is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__}
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
+
+
+@login_required
 @require_POST
 def x_stance_vocabulary(request):
     """Owner-only keyword edit. Creates a new immutable vocabulary version that takes effect with the next batch;
@@ -879,7 +899,15 @@ def news_json(request):
     except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
         data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "items": [], "providers": []}
     watch = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))
+    try:                                                         # model judgements of the article, if it was analysed; absent is not an error
+        from scripts.quant_news_v1 import stance as news_stance
+        judged = news_stance.for_items()
+    except Exception:  # noqa: BLE001
+        judged = {}
     for it in data["items"]:
+        found = judged.get((it.get("upstream"), it.get("upstream_id"))) or []
+        it["analysis"] = [{k: a[k] for k in ("target_id", "target", "outcome", "status", "reason", "evidence", "title_only", "body_truncated", "model_id", "prompt_version",
+                                               "published_at", "first_received_at", "model_completed_at", "version")} | {"of_current_version": a["version"] == it.get("latest_version")} for a in found]
         syms = set(it.get("symbols") or [])
         chans = {c.lower() for c in it.get("channels") or []}
         it["relevance"] = {"direct_watch": sorted(syms & watch), "direct_watch_etf": sorted(syms & watch & _ETF_WATCH),
@@ -931,6 +959,23 @@ def news_json(request):
     response = JsonResponse(data, json_dumps_params={"ensure_ascii": False})
     response["Cache-Control"] = "private, no-store"
     return response
+
+
+@login_required
+def news_stance_json(request):
+    """Model judgements of the stored English news, per target and per day, with the judged articles. Owner only."""
+    if not settings.PERSONAL_MODE or request.user.username != settings.PERSONAL_FEED_OWNER_USERNAME:
+        raise Http404("News analysis unavailable")
+    import sys
+    from .personal_feed_cache import REPO_ROOT
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    try:
+        from scripts.quant_news_v1 import stance as news_stance
+        data = news_stance.view()
+    except Exception as exc:  # noqa: BLE001 - an unreadable store is a status, not a page error
+        data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "targets": [], "days": [], "items": []}
+    return _no_store(JsonResponse(data, json_dumps_params={"ensure_ascii": False}))
 
 
 @login_required

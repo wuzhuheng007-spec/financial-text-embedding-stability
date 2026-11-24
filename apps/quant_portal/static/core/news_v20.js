@@ -75,11 +75,24 @@
     const body = h('div', 'nv-r-body');
     const text = stripHtml(it.body) || stripHtml(it.teaser);
     body.append(h('p', text ? null : 'muted', text || '供应商未提供正文，仅有标题；请打开原文。'));
+    const an = h('div', 'nv-r-analysis');
+    const OUT = {bullish: '看多', bearish: '看空', neutral: '中性', irrelevant: '无关', insufficient: '原文不足', failed: '判断失败'};
+    if ((it.analysis || []).length) {
+      an.append(h('h3', null, '模型判断'), h('span', 'tag tag-dim', '模型判断，待人工验证'));
+      it.analysis.forEach(a => { const row = h('div', 'nv-r-judge'); row.dataset.outcome = a.outcome;
+        const ev = h('span', null, a.evidence || '—'); ev.setAttribute('translate', 'no');
+        row.append(h('strong', null, `${a.target}：${OUT[a.outcome] || a.outcome}`), h('span', null, ` ${a.reason || ''}`), h('div', 'fine-print', null));
+        const fp = row.lastChild; fp.append(h('span', null, '依据原文：'), ev);
+        const meta = h('div', 'fine-print', [a.title_only ? '仅有标题' : '', a.body_truncated ? '正文过长，只读了前一部分' : '', a.of_current_version ? '' : '判断基于较早的版本',
+          `模型 ${a.model_id || '—'}`, `完成于 ${t(a.model_completed_at, true)}`].filter(Boolean).join(' · ')); meta.setAttribute('translate', 'no');
+        row.append(meta); an.append(row); });
+      an.append(h('p', 'fine-print', '判断的是文章明确呈现的对该标的的影响；这是事后对已入库文章做的判断，不是发布当时可用的信号。'));
+    } else an.append(h('p', 'fine-print', '这篇文章还没有模型判断（未命中分析标的，或尚未处理）。'));
     const foot = h('div', 'nv-r-foot');
     const link = safeUrl(it.url);
     if (link) { const a = h('a', 'button button-outline', '打开原文 ↗'); a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer'; foot.append(a); }
     foot.append(h('span', 'fine-print', it.relevance?.note || ''));
-    r.replaceChildren(head, body, foot);
+    r.replaceChildren(head, an, body, foot);
   }
   function renderList(force) {
     if (!nv) return;

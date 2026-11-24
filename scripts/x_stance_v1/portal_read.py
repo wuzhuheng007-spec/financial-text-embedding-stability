@@ -176,9 +176,11 @@ def _fill(db, cfg: dict, out: dict) -> None:
         _watch(db, cfg, out, act)
     except sqlite3.OperationalError:
         out["store_needs_upgrade"] = True
-    for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_daily_sentiment ORDER BY window_label DESC LIMIT 600"):
-        p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None)
-        out["daily"].append({"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
+    # the rows the page draws (session windows, all languages) come first, so the row limit never cuts a charted date
+    for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_daily_sentiment "
+                        "ORDER BY (window_kind='session' AND lang_scope='all') DESC, window_label DESC LIMIT 600"):
+        out["daily"].append(_daily_row(r))
+    out["daily_summary"] = _summary_identity(out["daily"], act)
     for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_narratives ORDER BY window_label DESC, rank LIMIT 100"):
         out["narratives"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **json.loads(r["payload_json"])})
     # research rows of the sample version in force now; other versions are their own series and are only counted here
@@ -202,6 +204,23 @@ def _fill(db, cfg: dict, out: dict) -> None:
                 others.setdefault(t["sample_version"], {"episodes": 0, "sessions_with_a_signal": 0})["sessions_with_a_signal"] += t["sessions"]
     out["other_sample_versions"] = [{"sample_version": k, **v_} for k, v_ in sorted(others.items())]
     out["has_data"] = bool(out["daily"])
+
+
+def _daily_row(r) -> dict:
+    from .day_view import empty_reason
+    p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None); p_.pop("vote_weights", None)
+    p_["empty_reason"] = empty_reason(p_.get("classification"), p_.get("posts_total") or 0)
+    return {"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_}
+
+
+def _summary_identity(rows: list, act: dict) -> dict:
+    """Which classification version the stored daily rows were built from, next to the version in force now."""
+    from collections import Counter
+    from .simple_view import NOTE
+    ids = Counter((r.get("activation") or {}).get("identity") or "" for r in rows)
+    models = sorted({(r.get("activation") or {}).get("model_id") or "" for r in rows} - {""})
+    return {"note": NOTE, "active_identity": act.get("identity"), "active_model_id": act.get("model_id"), "rows_by_identity": {k[:12] or "none": v for k, v in ids.items()},
+            "models": models, "all_rows_from_active_identity": bool(rows) and set(ids) == {act.get("identity")}}
 
 
 def _progress(db, ver: str, identity) -> dict:
@@ -270,9 +289,10 @@ def _watch(db, cfg: dict, out: dict, act: dict) -> None:
         ver = sample.sample_version(scoped[scope])
         pn = out["panels"][scope]
         pn.update({"sample_version": ver, "available": True, "classification": _progress(db, ver, act["identity"])})
-        for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_panel_sentiment WHERE scope=? ORDER BY window_label DESC LIMIT 600", (scope,)):
-            p_ = json.loads(r["payload_json"]); p_.pop("vote_post_ids", None)
-            pn["daily"].append({"window_kind": r["window_kind"], "window_label": r["window_label"], "topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
+        for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_panel_sentiment WHERE scope=? "
+                            "ORDER BY (window_kind='session' AND lang_scope='all') DESC, window_label DESC LIMIT 600", (scope,)):
+            pn["daily"].append(_daily_row(r))
+        pn["daily_summary"] = _summary_identity(pn["daily"], act)
         for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_panel_narratives WHERE scope=? ORDER BY window_label DESC, rank LIMIT 100", (scope,)):
             pn["narratives"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **json.loads(r["payload_json"])})
 

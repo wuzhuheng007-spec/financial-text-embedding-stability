@@ -174,3 +174,46 @@ class XStanceJsonTests(TestCase):
         from django.test import Client
         c = Client(); c.force_login(self.owner)
         self.assertEqual(c.post(reverse("x_stance_vocabulary"), data="[]", content_type="application/json").status_code, 400)      # the keyword endpoint answered 500 to a JSON list before
+
+
+@override_settings(PERSONAL_MODE=True, PERSONAL_FEED_OWNER_USERNAME="owner@example.org")
+class DayAndNewsJudgementJsonTests(TestCase):
+    """The per-day material and the news judgement view: owner only, never cached, empty without a store."""
+
+    def setUp(self):
+        self.tmp = TemporaryDirectory()
+        os.environ["QUANT_X_STANCE_DB"] = str(Path(self.tmp.name) / "x.sqlite3")
+        os.environ["QUANT_NEWS_STANCE_DB"] = str(Path(self.tmp.name) / "news_stance.sqlite3")
+        users = get_user_model().objects
+        self.owner = users.create_user(username="owner@example.org", email="owner@example.org", password=PASSWORD)
+        self.other = users.create_user(username="other@example.org", email="other@example.org", password=PASSWORD)
+
+    def tearDown(self):
+        os.environ.pop("QUANT_X_STANCE_DB", None); os.environ.pop("QUANT_NEWS_STANCE_DB", None); self.tmp.cleanup()
+
+    def test_owner_only_and_never_cached(self):
+        for name in ("x_stance_day_json", "news_stance_json"):
+            self.client.force_login(self.other)
+            self.assertEqual(self.client.get(reverse(name)).status_code, 404)
+            self.client.logout()
+            self.assertEqual(self.client.get(reverse(name)).status_code, 302)
+
+    def test_day_request_is_validated_and_no_store_is_a_state(self):
+        self.client.force_login(self.owner)
+        url = reverse("x_stance_day_json")
+        for bad in ("?scope=nope&target=QQQ&date=2026-11-19", "?scope=keyword&target=QQQ&date=19-11-2026", "?scope=keyword&date=2026-11-19"):
+            self.assertEqual(self.client.get(url + bad).status_code, 400, bad)
+        r = self.client.get(url + "?scope=keyword&target=QQQ&date=2026-11-19")
+        self.assertEqual((r.status_code, r["Cache-Control"], r.json()["state"]), (200, "private, no-store", "NO_STORE"))
+        self.assertFalse(Path(os.environ["QUANT_X_STANCE_DB"]).exists())                       # reading does not create a store
+
+    def test_news_judgement_view_without_labels_is_empty_and_labelled(self):
+        self.client.force_login(self.owner)
+        r = self.client.get(reverse("news_stance_json"))
+        d = r.json()
+        self.assertEqual((r.status_code, r["Cache-Control"]), (200, "private, no-store"))
+        self.assertIn(d["state"], ("NOT_STARTED", "NOTHING_JUDGED_YET"))
+        self.assertEqual((d["items"], d["note"]), ([], "模型判断，待人工验证"))
+        self.assertFalse(Path(os.environ["QUANT_NEWS_STANCE_DB"]).exists())
+        page = self.client.get(reverse("dashboard")).content.decode()
+        self.assertIn('data-xtab="news"', page); self.assertIn("news-stance.json", page); self.assertIn("x-stance/day.json", page)

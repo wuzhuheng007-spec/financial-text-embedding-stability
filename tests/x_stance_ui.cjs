@@ -94,12 +94,12 @@ test('filled panels: backfill label, null shares stay blank, five views at most,
   const ui = await mount(filled());
   const daily = texts(ui.panel('daily')).join('|');
   assert.ok(daily.includes('历史回填（现在可见的样本）') && !daily.includes('实时留档'));
-  assert.ok(daily.includes('采集不完整') && daily.includes('样本账号过少') && daily.includes('未判定') && daily.includes('分类未完成') && daily.includes('本次采集样本中的账号比例'));
-  const pendingCells = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2025-06-05')).all(e => e.tagName === 'td').map(c => c.textContent);
-  assert.deepStrictEqual(pendingCells.slice(2, 8), ['—', '—', '—', '0', '60', '0.0%']);      // shares blank, sample accounts shown, progress 0 %: nothing invented
-  const unknownRow = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2025-06-03'));
-  assert.deepStrictEqual(unknownRow.all(e => e.tagName === 'td').map(c => c.textContent).slice(2, 5), ['—', '—', '—']);   // no 0 %, no neutral, for a day without a sample
-  assert.strictEqual(ui.panel('daily').all(e => (e.className || '').includes('xs-bar-empty')).length, 2);
+  assert.ok(daily.includes('样本账号过少') && daily.includes('本次采集样本中的比例') && daily.includes('交易日窗口总数 4；有有效标签并画入图表 2；没有有效标签：1；待分类：1'));
+  const dayRows = ui.panel('daily').all(e => e.tagName === 'tr').filter(r => /2025-06-0\d/.test(r.textContent)).map(r => r.all(e => e.tagName === 'td').map(c => c.textContent));
+  assert.deepStrictEqual(dayRows.map(c => c[0]), ['2025-06-04', '2025-06-02']);                 // only dates with valid labels are listed and drawn: no blank row, no 0 %, no neutral for an empty day
+  assert.deepStrictEqual([dayRows[1][3], dayRows[1][5], dayRows[1][8]], ['55', '40', '50.0% / 25.0% / 25.0%']);
+  assert.strictEqual(ui.panel('daily').all(e => (e.className || '').includes('xs-bar-empty')).length, 0);
+  assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === '查看材料').length, 2);
   assert.strictEqual(ui.panel('views').all(e => (e.className || '') === 'xs-view').length, 5);
   const links = ui.panel('views').all(e => e.tagName === 'a');
   assert.ok(links.length === 5 && links.every(a => a.href.startsWith('https://x.com/') && a.rel === 'noopener noreferrer'));
@@ -165,14 +165,13 @@ test('account rules, the two queues and weighted next to equal-weight shares are
   s = texts(ui.panel('settings')).join('|');
   for (const need of ['10 / 40', '1 / 2', '12.5', '900 / 900', '714.3', '4.3', '3210', '20 / 20', '10 / 20', '50.0%', '近期队列先处理']) assert.ok(s.includes(need), need);
   const cells = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-19')).all(e => e.tagName === 'td').map(c => c.textContent);
-  assert.deepStrictEqual(cells.slice(2, 5), ['50.0%', '30.0%', '20.0%']);                    // headline: weighted
-  assert.deepStrictEqual(cells.slice(-2), ['25.0% / 25.0% / 50.0%', '3210']);                // beside it: one account one vote, and what the like floor left out
-  assert.ok(texts(ui.panel('daily')).join('|').includes('占比按账号权重计算'));
+  assert.deepStrictEqual([cells[6], cells[8], cells[11]], ['25.0% / 50.0% / 25.0%', '50.0% / 20.0% / 30.0%', '3210']);   // one account one vote (bull / bear / neutral), the weighted shares beside it, and what the like floor left out
+  assert.ok(texts(ui.panel('daily')).join('|').includes('按账号权重计算'));
   const left = [...new Set(texts(ui.root).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
   assert.deepStrictEqual(left, []);                                                           // nothing of the new cards is left in Chinese in English mode
   d.account_rules = {enabled: false, version: null};
   ui = await mount(d);
-  assert.ok(texts(ui.panel('settings')).join('|').includes('未启用，每个账号按一票计算。') && !texts(ui.panel('daily')).join('|').includes('占比按账号权重计算'));
+  assert.ok(texts(ui.panel('settings')).join('|').includes('未启用，每个账号按一票计算。') && !texts(ui.panel('daily')).join('|').includes('按账号权重计算'));
 });
 
 // Watched authors. The payload is synthetic: invented handles, invented posts.
@@ -242,12 +241,12 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
   assert.ok(ui.panel('authors').all(e => e.tagName === 'a').every(a => a.href.startsWith('https://x.com/')));
   const cells = () => ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-20')).all(e => e.tagName === 'td').map(c => c.textContent);
   const click = name => ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === name)[0].listeners.click();
-  assert.deepStrictEqual([cells()[2], cells()[5]], ['50.0%', '40']);
+  assert.deepStrictEqual([cells()[6], cells()[5]], ['50.0% / 25.0% / 25.0%', '40']);
   click('重点作者');
-  assert.deepStrictEqual([cells()[2], cells()[5]], ['100.0%', '3']);
+  assert.deepStrictEqual([cells()[6], cells()[5]], ['100.0% / 0.0% / 0.0%', '3']);
   assert.ok(ui.root.all(e => e.attrs.translate === 'no').some(e => e.textContent.includes('+watchlist:list-1')));
   click('合并去重');
-  assert.deepStrictEqual([cells()[2], cells()[5]], ['60.0%', '42']);                              // each panel shows its own denominator
+  assert.deepStrictEqual([cells()[6], cells()[5]], ['60.0% / 20.0% / 20.0%', '42']);                              // each panel shows its own denominator
   d.watchlist.reading = d.watchlist.reading.filter(r => r.post_id !== '11');
   const ui2 = await mount(d);
   assert.ok(texts(ui2.panel('authors')).join('|').includes('无达标样本') && !texts(ui2.panel('authors')).join('|').includes('有已计入的观点'));    // "no qualifying sample", never "neutral"
