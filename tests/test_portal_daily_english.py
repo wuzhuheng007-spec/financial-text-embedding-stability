@@ -32,6 +32,38 @@ class DailyAndEnglishPortalTests(unittest.TestCase):
             self.assertEqual([i["upstream_id"] for i in result["items"]], ["0"])
             self.assertEqual(len(store.read_for_portal(4, path)["items"]), 4)
 
+    def test_language_verdict_is_computed_once_per_version_and_reading_stops_when_the_list_is_full(self):
+        from scripts.quant_news_v1 import language
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "news.sqlite"
+            en = "Chip stocks rally as demand for artificial intelligence accelerates again today"
+            fr = "Les actions de Nvidia progressent après la publication des résultats"
+            with closing(store.connect(path)) as db, db:
+                for i in range(8):                               # newest first: 7 fr, 6 en, 5 fr, 4 en, ...
+                    stamp = f"2026-11-23T0{i}:00:00Z"
+                    store.apply(db, {"upstream": "benzinga", "upstream_id": str(i), "title": en if i % 2 == 0 else fr,
+                                    "provider_created_at": stamp, "provider_updated_at": stamp},
+                                provider="benzinga_stream", via="stream", received_at=stamp)
+            store._ENGLISH_VERDICT.clear()
+            calls = []
+            real = language.is_english_news
+            with patch.object(language, "is_english_news", side_effect=lambda *a: calls.append(a[0]) or real(*a)):
+                first = store.read_for_portal(2, path, english_only=True)
+                self.assertEqual([i["upstream_id"] for i in first["items"]], ["6", "4"])
+                self.assertEqual(len(calls), 4)                  # 7, 6, 5, 4: older items are not even read
+                again = store.read_for_portal(2, path, english_only=True)
+                self.assertEqual(again, first)
+                self.assertEqual(len(calls), 4)                  # a poll costs no detection
+                self.assertEqual([i["upstream_id"] for i in store.read_for_portal(10, path, english_only=True)["items"]], ["6", "4", "2", "0"])
+                self.assertEqual(len(calls), 8)
+                with closing(store.connect(path)) as db, db:      # item 7 is republished in English: a new version, a new verdict
+                    store.apply(db, {"upstream": "benzinga", "upstream_id": "7", "title": en + " update",
+                                    "provider_created_at": "2026-11-23T07:00:00Z", "provider_updated_at": "2026-11-23T09:00:00Z"},
+                                provider="benzinga_stream", via="stream", received_at="2026-11-23T09:00:00Z")
+                self.assertEqual([i["upstream_id"] for i in store.read_for_portal(2, path, english_only=True)["items"]], ["7", "6"])
+                self.assertEqual(len(calls), 9)
+            self.assertTrue(first["providers"] is not None and first["state"] == "READY")
+
     def test_snapshot_reads_by_symbol_and_calendar_year_without_filling_missing_days(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

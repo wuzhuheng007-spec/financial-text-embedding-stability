@@ -220,27 +220,69 @@ def read_for_portal(limit: int = 200, path: Path | None = None, *, english_only:
     path = path or db_path()
     if not path.is_file():
         return {"state": "NOT_STARTED", "items": [], "providers": []}
-    if english_only:
-        from .language import is_english_news
     with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
         db.row_factory = sqlite3.Row
+        if english_only:
+            return _read_english(db, limit)
         rows = db.execute("""SELECT i.upstream, i.upstream_id, i.first_seen_at, i.first_seen_via, i.first_online_seen_at, i.deleted,
                 i.deleted_at, i.receipts, i.latest_version, i.versions_n, i.conflicts, i.restored_at, v.provider, v.via, v.title, v.teaser, v.body, v.url, v.source, v.authors,
                 v.symbols_json, v.channels_json, v.provider_created_at, v.provider_updated_at, v.received_at, v.available_at
               FROM items i JOIN versions v ON v.upstream=i.upstream AND v.upstream_id=i.upstream_id AND v.version=i.latest_version
               ORDER BY COALESCE(v.provider_created_at, i.first_seen_at) DESC LIMIT ?""",
-                          (-1 if english_only else limit,))
-        items = []
-        for row in rows:
-            if len(items) >= limit:
-                break
-            if english_only and (row["deleted"] or not is_english_news(row["title"], row["teaser"], row["body"])):
-                continue
-            item = dict(row)
-            item["symbols"] = json.loads(item.pop("symbols_json"))
-            item["channels"] = json.loads(item.pop("channels_json"))
-            items.append(item)
-        providers = [dict(r) | {"counters": json.loads(r["counters_json"])} for r in db.execute("SELECT * FROM provider_state")]
+                          (limit,))
+        items = [_portal_item(row) for row in rows]
+        providers = _providers(db)
+    return {"state": "READY", "items": items, "providers": providers}
+
+
+_ITEM_COLUMNS = """i.upstream, i.upstream_id, i.first_seen_at, i.first_seen_via, i.first_online_seen_at, i.deleted,
+    i.deleted_at, i.receipts, i.latest_version, i.versions_n, i.conflicts, i.restored_at, v.provider, v.via, v.title, v.teaser, v.body, v.url, v.source, v.authors,
+    v.symbols_json, v.channels_json, v.provider_created_at, v.provider_updated_at, v.received_at, v.available_at"""
+_JOIN = "FROM items i JOIN versions v ON v.upstream=i.upstream AND v.upstream_id=i.upstream_id AND v.version=i.latest_version"
+# Language verdict per content hash. The same content always gets the same verdict, so it is computed once per
+# process; the page polls this list and must not run the detector over the whole store on every poll.
+_ENGLISH_VERDICT: dict[str, bool] = {}
+_ENGLISH_VERDICT_MAX = 200_000
+
+
+def _portal_item(row) -> dict:
+    item = dict(row)
+    item["symbols"] = json.loads(item.pop("symbols_json"))
+    item["channels"] = json.loads(item.pop("channels_json"))
+    return item
+
+
+def _providers(db) -> list[dict]:
+    providers = [dict(r) | {"counters": json.loads(r["counters_json"])} for r in db.execute("SELECT * FROM provider_state")]
     for p in providers:
         p.pop("counters_json", None)
-    return {"state": "READY", "items": items, "providers": providers}
+    return providers
+
+
+def _read_english(db, limit: int) -> dict:
+    """The newest `limit` visible English items. The filter runs before the limit, newest first, and stops as soon as
+    the list is full; text is read only for versions without a verdict yet and for the items that are returned."""
+    from .language import is_english_news
+    if len(_ENGLISH_VERDICT) > _ENGLISH_VERDICT_MAX:
+        _ENGLISH_VERDICT.clear()
+    keys = db.execute(f"SELECT i.upstream, i.upstream_id, i.latest_version, i.deleted, v.content_sha256 {_JOIN} "
+                      "ORDER BY COALESCE(v.provider_created_at, i.first_seen_at) DESC").fetchall()
+    chosen = []
+    for k in keys:
+        if len(chosen) >= limit:
+            break
+        if k["deleted"]:
+            continue
+        key = (k["upstream"], k["upstream_id"], k["latest_version"])
+        ok = _ENGLISH_VERDICT.get(k["content_sha256"])
+        if ok is None:
+            t = db.execute("SELECT title, teaser, body FROM versions WHERE upstream=? AND upstream_id=? AND version=?", key).fetchone()
+            ok = _ENGLISH_VERDICT[k["content_sha256"]] = bool(t) and is_english_news(t["title"], t["teaser"], t["body"])
+        if ok:
+            chosen.append(key)
+    items = []
+    for key in chosen:
+        row = db.execute(f"SELECT {_ITEM_COLUMNS} {_JOIN} WHERE i.upstream=? AND i.upstream_id=? AND i.latest_version=?", key).fetchone()
+        if row is not None:
+            items.append(_portal_item(row))
+    return {"state": "READY", "items": items, "providers": _providers(db)}
