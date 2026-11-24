@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import re
+from bisect import bisect_right
 import sqlite3
 from contextlib import closing
 from datetime import datetime, timedelta, timezone
@@ -75,13 +76,14 @@ def _selected_points(rows: list[sqlite3.Row], *, start: datetime, end: datetime,
     segment = -1
     last_source = last_received = None
     last_session = None
-    interruption_times = interruption_times or []
+    # Sorted once: "is there a cut with lo < cut <= hi" is two binary searches per point. Testing every cut for
+    # every point made the widest range cost minutes once the connection log had a few thousand entries.
+    cuts = sorted(interruption_times or [])
     for row in ordered:
         source = parse_utc(row["source_at"])
         received = parse_utc(row["received_at"])
         interrupted = (received is not None and last_received is not None and
-                       any(min(last_received,received) < cut <= max(last_received,received)
-                           for cut in interruption_times))
+                       bisect_right(cuts, max(last_received, received)) > bisect_right(cuts, min(last_received, received)))
         gap = (last_source is None or row["session"] != last_session or interrupted or
                (source - last_source).total_seconds() > gap_seconds or
                (received is not None and last_received is not None and

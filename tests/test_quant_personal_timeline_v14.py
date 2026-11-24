@@ -76,6 +76,41 @@ class TimelineTests(unittest.TestCase):
         self.assertEqual([x["segment"] for x in points],[0,0,1,2,3])
         self.assertEqual(summary["segment_count_before_sampling"],4)
 
+    def test_interruption_cut_boundaries_and_cost_with_a_long_connection_log(self):
+        import random
+        import time
+        base = datetime(2026, 11, 16, 3, 0, tzinfo=timezone.utc)
+        z = lambda d: d.isoformat().replace("+00:00", "Z")
+        def row(i, received_s):
+            return {"id": i, "session": "REGULAR", "price_text": "12", "currency": None, "source_at": z(base + timedelta(seconds=i)),
+                    "received_at": z(base + timedelta(seconds=received_s)), "source_channel": "WS_QUOTE", "delay_status": "UNKNOWN", "raw_present": 0}
+        def segments(rows, cuts):
+            return [p["segment"] for p in _selected_points(rows, start=base - timedelta(hours=1), end=base + timedelta(days=2),
+                                                         gap_seconds=180, max_points=10**9, interruption_times=cuts)[0]]
+        rows = [row(i, i) for i in range(6)]                      # received at 0..5 s, one per second
+        at = lambda s: base + timedelta(seconds=s)
+        self.assertEqual(segments(rows, [at(2)]), [0, 0, 1, 1, 1, 1])        # cut equal to the later receipt: cuts
+        self.assertEqual(segments(rows, [at(2.5)]), [0, 0, 0, 1, 1, 1])      # strictly between: cuts
+        self.assertEqual(segments(rows, [at(0)]), [0] * 6)                   # equal to the earlier receipt only: no cut
+        self.assertEqual(segments(rows, [at(9), at(-5)]), [0] * 6)           # outside every pair, unsorted input
+        self.assertEqual(segments(rows, [at(4.5), at(1.5), at(1.6)]), [0, 0, 1, 1, 1, 2])
+        # the old definition, kept here as the reference, on random data including out-of-order receipts
+        rng = random.Random(7)
+        rows = [row(i, i + rng.choice([0, 0, 0, -3, 4])) for i in range(400)]
+        cuts = [at(rng.uniform(-10, 410)) for _ in range(60)] + [at(rng.randrange(0, 400)) for _ in range(40)]
+        expected, seg, last = [], -1, None
+        for r in rows:
+            rec = datetime.fromisoformat(r["received_at"].replace("Z", "+00:00"))
+            if last is None or abs((rec - last).total_seconds()) > 180 or any(min(last, rec) < c <= max(last, rec) for c in cuts):
+                seg += 1
+            expected.append(seg); last = rec
+        self.assertEqual(segments(rows, cuts), expected)
+        self.assertGreater(expected[-1], 20)
+        # 20,000 points against 5,000 cuts was about 100 million comparisons; it must now be far below a second of work
+        rows = [row(i, i) for i in range(20000)]
+        cuts = [at(-10 - i) for i in range(5000)]
+        t = time.process_time(); self.assertEqual(set(segments(rows, cuts)), {0}); self.assertLess(time.process_time() - t, 5)
+
     def test_new_york_midnight_does_not_infer_trading_date_or_break_short_segment(self):
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/"cache.sqlite3"
