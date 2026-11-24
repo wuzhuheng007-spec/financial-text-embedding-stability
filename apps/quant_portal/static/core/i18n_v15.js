@@ -325,6 +325,12 @@
     "曲线在时段切换或数据间断处断开，不做插值": "Lines break at session changes and data gaps; no interpolation",
     "30分": "30 min",
     "2小时": "2 h",
+    "全部分时": "All intraday",
+    "1年日线": "1-year daily",
+    "该标的暂无可读取的 moomoo 历史日线": "No moomoo daily history available for this symbol",
+    "常规时段未复权收盘价": "unadjusted regular-session close",
+    "根日线": "daily bars",
+    "日收盘": "daily close",
     "24小时": "24 h",
     "7天": "7 d",
     "后端资格检查": "Backend eligibility check",
@@ -1520,6 +1526,7 @@
   const attrs = ['placeholder', 'title', 'aria-label', 'aria-description', 'alt'];
   // Whole-sentence templates. Captures keep numbers, hashes, symbols and dates literal; captured words go through translate().
   const patterns = [
+    [/^(.+?)（(.+?) 个单元）$/, (_, day, n) => `${day} (${n} units)`],
     [/^SEC 未提供（(.+)）$/, (_, why) => `Not provided by SEC (${translate(why)})`],
     [/^近\s?(\d+)\s?天公告 (\d+) 条 · 补充历史报告 (\d+) 条$/, (_, days, a, b) => `${a} filings in the last ${days} days · ${b} supplementary historical reports`],
     [/^近 (\d+) 天公告（申报日 ≥ (.+?)）· (\d+) 条$/, (_, days, start, n) => `Filings in the last ${days} days (filing date ≥ ${translate(start)}) · ${n}`],

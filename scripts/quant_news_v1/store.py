@@ -215,23 +215,32 @@ def read_sync_state(path: Path | None = None) -> dict:
     return {"state": "READY", "channels": list(chans.values())}
 
 
-def read_for_portal(limit: int = 200, path: Path | None = None) -> dict:
+def read_for_portal(limit: int = 200, path: Path | None = None, *, english_only: bool = False) -> dict:
     """Read-only view for the web app: latest version per item (deleted items flagged), provider state."""
     path = path or db_path()
     if not path.is_file():
         return {"state": "NOT_STARTED", "items": [], "providers": []}
+    if english_only:
+        from .language import is_english_news
     with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
         db.row_factory = sqlite3.Row
         rows = db.execute("""SELECT i.upstream, i.upstream_id, i.first_seen_at, i.first_seen_via, i.first_online_seen_at, i.deleted,
                 i.deleted_at, i.receipts, i.latest_version, i.versions_n, i.conflicts, i.restored_at, v.provider, v.via, v.title, v.teaser, v.body, v.url, v.source, v.authors,
                 v.symbols_json, v.channels_json, v.provider_created_at, v.provider_updated_at, v.received_at, v.available_at
               FROM items i JOIN versions v ON v.upstream=i.upstream AND v.upstream_id=i.upstream_id AND v.version=i.latest_version
-              ORDER BY COALESCE(v.provider_created_at, i.first_seen_at) DESC LIMIT ?""", (limit,)).fetchall()
+              ORDER BY COALESCE(v.provider_created_at, i.first_seen_at) DESC LIMIT ?""",
+                          (-1 if english_only else limit,))
+        items = []
+        for row in rows:
+            if len(items) >= limit:
+                break
+            if english_only and (row["deleted"] or not is_english_news(row["title"], row["teaser"], row["body"])):
+                continue
+            item = dict(row)
+            item["symbols"] = json.loads(item.pop("symbols_json"))
+            item["channels"] = json.loads(item.pop("channels_json"))
+            items.append(item)
         providers = [dict(r) | {"counters": json.loads(r["counters_json"])} for r in db.execute("SELECT * FROM provider_state")]
-    items = []
-    for r in rows:
-        d = dict(r); d["symbols"] = json.loads(d.pop("symbols_json")); d["channels"] = json.loads(d.pop("channels_json"))
-        items.append(d)
     for p in providers:
         p.pop("counters_json", None)
     return {"state": "READY", "items": items, "providers": providers}

@@ -45,7 +45,7 @@
       <div class="d-sub"><span class="sess" id="d-sess" hidden></span><span id="d-basis"></span><span class="num" id="d-time"></span><span class="stale-tag" id="d-stale" hidden>连接中断 · 显示最后报价</span></div>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="时间范围" id="range-seg">
-          <button type="button" data-range="30m">30分</button><button type="button" data-range="2h" aria-pressed="true">2小时</button><button type="button" data-range="24h">24小时</button><button type="button" data-range="all">全部</button>
+          <button type="button" data-range="30m">30分</button><button type="button" data-range="2h" aria-pressed="true">2小时</button><button type="button" data-range="24h">24小时</button><button type="button" data-range="all">全部分时</button><button type="button" data-range="1y">1年日线</button>
         </div>
         <div class="legend" role="group" aria-label="交易时段" id="session-legend">
           <button type="button" data-session="PREMARKET" aria-pressed="true" style="--c:var(--s-pre)">盘前</button>
@@ -83,7 +83,7 @@
       <article id="nv-reader" class="card nv-reader" aria-label="阅读"></article>
     </div>
   </div>
-  <details class="disclosure section" id="nv-legacy"><summary>金十快讯（本机采集；云端未启用）</summary><div class="disclosure-body">
+  <details class="disclosure section" id="nv-legacy" hidden inert><summary>金十快讯（本机采集；云端未启用）</summary><div class="disclosure-body">
   <div id="news-source-state" hidden></div>
   <div id="news-top10-block"><div class="section-head"><h2>重点事件</h2><span class="count" id="top10-count">0</span></div>
   <div id="personal-top10" class="top10-list" aria-live="polite"></div></div>
@@ -257,5 +257,5 @@
 <script defer charset="utf-8" src="{% static 'core/news_text_v1.js' %}?v=1"></script>
 <script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=23-1"></script>
 {% endif %}
-<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=22-2"></script>
+<script defer charset="utf-8" src="{% static 'core/terminal_v20.js' %}?v=24-1"></script>
 {% endblock %}

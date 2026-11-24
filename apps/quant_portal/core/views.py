@@ -289,6 +289,18 @@ def personal_timeline_json(request):
     from .personal_feed_cache import REPO_ROOT
     if str(REPO_ROOT) not in sys.path:
         sys.path.insert(0, str(REPO_ROOT))
+    if request.GET.get("range") == "1y":
+        import sqlite3
+        from scripts.quant_personal_feed.daily_history import read_daily_history
+        try:
+            history = read_daily_history(REPO_ROOT, request.GET.get("symbol", "").strip().upper())
+        except ValueError:
+            return JsonResponse({"error": "INVALID_TIMELINE_REQUEST"}, status=400)
+        except sqlite3.Error:
+            return JsonResponse({"error": "DAILY_HISTORY_UNAVAILABLE"}, status=503)
+        response = JsonResponse(history)
+        response["Cache-Control"] = "private, no-store"
+        return response
     from scripts.quant_personal_feed.timeline import read_timeline
     try:
         data = read_timeline(settings.PERSONAL_FEED_DB_PATH, request.user.pk,
@@ -863,7 +875,7 @@ def news_json(request):
         sys.path.insert(0, str(REPO_ROOT))
     from scripts.quant_news_v1.store import read_for_portal
     try:
-        data = read_for_portal(limit=200)
+        data = read_for_portal(limit=200, english_only=True)
     except Exception as exc:  # noqa: BLE001 - an unreadable cache is a status, not a page error
         data = {"state": "READ_ERROR", "error_class": type(exc).__name__, "items": [], "providers": []}
     watch = set(WatchlistItem.objects.filter(user=request.user).values_list("symbol", flat=True))

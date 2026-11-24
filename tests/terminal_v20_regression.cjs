@@ -32,6 +32,21 @@ function harness() {
   return {api: context.audit, requests, intervals, timers, reply, now: () => now, advance: n => {now += n;}};
 }
 const settle = () => new Promise(resolve => setImmediate(resolve));
+
+test('the one-year chart loads daily closes on their trading dates', async () => {
+  const h = harness();
+  h.api.chart.sym = 'QQQ';
+  h.api.chart.range = '1y';
+  const pending = h.api.loadChart(true);
+  assert.match(h.requests[0].url, /symbol=QQQ&session=ALL&range=1y$/);
+  h.reply(0, {bars: [{date: '2025-11-24', close: 100}, {date: '2026-11-23', close: 125}]});
+  await pending;
+  assert.equal(h.api.chart.range, '1y');
+  assert.equal(h.api.chart.data.length, 2);
+  assert.equal(h.api.chart.data[0].t, Date.parse('2025-11-24T00:00:00Z'));
+  assert.equal(h.api.chart.data[1].s, 'DAILY');
+  assert.equal(h.api.chart.data[1].p, 125);
+});
 test('switching symbols while a request is pending fetches the new symbol immediately after it settles', async () => {
   const h = harness(); h.api.chart.sym = 'NVDA';
   const first = h.api.loadChart(true);

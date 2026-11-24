@@ -306,12 +306,14 @@
   const chart = {sym: null, range: store.get('quant.range') || '2h', sessions: new Set(Object.keys(SESS)), data: [], gapMs: 180e3,
     domain: null, hoverX: null, loading: false, pendingLoad: false, ctrl: null, lastLoad: 0, earliest: new Map(), drag: null};
   function rangeAvailable(r) {
+    if (r === '1y') return true;
     const e = chart.earliest.get(chart.sym);
     if (e == null) return r === '30m' || r === '2h';
     const now = Date.now();
     return r === '30m' || (r === '2h' && e < now - RANGE_MS['30m']) || (r === '24h' && e < now - RANGE_MS['2h']) || (r === 'all' && e < now - RANGE_MS['24h']);
   }
   function renderRangeButtons() {
+    document.querySelectorAll('#session-legend [data-session]').forEach(b => { b.disabled = chart.range === '1y'; });
     document.querySelectorAll('#range-seg [data-range]').forEach(b => {
       b.disabled = !rangeAvailable(b.dataset.range);
       b.title = b.disabled ? '该范围内没有更早的数据' : '';
@@ -339,16 +341,30 @@
     chart.loading = true; const sym = chart.sym, range = chart.range; chart.loadingKey = `${sym}|${range}`;
     chart.ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     const state = $('chart-state');
-    if (!chart.data.length) { state.hidden = false; state.textContent = '加载中…'; }
+    if (!chart.data.length) { state.hidden = false; state.textContent = '加载中…'; drawChart(); }
     try {
       const j = await getTimeline(sym, range, chart.ctrl);
       if (sym !== chart.sym || range !== chart.range) return;
-      chart.data = toPoints(j.points); chart.gapMs = Math.max(60e3, (j.gap_seconds || 180) * 1000);
+      const daily = range === '1y';
+      const fmtDay = t => new Date(t).toISOString().slice(0, 10);
+      chart.data = daily
+        ? (j.bars || []).map(b => ({t: Date.parse(b.date + 'T00:00:00Z'), p: b.close, seg: 0, s: 'DAILY'}))
+          .filter(p => Number.isFinite(p.t) && Number.isFinite(p.p))
+        : toPoints(j.points);
+      chart.gapMs = daily ? 4 * 86400e3 : Math.max(60e3, (j.gap_seconds || 180) * 1000);
       chart.lastLoad = Date.now();
       const m = j.point_metrics || {};
       const segs = m.coverage_segments || [];
-      setText($('chart-coverage'), chart.data.length ? `数据 ${fmtMDHM.format(chart.data[0].t)} – ${fmtMDHM.format(chart.data[chart.data.length - 1].t)}${m.sampled ? ` · 按图宽显示 ${chart.data.length} / ${m.valid_unique_points} 个报价` : ''}${segs.length > 1 ? ` · ${segs.length} 段` : ''}` : '');
-      state.hidden = chart.data.length > 0; state.textContent = '该范围暂无报价';
+      if (daily) {
+        const coverage = chart.data.length
+          ? `moomoo · 常规时段未复权收盘价 · ${fmtDay(chart.data[0].t)} – ${fmtDay(chart.data.at(-1).t)} · ${chart.data.length} 根日线`
+          : '';
+        setText($('chart-coverage'), coverage);
+      } else {
+        setText($('chart-coverage'), chart.data.length ? `数据 ${fmtMDHM.format(chart.data[0].t)} – ${fmtMDHM.format(chart.data[chart.data.length - 1].t)}${m.sampled ? ` · 按图宽显示 ${chart.data.length} / ${m.valid_unique_points} 个报价` : ''}${segs.length > 1 ? ` · ${segs.length} 段` : ''}` : '');
+      }
+      state.hidden = chart.data.length > 0;
+      state.textContent = daily ? '该标的暂无可读取的 moomoo 历史日线' : '该范围暂无报价';
       drawChart();
     } catch (_) {
       if (!chart.data.length) { state.hidden = false; state.textContent = '走势暂不可用'; }
@@ -367,10 +383,11 @@
     const changed = sym !== chart.sym;
     selected = sym; store.set('quant.selected', sym);
     if (changed) { chart.sym = sym; chart.data = []; chart.domain = null; chart.hoverX = null; $('chart-svg')?.replaceChildren();
-      setText($('chart-coverage'), ''); cancelChart(); loadEarliest(sym).then(() => loadChart(true)); }
+      setText($('chart-coverage'), ''); cancelChart();
+      if (chart.range === '1y') void loadChart(true); else loadEarliest(sym).then(() => loadChart(true)); }
     renderRangeButtons(); renderList(connState().state === 'down'); renderDetailHead(connState().state === 'down');
   }
-  function visiblePoints() { return chart.data.filter(p => chart.sessions.has(p.s)); }
+  function visiblePoints() { return chart.range === '1y' ? chart.data : chart.data.filter(p => chart.sessions.has(p.s)); }
   function downsample(pts, x, width) {
     // Keep each pixel column's first, min, max and last point (time order): true extremes, no smoothing.
     if (pts.length <= width * 2) return pts;
@@ -416,7 +433,8 @@
     const multiDay = d1 - d0 > 20 * 3600e3;
     for (let i = 0; i <= ticks; i++) {
       const t = d0 + (d1 - d0) * i / ticks; const tx = s('text', {x: x(t), y: H - 6, 'text-anchor': i === 0 ? 'start' : i === ticks ? 'end' : 'middle'});
-      tx.textContent = multiDay ? fmtMDHM.format(t) : fmtHM.format(t); axis.append(tx);
+      tx.textContent = chart.range === '1y' ? new Date(t).toISOString().slice(0, 10)
+        : multiDay ? fmtMDHM.format(t) : fmtHM.format(t); axis.append(tx);
     }
     const series = s('g', {class: 'series'});
     for (const p of pathsFor(downsample(pts, x, W), x, y, chart.gapMs)) series.append(s('path', {d: p.d, stroke: SESS_COLOR[p.s] || 'var(--accent)'}));
@@ -435,7 +453,9 @@
       cross.style.display = ''; vline.setAttribute('x1', cx); vline.setAttribute('x2', cx);
       dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('fill', SESS_COLOR[p.s] || 'var(--accent)');
       const cur = currencyOf(chart.sym);
-      tip.replaceChildren(h('div', 'tp', `${chart.sym}  ${money(p.p, cur)}`), h('div', 'tt', `${fmtMDHMS.format(p.t)} · ${SESS[p.s] || ''}`));
+      const when = p.s === 'DAILY' ? `${new Date(p.t).toISOString().slice(0, 10)} · 日收盘`
+        : `${fmtMDHMS.format(p.t)} · ${SESS[p.s] || ''}`;
+      tip.replaceChildren(h('div', 'tp', `${chart.sym}  ${money(p.p, cur)}`), h('div', 'tt', when));
       tip.hidden = false;
       const tw = tip.offsetWidth; tip.style.left = `${Math.min(W - tw - 4, Math.max(4, cx + 12 + tw > W - pad.r ? cx - tw - 12 : cx + 12))}px`;
       tip.style.top = `${Math.max(4, Math.min(H - 60, cy - 46))}px`;
@@ -608,7 +628,7 @@
     const down = renderConn().state === 'down';
     for (const sym of symbols()) appendLive(sym);
     renderCards(down); renderList(down); renderDetailHead(down); renderOverviewNews(); renderNewsState();
-    if (currentView === 'markets' && chart.sym) {
+    if (currentView === 'markets' && chart.sym && chart.range !== '1y') {
       const q = quoteOf(chart.sym); const t = ms(q?.source_at); const last = chart.data[chart.data.length - 1]?.t;
       if (t != null && (last == null || t > last) && !chart.drag) loadChart(false);
     }

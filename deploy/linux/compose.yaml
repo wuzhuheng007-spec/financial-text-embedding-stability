@@ -24,6 +24,7 @@ x-app-env: &app-env
   PUBLIC_MARKET_DATA_ENABLED: "0"
   QUANT_OWNER_RESOLVER: django_orm
   QUANT_FEED_CONFIG: ${QUANT_FEED_CONFIG:-configs/quant_portal_personal_feeds_linux_v1.json}
+  MOOMOO_DISPLAY_HISTORY_DB: ${MOOMOO_DISPLAY_HISTORY_DB:-}
   # Page label and providers deliberately not started on this deployment.
   DEPLOYMENT_KIND: ${DEPLOYMENT_KIND:-local}
   PROVIDER_GATE_MOOMOO: ${PROVIDER_GATE_MOOMOO:-}
