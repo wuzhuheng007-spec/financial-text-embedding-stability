@@ -171,6 +171,8 @@ def retriable(db, run, now: datetime | None = None) -> bool:
         page = db.execute("SELECT response_json FROM x_page_cache WHERE provider=? AND query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=?",
                           (run["provider"], run["query_hash"], run["window_start_utc"], run["window_end_utc"], run["cursor"] or "")).fetchone()
         return bool(page) and provider.page_schema_error(json.loads(page[0])) is None
+    if reason.startswith("CIRCUIT_OPEN:"):                       # the breaker stopped the JOB while this unit was being asked; the unit itself is not at fault
+        return True
     return False
 
 
@@ -498,10 +500,32 @@ def _rebuilt(db, parent_run_id: str):
         return None
 
 
-def recovery_units(db, row, now: datetime) -> list[dict]:
+def cursor_age_hours(db, run_id: str, now: datetime):
+    """Hours since the cursor of a run was handed out: the time its last good page was received. None if unknown."""
+    r = db.execute("SELECT MAX(settled_at_utc) FROM x_cost_ledger WHERE run_id=? AND status='SETTLED'", (run_id,)).fetchone()
+    return (now - store.parse(r[0])).total_seconds() / 3600 if r and r[0] else None
+
+
+def _stale_hours(cfg) -> float | None:
+    """Above this age a stored cursor is not used. From the live ledger (2026-11-24): first pages 212 of 212 answered;
+    continuation with a cursor under 1 h old failed 12%, 1-12 h 52%, 12-36 h 88% (HTTP 503, not charged)."""
+    if cfg is None:
+        return None
+    v = {**provider.RETRY_DEFAULTS, **(cfg["acquisition"].get("retry") or {})}.get("stale_cursor_hours")
+    return float(v) if v else None
+
+
+def recovery_units(db, row, now: datetime, cfg: dict | None = None) -> list[dict]:
     """Every unit of the frozen plan that has not reached its planned pages, with what a recovery would do.
     The plan is not re-cut: query, vocabulary, list version, window and page depth are the frozen ones."""
     out = []
+    limit = _stale_hours(cfg)
+
+    def stale(u) -> bool:
+        if not (limit and u["has_cursor"]):
+            return False
+        age = cursor_age_hours(db, u["run_id"], now)
+        return age is not None and age > limit
     for u in audit.plan_units(db, row):
         if u["state"] == "DONE":
             continue
@@ -514,15 +538,19 @@ def recovery_units(db, row, now: datetime) -> list[dict]:
             action = "DONE_BY_REBUILD"
         elif u["state"] == "PARTIAL" and u["reason"].startswith("PROTOCOL:"):
             action = "REREAD_STORED_PAGE" if stored_page_ok(db, run) else "BLOCKED:STORED_PAGE_STILL_REJECTED"
+        elif (u["state"] != "PARTIAL" or u["reason"] == "ERROR:HTTP_503_NOT_CHARGED" or u["reason"].startswith("CIRCUIT_OPEN:")) and stale(u):
+            action = "REBUILD_STALE_CURSOR"                      # asked again from its first page; pages already stored are paid a second time
         elif u["state"] == "PARTIAL" and u["reason"] == "ERROR:HTTP_503_NOT_CHARGED":
             due = rs["next_retry_at_utc"] if rs else None
             action = f"WAIT_UNTIL:{due}" if due and store.parse(due) > now else ("RESUME_FROM_CURSOR" if u["has_cursor"] else "FIRST_PAGE")
+        elif u["state"] == "PARTIAL" and u["reason"].startswith("CIRCUIT_OPEN:"):
+            action = "RESUME_FROM_CURSOR" if u["has_cursor"] else "FIRST_PAGE"
         elif u["state"] == "PARTIAL":                            # the provider refused the request (e.g. the stored cursor)
             action = "NEEDS_REBUILD:" + u["reason"] if u["has_cursor"] else "BLOCKED:" + u["reason"]
         else:
             action = "RESUME_FROM_CURSOR" if u["has_cursor"] else "FIRST_PAGE"
         out.append({**u, "action": action, "attempts_so_far": rs["attempts_total"] if rs else 0, "next_retry_at_utc": rs["next_retry_at_utc"] if rs else None,
-                    "pages_to_read": 0 if action.startswith(("BLOCKED", "DONE", "REREAD")) else u["planned_pages"] - u["pages_read"]})
+                    "pages_to_read": 0 if action.startswith(("BLOCKED", "DONE", "REREAD")) else u["planned_pages"] if action == "REBUILD_STALE_CURSOR" else u["planned_pages"] - u["pages_read"]})
     return [u for u in out if u["action"] != "DONE_BY_REBUILD"]
 
 
@@ -531,7 +559,7 @@ def recovery_preview(db, cfg: dict, sample_date: str, plan_id: str | None, now: 
     if err:
         return {"status": err, "sample_date_ny": sample_date, "plan_id": plan_id, "requests_sent": 0,
                 "plans_in_store": [{"plan_id": r[0], "sample_date_ny": r[1]} for r in db.execute("SELECT plan_id, plan_key FROM x_sample_plans WHERE job='recent' ORDER BY plan_key")]}
-    plan, units = json.loads(row["plan_json"]), recovery_units(db, row, now)
+    plan, units = json.loads(row["plan_json"]), recovery_units(db, row, now, cfg)
     page = cfg["quote"]["documented_max_posts_per_page"]
     go = [u for u in units if u["pages_to_read"] > 0 and not u["action"].startswith(("WAIT", "NEEDS_REBUILD"))]
     pages = {k: sum(u["pages_to_read"] for u in go if u["kind"] == k) for k in ("author", "keyword")}
@@ -540,6 +568,8 @@ def recovery_preview(db, cfg: dict, sample_date: str, plan_id: str | None, now: 
            "open_units": len(units), "by_action": {}, "free_rereads_of_stored_pages": sum(1 for u in units if u["action"] == "REREAD_STORED_PAGE"),
            "requests_upper_bound": pages, "posts_upper_bound": {k: v * page for k, v in pages.items()},
            "cost_upper_bound_usd": str((Decimal(sum(pages.values()) * page * cfg["quote"]["credits_per_post"]) / Decimal(cfg["quote"]["credits_per_usd"])).normalize()),
+           "stale_cursor_hours": _stale_hours(cfg),
+           "reread_posts_upper_bound": sum(u["returned"] for u in units if u["action"] == "REBUILD_STALE_CURSOR"),
            "charged_to": "the recent pool and its author / keyword shares of the budget day in which the requests are actually sent",
            "ingest_mode_of_new_posts": provider.RETRO, "requests_sent": 0, "units": units,
            "note": "finishing these units finishes the frozen sampling plan of that date; it does not mean everything posted on X that day was read"}
@@ -560,21 +590,38 @@ def _rebuild_unit(db, cfg, col: provider.Collector, row, u: dict, now: datetime)
     counted and kept."""
     db.executescript(RECOVERY_SCHEMA)
     q = _query(db, u["query_hash"])
-    n = db.execute("SELECT COUNT(*) FROM x_recovery_attempts WHERE parent_run_id=?", (u["run_id"],)).fetchone()[0] + 1
-    qh = store.sha(f"{u['query_hash']}|recovery|{row['plan_id']}|{n}")
-    vv = db.execute("SELECT provider, topic_id, lang, vocab_version, query_text FROM x_queries WHERE query_hash=?", (u["query_hash"],)).fetchone()
-    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, vv[0], vv[1], vv[2], vv[3], vv[4]))
     s, e = int(store.parse(u["window_start_utc"]).timestamp()), int(store.parse(u["window_end_utc"]).timestamp())
-    rid = col._run_id(qh, s, e)
-    aid = store.sha(f"{u['run_id']}|{n}")[:24]
-    db.execute("INSERT INTO x_recovery_attempts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (aid, row["plan_id"], row["plan_key"], u["run_id"], u["query_hash"], qh, rid, u["reason"], store.iso(now), None, None, None, None, None))
-    db.commit()
-    res = col.collect_pages({**q, "query_hash": qh}, s, e, u["planned_pages"])
-    dup = res["returned"] - res["new_posts"]
-    db.execute("UPDATE x_recovery_attempts SET status=?, returned=?, new_posts=?, duplicate_returned=?, duplicate_cost_credits=? WHERE attempt_id=?",
-               (res["status"], res["returned"], res["new_posts"], dup, dup * cfg["quote"]["credits_per_post"], aid))
-    db.commit()
-    return {"attempt_id": aid, "parent_run_id": u["run_id"], "new_run_id": rid, "status": res["status"], "returned": res["returned"], "new_posts": res["new_posts"], "duplicate_returned": dup}
+    last, limit, resumed = _rebuilt(db, u["run_id"]), _stale_hours(cfg), False
+    if last is not None and limit:                               # an earlier rebuild that did not finish and whose own cursor is still fresh is continued, not started over
+        age = cursor_age_hours(db, last["new_run_id"], now)
+        resumed = age is not None and age <= limit
+    if resumed:
+        aid, qh, rid = last["attempt_id"], last["new_query_hash"], last["new_run_id"]
+    else:
+        n = db.execute("SELECT COUNT(*) FROM x_recovery_attempts WHERE parent_run_id=?", (u["run_id"],)).fetchone()[0] + 1
+        qh = store.sha(f"{u['query_hash']}|recovery|{row['plan_id']}|{n}")
+        vv = db.execute("SELECT provider, topic_id, lang, vocab_version, query_text FROM x_queries WHERE query_hash=?", (u["query_hash"],)).fetchone()
+        db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, vv[0], vv[1], vv[2], vv[3], vv[4]))
+        rid = col._run_id(qh, s, e)
+        aid = store.sha(f"{u['run_id']}|{n}")[:24]
+        reason = u["reason"] if u["action"].startswith("NEEDS_REBUILD") else "STALE_CURSOR"
+        db.execute("INSERT INTO x_recovery_attempts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (aid, row["plan_id"], row["plan_key"], u["run_id"], u["query_hash"], qh, rid, reason, store.iso(now), None, None, None, None, None))
+        db.commit()
+
+    def close(status: str) -> dict:
+        r = db.execute("SELECT returned, new_posts FROM x_query_runs WHERE run_id=?", (rid,)).fetchone()
+        got, new = (r["returned"], r["new_posts"]) if r else (0, 0)
+        db.execute("UPDATE x_recovery_attempts SET status=?, returned=?, new_posts=?, duplicate_returned=?, duplicate_cost_credits=? WHERE attempt_id=?",
+                   (status, got, new, got - new, (got - new) * cfg["quote"]["credits_per_post"], aid))
+        db.commit()
+        return {"attempt_id": aid, "parent_run_id": u["run_id"], "new_run_id": rid, "status": status, "returned": got, "new_posts": new, "duplicate_returned": got - new, "continued_earlier_attempt": resumed}
+
+    try:
+        res = col.collect_pages({**q, "query_hash": qh}, s, e, u["planned_pages"])
+    except provider.StopAll as stop:                             # the attempt keeps what it read; it is not left without a status
+        close("STOPPED:" + stop.reason)
+        raise
+    return close(res["status"])
 
 
 def run_recover(db, cfg: dict, transport, sample_date: str, plan_id: str | None, anchor: datetime, *, clock=None, ledger: Ledger | None = None, rebuild: bool = False) -> dict:
@@ -596,8 +643,8 @@ def run_recover(db, cfg: dict, transport, sample_date: str, plan_id: str | None,
     out = {"status": "RAN", "recovery_id": rid, "sample_date_ny": sample_date, "plan_id": row["plan_id"], "open_units_before": len(units), "by_action_before": before["by_action"], "parts": {}, "rebuilt": []}
     free = [u for u in units if u["action"] == "REREAD_STORED_PAGE"]
     for kind, job in (("author", "watchlist"), ("keyword", None)):
-        mine = [u for u in units if u["kind"] == kind and not u["action"].startswith(("BLOCKED", "WAIT", "NEEDS_REBUILD"))]
-        redo = [x for x in units if x["kind"] == kind and x["action"].startswith("NEEDS_REBUILD")] if rebuild else []
+        mine = [u for u in units if u["kind"] == kind and not u["action"].startswith(("BLOCKED", "WAIT", "NEEDS_REBUILD", "REBUILD_STALE"))]
+        redo = [x for x in units if x["kind"] == kind and (x["action"] == "REBUILD_STALE_CURSOR" or (rebuild and x["action"].startswith("NEEDS_REBUILD")))]
         if not mine and not redo:
             continue
         col = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent", job_type=job), transport=transport, mode=provider.RETRO, clock=clock)
@@ -606,13 +653,20 @@ def run_recover(db, cfg: dict, transport, sample_date: str, plan_id: str | None,
         first = [(u["planned_pages"], as_step(u)) for u in mine if u in free]                     # stored pages first: they cost nothing
         steps = first + [(d, as_step(u)) for d in range(1, depth + 1) for u in mine if d <= u["planned_pages"]]
         out["parts"][kind] = _walk(col, db, iter(steps))
-        if rebuild and not out["parts"][kind]["stopped"]:
+        part = out["parts"][kind]
+        if redo and not (part["stopped"] and not part["stopped"].startswith("CIRCUIT_OPEN:")):
+            # First pages are not what fails: they get their own collector, so failed continuations above (an open
+            # breaker) do not keep the rebuilds from running. A budget, pause, 429 or disk stop still ends the part.
+            col2 = provider.Collector(db, cfg, budget=JobBudget(ledger, pool="recent", job_type=job), transport=transport, mode=provider.RETRO, clock=clock)
+            part["rebuild_units"], before_n = 0, col2.budget.requests
             for u in redo:
                 try:
-                    out["rebuilt"].append(_rebuild_unit(db, cfg, col, row, u, clock()))
+                    out["rebuilt"].append(_rebuild_unit(db, cfg, col2, row, u, clock()))
+                    part["rebuild_units"] += 1
                 except provider.StopAll as stop:
-                    out["parts"][kind]["stopped"] = stop.reason
+                    part["rebuild_stopped"] = stop.reason
                     break
+            part["rebuild_requests"], part["rebuild_transient_errors"] = col2.budget.requests - before_n, col2.transient_errors
     plan = json.loads(row["plan_json"])
     wu = [{**u, "run_id": provider.Collector(db, cfg, budget=None)._run_id(u["query_hash"], u["start"], u["end"])} for u in (plan.get("watch") or {}).get("units", [])]
     unbound = [u for u in wu if not (watchlist.get(db, u["watch_id"]) or {}).get("stable_author_id")]
@@ -631,7 +685,7 @@ def recovery_pending(db, cfg: dict, current: date, now: datetime) -> list[dict]:
     """Earlier sample dates whose frozen plan still has units a recovery can work on, oldest first."""
     out = []
     for row in db.execute("SELECT * FROM x_sample_plans WHERE job='recent' AND plan_key<? ORDER BY plan_key", (current.isoformat(),)).fetchall():
-        units = recovery_units(db, row, now)
+        units = recovery_units(db, row, now, cfg)
         work = [u for u in units if not u["action"].startswith(("BLOCKED", "NEEDS_REBUILD"))]
         if work:
             out.append({"plan_id": row["plan_id"], "sample_date_ny": row["plan_key"], "open_units": len(units), "workable_units": len(work),

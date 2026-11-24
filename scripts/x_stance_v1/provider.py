@@ -288,7 +288,8 @@ SLEEP = time.sleep                                             # tests replace t
 POLICY_503 = ("HTTP 503 on tweet/advanced_search is documented as not charged (docs.twitterapi.io, advanced search, 503 response; read 2026-11-23); "
               "reservation released under that policy, not reconciled with a bill")
 RETRY_DEFAULTS = {"max_attempts_per_unit_per_round": 3, "backoff_base_seconds": 6, "backoff_factor": 2, "backoff_max_seconds": 60, "retry_after_max_seconds": 120,
-                  "defer_seconds": 900, "breaker_consecutive_failed_units": 4, "breaker_window_requests": 20, "breaker_min_requests": 10, "breaker_failure_rate": 0.5}
+                  "defer_seconds": 900, "breaker_consecutive_failed_units": 4, "breaker_window_requests": 20, "breaker_min_requests": 10, "breaker_failure_rate": 0.5,
+                  "stale_cursor_hours": 1}
 RETRY_SCHEMA = """CREATE TABLE IF NOT EXISTS x_retry_state(
   run_id TEXT PRIMARY KEY, cursor TEXT, attempts_total INTEGER NOT NULL, attempts_last_round INTEGER NOT NULL, last_error_class TEXT, last_error_summary TEXT,
   retry_after_seconds REAL, last_attempt_at_utc TEXT, next_retry_at_utc TEXT, state TEXT NOT NULL)"""

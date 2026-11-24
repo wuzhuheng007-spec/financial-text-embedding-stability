@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
- "config_sha256": "3324a2653787d768625411e348063c77b29c51ef77f657382e1405091b55e1d0",
+ "config_sha256": "ec785b6528dbbe9d16c4cd5149ea06645a0d183b36598131910fb5dff38731cd",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,

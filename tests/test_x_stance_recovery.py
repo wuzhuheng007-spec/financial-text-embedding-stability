@@ -24,6 +24,7 @@ def cfg():
     c["topics"] = [t for t in c["topics"] if t["id"] in ("qqq", "memory")]
     c["languages"] = ["en"]
     c["acquisition"]["proposed_recent_slices_per_day"] = 2
+    c["acquisition"]["retry"]["stale_cursor_hours"] = None        # the tests below are about resuming from a stored cursor; the stale-cursor rule has its own tests at the end
     return c
 
 
@@ -404,3 +405,117 @@ def test_the_page_shows_the_workers_receipt_and_never_infers_a_missing_key_from_
     assert g["allowed"] is None and g["reasons"] == ["WORKER_HEALTH_STALE_RECHECK_NEEDED"] and v["worker_health"]["state"] == "STALE_RECHECK_NEEDED"
     batch.save_recovery_todo(db, cfg, batch.last_completed_ny_date(D22), D22)
     assert portal_read.read_for_portal(cfg, path, env={})["recovery_todo"]["plans"] == []
+
+
+# ---------- stored cursors that are too old (live finding of 2026-11-24) ----------
+# The ledger showed: first pages always answered; continuation with an old cursor mostly answered HTTP 503.
+@pytest.fixture()
+def stale_cfg(cfg):
+    cfg["acquisition"]["retry"]["stale_cursor_hours"] = 1
+    return cfg
+
+
+def test_the_shipped_configuration_sets_the_stale_cursor_age():
+    assert C.load()["acquisition"]["retry"]["stale_cursor_hours"] == 1 and provider.RETRY_DEFAULTS["stale_cursor_hours"] == 1
+
+
+def test_a_cursor_within_the_age_limit_is_still_resumed(stale_cfg, db):
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    soon = D21 + timedelta(minutes=30)
+    p = batch.recovery_preview(db, stale_cfg, "2026-11-21", None, soon)
+    assert p["by_action"] == {"keyword:RESUME_FROM_CURSOR": 4} and p["reread_posts_upper_bound"] == 0 and p["stale_cursor_hours"] == 1.0
+
+
+def test_an_old_cursor_is_not_sent_again_the_unit_is_read_from_its_first_page(stale_cfg, db):
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    old = {r["run_id"]: r["cursor"] for r in db.execute("SELECT run_id, cursor FROM x_query_runs WHERE cursor<>''")}
+    stored = db.execute("SELECT COUNT(*) FROM x_posts").fetchone()[0]
+    n = len(net.requests)
+    p = batch.recovery_preview(db, stale_cfg, "2026-11-21", None, D22)
+    assert p["by_action"] == {"keyword:REBUILD_STALE_CURSOR": 4} and p["requests_sent"] == 0 and len(net.requests) == n
+    assert p["requests_upper_bound"]["keyword"] == 4 * 30 and p["reread_posts_upper_bound"] == 80      # whole depth again, and what is paid twice is said up front
+    out = batch.run_recover(db, stale_cfg, net, "2026-11-21", None, D22, clock=lambda: D22)      # no --rebuild flag needed
+    part = out["parts"]["keyword"]
+    assert part["requests"] == 0 and part["rebuild_units"] == 3 and part["rebuild_requests"] > 0
+    assert net.requests[n]["cursor"] == ""                                                   # the first request of a rebuilt unit is a first page
+    assert [r["status"] for r in out["rebuilt"]] == ["PLANNED_SAMPLE"] * 3
+    atts = db.execute("SELECT * FROM x_recovery_attempts ORDER BY created_at_utc").fetchall()
+    assert {a["reason"] for a in atts} == {"STALE_CURSOR"} and all(a["parent_run_id"] in old for a in atts)
+    assert all(a["duplicate_cost_credits"] == a["duplicate_returned"] * 15 for a in atts)
+    now = {r["run_id"]: r["cursor"] for r in db.execute("SELECT run_id, cursor FROM x_query_runs") if r["run_id"] in old}
+    assert now == old                                                                        # the parent runs are untouched
+    assert db.execute("SELECT COUNT(*) FROM x_posts").fetchone()[0] > stored
+    assert out["usage"]["budget_day"] == "2026-11-23" and out["usage"]["pools"]["historical"]["returned_posts"] == 0     # charged today, to the recent pool
+
+
+def test_a_rebuild_the_budget_stopped_keeps_a_status_and_is_started_over_once_its_own_cursor_is_old(stale_cfg, db):
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    out = batch.run_recover(db, stale_cfg, net, "2026-11-21", None, D22, clock=lambda: D22)
+    assert out["parts"]["keyword"]["rebuild_stopped"] == "LIMIT_REACHED:SUBPOOL_RECENT_POSTS" and not out["plan_complete"]
+    cut = db.execute("SELECT * FROM x_recovery_attempts WHERE status LIKE 'STOPPED:%'").fetchall()
+    assert len(cut) == 1 and cut[0]["status"] == "STOPPED:LIMIT_REACHED:SUBPOOL_RECENT_POSTS" and cut[0]["returned"] is not None
+    D23 = D22 + timedelta(days=1)
+    out = batch.run_recover(db, stale_cfg, net, "2026-11-21", None, D23, clock=lambda: D23)
+    assert out["plan_complete"] and out["rebuilt"][0]["continued_earlier_attempt"] is False
+    assert db.execute("SELECT COUNT(*) FROM x_recovery_attempts WHERE parent_run_id=?", (cut[0]["parent_run_id"],)).fetchone()[0] == 2
+
+
+def test_a_rebuild_cut_short_is_continued_while_its_own_cursor_is_fresh(stale_cfg, db):
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    batch.run_recover(db, stale_cfg, net, "2026-11-21", None, D22, clock=lambda: D22)
+    cut = db.execute("SELECT * FROM x_recovery_attempts WHERE status LIKE 'STOPPED:%'").fetchone()
+    soon = D22 + timedelta(minutes=20)
+    p = batch.recovery_preview(db, stale_cfg, "2026-11-21", None, soon)
+    assert p["by_action"] == {"keyword:REBUILD_STALE_CURSOR": 1}                             # the parent's cursor is still the old one
+    last = batch._rebuilt(db, cut["parent_run_id"])
+    assert last["attempt_id"] == cut["attempt_id"] and batch.cursor_age_hours(db, last["new_run_id"], soon) < 1
+    later = D22 + timedelta(hours=3)
+    assert batch.cursor_age_hours(db, last["new_run_id"], later) > 1
+
+
+def test_units_the_breaker_interrupted_are_rebuilt_without_a_flag(stale_cfg, db):
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    rid = db.execute("SELECT run_id FROM x_query_runs WHERE cursor<>'' ORDER BY run_id LIMIT 1").fetchone()[0]
+    db.execute("UPDATE x_query_runs SET status='PARTIAL', stop_reason='CIRCUIT_OPEN:FAILURE_RATE' WHERE run_id=?", (rid,)); db.commit()
+    acts = {u["run_id"]: u["action"] for u in batch.recovery_preview(db, stale_cfg, "2026-11-21", None, D22)["units"]}
+    assert acts[rid] == "REBUILD_STALE_CURSOR"                                             # was NEEDS_REBUILD, which only --rebuild-failed-cursors touched
+    fresh = D21 + timedelta(minutes=30)
+    acts = {u["run_id"]: u["action"] for u in batch.recovery_preview(db, stale_cfg, "2026-11-21", None, fresh)["units"]}
+    assert acts[rid] == "RESUME_FROM_CURSOR" and batch.retriable(db, db.execute("SELECT * FROM x_query_runs WHERE run_id=?", (rid,)).fetchone(), fresh)
+
+
+def test_failed_continuations_with_an_open_breaker_do_not_keep_rebuilds_from_running(stale_cfg, db):
+    """The live case: old cursors answer 503 until the breaker opens. Units past the age limit must still be read."""
+    net = Net()
+    first_day(db, stale_cfg, net, room=100)
+    runs = [r["run_id"] for r in db.execute("SELECT run_id FROM x_query_runs WHERE cursor<>'' ORDER BY run_id")]
+    young = D22 - timedelta(minutes=10)                          # two units keep a young cursor (they resume); the provider refuses exactly those cursors
+    for rid in runs[:2]:
+        db.execute("UPDATE x_cost_ledger SET settled_at_utc=? WHERE run_id=?", (store.iso(young), rid))
+    db.commit()
+    n0 = len(net.requests)
+
+    def rule(params):
+        if params["cursor"] and len(net.requests) - n0 <= 12 and not net.rebuilding:
+            raise E503()
+        return None
+    net.rule, net.rebuilding = rule, False
+    stale_cfg["acquisition"]["retry"].update(breaker_min_requests=4, breaker_window_requests=6)
+    real = batch._rebuild_unit
+
+    def marked(*a, **k):
+        net.rebuilding = True
+        return real(*a, **k)
+    batch._rebuild_unit = marked
+    try:
+        out = batch.run_recover(db, stale_cfg, net, "2026-11-21", None, D22, clock=lambda: D22)
+    finally:
+        batch._rebuild_unit = real
+    part = out["parts"]["keyword"]
+    assert part["stopped"] == "CIRCUIT_OPEN:FAILURE_RATE" and part["rebuild_units"] >= 1 and part["rebuild_transient_errors"] == 0
+    assert [r["status"] for r in out["rebuilt"]][0] == "PLANNED_SAMPLE"

@@ -59,7 +59,9 @@
       "breaker_consecutive_failed_units": 4,
       "breaker_window_requests": 20,
       "breaker_min_requests": 10,
-      "breaker_failure_rate": 0.5
+      "breaker_failure_rate": 0.5,
+      "stale_cursor_hours": 1,
+      "stale_cursor_note": "A stored cursor older than this is not sent again: the unit is asked from its first page under a new query record (reason STALE_CURSOR) and the pages already stored are paid a second time. From the live ledger read on 2026-11-24: first pages 212 of 212 answered; continuation with a cursor under 1 h old failed 12%, 1-12 h 52%, 12-36 h 88% (HTTP 503, documented as not charged). Cursor age and time of day were not separated in that data."
     },
     "worker_health_max_age_hours": 36,
     "tolerated_max_posts_per_page": 25,
