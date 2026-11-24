@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS news_stance_labels (
 CREATE INDEX IF NOT EXISTS news_stance_item ON news_stance_labels(upstream, upstream_id);
 CREATE TABLE IF NOT EXISTS news_stance_identities (identity TEXT PRIMARY KEY, payload_json TEXT NOT NULL, first_used_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS news_stance_imports (results_sha256 TEXT PRIMARY KEY, imported_at TEXT NOT NULL, summary_json TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS news_stance_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL);
 """
 
 
@@ -264,6 +265,19 @@ def _done(db) -> set:
     return {(r[0], r[1]) for r in db.execute("SELECT content_sha256, target_id FROM news_stance_labels WHERE prompt_version=?", (PROMPT_VERSION,))}
 
 
+def refresh_counts(news_db, db) -> dict:
+    """How many (article, target) pairs are selected and how many still wait, per target, written into the label
+    store. The jobs (export, import, status) do this; the web page only reads the result, so a page view never runs
+    the language gate over the whole news store."""
+    done = _done(db)
+    cs = candidates(news_db)
+    out = {"selected": dict(Counter(c["target_id"] for c in cs)), "pending": dict(Counter(c["target_id"] for c in cs if (c["row"]["content_sha256"], c["target_id"]) not in done)),
+           "articles": len({(c["row"]["upstream"], c["row"]["upstream_id"]) for c in cs}), "found_by": dict(Counter(c["found_by"] for c in cs)), "counted_at": utcnow()}
+    db.execute("INSERT OR REPLACE INTO news_stance_meta VALUES('candidate_counts', ?, ?)", (json.dumps(out, ensure_ascii=False), out["counted_at"]))
+    db.commit()
+    return out
+
+
 def _sha_file(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
@@ -292,6 +306,7 @@ def export_pending(news_db, db, out: Path, *, limit_articles: int | None = None)
            "by_target": dict(Counter(json.loads(x)["item"]["target_id"] for x in lines)), "sha256": _sha_file(out), "exported_at": utcnow(),
            "pending_articles_left_after_this_file": len(by_article) - len(arts)}
     Path(str(out) + ".manifest.json").write_text(json.dumps(man, indent=1, ensure_ascii=False), encoding="utf-8")
+    refresh_counts(news_db, db)
     return man
 
 
@@ -335,6 +350,7 @@ def import_results(news_db, db, results: Path) -> dict:
                "rejected": dict(rejected), "by_outcome": dict(by), "results_sha256": sha, "imported_at": now}
     db.execute("INSERT OR REPLACE INTO news_stance_imports VALUES(?,?,?)", (sha, now, json.dumps(summary, ensure_ascii=False)))
     db.commit()
+    summary["counts"] = refresh_counts(news_db, db)
     return summary
 
 
@@ -386,7 +402,7 @@ def for_items(path: Path | None = None) -> dict:
     return out
 
 
-def view(news_path: Path | None = None, path: Path | None = None, *, max_items: int = 600) -> dict:
+def view(path: Path | None = None, *, max_items: int = 600) -> dict:
     """What the research page shows: per target the three shares over articles, everything else counted apart, the
     same per New York publication date, representative articles of each direction, and the judged items."""
     p = Path(path or db_path())
@@ -400,17 +416,16 @@ def view(news_path: Path | None = None, path: Path | None = None, *, max_items: 
             labels = [_item(r) | {"content_sha256": r["content_sha256"]} for r in _latest_labels(db)]
             out["identities"] = [{"identity": r["identity"][:12], "first_used_at": r["first_used_at"], "model_id": (json.loads(r["payload_json"]).get("model") or {}).get("model_id"),
                                   "labels": db.execute("SELECT COUNT(*) FROM news_stance_labels WHERE identity=?", (r["identity"],)).fetchone()[0]} for r in db.execute("SELECT * FROM news_stance_identities ORDER BY first_used_at")]
-    pending = Counter()
-    np_ = Path(news_path or news_store.db_path())
-    selected = Counter()
-    if np_.is_file():
-        with closing(sqlite3.connect(np_.resolve().as_uri() + "?mode=ro", uri=True, timeout=5)) as ndb:
-            ndb.row_factory = sqlite3.Row
-            done = {(x["content_sha256"], x["target_id"]) for x in labels}
-            for c in candidates(ndb):
-                selected[c["target_id"]] += 1
-                if (c["row"]["content_sha256"], c["target_id"]) not in done:
-                    pending[c["target_id"]] += 1
+    selected, pending, counted_at = Counter(), Counter(), None
+    if p.is_file():                                              # counted by the last job (export / import / status); a page view does not rescan the news store
+        with closing(connect(p, readonly=True)) as db:
+            try:
+                m = db.execute("SELECT value FROM news_stance_meta WHERE key='candidate_counts'").fetchone()
+            except sqlite3.OperationalError:
+                m = None
+        if m:
+            cc = json.loads(m[0]); selected.update(cc["selected"]); pending.update(cc["pending"]); counted_at = cc["counted_at"]
+    out["candidates_counted_at"] = counted_at
     by_t = defaultdict(list)
     for x in labels:
         by_t[x["target_id"]].append(x)
@@ -445,7 +460,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     npath = a.news_db or news_store.db_path()
     if a.cmd == "view":
-        v = view(npath, a.db)
+        v = view(a.db)
         print(json.dumps({k: v[k] for k in v if k != "items"} | {"items_shown": len(v["items"])}, ensure_ascii=False, indent=1))
         return 0
     with closing(sqlite3.connect(npath.resolve().as_uri() + "?mode=ro", uri=True, timeout=10)) as ndb:
@@ -456,6 +471,8 @@ def main(argv=None) -> int:
             if Path(a.db or db_path()).is_file():
                 with closing(connect(a.db, readonly=True)) as db:
                     done = _done(db)
+            with closing(connect(a.db)) as db:
+                refresh_counts(ndb, db)
             out = {"english_articles_with_a_candidate_target": len({(c["row"]["upstream"], c["row"]["upstream_id"]) for c in cs}), "pairs": len(cs),
                    "pairs_by_target": dict(Counter(c["target_id"] for c in cs)), "found_by": dict(Counter(c["found_by"] for c in cs)),
                    "title_only_pairs": sum(1 for c in cs if not (plain(c["row"]["body"]) or plain(c["row"]["teaser"]))),

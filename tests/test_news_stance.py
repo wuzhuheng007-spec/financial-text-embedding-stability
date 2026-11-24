@@ -118,7 +118,8 @@ def test_export_answers_checked_import_and_the_read_models(news, tmp_path):
         assert imp["labels_written"] == 8 and imp["rejected"] == {} and imp["by_outcome"] == {"bullish": 2, "IRRELEVANT": 2, "neutral": 2, "JSON_INVALID": 1, "INSUFFICIENT_TEXT": 1}
         assert stance.import_results(d, db, res)["already_present"] == 8                                # the same file twice writes nothing twice
         assert stance.export_pending(d, db, tmp_path / "w2.jsonl")["items"] == 0
-    v = stance.view(news, dbp)
+    v = stance.view(dbp)
+    assert v["candidates_counted_at"]                                                           # counted by the jobs; the page does not rescan the news store
     assert v["state"] == "READY" and v["note"] == "模型判断，待人工验证" and v["totals"]["pending_pairs"] == 0 and v["totals"]["selected_pairs"] == 8
     by = {t["target_id"]: t for t in v["targets"]}
     assert by["NVDA"]["articles"] == {"n": 1, "bullish": 1, "bearish": 0, "neutral": 0, "bullish_share": 1.0, "bearish_share": 0.0, "neutral_share": 0.0}

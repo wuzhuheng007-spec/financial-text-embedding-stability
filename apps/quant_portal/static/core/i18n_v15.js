@@ -1519,6 +1519,7 @@
     "科技与半导体板块": "Technology and semiconductor sector",
     "美股整体市场": "US equity market overall",
     "无样本": "No sample",
+    "入选与待处理的统计时间": "Selected and pending counted at",
     "交易日窗口总数": "Session windows in total:",
     "有有效标签并画入图表": "with valid labels and drawn:",
     "最近文章数": "latest articles:",

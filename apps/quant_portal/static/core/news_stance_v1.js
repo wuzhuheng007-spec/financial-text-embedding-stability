@@ -29,7 +29,7 @@
     head.append(h('h3', null, '英文新闻：模型判断'), h('span', 'tag tag-dim', d.note), h('p', 'fine-print', d.rule), h('p', 'fine-print', d.timing),
       row('入选（文章 × 标的）', t.selected_pairs), row('已判断', t.judged_pairs), row('待处理', t.pending_pairs),
       row('看多 / 看空 / 中性', `${t.bullish || 0} / ${t.bearish || 0} / ${t.neutral || 0}`), row('无关', t.irrelevant || 0), row('原文不足', t.insufficient || 0), row('判断失败', t.failed || 0),
-      row('模型', data((d.identities || []).map(i => `${i.model_id} · ${i.labels}`).join('；') || '—')), row('提示词版本', data(d.prompt_version)));
+      row('模型', data((d.identities || []).map(i => `${i.model_id} · ${i.labels}`).join('；') || '—')), row('提示词版本', data(d.prompt_version)), row('入选与待处理的统计时间', data(fmtT(d.candidates_counted_at))));
     out.push(head);
     if (!(d.targets || []).some(x => x.judged)) { out.push(h('p', 'muted', '还没有已判断的英文新闻。')); panel.replaceChildren(...out); return; }
     const tc = h('div', 'card'); tc.append(h('h3', null, '各标的：文章占比'));
