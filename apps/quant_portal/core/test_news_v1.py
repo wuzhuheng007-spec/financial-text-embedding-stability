@@ -39,7 +39,7 @@ class NewsJsonTests(TestCase):
         self.assertEqual(r["Cache-Control"], "private, no-store")
         return r.json()
 
-    def item(self, uid, symbols, channels=(), title="t"):
+    def item(self, uid, symbols, channels=(), title="Chip makers rally after strong quarterly results and higher guidance"):
         return {"upstream": "benzinga", "upstream_id": uid, "message_id": None, "action": "created", "title": title,
                 "teaser": None, "body": None, "url": "https://www.benzinga.com/x", "source": "Benzinga", "authors": ["A", "B"],
                 "symbols": list(symbols), "channels": list(channels), "provider_created_at": "2026-11-19T13:00:00Z",
