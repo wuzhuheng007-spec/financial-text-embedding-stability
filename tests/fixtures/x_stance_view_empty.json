@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
- "config_sha256": "ec785b6528dbbe9d16c4cd5149ea06645a0d183b36598131910fb5dff38731cd",
+ "config_sha256": "0518459324c1918650337f631891db787370f371fcb1bff8e53d7da23391d804",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
@@ -309,9 +309,12 @@
  },
  "account_rules": {
   "enabled": true,
-  "version": "account-rules-v1-20261123-e21233ec",
+  "version": "account-rules-v2-20261125-fc399b14",
   "min_likes": 20,
   "unknown_likes": "exclude",
+  "target_must_be_named": [
+   "QQQ"
+  ],
   "follower_tiers": [
    {
     "min_followers": 1000000,
@@ -387,7 +390,7 @@
  },
  "panels": {
   "keyword": {
-   "sample_version": "vocab-20261122-a@account-rules-v1-20261123-e21233ec",
+   "sample_version": "vocab-20261122-a@account-rules-v2-20261125-fc399b14",
    "available": true,
    "rows": "top-level daily / narratives / classification"
   },

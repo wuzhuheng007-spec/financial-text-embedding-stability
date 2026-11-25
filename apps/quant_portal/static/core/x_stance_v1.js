@@ -107,6 +107,7 @@
     if (!r.enabled) { box.append(h('p', 'muted', '未启用，每个账号按一票计算。')); return box; }
     box.append(row('规则版本', data(r.version)), row('点赞下限（低于此数的帖子不计入样本）', r.min_likes), row('点赞数未知的帖子', r.unknown_likes === 'exclude' ? '不计入样本' : '计入样本'),
       row('粉丝数未知的账号权重', r.unknown_followers_weight));
+    if ((r.target_must_be_named || []).length) box.append(row('原文必须点名才计入的标的', data(r.target_must_be_named.join('、'))));
     box.append(table(['粉丝数下限', '权重'], r.follower_tiers.map(t => [data(t.min_followers.toLocaleString('en-US')), t.weight])));
     if (r.named_accounts.length) box.append(table(['指定账号', '权重', '是否已填账号名'], r.named_accounts.map(n => [data(n.label), n.weight, n.identified ? (n.handle ? data(`@${n.handle}`) : '已填写') : '未填写，暂按粉丝数分档'])));
     box.append(h('p', 'fine-print', '点赞数和粉丝数取自帖子被采集到的那一刻，不是历史数值；发帖后很快被采到的帖子点赞偏少，更容易被过滤。权重只影响占比的计算，分类模型看不到这些数字。'));
@@ -284,7 +285,7 @@
       row('帖子：看多 / 看空 / 中性（占比）', cnt(j.posts, j.shares_by_post)), row('分母（有效帖子）', j.posts_total),
       row('账号：看多 / 看空 / 中性（占比）', cnt(j.accounts, j.shares_by_account)), row('分母（有效账号）', j.accounts_total),
       row('无关', ex.IRRELEVANT || 0), row('分类失败', (ex.JSON_INVALID || 0) + (ex.EVIDENCE_NOT_IN_TEXT || 0)),
-      row('待分类', cl.pending), row('样本内帖子', cl.matched_posts), row('点赞不足未计入', cl.filtered_low_likes),
+      row('待分类', cl.pending), row('样本内帖子', cl.matched_posts), row('点赞不足未计入', cl.filtered_low_likes), row('原文未点名标的未计入', cl.filtered_target_not_named || 0),
       row('采集状态', why('COLLECTION_' + j.collection_status)),
       row('逐条判断与每日汇总是否一致', j.check.labels_equal_summary ? '一致' : '不一致，需要重建汇总'),
       row('主要观点引用的帖子是否都在本日材料内且标签相同', j.narratives.length ? (j.check.views_evidence_in_material ? '是' : '否') : '本日没有主要观点'),

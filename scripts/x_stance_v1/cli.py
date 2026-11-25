@@ -16,8 +16,10 @@
   import-results FILE                                    checked, idempotent import of that worker's answers
   smoke-model                                            real local model on hand-written texts, in a throwaway store
   build                                                  derived tables: shares, snapshots, views, episodes, QQQ pairing
+  focus preview NAME | focus status NAME                 a focused per-session plan for one target: what it would ask / what it has read
+  focus run NAME                                         walks that plan through the shared ledger (needs the key and a current preflight)
 
-`preflight` and `daily` are the only commands that can reach the provider. Both refuse and exit 2 while their gate
+`preflight`, `daily`, `recover`, `watch verify-candidate` and `focus run` are the only commands that can reach the provider. Both refuse and exit 2 while their gate
 is closed, and every request goes through the shared ledger. The key is read from the environment and never printed.
 """
 from __future__ import annotations
@@ -82,6 +84,8 @@ def _smoke(cfg) -> dict:
                                 # made-up counts above the like floor, so the account rules admit the smoke texts and the model is really called
                                 "engagement_snapshot": {"likeCount": 1000, "authorFollowers": 1000, "synthetic": True}})
         c = dict(cfg); c["topics"] = [t for t in cfg["topics"] if t["id"] == "qqq"]
+        # plumbing check in two languages: the rule that a target must be named is left out here, so the index-only texts still reach the model
+        c["aggregation"] = {**cfg["aggregation"], "account_rules": {k: v for k, v in cfg["aggregation"]["account_rules"].items() if k != "target_must_be_named"}}
         stance.map_topics(db, c)
         res = stance.run(db, c, worker)
         rows = [dict(r) for r in db.execute("SELECT post_id, label, quality_status, is_relevant, (evidence_text IS NOT NULL) has_evidence FROM x_stance_labels ORDER BY CAST(post_id AS INTEGER)")]
@@ -113,6 +117,7 @@ def main(argv=None) -> int:
     s = sub.add_parser("classify"); s.add_argument("--limit", type=int, default=50); s.add_argument("--queue", default="auto", choices=["auto", "recent", "history"])
     s.add_argument("--max-seconds", type=float)
     s = sub.add_parser("build"); s.add_argument("--prices-db"); s.add_argument("--out")
+    s = sub.add_parser("focus"); s.add_argument("action", choices=["preview", "run", "status"]); s.add_argument("name")
     s = sub.add_parser("vocab"); s.add_argument("action", choices=["show", "add", "disable", "enable", "edit"]); s.add_argument("args", nargs="*")
     s = sub.add_parser("watch"); s.add_argument("action", choices=["import", "show", "enable", "disable", "confirm-handle", "verify-candidate"]); s.add_argument("args", nargs="*")
     a = ap.parse_args(argv)
@@ -190,6 +195,25 @@ def main(argv=None) -> int:
                         batch.write_health(db, base, env, now, source="recover")
                     else:
                         code = 1
+        elif a.cmd == "focus":
+            from . import focus
+            try:
+                if a.action == "preview":
+                    out = focus.preview(db, base, a.name, now, ledger)
+                elif a.action == "status":
+                    out = focus.progress(db, base, a.name)
+                else:
+                    state = batch.preflight_state(db, base, env)
+                    gate = cfgmod.acquisition_gate(base, env, preflight_passed=state["recent_unlocked"])
+                    if not gate["allowed"]:
+                        out, code = {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
+                    else:
+                        ledger.recover_open()
+                        out = {"status": "RAN", **focus.run(db, base, provider.live_transport(base, env[key_env]), a.name, now, ledger=ledger)}
+                        out["topics_mapped"] = stance.map_all(db, base)
+                        batch.write_health(db, base, env, now, source="focus")
+            except focus.FocusError as ex:
+                out, code = {"status": "REJECTED", "reason": str(ex), "requests_sent": 0}, 1
         elif a.cmd == "usage":
             out = {"usage": ledger.usage(), "ledger": ledger.summary()}
         elif a.cmd == "migrate":

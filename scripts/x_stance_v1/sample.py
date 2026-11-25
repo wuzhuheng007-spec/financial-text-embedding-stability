@@ -16,11 +16,13 @@ Standard library only (the web view imports this).
 from __future__ import annotations
 
 import json
+import re
 from datetime import date
 
 from . import store
 
 FILTERED_LOW, FILTERED_UNKNOWN = "FILTERED_LOW_LIKES", "FILTERED_LIKES_UNKNOWN"
+FILTERED_NOT_NAMED = "FILTERED_TARGET_NOT_NAMED"
 
 
 def rules(cfg: dict) -> dict | None:
@@ -35,6 +37,8 @@ def rules_version(cfg: dict) -> str | None:
     if not r:
         return None
     body = {k: r.get(k) for k in ("min_likes", "unknown_likes", "follower_tiers", "named_accounts", "unknown_followers_weight")}
+    if r.get("target_must_be_named"):                            # only part of the hash when set: earlier versions keep their names
+        body["target_must_be_named"] = r["target_must_be_named"]
     if cfg.get("_named_bindings"):                               # which account a label points at is part of the rule set
         body["named_bindings"] = {k: v.get("handle") for k, v in sorted(cfg["_named_bindings"].items())}
     return f"{r['version']}-{store.sha(json.dumps(body, sort_keys=True, ensure_ascii=False))[:8]}"
@@ -116,6 +120,21 @@ def like_filter(row, cfg: dict) -> str | None:
     return FILTERED_LOW if likes < r["min_likes"] else None
 
 
+_NAMED_RE: dict = {}
+
+
+def target_named(text, target_id: str, cfg: dict) -> bool:
+    """True unless the rules ask that this target be named in the author's own text and it is not. A post that
+    only talks about the index, the sector or the market stays in the store and in the other targets' samples."""
+    r = rules(cfg)
+    pat = ((r or {}).get("target_must_be_named") or {}).get(target_id)
+    if not pat:
+        return True
+    if pat not in _NAMED_RE:
+        _NAMED_RE[pat] = re.compile(pat, re.I)
+    return bool(_NAMED_RE[pat].search(text or ""))
+
+
 def weight(row, cfg: dict) -> tuple[float, str]:
     """(weight, basis) of the account behind a vote row. Without rules every account counts 1."""
     r = rules(cfg)
@@ -146,6 +165,7 @@ def summary(cfg: dict) -> dict:
     bound = cfg.get("_named_bindings") or {}
     named = [{**n, **{k: v for k, v in (bound.get(n.get("label")) or {}).items() if v}} for n in r.get("named_accounts") or []]
     return {"enabled": True, "version": rules_version(cfg), "min_likes": r.get("min_likes"), "unknown_likes": r.get("unknown_likes", "exclude"),
+            "target_must_be_named": sorted(r.get("target_must_be_named") or {}),
             "follower_tiers": r.get("follower_tiers") or [], "unknown_followers_weight": r.get("unknown_followers_weight", 1),
             "named_accounts": [{"label": n.get("label"), "weight": n.get("weight"), "identified": bool(n.get("author_id") or n.get("handle")), "handle": n.get("handle"),
                                 "id_bound": bool(n.get("author_id")), "identity_from": "watch list alias" if n.get("label") in bound else None} for n in named],

@@ -471,7 +471,7 @@ def test_r_posts_under_twenty_likes_are_outside_the_sample_and_are_never_classif
     put(db, 2, "$QQQ #2 quiet", likes=19)
     put(db, 3, "$QQQ #3 unknown", likes=None)
     full = stance.map_sample(db, cfg)
-    assert (full["pairs"], full["filtered"]) == (3, 2) and "@account-rules-v1-20261123-" in full["sample_version"]
+    assert (full["pairs"], full["filtered"]) == (3, 2) and "@account-rules-v2-20261125-" in full["sample_version"]
     q = dict(db.execute("SELECT post_id, quality FROM x_post_topics"))
     assert q == {"1": "PENDING", "2": "FILTERED_LOW_LIKES", "3": "FILTERED_LIKES_UNKNOWN"}
     m = Model({"1": "bullish", "2": "bearish", "3": "bearish"})

@@ -1390,6 +1390,8 @@
     "近期队列先处理，历史队列只使用剩余的计算时间。待分类的帖子不会被当作中性。": "The recent queue is handled first; the historical queue only uses the computing time that is left. A post waiting for classification is never treated as neutral.",
     "等权占比（多 / 中 / 空）": "Equal-weight shares (bullish / neutral / bearish)",
     "点赞不足未计入": "Left out: too few likes",
+    "原文未点名标的未计入": "Left out: target not named in the post",
+    "原文必须点名才计入的标的": "Targets that must be named in the post",
     "占比按账号权重计算（粉丝数分档或指定账号），“等权占比”一栏是每个账号一票的结果，供对照。点赞数低于下限的帖子不在样本内。": "Shares are weighted by account (follower tier or named account); the “Equal-weight shares” column gives one vote per account for comparison. Posts below the like minimum are not in the sample.",
     "重点作者": "Watched authors",
     "关键词样本": "Keyword sample",

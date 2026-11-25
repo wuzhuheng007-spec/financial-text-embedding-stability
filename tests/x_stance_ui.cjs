@@ -152,7 +152,7 @@ test('account rules, the two queues and weighted next to equal-weight shares are
   for (const need of ['账号权重与点赞过滤', '点赞下限（低于此数的帖子不计入样本）', '不计入样本', '粉丝数下限', '未填写，暂按粉丝数分档', '不是历史数值', '分类队列', '还没有待分类的帖子。',
     '点赞不足，未计入样本', '点赞数未知，未计入样本']) assert.ok(s.includes(need), need);
   const marked = ui.root.all(e => e.attrs.translate === 'no').map(e => e.textContent);
-  assert.ok(marked.includes('1,000,000') && marked.includes('口罩哥') && marked.some(t => t.startsWith('account-rules-v1-20261123-')));     // numbers and names are data
+  assert.ok(marked.includes('1,000,000') && marked.includes('口罩哥') && marked.some(t => t.startsWith('account-rules-v2-20261125-')));     // numbers and names are data
   d.classification = {matched_pairs: 40, classified_or_prefiltered: 30, pending: 10, share_done: 0.75, filtered_low_likes: 3210, filtered_likes_unknown: 4};
   d.queues = {recent: {pairs: 40, pending: 10, sample_days: 2, sample_days_complete: 1, oldest_pending_age_hours: 12.5, by_sample_day: {'2026-11-19': {pairs: 20, done: 20, share_done: 1}, '2026-11-18': {pairs: 20, done: 10, share_done: 0.5}}},
     history: {pairs: 900, pending: 900, sample_days: 90, sample_days_complete: 0, oldest_pending_age_hours: 30, by_sample_day: {}},

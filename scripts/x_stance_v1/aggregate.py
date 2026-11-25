@@ -107,14 +107,15 @@ def progress(db, *, topic_id: str, target_id: str, start: datetime, end: datetim
     r = db.execute(
         "SELECT SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN 1 ELSE 0 END), COUNT(DISTINCT CASE WHEN t.quality NOT LIKE 'FILTERED_%' THEN p.author_id END), "
         "SUM(CASE WHEN t.quality NOT LIKE 'FILTERED_%' AND (l.post_id IS NOT NULL OR t.quality!='PENDING') THEN 1 ELSE 0 END), "
-        "SUM(CASE WHEN t.quality='FILTERED_LOW_LIKES' THEN 1 ELSE 0 END), SUM(CASE WHEN t.quality='FILTERED_LIKES_UNKNOWN' THEN 1 ELSE 0 END) "
+        "SUM(CASE WHEN t.quality='FILTERED_LOW_LIKES' THEN 1 ELSE 0 END), SUM(CASE WHEN t.quality='FILTERED_LIKES_UNKNOWN' THEN 1 ELSE 0 END), "
+        "SUM(CASE WHEN t.quality='FILTERED_TARGET_NOT_NAMED' THEN 1 ELSE 0 END) "
         "FROM x_post_topics t JOIN x_posts p USING(provider, post_id) "
         f"LEFT JOIN ({inner}) l ON l.provider=t.provider AND l.post_id=t.post_id AND l.topic_id=t.topic_id AND l.target_id=t.target_id "
         "WHERE t.topic_version=? AND t.topic_id=? AND t.target_id=? AND p.created_at_utc>=? AND p.created_at_utc<?",
         args + (vocab_version, topic_id, target_id, s, e)).fetchone()
     total, done = r[0] or 0, r[2] or 0
     return {"matched_posts": total, "sample_accounts": r[1] or 0, "classified_or_prefiltered": done, "pending": total - done,
-            "share_done": (done / total) if total else None, "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0, "sample_version": vocab_version}
+            "share_done": (done / total) if total else None, "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0, "filtered_target_not_named": r[5] or 0, "sample_version": vocab_version}
 
 
 def aggregate(rows: list, *, collection_status: str, threshold: int, lang_scope: str = "all", pending: int = 0, cfg: dict | None = None) -> dict:

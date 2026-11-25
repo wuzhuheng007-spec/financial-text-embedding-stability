@@ -153,10 +153,10 @@ def map_sample(db, cfg: dict) -> dict:
         out = sample.like_filter(p, cfg)
         for tid, kws in hits.items():
             for target in cfgmod.targets(cfgmod.topic(cfg, tid)):
-                q = out or prefilter(dict(p)) or "PENDING"
+                q = out or (None if sample.target_named(p["author_text"], target, cfg) else sample.FILTERED_NOT_NAMED) or prefilter(dict(p)) or "PENDING"
                 db.execute("INSERT OR REPLACE INTO x_post_topics VALUES(?,?,?,?,?,?,?,?)", (p["provider"], p["post_id"], ver, tid, target, "KEYWORD_MATCH", q, json.dumps(kws, ensure_ascii=False)))
                 n["pairs"] += 1
-                n["filtered"] += 1 if out else 0
+                n["filtered"] += 1 if q.startswith("FILTERED_") else 0
     db.commit()
     return n
 
