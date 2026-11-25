@@ -13,9 +13,14 @@ Provider credit: when the provider answers HTTP 402 (credits used up), no new re
 owner says the account was topped up (`credit-resume REASON`) - sending more would only repeat the refusal. Posts
 already stored keep being classified, imported and built.
 
-Posts are stored as LIVE. The like floor of the sample rules uses the like count at fetch time, so a post fetched
-within two hours of being written has had little time to collect likes: most increments will be left out of the main
-sample by that rule. That is a property of the rule, reported with every run, not something this job works around.
+Like floor. The sample rules keep the like count of a post's FIRST fetch for good. Asked without a filter, most posts
+of the last two hours were stored with a handful of likes and could never enter the sample (measured 2026-11-25: 166
+new posts, 2 admitted). So every increment query carries `query_suffix` (the sample's own like floor, `min_faves:20`)
+and reads a window that ends `lag_hours` before the run: a post is first fetched only once it already meets the floor,
+and is not paid for earlier at a count that would exclude it. The queries with the suffix are registered as queries
+of their own; the plain queries of the daily job are not changed.
+
+Posts are stored as LIVE; the window they were read in ends `lag_hours` before they were received.
 """
 from __future__ import annotations
 
@@ -27,7 +32,7 @@ from .ledger import JobBudget, Ledger, get_meta, set_meta
 
 STATE_KEY, RECEIPT_KEY, RESUME_KEY = "incremental_state", "update_receipt", "credit_hold_cleared"
 DONE = ("COMPLETE", "PLANNED_SAMPLE")
-DEFAULTS = {"interval_hours": 2, "first_window_hours": 2, "max_window_hours": 6, "pages_per_query": 1, "include_watchlist": True}
+DEFAULTS = {"interval_hours": 2, "first_window_hours": 2, "max_window_hours": 6, "pages_per_query": 1, "include_watchlist": True, "query_suffix": "", "lag_hours": 0}
 LOG_SCHEMA = "CREATE TABLE IF NOT EXISTS x_update_log(id INTEGER PRIMARY KEY AUTOINCREMENT, finished_at_utc TEXT NOT NULL, receipt_json TEXT NOT NULL)"
 
 
@@ -61,14 +66,27 @@ def _state(db) -> dict:
     return json.loads(get_meta(db, STATE_KEY) or "{}")
 
 
+def _suffixed(db, cfg: dict, q: dict, suffix: str) -> dict:
+    """The same query with the suffix, registered under its own hash (same topic id), so its runs, pages and
+    position never mix with those of the plain query."""
+    if not suffix:
+        return q
+    text = q["query"] + suffix
+    qh = store.sha(f"{cfg['provider_candidate']}|incremental|{q['query_hash']}|{suffix}")
+    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, cfg["provider_candidate"], q["topic_id"], q["lang"], "incremental:" + suffix.strip(), text))
+    return {**q, "query_hash": qh, "query": text, "plain_query_hash": q["query_hash"]}
+
+
 def units(db, cfg: dict, now: datetime) -> list[dict]:
-    """What this run would ask: one window per query, from where that query last succeeded."""
+    """What this run would ask: one window per query, from where that query last succeeded, ending lag_hours ago."""
     s_, st = settings(cfg), _state(db)
-    end = int(now.replace(second=0, microsecond=0).timestamp())
+    end = int(now.replace(second=0, microsecond=0).timestamp()) - int(float(s_["lag_hours"]) * 3600)
     c = vocab.with_topics(cfg, vocab.active(db, cfg))
     qs = [{**q, "job_type": "recent"} for q in provider.register_queries(db, c)]
     if s_["include_watchlist"] and (cfg.get("watchlist") or {}).get("enabled", True) and watchlist.exists(db):
         qs += [{**q, "job_type": "watchlist"} for q in watchlist.register_queries(db, cfg)]
+    qs = [_suffixed(db, cfg, q, s_["query_suffix"]) for q in qs]
+    db.commit()
     out = []
     for q in qs:
         last = (st.get(q["query_hash"]) or {}).get("until")

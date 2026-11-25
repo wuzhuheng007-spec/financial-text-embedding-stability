@@ -18,6 +18,7 @@ def cfg():
     c = C.load()
     c["topics"] = [t for t in c["topics"] if t["id"] in ("qqq", "memory")]
     c["languages"] = ["en"]
+    c["incremental"] = {**c["incremental"], "query_suffix": "", "lag_hours": 0}     # the windowing tests below; the shipped suffix and lag have their own test
     return c
 
 
@@ -126,3 +127,22 @@ def test_cli_incremental_on_hold_sends_nothing_even_without_a_key(db, cfg, tmp_p
     assert cli.main(["--db", str(tmp_path / "x.sqlite3"), "incremental", "run"]) == 0
     out = json.loads(capsys.readouterr().out)
     assert out["status"] == "PAUSED_PROVIDER_CREDITS" and out["requests"] == 0
+
+
+def test_shipped_increment_asks_only_posts_at_the_like_floor_in_a_window_that_ended_six_hours_ago(db):
+    full = C.load()
+    full["topics"] = [t for t in full["topics"] if t["id"] == "qqq"]; full["languages"] = ["en"]
+    assert full["incremental"]["query_suffix"].strip() == f"min_faves:{full['aggregation']['account_rules']['min_likes']}"     # the sample's own floor
+    net = Net()
+    out = incremental.run(db, full, net, T0, clock=lambda: T0)
+    assert out["status"] == "RAN" and len(net.requests) == 1
+    q = net.requests[0]["query"]
+    assert q.startswith('($QQQ OR "Nasdaq 100" OR "Nasdaq-100") lang:en min_faves:20 since_time:')
+    end = int(T0.replace(second=0).timestamp()) - 6 * 3600
+    assert windows(net) == [(end - 7200, end)]
+    plain = provider.register_queries(db, full)[0]["query_hash"]
+    qh = db.execute("SELECT query_hash FROM x_query_runs").fetchone()[0]
+    assert qh != plain and db.execute("SELECT topic_id, query_text FROM x_queries WHERE query_hash=?", (qh,)).fetchone()[0] == "qqq"
+    t1 = T0 + timedelta(hours=2); net2 = Net(); net2.n = 100
+    incremental.run(db, full, net2, t1, clock=lambda: t1)
+    assert windows(net2) == [(end, end + 7200)]                   # contiguous: nothing asked twice
