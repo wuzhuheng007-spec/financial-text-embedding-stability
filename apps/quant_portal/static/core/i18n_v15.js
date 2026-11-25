@@ -1392,6 +1392,7 @@
     "点赞不足未计入": "Left out: too few likes",
     "自动更新": "Automatic updates",
     "每三个交易日": "Per three sessions",
+    "之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。": "and later: closes from the moomoo display history (unadjusted; drawn only, never paired with a return).",
     "每个交易日": "Per session",
     "每三个交易日为一组：从 2026-08-24 起依次分组，一组的窗口是第一个交易日之前的收盘到第三个交易日的收盘。同一账号在一组内只算一票（取最后一条有效帖子）。只列出三个交易日都已收盘的组。": "Groups of three sessions, counted from 2026-08-24; a group's window runs from the close before its first session to the close of its third. An account has one vote per group (its last valid post). Only groups whose three sessions have closed are listed.",
     "还没有按三个交易日分组的汇总，需要先重建；下面先显示每个交易日的数据。": "No three-session summaries yet; a rebuild is needed. Per-session figures are shown meanwhile.",

@@ -77,6 +77,23 @@ def _suffixed(db, cfg: dict, q: dict, suffix: str) -> dict:
     return {**q, "query_hash": qh, "query": text, "plain_query_hash": q["query_hash"]}
 
 
+def control_queries(db, cfg: dict) -> list[dict]:
+    """A like-threshold control (owner instruction of 2026-11-26): each pair is one fixed query asked twice per run, once
+    without a like operator and once with the sample's floor, over the same window (same lag, same page depth). Both
+    are queries of their own (own hash, own position), registered as `control:<name>:<variant>`.
+
+    Their posts enter the store like any other: those at or above the floor that name the target can enter the main
+    sample as they would through the other keyword queries; those below stay out of it (the sample rules decide) and
+    are only classified for the audit, outside the production queue."""
+    out = []
+    for p in (settings(cfg).get("control_pairs") or []):
+        for variant, text in (("no_threshold", p["query"]), ("floor", p["query"] + p["floor_suffix"])):
+            qh = store.sha(f"{cfg['provider_candidate']}|control|{p['name']}|{variant}|{text}")
+            db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (qh, cfg["provider_candidate"], p["topic_id"], p["lang"], f"control:{p['name']}:{variant}", text))
+            out.append({"query_hash": qh, "topic_id": p["topic_id"], "lang": p["lang"], "query": text, "job_type": "recent", "control": f"{p['name']}:{variant}"})
+    return out
+
+
 def units(db, cfg: dict, now: datetime) -> list[dict]:
     """What this run would ask: one window per query, from where that query last succeeded, ending lag_hours ago."""
     s_, st = settings(cfg), _state(db)
@@ -86,6 +103,7 @@ def units(db, cfg: dict, now: datetime) -> list[dict]:
     if s_["include_watchlist"] and (cfg.get("watchlist") or {}).get("enabled", True) and watchlist.exists(db):
         qs += [{**q, "job_type": "watchlist"} for q in watchlist.register_queries(db, cfg)]
     qs = [_suffixed(db, cfg, q, s_["query_suffix"]) for q in qs]
+    qs += control_queries(db, cfg)
     db.commit()
     out = []
     for q in qs:
@@ -93,7 +111,7 @@ def units(db, cfg: dict, now: datetime) -> list[dict]:
         start = last if last is not None else end - int(s_["first_window_hours"] * 3600)
         floor = end - int(s_["max_window_hours"] * 3600)
         out.append({"query_hash": q["query_hash"], "topic_id": q["topic_id"], "lang": q["lang"], "query": q["query"], "job_type": q["job_type"],
-                    "start": max(start, floor), "end": end, "resumes_from_last_success": last is not None, "gap_left_to_daily_job_seconds": max(0, floor - start)})
+                    "start": max(start, floor), "end": end, "resumes_from_last_success": last is not None, "gap_left_to_daily_job_seconds": max(0, floor - start), "control": q.get("control")})
     return [u for u in out if u["end"] - u["start"] >= 60]
 
 

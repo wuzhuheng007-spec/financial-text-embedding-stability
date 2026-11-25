@@ -250,7 +250,7 @@
     return bar;
   }
 
-  function chart(rows, closes) {
+  function chart(rows, closes, fill) {
     // two stacked zones on one date axis: shares on top (0-100 %), adjusted close below (its own scale)
     const W = 640, H = 220, top = 110, pad = 28, n = rows.length;
     const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'xs-chart', role: 'img', 'aria-label': '占比与收盘价的日期对照'});
@@ -267,6 +267,7 @@
     }
     const wrap = h('figure', 'xs-figure'); wrap.append(svg);
     wrap.append(h('figcaption', 'fine-print', pts.length > 1 ? '上：三类账号占比（0–100%）；下：对照标的复权收盘价（单独刻度）。' : '上：三类账号占比（0–100%）。没有可配对的行情，价格区留空。'));
+    if (pts.length > 1 && fill) { const fc = h('figcaption', 'fine-print'); fc.append(data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); wrap.append(fc); }
     return wrap;
   }
 
@@ -360,7 +361,10 @@
     shown = grain === 'session3' && !pn.daily.some(r => r.window_kind === 'session3') ? 'session' : grain;
     if (shown !== grain) out.push(h('p', 'muted', '还没有按三个交易日分组的汇总，需要先重建；下面先显示每个交易日的数据。'));
     const sess = pn.daily.filter(r => r.window_kind === shown && r.lang_scope === 'all');
-    const closes = {}; d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
+    const closes = {};
+    if (d.closes) Object.entries(d.closes).forEach(([t, m]) => Object.entries(m).forEach(([day, c]) => { closes[`${t}|${day}`] = c; }));
+    else d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
+    const cm = d.closes_meta || {}; const fill = cm.display_fill && cm.display_fill.dates_added ? cm.display_fill : null;
     for (const tid of [...new Set(sess.map(r => r.topic_id))]) {
       const rows = sess.filter(r => r.topic_id === tid).sort((a, b) => a.window_label < b.window_label ? -1 : 1);
       const sec = h('section', 'card section'); const head = h('div', 'section-head'); head.append(h('h3', null, TOPIC[tid] || tid));
@@ -371,7 +375,7 @@
       if (!withData.length) sec.append(h('p', 'muted', '这个标的还没有带有效标签的日期。'));
       else {
         const cl = {}; withData.forEach(r => { cl[r.window_label] = closes[`${tid}|${r.window_label}`]; });
-        sec.append(chart(withData.slice(-60).map(r => ({...r, shares: (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : r.shares})), cl));
+        sec.append(chart(withData.slice(-60).map(r => ({...r, shares: (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : r.shares})), cl, fill));
         const box = h('div', 'xs-day'); box.hidden = true;
         const pick = r => { const b = h('button', 'button', '查看材料'); b.type = 'button'; b.dataset.day = r.window_label; b.addEventListener('click', () => openDay(box, r.target_id, r.window_label)); return b; };
         sec.append(table([shown === 'session3' ? '交易日（三日一组）' : '交易日', '账号占比', '帖子：多 / 空 / 中', '分母（帖子）', '账号：多 / 空 / 中', '分母（账号）', '账号占比：多 / 空 / 中', '帖子占比：多 / 空 / 中', '加权账号占比：多 / 空 / 中', '无关或失败', '待分类', '点赞不足未计入', '来源', '说明', '材料'],

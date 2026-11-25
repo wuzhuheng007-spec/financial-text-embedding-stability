@@ -18,7 +18,7 @@ def cfg():
     c = C.load()
     c["topics"] = [t for t in c["topics"] if t["id"] in ("qqq", "memory")]
     c["languages"] = ["en"]
-    c["incremental"] = {**c["incremental"], "query_suffix": "", "lag_hours": 0}     # the windowing tests below; the shipped suffix and lag have their own test
+    c["incremental"] = {**c["incremental"], "query_suffix": "", "lag_hours": 0, "control_pairs": []}     # the windowing tests below; the shipped suffix, lag and control pair have their own tests
     return c
 
 
@@ -115,7 +115,7 @@ def test_the_receipt_keeps_the_last_successful_update_and_shows_the_hold(db, cfg
 def test_preview_sends_nothing_and_fits_the_keyword_share(db, cfg):
     full = C.load()
     v = incremental.preview(db, full, T0, Ledger(db, full, clock=lambda: T0))
-    assert v["requests_sent"] == 0 and v["queries"]["keyword"] == 8
+    assert v["requests_sent"] == 0 and v["queries"]["keyword"] == 10          # 8 keyword queries + the two halves of the like-floor control pair
     assert v["per_day_if_every_page_is_full"]["keyword_posts"] <= v["per_day_if_every_page_is_full"]["keyword_share_cap_posts"]
     assert db.execute("SELECT count(*) FROM x_cost_ledger").fetchone()[0] == 0
 
@@ -132,6 +132,7 @@ def test_cli_incremental_on_hold_sends_nothing_even_without_a_key(db, cfg, tmp_p
 def test_shipped_increment_asks_only_posts_at_the_like_floor_in_a_window_that_ended_six_hours_ago(db):
     full = C.load()
     full["topics"] = [t for t in full["topics"] if t["id"] == "qqq"]; full["languages"] = ["en"]
+    full["incremental"] = {**full["incremental"], "control_pairs": []}          # the control pair has its own test
     assert full["incremental"]["query_suffix"].strip() == f"min_faves:{full['aggregation']['account_rules']['min_likes']}"     # the sample's own floor
     net = Net()
     out = incremental.run(db, full, net, T0, clock=lambda: T0)
@@ -146,3 +147,24 @@ def test_shipped_increment_asks_only_posts_at_the_like_floor_in_a_window_that_en
     t1 = T0 + timedelta(hours=2); net2 = Net(); net2.n = 100
     incremental.run(db, full, net2, t1, clock=lambda: t1)
     assert windows(net2) == [(end, end + 7200)]                   # contiguous: nothing asked twice
+
+
+def test_the_control_pair_asks_one_query_with_and_without_the_floor_over_the_same_window(db):
+    c = C.load()
+    c["topics"] = [t for t in c["topics"] if t["id"] == "qqq"]; c["languages"] = ["en"]; c["incremental"] = {**c["incremental"], "include_watchlist": False}
+    pair = c["incremental"]["control_pairs"][0]
+    assert pair["query"] == "$QQQ -filter:replies lang:en" and pair["floor_suffix"] == " min_faves:20"
+    us = incremental.units(db, c, T0)
+    ctl = [u for u in us if u.get("control")]
+    assert sorted(u["control"] for u in ctl) == ["qqq-like-floor-20261126:floor", "qqq-like-floor-20261126:no_threshold"]
+    a, b = sorted(ctl, key=lambda u: u["control"])
+    assert (a["start"], a["end"]) == (b["start"], b["end"])                           # same window, same lag as the increment
+    assert a["query"] == "$QQQ -filter:replies lang:en min_faves:20" and b["query"] == "$QQQ -filter:replies lang:en"
+    assert a["query_hash"] != b["query_hash"]
+    vocab_ = dict(db.execute("SELECT query_hash, vocab_version FROM x_queries WHERE vocab_version LIKE 'control:%'"))
+    assert sorted(vocab_.values()) == ["control:qqq-like-floor-20261126:floor", "control:qqq-like-floor-20261126:no_threshold"]
+    net = Net()
+    out = incremental.run(db, c, net, T0, clock=lambda: T0)
+    sent = [r["query"].split(" since_time:")[0] for r in net.requests]
+    assert "$QQQ -filter:replies lang:en" in sent and "$QQQ -filter:replies lang:en min_faves:20" in sent
+    assert out["units_asked"] == len(us)

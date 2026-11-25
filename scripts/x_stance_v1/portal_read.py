@@ -198,6 +198,7 @@ def _fill(db, cfg: dict, out: dict) -> None:
         p_ = json.loads(r["payload_json"])
         if mine(p_) and len(out["returns"]) < 1200:
             out["returns"].append({"topic_id": r["topic_id"], "target_id": r["target_id"], **p_})
+    out["closes"], out["closes_meta"] = _closes(db, mine)
     for r in db.execute("SELECT payload_json FROM x_run_manifest WHERE manifest_id LIKE 'research_summary:%'"):
         for t in json.loads(r["payload_json"])["topics"]:
             if mine(t):
@@ -206,6 +207,39 @@ def _fill(db, cfg: dict, out: dict) -> None:
                 others.setdefault(t["sample_version"], {"episodes": 0, "sessions_with_a_signal": 0})["sessions_with_a_signal"] += t["sessions"]
     out["other_sample_versions"] = [{"sample_version": k, **v_} for k, v_ in sorted(others.items())]
     out["has_data"] = bool(out["daily"])
+
+
+def _closes(db, mine) -> tuple[dict, dict]:
+    """The chart's price line, per topic and session date. It used to come from the first 1,200 return rows, which on a
+    store with four topics held almost no QQQ rows (2026-11-26: 1 of 393), so the price strip stayed empty.
+
+    Adjusted closes of the frozen research input come first (the anchor close of each h=1 pair). Dates after that
+    input ends are filled from the portal's own moomoo display history (unadjusted, same vendor), marked as such;
+    they are drawn only, never paired with a return."""
+    out, series, last = {}, {}, {}
+    for r in db.execute("SELECT topic_id, payload_json FROM x_event_returns WHERE h=1"):
+        p_ = json.loads(r["payload_json"])
+        if mine(p_) and p_.get("anchor_close") is not None and p_.get("session_date"):
+            out.setdefault(r["topic_id"], {})[p_["session_date"]] = p_["anchor_close"]
+            series[r["topic_id"]] = p_.get("series_id")
+    for t, m in out.items():
+        last[t] = max(m)
+    meta = {"frozen_input_last_date": max(last.values()) if last else None, "display_fill": None}
+    want = sorted(t for t, s in series.items() if (s or "").startswith("US.QQQ|"))
+    if want:
+        try:
+            from scripts.quant_personal_feed.daily_history import read_daily_history
+            h = read_daily_history(store.REPO_ROOT, "QQQ")
+        except Exception as ex:  # noqa: BLE001 - the display history is optional; the frozen closes stand alone
+            h = {"state": type(ex).__name__, "bars": []}
+        added = 0
+        for t in want:
+            for b in h.get("bars") or []:
+                if b["date"] > last[t]:
+                    out[t][b["date"]] = b["close"]; added += 1
+        meta["display_fill"] = {"state": h.get("state"), "source": "moomoo daily bars, unadjusted (portal display history)", "after": min(last[t] for t in want),
+                                "dates_added": added // max(len(want), 1), "through": max((b["date"] for b in h.get("bars") or []), default=None)}
+    return out, meta
 
 
 def _daily_row(r) -> dict:
