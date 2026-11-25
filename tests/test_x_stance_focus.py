@@ -43,11 +43,11 @@ class Net:
         if ex:
             raise ex
         e = int(params["query"].split("until_time:")[1].split()[0])
-        out = []
+        out, page = [], int(params.get("cursor") or 0)
         for j in range(20):
             self.n += 1
-            out.append(tweet(self.n, datetime.fromtimestamp(e - 1 - j, UTC), self.likes))
-        return {"tweets": out, "has_next_page": True, "next_cursor": "1"}
+            out.append(tweet(self.n, datetime.fromtimestamp(e - 1 - page * 60 - j, UTC), self.likes))
+        return {"tweets": out, "has_next_page": True, "next_cursor": str(int(params.get("cursor") or 0) + 1)}
 
 
 def history(db, end="2026-11-21T05:00:00Z"):
@@ -158,3 +158,20 @@ def test_preflight_binding_is_not_moved_by_the_focus_plan_or_the_new_rule(db, cf
     env = {"TWITTERAPI_IO_API_KEY": "tw-FAKE-not-a-real-key-000"}
     old = json.loads(json.dumps(cfg)); old.pop("focus"); del old["aggregation"]["account_rules"]["target_must_be_named"]
     assert batch.binding(db, cfg, env) == batch.binding(db, old, env)
+
+
+def test_a_deeper_plan_continues_the_first_plans_pages_and_never_rereads_them(db, cfg):
+    history(db)
+    cfg["focus"]["qqq-20261126-depth"]["first_session"] = "2026-11-18"
+    net = Net()
+    focus.run(db, cfg, net, NAME, NOW, clock=lambda: NOW)                          # page 1 of every unit
+    first = [r["cursor"] for r in net.requests]
+    assert len(first) == 10 and all(c == "" for c in first)
+    assert focus.query_hash(cfg, "qqq-20261126-depth") == focus.query_hash(cfg, NAME)
+    out = focus.run(db, cfg, net, "qqq-20261126-depth", NOW, clock=lambda: NOW)
+    second = [r["cursor"] for r in net.requests[10:]]
+    assert len(second) == 10 and all(c == "1" for c in second)                     # page 2 only: no first page is paid for twice
+    assert out["units_asked"] == 10 and focus.progress(db, cfg, "qqq-20261126-depth")["returned"] == 400
+    bad = json.loads(json.dumps(cfg)); bad["focus"]["qqq-20261126-depth"]["query"] = "$QQQ lang:en"
+    with pytest.raises(focus.FocusError):
+        focus.query_hash(bad, "qqq-20261126-depth")

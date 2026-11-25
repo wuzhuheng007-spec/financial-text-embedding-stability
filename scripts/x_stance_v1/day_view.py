@@ -49,12 +49,15 @@ def _who(r) -> dict:
     return {"author_id": str(r["author_id"]), "author_handle": e.get("authorUserName")}
 
 
-def _stored(db, scope: str, target_id: str, label: str):
+KINDS = ("session", "session3")
+
+
+def _stored(db, scope: str, target_id: str, label: str, kind: str = "session"):
     if scope == "keyword":
-        return db.execute("SELECT topic_id, mode, payload_json FROM x_daily_sentiment WHERE window_kind='session' AND lang_scope='all' AND target_id=? AND window_label=?",
-                          (target_id, label)).fetchone()
-    return db.execute("SELECT topic_id, mode, payload_json FROM x_panel_sentiment WHERE scope=? AND window_kind='session' AND lang_scope='all' AND target_id=? AND window_label=?",
-                      (scope, target_id, label)).fetchone()
+        return db.execute("SELECT topic_id, mode, payload_json FROM x_daily_sentiment WHERE window_kind=? AND lang_scope='all' AND target_id=? AND window_label=?",
+                          (kind, target_id, label)).fetchone()
+    return db.execute("SELECT topic_id, mode, payload_json FROM x_panel_sentiment WHERE scope=? AND window_kind=? AND lang_scope='all' AND target_id=? AND window_label=?",
+                      (scope, kind, target_id, label)).fetchone()
 
 
 def _outcome(r) -> str:
@@ -65,18 +68,18 @@ def _outcome(r) -> str:
     return "failed" if r["quality_status"] in simple.FAILED else "not_judged"
 
 
-def read_day(cfg: dict, db_path: Path | None = None, *, scope: str, target_id: str, window_label: str, max_items: int = 400) -> dict:
-    if scope not in sample.SCOPES or not DATE_RE.fullmatch(window_label or "") or not target_id or len(target_id) > 64:
+def read_day(cfg: dict, db_path: Path | None = None, *, scope: str, target_id: str, window_label: str, max_items: int = 400, kind: str = "session") -> dict:
+    if scope not in sample.SCOPES or not DATE_RE.fullmatch(window_label or "") or not target_id or len(target_id) > 64 or kind not in KINDS:
         raise ValueError("bad day request")
     p = Path(db_path or store.db_path())
-    out = {"scope": scope, "target_id": target_id, "window_label": window_label, "state": "NO_STORE", "note": simple_view.NOTE, "items": [], "narratives": []}
+    out = {"scope": scope, "target_id": target_id, "window_label": window_label, "window_kind": kind, "state": "NO_STORE", "note": simple_view.NOTE, "items": [], "narratives": []}
     if not p.exists():
         return out
     db = store.connect(p, readonly=True)
     try:
         cfg = cfgmod.apply_active(db, cfg)
         cfg = vocab.with_topics(sample.attach_named(db, cfg), vocab.active(db, cfg))
-        row = _stored(db, scope, target_id, window_label)
+        row = _stored(db, scope, target_id, window_label, kind)
         if row is None:
             out["state"] = "NO_SUMMARY_ROW"
             return out
@@ -86,14 +89,20 @@ def read_day(cfg: dict, db_path: Path | None = None, *, scope: str, target_id: s
         if scfg is None:
             out["state"] = "PANEL_NOT_AVAILABLE"
             return out
-        wcfg = sample.config_for_date(db, scfg, date.fromisoformat(window_label))
+        sessions_in = stored.get("group_sessions") or [window_label]
+        wcfg = sample.config_for_date(db, scfg, date.fromisoformat(sessions_in[0]))
         act_now = snapshots.activation(wcfg)
         # the stored row's own identity and sample version: the material is the one that row was built from
         act = {**act_now, **{k: sact[k] for k in ("identity", "model_id", "model_revision", "prompt_hash", "sample_version") if sact.get(k)}}
         c = cfg["time"]["exchange_calendar"]
         cal = Calendar.load(store.REPO_ROOT / c["path"], c["sha256"])
         i = cal.index(window_label)
-        win = cal.session_window(i) if i is not None else None
+        if kind == "session":
+            win = cal.session_window(i) if i is not None else None
+        else:
+            from .sessions import group_window
+            idx = [cal.index(x) for x in sessions_in]
+            win = group_window(cal, idx) if None not in idx else None
         if win is None:
             out["state"] = "NOT_A_SESSION"
             return out
@@ -114,9 +123,9 @@ def read_day(cfg: dict, db_path: Path | None = None, *, scope: str, target_id: s
         same = {k: res[k] == stored.get(k) for k in ("posts", "accounts", "posts_total", "accounts_total", "excluded_or_unjudged")}
         same["vote_posts"] = res["vote_post_ids"] == stored.get("vote_post_ids")
         if scope == "keyword":
-            nar = db.execute("SELECT payload_json FROM x_narratives WHERE window_kind='session' AND window_label=? AND target_id=? ORDER BY rank", (window_label, target_id)).fetchall()
+            nar = db.execute("SELECT payload_json FROM x_narratives WHERE window_kind=? AND window_label=? AND target_id=? ORDER BY rank", (kind, window_label, target_id)).fetchall()
         else:
-            nar = db.execute("SELECT payload_json FROM x_panel_narratives WHERE scope=? AND window_kind='session' AND window_label=? AND target_id=? ORDER BY rank", (scope, window_label, target_id)).fetchall()
+            nar = db.execute("SELECT payload_json FROM x_panel_narratives WHERE scope=? AND window_kind=? AND window_label=? AND target_id=? ORDER BY rank", (scope, kind, window_label, target_id)).fetchall()
         nars, in_day = [], {x["post_id"]: x for x in items}
         for n in nar:
             n = json.loads(n[0])
@@ -126,7 +135,7 @@ def read_day(cfg: dict, db_path: Path | None = None, *, scope: str, target_id: s
         nar_ok = all(e["in_this_days_material"] and e["stance_matches_label"] for n in nars for e in n["evidence"])
         mode = row["mode"]
         out.update({
-            "state": "READY", "topic_id": row["topic_id"], "target": names.get(target_id) or target_id, "mode": mode,
+            "state": "READY", "topic_id": row["topic_id"], "target": names.get(target_id) or target_id, "mode": mode, "group_sessions": sessions_in,
             "window_start_utc": store.iso(win[0]), "window_end_utc": store.iso(win[1]),
             "backfilled": mode == "RETROSPECTIVE_VISIBLE_NOW",
             "timing_note": ("历史回填：这些帖子是后来取得并分类的，不代表当天可用的信号" if mode == "RETROSPECTIVE_VISIBLE_NOW" else "收盘后批量采集并分类；以实际完成时间为准，不是盘中信号"),

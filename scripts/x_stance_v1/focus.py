@@ -47,7 +47,11 @@ def _cal(cfg: dict) -> Calendar:
 
 
 def query_hash(cfg: dict, name: str) -> str:
-    return store.sha(f"{cfg['provider_candidate']}|focus:{name}|{spec(cfg, name)['query']}")
+    f = spec(cfg, name)
+    base = f.get("reuse_query_of") or name
+    if base != name and spec(cfg, base)["query"] != f["query"]:
+        raise FocusError("reuse_query_of names a plan with a different query")
+    return store.sha(f"{cfg['provider_candidate']}|focus:{base}|{f['query']}")
 
 
 def run_id(cfg: dict, qh: str, s: int, e: int) -> str:
@@ -196,7 +200,7 @@ def run(db, cfg: dict, transport, name: str, anchor: datetime, *, clock=None, le
     clock = clock or batch.utc_now
     ledger = ledger or Ledger(db, cfg, clock=clock)
     plan = batch._freeze(db, "focus", name, build_plan(db, cfg, name, anchor), anchor)
-    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (plan["query_hash"], cfg["provider_candidate"], plan["topic_id"], plan["lang"], f"focus:{name}", plan["query"]))
+    db.execute("INSERT OR IGNORE INTO x_queries VALUES(?,?,?,?,?,?)", (plan["query_hash"], cfg["provider_candidate"], plan["topic_id"], plan["lang"], f"focus:{spec(cfg, name).get('reuse_query_of') or name}", plan["query"]))
     db.commit()
     q = {"query_hash": plan["query_hash"], "topic_id": plan["topic_id"], "lang": plan["lang"], "query": plan["query"]}
     cols = {}

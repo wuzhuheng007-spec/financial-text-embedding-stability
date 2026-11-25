@@ -830,7 +830,7 @@ def x_stance_day_json(request):
     try:
         from scripts.x_stance_v1 import config as x_config, day_view
         data = day_view.read_day(x_config.load(), scope=(request.GET.get("scope") or "keyword")[:16], target_id=(request.GET.get("target") or "")[:64],
-                                 window_label=(request.GET.get("date") or "")[:10])
+                                 window_label=(request.GET.get("date") or "")[:10], kind=(request.GET.get("kind") or "session")[:16])
     except ValueError:
         return JsonResponse({"error": "INVALID_DAY_REQUEST"}, status=400)
     except Exception as exc:  # noqa: BLE001 - an unreadable store is a status, not a page error

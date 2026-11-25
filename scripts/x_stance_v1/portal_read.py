@@ -180,7 +180,7 @@ def _fill(db, cfg: dict, out: dict) -> None:
         out["store_needs_upgrade"] = True
     # the rows the page draws (session windows, all languages) come first, so the row limit never cuts a charted date
     for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_daily_sentiment "
-                        "ORDER BY (window_kind='session' AND lang_scope='all') DESC, window_label DESC LIMIT 600"):
+                        "ORDER BY (window_kind IN ('session','session3') AND lang_scope='all') DESC, window_label DESC LIMIT 800"):
         out["daily"].append(_daily_row(r))
     out["daily_summary"] = _summary_identity(out["daily"], act)
     for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_narratives ORDER BY window_label DESC, rank LIMIT 100"):
@@ -292,7 +292,7 @@ def _watch(db, cfg: dict, out: dict, act: dict) -> None:
         pn = out["panels"][scope]
         pn.update({"sample_version": ver, "available": True, "classification": _progress(db, ver, act["identity"])})
         for r in db.execute("SELECT window_kind, window_label, topic_id, target_id, lang_scope, mode, payload_json FROM x_panel_sentiment WHERE scope=? "
-                            "ORDER BY (window_kind='session' AND lang_scope='all') DESC, window_label DESC LIMIT 600", (scope,)):
+                            "ORDER BY (window_kind IN ('session','session3') AND lang_scope='all') DESC, window_label DESC LIMIT 800", (scope,)):
             pn["daily"].append(_daily_row(r))
         pn["daily_summary"] = _summary_identity(pn["daily"], act)
         for r in db.execute("SELECT topic_id, target_id, payload_json FROM x_panel_narratives WHERE scope=? ORDER BY window_label DESC, rank LIMIT 100", (scope,)):

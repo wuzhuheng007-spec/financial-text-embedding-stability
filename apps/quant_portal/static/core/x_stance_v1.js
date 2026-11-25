@@ -11,7 +11,8 @@
   const pct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
   const TABS = ['settings', 'simple', 'news', 'authors', 'daily', 'views', 'history'];
   const PANEL = {keyword: '关键词样本', watchlist: '重点作者', combined: '合并去重'};
-  let scope = 'keyword', last = null;
+  let scope = 'keyword', last = null, grain = 'session3', shown = 'session3';
+  const GRAIN = {session3: '每三个交易日', session: '每个交易日'};
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
   const STATE = {bullish: '看多', bearish: '看空', neutral: '中性', UNKNOWN: '未判定'};
   const MODE = {LIVE: '实时留档', BATCH_AFTER_CLOSE: '收盘后批量采集', RETROSPECTIVE_VISIBLE_NOW: '历史回填（现在可见的样本）'};
@@ -269,6 +270,13 @@
     return wrap;
   }
 
+  function grainBar() {
+    const bar = h('div', 'xs-chips');
+    Object.keys(GRAIN).forEach(k => { const b = h('button', `tag ${k === grain ? '' : 'tag-dim'}`, GRAIN[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === grain));
+      b.addEventListener('click', () => { grain = k; if (last) renderDaily(last); }); bar.append(b); });
+    return bar;
+  }
+  const span = r => (r.group_sessions && r.group_sessions.length > 1) ? `${r.group_sessions[0]} – ${r.group_sessions[r.group_sessions.length - 1]}` : r.window_label;
   function scopeBar() {
     const bar = h('div', 'xs-chips');
     Object.keys(PANEL).forEach(k => { const b = h('button', `tag ${k === scope ? '' : 'tag-dim'}`, PANEL[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === scope));
@@ -287,7 +295,7 @@
   function renderDay(box, j) {
     if (j.state !== 'READY') { box.replaceChildren(h('p', 'muted', j.state === 'READ_ERROR' ? '读取失败' : '这一天没有可核对的汇总记录。')); return; }
     const out = [];
-    const head = h('div', 'section-head'); head.append(h('h3', null, `${j.target} · ${j.window_label} · ${PANEL[j.scope]}`), chip(j.note, 'tag-dim'), chip(MODE[j.mode] || j.mode, 'tag-dim')); out.push(head);
+    const head = h('div', 'section-head'); head.append(h('h3', null, `${j.target} · ${span(j)} · ${PANEL[j.scope]}`), chip(j.note, 'tag-dim'), chip(MODE[j.mode] || j.mode, 'tag-dim')); out.push(head);
     out.push(h('p', 'fine-print', j.timing_note));
     const ex = j.excluded || {}, cl = j.classification || {};
     const card = h('div', 'card');
@@ -316,7 +324,7 @@
         n.evidence.forEach(e => meta.append(xlink(e.url, ` ${e.author_handle ? '@' + e.author_handle : e.post_id} `))); it.append(meta); nc.append(it); });
       out.push(nc);
     }
-    const ic = h('div', 'card'); ic.append(h('h3', null, '组成这一天的全部帖子'), row('显示 / 总数', `${j.items.length} / ${j.items_total}`));
+    const ic = h('div', 'card'); ic.append(h('h3', null, j.window_kind === 'session3' ? '组成这一组的全部帖子' : '组成这一天的全部帖子'), row('显示 / 总数', `${j.items.length} / ${j.items_total}`));
     ic.append(table(['判断', '计入账号票', '简短理由', '依据原文', '原文', '发布时间', '采集时间', '模型完成时间'], j.items.map(x =>
       [OUT[x.outcome] || x.outcome, x.counts_as_account_vote ? '是' : '否', quote(x.reason), quote(x.evidence), xlink(x.source_url, x.author_handle ? `@${x.author_handle}` : '打开原文'),
         data(fmtT(x.published_at_utc)), data(fmtT(x.first_received_at_utc)), data(fmtT(x.model_completed_at_utc))])));
@@ -326,9 +334,9 @@
   }
 
   function openDay(box, target, date) {
-    dayKey = `${scope}|${target}|${date}`; const key = dayKey;
+    dayKey = `${scope}|${shown}|${target}|${date}`; const key = dayKey;
     box.hidden = false; box.replaceChildren(h('p', 'muted', '读取中…'));
-    fetch(`${root.dataset.dayUrl}?scope=${encodeURIComponent(scope)}&target=${encodeURIComponent(target)}&date=${encodeURIComponent(date)}`, {credentials: 'same-origin', cache: 'no-store'})
+    fetch(`${root.dataset.dayUrl}?scope=${encodeURIComponent(scope)}&kind=${encodeURIComponent(shown)}&target=${encodeURIComponent(target)}&date=${encodeURIComponent(date)}`, {credentials: 'same-origin', cache: 'no-store'})
       .then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then(j => { if (key === dayKey) renderDay(box, j); })
       .catch(() => { if (key === dayKey) box.replaceChildren(h('p', 'muted', '读取失败')); });
@@ -337,7 +345,8 @@
   function renderDaily(d) {
     const p = panel('daily');
     const pn = {...((d.panels || {})[scope] || {available: true}), ...(scope === 'keyword' ? {daily: d.daily, daily_summary: d.daily_summary} : {})};      // the keyword panel's rows are the top-level ones
-    const head = [scopeBar(), h('p', 'fine-print', NOTE[scope])];
+    const head = [scopeBar(), grainBar(), h('p', 'fine-print', NOTE[scope])];
+    if (grain === 'session3') head.push(h('p', 'fine-print', '每三个交易日为一组：从 2026-08-24 起依次分组，一组的窗口是第一个交易日之前的收盘到第三个交易日的收盘。同一账号在一组内只算一票（取最后一条有效帖子）。只列出三个交易日都已收盘的组。'));
     if (scope !== 'keyword' && !pn.available) { p.replaceChildren(...head, h('p', 'muted', '还没有导入重点作者名单。')); return; }
     if (scope === 'keyword' ? !d.has_data : !pn.daily.length) { p.replaceChildren(...head, missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return; }
     const out = head;
@@ -348,7 +357,9 @@
     const up = d.updates || {state: 'NOT_REPORTED'};
     if (up.state !== 'NOT_REPORTED') { const v = h('p', 'fine-print'); v.append(h('span', null, '最后成功更新时间（UTC）'), data(' ' + (up.last_successful_update_at_utc || '—')), h('span', null, ' · '), h('span', null, '最后成功采集时间（UTC）'), data(' ' + (up.last_successful_collection_at_utc || '—')));
       if (up.credit_hold) v.append(h('span', null, ' · '), h('span', null, '新采集已暂停：供应商账户额度不足')); out.push(v); }
-    const sess = pn.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all');
+    shown = grain === 'session3' && !pn.daily.some(r => r.window_kind === 'session3') ? 'session' : grain;
+    if (shown !== grain) out.push(h('p', 'muted', '还没有按三个交易日分组的汇总，需要先重建；下面先显示每个交易日的数据。'));
+    const sess = pn.daily.filter(r => r.window_kind === shown && r.lang_scope === 'all');
     const closes = {}; d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
     for (const tid of [...new Set(sess.map(r => r.topic_id))]) {
       const rows = sess.filter(r => r.topic_id === tid).sort((a, b) => a.window_label < b.window_label ? -1 : 1);
@@ -363,17 +374,17 @@
         sec.append(chart(withData.slice(-60).map(r => ({...r, shares: (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : r.shares})), cl));
         const box = h('div', 'xs-day'); box.hidden = true;
         const pick = r => { const b = h('button', 'button', '查看材料'); b.type = 'button'; b.dataset.day = r.window_label; b.addEventListener('click', () => openDay(box, r.target_id, r.window_label)); return b; };
-        sec.append(table(['交易日', '账号占比', '帖子：多 / 空 / 中', '分母（帖子）', '账号：多 / 空 / 中', '分母（账号）', '账号占比：多 / 空 / 中', '帖子占比：多 / 空 / 中', '加权账号占比：多 / 空 / 中', '无关或失败', '待分类', '点赞不足未计入', '来源', '说明', '材料'],
+        sec.append(table([shown === 'session3' ? '交易日（三日一组）' : '交易日', '账号占比', '帖子：多 / 空 / 中', '分母（帖子）', '账号：多 / 空 / 中', '分母（账号）', '账号占比：多 / 空 / 中', '帖子占比：多 / 空 / 中', '加权账号占比：多 / 空 / 中', '无关或失败', '待分类', '点赞不足未计入', '来源', '说明', '材料'],
           withData.slice(-30).reverse().map(r => { const e = r.shares_equal_weight || {}, bp = r.shares_by_post || {}, c = r.classification || {};
             const three = c => c ? `${c.bullish} / ${c.bearish} / ${c.neutral}` : '—';
-            return [r.window_label, shareBar(e.bullish == null ? r.shares : e), three(r.posts), r.posts_total,
+            return [span(r), shareBar(e.bullish == null ? r.shares : e), three(r.posts), r.posts_total,
               three(r.accounts), r.accounts_total,
               data(e.bullish == null ? '—' : `${pct(e.bullish)} / ${pct(e.bearish)} / ${pct(e.neutral)}`), data(bp.bullish == null ? '—' : `${pct(bp.bullish)} / ${pct(bp.bearish)} / ${pct(bp.neutral)}`),
               data(r.shares.bullish == null ? '—' : `${pct(r.shares.bullish)} / ${pct(r.shares.bearish)} / ${pct(r.shares.neutral)}`), r.unjudged_total, c.pending, c.filtered_low_likes, MODE[r.mode] || r.mode, [why(r.state_reason), r.low_sample ? '样本账号少于 ' + r.low_sample_threshold : ''].filter(Boolean).join('；'), pick(r)]; })));
         sec.append(box);
       }
       const parts = Object.keys(empty).map(k => (EMPTY[k] || k) + '：' + empty[k]);
-      sec.append(h('p', 'fine-print', ['交易日窗口总数 ' + rows.length, '有有效标签并画入图表 ' + withData.length].concat(parts).join('；')));
+      sec.append(h('p', 'fine-print', [(shown === 'session3' ? '分组总数 ' : '交易日窗口总数 ') + rows.length, '有有效标签并画入图表 ' + withData.length].concat(parts).join('；')));
       out.push(sec);
     }
     if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '“加权账号占比”按账号权重计算（粉丝数分档或指定账号）；“账号占比”是每个账号一票的结果，图表画的是后者。点赞数低于下限的帖子不在样本内。'));
@@ -384,13 +395,14 @@
 
   function renderViews(d) {
     const p = panel('views');
-    const nar = scope === 'keyword' ? d.narratives : (((d.panels || {})[scope] || {}).narratives || []);
+    const all = scope === 'keyword' ? d.narratives : (((d.panels || {})[scope] || {}).narratives || []);
+    const nar = all.some(n => n.window_kind === 'session3') ? all.filter(n => n.window_kind === 'session3') : all;      // per group of three sessions when the build has made them
     if (!nar.length) { p.replaceChildren(h('p', 'fine-print', NOTE[scope]), d.has_data ? h('p', 'muted', '当前窗口的证据不足，没有可列出的主要观点。') : missingBox(d, '还没有可归纳的观点。需要以下输入：')); return; }
     d = {...d, narratives: nar};
     const latest = {}; d.narratives.forEach(n => { const k = `${n.topic_id}`; if (!latest[k] || n.window_label > latest[k]) latest[k] = n.window_label; });
     const out = [];
     for (const tid of Object.keys(latest)) {
-      const sec = h('section', 'card section'); const head = h('div', 'section-head'); head.append(h('h3', null, TOPIC[tid] || tid), h('span', 'count', latest[tid])); sec.append(head);
+      const sec = h('section', 'card section'); const head = h('div', 'section-head'); const one = d.narratives.find(n => n.topic_id === tid && n.window_label === latest[tid]) || {}; head.append(h('h3', null, TOPIC[tid] || tid), h('span', 'count', span({...one, window_label: latest[tid]}))); sec.append(head);
       d.narratives.filter(n => n.topic_id === tid && n.window_label === latest[tid]).sort((a, b) => a.rank - b.rank).slice(0, 5).forEach(n => {
         const item = h('div', 'xs-view'); const title = h('p', 'xs-view-title', n.title); title.setAttribute('translate', 'no'); item.append(title);   // quoted post text is data
         const meta = h('div', 'fine-print');

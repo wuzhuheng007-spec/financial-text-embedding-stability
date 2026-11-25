@@ -73,6 +73,24 @@ class Calendar:
         return bool(self.dates) and self.dates[0] <= d <= self.dates[-1]
 
 
+GROUP_KIND = "session3"
+
+
+def group_of(cal: "Calendar", i: int, n: int, anchor: int) -> list[int]:
+    """Indexes of the fixed group of n consecutive sessions that contains session i. Groups are counted from the
+    anchor session, so adding new days never moves an existing group."""
+    k = (i - anchor) // n
+    first = anchor + k * n
+    return [j for j in range(first, first + n) if 0 <= j < len(cal.sessions)]
+
+
+def group_window(cal: "Calendar", idx: list[int]) -> tuple[datetime, datetime] | None:
+    """[close before the group's first session, close of its last session)."""
+    if not idx or idx[0] <= 0:
+        return None
+    return cal.closes[idx[0] - 1], cal.closes[idx[-1]]
+
+
 def calendar_window(d: str | date) -> tuple[datetime, datetime]:
     """New York local midnight to the next local midnight, in UTC (23, 24 or 25 hours long)."""
     d = date.fromisoformat(d) if isinstance(d, str) else d

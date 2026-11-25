@@ -36,7 +36,7 @@ def build_daily(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime | None
             out = res                                              # the keyword panel's figures stay at the top level
             out["panels"] = {}
         else:
-            out["panels"][sample.scope_of(scfg)] = {k: res[k] for k in ("session_windows", "calendar_windows", "narratives", "sample_versions")}
+            out["panels"][sample.scope_of(scfg)] = {k: res[k] for k in ("session_windows", "group_windows", "calendar_windows", "narratives", "sample_versions")}
     return out
 
 
@@ -55,10 +55,66 @@ def _coverage(db, cfg: dict, topic_id: str, a, b, ver: str) -> dict:
     return {"status": worst["status"], "reason": worst["reason"], "gaps": kw["gaps"] + w["gaps"], "parts": {"keyword": kw["status"], "watchlist": w["status"]}}
 
 
+def group_settings(cfg: dict, cal: Calendar) -> tuple[int, int] | None:
+    """(sessions per group, index of the anchor session) or None when grouping is off."""
+    a = cfg.get("aggregation") or {}
+    n, anchor = a.get("group_sessions"), a.get("group_anchor_session")
+    if not n or not anchor:
+        return None
+    i = cal.index(anchor)
+    if i is None:
+        raise ValueError("group_anchor_session is not a session of the calendar")
+    return int(n), i
+
+
+def _build_groups(db, cfg, cal, t, target, lo, hi, *, now, panel, for_date, pick, thr, out) -> int:
+    """Complete groups of N sessions that overlap [lo, hi]. The posts of the whole group are counted at once, so an
+    account that posted on two days of the group still has one vote (its last valid post). A group is written only
+    once its last session has closed."""
+    from .sessions import GROUP_KIND, group_of, group_window
+    gs = group_settings(cfg, cal)
+    if not gs:
+        return 0
+    n, anchor, made, seen = gs[0], gs[1], 0, set()
+    for i in range(lo, hi + 1):
+        idx = group_of(cal, i, n, anchor)
+        if idx[0] in seen or len(idx) < n:
+            continue
+        seen.add(idx[0])
+        w = group_window(cal, idx)
+        if w is None or now < w[1]:
+            continue
+        a, b = w
+        label, dates = cal.dates[idx[-1]], [cal.dates[j] for j in idx]
+        wmode = pick(b)
+        wcfg, act, ver, sver = for_date(dates[0])
+        rows, dropped = aggregate.rows_for_window(db, topic_id=t["id"], target_id=target, start=a, end=b, mode=wmode, act=act)
+        cov = _coverage(db, wcfg, t["id"], a, b, ver)
+        prog = aggregate.progress(db, topic_id=t["id"], target_id=target, start=a, end=b, vocab_version=sver, act=act)
+        res = aggregate.aggregate(rows, collection_status=cov["status"], threshold=thr, pending=prog["pending"], cfg=wcfg)
+        res["dropped"], res["collection_gaps"], res["classification"] = dropped, len(cov["gaps"]), prog
+        res["group_sessions"], res["group_size"] = dates, n
+        aggregate.commit(db, window_kind=GROUP_KIND, window_label=label, start=a, end=b, topic_id=t["id"], target_id=target, mode=wmode, result=res, rows=rows, now=now, act=act)
+        made += 1
+        if panel == "keyword":
+            db.execute("DELETE FROM x_narratives WHERE window_kind=? AND window_label=? AND topic_id=? AND target_id=?", (GROUP_KIND, label, t["id"], target))
+        else:
+            db.execute("DELETE FROM x_panel_narratives WHERE scope=? AND window_kind=? AND window_label=? AND topic_id=? AND target_id=?", (panel, GROUP_KIND, label, t["id"], target))
+        for nar in narratives.build(aggregate.votes(rows), cfg=cfg, window_label=label, window_kind=GROUP_KIND, data_quality=cov["status"]):
+            nar["sample_version"], nar["group_sessions"] = sver, dates
+            if panel != "keyword":
+                nar["panel"] = panel
+                db.execute("INSERT OR REPLACE INTO x_panel_narratives VALUES(?,?,?,?,?,?,?)", (panel, GROUP_KIND, label, t["id"], target, nar["rank"], json.dumps(nar, ensure_ascii=False, sort_keys=True)))
+            else:
+                db.execute("INSERT OR REPLACE INTO x_narratives VALUES(?,?,?,?,?,?,?)", (GROUP_KIND, label, t["id"], target, nar["cluster_version"], nar["rank"], json.dumps(nar, ensure_ascii=False, sort_keys=True)))
+            out["narratives"] += 1
+    return made
+
+
 def _build_daily_scope(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime) -> dict:
     thr = cfg["aggregation"]["proposed_low_sample_author_threshold"]
     panel = sample.scope_of(cfg)
-    out = {"session_windows": 0, "calendar_windows": 0, "narratives": 0, "outside_calendar_posts_ranges": [], "sample_versions": {}}
+    out = {"session_windows": 0, "calendar_windows": 0, "group_windows": 0, "narratives": 0, "outside_calendar_posts_ranges": [], "sample_versions": {}}
     per_date = {}
 
     def for_date(label: str):
@@ -116,6 +172,8 @@ def _build_daily_scope(db, cfg: dict, cal: Calendar, *, mode: str, now: datetime
                             continue
                         db.execute("INSERT OR REPLACE INTO x_narratives VALUES(?,?,?,?,?,?,?)", ("session", cal.dates[i], t["id"], target, nar["cluster_version"], nar["rank"], json.dumps(nar, ensure_ascii=False, sort_keys=True)))
                         out["narratives"] += 1
+            if lo is not None and hi is not None:
+                out["group_windows"] += _build_groups(db, cfg, cal, t, target, lo, hi, now=now, panel=panel, for_date=for_date, pick=pick, thr=thr, out=out)
             d, last = rng[0].astimezone(NY).date(), rng[1].astimezone(NY).date()
             while d <= last:
                 a, b = calendar_window(d)
