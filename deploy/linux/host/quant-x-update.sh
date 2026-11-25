@@ -3,6 +3,9 @@
 #
 #   1 collect   intraday increment (every query from where it last succeeded). Sends nothing while the provider
 #               refuses for lack of credit (HTTP 402) or the gate is closed; the round goes on either way.
+#   1b backfill the frozen focus plans named in X_FOCUS_PLANS (default below), each through the same ledger: units
+#               already read are skipped at no cost, a used-up pool waits for the next budget day, a plan that
+#               reached its limit asks nothing. Same hold and gate as the increment.
 #   2 import    every results file the owner's GPU worker left in /srv/quant/x_offload/inbox (checked, idempotent)
 #   3 build     derived tables: shares, snapshots, main views
 #   4 export    pending pairs that no worker has claimed yet -> /srv/quant/x_offload/outbox (new posts first)
@@ -31,6 +34,29 @@ t=$(now); rc=0
   export TWITTERAPI_IO_API_KEY=${TWITTERAPI_IO_API_KEY:-}
   with_lock net_job incremental run ) > "$R/collect.json" 2> "$R/collect.err" || rc=$?
 COLLECT_S=$(secs $t $(now)); COLLECT_RC=$rc
+
+# 1b backfill plans
+t=$(now); FOCUS_PLANS=${X_FOCUS_PLANS-qqq-20261126-depth}
+for fp in $FOCUS_PLANS; do
+  ( if [ -z "${TWITTERAPI_IO_API_KEY:-}" ] && [ -r "$KEYFILE" ]; then set -a; . "$KEYFILE"; set +a; fi
+    export TWITTERAPI_IO_API_KEY=${TWITTERAPI_IO_API_KEY:-}
+    with_lock net_job focus run "$fp" ) > "$R/focus_$fp.json" 2> "$R/focus_$fp.err" || true
+done
+FOCUS_JSON=$(python3 - "$R" $FOCUS_PLANS <<'EOF2'
+import json, sys
+out = {}
+for fp in sys.argv[2:]:
+    try:
+        d = json.load(open(f"{sys.argv[1]}/focus_{fp}.json"))
+    except Exception:
+        out[fp] = {"status": "NO_OUTPUT"}; continue
+    p = d.get("progress") or {}
+    out[fp] = {"status": d.get("status"), "stopped": d.get("stopped"), "requests": d.get("requests", d.get("requests_sent")), "units_asked": d.get("units_asked"),
+               "pools_exhausted": [x.get("pool") for x in d.get("pools_exhausted") or []], "plan_new_posts": p.get("new_posts"), "plan_returned": p.get("returned")}
+print(json.dumps(out))
+EOF2
+)
+FOCUS_S=$(secs $t $(now))
 
 # 2 import
 t=$(now); IMPORTED=0; IMPORT_FAILED=0; LABELS=0
@@ -69,7 +95,7 @@ except Exception:
 col = {k: c.get(k) for k in ("status", "requests", "units_asked", "returned", "new_posts", "duplicates", "stopped", "transient_errors")}
 col["requests"] = col["requests"] if col["requests"] is not None else c.get("requests_sent")
 col.update(exit=$COLLECT_RC, seconds=$COLLECT_S, gate_reasons=(c.get("gate") or {}).get("reasons"))
-print(json.dumps({"started_at_utc": "$STARTED", "collect": col, "import": {"files": $IMPORTED, "failed": $IMPORT_FAILED, "labels_written": $LABELS, "seconds": $IMPORT_S},
+print(json.dumps({"started_at_utc": "$STARTED", "collect": col, "backfill": {"plans": json.loads('$FOCUS_JSON' or '{}'), "seconds": $FOCUS_S}, "import": {"files": $IMPORTED, "failed": $IMPORT_FAILED, "labels_written": $LABELS, "seconds": $IMPORT_S},
                   "build": {"exit": $BUILD_RC, "seconds": $BUILD_S}, "export": {"exit": $EXPORT_RC, "items": $EXPORTED, "seconds": $EXPORT_S}, "round_seconds": round($(now) - $T0, 1)}))
 EOF
 )
