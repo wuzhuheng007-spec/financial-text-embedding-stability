@@ -83,6 +83,16 @@
       row('已匹配主题的帖子', cl.matched_pairs), row('已分类', cl.classified_or_prefiltered), row('待分类', cl.pending),
       row('分类进度', cl.share_done == null ? '—' : pct(cl.share_done)),
       row('点赞不足，未计入样本', cl.filtered_low_likes), row('点赞数未知，未计入样本', cl.filtered_likes_unknown));
+    const up = d.updates || {state: 'NOT_REPORTED'}, upc = h('div', 'card');
+    upc.append(h('h3', null, '自动更新'), chip(up.state === 'NOT_REPORTED' ? '尚未上报' : up.state === 'FRESH' ? '按计划运行' : '已超过两个周期未更新', up.state === 'FRESH' ? 'run-succeeded' : 'tag-dim'));
+    if (up.credit_hold) upc.append(h('p', 'xs-warn', '新采集已暂停：供应商账户额度不足（HTTP 402）。已入库的帖子继续分类和更新；充值并确认后恢复采集。'), row('暂停开始时间（UTC）', data(up.credit_hold.since_utc)));
+    if (up.state !== 'NOT_REPORTED') {
+      const pe = up.pending || {}, co = up.collection || {};
+      upc.append(row('最后成功更新时间（UTC）', data(up.last_successful_update_at_utc)), row('最后成功采集时间（UTC）', data(up.last_successful_collection_at_utc)),
+        row('最近一次分类写入时间（UTC）', data(up.last_label_written_at_utc)), row('本轮采集', co.status === 'PAUSED_PROVIDER_CREDITS' ? '已暂停，未发请求' : co.status === 'RAN' ? '已运行' : (co.status || '—')),
+        row('本轮新入库帖子', co.new_posts == null ? '—' : co.new_posts), row('待分类：新帖', pe.new_posts_queue), row('待分类：历史积压', pe.history_backlog),
+        row('更新周期（小时）', up.interval_hours));
+    }
     const gate = h('div', 'card');
     const ag = st.acquisition_gate, wh = d.worker_health || {state: 'NOT_REPORTED'};
     gate.append(h('h3', null, '付费采集'), chip(ag.allowed === true ? '已满足条件' : ag.allowed === false ? '未开启' : '未知，待复检', ag.allowed === true ? 'run-succeeded' : 'tag-dim'));
@@ -97,7 +107,7 @@
     model.append(h('h3', null, '分类与行情'), row('立场模型', data(d.classifier.model_id)), row('标签质量', d.classifier.quality === 'UNVALIDATED' ? '未经人工验证' : d.classifier.quality),
       row('行情版本', data(d.market.input_version)), row('行情最后日期', data(d.market.last_date)));
     p.replaceChildren(h('p', 'fine-print', '关键词的修改会生成新的词表版本，从下一批次开始生效；已经冻结的采集计划不会被替换。不同词表版本的占比不能直接相接。'),
-      topics, editor(d), rulesCard(d), card, cost, prog, queueCard(d), model, gate);
+      topics, upc, editor(d), rulesCard(d), card, cost, prog, queueCard(d), model, gate);
   }
 
   // ---------- account rules (like floor, follower-tier and named-account weights) ----------
@@ -335,6 +345,9 @@
     if (ds) { const v = h('p', 'fine-print'); v.append(chip(ds.note, 'tag-dim'), h('span', null, ' 分类模型 '), data((ds.models || []).join(' / ') || '—'),
       h('span', null, ds.all_rows_from_active_identity ? ' · 汇总来自当前生效版本' : ' · 部分汇总不是当前生效版本生成的，需要重建')); out.push(v); }
     if (pn.sample_version) { const v = h('p', 'fine-print'); v.append(h('span', null, '样本版本'), data(` ${pn.sample_version}`)); out.push(v); }
+    const up = d.updates || {state: 'NOT_REPORTED'};
+    if (up.state !== 'NOT_REPORTED') { const v = h('p', 'fine-print'); v.append(h('span', null, '最后成功更新时间（UTC）'), data(' ' + (up.last_successful_update_at_utc || '—')), h('span', null, ' · '), h('span', null, '最后成功采集时间（UTC）'), data(' ' + (up.last_successful_collection_at_utc || '—')));
+      if (up.credit_hold) v.append(h('span', null, ' · '), h('span', null, '新采集已暂停：供应商账户额度不足')); out.push(v); }
     const sess = pn.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all');
     const closes = {}; d.returns.forEach(r => { if (r.h === 1 && r.anchor_close != null) closes[`${r.topic_id}|${r.session_date}`] = r.anchor_close; });
     for (const tid of [...new Set(sess.map(r => r.topic_id))]) {

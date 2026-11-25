@@ -85,6 +85,8 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
                                 "continuation": (rec.get("continuation") or {}).get("state"), "receipt_sha256": st.get("receipt_sha256")}
             try:
                 out["worker_health"] = batch.read_health(db, cfg, datetime.now(timezone.utc))
+                from . import incremental
+                out["updates"] = incremental.read_receipt(db, datetime.now(timezone.utc))
                 todo = _meta(db, "recovery_todo")
                 out["recovery_todo"] = {"saved_at_utc": todo.get("saved_at_utc"), "plans": todo.get("plans") or []} if todo else None
             except sqlite3.OperationalError:
@@ -113,7 +115,7 @@ def read_for_portal(cfg: dict, db_path: Path | None = None, *, env: dict | None 
     # the keyword panel's rows are the top-level `daily` / `narratives` / `classification`; they are not sent twice
     out["panels"]["keyword"] = {"sample_version": out["settings"].get("sample_version") or sample.sample_version(cfg), "available": True, "rows": "top-level daily / narratives / classification"}
     gate = cfgmod.acquisition_gate(cfg, env, preflight_passed=passed)
-    out.setdefault("worker_health", {"state": "NOT_REPORTED"}); out.setdefault("recovery_todo", None); out.setdefault("simple", None)
+    out.setdefault("worker_health", {"state": "NOT_REPORTED"}); out.setdefault("updates", {"state": "NOT_REPORTED", "credit_hold": None}); out.setdefault("recovery_todo", None); out.setdefault("simple", None)
     out["classifier"]["profile"] = cfg.get("_classifier_profile") or "default"
     if not batch.key_fingerprint(env, cfg):
         # This process (the web page) holds no key by design. What it shows about the paid collection comes from

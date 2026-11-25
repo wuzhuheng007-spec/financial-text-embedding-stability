@@ -1,7 +1,7 @@
 {
  "contract_version": "x-keyword-stance-v1-proposed-20261122",
  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
- "config_sha256": "0518459324c1918650337f631891db787370f371fcb1bff8e53d7da23391d804",
+ "config_sha256": "9022ac40d755479ac89ddda49ad4735e31e825138f8319d7797deece64fc963e",
  "settings": {
   "provider": "twitterapi_io",
   "automatic_paid_fallback": false,
@@ -428,6 +428,10 @@
  ],
  "worker_health": {
   "state": "NOT_REPORTED"
+ },
+ "updates": {
+  "state": "NOT_REPORTED",
+  "credit_hold": null
  },
  "recovery_todo": null,
  "simple": null,

@@ -220,6 +220,7 @@
       ]
     }
   ],
+  "incremental": {"interval_hours": 2, "first_window_hours": 2, "max_window_hours": 6, "pages_per_query": 1, "include_watchlist": true, "set_by": "owner instruction of 2026-11-25: verify an update every two hours on the existing server", "note": "one page per query per run from where the query last succeeded; charged to the recent pool's existing shares. With 8 keyword queries and 12 runs a day, full pages give 1,920 posts, inside the 2,400 keyword share."},
   "focus": {"qqq-20261125": {"topic_id": "qqq", "target_id": "QQQ", "lang": "en", "query": "$QQQ min_faves:20 -filter:replies lang:en", "min_likes_in_query": 20, "first_session": "2026-08-24", "slices": ["regular", "pre_open"], "pages_per_unit": 1, "max_new_posts": 1600, "order": "round 1: the regular-hours slice of every session, thinnest session first; round 2: the pre-open slice, thinnest first after round 1; stops at max_new_posts", "set_by": "owner instruction of 2026-11-25: at least 500, target 1,000 valid QQQ posts", "note": "planned sample. The like operator is the main sample's own 20-like floor moved into the search, so no page is paid for posts the rules would drop; the first page is checked and the job stops if the provider does not honour it. Replies are not asked for. Every post is fetched after the fact and marked RETROSPECTIVE_VISIBLE_NOW."}},
   "topic_vocabulary_version": "vocab-20261122-a",
   "classifier": {

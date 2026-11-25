@@ -1,0 +1,14 @@
+[Unit]
+Description=X stance study: one update round (increment within the shared ledger, import GPU results, build, export pending)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/quant-x-update.sh
+TimeoutStartSec=45min
+# 75 = another round or the data lock was busy: reported, never retried in a loop
+SuccessExitStatus=75
+Nice=10
+CPUWeight=20
+IOWeight=20

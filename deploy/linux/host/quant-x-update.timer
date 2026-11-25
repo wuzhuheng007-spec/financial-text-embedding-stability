@@ -1,0 +1,11 @@
+[Unit]
+Description=X stance update round every two hours (explicit zone)
+
+[Timer]
+# Even hours plus 20 minutes, away from the backup and the daily batch. Check with: systemd-analyze calendar "*-*-* 00/2:20:00 Asia/Shanghai"
+OnCalendar=*-*-* 00/2:20:00 Asia/Shanghai
+RandomizedDelaySec=60
+Persistent=false
+
+[Install]
+WantedBy=timers.target

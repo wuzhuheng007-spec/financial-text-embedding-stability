@@ -18,6 +18,9 @@
   build                                                  derived tables: shares, snapshots, views, episodes, QQQ pairing
   focus preview NAME | focus status NAME                 a focused per-session plan for one target: what it would ask / what it has read
   focus run NAME                                         walks that plan through the shared ledger (needs the key and a current preflight)
+  incremental preview | incremental run                  intraday increment: every query from where it last succeeded, one page each
+  credit-resume REASON                                   lifts the hold that an HTTP 402 (provider credits used up) puts on new collection
+  update-receipt STAGES_JSON | update-facts              the update round's receipt the page reads / the store's freshness facts
 
 `preflight`, `daily`, `recover`, `watch verify-candidate` and `focus run` are the only commands that can reach the provider. Both refuse and exit 2 while their gate
 is closed, and every request goes through the shared ledger. The key is read from the environment and never printed.
@@ -118,6 +121,10 @@ def main(argv=None) -> int:
     s.add_argument("--max-seconds", type=float)
     s = sub.add_parser("build"); s.add_argument("--prices-db"); s.add_argument("--out")
     s = sub.add_parser("focus"); s.add_argument("action", choices=["preview", "run", "status"]); s.add_argument("name")
+    s = sub.add_parser("incremental"); s.add_argument("action", choices=["preview", "run"])
+    s = sub.add_parser("credit-resume"); s.add_argument("reason")
+    s = sub.add_parser("update-receipt"); s.add_argument("stages")
+    sub.add_parser("update-facts")
     s = sub.add_parser("vocab"); s.add_argument("action", choices=["show", "add", "disable", "enable", "edit"]); s.add_argument("args", nargs="*")
     s = sub.add_parser("watch"); s.add_argument("action", choices=["import", "show", "enable", "disable", "confirm-handle", "verify-candidate"]); s.add_argument("args", nargs="*")
     a = ap.parse_args(argv)
@@ -195,6 +202,35 @@ def main(argv=None) -> int:
                         batch.write_health(db, base, env, now, source="recover")
                     else:
                         code = 1
+        elif a.cmd == "incremental":
+            from . import incremental
+            if a.action == "preview":
+                out = incremental.preview(db, base, now, ledger)
+            else:
+                state = batch.preflight_state(db, base, env)
+                gate = cfgmod.acquisition_gate(base, env, preflight_passed=state["recent_unlocked"])
+                if incremental.credit_hold(db):                  # decided before the gate: no request is sent while the provider refuses for lack of credit
+                    out = {"status": "PAUSED_PROVIDER_CREDITS", **incremental.run(db, base, None, now)}
+                elif not gate["allowed"]:
+                    out, code = {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
+                else:
+                    ledger.recover_open()
+                    out = incremental.run(db, base, provider.live_transport(base, env[key_env]), now, ledger=ledger)
+                    out["topics_mapped"] = stance.map_all(db, base)
+                    batch.write_health(db, base, env, now, source="incremental")
+        elif a.cmd == "credit-resume":
+            from . import incremental
+            out = incremental.credit_resume(db, a.reason, now) if a.reason.strip() else {"status": "REJECTED", "reason": "a reason is required"}
+        elif a.cmd == "update-receipt":
+            from . import incremental
+            try:
+                stages = json.loads(a.stages)
+                out = incremental.write_receipt(db, cfg, now, stages if isinstance(stages, dict) else {}, versions=_live(db, base))
+            except ValueError:
+                out, code = {"status": "REJECTED", "reason": "stages must be a JSON object"}, 1
+        elif a.cmd == "update-facts":
+            from . import incremental
+            out = incremental.facts(db, cfg, now, versions=_live(db, base))
         elif a.cmd == "focus":
             from . import focus
             try:
@@ -205,7 +241,11 @@ def main(argv=None) -> int:
                 else:
                     state = batch.preflight_state(db, base, env)
                     gate = cfgmod.acquisition_gate(base, env, preflight_passed=state["recent_unlocked"])
-                    if not gate["allowed"]:
+                    from . import incremental
+                    hold = incremental.credit_hold(db)
+                    if hold:
+                        out = {"status": "PAUSED_PROVIDER_CREDITS", "requests_sent": 0, "credit_hold": hold}
+                    elif not gate["allowed"]:
                         out, code = {"status": "BLOCKED_CREDENTIAL" if "PROVIDER_KEY_MISSING" in gate["reasons"] else "REFUSED_FAIL_CLOSED", "requests_sent": 0, "gate": gate}, 2
                     else:
                         ledger.recover_open()
@@ -252,9 +292,13 @@ def main(argv=None) -> int:
                 code = 0 if out["verdict"] == "PASS" else 1
                 batch.write_health(db, base, env, now, source="preflight")
         elif a.cmd == "daily":
-            out = batch.run_daily(db, base, env, lambda: provider.live_transport(base, env[key_env]), now)
+            from . import incremental
+            hold = incremental.credit_hold(db)
+            out = {"status": "PAUSED_PROVIDER_CREDITS", "requests_sent": 0, "credit_hold": hold} if hold else batch.run_daily(db, base, env, lambda: provider.live_transport(base, env[key_env]), now)
             batch.write_health(db, base, env, now, source="daily")
-            if out["status"] == "REFUSED_FAIL_CLOSED":
+            if out["status"] == "PAUSED_PROVIDER_CREDITS":
+                pass
+            elif out["status"] == "REFUSED_FAIL_CLOSED":
                 code = 2
             else:
                 out["topics_mapped"] = stance.map_all(db, base)
