@@ -34,6 +34,11 @@ class FocusError(ValueError):
     pass
 
 
+def _read(r, pages: int) -> bool:
+    """A unit is read when the provider said it ended, or the plan's number of pages was read."""
+    return bool(r) and (r["status"] == "COMPLETE" or (r["status"] in DONE and (r["pages"] or 0) >= pages))
+
+
 def spec(cfg: dict, name: str) -> dict:
     f = (cfg.get("focus") or {}).get(name)
     if not f:
@@ -125,13 +130,15 @@ def preview(db, cfg: dict, name: str, now: datetime, ledger: Ledger) -> dict:
     left = {p: usage["pools"][p]["cap_posts"] - usage["pools"][p]["returned_posts"] for p in ("recent", "historical")}
     left["recent"] = min(left["recent"], usage["sub_pools"]["recent"]["cap_posts"] - usage["sub_pools"]["recent"]["returned_posts"]) if "recent" in usage.get("sub_pools", {}) else left["recent"]
     left_day = usage["today"]["cap_posts"] - usage["today"]["returned_posts"]
-    open_units = [u for u in plan["units"] if (runs.get(u["run_id"]) or {"status": None})["status"] not in DONE]
+    open_units = [u for u in plan["units"] if not _read(runs.get(u["run_id"]), plan["pages_per_unit"])]
+    left_pages = {u["run_id"]: plan["pages_per_unit"] - ((runs.get(u["run_id"]) or {"pages": 0})["pages"] or 0) for u in open_units}   # a unit read to page 1 has one page to go
+    pages_left = sum(left_pages.values())
     fit, room, day_room, budgeted_new = Counter(), dict(left), left_day, 0
     already_new = sum(r["new_posts"] or 0 for r in runs.values())
     for u in open_units:                                       # same order and the same stop rule as the run; full pages assumed
         if already_new + budgeted_new >= plan["max_new_posts"]:
             break
-        need = page * plan["pages_per_unit"]
+        need = page * left_pages[u["run_id"]]
         if room[u["pool"]] >= need and day_room >= need:
             room[u["pool"]] -= need; day_room -= need; fit[u["pool"]] += 1; budgeted_new += need
     table = []
@@ -139,17 +146,17 @@ def preview(db, cfg: dict, name: str, now: datetime, ledger: Ledger) -> dict:
         h = have.get(d) or {"named": 0, "at_floor": 0, "valid": 0, "authors": set()}
         us = [u for u in plan["units"] if u["session"] == d]
         table.append({"session": d, "named_in_store": h["named"], "at_like_floor_in_store": h["at_floor"], "valid_in_store": h["valid"], "valid_authors_in_store": len(h["authors"]),
-                      "pool": us[0]["pool"], "stored_as": us[0]["ingest_mode"], "units": len(us), "units_read": sum(1 for u in us if (runs.get(u["run_id"]) or {"status": None})["status"] in DONE),
+                      "pool": us[0]["pool"], "stored_as": us[0]["ingest_mode"], "units": len(us), "units_read": sum(1 for u in us if _read(runs.get(u["run_id"]), plan["pages_per_unit"])),
                       "max_posts_planned": len(us) * page * plan["pages_per_unit"], "possible_repeat_of_stored_posts": h["at_floor"]})
-    max_posts = len(open_units) * page * plan["pages_per_unit"]
+    max_posts = pages_left * page
     tot_valid, tot_floor = sum(t["valid_in_store"] for t in table), sum(t["at_like_floor_in_store"] for t in table)
     return {"status": "PREVIEW", "requests_sent": 0, "name": name, "frozen": bool(plan["reused"]), "plan_sha256": plan["sha256"], "query": plan["query"], "order": plan["order"],
             "sessions": len(plan["sessions"]), "first_session": plan["sessions"][0] if plan["sessions"] else None, "last_session": plan["sessions"][-1] if plan["sessions"] else None,
             "units_total": len(plan["units"]), "units_open": len(open_units), "units_by_pool": dict(Counter(u["pool"] for u in open_units)), "units_by_round": dict(Counter(u["round"] for u in open_units)),
             "stop_at_new_posts": plan["max_new_posts"], "new_posts_so_far": already_new,
             "if_every_page_is_full": {"posts": min(max_posts, max(0, plan["max_new_posts"] - already_new) + page), "all_open_units_posts": max_posts,
-                                      "usd_at_quoted_rate_all_open_units": round(max_posts * per_post, 4), "requests_all_open_units": len(open_units) * plan["pages_per_unit"],
-                                      "minutes_at_request_interval": round(len(open_units) * plan["pages_per_unit"] * cfg["acquisition"]["min_request_interval_seconds"] / 60, 1)},
+                                      "usd_at_quoted_rate_all_open_units": round(max_posts * per_post, 4), "requests_all_open_units": pages_left,
+                                      "minutes_at_request_interval": round(pages_left * cfg["acquisition"]["min_request_interval_seconds"] / 60, 1)},
             "today": {"budget_day": usage["budget_day"], "posts_left": {"day": left_day, **left}, "units_that_fit_today": dict(fit), "posts_budgeted_today_if_full": budgeted_new,
                       "usd_today_if_full": round(budgeted_new * per_post, 4), "units_left_for_a_later_budget_day": len(open_units) - sum(fit.values())},
             "in_store_now": {"valid_posts": tot_valid, "valid_authors": len({a for d in plan["sessions"] for a in (have.get(d) or {"authors": ()})["authors"]}),
@@ -176,7 +183,7 @@ def progress(db, cfg: dict, name: str) -> dict:
         c["units"] += 1
         if r:
             c["returned"] += r["returned"] or 0; c["new_posts"] += r["new_posts"] or 0; c["duplicates"] += r["duplicates"] or 0
-        if r and r["status"] in DONE:
+        if _read(r, plan["pages_per_unit"]):
             c["units_read"] += 1
         else:
             c["open"].append({"slice": u["slice"], "status": r["status"] if r else "NOT_ASKED", "stop_reason": r["stop_reason"] if r else None})

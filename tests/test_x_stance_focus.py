@@ -168,6 +168,9 @@ def test_a_deeper_plan_continues_the_first_plans_pages_and_never_rereads_them(db
     first = [r["cursor"] for r in net.requests]
     assert len(first) == 10 and all(c == "" for c in first)
     assert focus.query_hash(cfg, "qqq-20261126-depth") == focus.query_hash(cfg, NAME)
+    from scripts.x_stance_v1.ledger import Ledger
+    v = focus.preview(db, cfg, "qqq-20261126-depth", NOW, Ledger(db, cfg, clock=lambda: NOW))
+    assert v["units_open"] == 10 and v["if_every_page_is_full"]["all_open_units_posts"] == 10 * 20      # a unit read to page 1 has exactly one page to go
     out = focus.run(db, cfg, net, "qqq-20261126-depth", NOW, clock=lambda: NOW)
     second = [r["cursor"] for r in net.requests[10:]]
     assert len(second) == 10 and all(c == "1" for c in second)                     # page 2 only: no first page is paid for twice
