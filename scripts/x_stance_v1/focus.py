@@ -195,12 +195,28 @@ def progress(db, cfg: dict, name: str) -> dict:
             "ledger_basis": "estimate from the quoted rate; not the provider's bill", "per_session": [by_session[d] for d in plan["sessions"]]}
 
 
-def _page_min_likes(db, plan: dict, u: dict):
+LIKE_CHECK_MIN_POSTS = 5          # fewer posts than this on the pages just fetched: no verdict yet, the next unit is checked
+LIKE_CHECK_MAX_BELOW = 0.25       # measured on 82 pages of this query: 1.1% of posts below the floor, at most 12% on one page
+
+
+def _fetched_likes(db, plan: dict, u: dict, since: str) -> list:
+    """Like counts on the pages of this unit fetched in this run only (a page an earlier plan paid for is not judged again)."""
     ws, we = (store.iso(datetime.fromtimestamp(x, timezone.utc)) for x in (u["start"], u["end"]))
-    page = db.execute("SELECT response_json FROM x_page_cache WHERE query_hash=? AND window_start_utc=? AND window_end_utc=? AND cursor=''", (plan["query_hash"], ws, we)).fetchone()
-    likes = [t.get("likeCount") for t in (json.loads(page[0]).get("tweets") or [])] if page else []
+    likes = []
+    for (rj,) in db.execute("SELECT response_json FROM x_page_cache WHERE query_hash=? AND window_start_utc=? AND window_end_utc=? AND fetched_at_utc>=?", (plan["query_hash"], ws, we, since)):
+        likes += [t.get("likeCount") for t in (json.loads(rj).get("tweets") or [])]
+    return likes
+
+
+def like_verdict(likes: list, floor: int) -> dict | None:
+    """The provider honours the like operator when most posts returned sit at or above it. A few below are expected
+    (likes are counted again when the post is read); a page made mostly of such posts means the operator was ignored."""
     known = [x for x in likes if isinstance(x, int)]
-    return (min(known) if known else None), len(likes), len(known)
+    if len(known) < LIKE_CHECK_MIN_POSTS:
+        return None
+    below = sum(1 for x in known if x < floor)
+    return {"posts_checked": len(likes), "with_like_count": len(known), "below_floor": below, "share_below_floor": round(below / len(known), 3),
+            "lowest_like_count": min(known), "floor": floor, "max_share_below": LIKE_CHECK_MAX_BELOW, "honoured": below / len(known) <= LIKE_CHECK_MAX_BELOW}
 
 
 def run(db, cfg: dict, transport, name: str, anchor: datetime, *, clock=None, ledger: Ledger | None = None) -> dict:
@@ -247,9 +263,8 @@ def run(db, cfg: dict, transport, name: str, anchor: datetime, *, clock=None, le
         if res.get("status") == "PARTIAL":
             out["interruptions"].append({"session": u["session"], "slice": u["slice"], "reason": res.get("stop_reason")})
         if floor is not None and out["like_floor_check"] is None and (res.get("returned") or 0) > 0:
-            lo, n, known = _page_min_likes(db, plan, u)
-            out["like_floor_check"] = {"first_page_posts": n, "with_like_count": known, "lowest_like_count": lo, "floor": floor, "honoured": lo is not None and lo >= floor}
-            if not out["like_floor_check"]["honoured"]:           # the search did not apply the like operator: stop before paying for posts the rules drop
+            out["like_floor_check"] = like_verdict(_fetched_likes(db, plan, u, out["started_at_utc"]), floor)
+            if out["like_floor_check"] and not out["like_floor_check"]["honoured"]:   # the search did not apply the like operator: stop before paying for posts the rules drop
                 out["stopped"] = "LIKE_OPERATOR_NOT_HONOURED"
                 break
     out["transient_errors"] = sum(c.transient_errors for c in cols.values())

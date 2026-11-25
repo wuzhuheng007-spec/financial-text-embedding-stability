@@ -115,6 +115,40 @@ def test_run_stops_after_one_page_if_the_like_operator_is_not_honoured(db, cfg):
     assert out["like_floor_check"]["lowest_like_count"] == 3
 
 
+class MixedNet(Net):
+    """Page 1 of every unit carries one post with 1 like (likes recounted after the search), later pages are clean."""
+    def get(self, params):
+        out = super().get(params)
+        if not params.get("cursor"):
+            out["tweets"][0]["likeCount"] = 1
+        return out
+
+
+def test_a_few_posts_below_the_floor_do_not_stop_the_run(db, cfg):
+    history(db)
+    out = focus.run(db, cfg, MixedNet(), NAME, NOW, clock=lambda: NOW)
+    assert out["stopped"] is None and out["units_asked"] == 10
+    assert out["like_floor_check"]["honoured"] is True and out["like_floor_check"]["below_floor"] == 1 and out["like_floor_check"]["lowest_like_count"] == 1
+
+
+def test_the_deeper_plan_judges_only_the_page_it_fetched(db, cfg):
+    """Regression (2026-11-25 20:37): the check re-read page 1, paid for by the first plan, instead of the page just fetched."""
+    history(db)
+    cfg["focus"]["qqq-20261126-depth"]["first_session"] = "2026-11-18"
+    net = MixedNet()
+    focus.run(db, cfg, net, NAME, NOW, clock=lambda: NOW)
+    later = NOW + timedelta(hours=10)
+    out = focus.run(db, cfg, net, "qqq-20261126-depth", later, clock=lambda: later)
+    assert out["stopped"] is None and out["units_asked"] == 10
+    assert out["like_floor_check"]["below_floor"] == 0 and out["like_floor_check"]["with_like_count"] == 20
+
+
+def test_a_page_too_small_to_judge_defers_the_check_to_the_next_unit():
+    assert focus.like_verdict([20, 3], 20) is None
+    assert focus.like_verdict([50] * 15 + [3] * 5, 20)["honoured"] is True        # 25%: still the operator at work
+    assert focus.like_verdict([50] * 14 + [3] * 6, 20)["honoured"] is False
+
+
 def test_a_503_leaves_the_unit_open_and_the_job_goes_on(db, cfg):
     history(db)
     e503 = provider.ProviderHTTPError(503, "HTTP_503_NOT_CHARGED")
