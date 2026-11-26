@@ -250,7 +250,8 @@ services:
   news:
     <<: *hardening
     profiles: ["news"]
-    image: ${APP_IMAGE:-quant-personal-app:local}
+    # Pinned to the image the collector runs, released on its own: a web release (APP_IMAGE) must never replace it.
+    image: ${NEWS_IMAGE:?set NEWS_IMAGE in the env file to the image the news collector runs}
     entrypoint: ["python", "-m", "scripts.quant_news_v1.collector"]
     command: ["run"]
     environment:
