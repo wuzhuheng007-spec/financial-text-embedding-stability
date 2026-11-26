@@ -685,7 +685,7 @@
     const shown = range ? rows.slice(-range) : rows;
     const bar = h('div', 'xs-range'), rb = h('div', 'xs-chips'); rb.setAttribute('role', 'group'); rb.setAttribute('aria-label', '显示范围');
     RANGES.forEach(([k, t]) => { const b = h('button', `tag ${k === range ? '' : 'tag-dim'}`, t); b.type = 'button'; b.setAttribute('aria-pressed', String(k === range)); b.addEventListener('click', () => { range = k; if (last) renderOverview(last); }); rb.append(b); });
-    const span_ = h('p', 'xs-when'); span_.append(h('span', null, '显示'), data(` ${span(shown[0])} – ${lastDay(shown[shown.length - 1])} `), h('span', null, '共'), data(` ${shown.length} `), h('span', null, kind === 'session3' ? '组' : '个交易日'), h('span', null, '（全部'), data(` ${rows.length} `), h('span', null, '）'));
+    const span_ = h('p', 'xs-when'); span_.append(h('span', null, '显示'), data(` ${(shown[0].group_sessions || [shown[0].window_label])[0]} – ${lastDay(shown[shown.length - 1])} `), h('span', null, '共'), data(` ${shown.length} `), h('span', null, kind === 'session3' ? '组' : '个交易日'), h('span', null, '（全部'), data(` ${rows.length} `), h('span', null, '）'));
     bar.append(rb, span_); box.append(bar);
     const prices = shown.map(r => closeOf(cm, PRIMARY, r)), info = h('div', 'xs-pick'); info.setAttribute('aria-live', 'polite');
     let idx = Math.max(0, shown.findIndex(r => r.window_label === picked)); if (picked == null || shown[idx].window_label !== picked) idx = shown.length - 1;

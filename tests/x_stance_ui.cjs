@@ -282,7 +282,7 @@ test('overview cards: sample, period, authors and evidence, with stage tags next
 test('overview chart: every group on the axis, a range to narrow it, keyboard, tap and hover, and why a price is missing', async () => {
   const d = DEID(), ui = await mount(d), ov = ui.panel('overview');
   assert.strictEqual(slots(ov).length, d.daily.length);                                                                                       // the full group index
-  assert.ok(allText(ov).includes('2026-08-24 – 2026-08-26 – 2026-11-24') || dataOf(ov).some(v => v.startsWith('2026-08-24 – 2026-08-26 – 2026-11-24')));
+  assert.ok(dataOf(ov).includes('2026-08-24 – 2026-11-24'));                                                                              // first and last session shown
   const svg = ov.all(e => e.tagName === 'svg')[0], marks = svg.all(e => e.tagName === 'text').map(e => e.textContent);
   assert.ok(marks.includes('∅') && marks.includes('…') && marks.some(t => t.endsWith('*')));                                                // empty and pending groups keep their place
   // the latest group is selected first; its price is missing because it is after the price data
