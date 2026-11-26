@@ -109,6 +109,28 @@ def _collector_lock_held() -> bool:
         return False
 
 
+def _moomoo_business(cache: Path, row: dict, now: datetime) -> dict:
+    """moomoo push verdict from the session calendar, the subscription acknowledgements, the per-session entitlement
+    observed so far and the connection history (scripts/quant_personal_feed/market_hours.py)."""
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.quant_personal_feed import market_hours as mh
+    with closing(sqlite3.connect(f"file:{cache.as_posix()}?mode=ro", uri=True, timeout=3)) as con:
+        events = [(s, a) for s, a in con.execute(
+            "SELECT state, at_utc FROM provider_state_events WHERE provider='moomoo' ORDER BY id DESC LIMIT 200")][::-1]
+        symbols = [s for (s,) in con.execute("SELECT state FROM symbol_state WHERE state<>'STOPPED'")]
+        caps: dict[str, list[str]] = {}
+        for session, state in con.execute("SELECT session, state FROM session_capabilities"):
+            caps.setdefault(session, []).append(state)
+    return mh.classify(
+        row=row, events=events, symbols=symbols, caps=caps, cal=mh.load(ROOT), now=now,
+        push_stale_s=MOOMOO_PUSH_STALE_SECONDS, heartbeat_stale_s=HEARTBEAT_STALE_SECONDS,
+        first_push_grace_s=int(os.environ.get("QUANT_MOOMOO_FIRST_PUSH_GRACE_SECONDS", "600")),
+        reconnect_grace_s=int(os.environ.get("QUANT_MOOMOO_RECONNECT_GRACE_SECONDS", "180")),
+        extended=os.environ.get("QUANT_MOOMOO_EXTENDED_SESSIONS", "1") == "1",
+        overnight=os.environ.get("QUANT_MOOMOO_OVERNIGHT", "0") == "1")
+
+
 def health_feed() -> dict:
     now = datetime.now(timezone.utc)
     config = _feed_config()
@@ -127,6 +149,15 @@ def health_feed() -> dict:
     for provider, on in enabled.items():
         row = rows.get(provider, {})
         item = {"enabled": on, "state": row.get("state")}
+        if on and provider == "moomoo":
+            try:
+                item.update(_moomoo_business(cache, row, now))
+                if not item["ok"]:
+                    healthy = False
+                result["providers"][provider] = item
+                continue
+            except Exception as exc:  # noqa: BLE001 - fall back to the old, strict rule below; class only
+                item["session_rule_error_class"] = type(exc).__name__
         if on:
             heartbeat = _age(row.get("heartbeat_at"), now)
             if provider == "jin10":
