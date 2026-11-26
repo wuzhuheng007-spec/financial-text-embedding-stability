@@ -225,4 +225,7 @@ def read_receipt(db, now: datetime) -> dict:
             "last_summary_committed_at_utc", "pending", "interval_hours")
     col = (rec.get("stages") or {}).get("collect") or {}
     return {"state": "STALE" if age > 2 * rec.get("interval_hours", 2) + 0.5 else "FRESH", "age_hours": round(age, 2), **{k: rec.get(k) for k in keep},
-            "collection": {k: col.get(k) for k in ("status", "requests", "new_posts", "returned")}, "credit_hold": hold}
+            "collection": {k: col.get(k) for k in ("status", "requests", "new_posts", "returned")}, "credit_hold": hold,
+            "last_post_received_at_utc": rec.get("last_post_received_at_utc"),
+            # each stage's exit code as the host script reported it, so the page can tell a partial round from a failed one
+            "stage_exits": {k: v.get("exit") for k, v in sorted((rec.get("stages") or {}).items()) if isinstance(v, dict) and "exit" in v}}

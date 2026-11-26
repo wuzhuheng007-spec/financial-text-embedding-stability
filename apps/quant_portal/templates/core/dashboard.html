@@ -144,16 +144,16 @@
   </section>
   <section id="x-stance" class="rw section" data-url="{% url 'x_stance_json' %}" data-day-url="{% url 'x_stance_day_json' %}" data-news-url="{% url 'news_stance_json' %}" data-vocab-url="{% url 'x_stance_vocabulary' %}" data-watch-url="{% url 'x_stance_watch' %}" aria-labelledby="x-stance-title">
     <div class="section-head"><h2 id="x-stance-title">X 关键词情绪</h2><span class="fine-print" id="x-stance-state" role="status">读取中…</span></div>
-    <div class="seg rw-tabs" role="tablist" aria-label="X 关键词情绪">
-      <button type="button" role="tab" data-xtab="settings" aria-selected="true">关键词设置</button><button type="button" role="tab" data-xtab="simple" aria-selected="false">模型判断</button><button type="button" role="tab" data-xtab="news" aria-selected="false">英文新闻</button><button type="button" role="tab" data-xtab="authors" aria-selected="false">重点作者</button><button type="button" role="tab" data-xtab="daily" aria-selected="false">每日情绪</button><button type="button" role="tab" data-xtab="views" aria-selected="false">样本主要观点</button><button type="button" role="tab" data-xtab="history" aria-selected="false">历史对照</button>
-    </div>
-    <div class="rw-panel" data-xpanel="settings" role="tabpanel"></div>
-    <div class="rw-panel" data-xpanel="simple" role="tabpanel" hidden></div>
-    <div class="rw-panel" data-xpanel="news" role="tabpanel" hidden></div>
-    <div class="rw-panel" data-xpanel="authors" role="tabpanel" hidden></div>
-    <div class="rw-panel" data-xpanel="daily" role="tabpanel" hidden></div>
-    <div class="rw-panel" data-xpanel="views" role="tabpanel" hidden></div>
-    <div class="rw-panel" data-xpanel="history" role="tabpanel" hidden></div>
+    <div class="xs-overview" data-xpanel="overview" aria-live="polite"><p class="muted">读取中…</p></div>
+    <h3 class="xs-more-title">明细（默认收起，点开查看）</h3>
+    <details class="disclosure section xs-fold"><summary data-xtab="daily">每组明细与分母（各标的、各面板）</summary><div class="disclosure-body" data-xpanel="daily"></div></details>
+    <details class="disclosure section xs-fold"><summary data-xtab="views">样本主要观点</summary><div class="disclosure-body" data-xpanel="views"></div></details>
+    <details class="disclosure section xs-fold"><summary data-xtab="authors">重点作者：名单与原文</summary><div class="disclosure-body" data-xpanel="authors"></div></details>
+    <details class="disclosure section xs-fold"><summary data-xtab="simple">逐条模型判断（可切换分类版本）</summary><div class="disclosure-body" data-xpanel="simple"></div></details>
+    <details class="disclosure section xs-fold"><summary data-xtab="news">英文新闻：模型判断</summary><div class="disclosure-body" data-xpanel="news"></div></details>
+    <details class="disclosure section xs-fold"><summary data-xtab="history">历史对照</summary><div class="disclosure-body" data-xpanel="history"></div></details>
+    <h3 class="xs-more-title" data-xtab="settings">额度、进度、设置与诊断</h3>
+    <div class="xs-settings" data-xpanel="settings"></div>
   </section>
   <h2 class="rs-more-title">其他研究资料</h2>
   <details class="disclosure section" id="rs-old-sentiment"><summary>旧研究：新闻情绪评分（英文 v4 / 中文 v4.1）</summary><div class="disclosure-body">
@@ -254,7 +254,7 @@
 <script defer charset="utf-8" src="{% static 'core/research_sentiment_v4.js' %}?v=research-v45-compact-1"></script>
 <script defer charset="utf-8" src="{% static 'core/official_filings.js' %}?v=official-v5"></script>
 <script defer charset="utf-8" src="{% static 'core/research_v1.js' %}?v=m1-2"></script>
-<script defer charset="utf-8" src="{% static 'core/x_stance_v1.js' %}?v=12"></script>
+<script defer charset="utf-8" src="{% static 'core/x_stance_v1.js' %}?v=15"></script>
 <script defer charset="utf-8" src="{% static 'core/news_stance_v1.js' %}?v=1"></script>
 <script defer charset="utf-8" src="{% static 'core/news_text_v1.js' %}?v=1"></script>
 <script defer charset="utf-8" src="{% static 'core/news_v20.js' %}?v=24-1"></script>

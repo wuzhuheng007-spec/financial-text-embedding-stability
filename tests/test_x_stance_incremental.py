@@ -108,6 +108,8 @@ def test_the_receipt_keeps_the_last_successful_update_and_shows_the_hold(db, cfg
     assert r2["ok"] is False and r2["last_successful_update_at_utc"] == r1["last_successful_update_at_utc"]      # a failed round does not move it
     v = incremental.read_receipt(db, T0 + timedelta(hours=2, minutes=1))
     assert v["state"] == "FRESH" and v["credit_hold"] and v["last_successful_update_at_utc"] == r1["last_successful_update_at_utc"]
+    assert v["ok"] is False and v["stage_exits"] == {"build": 1}                                    # FRESH and failed at once: the page must not call this round on schedule
+    assert "last_post_received_at_utc" in v
     assert incremental.read_receipt(db, T0 + timedelta(hours=9))["state"] == "STALE"
     assert db.execute("SELECT count(*) FROM x_update_log").fetchone()[0] == 2
 
