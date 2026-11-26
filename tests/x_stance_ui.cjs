@@ -325,3 +325,13 @@ test('overview receipt: a FRESH receipt of a failed or partial round, a provider
     assert.deepStrictEqual(left, []);
   }
 });
+
+test('watched authors: a failed classification is named as such, never as neutral or "could not be judged"', async () => {
+  const d = watchPayload();
+  d.watchlist.reading = [{watch_id: 'watch-01', post_id: '21', created_at_utc: '2026-11-22T15:00:00Z', first_seen_at_utc: '2026-11-23T05:31:00Z', kind: 'original', lang: 'zh', text: 'synthetic post',
+    url: 'https://x.com/Synth_One/status/21', likes_at_fetch: 40, sources: [], analysis: [{topic_id: 'qqq', target_id: 'QQQ', state: 'NOT_IN_ANALYSIS', reason: 'EVIDENCE_NOT_IN_TEXT', stance: null}]}];
+  const ui = await mount(d), t = texts(ui.panel('authors')).join('|');
+  assert.ok(t.includes('未计入：模型给出的依据在原文里找不到（分类失败）') && !t.includes('未计入：无法判定'));
+  const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
+  assert.deepStrictEqual(left, []);
+});

@@ -1507,6 +1507,8 @@
     "模型判断": "Model judgements",
     "模型判断，待人工验证": "Model judgement, awaiting human verification",
     "已有数据": "Data available",
+    "未计入：模型给出的依据在原文里找不到（分类失败）": "Not counted: the evidence the model gave is not in the text (classification failed)",
+    "未计入：模型输出格式错误（分类失败）": "Not counted: the model output was malformed (classification failed)",
     "分类未完成，占比还会变": "Classification incomplete; shares may change",
     "等权占比缺失": "Equal-weight shares missing",
     "待分类，暂无占比": "Pending; no shares yet",

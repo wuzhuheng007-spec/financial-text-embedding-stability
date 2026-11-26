@@ -133,7 +133,7 @@
     if (v.startsWith('NOT_REACHED')) return '额度或计划未轮到'; if (v.startsWith('QUERY_FAILED')) return '查询失败';
     if (v.startsWith('AUTHOR_MISMATCH')) return '返回的账号不符'; if (v === 'RETURNED_WITHOUT_USERNAME_ID_NOT_BOUND') return '返回中没有用户名，未绑定'; return v; };
   const WHYNOT = {BELOW_LIKE_FLOOR: '未计入：点赞低于下限', LIKE_COUNT_UNKNOWN: '未计入：点赞数未知', NO_TARGET_KEYWORD_IN_TEXT: '未计入：正文没有提到任何标的关键词', TARGET_NOT_NAMED: '未计入：正文没有点名该标的', IRRELEVANT: '未计入：模型判为无关',
-    RETWEET_NO_NEW_TEXT: '未计入：纯转发', IMAGE_OR_LINK_ONLY: '未计入：只有图片或链接'};
+    RETWEET_NO_NEW_TEXT: '未计入：纯转发', IMAGE_OR_LINK_ONLY: '未计入：只有图片或链接', EVIDENCE_NOT_IN_TEXT: '未计入：模型给出的依据在原文里找不到（分类失败）', JSON_INVALID: '未计入：模型输出格式错误（分类失败）'};
   const COUNTED = {bullish: '已计入：看多', bearish: '已计入：看空', neutral: '已计入：中性'};
   const counted = x => x.state === 'IN_ANALYSIS' ? COUNTED[x.stance] : x.state === 'WAITING_FOR_CLASSIFICATION' ? '待分类' : (WHYNOT[x.reason] || '未计入：无法判定');
   function sendWatch(id, enabled, msg) {
