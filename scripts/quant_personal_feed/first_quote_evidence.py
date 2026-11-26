@@ -16,6 +16,7 @@ CLI (inside the feed container): python -m scripts.quant_personal_feed.first_quo
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import sqlite3
 import subprocess
@@ -54,6 +55,12 @@ def labels(symbols: list[str]) -> tuple[dict[str, str], str]:
     return m, hashlib.sha256(json.dumps(order).encode()).hexdigest()[:16]
 
 
+def match_key(symbol: str, salt: bytes | None) -> str | None:
+    """Cross-window matching key: HMAC-SHA256 under a salt that stays on the observing machine. Without the salt a key
+    cannot be tied to a symbol (a plain hash of a ticker could be brute-forced; this cannot)."""
+    return hmac.new(salt, symbol.encode(), hashlib.sha256).hexdigest()[:16] if salt else None
+
+
 def classify_row(row: dict, start: datetime, end: datetime, cal: dict | None) -> str:
     """VALID_PREMARKET | OLD_SNAPSHOT | SOURCE_TIME_MISSING | SESSION_UNCONFIRMED | OTHER_SESSION | SOURCE_AFTER_WINDOW"""
     src = utc(row.get("source_at"))
@@ -73,10 +80,16 @@ def classify_row(row: dict, start: datetime, end: datetime, cal: dict | None) ->
 
 
 def summarize(*, session_rows: list[dict], subscriptions: list[str], start: datetime, end: datetime, cal: dict | None,
-              events: list[tuple[str, str]] = (), parent_rows: list[dict] = ()) -> dict:
-    """session_rows: session_quotes rows (symbol, session, source_at, received_at, source_channel, date_basis)."""
+              events: list[tuple[str, str]] = (), parent_rows: list[dict] = (), key_salt: bytes | None = None) -> dict:
+    """session_rows: session_quotes rows (symbol, session, source_at, received_at, source_channel, date_basis).
+    With key_salt, every confirmed subscription carries a match key, and valid quotes of symbols that are no longer
+    confirmed are kept by key (so a subscription dropped during the window can still be traced)."""
     lab, map_sha = labels(subscriptions)
     per = {lab[s]: {"first_valid": None, "excluded": {}} for s in subscriptions}
+    if key_salt:
+        for s in subscriptions:
+            per[lab[s]]["key"] = match_key(s, key_salt)
+    unconfirmed_valid: dict[str, str] = {}
     excluded_total: dict[str, int] = {}
     first_any = None
     rows = sorted((r for r in session_rows if in_window(utc(r.get("received_at")), start, end)),
@@ -87,6 +100,8 @@ def summarize(*, session_rows: list[dict], subscriptions: list[str], start: date
         name = lab.get(r.get("symbol"))
         if name is None:
             outside_subs += 1
+            if key_salt and k == "VALID_PREMARKET":
+                unconfirmed_valid.setdefault(match_key(r["symbol"], key_salt), iso(utc(r["received_at"])))
             continue
         slot = per[name]
         if k == "VALID_PREMARKET":
@@ -117,10 +132,11 @@ def summarize(*, session_rows: list[dict], subscriptions: list[str], start: date
         "records_in_window": len(rows), "records_for_unconfirmed_symbols": outside_subs,
         "parent_quote_rows_in_window": sum(1 for r in parent_rows if in_window(utc(r.get("received_at")), start, end)),
         "state_events": ev, "reconnects_after_start": len(reconnects),
+        "keyed": bool(key_salt), "valid_quote_first_by_unconfirmed_key": unconfirmed_valid,
     }
 
 
-def collect(db_path: str, start: datetime, end: datetime, root: Path = Path("/app")) -> dict:
+def collect(db_path: str, start: datetime, end: datetime, root: Path = Path("/app"), key_salt: bytes | None = None) -> dict:
     d = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True); d.row_factory = sqlite3.Row
     lo, hi = (start - timedelta(seconds=2)).strftime("%Y-%m-%dT%H:%M:%S"), (end + timedelta(seconds=2)).strftime("%Y-%m-%dT%H:%M:%S")
     sess = [dict(r) for r in d.execute("""SELECT symbol, session, source_at, received_at, source_channel, date_basis
@@ -133,7 +149,7 @@ def collect(db_path: str, start: datetime, end: datetime, root: Path = Path("/ap
         cal = mh.load(root)
     except OSError:
         cal = None
-    out = summarize(session_rows=sess, subscriptions=subs, start=start, end=end, cal=cal, events=events, parent_rows=parent)
+    out = summarize(session_rows=sess, subscriptions=subs, start=start, end=end, cal=cal, events=events, parent_rows=parent, key_salt=key_salt)
     out["subscription_state_updates"] = [(s, iso(utc(a))) for s, a in sym_events]
     out["calendar_registered"] = bool(cal and cal.get("registered"))
     return out
