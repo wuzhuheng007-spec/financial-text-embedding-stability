@@ -109,6 +109,20 @@ def _collector_lock_held() -> bool:
         return False
 
 
+def _moomoo_market(config: dict, now, push_age, limit) -> dict:
+    """The market-hours verdict for the moomoo push. Any failure here keeps the old, strict rule."""
+    try:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.quant_personal_feed import market_hours
+        syms = (config.get("moomoo") or {}).get("priority_symbols") or []
+        if any("." in s and not s.upper().startswith("US.") for s in syms):
+            return {"business": "STALE_OR_NONE" if push_age is None or push_age > limit else "OK", "market": {"phase": "UNKNOWN", "reason": "non-US symbols subscribed"}, "ok": push_age is not None and push_age <= limit}
+        return market_hours.judge(market_hours.load(ROOT), now, push_age, limit)
+    except Exception as exc:  # noqa: BLE001 - report class only
+        return {"business": "STALE_OR_NONE" if push_age is None or push_age > limit else "OK", "market": {"phase": "UNKNOWN", "error_class": type(exc).__name__}, "ok": push_age is not None and push_age <= limit}
+
+
 def health_feed() -> dict:
     now = datetime.now(timezone.utc)
     config = _feed_config()
@@ -137,7 +151,12 @@ def health_feed() -> dict:
                 limit = MOOMOO_PUSH_STALE_SECONDS
             item.update(heartbeat_age_seconds=heartbeat, business_age_seconds=business,
                         business="OK" if business is not None and business <= limit else "STALE_OR_NONE")
-            if heartbeat is None or heartbeat > HEARTBEAT_STALE_SECONDS or item["business"] != "OK":
+            ok = item["business"] == "OK"
+            if provider == "moomoo":                     # a missing push is a fault only while one is expected (holidays, nights, early closes)
+                verdict = _moomoo_market(config, now, business, limit)
+                item.update(business=verdict["business"], market=verdict["market"], last_push_at=row.get("last_push_at"))
+                ok = verdict["ok"]
+            if heartbeat is None or heartbeat > HEARTBEAT_STALE_SECONDS or not ok:
                 healthy = False
         result["providers"][provider] = item
     if not any(enabled.values()):
