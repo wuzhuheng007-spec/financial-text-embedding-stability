@@ -224,7 +224,10 @@ def _closes(db, mine) -> tuple[dict, dict]:
             series[r["topic_id"]] = p_.get("series_id")
     for t, m in out.items():
         last[t] = max(m)
-    meta = {"frozen_input_last_date": max(last.values()) if last else None, "display_fill": None}
+    meta = {"frozen_input_last_date": max(last.values()) if last else None, "display_fill": None,
+            # what each part of the line is, so the page can label it without guessing (additions only; old fields unchanged)
+            "research": {"basis": "ADJUSTED", "currency": "USD", "series_ids": sorted({s for s in series.values() if s}), "use": "research returns and the drawn line",
+                         "source": "frozen research price input (anchor close of each h=1 pair)"}}
     want = sorted(t for t, s in series.items() if (s or "").startswith("US.QQQ|"))
     if want:
         try:
@@ -237,7 +240,7 @@ def _closes(db, mine) -> tuple[dict, dict]:
             for b in h.get("bars") or []:
                 if b["date"] > last[t]:
                     out[t][b["date"]] = b["close"]; added += 1
-        meta["display_fill"] = {"state": h.get("state"), "source": "moomoo daily bars, unadjusted (portal display history)", "after": min(last[t] for t in want),
+        meta["display_fill"] = {"state": h.get("state"), "source": "moomoo daily bars, unadjusted (portal display history)", "basis": "UNADJUSTED", "currency": "USD", "use": "drawn only, never paired with a return", "after": min(last[t] for t in want),
                                 "dates_added": added // max(len(want), 1), "through": max((b["date"] for b in h.get("bars") or []), default=None)}
     return out, meta
 

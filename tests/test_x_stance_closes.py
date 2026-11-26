@@ -26,6 +26,9 @@ def test_every_session_close_reaches_the_page(tmp_path, monkeypatch):
     assert len(out["closes"]["qqq"]) == 100 and out["closes"]["qqq"][dates[-1]] == 699.0
     assert out["closes_meta"]["frozen_input_last_date"] == dates[-1]
     assert out["closes_meta"]["display_fill"]["dates_added"] == 0                     # no display history: nothing filled, nothing invented
+    r = out["closes_meta"]["research"]
+    assert r["basis"] == "ADJUSTED" and r["currency"] == "USD" and r["series_ids"] == ["US.QQQ|DAY|a1"]          # the page labels each part from the read model
+    assert out["closes_meta"]["display_fill"]["basis"] == "UNADJUSTED"
 
 
 def test_dates_after_the_frozen_input_are_filled_from_the_display_history_and_marked(tmp_path, monkeypatch):
