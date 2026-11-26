@@ -1,0 +1,52 @@
+{
+ "provider_state": {
+  "state": "CONNECTED_DELAY_UNKNOWN",
+  "heartbeat_at": "2026-11-26T07:23:17.350224Z",
+  "last_push_at": "2026-11-26T07:23:15.342269Z",
+  "last_error_class": null,
+  "worker_alive": 1
+ },
+ "events_since_release": [
+  [
+   "DISCONNECTED",
+   "2026-11-26T07:22:52.258316Z"
+  ],
+  [
+   "CONNECTING",
+   "2026-11-26T07:22:56.433233Z"
+  ],
+  [
+   "CONNECTED_DELAY_UNKNOWN",
+   "2026-11-26T07:23:00.987748Z"
+  ]
+ ],
+ "symbol_states": [
+  "SUBSCRIBED",
+  "SUBSCRIBED",
+  "SUBSCRIBED",
+  "SUBSCRIBED",
+  "SUBSCRIBED",
+  "SUBSCRIBED"
+ ],
+ "receipt": {
+  "accepted_subscriptions_this_session": 6,
+  "connection_state": "CONNECTED_DELAY_UNKNOWN",
+  "market_state_codes": {
+   "US": 11
+  },
+  "observed_at_utc": "2026-11-26T07:23:15.338054Z",
+  "skipped_subscriptions": 0
+ },
+ "quotes_since_release": {
+  "last_quote_received": null,
+  "quotes_since_release": 0
+ },
+ "health": {
+  "healthy": true,
+  "business": "OK",
+  "business_zh": "行情正常",
+  "phase": "CLOSED",
+  "next_open_utc": "2026-11-27T14:30:00+00:00",
+  "checked_at_utc": "2026-11-26T07:23:21.972699+00:00"
+ }
+}
