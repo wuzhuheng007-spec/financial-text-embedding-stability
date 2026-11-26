@@ -420,6 +420,14 @@
     p.replaceChildren(...out);
   }
 
+  const CELL_WHY = {SERIES_SHORTER_THAN_TWO_BLOCKS: '序列短于两个区块，无法估计区间', TOO_FEW_STATE_DAYS: '这个状态的交易日太少'};
+  function verdict(c) {                                     // an inconclusive cell names the machine reason and the days behind it
+    if (c.status !== 'INCONCLUSIVE') return '已估计';
+    const b = h('span'); b.append(h('span', null, '样本不足，无结论'));
+    if (c.status_reason) b.append(h('span', null, '：'), h('span', null, CELL_WHY[c.status_reason] || ''), data(` (${c.status_reason})`));
+    b.append(h('span', null, ' · 有收益的状态日'), data(` ${c.n_dates == null ? '—' : c.n_dates}`), h('span', null, ' · 没有收益的状态日'), data(` ${c.state_days_without_return == null ? '—' : c.state_days_without_return}`));
+    return b;
+  }
   function renderHistory(d) {
     const p = panel('history');
     if (!d.has_data) { p.replaceChildren(missingBox(d, '还没有历史对照。需要以下输入：')); return; }
@@ -433,7 +441,7 @@
     if (!cells.length) s2.append(h('p', 'muted', '没有可配对的行情或样本，条件收益表为空。'));
     else s2.append(table(['关键词主题', '状态', '期限（交易日）', '日期数', '平均', '中位数', '上涨比例', '同期无条件平均', '95% 区间', '结论'], cells.map(c =>
       [TOPIC[c.topic_id] || c.topic_id, STATE[c.state], c.h, c.n_dates, pct(c.mean), pct(c.median), pct(c.up_share), pct(c.unconditional.mean),
-        c.mean_ci95 ? `${pct(c.mean_ci95[0])} ~ ${pct(c.mean_ci95[1])}` : '—', c.status === 'INCONCLUSIVE' ? '样本不足，无结论' : '已估计'])));
+        c.mean_ci95 ? `${pct(c.mean_ci95[0])} ~ ${pct(c.mean_ci95[1])}` : '—', verdict(c)])));
     s2.append(h('p', 'fine-print', '历史回填只说明现在还能取到的帖子，不证明当时系统能同样收到。这里没有预测，也没有策略收益。'));
     out.push(s2);
     p.replaceChildren(...out);
@@ -474,18 +482,28 @@
     p.replaceChildren(...out);
   }
 
-  // ---------- overview: the update receipt, one headline block per panel, then the one primary chart ----------
-  // Shares on this screen are one vote per account (shares_equal_weight) only. A row without them shows a missing
-  // state; it never falls back to the weighted shares under an equal-weight label.
-  const PRIMARY = 'qqq', LOW = 30, TARGET_POSTS = 500, NBARS = 40;
+  // ---------- overview: the update receipt, one card per panel, then the one primary chart ----------
+  // A card answers, in this order: which sample, which period, how many authors, what the evidence is. Shares are one
+  // vote per author (shares_equal_weight) and, separately, one per valid post (shares_by_post); a row without the
+  // equal-weight shares shows a missing state and never borrows the weighted ones.
+  const PRIMARY = 'qqq', LOW = 30, TARGET_POSTS = 500;
+  const RANGES = [[10, '最近 10 组'], [20, '最近 20 组'], [0, '全部']];
+  let range = 0, picked = null;
   const lastDay = r => { const g = r.group_sessions || []; return g.length ? g[g.length - 1] : r.window_label; };
-  function closeMap(d) {                                    // close and source per topic and session; a group is priced at its last session
-    const m = {}, src = {}, meta = d.closes_meta || {}, cut = meta.frozen_input_last_date, fill = meta.display_fill;
-    if (d.closes) Object.entries(d.closes).forEach(([t, by]) => Object.entries(by || {}).forEach(([day, c]) => { m[`${t}|${day}`] = c; src[`${t}|${day}`] = fill && cut && day > cut ? 'display' : 'research'; }));
-    else (d.returns || []).forEach(r => { if (r.h === 1 && r.anchor_close != null) { m[`${r.topic_id}|${r.session_date}`] = r.anchor_close; src[`${r.topic_id}|${r.session_date}`] = 'research'; } });
-    return {m, src};
+  function closeMap(d) {                                    // close, source and the last priced date per topic; a group is priced at its last session
+    const m = {}, src = {}, meta = d.closes_meta || {}, cut = meta.frozen_input_last_date, fill = meta.display_fill, last = {};
+    const put = (t, day, c, s_) => { m[`${t}|${day}`] = c; src[`${t}|${day}`] = s_; if (!last[t] || day > last[t]) last[t] = day; };
+    if (d.closes) Object.entries(d.closes).forEach(([t, by]) => Object.entries(by || {}).forEach(([day, c]) => put(t, day, c, fill && cut && day > cut ? 'display' : 'research')));
+    else (d.returns || []).forEach(r => { if (r.h === 1 && r.anchor_close != null) put(r.topic_id, r.session_date, r.anchor_close, 'research'); });
+    return {m, src, last, meta};
   }
-  const closeOf = (cm, tid, r) => { for (const k of [`${tid}|${lastDay(r)}`, `${tid}|${r.window_label}`]) if (cm.m[k] != null) return {v: cm.m[k], src: cm.src[k]}; return {v: null, src: null}; };
+  function closeOf(cm, tid, r) {
+    for (const k of [`${tid}|${lastDay(r)}`, `${tid}|${r.window_label}`]) if (cm.m[k] != null) return {v: cm.m[k], src: cm.src[k], reason: null};
+    const why = !cm.last[tid] ? 'NO_PRICE_SERIES' : lastDay(r) > cm.last[tid] ? 'AFTER_PRICE_INPUT_END' : 'NO_CLOSE_FOR_SESSION';
+    return {v: null, src: null, reason: why};
+  }
+  const PRICE_WHY = {NO_PRICE_SERIES: '没有可配对的价格序列', AFTER_PRICE_INPUT_END: '这一组的最后交易日晚于价格数据的最后日期', NO_CLOSE_FOR_SESSION: '价格序列里没有这一天的收盘价'};
+  const BASIS = {research: '复权研究收盘价（冻结研究序列，参与收益计算）', display: '未复权展示收盘价（moomoo 日线，只用于画图）'};
   const eqOf = r => r.shares_equal_weight || {};
   const hasEq = r => eqOf(r).bullish != null;
   function status(r) {
@@ -497,16 +515,27 @@
   }
   const STATUS = {ok: '已全部分类', partial: '分类未完成，占比还会变', noeq: '等权占比缺失', pending: '待分类，暂无占比', novalid: '没有有效标签', nosample: '无样本'};
   const MARK = {partial: '*', noeq: '≠', pending: '…', novalid: '×', nosample: '∅'};
+  const DESC = {keyword: '关键词检索采到、命中词表、正文点名 QQQ 并达到点赞下限的帖子', watchlist: '重点作者名单内作者的帖子，同样要求点名 QQQ 并达到点赞下限',
+    combined: '关键词样本与重点作者两路合并，跨来源去重：同一条帖子只算一次，同一作者只投一票'};
   const bj = v => { const t = Date.parse(v || ''); if (!v || isNaN(t)) return null; const x = new Date(t + 8 * 3600e3), z = n => String(n).padStart(2, '0');
     return `${x.getUTCFullYear()}-${z(x.getUTCMonth() + 1)}-${z(x.getUTCDate())} ${z(x.getUTCHours())}:${z(x.getUTCMinutes())}`; };
   const when = v => { const n = data(bj(v) || '—'); if (v) { n.title = String(v); n.dataset.utc = String(v); } return n; };       // Beijing time shown, the stored UTC kept on the node
+  const nyDate = v => { const t = Date.parse(v || ''); if (isNaN(t)) return null; try { return new Date(t).toLocaleDateString('en-CA', {timeZone: 'America/New_York'}); } catch (e) { return new Date(t - 5 * 3600e3).toISOString().slice(0, 10); } };
   const panelDaily = (d, sc) => { if (sc === 'keyword') return {available: true, daily: d.daily || []}; const pn = (d.panels || {})[sc] || {}; return {...pn, daily: pn.daily || []}; };
-  function series(rows) {                                   // the QQQ rows of one panel, all languages, per group of three sessions when the build has them
-    const q = rows.filter(r => r.lang_scope === 'all' && r.topic_id === PRIMARY);
+  function series(d, sc) {                                  // the QQQ rows of one panel, all languages, per group of three sessions when the build has them
+    const q = panelDaily(d, sc).daily.filter(r => r.lang_scope === 'all' && r.topic_id === PRIMARY);
     const kind = q.some(r => r.window_kind === 'session3') ? 'session3' : 'session';
-    return {kind, rows: q.filter(r => r.window_kind === kind).sort((a, b) => a.window_label < b.window_label ? -1 : 1)};
+    let rows = q.filter(r => r.window_kind === kind).sort((a, b) => a.window_label < b.window_label ? -1 : 1);
+    const sel = sc === 'watchlist' ? nyDate(((d.watchlist || {}).summary || {}).selected_at_utc) : null;
+    if (sel) rows = rows.filter(r => lastDay(r) >= sel);     // the list exists from the day it was selected; earlier groups are not part of this panel
+    return {kind, rows, sel};
   }
-  const stat = (k, v) => { const b = h('div', `xs-stat xs-t-${k}`); const n = data(pct(v)); n.className = 'num xs-stat-v'; b.append(h('span', 'xs-stat-k', STATE[k]), n); return b; };
+  function triple(sh, n, withPct) {                       // stance words stay translatable; numbers are data
+    const out = [];
+    ['bullish', 'bearish', 'neutral'].forEach((k, i) => { if (i) out.push(h('span', null, ' · ')); out.push(h('span', null, STATE[k]), data(withPct ? ` ${pct(sh[k])} (${n[k] == null ? '—' : n[k]})` : ` ${n[k] == null ? '—' : n[k]}`)); });
+    return out;
+  }
+  const tag = (t, cls) => chip(t, cls || 'xs-tag-warn');
   const fact = (k, v) => { const b = h('div', 'xs-fact'); b.append(h('span', 'xs-fact-k', k), v instanceof Node ? v : data(v == null ? '—' : v)); return b; };
   function outcome(up) {                                    // what the last round did, from the receipt the host script wrote
     if (up.state === 'NOT_REPORTED') return [['更新回执：尚未上报', 'tag-dim']];
@@ -528,64 +557,114 @@
     box.append(h('p', 'fine-print', '时间均为北京时间；鼠标停在时间上可看原始 UTC 记录。'));
     return box;
   }
-  function headline(d, sc) {
+  function stages(d, r, cm) {                               // the stage each number is at, written next to it
+    const out = [], c = r.classification || {}, st = status(r);
+    if (r.collection_status && r.collection_status !== 'COMPLETE') out.push(tag('覆盖不全'));
+    if ((c.pending || 0) > 0) out.push(tag('分类未完成'));
+    if (st === 'novalid' || st === 'nosample' || st === 'noeq') out.push(tag(STATUS[st]));
+    if (closeOf(cm, PRIMARY, r).v == null) out.push(tag('行情不完整'));
+    if ((d.classifier || {}).quality !== 'VALIDATED') out.push(tag('模型未人工验证', 'xs-tag-label'));
+    const b = h('div', 'xs-stages'); b.append(...out); return b;
+  }
+  function cardDetail(d, r) {                               // identity, versions and the time chain, one click away
+    const det = h('details', 'xs-card-detail'); det.append(h('summary', null, '详情：模型、版本与时间'));
+    const act = r.activation || {}, c = r.classification || {}, ex = r.excluded_or_unjudged || {}, g = h('div', 'xs-facts');
+    const short = v => v ? String(v).slice(0, 16) : '—';
+    g.append(fact('窗口开始', when(r.window_start_utc)), fact('窗口结束', when(r.window_end_utc)), fact('汇总提交', when(r.signal_committed_at_utc || r.first_committed_at_utc)),
+      fact('模型', act.model_id || (d.classifier || {}).model_id || '—'), fact('模型版本', short(act.model_revision || (d.classifier || {}).revision)), fact('提示词哈希', short(act.prompt_hash)),
+      fact('推理身份', short(act.identity)), fact('样本版本', act.sample_version || c.sample_version || '—'), fact('快照', short(r.snapshot_id)),
+      fact('无关', ex.IRRELEVANT || 0), fact('分类失败', (ex.EVIDENCE_NOT_IN_TEXT || 0) + (ex.JSON_INVALID || 0)), fact('点赞不足未计入', c.filtered_low_likes == null ? '—' : c.filtered_low_likes),
+      fact('原文未点名未计入', c.filtered_target_not_named == null ? '—' : c.filtered_target_not_named));
+    det.append(g); return det;
+  }
+  function headline(d, sc, cm) {
     const card = h('div', 'card xs-head');
     const top = h('div', 'xs-head-top'); const tg = h('span', 'tag tag-dim', 'QQQ'); tg.setAttribute('translate', 'no');
-    top.append(h('h3', null, PANEL[sc]), tg); card.append(top);
+    top.append(h('h3', null, PANEL[sc]), tg); card.append(top, h('p', 'xs-desc', DESC[sc]));
     const pn = panelDaily(d, sc), label = chip('模型判断，待人工验证', 'xs-tag-label');
     if (sc !== 'keyword' && !pn.available) { card.append(h('p', 'muted', '还没有导入重点作者名单。'), label); return card; }
-    const {kind, rows} = series(pn.daily);
+    const {kind, rows, sel} = series(d, sc);
+    if (sel) { const p = h('p', 'fine-print'); p.append(h('span', null, '名单选定于'), when(((d.watchlist || {}).summary || {}).selected_at_utc), h('span', null, '；更早的分组不属于这个面板。')); card.append(p); }
     if (!rows.length) { card.append(h('p', 'muted', '还没有 QQQ 的占比数据。'), label); return card; }
     const latest = rows[rows.length - 1], valued = rows.filter(hasEq), r = valued[valued.length - 1], st = status(latest);
     const w1 = h('p', 'xs-when'); w1.append(h('span', null, kind === 'session3' ? '最新一组（三个交易日）' : '最新交易日（还没有三日分组）'), data(` ${span(latest)} `), chip(STATUS[st], st === 'ok' ? 'run-succeeded' : 'xs-tag-warn')); card.append(w1);
-    if (r && r !== latest) { const w2 = h('p', 'xs-when'); w2.append(h('span', null, '下面的占比来自最近有值的一组'), data(` ${span(r)}`)); card.append(w2); }
-    if (!r) { card.append(h('p', 'muted', st === 'noeq' ? '等权占比缺失：这一组只有加权结果，这里不显示。' : '还没有带等权占比的分组。'), label); return card; }
-    const sh = eqOf(r), big = h('div', 'xs-stats'); big.append(stat('bullish', sh.bullish), stat('bearish', sh.bearish), stat('neutral', sh.neutral)); card.append(big);
-    const bar = shareBar(sh); bar.classList.add('xs-bar-lg'); card.append(bar);
-    card.append(h('p', 'fine-print', '等权：每个账号一票，取窗口内最后一条有效帖子'));
-    const c = r.classification || {}, act = r.activation || {};
-    const g = h('div', 'xs-facts');
-    g.append(fact('窗口终点（交易日）', lastDay(r)), fact('有效帖子', r.posts_total), fact('独立账号', r.accounts_total),
-      fact('分类完成', c.share_done == null ? '—' : pct(c.share_done)), fact('待分类', c.pending == null ? '—' : c.pending), fact('模型', act.model_id || '—'));
-    card.append(g);
-    const n = r.accounts_total;
-    if (n == null || n < LOW) card.append(h('p', 'xs-warn', '样本账号少于 30 个：占比很容易被几个账号改变，只能作参考。'));
-    if (status(r) === 'partial') card.append(h('p', 'xs-warn', '这一组还有待分类的帖子：占比是已分类部分的结果，还会变。'));
+    if (r && r !== latest) { const w2 = h('p', 'xs-when'); w2.append(h('span', null, '下面的数字来自最近有值的一组'), data(` ${span(r)}`)); card.append(w2); }
+    if (!r) { card.append(h('p', 'muted', st === 'noeq' ? '等权占比缺失：这一组只有加权结果，这里不显示。' : '还没有带等权占比的分组。'), stages(d, latest, cm), label); return card; }
+    const n = r.accounts_total || 0, sh = eqOf(r), na = r.accounts || {}, np = r.posts || {}, sp = r.shares_by_post || {};
+    if (n < LOW) {                                           // few authors: the count and the state are the news, the percentages are not
+      const m = h('p', 'xs-main-low'); m.append(data(String(n)), h('span', null, ' 位作者 · 样本不足')); card.append(m);
+    } else {
+      const big = h('div', 'xs-stats');
+      for (const k of ['bullish', 'bearish', 'neutral']) { const b = h('div', `xs-stat xs-t-${k}`); const v = data(pct(sh[k])); v.className = 'num xs-stat-v'; b.append(h('span', 'xs-stat-k', STATE[k]), v); big.append(b); }
+      const bar = shareBar(sh); bar.classList.add('xs-bar-lg'); card.append(big, bar);
+    }
+    card.append(stages(d, r, cm));
+    const g = h('div', 'xs-split');
+    const line = (k, s_, c_, total, unit) => { const p = h('p', 'xs-line'); p.append(h('span', 'xs-line-k', k), h('span', null, ' '), ...triple(s_, c_, n >= LOW), h('span', null, ' · '), h('span', null, '共'), data(` ${total} `), h('span', null, unit)); return p; };
+    g.append(line('按作者（每人一票）', sh, na, n, '位作者'));
+    if (sp.bullish != null) g.append(line('按有效帖子（每帖一次）', sp, np, r.posts_total, '条有效帖子'));
+    const c = r.classification || {};
+    const prog = h('p', 'xs-line'); prog.append(h('span', 'xs-line-k', '已处理判断'), data(` ${c.classified_or_prefiltered == null ? '—' : c.classified_or_prefiltered} / ${c.matched_posts == null ? '—' : c.matched_posts} `),
+      h('span', 'fine-print', '（含有效、无关、分类失败和规则预筛）'), h('span', null, ' · 模型待分类'), data(` ${c.pending == null ? '—' : c.pending}`));
+    g.append(prog); card.append(g);
+    if (n < LOW) card.append(h('p', 'xs-warn', '作者少于 30 位：几位作者就能改变比例，这里只列票数，不给比例结论。'));
+    if (status(r) === 'partial') card.append(h('p', 'xs-note', '这一组还有待分类的帖子：数字是已分类部分的结果，还会变。'));
     if ((r.posts_total || 0) < TARGET_POSTS) { const gap = h('p', 'xs-note'); gap.append(h('span', null, '有效帖子距每组 500 条的覆盖目标还差'), data(` ${TARGET_POSTS - (r.posts_total || 0)}`)); card.append(gap); }
-    card.append(label);
+    card.append(cardDetail(d, r), label);
     return card;
   }
-  function mainChart(rows, prices) {
-    // every group on the axis in order: account shares (one vote per account, stacked, 0-100 %) with the account count
-    // above, a marker where a group has no shares, and the QQQ close strip below, broken at gaps and at a source change
+  function slotInfo(r, p) {                                  // the line under the chart for the selected group
+    const box = h('div'), st = status(r);
+    const head = h('p', 'xs-pick-head'); head.append(data(span(r)), h('span', null, ' · '), h('span', null, STATUS[st])); box.append(head);
+    if (st === 'ok' || st === 'partial') {
+      const a = h('p', 'xs-line'); a.append(h('span', 'xs-line-k', '按作者'), h('span', null, ' '), ...triple(eqOf(r), r.accounts || {}, (r.accounts_total || 0) >= LOW), h('span', null, ' · '), h('span', null, '共'), data(` ${r.accounts_total} `), h('span', null, '位作者'));
+      box.append(a);
+      if ((r.accounts_total || 0) < LOW) box.append(h('p', 'xs-note', '作者少于 30 位，只作参考。'));
+    } else box.append(h('p', 'xs-note', {pending: '这一组的帖子还在等模型分类，所以没有占比。', nosample: '这一组没有采到符合条件的帖子。', novalid: '这一组的帖子都无关或分类失败，没有有效标签。', noeq: '这一组只有加权结果，没有等权占比。'}[st]));
+    const pr = h('p', 'xs-line');
+    if (p.v != null) pr.append(h('span', 'xs-line-k', '收盘价'), data(` ${p.v.toFixed(2)} USD `), h('span', null, BASIS[p.src]), h('span', null, ' · 交易日'), data(` ${lastDay(r)}`));
+    else pr.append(h('span', 'xs-line-k', '缺价'), h('span', null, ` ${PRICE_WHY[p.reason]} `), data(`(${p.reason})`));
+    box.append(pr);
+    return box;
+  }
+  function mainChart(rows, prices, onPick) {
+    // every group on the axis in order: account shares (one vote per author, stacked, 0-100 %) with the author count
+    // above, a marker where a group has no shares, and the QQQ close strip below, broken at gaps and at a source change.
+    // Each group is a focusable slot: arrow keys, Home / End, tap or hover select it and fill the line under the chart.
     const W = 720, H = 300, L = 8, R = 8, bt = 22, bb = 172, pt = 196, pb = 262, n = rows.length, bw = (W - L - R) / Math.max(n, 1);
-    const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'xs-chart xs-main', role: 'img', 'aria-label': '账号占比、账号数与收盘价'});
+    const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'xs-chart xs-main', role: 'group', 'aria-label': '账号占比、账号数与收盘价'});
     svg.append(s('line', {x1: L, x2: W - R, y1: (bt + bb) / 2, y2: (bt + bb) / 2, class: 'xs-c-grid'}));
+    const slots = [];
     rows.forEach((r, i) => {
-      const x = L + i * bw, w = Math.max(bw - 2, 1), st = status(r), cx = x + w / 2;
+      const x = L + i * bw, w = Math.max(bw - 2, 1), st = status(r), cx = x + w / 2, g = s('g', {class: 'xs-c-slot', tabindex: '-1', role: 'button', 'aria-label': STATUS[st]}), ttl = s('title'); ttl.textContent = span(r); g.append(ttl);
       const lab = s('text', {x: cx, y: bt - 7, 'text-anchor': 'middle'});
       if (st === 'ok' || st === 'partial') {
         const sh = eqOf(r), low = r.accounts_total == null || r.accounts_total < LOW; let y = bt;
-        for (const k of ['bullish', 'neutral', 'bearish']) { const hh = (bb - bt) * sh[k]; svg.append(s('rect', {x, y, width: w, height: hh, class: `xs-c-${k}${low ? ' xs-c-low' : ''}`})); y += hh; }
+        for (const k of ['bullish', 'neutral', 'bearish']) { const hh = (bb - bt) * sh[k]; g.append(s('rect', {x, y, width: w, height: hh, class: `xs-c-${k}${low ? ' xs-c-low' : ''}`})); y += hh; }
         lab.setAttribute('class', `xs-c-n${low ? ' xs-c-nlow' : ''}`); lab.textContent = `${r.accounts_total == null ? '—' : r.accounts_total}${st === 'partial' ? MARK.partial : ''}`;
       } else {
-        svg.append(s('rect', {x, y: bt, width: w, height: bb - bt, class: 'xs-c-gap'}));
-        const m = s('text', {x: cx, y: (bt + bb) / 2 + 4, 'text-anchor': 'middle', class: 'xs-c-mark'}); m.textContent = MARK[st]; svg.append(m);
+        g.append(s('rect', {x, y: bt, width: w, height: bb - bt, class: 'xs-c-gap'}));
+        const m = s('text', {x: cx, y: (bt + bb) / 2 + 4, 'text-anchor': 'middle', class: 'xs-c-mark'}); m.textContent = MARK[st]; g.append(m);
         lab.setAttribute('class', 'xs-c-n xs-c-nlow'); lab.textContent = String(r.accounts_total || 0);
       }
-      svg.append(lab);
+      g.append(lab, s('rect', {x: x - 1, y: 4, width: w + 2, height: H - 30, class: 'xs-c-hit'}));
+      const go = j => { const k = Math.max(0, Math.min(n - 1, j)); onPick(k, true); };
+      g.addEventListener('keydown', e => { const k = {ArrowLeft: i - 1, ArrowRight: i + 1, Home: 0, End: n - 1}[e.key]; if (k != null) { if (e.preventDefault) e.preventDefault(); go(k); } else if (e.key === 'Enter' || e.key === ' ') { if (e.preventDefault) e.preventDefault(); onPick(i, false); } });
+      g.addEventListener('click', () => onPick(i, false));
+      g.addEventListener('pointerenter', e => { if (!e || e.pointerType === 'mouse') onPick(i, false); });
+      slots.push(g); svg.append(g);
     });
     svg.append(s('rect', {x: L, y: pt - 8, width: W - L - R, height: pb - pt + 16, rx: 4, class: 'xs-c-strip'}));
     const pts = prices.map((p, i) => ({x: L + i * bw + bw / 2, ...p})), have = pts.filter(p => p.v != null);
-    let gaps = false, display = false, dashed = false;
-    if (have.length > 1) {
+    let gaps = false, display = false, dashed = false, research = false;
+    if (have.length) {
       const lo = Math.min(...have.map(p => p.v)), hi = Math.max(...have.map(p => p.v)), sp = hi - lo || 1, Y = v => pb - (v - lo) / sp * (pb - pt);
       let seg = [];
-      const flush = () => { if (seg.length > 1 && seg[0].src === 'display') dashed = true; if (seg.length > 1) svg.append(s('polyline', {class: seg[0].src === 'display' ? 'xs-c-price xs-c-price-disp' : 'xs-c-price', fill: 'none', points: seg.map(p => `${p.x.toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ')})); seg = []; };
-      pts.forEach((p, i) => {
+      const flush = () => { if (seg.length > 1) { if (seg[0].src === 'display') dashed = true; svg.append(s('polyline', {class: seg[0].src === 'display' ? 'xs-c-price xs-c-price-disp' : 'xs-c-price', fill: 'none', points: seg.map(p => `${p.x.toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ')})); } seg = []; };
+      pts.forEach(p => {
         if (p.v == null) { if (have.some(q => q.x < p.x) && have.some(q => q.x > p.x)) gaps = true; flush(); return; }
         if (seg.length && seg[seg.length - 1].src !== p.src) flush();
-        if (p.src === 'display') display = true;
+        if (p.src === 'display') display = true; else research = true;
         seg.push(p); svg.append(s('circle', {cx: p.x.toFixed(1), cy: Y(p.v).toFixed(1), r: 2.2, class: p.src === 'display' ? 'xs-c-dot xs-c-dot-disp' : 'xs-c-dot'}));
       });
       flush();
@@ -594,32 +673,50 @@
     }
     [0, Math.floor((n - 1) / 2), n - 1].filter((v, i, a) => v >= 0 && a.indexOf(v) === i).forEach(i => {
       const t = s('text', {x: L + i * bw + bw / 2, y: H - 12, class: 'xs-c-ax', 'text-anchor': n === 1 ? 'middle' : i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}); t.textContent = lastDay(rows[i]); svg.append(t); });
-    return {svg, priced: have.length > 1, gaps, display, dashed};
+    return {svg, slots, priced: have.length > 0, gaps, display, dashed, research};
+  }
+  function chartBox(d, cm) {
+    const box = h('section', 'card section xs-primary'), top = h('div', 'section-head');
+    top.append(h('h3', null, 'QQQ：作者占比、作者数与收盘价'), scopeBar()); box.append(top);
+    const pn = panelDaily(d, scope);
+    if (scope !== 'keyword' && !pn.available) { box.append(h('p', 'muted', '还没有导入重点作者名单。')); return box; }
+    const {kind, rows} = series(d, scope);
+    if (!rows.length) { box.append(d.has_data ? h('p', 'muted', '这个标的还没有带有效标签的日期。') : missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return box; }
+    const shown = range ? rows.slice(-range) : rows;
+    const bar = h('div', 'xs-range'), rb = h('div', 'xs-chips'); rb.setAttribute('role', 'group'); rb.setAttribute('aria-label', '显示范围');
+    RANGES.forEach(([k, t]) => { const b = h('button', `tag ${k === range ? '' : 'tag-dim'}`, t); b.type = 'button'; b.setAttribute('aria-pressed', String(k === range)); b.addEventListener('click', () => { range = k; if (last) renderOverview(last); }); rb.append(b); });
+    const span_ = h('p', 'xs-when'); span_.append(h('span', null, '显示'), data(` ${span(shown[0])} – ${lastDay(shown[shown.length - 1])} `), h('span', null, '共'), data(` ${shown.length} `), h('span', null, kind === 'session3' ? '组' : '个交易日'), h('span', null, '（全部'), data(` ${rows.length} `), h('span', null, '）'));
+    bar.append(rb, span_); box.append(bar);
+    const prices = shown.map(r => closeOf(cm, PRIMARY, r)), info = h('div', 'xs-pick'); info.setAttribute('aria-live', 'polite');
+    let idx = Math.max(0, shown.findIndex(r => r.window_label === picked)); if (picked == null || shown[idx].window_label !== picked) idx = shown.length - 1;
+    const chart = mainChart(shown, prices, (i, focus) => {
+      chart.slots.forEach((g, j) => { g.setAttribute('tabindex', j === i ? '0' : '-1'); g.setAttribute('aria-pressed', String(j === i)); g.setAttribute('class', j === i ? 'xs-c-slot xs-c-on' : 'xs-c-slot'); });
+      picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i]));
+      if (focus && chart.slots[i].focus) chart.slots[i].focus();
+    });
+    const key = h('div', 'xs-key');
+    for (const k of ['bullish', 'neutral', 'bearish']) { const it = h('span', 'xs-key-i'); it.append(h('i', `xs-sw xs-${k}`), h('span', null, STATE[k])); key.append(it); }
+    key.append(h('span', 'xs-key-i', '柱上数字：作者数'), h('span', 'xs-key-i', '浅色柱：作者少于 30 位'), h('span', 'xs-key-i', '数字后的 *：分类未完成'));
+    const kr = h('span', 'xs-key-i'); kr.append(h('i', 'xs-sw-line'), h('span', null, '实线和实心点：复权研究收盘价（USD）')); key.append(kr);
+    if (chart.display) { const kd = h('span', 'xs-key-i'); kd.append(h('i', 'xs-sw-line xs-sw-dash'), h('span', null, '虚线和空心点：未复权展示收盘价（USD，只画图）')); key.append(kd); }
+    const fig = h('figure', 'xs-figure'); fig.append(chart.svg, info);
+    const notes = h('ul', 'xs-notes');
+    [kind === 'session3' ? '每根柱是一组三个交易日，按顺序全部保留在轴上；同一作者在一组内只投一票。' : '还没有三日分组：每根柱是一个交易日，按顺序全部保留；同一作者只投一票。',
+      '空柱：… 待分类 · ∅ 无样本 · × 没有有效标签 · ≠ 等权占比缺失。',
+      '休市日不在轴上；交易日有记录但缺收盘价时，价格线在那里断开，并在选中这一组时写出原因。',
+      '价格取每组最后一个交易日的收盘价；研究序列与展示序列之间断线，不相连。',
+      '选中一组：点按柱子、鼠标移到柱子上，或用 Tab 进入后按左右方向键、Home、End。'].forEach(t => notes.append(h('li', null, t)));
+    if (!chart.priced) notes.append(h('li', null, '这一段没有可配对的收盘价，价格区留空。'));
+    const fill = (cm.meta || {}).display_fill;
+    if (chart.display && fill) { const li = h('li'); li.append(h('span', null, chart.dashed ? '虚线和空心点：' : '空心点：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); notes.append(li); }
+    box.append(key, fig, notes, h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是预测；价格只作日期对照。分母、帖子口径和逐条材料在下方“每组明细与分母”里。'));
+    chart.slots.length && (() => { const i = idx; chart.slots.forEach((g, j) => g.setAttribute('tabindex', j === i ? '0' : '-1')); picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i])); chart.slots[i].setAttribute('class', 'xs-c-slot xs-c-on'); chart.slots[i].setAttribute('aria-pressed', 'true'); })();
+    return box;
   }
   function renderOverview(d) {
     const p = panel('overview'); if (!p) return;
-    const heads = h('div', 'xs-heads'); Object.keys(PANEL).forEach(k => heads.append(headline(d, k)));
-    const box = h('section', 'card section xs-primary'), top = h('div', 'section-head');
-    top.append(h('h3', null, 'QQQ：账号占比、账号数与收盘价'), scopeBar()); box.append(top);
-    const pn = panelDaily(d, scope), {kind, rows} = series(pn.daily), shown = rows.slice(-NBARS);
-    if (scope !== 'keyword' && !pn.available) box.append(h('p', 'muted', '还没有导入重点作者名单。'));
-    else if (!shown.length) box.append(d.has_data ? h('p', 'muted', '这个标的还没有带有效标签的日期。') : missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：'));
-    else {
-      const cm = closeMap(d), {svg, priced, gaps, display, dashed} = mainChart(shown, shown.map(r => closeOf(cm, PRIMARY, r)));
-      const key = h('div', 'xs-key');
-      for (const k of ['bullish', 'neutral', 'bearish']) { const it = h('span', 'xs-key-i'); it.append(h('i', `xs-sw xs-${k}`), h('span', null, STATE[k])); key.append(it); }
-      key.append(h('span', 'xs-key-i', '柱上数字：账号数'), h('span', 'xs-key-i', '浅色柱：账号少于 30 个'), h('span', 'xs-key-i', '数字后的 *：分类未完成'),
-        h('span', 'xs-key-i', '空柱：… 待分类 · ∅ 无样本 · × 没有有效标签 · ≠ 等权占比缺失'), h('span', 'xs-key-i', '下方折线：QQQ 收盘价（单独刻度）'));
-      const fig = h('figure', 'xs-figure'); fig.append(svg);
-      fig.append(h('figcaption', 'fine-print', kind === 'session3' ? '每根柱是一组三个交易日，按顺序全部保留在轴上（最多最近 40 组），没有结果的组画成空柱。同一账号在一组内只投一票。价格取每组最后一个交易日的收盘价。' : '还没有三日分组：每根柱是一个交易日，按顺序全部保留（最多最近 40 个），没有结果的画成空柱。同一账号只投一票。'));
-      if (!priced) fig.append(h('figcaption', 'fine-print', '这一段没有可配对的收盘价，价格区留空。'));
-      if (gaps) fig.append(h('figcaption', 'fine-print', '价格线在缺少收盘价的组断开，不做插值。'));
-      const fill = (d.closes_meta || {}).display_fill;
-      if (display && fill) { const fc = h('figcaption', 'fine-print'); fc.append(h('span', null, dashed ? '虚线和空心点：' : '空心点：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); fig.append(fc); }
-      box.append(key, fig);
-    }
-    box.append(h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是预测；价格只作日期对照。分母、帖子口径和逐条材料在下方“每组明细与分母”里。'));
-    p.replaceChildren(receiptStrip(d), heads, box);
+    const cm = closeMap(d), heads = h('div', 'xs-heads'); Object.keys(PANEL).forEach(k => heads.append(headline(d, k, cm)));
+    p.replaceChildren(receiptStrip(d), heads, chartBox(d, cm));
   }
 
   const load = () => fetch(root.dataset.url + (simpleIdentity ? `?identity=${encodeURIComponent(simpleIdentity)}` : ''), {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {

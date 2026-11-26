@@ -116,31 +116,26 @@ test('nothing visible is left in Chinese in English mode', async () => {
   }
 });
 
-// Optional: render a read model produced by the real pipeline from a local SYNTHETIC store (path in
-// X_STANCE_UI_PAYLOAD). Checks the states a browser pass would look at; it does not check visual layout.
-test('a pipeline-built synthetic store renders every state without inventing or leaking anything', {skip: !process.env.X_STANCE_UI_PAYLOAD}, async () => {
+// End to end: a read model the real pipeline built from a SYNTHETIC store (tests/test_x_stance_ui_payload.py writes it
+// and sets X_STANCE_UI_PAYLOAD). The checks hold for any pipeline-built payload: nothing invented, nothing leaked, every
+// drawn number traceable to its row. A report of the checks is written to X_STANCE_UI_REPORT when set.
+test('a pipeline-built synthetic store renders every state without inventing or leaking anything', {skip: !process.env.X_STANCE_UI_PAYLOAD && 'needs X_STANCE_UI_PAYLOAD (set by tests/test_x_stance_ui_payload.py)'}, async () => {
   const d = JSON.parse(fs.readFileSync(process.env.X_STANCE_UI_PAYLOAD, 'utf8'));
-  const ui = await mount(d);
-  const settings = texts(ui.panel('settings')).join('|'), daily = texts(ui.panel('daily')).join('|'), hist = texts(ui.panel('history')).join('|');
-  const report = {state: ui.state.textContent, checks: {}};
+  const ui = await mount(d), ov = ui.panel('overview');
+  const report = {payload_rows: d.daily.length, checks: {}};
   const ok = (name, cond) => { report.checks[name] = !!cond; assert.ok(cond, name); };
-  ok('has data', ui.state.textContent === '已有数据');
-  ok('cost and limits shown from the ledger', settings.includes(`${d.budget.today.returned_posts} / 5000`) && settings.includes('不是供应商账单'));
-  ok('preflight state and what it did not verify', settings.includes('预检通过') && settings.includes('已验证'));
-  ok('pending vocabulary version with its effective date', !!d.vocabulary.pending && settings.includes('待生效的词表版本') && ui.root.all(e => e.attrs.translate === 'no').some(e => e.textContent === d.vocabulary.pending.version));
-  ok('editor lists the pending keyword and a disabled one', ui.root.all(e => e.tagName === 'button' && e.textContent.includes('HBM4')).length === 1 && ui.root.all(e => (e.className || '').includes('xs-off')).length === 1);
-  ok('classification progress is partial and labelled unvalidated', d.classification.pending > 0 && settings.includes('未经人工验证') && settings.includes('待分类'));
-  ok('a partly classified day has no state and no shares', daily.includes('分类未完成'));
-  ok('fully classified days show shares that sum to 100%', d.daily.filter(r => r.window_kind === 'session' && r.lang_scope === 'all' && r.shares.bullish != null).every(r => Math.abs(r.shares.bullish + r.shares.bearish + r.shares.neutral - 1) < 1e-9));
-  ok('batch and backfill are labelled apart', daily.includes('收盘后批量采集') && daily.includes('历史回填（现在可见的样本）'));
-  ok('at most five views per topic, each with a source post', ui.panel('views').all(e => (e.className || '') === 'card section').every(sec => sec.all(e => (e.className || '') === 'xs-view').length <= 5) && ui.panel('views').all(e => e.tagName === 'a').length > 0);
-  ok('links go to x.com only', ui.panel('views').all(e => e.tagName === 'a').every(a => a.href.startsWith('https://x.com/')));
-  ok('returns that are not mature stay blank with no conclusion', hist.includes('样本不足，无结论') && !hist.includes('已估计'));
-  ok('no page-level percentage for a day without shares', true);
-  for (const lang of ['en']) {
-    const left = [...new Set(texts(ui.root).concat([ui.state.textContent]).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
-    ok('nothing visible left in Chinese in English mode', left.length === 0);
-  }
+  const marked = el => el.all(() => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
+  ok('state follows has_data', ui.state.textContent === (d.has_data ? '已有数据' : '尚无数据'));
+  ok('three panel cards and one receipt', ov.all(e => e.className === 'card xs-head').length === 3 && ov.all(e => e.className === 'card xs-receipt').length === 1);
+  const q = d.daily.filter(r => r.topic_id === 'qqq' && r.lang_scope === 'all'), kind = q.some(r => r.window_kind === 'session3') ? 'session3' : 'session';
+  const rows = q.filter(r => r.window_kind === kind);
+  ok('every QQQ group is on the chart axis', ov.all(e => e.tagName === 'g' && (e.attrs.class || '').startsWith('xs-c-slot')).length === rows.length);
+  ok('drawn shares sum to one per row', rows.filter(r => (r.shares_equal_weight || {}).bullish != null).every(r => Math.abs(r.shares_equal_weight.bullish + r.shares_equal_weight.bearish + r.shares_equal_weight.neutral - 1) < 1e-9));
+  const kw = ov.all(e => e.className === 'card xs-head')[0], withEq = rows.filter(r => (r.shares_equal_weight || {}).bullish != null).pop();
+  if (withEq) ok('the keyword card shows the latest group with values and its own author count', marked(kw).some(v => v.includes(String(withEq.accounts_total))));
+  ok('no share is shown for a card without equal-weight shares', ov.all(e => e.className === 'card xs-head').every(c => c.all(e => (e.className || '').includes('xs-stat-v')).length === 0 || c.all(e => e.tagName === 'p' && e.className === 'xs-main-low').length === 0));
+  ok('links go to x.com only', ui.root.all(e => e.tagName === 'a').every(a => !a.href || a.href.startsWith('https://x.com/') || a.href.startsWith('https://twitter.com/')));
+  ok('nothing visible left in Chinese in English mode', [...new Set(texts(ui.root).concat([ui.state.textContent]).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t))).length === 0);
   if (process.env.X_STANCE_UI_REPORT) fs.writeFileSync(process.env.X_STANCE_UI_REPORT, JSON.stringify(report, null, 1));
 });
 
@@ -254,64 +249,89 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
   assert.deepStrictEqual(left, []);
 });
 
-// Overview: the update receipt, one headline per panel (equal-weight shares of the latest group with values, its
-// denominators, completion and model), the low-sample and coverage notes, and one chart that keeps every group on the
-// axis with a marker where there are no shares, and breaks the price line at a source change. The payload is synthetic.
-function overviewPayload() {
-  const d = JSON.parse(JSON.stringify(EMPTY));
-  const g = (label, sessions, eq, acc, extra) => ({window_kind: 'session3', window_label: label, group_sessions: sessions, topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE',
-    shares: eq, shares_equal_weight: eq, accounts_total: acc, posts_total: acc + 5, unjudged_total: 0, state: 'UNKNOWN', state_reason: null, activation: {model_id: 'synthetic-model'},
-    classification: {share_done: 1, pending: 0, matched_posts: acc + 5}, ...extra});
-  const none = {bullish: null, bearish: null, neutral: null};
-  d.has_data = true;
-  d.daily = [g('2026-11-13', ['2026-11-13', '2026-11-16', '2026-11-17'], {bullish: 0.5, bearish: 0.3, neutral: 0.2}, 64),
-    g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.25, bearish: 0.5, neutral: 0.25}, 48, {classification: {share_done: 0.5, pending: 7, matched_posts: 60}, state_reason: 'CLASSIFICATION_INCOMPLETE'}),
-    g('2026-11-23', ['2026-11-23', '2026-11-24', '2026-11-25'], none, 0, {state_reason: 'CLASSIFICATION_INCOMPLETE', empty_reason: 'PENDING', classification: {pending: 9, matched_posts: 9}}),
-    {...g('2026-11-20', [], {bullish: 0.9, bearish: 0.1, neutral: 0}, 9), window_kind: 'session'}];              // per-session rows do not feed the overview
-  d.panels.watchlist = {sample_version: 'v-w', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.6, bearish: 0.2, neutral: 0.2}, 12)]};
-  d.panels.combined = {sample_version: 'v-c', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], none, 57, {shares: {bullish: 0.3, bearish: 0.4, neutral: 0.3}})]};
-  d.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25, '2026-11-25': 595}};                                  // a group is priced at its last session
-  d.closes_meta = {frozen_input_last_date: '2026-11-17', display_fill: {after: '2026-11-17', dates_added: 2}};
-  d.updates = {state: 'FRESH', ok: true, stage_exits: {build: 0, collect: 0}, round_finished_at_utc: '2026-11-26T02:05:00Z', last_successful_update_at_utc: '2026-11-26T02:05:00Z',
-    last_successful_collection_at_utc: '2026-11-26T02:01:00Z', last_label_written_at_utc: '2026-11-26T02:03:00Z', last_summary_committed_at_utc: '2026-11-26T02:04:00Z', credit_hold: null};
-  return d;
-}
+// Overview on the de-identified fixture (tests/fixtures/x_stance_view_deid.json, made by make_x_stance_deid.cjs; all
+// numbers synthetic, no post text): the update receipt, one card per panel that says which sample, which period, how many
+// authors and what the evidence is, and one chart that keeps every group, can be narrowed, read by keyboard, tap or hover,
+// and says why a price is missing. The same fixture drives the preview screenshots.
+const DEID = () => JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/x_stance_view_deid.json'), 'utf8'));
 const dataOf = x => x.all(() => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
+const allText = x => texts(x).join('|') + '|' + dataOf(x).join('|');
+const leftChinese = ui => [...new Set(texts(ui.root).concat([ui.state.textContent]).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
+const cards = ov => ov.all(e => e.className === 'card xs-head');
+const slots = ov => ov.all(e => e.tagName === 'g' && (e.attrs.class || '').startsWith('xs-c-slot'));
+const picked = ov => texts(ov.all(e => e.className === 'xs-pick')[0]).join('|') + '|' + dataOf(ov.all(e => e.className === 'xs-pick')[0]).join('|');
 
-test('overview: receipt, a headline per panel and one primary chart, details folded below', async () => {
-  const ui = await mount(overviewPayload()), ov = ui.panel('overview');
-  const rec = ov.all(e => e.className === 'card xs-receipt')[0], rt = texts(rec).join('|');
-  assert.ok(rt.includes('本轮成功') && !rt.includes('本轮失败') && dataOf(rec).includes('2026-11-26 10:05'));             // 02:05 UTC is 10:05 in Beijing
-  assert.ok(rec.all(() => true).some(e => e.dataset.utc === '2026-11-26T02:05:00Z'));                                       // the stored UTC stays on the node
-  const heads = ov.all(e => e.className === 'card xs-head'), t = heads.map(x => texts(x).join('|'));
-  assert.strictEqual(heads.length, 3);
-  // keyword: the latest group is pending, the shares come from the latest group with values, named by its own dates
-  assert.ok(t[0].includes('待分类，暂无占比') && dataOf(heads[0]).includes('2026-11-23 – 2026-11-25') && t[0].includes('下面的占比来自最近有值的一组') && dataOf(heads[0]).includes('2026-11-18 – 2026-11-20'));
-  for (const v of ['25.0%', '50.0%', '53', '48', '7', 'synthetic-model', '2026-11-20', '447']) assert.ok(dataOf(heads[0]).includes(v), v);
-  assert.ok(t[0].includes('这一组还有待分类的帖子') && t[0].includes('有效帖子距每组 500 条的覆盖目标还差') && !t[0].includes('样本账号少于 30 个'));
-  assert.ok(t[1].includes('样本账号少于 30 个') && dataOf(heads[1]).includes('60.0%'));
-  assert.ok(t[2].includes('等权占比缺失') && !dataOf(heads[2]).some(v => /%$/.test(v)));                                    // weighted shares never stand in for equal-weight ones
-  for (const x of t) assert.ok(x.includes('模型判断，待人工验证'));
-  const svgs = ov.all(e => e.tagName === 'svg');
-  assert.strictEqual(svgs.length, 1);
-  const labels = svgs[0].all(e => e.tagName === 'text').map(e => e.textContent);
-  assert.ok(labels.includes('64') && labels.includes('48*') && labels.includes('…') && labels.includes('2026-11-25'));       // the pending group keeps its place on the axis
-  const lines = svgs[0].all(e => e.tagName === 'polyline').map(e => e.attrs.class);
-  assert.deepStrictEqual(lines, ['xs-c-price xs-c-price-disp']);                                                             // broken where the source changes: the one research close is a dot, not joined to the display line
-  assert.deepStrictEqual(svgs[0].all(e => e.tagName === 'circle').map(e => e.attrs.class), ['xs-c-dot', 'xs-c-dot xs-c-dot-disp', 'xs-c-dot xs-c-dot-disp']);
-  assert.ok(texts(ov).join('|').includes('虚线和空心点：'));
-  // the live case of 2026-11-26: one display close between research closes draws a lone point, so the caption names points only
-  const one = overviewPayload(); one.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25}};
-  const ov1 = (await mount(one)).panel('overview'), t1 = texts(ov1).join('|');
-  assert.ok(t1.includes('空心点：') && !t1.includes('虚线') && ov1.all(e => e.tagName === 'polyline').length === 0);
-  assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'svg').length, 0);                                            // the QQQ chart is drawn once, on top
-  ov.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
-  assert.ok(ui.panel('overview').all(e => e.tagName === 'text').map(e => e.textContent).includes('12'));
-  const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
-  assert.deepStrictEqual(left, []);
-  for (const k of ['额度与费用', '采集与分类进度', '关键词与账号规则（可修改）', '采集端与模型诊断'])
-    assert.ok(ui.panel('settings').all(e => e.tagName === 'summary').some(e => e.textContent === k), k);
-  assert.ok(ui.panel('settings').all(e => e.tagName === 'details').every(e => !e.open));                                    // every detail group starts closed
+test('overview cards: sample, period, authors and evidence, with stage tags next to the numbers', async () => {
+  const ui = await mount(DEID()), ov = ui.panel('overview'), [kw, wl, cb] = cards(ov);
+  const k = allText(kw);
+  for (const need of ['关键词检索采到', '最新一组（三个交易日）', '2026-11-20 – 2026-11-24', '分类未完成，占比还会变', '按作者（每人一票）', '按有效帖子（每帖一次）', '已处理判断', '模型待分类',
+    '覆盖不全', '分类未完成', '行情不完整', '模型未人工验证', '有效帖子距每组 500 条的覆盖目标还差', '详情：模型、版本与时间', 'synthetic-model', '模型判断，待人工验证']) assert.ok(k.includes(need), `keyword card lacks ${need}`);
+  const r = DEID().daily.at(-1), c = r.classification;
+  assert.ok(dataOf(kw).includes(`${c.classified_or_prefiltered} / ${c.matched_posts}`) && dataOf(kw).includes(String(c.pending)));          // processed judgements, numerator and denominator, and the true model queue
+  assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_equal_weight.bullish * 100).toFixed(1)}% (${r.accounts.bullish})`)));            // by author: share and real votes
+  assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_by_post.bullish * 100).toFixed(1)}% (${r.posts.bullish})`)));                  // by valid post, listed apart
+  // one watched author: the count and the state are the main line; the real votes stay, the percentages go
+  const w = allText(wl);
+  assert.ok(w.includes('位作者 · 样本不足') && dataOf(wl).includes('1') && w.includes('名单选定于') && w.includes('作者少于 30 位'));
+  assert.ok(!dataOf(wl).some(v => /%/.test(v)) && wl.all(e => (e.className || '').includes('xs-stat-v')).length === 0);
+  assert.ok(allText(cb).includes('跨来源去重'));
+  assert.ok(kw.all(e => e.tagName === 'details').every(e => !e.open));                                                                        // the identity detail starts closed
+  assert.deepStrictEqual(leftChinese(ui), []);
+});
+
+test('overview chart: every group on the axis, a range to narrow it, keyboard, tap and hover, and why a price is missing', async () => {
+  const d = DEID(), ui = await mount(d), ov = ui.panel('overview');
+  assert.strictEqual(slots(ov).length, d.daily.length);                                                                                       // the full group index
+  assert.ok(allText(ov).includes('2026-08-24 – 2026-08-26 – 2026-11-24') || dataOf(ov).some(v => v.startsWith('2026-08-24 – 2026-08-26 – 2026-11-24')));
+  const svg = ov.all(e => e.tagName === 'svg')[0], marks = svg.all(e => e.tagName === 'text').map(e => e.textContent);
+  assert.ok(marks.includes('∅') && marks.includes('…') && marks.some(t => t.endsWith('*')));                                                // empty and pending groups keep their place
+  // the latest group is selected first; its price is missing because it is after the price data
+  assert.ok(picked(ov).includes('2026-11-20 – 2026-11-24') && picked(ov).includes('缺价') && picked(ov).includes('(AFTER_PRICE_INPUT_END)'));
+  const s = slots(ov);
+  s.at(-1).listeners.keydown({key: 'ArrowLeft', preventDefault() {}});
+  assert.ok(picked(ov).includes('2026-11-17 – 2026-11-19') && picked(ov).includes('USD') && picked(ov).includes('未复权展示收盘价'));          // a display close says so
+  slots(ov)[0].listeners.keydown({key: 'Home', preventDefault() {}});
+  assert.ok(picked(ov).includes('2026-08-24 – 2026-08-26') && picked(ov).includes('复权研究收盘价'));
+  slots(ov)[6].listeners.click();
+  assert.ok(picked(ov).includes('(NO_CLOSE_FOR_SESSION)'));                                                                                    // a session in range without a close
+  assert.strictEqual(slots(ov).filter(g => g.attrs.tabindex === '0').length, 1);                                                             // one tab stop, arrows move inside
+  slots(ov)[9].listeners.pointerenter({pointerType: 'mouse'});
+  assert.ok(picked(ov).includes('这一组没有采到符合条件的帖子'));
+  // the line breaks at the missing close and where the research series gives way to the display series
+  assert.deepStrictEqual(svg.all(e => e.tagName === 'polyline').map(e => e.attrs.class), ['xs-c-price', 'xs-c-price']);                     // two research stretches; the one display close is a lone hollow point
+  assert.strictEqual(svg.all(e => e.tagName === 'circle' && e.attrs.class === 'xs-c-dot xs-c-dot-disp').length, 1);
+  const t = allText(ov);
+  for (const need of ['实线和实心点：复权研究收盘价（USD）', '虚线和空心点：未复权展示收盘价（USD，只画图）', '空心点：', '休市日不在轴上', '选中一组']) assert.ok(t.includes(need), need);
+  ov.all(e => e.tagName === 'button' && e.textContent === '最近 10 组')[0].listeners.click();
+  const ov2 = ui.panel('overview');
+  assert.strictEqual(slots(ov2).length, 10);
+  assert.ok(dataOf(ov2).includes('10') && dataOf(ov2).includes(String(d.daily.length)));                                                     // shown and total
+  ov2.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
+  assert.strictEqual(slots(ui.panel('overview')).length, 1);                                                                                 // the list exists from its selection date
+  assert.deepStrictEqual(leftChinese(ui), []);
+});
+
+test('history: an inconclusive return cell names the machine reason and the days behind it', async () => {
+  const ui = await mount(DEID()), h_ = allText(ui.panel('history'));
+  assert.ok(h_.includes('样本不足，无结论') && h_.includes('这个状态的交易日太少') && h_.includes('(TOO_FEW_STATE_DAYS)') && h_.includes('有收益的状态日'));
+  assert.deepStrictEqual(leftChinese(ui), []);
+});
+
+test('overview states: empty store, failed read and a slow read never show shares', async () => {
+  let ui = await mount(EMPTY);
+  assert.ok(!/\d+(\.\d+)?%/.test(allText(ui.panel('overview'))) && allText(ui.panel('overview')).includes('采集端自检结果'));                   // no data: the missing inputs, no shares
+  ui = await mount({state: 'READ_ERROR'});
+  assert.ok(ui.state.textContent === '读取失败' && texts(ui.panel('overview')).join('|').includes('读取失败'));
+  // slow: until the read model arrives, the overview has nothing that looks like a result
+  const root = new El('section'); root.dataset.url = '/x-stance.json'; const state = new El('span'), ov = new El('div'); ov.dataset.xpanel = 'overview'; root.append(ov);
+  for (const t of ['settings', 'simple', 'authors', 'daily', 'views', 'history']) { const p = new El('div'); p.dataset.xpanel = t; root.append(p); }
+  let release; const gate = new Promise(r => { release = r; });
+  const document = {getElementById: id => id === 'x-stance' ? root : id === 'x-stance-state' ? state : null, createElement: t => new El(t), querySelector: () => null, createElementNS: (_, t) => new El(t), createTextNode: t => new Text(t)};
+  vm.runInNewContext(src, {document, fetch: async () => { await gate; return {ok: true, json: async () => DEID()}; }, Node: El, Set, Math, Object, String, console});
+  await new Promise(r => setTimeout(r, 5));
+  assert.strictEqual(ov.children.length, 0);
+  release(); await new Promise(r => setTimeout(r, 5));
+  assert.strictEqual(cards(ov).length, 3);
 });
 
 test('overview receipt: a FRESH receipt of a failed or partial round, a provider pause and a stale receipt are told apart', async () => {
@@ -321,13 +341,14 @@ test('overview receipt: a FRESH receipt of a failed or partial round, a provider
     [{ok: true, stage_exits: {build: 0}, collection: {status: 'PAUSED_PROVIDER_CREDITS'}, credit_hold: {reason: 'PROVIDER_CREDITS_EXHAUSTED'}}, ['本轮成功', '供应商暂停'], []],
     [{state: 'STALE', ok: true, stage_exits: {build: 0}}, ['数据过期'], []]];
   for (const [over, want, never] of cases) {
-    const d = overviewPayload(); d.updates = {...d.updates, ...over};
+    const d = DEID(); d.updates = {...d.updates, ...over};
     const ui = await mount(d), rt = texts(ui.panel('overview').all(e => e.className === 'card xs-receipt')[0]).join('|');
     for (const w of want) assert.ok(rt.includes(w), `${JSON.stringify(over)} lacks ${w}`);
     for (const n of never) assert.ok(!rt.includes(n), `${JSON.stringify(over)} shows ${n}`);
-    const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
-    assert.deepStrictEqual(left, []);
+    assert.deepStrictEqual(leftChinese(ui), []);
   }
+  const ui = await mount(DEID()), rec = ui.panel('overview').all(e => e.className === 'card xs-receipt')[0];
+  assert.ok(dataOf(rec).includes('2026-11-26 10:28') && rec.all(() => true).some(e => e.dataset.utc === '2026-11-26T02:28:00Z'));            // Beijing time shown, UTC kept
 });
 
 test('watched authors: a failed classification is named as such, never as neutral or "could not be judged"', async () => {
