@@ -28,7 +28,7 @@ function mount(payload) {
   const root = new El('section'); root.dataset.url = '/x-stance.json';
   const state = new El('span');
   root.dataset.watchUrl = '/x-stance/watch/';
-  for (const t of ['settings', 'simple', 'authors', 'daily', 'views', 'history']) {
+  for (const t of ['overview', 'settings', 'simple', 'authors', 'daily', 'views', 'history']) {
     const b = new El('button'); b.dataset.xtab = t; root.append(b);
     const p = new El('div'); p.dataset.xpanel = t; p.hidden = t !== 'settings'; root.append(p);
   }
@@ -252,4 +252,45 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
   assert.ok(texts(ui2.panel('authors')).join('|').includes('无达标样本') && !texts(ui2.panel('authors')).join('|').includes('有已计入的观点'));    // "no qualifying sample", never "neutral"
   const left = [...new Set(texts(ui2.root).concat(texts(ui.root)).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
   assert.deepStrictEqual(left, []);
+});
+
+// Overview: one headline per panel (latest three-session group, one vote per account), the low-sample warning, the
+// update receipt in Beijing time, the model label, and one chart with the account count above each bar and the
+// QQQ close strip. The payload is synthetic.
+test('overview: a headline per panel and one primary chart, details folded below', async () => {
+  const d = JSON.parse(JSON.stringify(EMPTY));
+  const g = (label, sessions, sh, acc, extra) => ({window_kind: 'session3', window_label: label, group_sessions: sessions, topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE',
+    shares: sh, shares_equal_weight: sh, accounts_total: acc, posts_total: acc + 5, unjudged_total: 0, state: 'UNKNOWN', state_reason: null, classification: {share_done: 1, pending: 0, matched_posts: acc + 5}, ...extra});
+  const none = {bullish: null, bearish: null, neutral: null};
+  d.has_data = true;
+  d.daily = [g('2026-11-13', ['2026-11-13', '2026-11-16', '2026-11-17'], {bullish: 0.5, bearish: 0.3, neutral: 0.2}, 64),
+    g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.25, bearish: 0.5, neutral: 0.25}, 48),
+    g('2026-11-23', ['2026-11-23', '2026-11-24', '2026-11-25'], none, 0, {state_reason: 'CLASSIFICATION_INCOMPLETE'}),
+    {...g('2026-11-20', [], {bullish: 0.9, bearish: 0.1, neutral: 0}, 9), window_kind: 'session'}];              // per-session rows do not feed the headline
+  d.panels.watchlist = {sample_version: 'v-w', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.6, bearish: 0.2, neutral: 0.2}, 12)]};
+  d.panels.combined = {sample_version: 'v-c', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.3, bearish: 0.4, neutral: 0.3}, 57)]};
+  d.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25}};                                                     // the direct close map of a later read model; a group is priced at its last session
+  d.updates = {state: 'FRESH', last_successful_update_at_utc: '2026-11-26T02:05:00Z', credit_hold: null};
+  const ui = await mount(d), ov = ui.panel('overview');
+  const heads = ov.all(e => e.className === 'card xs-head');
+  assert.strictEqual(heads.length, 3);
+  const t = heads.map(x => texts(x).join('|')), all = x => x.all(e => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
+  assert.ok(all(heads[0]).includes('2026-11-18 – 2026-11-20') && all(heads[0]).includes('25.0%') && all(heads[0]).includes('50.0%') && all(heads[0]).includes('48'));
+  assert.ok(t[0].includes('更新的分组还没有占比') && all(heads[0]).includes('2026-11-23 – 2026-11-25'));               // the newer pending group is named, never shown as shares
+  assert.ok(!t[0].includes('样本账号少于 30 个') && t[1].includes('样本账号少于 30 个') && !t[2].includes('样本账号少于 30 个'));
+  for (const x of t) assert.ok(x.includes('模型判断，待人工验证') && x.includes('更新回执：按计划运行') && x.includes('北京时间'));
+  assert.ok(all(heads[0]).includes('2026-11-26 10:05'));                                                            // 02:05 UTC is 10:05 in Beijing
+  const svgs = ov.all(e => e.tagName === 'svg');
+  assert.strictEqual(svgs.length, 1);
+  const labels = svgs[0].all(e => e.tagName === 'text').map(e => e.textContent);
+  assert.ok(labels.includes('64') && labels.includes('48') && labels.includes('600.50') && labels.includes('590.25'));
+  assert.strictEqual(svgs[0].all(e => e.tagName === 'polyline').length, 1);
+  assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'svg').length, 0);                                    // the QQQ chart is drawn once, on top
+  ov.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
+  assert.ok(ui.panel('overview').all(e => e.tagName === 'text').map(e => e.textContent).includes('12'));
+  const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
+  assert.deepStrictEqual(left, []);
+  for (const k of ['额度与费用', '采集与分类进度', '关键词与账号规则（可修改）', '采集端与模型诊断'])
+    assert.ok(ui.panel('settings').all(e => e.tagName === 'summary').some(e => e.textContent === k), k);
+  assert.ok(ui.panel('settings').all(e => e.tagName === 'details').every(e => !e.open));                             // every detail group starts closed
 });
