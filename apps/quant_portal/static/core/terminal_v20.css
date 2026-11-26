@@ -463,5 +463,5 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .tag.xs-tag-bad{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,transparent)}
 .xs-c-gap{fill:none;stroke:var(--line-2);stroke-dasharray:2 3}
 .xs-c-mark{font-size:12px;fill:var(--text-3)}
-.xs-c-price-disp{stroke-dasharray:4 3}.xs-c-dot-disp{fill:var(--text-3)}
+.xs-c-price-disp{stroke-dasharray:4 3}.xs-c-dot-disp{fill:var(--card);stroke:var(--text);stroke-width:1.2}
 @media (max-width:640px){.xs-c-n{font-size:15px}.xs-c-ax{font-size:17px}.xs-c-mark{font-size:18px}.xs-key{font-size:11.5px;gap:4px 10px}}
