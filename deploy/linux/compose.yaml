@@ -129,10 +129,17 @@ services:
 
   feed:
     <<: *hardening
-    image: ${APP_IMAGE:-quant-personal-app:local}
+    # The feed runs its own image, released on its own: a web release (APP_IMAGE) must never replace the collector.
+    image: ${FEED_IMAGE:?set FEED_IMAGE in the env file to the image the feed runs}
     command: ["feed"]
     environment:
       <<: [*app-env, *worker-env]
+      # When a moomoo push is due (scripts/quant_personal_feed/market_hours.py): extended sessions count only once
+      # this account has delivered them; the first push of a due period gets a bounded grace, then it is a fault.
+      QUANT_MOOMOO_EXTENDED_SESSIONS: ${FEED_MOOMOO_EXTENDED_SESSIONS:-1}
+      QUANT_MOOMOO_OVERNIGHT: ${FEED_MOOMOO_OVERNIGHT:-0}
+      QUANT_MOOMOO_FIRST_PUSH_GRACE_SECONDS: ${FEED_FIRST_PUSH_GRACE_SECONDS:-600}
+      QUANT_MOOMOO_RECONNECT_GRACE_SECONDS: ${FEED_RECONNECT_GRACE_SECONDS:-180}
     depends_on: {migrate: {condition: service_completed_successfully}}
     # backend: owner lookup in PostgreSQL; egress: moomoo and Jin10 endpoints.
     networks: [backend, egress]

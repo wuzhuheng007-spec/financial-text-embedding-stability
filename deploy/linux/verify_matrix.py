@@ -188,7 +188,7 @@ class Runner:
                 "SITE_DOMAIN=localhost", "CADDY_TLS=tls internal", "ALLOWED_HOSTS=localhost",
                 "CSRF_TRUSTED_ORIGINS=https://localhost:18443", "HTTPS_PORT=18443",
                 f"MOOMOO_TOKEN_KEY_PATH={(sec / 'moomoo_token_key').as_posix()}", f"MODEL_VOLUME={MODEL_VOLUME}",
-                f"APP_IMAGE={APP}", f"RESEARCH_IMAGE={RESEARCH}", "RESEARCH_THREADS=2", ""]), encoding="utf-8")
+                f"APP_IMAGE={APP}", f"FEED_IMAGE={APP}", f"RESEARCH_IMAGE={RESEARCH}", "RESEARCH_THREADS=2", ""]), encoding="utf-8")
             pw_file.write_text(f"TEST_OWNER_PASSWORD={secrets.token_urlsafe(18)}\nTEST_OTHER_PASSWORD={secrets.token_urlsafe(18)}\n")
             recreated = True
         env = dict(l.split("=", 1) for l in env_file.read_text().splitlines() if "=" in l)
