@@ -446,7 +446,7 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .xs-key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--text-2);margin:4px 0}
 .xs-key-i{display:inline-flex;align-items:center;gap:5px}.xs-sw{display:inline-block;width:10px;height:10px;border-radius:2px}
 .xs-chart.xs-main{max-height:340px}
-.xs-c-low{opacity:.38}
+.xs-c-low{opacity:.55}
 .xs-c-n{font-size:10px;fill:var(--text-2);font-family:var(--mono)}.xs-c-nlow{fill:var(--warn)}
 .xs-c-ax{font-size:10px;fill:var(--text-3);font-family:var(--mono)}
 .xs-c-grid{stroke:var(--line-2);stroke-dasharray:3 3}
