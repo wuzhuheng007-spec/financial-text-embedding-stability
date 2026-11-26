@@ -27,7 +27,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timedelta, timezone
 
-from . import batch, provider, stance, store, vocab, watchlist
+from . import control_pair, batch, provider, stance, store, vocab, watchlist
 from .ledger import JobBudget, Ledger, get_meta, set_meta
 
 STATE_KEY, RECEIPT_KEY, RESUME_KEY = "incremental_state", "update_receipt", "credit_hold_cleared"
@@ -106,7 +106,6 @@ def units(db, cfg: dict, now: datetime) -> list[dict]:
     if s_["include_watchlist"] and (cfg.get("watchlist") or {}).get("enabled", True) and watchlist.exists(db):
         qs += [{**q, "job_type": "watchlist"} for q in watchlist.register_queries(db, cfg)]
     qs = [_suffixed(db, cfg, q, s_["query_suffix"]) for q in qs]
-    qs += control_queries(db, cfg, now)
     db.commit()
     out = []
     for q in qs:
@@ -123,18 +122,20 @@ def preview(db, cfg: dict, now: datetime, ledger: Ledger) -> dict:
     s_ = settings(cfg)
     kw, wa = [u for u in us if u["job_type"] == "recent"], [u for u in us if u["job_type"] == "watchlist"]
     per_day = 24 / s_["interval_hours"]
-    return {"status": "PREVIEW", "requests_sent": 0, "settings": s_, "credit_hold": credit_hold(db), "queries": {"keyword": len(kw), "watched_authors": len(wa)},
+    ctl = [q for q in control_pair.pairs_cfg(cfg) if not q.get("active_until_utc") or now < store.parse(q["active_until_utc"])]
+    ctl_req = 2 * len(ctl) * s_["pages_per_query"]                # isolated pairs, paid from the same keyword share
+    return {"status": "PREVIEW", "requests_sent": 0, "settings": s_, "credit_hold": credit_hold(db), "queries": {"keyword": len(kw), "watched_authors": len(wa), "control_pair_sides": 2 * len(ctl)},
             "windows": {"earliest_start_utc": store.iso(datetime.fromtimestamp(min(u["start"] for u in us), timezone.utc)) if us else None,
                         "end_utc": store.iso(datetime.fromtimestamp(us[0]["end"], timezone.utc)) if us else None,
                         "resuming_from_last_success": sum(1 for u in us if u["resumes_from_last_success"]), "gaps_left_to_daily_job": sum(1 for u in us if u["gap_left_to_daily_job_seconds"])},
             "this_run_if_every_page_is_full": {"requests": len(us) * s_["pages_per_query"], "keyword_posts": len(kw) * page * s_["pages_per_query"]},
-            "per_day_if_every_page_is_full": {"runs": per_day, "keyword_posts": int(len(kw) * page * s_["pages_per_query"] * per_day),
+            "per_day_if_every_page_is_full": {"runs": per_day, "keyword_posts": int((len(kw) * s_["pages_per_query"] + ctl_req) * page * per_day), "control_posts": int(ctl_req * page * per_day),
                                               "keyword_share_cap_posts": ((cfg["allocation"]["recent"].get("sub_pools") or {}).get("recent") or {}).get("max_returned_posts_per_day"),
                                               "watched_author_requests": int(len(wa) * s_["pages_per_query"] * per_day)},
             "usage": ledger.usage(now)}
 
 
-def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger | None = None) -> dict:
+def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger | None = None, audit_db=None) -> dict:
     clock = clock or batch.utc_now
     hold = credit_hold(db)
     out = {"job": "incremental", "started_at_utc": store.iso(clock()), "requests": 0, "units_asked": 0, "returned": 0, "new_posts": 0, "duplicates": 0, "stopped": None,
@@ -168,6 +169,13 @@ def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger |
             out["interruptions"].append({"topic_id": u["topic_id"], "reason": res.get("stop_reason")})
     set_meta(db, STATE_KEY, json.dumps(st, sort_keys=True)); db.commit()
     out["requests"] = sum(c.budget.requests for c in cols.values())
+    if control_pair.pairs_cfg(cfg) and not out["stopped"]:       # isolated: its pages and posts go to the audit store, production gets ledger rows only
+        adb = control_pair.connect_audit(audit_db or control_pair.audit_path(db.execute("PRAGMA database_list").fetchone()[2]))
+        try:
+            out["control"] = control_pair.run(db, adb, cfg, transport, now, ledger=ledger, clock=clock)
+        finally:
+            adb.close()
+        out["requests_control"] = out["control"]["requests"]
     out["transient_errors"] = sum(c.transient_errors for c in cols.values())
     out["credit_hold"] = credit_hold(db)
     out["status"] = "PAUSED_PROVIDER_CREDITS" if out["credit_hold"] else "RAN"
