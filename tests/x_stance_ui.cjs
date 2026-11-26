@@ -251,7 +251,7 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
 
 // Overview on the de-identified fixture (tests/fixtures/x_stance_view_deid.json, made by make_x_stance_deid.cjs; all
 // numbers synthetic, no post text): the update receipt, one card per panel that says which sample, which period, how many
-// authors and what the evidence is, and one chart that keeps every group, can be narrowed, read by keyboard, tap or hover,
+// authors and what the evidence is, and one chart that keeps every group, can be narrowed, read by keyboard or tap,
 // and says why a price is missing. The same fixture drives the preview screenshots.
 const DEID = () => JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/x_stance_view_deid.json'), 'utf8'));
 const dataOf = x => x.all(() => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
@@ -279,7 +279,7 @@ test('overview cards: sample, period, authors and evidence, with stage tags next
   assert.deepStrictEqual(leftChinese(ui), []);
 });
 
-test('overview chart: every group on the axis, a range to narrow it, keyboard, tap and hover, and why a price is missing', async () => {
+test('overview chart: every group on the axis, a range to narrow it, keyboard and tap (not hover), and why a price is missing', async () => {
   const d = DEID(), ui = await mount(d), ov = ui.panel('overview');
   assert.strictEqual(slots(ov).length, d.daily.length);                                                                                       // the full group index
   assert.ok(dataOf(ov).includes('2026-08-24 – 2026-11-24'));                                                                              // first and last session shown
@@ -295,7 +295,8 @@ test('overview chart: every group on the axis, a range to narrow it, keyboard, t
   slots(ov)[6].listeners.click();
   assert.ok(picked(ov).includes('(NO_CLOSE_FOR_SESSION)'));                                                                                    // a session in range without a close
   assert.strictEqual(slots(ov).filter(g => g.attrs.tabindex === '0').length, 1);                                                             // one tab stop, arrows move inside
-  slots(ov)[9].listeners.pointerenter({pointerType: 'mouse'});
+  assert.ok(!('pointerenter' in slots(ov)[9].listeners) && !('mouseenter' in slots(ov)[9].listeners));                                    // hovering never moves the selection
+  slots(ov)[9].listeners.click();
   assert.ok(picked(ov).includes('这一组没有采到符合条件的帖子'));
   // the line breaks at the missing close and where the research series gives way to the display series
   assert.deepStrictEqual(svg.all(e => e.tagName === 'polyline').map(e => e.attrs.class), ['xs-c-price', 'xs-c-price']);                     // two research stretches; the one display close is a lone hollow point

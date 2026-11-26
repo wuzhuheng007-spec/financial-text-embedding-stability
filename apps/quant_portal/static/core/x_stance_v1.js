@@ -630,7 +630,8 @@
   function mainChart(rows, prices, onPick) {
     // every group on the axis in order: account shares (one vote per author, stacked, 0-100 %) with the author count
     // above, a marker where a group has no shares, and the QQQ close strip below, broken at gaps and at a source change.
-    // Each group is a focusable slot: arrow keys, Home / End, tap or hover select it and fill the line under the chart.
+    // Each group is a focusable slot: arrow keys, Home / End, Enter or a tap / click select it and fill the line under the chart.
+    // Hovering does not change the selection, so scrolling past the chart or a resting pointer never moves it.
     const W = 720, H = 300, L = 8, R = 8, bt = 22, bb = 172, pt = 196, pb = 262, n = rows.length, bw = (W - L - R) / Math.max(n, 1);
     const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'xs-chart xs-main', role: 'group', 'aria-label': '账号占比、账号数与收盘价'});
     svg.append(s('line', {x1: L, x2: W - R, y1: (bt + bb) / 2, y2: (bt + bb) / 2, class: 'xs-c-grid'}));
@@ -651,7 +652,6 @@
       const go = j => { const k = Math.max(0, Math.min(n - 1, j)); onPick(k, true); };
       g.addEventListener('keydown', e => { const k = {ArrowLeft: i - 1, ArrowRight: i + 1, Home: 0, End: n - 1}[e.key]; if (k != null) { if (e.preventDefault) e.preventDefault(); go(k); } else if (e.key === 'Enter' || e.key === ' ') { if (e.preventDefault) e.preventDefault(); onPick(i, false); } });
       g.addEventListener('click', () => onPick(i, false));
-      g.addEventListener('pointerenter', e => { if (!e || e.pointerType === 'mouse') onPick(i, false); });
       slots.push(g); svg.append(g);
     });
     svg.append(s('rect', {x: L, y: pt - 8, width: W - L - R, height: pb - pt + 16, rx: 4, class: 'xs-c-strip'}));
@@ -705,7 +705,7 @@
       '空柱：… 待分类 · ∅ 无样本 · × 没有有效标签 · ≠ 等权占比缺失。',
       '休市日不在轴上；交易日有记录但缺收盘价时，价格线在那里断开，并在选中这一组时写出原因。',
       '价格取每组最后一个交易日的收盘价；研究序列与展示序列之间断线，不相连。',
-      '选中一组：点按柱子、鼠标移到柱子上，或用 Tab 进入后按左右方向键、Home、End。'].forEach(t => notes.append(h('li', null, t)));
+      '选中一组：点按柱子，或用 Tab 进入后按左右方向键、Home、End。鼠标经过不会切换。'].forEach(t => notes.append(h('li', null, t)));
     if (!chart.priced) notes.append(h('li', null, '这一段没有可配对的收盘价，价格区留空。'));
     const fill = (cm.meta || {}).display_fill;
     if (chart.display && fill) { const li = h('li'); li.append(h('span', null, chart.dashed ? '虚线和空心点：' : '空心点：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); notes.append(li); }

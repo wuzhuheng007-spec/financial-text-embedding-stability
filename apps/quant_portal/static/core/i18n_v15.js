@@ -1566,7 +1566,7 @@
     "空柱：… 待分类 · ∅ 无样本 · × 没有有效标签 · ≠ 等权占比缺失。": "Empty bar: … pending · ∅ no sample · × no valid label · ≠ equal-weight shares missing.",
     "休市日不在轴上；交易日有记录但缺收盘价时，价格线在那里断开，并在选中这一组时写出原因。": "Market holidays are not on the axis; where a session has no close, the price line breaks there and the reason is shown when that group is selected.",
     "价格取每组最后一个交易日的收盘价；研究序列与展示序列之间断线，不相连。": "The price is the close of each group's last session; the line breaks between the research and the display series.",
-    "选中一组：点按柱子、鼠标移到柱子上，或用 Tab 进入后按左右方向键、Home、End。": "Select a group: tap or hover a bar, or Tab into the chart and use the arrow keys, Home and End.",
+    "选中一组：点按柱子，或用 Tab 进入后按左右方向键、Home、End。鼠标经过不会切换。": "Select a group: tap or click a bar, or Tab into the chart and use the arrow keys, Home and End. Hovering does not change it.",
     "已有数据": "Data available",
     "未计入：模型给出的依据在原文里找不到（分类失败）": "Not counted: the evidence the model gave is not in the text (classification failed)",
     "未计入：模型输出格式错误（分类失败）": "Not counted: the model output was malformed (classification failed)",
