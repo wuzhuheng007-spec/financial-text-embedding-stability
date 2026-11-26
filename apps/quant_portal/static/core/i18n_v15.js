@@ -1506,6 +1506,7 @@
     "还没有可显示的模型判断。": "No model judgements to show yet.",
     "模型判断": "Model judgements",
     "模型判断，待人工验证": "Model judgement, awaiting human verification",
+    "已有数据": "Data available",
     "分类未完成，占比还会变": "Classification incomplete; shares may change",
     "等权占比缺失": "Equal-weight shares missing",
     "待分类，暂无占比": "Pending; no shares yet",
