@@ -139,8 +139,15 @@ def map_sample(db, cfg: dict) -> dict:
     have_list = watchlist.exists(db)
     only_watch = watchlist.watch_only_posts(db) if have_list else set()      # in the store only because an author query returned them
     watched = set(watchlist.bound_ids(db)) if have_list else set()           # authors whose id a provider response has confirmed
+    from . import control_pair
+    ctl_only = control_pair.control_only_posts(db)                           # written here by the first, unisolated control: never in a sample
+    if ctl_only:
+        db.executemany("DELETE FROM x_post_topics WHERE provider=? AND post_id=? AND topic_version=?", [(a, b, ver) for a, b in ctl_only])
+    n["control_only"] = len(ctl_only)
     for p in db.execute("SELECT provider, post_id, author_id, author_text, kind, engagement_snapshot_json FROM x_posts").fetchall():
         key = (p["provider"], p["post_id"])
+        if key in ctl_only:
+            continue
         in_kw, in_watch = key not in only_watch, p["author_id"] in watched
         if (scope == "keyword" and not in_kw) or (scope == "watchlist" and not in_watch) or (scope == "combined" and not (in_kw or in_watch)):
             n["outside_scope"] += 1
