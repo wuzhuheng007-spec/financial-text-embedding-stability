@@ -1,0 +1,5568 @@
+{
+ "contract_version": "x-keyword-stance-v1-proposed-20261122",
+ "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
+ "config_sha256": "f6ad9fb64bf8bfbf582f1a64983764894c14cc6dfee2b65095b064b8ee43eb88",
+ "settings": {
+  "provider": "twitterapi_io",
+  "automatic_paid_fallback": false,
+  "auto_topup": false,
+  "languages": [
+   "en",
+   "zh"
+  ],
+  "vocabulary_version": "vocab-20261122-a",
+  "topics": [
+   {
+    "id": "memory",
+    "keywords": [
+     "DRAM",
+     "NAND",
+     "HBM",
+     "memory chip",
+     "memory chips",
+     "$MU",
+     "$SNDK",
+     "存储芯片",
+     "存储涨价",
+     "存储降价",
+     "内存价格",
+     "闪存价格"
+    ],
+    "comparison_asset": null,
+    "targets": [
+     "industry:memory"
+    ]
+   },
+   {
+    "id": "technology",
+    "keywords": [
+     "technology stocks",
+     "tech stocks",
+     "semiconductor",
+     "AI capex",
+     "$NVDA",
+     "$AMD",
+     "科技股",
+     "半导体",
+     "人工智能",
+     "AI资本开支"
+    ],
+    "comparison_asset": null,
+    "targets": [
+     "industry:technology"
+    ]
+   },
+   {
+    "id": "market",
+    "keywords": [
+     "stock market",
+     "US stocks",
+     "S&P 500",
+     "Nasdaq",
+     "$SPY",
+     "美股",
+     "股市",
+     "加息",
+     "降息",
+     "关税"
+    ],
+    "comparison_asset": null,
+    "targets": [
+     "industry:market"
+    ]
+   },
+   {
+    "id": "qqq",
+    "keywords": [
+     "$QQQ",
+     "Nasdaq 100",
+     "Nasdaq-100",
+     "纳斯达克100",
+     "纳指100"
+    ],
+    "comparison_asset": "QQQ",
+    "targets": [
+     "QQQ"
+    ]
+   }
+  ],
+  "update_mode": "daily_batch",
+  "sampling_mode": "PLANNED_SAMPLE",
+  "key_env_name": "TWITTERAPI_IO_API_KEY",
+  "classifier_gate": {
+   "allowed": true,
+   "reasons": []
+  },
+  "editing": "VERSIONED_EDITS_EFFECTIVE_NEXT_BATCH",
+  "acquisition_gate": {
+   "allowed": null,
+   "provider": "twitterapi_io",
+   "key_env_name": "TWITTERAPI_IO_API_KEY",
+   "reasons": [
+    "WORKER_HEALTH_NOT_REPORTED"
+   ],
+   "source": "WORKER_HEALTH",
+   "checked_at_utc": null
+  }
+ },
+ "classifier": {
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct-GGUF:qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "revision": "hf:91cad51170dc346986eccefdc2dd33a9da36ead9|gguf-sha256:6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e|llama.cpp:225a5345bbb0e0c70859af5441ba922beb666fcf",
+  "prompt_version": "x-stance-prompt-v2-20261122",
+  "quality": "UNVALIDATED",
+  "runs_in": "separate CPU worker, not in the web process",
+  "profile": "default"
+ },
+ "market": {
+  "input_version": "phase5_bundle/c5b5ec22",
+  "series": {
+   "QQQ": "US.QQQ|DAY|a1"
+  },
+  "last_date": "2026-11-17",
+  "branch": "market-regime description, not the alpha target"
+ },
+ "vocabulary": {
+  "active": {
+   "version": "vocab-20261122-a",
+   "parent": null,
+   "effective_from_ny_date": null,
+   "status": "BASE_CONFIG",
+   "topics": [
+    {
+     "id": "memory",
+     "keywords": [
+      "DRAM",
+      "NAND",
+      "HBM",
+      "memory chip",
+      "memory chips",
+      "$MU",
+      "$SNDK",
+      "存储芯片",
+      "存储涨价",
+      "存储降价",
+      "内存价格",
+      "闪存价格"
+     ],
+     "disabled_keywords": []
+    },
+    {
+     "id": "technology",
+     "keywords": [
+      "technology stocks",
+      "tech stocks",
+      "semiconductor",
+      "AI capex",
+      "$NVDA",
+      "$AMD",
+      "科技股",
+      "半导体",
+      "人工智能",
+      "AI资本开支"
+     ],
+     "disabled_keywords": []
+    },
+    {
+     "id": "market",
+     "keywords": [
+      "stock market",
+      "US stocks",
+      "S&P 500",
+      "Nasdaq",
+      "$SPY",
+      "美股",
+      "股市",
+      "加息",
+      "降息",
+      "关税"
+     ],
+     "disabled_keywords": []
+    },
+    {
+     "id": "qqq",
+     "keywords": [
+      "$QQQ",
+      "Nasdaq 100",
+      "Nasdaq-100",
+      "纳斯达克100",
+      "纳指100"
+     ],
+     "disabled_keywords": []
+    }
+   ],
+   "impact": {
+    "queries": 8,
+    "max_query_chars_with_time_operators": 138,
+    "query_char_limit": 512,
+    "recent_units_per_day": 32,
+    "recent_pages_per_unit": 4,
+    "recent_posts_if_every_page_is_full": 2560,
+    "recent_pool_cap_posts": 3000,
+    "daily_cap_posts": 5000,
+    "daily_cap_usd": "0.75",
+    "budget_changed": false,
+    "over_pool": false
+   }
+  },
+  "pending": null,
+  "history": [],
+  "limits": {
+   "max_keyword_chars": 60,
+   "max_query_chars": 512
+  }
+ },
+ "budget": {
+  "budget_day": null,
+  "timezone": "Asia/Shanghai",
+  "today": {
+   "credits": 0,
+   "usd": "0",
+   "returned_posts": 0,
+   "cap_usd": "0.75",
+   "cap_posts": 5000
+  },
+  "rolling": {
+   "hours": 720,
+   "credits": 0,
+   "usd": "0",
+   "cap_usd": "22.5"
+  },
+  "preflight_cumulative": {
+   "credits": 0,
+   "usd": "0",
+   "returned_posts": 0,
+   "cap_usd": "0.03",
+   "cap_posts": 200
+  },
+  "pools": {
+   "recent": {
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.45",
+    "cap_posts": 3000
+   },
+   "historical": {
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.3",
+    "cap_posts": 2000
+   }
+  },
+  "sub_pools": {
+   "watchlist": {
+    "pool": "recent",
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.09",
+    "cap_posts": 600
+   },
+   "recent": {
+    "pool": "recent",
+    "credits": 0,
+    "usd": "0",
+    "returned_posts": 0,
+    "cap_usd": "0.36",
+    "cap_posts": 2400
+   }
+  },
+  "unknown_held": {
+   "requests": 0,
+   "usd": "0"
+  },
+  "billing_source": "ESTIMATE_FROM_QUOTED_RATE (15 credits x max(returned, 1)); not the provider's bill",
+  "paused": null,
+  "tolerated_max_posts_per_page": 25
+ },
+ "preflight": {
+  "state": "NOT_RUN",
+  "verdict": null,
+  "at_utc": null,
+  "returned_total": null,
+  "reasons": [],
+  "history_unlocked": false,
+  "continuation": null
+ },
+ "history_queue": {
+  "state": "NOT_STARTED",
+  "range": null
+ },
+ "collection": {
+  "state": "HAS_GAPS",
+  "runs": 0,
+  "posts": 9000,
+  "sample_accounts": 0,
+  "last_post_created_at_utc": "2026-11-25T20:19:00Z",
+  "last_fetch_at_utc": "2026-11-26T02:22:00Z",
+  "by_status": {},
+  "disk_free_gib": null
+ },
+ "classification": {
+  "matched_pairs": 0,
+  "classified_or_prefiltered": 0,
+  "pending": 0,
+  "share_done": null,
+  "filtered_low_likes": 0,
+  "filtered_likes_unknown": 0
+ },
+ "account_rules": {
+  "enabled": true,
+  "version": "account-rules-v2-20261125-fc399b14",
+  "min_likes": 20,
+  "unknown_likes": "exclude",
+  "target_must_be_named": [
+   "QQQ"
+  ],
+  "follower_tiers": [
+   {
+    "min_followers": 1000000,
+    "weight": 5
+   },
+   {
+    "min_followers": 100000,
+    "weight": 3
+   },
+   {
+    "min_followers": 10000,
+    "weight": 2
+   },
+   {
+    "min_followers": 0,
+    "weight": 1
+   }
+  ],
+  "unknown_followers_weight": 1,
+  "named_accounts": [
+   {
+    "label": "synthetic-author-1",
+    "weight": 5,
+    "identified": false,
+    "handle": null,
+    "id_bound": false,
+    "identity_from": null
+   },
+   {
+    "label": "synthetic-author-2",
+    "weight": 5,
+    "identified": false,
+    "handle": null,
+    "id_bound": false,
+    "identity_from": null
+   }
+  ],
+  "named_accounts_not_identified": 2,
+  "basis": "like and follower counts as reported when the post was first fetched; not historical values"
+ },
+ "queues": null,
+ "other_sample_versions": [],
+ "watchlist": {
+  "summary": {
+   "imported": true,
+   "versions": [],
+   "selected_at_utc": "2026-11-23T01:10:22Z",
+   "version_tag": null,
+   "logical_authors": 25,
+   "with_handle": 0,
+   "blocked_ambiguous": 0,
+   "mismatch": 0,
+   "enabled": 0,
+   "ready_for_queries": 0,
+   "stable_ids_bound": 0,
+   "collected_at_least_once": 0,
+   "scope": "PLATFORM_READ_ONLY_MONITORING: nothing is followed on X; no X password is used",
+   "selection_note": "the list was chosen on its import date; results for earlier dates are a panel of authors selected afterwards",
+   "suballocation": {
+    "watchlist": {
+     "max_returned_posts_per_day": 600,
+     "cost_cap_usd_per_day": "0.09"
+    },
+    "recent": {
+     "max_returned_posts_per_day": 2400,
+     "cost_cap_usd_per_day": "0.36"
+    }
+   }
+  },
+  "authors": [],
+  "reading": [],
+  "plan": null
+ },
+ "panels": {
+  "keyword": {
+   "sample_version": "vocab-20261122-a@account-rules-v2-20261125-fc399b14",
+   "available": true,
+   "rows": "top-level daily / narratives / classification"
+  },
+  "watchlist": {
+   "sample_version": "synthetic-sample-version+watchlist",
+   "available": true,
+   "narratives": [],
+   "daily": [
+    {
+     "window_kind": "session3",
+     "window_label": "2026-08-26",
+     "group_sessions": [
+      "2026-08-24",
+      "2026-08-25",
+      "2026-08-26"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-08-24T00:00:00Z",
+     "window_end_utc": "2026-08-26T21:00:00Z",
+     "signal_committed_at_utc": "2026-08-26T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-0",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-08-31",
+     "group_sessions": [
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-31"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-08-27T00:00:00Z",
+     "window_end_utc": "2026-08-31T21:00:00Z",
+     "signal_committed_at_utc": "2026-08-31T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-1",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-03",
+     "group_sessions": [
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-01T00:00:00Z",
+     "window_end_utc": "2026-09-03T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-03T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-2",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-09",
+     "group_sessions": [
+      "2026-09-04",
+      "2026-09-08",
+      "2026-09-09"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-04T00:00:00Z",
+     "window_end_utc": "2026-09-09T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-09T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-3",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-14",
+     "group_sessions": [
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-14"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-10T00:00:00Z",
+     "window_end_utc": "2026-09-14T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-14T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-4",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-17",
+     "group_sessions": [
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-15T00:00:00Z",
+     "window_end_utc": "2026-09-17T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-17T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-5",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-22",
+     "group_sessions": [
+      "2026-09-18",
+      "2026-09-21",
+      "2026-09-22"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-18T00:00:00Z",
+     "window_end_utc": "2026-09-22T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-22T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-6",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-25",
+     "group_sessions": [
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-25"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-23T00:00:00Z",
+     "window_end_utc": "2026-09-25T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-25T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-7",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-30",
+     "group_sessions": [
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-28T00:00:00Z",
+     "window_end_utc": "2026-09-30T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-30T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-8",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-05",
+     "group_sessions": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-01T00:00:00Z",
+     "window_end_utc": "2026-10-05T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-05T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-9",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-08",
+     "group_sessions": [
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-06T00:00:00Z",
+     "window_end_utc": "2026-10-08T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-08T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-10",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-13",
+     "group_sessions": [
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-09T00:00:00Z",
+     "window_end_utc": "2026-10-13T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-13T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-11",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-16",
+     "group_sessions": [
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-14T00:00:00Z",
+     "window_end_utc": "2026-10-16T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-16T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-12",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-21",
+     "group_sessions": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-19T00:00:00Z",
+     "window_end_utc": "2026-10-21T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-21T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-13",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-26",
+     "group_sessions": [
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-26"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-22T00:00:00Z",
+     "window_end_utc": "2026-10-26T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-26T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-14",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-29",
+     "group_sessions": [
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-27T00:00:00Z",
+     "window_end_utc": "2026-10-29T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-29T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-15",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-03",
+     "group_sessions": [
+      "2026-10-30",
+      "2026-11-02",
+      "2026-11-03"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-30T00:00:00Z",
+     "window_end_utc": "2026-11-03T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-03T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-16",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-06",
+     "group_sessions": [
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-04T00:00:00Z",
+     "window_end_utc": "2026-11-06T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-06T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-17",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-11",
+     "group_sessions": [
+      "2026-11-09",
+      "2026-11-10",
+      "2026-11-11"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-09T00:00:00Z",
+     "window_end_utc": "2026-11-11T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-11T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-18",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-16",
+     "group_sessions": [
+      "2026-11-12",
+      "2026-11-13",
+      "2026-11-16"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-12T00:00:00Z",
+     "window_end_utc": "2026-11-16T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-16T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-19",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-19",
+     "group_sessions": [
+      "2026-11-17",
+      "2026-11-18",
+      "2026-11-19"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-17T00:00:00Z",
+     "window_end_utc": "2026-11-19T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-19T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-20",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-24",
+     "group_sessions": [
+      "2026-11-20",
+      "2026-11-23",
+      "2026-11-24"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-20T00:00:00Z",
+     "window_end_utc": "2026-11-24T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-24T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-21",
+     "accounts": {
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 1,
+     "posts": {
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 1,
+     "shares_equal_weight": {
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "shares_by_post": {
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "shares": {
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 0,
+      "EVIDENCE_NOT_IN_TEXT": 0,
+      "JSON_INVALID": 0
+     },
+     "classification": {
+      "matched_posts": 1,
+      "classified_or_prefiltered": 1,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 4,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": true,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    }
+   ]
+  },
+  "combined": {
+   "sample_version": "synthetic-sample-version+combined",
+   "available": true,
+   "narratives": [],
+   "daily": [
+    {
+     "window_kind": "session3",
+     "window_label": "2026-08-26",
+     "group_sessions": [
+      "2026-08-24",
+      "2026-08-25",
+      "2026-08-26"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-08-24T00:00:00Z",
+     "window_end_utc": "2026-08-26T21:00:00Z",
+     "signal_committed_at_utc": "2026-08-26T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-0",
+     "accounts": {
+      "bullish": 47,
+      "bearish": 10,
+      "neutral": 3
+     },
+     "accounts_total": 61,
+     "posts": {
+      "bullish": 60,
+      "bearish": 12,
+      "neutral": 3
+     },
+     "posts_total": 75,
+     "shares_equal_weight": {
+      "bullish": 0.7833333333333333,
+      "bearish": 0.16666666666666666,
+      "neutral": 0.05
+     },
+     "shares_by_post": {
+      "bullish": 0.8,
+      "bearish": 0.16,
+      "neutral": 0.04
+     },
+     "shares": {
+      "bullish": 0.7833333333333333,
+      "bearish": 0.16666666666666666,
+      "neutral": 0.05
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 8,
+      "EVIDENCE_NOT_IN_TEXT": 6,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 90,
+      "classified_or_prefiltered": 90,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 300,
+      "filtered_target_not_named": 8,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-08-31",
+     "group_sessions": [
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-31"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-08-27T00:00:00Z",
+     "window_end_utc": "2026-08-31T21:00:00Z",
+     "signal_committed_at_utc": "2026-08-31T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-1",
+     "accounts": {
+      "bullish": 42,
+      "bearish": 26,
+      "neutral": 6
+     },
+     "accounts_total": 75,
+     "posts": {
+      "bullish": 54,
+      "bearish": 31,
+      "neutral": 8
+     },
+     "posts_total": 93,
+     "shares_equal_weight": {
+      "bullish": 0.5675675675675675,
+      "bearish": 0.35135135135135137,
+      "neutral": 0.08108108108108109
+     },
+     "shares_by_post": {
+      "bullish": 0.5806451612903226,
+      "bearish": 0.3333333333333333,
+      "neutral": 0.08602150537634409
+     },
+     "shares": {
+      "bullish": 0.5675675675675675,
+      "bearish": 0.35135135135135137,
+      "neutral": 0.08108108108108109
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 9,
+      "EVIDENCE_NOT_IN_TEXT": 7,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 112,
+      "classified_or_prefiltered": 112,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 372,
+      "filtered_target_not_named": 10,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-03",
+     "group_sessions": [
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-01T00:00:00Z",
+     "window_end_utc": "2026-09-03T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-03T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-2",
+     "accounts": {
+      "bullish": 63,
+      "bearish": 26,
+      "neutral": 7
+     },
+     "accounts_total": 97,
+     "posts": {
+      "bullish": 82,
+      "bearish": 30,
+      "neutral": 8
+     },
+     "posts_total": 120,
+     "shares_equal_weight": {
+      "bullish": 0.65625,
+      "bearish": 0.2708333333333333,
+      "neutral": 0.07291666666666667
+     },
+     "shares_by_post": {
+      "bullish": 0.6833333333333333,
+      "bearish": 0.25,
+      "neutral": 0.06666666666666667
+     },
+     "shares": {
+      "bullish": 0.65625,
+      "bearish": 0.2708333333333333,
+      "neutral": 0.07291666666666667
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 10,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 144,
+      "classified_or_prefiltered": 144,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 480,
+      "filtered_target_not_named": 13,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-09",
+     "group_sessions": [
+      "2026-09-04",
+      "2026-09-08",
+      "2026-09-09"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-04T00:00:00Z",
+     "window_end_utc": "2026-09-09T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-09T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-3",
+     "accounts": {
+      "bullish": 55,
+      "bearish": 17,
+      "neutral": 4
+     },
+     "accounts_total": 77,
+     "posts": {
+      "bullish": 71,
+      "bearish": 19,
+      "neutral": 5
+     },
+     "posts_total": 95,
+     "shares_equal_weight": {
+      "bullish": 0.7236842105263158,
+      "bearish": 0.2236842105263158,
+      "neutral": 0.05263157894736842
+     },
+     "shares_by_post": {
+      "bullish": 0.7473684210526316,
+      "bearish": 0.2,
+      "neutral": 0.05263157894736842
+     },
+     "shares": {
+      "bullish": 0.7236842105263158,
+      "bearish": 0.2236842105263158,
+      "neutral": 0.05263157894736842
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 10,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 114,
+      "classified_or_prefiltered": 114,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 380,
+      "filtered_target_not_named": 11,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-14",
+     "group_sessions": [
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-14"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-10T00:00:00Z",
+     "window_end_utc": "2026-09-14T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-14T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-4",
+     "accounts": {
+      "bullish": 65,
+      "bearish": 26,
+      "neutral": 7
+     },
+     "accounts_total": 99,
+     "posts": {
+      "bullish": 84,
+      "bearish": 31,
+      "neutral": 8
+     },
+     "posts_total": 123,
+     "shares_equal_weight": {
+      "bullish": 0.6632653061224489,
+      "bearish": 0.2653061224489796,
+      "neutral": 0.07142857142857142
+     },
+     "shares_by_post": {
+      "bullish": 0.6829268292682927,
+      "bearish": 0.25203252032520324,
+      "neutral": 0.06504065040650407
+     },
+     "shares": {
+      "bullish": 0.6632653061224489,
+      "bearish": 0.2653061224489796,
+      "neutral": 0.07142857142857142
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 10,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 148,
+      "classified_or_prefiltered": 148,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 492,
+      "filtered_target_not_named": 14,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-17",
+     "group_sessions": [
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-15T00:00:00Z",
+     "window_end_utc": "2026-09-17T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-17T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-5",
+     "accounts": {
+      "bullish": 65,
+      "bearish": 23,
+      "neutral": 6
+     },
+     "accounts_total": 95,
+     "posts": {
+      "bullish": 84,
+      "bearish": 27,
+      "neutral": 7
+     },
+     "posts_total": 118,
+     "shares_equal_weight": {
+      "bullish": 0.6914893617021277,
+      "bearish": 0.24468085106382978,
+      "neutral": 0.06382978723404255
+     },
+     "shares_by_post": {
+      "bullish": 0.711864406779661,
+      "bearish": 0.2288135593220339,
+      "neutral": 0.059322033898305086
+     },
+     "shares": {
+      "bullish": 0.6914893617021277,
+      "bearish": 0.24468085106382978,
+      "neutral": 0.06382978723404255
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 9,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 142,
+      "classified_or_prefiltered": 142,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 472,
+      "filtered_target_not_named": 13,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-22",
+     "group_sessions": [
+      "2026-09-18",
+      "2026-09-21",
+      "2026-09-22"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-18T00:00:00Z",
+     "window_end_utc": "2026-09-22T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-22T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-6",
+     "accounts": {
+      "bullish": 58,
+      "bearish": 34,
+      "neutral": 9
+     },
+     "accounts_total": 102,
+     "posts": {
+      "bullish": 75,
+      "bearish": 41,
+      "neutral": 10
+     },
+     "posts_total": 126,
+     "shares_equal_weight": {
+      "bullish": 0.5742574257425742,
+      "bearish": 0.33663366336633666,
+      "neutral": 0.0891089108910891
+     },
+     "shares_by_post": {
+      "bullish": 0.5952380952380952,
+      "bearish": 0.3253968253968254,
+      "neutral": 0.07936507936507936
+     },
+     "shares": {
+      "bullish": 0.5742574257425742,
+      "bearish": 0.33663366336633666,
+      "neutral": 0.0891089108910891
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 13,
+      "EVIDENCE_NOT_IN_TEXT": 10,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 151,
+      "classified_or_prefiltered": 151,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 504,
+      "filtered_target_not_named": 14,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-25",
+     "group_sessions": [
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-25"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-23T00:00:00Z",
+     "window_end_utc": "2026-09-25T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-25T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-7",
+     "accounts": {
+      "bullish": 56,
+      "bearish": 18,
+      "neutral": 5
+     },
+     "accounts_total": 80,
+     "posts": {
+      "bullish": 73,
+      "bearish": 21,
+      "neutral": 5
+     },
+     "posts_total": 99,
+     "shares_equal_weight": {
+      "bullish": 0.7088607594936709,
+      "bearish": 0.22784810126582278,
+      "neutral": 0.06329113924050633
+     },
+     "shares_by_post": {
+      "bullish": 0.7373737373737373,
+      "bearish": 0.21212121212121213,
+      "neutral": 0.050505050505050504
+     },
+     "shares": {
+      "bullish": 0.7088607594936709,
+      "bearish": 0.22784810126582278,
+      "neutral": 0.06329113924050633
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 10,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 119,
+      "classified_or_prefiltered": 119,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 396,
+      "filtered_target_not_named": 11,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-09-30",
+     "group_sessions": [
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-09-28T00:00:00Z",
+     "window_end_utc": "2026-09-30T21:00:00Z",
+     "signal_committed_at_utc": "2026-09-30T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-8",
+     "accounts": {
+      "bullish": 49,
+      "bearish": 37,
+      "neutral": 9
+     },
+     "accounts_total": 96,
+     "posts": {
+      "bullish": 64,
+      "bearish": 44,
+      "neutral": 11
+     },
+     "posts_total": 119,
+     "shares_equal_weight": {
+      "bullish": 0.5157894736842106,
+      "bearish": 0.3894736842105263,
+      "neutral": 0.09473684210526316
+     },
+     "shares_by_post": {
+      "bullish": 0.5378151260504201,
+      "bearish": 0.3697478991596639,
+      "neutral": 0.09243697478991597
+     },
+     "shares": {
+      "bullish": 0.5157894736842106,
+      "bearish": 0.3894736842105263,
+      "neutral": 0.09473684210526316
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 10,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 143,
+      "classified_or_prefiltered": 143,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 476,
+      "filtered_target_not_named": 13,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-05",
+     "group_sessions": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-01T00:00:00Z",
+     "window_end_utc": "2026-10-05T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-05T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-9",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 0,
+      "classified_or_prefiltered": 0,
+      "pending": 0,
+      "share_done": null,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": "NO_SAMPLE",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-08",
+     "group_sessions": [
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-06T00:00:00Z",
+     "window_end_utc": "2026-10-08T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-08T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-10",
+     "accounts": {
+      "bullish": 60,
+      "bearish": 27,
+      "neutral": 7
+     },
+     "accounts_total": 95,
+     "posts": {
+      "bullish": 78,
+      "bearish": 32,
+      "neutral": 8
+     },
+     "posts_total": 118,
+     "shares_equal_weight": {
+      "bullish": 0.6382978723404256,
+      "bearish": 0.2872340425531915,
+      "neutral": 0.07446808510638298
+     },
+     "shares_by_post": {
+      "bullish": 0.6610169491525424,
+      "bearish": 0.2711864406779661,
+      "neutral": 0.06779661016949153
+     },
+     "shares": {
+      "bullish": 0.6382978723404256,
+      "bearish": 0.2872340425531915,
+      "neutral": 0.07446808510638298
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 9,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 142,
+      "classified_or_prefiltered": 142,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 472,
+      "filtered_target_not_named": 13,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-13",
+     "group_sessions": [
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-09T00:00:00Z",
+     "window_end_utc": "2026-10-13T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-13T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-11",
+     "accounts": {
+      "bullish": 79,
+      "bearish": 22,
+      "neutral": 5
+     },
+     "accounts_total": 107,
+     "posts": {
+      "bullish": 101,
+      "bearish": 26,
+      "neutral": 6
+     },
+     "posts_total": 133,
+     "shares_equal_weight": {
+      "bullish": 0.7452830188679245,
+      "bearish": 0.20754716981132076,
+      "neutral": 0.04716981132075472
+     },
+     "shares_by_post": {
+      "bullish": 0.7593984962406015,
+      "bearish": 0.19548872180451127,
+      "neutral": 0.045112781954887216
+     },
+     "shares": {
+      "bullish": 0.7452830188679245,
+      "bearish": 0.20754716981132076,
+      "neutral": 0.04716981132075472
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 13,
+      "EVIDENCE_NOT_IN_TEXT": 11,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 160,
+      "classified_or_prefiltered": 160,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 532,
+      "filtered_target_not_named": 15,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-16",
+     "group_sessions": [
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-14T00:00:00Z",
+     "window_end_utc": "2026-10-16T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-16T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-12",
+     "accounts": {
+      "bullish": 43,
+      "bearish": 18,
+      "neutral": 5
+     },
+     "accounts_total": 67,
+     "posts": {
+      "bullish": 56,
+      "bearish": 22,
+      "neutral": 5
+     },
+     "posts_total": 83,
+     "shares_equal_weight": {
+      "bullish": 0.6515151515151515,
+      "bearish": 0.2727272727272727,
+      "neutral": 0.07575757575757576
+     },
+     "shares_by_post": {
+      "bullish": 0.6746987951807228,
+      "bearish": 0.26506024096385544,
+      "neutral": 0.060240963855421686
+     },
+     "shares": {
+      "bullish": 0.6515151515151515,
+      "bearish": 0.2727272727272727,
+      "neutral": 0.07575757575757576
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 8,
+      "EVIDENCE_NOT_IN_TEXT": 7,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 100,
+      "classified_or_prefiltered": 100,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 332,
+      "filtered_target_not_named": 9,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-21",
+     "group_sessions": [
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-19T00:00:00Z",
+     "window_end_utc": "2026-10-21T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-21T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-13",
+     "accounts": {
+      "bullish": 75,
+      "bearish": 25,
+      "neutral": 6
+     },
+     "accounts_total": 107,
+     "posts": {
+      "bullish": 97,
+      "bearish": 29,
+      "neutral": 7
+     },
+     "posts_total": 133,
+     "shares_equal_weight": {
+      "bullish": 0.7075471698113207,
+      "bearish": 0.2358490566037736,
+      "neutral": 0.05660377358490566
+     },
+     "shares_by_post": {
+      "bullish": 0.7293233082706767,
+      "bearish": 0.21804511278195488,
+      "neutral": 0.05263157894736842
+     },
+     "shares": {
+      "bullish": 0.7075471698113207,
+      "bearish": 0.2358490566037736,
+      "neutral": 0.05660377358490566
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 13,
+      "EVIDENCE_NOT_IN_TEXT": 11,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 160,
+      "classified_or_prefiltered": 160,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 532,
+      "filtered_target_not_named": 15,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-26",
+     "group_sessions": [
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-26"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-22T00:00:00Z",
+     "window_end_utc": "2026-10-26T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-26T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-14",
+     "accounts": {
+      "bullish": 62,
+      "bearish": 24,
+      "neutral": 6
+     },
+     "accounts_total": 93,
+     "posts": {
+      "bullish": 80,
+      "bearish": 28,
+      "neutral": 7
+     },
+     "posts_total": 115,
+     "shares_equal_weight": {
+      "bullish": 0.6739130434782609,
+      "bearish": 0.2608695652173913,
+      "neutral": 0.06521739130434782
+     },
+     "shares_by_post": {
+      "bullish": 0.6956521739130435,
+      "bearish": 0.24347826086956523,
+      "neutral": 0.06086956521739131
+     },
+     "shares": {
+      "bullish": 0.6739130434782609,
+      "bearish": 0.2608695652173913,
+      "neutral": 0.06521739130434782
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 12,
+      "EVIDENCE_NOT_IN_TEXT": 9,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 138,
+      "classified_or_prefiltered": 138,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 460,
+      "filtered_target_not_named": 13,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-10-29",
+     "group_sessions": [
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-27T00:00:00Z",
+     "window_end_utc": "2026-10-29T21:00:00Z",
+     "signal_committed_at_utc": "2026-10-29T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-15",
+     "accounts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "accounts_total": 0,
+     "posts": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 0
+     },
+     "posts_total": 0,
+     "shares_equal_weight": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares_by_post": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "shares": {
+      "bullish": null,
+      "bearish": null,
+      "neutral": null
+     },
+     "excluded_or_unjudged": {},
+     "classification": {
+      "matched_posts": 40,
+      "classified_or_prefiltered": 0,
+      "pending": 40,
+      "share_done": 0,
+      "filtered_low_likes": 0,
+      "filtered_target_not_named": 0,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": "PENDING",
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-03",
+     "group_sessions": [
+      "2026-10-30",
+      "2026-11-02",
+      "2026-11-03"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-10-30T00:00:00Z",
+     "window_end_utc": "2026-11-03T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-03T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-16",
+     "accounts": {
+      "bullish": 82,
+      "bearish": 19,
+      "neutral": 5
+     },
+     "accounts_total": 107,
+     "posts": {
+      "bullish": 105,
+      "bearish": 22,
+      "neutral": 6
+     },
+     "posts_total": 133,
+     "shares_equal_weight": {
+      "bullish": 0.7735849056603774,
+      "bearish": 0.1792452830188679,
+      "neutral": 0.04716981132075472
+     },
+     "shares_by_post": {
+      "bullish": 0.7894736842105263,
+      "bearish": 0.16541353383458646,
+      "neutral": 0.045112781954887216
+     },
+     "shares": {
+      "bullish": 0.7735849056603774,
+      "bearish": 0.1792452830188679,
+      "neutral": 0.04716981132075472
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 13,
+      "EVIDENCE_NOT_IN_TEXT": 11,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 160,
+      "classified_or_prefiltered": 160,
+      "pending": 0,
+      "share_done": 1,
+      "filtered_low_likes": 532,
+      "filtered_target_not_named": 15,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "COMPLETE",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": null,
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-06",
+     "group_sessions": [
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-04T00:00:00Z",
+     "window_end_utc": "2026-11-06T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-06T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-17",
+     "accounts": {
+      "bullish": 47,
+      "bearish": 26,
+      "neutral": 6
+     },
+     "accounts_total": 80,
+     "posts": {
+      "bullish": 61,
+      "bearish": 30,
+      "neutral": 8
+     },
+     "posts_total": 99,
+     "shares_equal_weight": {
+      "bullish": 0.5949367088607594,
+      "bearish": 0.3291139240506329,
+      "neutral": 0.0759493670886076
+     },
+     "shares_by_post": {
+      "bullish": 0.6161616161616161,
+      "bearish": 0.30303030303030304,
+      "neutral": 0.08080808080808081
+     },
+     "shares": {
+      "bullish": 0.5949367088607594,
+      "bearish": 0.3291139240506329,
+      "neutral": 0.0759493670886076
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 10,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 139,
+      "classified_or_prefiltered": 119,
+      "pending": 20,
+      "share_done": 0.8561151079136691,
+      "filtered_low_likes": 396,
+      "filtered_target_not_named": 11,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-11",
+     "group_sessions": [
+      "2026-11-09",
+      "2026-11-10",
+      "2026-11-11"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-09T00:00:00Z",
+     "window_end_utc": "2026-11-11T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-11T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-18",
+     "accounts": {
+      "bullish": 17,
+      "bearish": 4,
+      "neutral": 1
+     },
+     "accounts_total": 23,
+     "posts": {
+      "bullish": 22,
+      "bearish": 5,
+      "neutral": 1
+     },
+     "posts_total": 28,
+     "shares_equal_weight": {
+      "bullish": 0.7727272727272727,
+      "bearish": 0.18181818181818182,
+      "neutral": 0.045454545454545456
+     },
+     "shares_by_post": {
+      "bullish": 0.7857142857142857,
+      "bearish": 0.17857142857142858,
+      "neutral": 0.03571428571428571
+     },
+     "shares": {
+      "bullish": 0.7727272727272727,
+      "bearish": 0.18181818181818182,
+      "neutral": 0.045454545454545456
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 3,
+      "EVIDENCE_NOT_IN_TEXT": 2,
+      "JSON_INVALID": 0
+     },
+     "classification": {
+      "matched_posts": 54,
+      "classified_or_prefiltered": 34,
+      "pending": 20,
+      "share_done": 0.6296296296296297,
+      "filtered_low_likes": 112,
+      "filtered_target_not_named": 3,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": true,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-16",
+     "group_sessions": [
+      "2026-11-12",
+      "2026-11-13",
+      "2026-11-16"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-12T00:00:00Z",
+     "window_end_utc": "2026-11-16T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-16T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-19",
+     "accounts": {
+      "bullish": 42,
+      "bearish": 28,
+      "neutral": 7
+     },
+     "accounts_total": 78,
+     "posts": {
+      "bullish": 54,
+      "bearish": 34,
+      "neutral": 8
+     },
+     "posts_total": 96,
+     "shares_equal_weight": {
+      "bullish": 0.5454545454545454,
+      "bearish": 0.36363636363636365,
+      "neutral": 0.09090909090909091
+     },
+     "shares_by_post": {
+      "bullish": 0.5625,
+      "bearish": 0.3541666666666667,
+      "neutral": 0.08333333333333333
+     },
+     "shares": {
+      "bullish": 0.5454545454545454,
+      "bearish": 0.36363636363636365,
+      "neutral": 0.09090909090909091
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 10,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 135,
+      "classified_or_prefiltered": 115,
+      "pending": 20,
+      "share_done": 0.8518518518518519,
+      "filtered_low_likes": 384,
+      "filtered_target_not_named": 11,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-19",
+     "group_sessions": [
+      "2026-11-17",
+      "2026-11-18",
+      "2026-11-19"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-17T00:00:00Z",
+     "window_end_utc": "2026-11-19T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-19T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-20",
+     "accounts": {
+      "bullish": 47,
+      "bearish": 22,
+      "neutral": 6
+     },
+     "accounts_total": 76,
+     "posts": {
+      "bullish": 61,
+      "bearish": 26,
+      "neutral": 7
+     },
+     "posts_total": 94,
+     "shares_equal_weight": {
+      "bullish": 0.6266666666666667,
+      "bearish": 0.29333333333333333,
+      "neutral": 0.08
+     },
+     "shares_by_post": {
+      "bullish": 0.648936170212766,
+      "bearish": 0.2765957446808511,
+      "neutral": 0.07446808510638298
+     },
+     "shares": {
+      "bullish": 0.6266666666666667,
+      "bearish": 0.29333333333333333,
+      "neutral": 0.08
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 9,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 133,
+      "classified_or_prefiltered": 113,
+      "pending": 20,
+      "share_done": 0.849624060150376,
+      "filtered_low_likes": 376,
+      "filtered_target_not_named": 10,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    },
+    {
+     "window_kind": "session3",
+     "window_label": "2026-11-24",
+     "group_sessions": [
+      "2026-11-20",
+      "2026-11-23",
+      "2026-11-24"
+     ],
+     "group_size": 3,
+     "topic_id": "qqq",
+     "target_id": "QQQ",
+     "lang_scope": "all",
+     "mode": "BATCH_AFTER_CLOSE",
+     "window_start_utc": "2026-11-20T00:00:00Z",
+     "window_end_utc": "2026-11-24T21:00:00Z",
+     "signal_committed_at_utc": "2026-11-24T23:30:00Z",
+     "snapshot_id": "synthetic-snapshot-21",
+     "accounts": {
+      "bullish": 59,
+      "bearish": 13,
+      "neutral": 3
+     },
+     "accounts_total": 76,
+     "posts": {
+      "bullish": 75,
+      "bearish": 15,
+      "neutral": 4
+     },
+     "posts_total": 94,
+     "shares_equal_weight": {
+      "bullish": 0.7866666666666666,
+      "bearish": 0.17333333333333334,
+      "neutral": 0.04
+     },
+     "shares_by_post": {
+      "bullish": 0.7978723404255319,
+      "bearish": 0.1595744680851064,
+      "neutral": 0.0425531914893617
+     },
+     "shares": {
+      "bullish": 0.7866666666666666,
+      "bearish": 0.17333333333333334,
+      "neutral": 0.04
+     },
+     "excluded_or_unjudged": {
+      "IRRELEVANT": 9,
+      "EVIDENCE_NOT_IN_TEXT": 8,
+      "JSON_INVALID": 1
+     },
+     "classification": {
+      "matched_posts": 203,
+      "classified_or_prefiltered": 113,
+      "pending": 90,
+      "share_done": 0.5566502463054187,
+      "filtered_low_likes": 376,
+      "filtered_target_not_named": 10,
+      "sample_version": "synthetic-sample-version"
+     },
+     "collection_status": "PARTIAL",
+     "low_sample": false,
+     "low_sample_threshold": 30,
+     "state": "UNKNOWN",
+     "state_reason": "CLASSIFICATION_INCOMPLETE",
+     "empty_reason": null,
+     "activation": {
+      "model_id": "synthetic-model",
+      "model_revision": "synthetic-revision-0000",
+      "prompt_hash": "synthetic-prompt-hash",
+      "identity": "synthetic-identity",
+      "sample_version": "synthetic-sample-version"
+     }
+    }
+   ]
+  }
+ },
+ "daily": [
+  {
+   "window_kind": "session3",
+   "window_label": "2026-08-26",
+   "group_sessions": [
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-08-24T00:00:00Z",
+   "window_end_utc": "2026-08-26T21:00:00Z",
+   "signal_committed_at_utc": "2026-08-26T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-0",
+   "accounts": {
+    "bullish": 47,
+    "bearish": 10,
+    "neutral": 3
+   },
+   "accounts_total": 60,
+   "posts": {
+    "bullish": 60,
+    "bearish": 12,
+    "neutral": 3
+   },
+   "posts_total": 75,
+   "shares_equal_weight": {
+    "bullish": 0.7833333333333333,
+    "bearish": 0.16666666666666666,
+    "neutral": 0.05
+   },
+   "shares_by_post": {
+    "bullish": 0.8,
+    "bearish": 0.16,
+    "neutral": 0.04
+   },
+   "shares": {
+    "bullish": 0.7833333333333333,
+    "bearish": 0.16666666666666666,
+    "neutral": 0.05
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 8,
+    "EVIDENCE_NOT_IN_TEXT": 6,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 90,
+    "classified_or_prefiltered": 90,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 300,
+    "filtered_target_not_named": 8,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-08-31",
+   "group_sessions": [
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-31"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-08-27T00:00:00Z",
+   "window_end_utc": "2026-08-31T21:00:00Z",
+   "signal_committed_at_utc": "2026-08-31T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-1",
+   "accounts": {
+    "bullish": 42,
+    "bearish": 26,
+    "neutral": 6
+   },
+   "accounts_total": 74,
+   "posts": {
+    "bullish": 54,
+    "bearish": 31,
+    "neutral": 8
+   },
+   "posts_total": 93,
+   "shares_equal_weight": {
+    "bullish": 0.5675675675675675,
+    "bearish": 0.35135135135135137,
+    "neutral": 0.08108108108108109
+   },
+   "shares_by_post": {
+    "bullish": 0.5806451612903226,
+    "bearish": 0.3333333333333333,
+    "neutral": 0.08602150537634409
+   },
+   "shares": {
+    "bullish": 0.5675675675675675,
+    "bearish": 0.35135135135135137,
+    "neutral": 0.08108108108108109
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 9,
+    "EVIDENCE_NOT_IN_TEXT": 7,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 112,
+    "classified_or_prefiltered": 112,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 372,
+    "filtered_target_not_named": 10,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-03",
+   "group_sessions": [
+    "2026-09-01",
+    "2026-09-02",
+    "2026-09-03"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-01T00:00:00Z",
+   "window_end_utc": "2026-09-03T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-03T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-2",
+   "accounts": {
+    "bullish": 63,
+    "bearish": 26,
+    "neutral": 7
+   },
+   "accounts_total": 96,
+   "posts": {
+    "bullish": 82,
+    "bearish": 30,
+    "neutral": 8
+   },
+   "posts_total": 120,
+   "shares_equal_weight": {
+    "bullish": 0.65625,
+    "bearish": 0.2708333333333333,
+    "neutral": 0.07291666666666667
+   },
+   "shares_by_post": {
+    "bullish": 0.6833333333333333,
+    "bearish": 0.25,
+    "neutral": 0.06666666666666667
+   },
+   "shares": {
+    "bullish": 0.65625,
+    "bearish": 0.2708333333333333,
+    "neutral": 0.07291666666666667
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 10,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 144,
+    "classified_or_prefiltered": 144,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 480,
+    "filtered_target_not_named": 13,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-09",
+   "group_sessions": [
+    "2026-09-04",
+    "2026-09-08",
+    "2026-09-09"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-04T00:00:00Z",
+   "window_end_utc": "2026-09-09T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-09T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-3",
+   "accounts": {
+    "bullish": 55,
+    "bearish": 17,
+    "neutral": 4
+   },
+   "accounts_total": 76,
+   "posts": {
+    "bullish": 71,
+    "bearish": 19,
+    "neutral": 5
+   },
+   "posts_total": 95,
+   "shares_equal_weight": {
+    "bullish": 0.7236842105263158,
+    "bearish": 0.2236842105263158,
+    "neutral": 0.05263157894736842
+   },
+   "shares_by_post": {
+    "bullish": 0.7473684210526316,
+    "bearish": 0.2,
+    "neutral": 0.05263157894736842
+   },
+   "shares": {
+    "bullish": 0.7236842105263158,
+    "bearish": 0.2236842105263158,
+    "neutral": 0.05263157894736842
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 10,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 114,
+    "classified_or_prefiltered": 114,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 380,
+    "filtered_target_not_named": 11,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-14",
+   "group_sessions": [
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-14"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-10T00:00:00Z",
+   "window_end_utc": "2026-09-14T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-14T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-4",
+   "accounts": {
+    "bullish": 65,
+    "bearish": 26,
+    "neutral": 7
+   },
+   "accounts_total": 98,
+   "posts": {
+    "bullish": 84,
+    "bearish": 31,
+    "neutral": 8
+   },
+   "posts_total": 123,
+   "shares_equal_weight": {
+    "bullish": 0.6632653061224489,
+    "bearish": 0.2653061224489796,
+    "neutral": 0.07142857142857142
+   },
+   "shares_by_post": {
+    "bullish": 0.6829268292682927,
+    "bearish": 0.25203252032520324,
+    "neutral": 0.06504065040650407
+   },
+   "shares": {
+    "bullish": 0.6632653061224489,
+    "bearish": 0.2653061224489796,
+    "neutral": 0.07142857142857142
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 10,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 148,
+    "classified_or_prefiltered": 148,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 492,
+    "filtered_target_not_named": 14,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-17",
+   "group_sessions": [
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-15T00:00:00Z",
+   "window_end_utc": "2026-09-17T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-17T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-5",
+   "accounts": {
+    "bullish": 65,
+    "bearish": 23,
+    "neutral": 6
+   },
+   "accounts_total": 94,
+   "posts": {
+    "bullish": 84,
+    "bearish": 27,
+    "neutral": 7
+   },
+   "posts_total": 118,
+   "shares_equal_weight": {
+    "bullish": 0.6914893617021277,
+    "bearish": 0.24468085106382978,
+    "neutral": 0.06382978723404255
+   },
+   "shares_by_post": {
+    "bullish": 0.711864406779661,
+    "bearish": 0.2288135593220339,
+    "neutral": 0.059322033898305086
+   },
+   "shares": {
+    "bullish": 0.6914893617021277,
+    "bearish": 0.24468085106382978,
+    "neutral": 0.06382978723404255
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 9,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 142,
+    "classified_or_prefiltered": 142,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 472,
+    "filtered_target_not_named": 13,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-22",
+   "group_sessions": [
+    "2026-09-18",
+    "2026-09-21",
+    "2026-09-22"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-18T00:00:00Z",
+   "window_end_utc": "2026-09-22T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-22T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-6",
+   "accounts": {
+    "bullish": 58,
+    "bearish": 34,
+    "neutral": 9
+   },
+   "accounts_total": 101,
+   "posts": {
+    "bullish": 75,
+    "bearish": 41,
+    "neutral": 10
+   },
+   "posts_total": 126,
+   "shares_equal_weight": {
+    "bullish": 0.5742574257425742,
+    "bearish": 0.33663366336633666,
+    "neutral": 0.0891089108910891
+   },
+   "shares_by_post": {
+    "bullish": 0.5952380952380952,
+    "bearish": 0.3253968253968254,
+    "neutral": 0.07936507936507936
+   },
+   "shares": {
+    "bullish": 0.5742574257425742,
+    "bearish": 0.33663366336633666,
+    "neutral": 0.0891089108910891
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 13,
+    "EVIDENCE_NOT_IN_TEXT": 10,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 151,
+    "classified_or_prefiltered": 151,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 504,
+    "filtered_target_not_named": 14,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-25",
+   "group_sessions": [
+    "2026-09-23",
+    "2026-09-24",
+    "2026-09-25"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-23T00:00:00Z",
+   "window_end_utc": "2026-09-25T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-25T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-7",
+   "accounts": {
+    "bullish": 56,
+    "bearish": 18,
+    "neutral": 5
+   },
+   "accounts_total": 79,
+   "posts": {
+    "bullish": 73,
+    "bearish": 21,
+    "neutral": 5
+   },
+   "posts_total": 99,
+   "shares_equal_weight": {
+    "bullish": 0.7088607594936709,
+    "bearish": 0.22784810126582278,
+    "neutral": 0.06329113924050633
+   },
+   "shares_by_post": {
+    "bullish": 0.7373737373737373,
+    "bearish": 0.21212121212121213,
+    "neutral": 0.050505050505050504
+   },
+   "shares": {
+    "bullish": 0.7088607594936709,
+    "bearish": 0.22784810126582278,
+    "neutral": 0.06329113924050633
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 10,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 119,
+    "classified_or_prefiltered": 119,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 396,
+    "filtered_target_not_named": 11,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-09-30",
+   "group_sessions": [
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-09-28T00:00:00Z",
+   "window_end_utc": "2026-09-30T21:00:00Z",
+   "signal_committed_at_utc": "2026-09-30T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-8",
+   "accounts": {
+    "bullish": 49,
+    "bearish": 37,
+    "neutral": 9
+   },
+   "accounts_total": 95,
+   "posts": {
+    "bullish": 64,
+    "bearish": 44,
+    "neutral": 11
+   },
+   "posts_total": 119,
+   "shares_equal_weight": {
+    "bullish": 0.5157894736842106,
+    "bearish": 0.3894736842105263,
+    "neutral": 0.09473684210526316
+   },
+   "shares_by_post": {
+    "bullish": 0.5378151260504201,
+    "bearish": 0.3697478991596639,
+    "neutral": 0.09243697478991597
+   },
+   "shares": {
+    "bullish": 0.5157894736842106,
+    "bearish": 0.3894736842105263,
+    "neutral": 0.09473684210526316
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 10,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 143,
+    "classified_or_prefiltered": 143,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 476,
+    "filtered_target_not_named": 13,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-05",
+   "group_sessions": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-05"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-01T00:00:00Z",
+   "window_end_utc": "2026-10-05T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-05T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-9",
+   "accounts": {
+    "bullish": 0,
+    "bearish": 0,
+    "neutral": 0
+   },
+   "accounts_total": 0,
+   "posts": {
+    "bullish": 0,
+    "bearish": 0,
+    "neutral": 0
+   },
+   "posts_total": 0,
+   "shares_equal_weight": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "shares_by_post": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "shares": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "excluded_or_unjudged": {},
+   "classification": {
+    "matched_posts": 0,
+    "classified_or_prefiltered": 0,
+    "pending": 0,
+    "share_done": null,
+    "filtered_low_likes": 0,
+    "filtered_target_not_named": 0,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": "NO_SAMPLE",
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-08",
+   "group_sessions": [
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-06T00:00:00Z",
+   "window_end_utc": "2026-10-08T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-08T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-10",
+   "accounts": {
+    "bullish": 60,
+    "bearish": 27,
+    "neutral": 7
+   },
+   "accounts_total": 94,
+   "posts": {
+    "bullish": 78,
+    "bearish": 32,
+    "neutral": 8
+   },
+   "posts_total": 118,
+   "shares_equal_weight": {
+    "bullish": 0.6382978723404256,
+    "bearish": 0.2872340425531915,
+    "neutral": 0.07446808510638298
+   },
+   "shares_by_post": {
+    "bullish": 0.6610169491525424,
+    "bearish": 0.2711864406779661,
+    "neutral": 0.06779661016949153
+   },
+   "shares": {
+    "bullish": 0.6382978723404256,
+    "bearish": 0.2872340425531915,
+    "neutral": 0.07446808510638298
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 9,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 142,
+    "classified_or_prefiltered": 142,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 472,
+    "filtered_target_not_named": 13,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-13",
+   "group_sessions": [
+    "2026-10-09",
+    "2026-10-12",
+    "2026-10-13"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-09T00:00:00Z",
+   "window_end_utc": "2026-10-13T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-13T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-11",
+   "accounts": {
+    "bullish": 79,
+    "bearish": 22,
+    "neutral": 5
+   },
+   "accounts_total": 106,
+   "posts": {
+    "bullish": 101,
+    "bearish": 26,
+    "neutral": 6
+   },
+   "posts_total": 133,
+   "shares_equal_weight": {
+    "bullish": 0.7452830188679245,
+    "bearish": 0.20754716981132076,
+    "neutral": 0.04716981132075472
+   },
+   "shares_by_post": {
+    "bullish": 0.7593984962406015,
+    "bearish": 0.19548872180451127,
+    "neutral": 0.045112781954887216
+   },
+   "shares": {
+    "bullish": 0.7452830188679245,
+    "bearish": 0.20754716981132076,
+    "neutral": 0.04716981132075472
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 13,
+    "EVIDENCE_NOT_IN_TEXT": 11,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 160,
+    "classified_or_prefiltered": 160,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 532,
+    "filtered_target_not_named": 15,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-16",
+   "group_sessions": [
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-14T00:00:00Z",
+   "window_end_utc": "2026-10-16T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-16T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-12",
+   "accounts": {
+    "bullish": 43,
+    "bearish": 18,
+    "neutral": 5
+   },
+   "accounts_total": 66,
+   "posts": {
+    "bullish": 56,
+    "bearish": 22,
+    "neutral": 5
+   },
+   "posts_total": 83,
+   "shares_equal_weight": {
+    "bullish": 0.6515151515151515,
+    "bearish": 0.2727272727272727,
+    "neutral": 0.07575757575757576
+   },
+   "shares_by_post": {
+    "bullish": 0.6746987951807228,
+    "bearish": 0.26506024096385544,
+    "neutral": 0.060240963855421686
+   },
+   "shares": {
+    "bullish": 0.6515151515151515,
+    "bearish": 0.2727272727272727,
+    "neutral": 0.07575757575757576
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 8,
+    "EVIDENCE_NOT_IN_TEXT": 7,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 100,
+    "classified_or_prefiltered": 100,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 332,
+    "filtered_target_not_named": 9,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-21",
+   "group_sessions": [
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-19T00:00:00Z",
+   "window_end_utc": "2026-10-21T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-21T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-13",
+   "accounts": {
+    "bullish": 75,
+    "bearish": 25,
+    "neutral": 6
+   },
+   "accounts_total": 106,
+   "posts": {
+    "bullish": 97,
+    "bearish": 29,
+    "neutral": 7
+   },
+   "posts_total": 133,
+   "shares_equal_weight": {
+    "bullish": 0.7075471698113207,
+    "bearish": 0.2358490566037736,
+    "neutral": 0.05660377358490566
+   },
+   "shares_by_post": {
+    "bullish": 0.7293233082706767,
+    "bearish": 0.21804511278195488,
+    "neutral": 0.05263157894736842
+   },
+   "shares": {
+    "bullish": 0.7075471698113207,
+    "bearish": 0.2358490566037736,
+    "neutral": 0.05660377358490566
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 13,
+    "EVIDENCE_NOT_IN_TEXT": 11,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 160,
+    "classified_or_prefiltered": 160,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 532,
+    "filtered_target_not_named": 15,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-26",
+   "group_sessions": [
+    "2026-10-22",
+    "2026-10-23",
+    "2026-10-26"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-22T00:00:00Z",
+   "window_end_utc": "2026-10-26T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-26T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-14",
+   "accounts": {
+    "bullish": 62,
+    "bearish": 24,
+    "neutral": 6
+   },
+   "accounts_total": 92,
+   "posts": {
+    "bullish": 80,
+    "bearish": 28,
+    "neutral": 7
+   },
+   "posts_total": 115,
+   "shares_equal_weight": {
+    "bullish": 0.6739130434782609,
+    "bearish": 0.2608695652173913,
+    "neutral": 0.06521739130434782
+   },
+   "shares_by_post": {
+    "bullish": 0.6956521739130435,
+    "bearish": 0.24347826086956523,
+    "neutral": 0.06086956521739131
+   },
+   "shares": {
+    "bullish": 0.6739130434782609,
+    "bearish": 0.2608695652173913,
+    "neutral": 0.06521739130434782
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 12,
+    "EVIDENCE_NOT_IN_TEXT": 9,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 138,
+    "classified_or_prefiltered": 138,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 460,
+    "filtered_target_not_named": 13,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-10-29",
+   "group_sessions": [
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-27T00:00:00Z",
+   "window_end_utc": "2026-10-29T21:00:00Z",
+   "signal_committed_at_utc": "2026-10-29T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-15",
+   "accounts": {
+    "bullish": 0,
+    "bearish": 0,
+    "neutral": 0
+   },
+   "accounts_total": 0,
+   "posts": {
+    "bullish": 0,
+    "bearish": 0,
+    "neutral": 0
+   },
+   "posts_total": 0,
+   "shares_equal_weight": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "shares_by_post": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "shares": {
+    "bullish": null,
+    "bearish": null,
+    "neutral": null
+   },
+   "excluded_or_unjudged": {},
+   "classification": {
+    "matched_posts": 40,
+    "classified_or_prefiltered": 0,
+    "pending": 40,
+    "share_done": 0,
+    "filtered_low_likes": 0,
+    "filtered_target_not_named": 0,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": "PENDING",
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-03",
+   "group_sessions": [
+    "2026-10-30",
+    "2026-11-02",
+    "2026-11-03"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-10-30T00:00:00Z",
+   "window_end_utc": "2026-11-03T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-03T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-16",
+   "accounts": {
+    "bullish": 82,
+    "bearish": 19,
+    "neutral": 5
+   },
+   "accounts_total": 106,
+   "posts": {
+    "bullish": 105,
+    "bearish": 22,
+    "neutral": 6
+   },
+   "posts_total": 133,
+   "shares_equal_weight": {
+    "bullish": 0.7735849056603774,
+    "bearish": 0.1792452830188679,
+    "neutral": 0.04716981132075472
+   },
+   "shares_by_post": {
+    "bullish": 0.7894736842105263,
+    "bearish": 0.16541353383458646,
+    "neutral": 0.045112781954887216
+   },
+   "shares": {
+    "bullish": 0.7735849056603774,
+    "bearish": 0.1792452830188679,
+    "neutral": 0.04716981132075472
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 13,
+    "EVIDENCE_NOT_IN_TEXT": 11,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 160,
+    "classified_or_prefiltered": 160,
+    "pending": 0,
+    "share_done": 1,
+    "filtered_low_likes": 532,
+    "filtered_target_not_named": 15,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "COMPLETE",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": null,
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-06",
+   "group_sessions": [
+    "2026-11-04",
+    "2026-11-05",
+    "2026-11-06"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-11-04T00:00:00Z",
+   "window_end_utc": "2026-11-06T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-06T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-17",
+   "accounts": {
+    "bullish": 47,
+    "bearish": 26,
+    "neutral": 6
+   },
+   "accounts_total": 79,
+   "posts": {
+    "bullish": 61,
+    "bearish": 30,
+    "neutral": 8
+   },
+   "posts_total": 99,
+   "shares_equal_weight": {
+    "bullish": 0.5949367088607594,
+    "bearish": 0.3291139240506329,
+    "neutral": 0.0759493670886076
+   },
+   "shares_by_post": {
+    "bullish": 0.6161616161616161,
+    "bearish": 0.30303030303030304,
+    "neutral": 0.08080808080808081
+   },
+   "shares": {
+    "bullish": 0.5949367088607594,
+    "bearish": 0.3291139240506329,
+    "neutral": 0.0759493670886076
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 10,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 139,
+    "classified_or_prefiltered": 119,
+    "pending": 20,
+    "share_done": 0.8561151079136691,
+    "filtered_low_likes": 396,
+    "filtered_target_not_named": 11,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "PARTIAL",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-11",
+   "group_sessions": [
+    "2026-11-09",
+    "2026-11-10",
+    "2026-11-11"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-11-09T00:00:00Z",
+   "window_end_utc": "2026-11-11T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-11T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-18",
+   "accounts": {
+    "bullish": 17,
+    "bearish": 4,
+    "neutral": 1
+   },
+   "accounts_total": 22,
+   "posts": {
+    "bullish": 22,
+    "bearish": 5,
+    "neutral": 1
+   },
+   "posts_total": 28,
+   "shares_equal_weight": {
+    "bullish": 0.7727272727272727,
+    "bearish": 0.18181818181818182,
+    "neutral": 0.045454545454545456
+   },
+   "shares_by_post": {
+    "bullish": 0.7857142857142857,
+    "bearish": 0.17857142857142858,
+    "neutral": 0.03571428571428571
+   },
+   "shares": {
+    "bullish": 0.7727272727272727,
+    "bearish": 0.18181818181818182,
+    "neutral": 0.045454545454545456
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 3,
+    "EVIDENCE_NOT_IN_TEXT": 2,
+    "JSON_INVALID": 0
+   },
+   "classification": {
+    "matched_posts": 54,
+    "classified_or_prefiltered": 34,
+    "pending": 20,
+    "share_done": 0.6296296296296297,
+    "filtered_low_likes": 112,
+    "filtered_target_not_named": 3,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "PARTIAL",
+   "low_sample": true,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-16",
+   "group_sessions": [
+    "2026-11-12",
+    "2026-11-13",
+    "2026-11-16"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-11-12T00:00:00Z",
+   "window_end_utc": "2026-11-16T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-16T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-19",
+   "accounts": {
+    "bullish": 42,
+    "bearish": 28,
+    "neutral": 7
+   },
+   "accounts_total": 77,
+   "posts": {
+    "bullish": 54,
+    "bearish": 34,
+    "neutral": 8
+   },
+   "posts_total": 96,
+   "shares_equal_weight": {
+    "bullish": 0.5454545454545454,
+    "bearish": 0.36363636363636365,
+    "neutral": 0.09090909090909091
+   },
+   "shares_by_post": {
+    "bullish": 0.5625,
+    "bearish": 0.3541666666666667,
+    "neutral": 0.08333333333333333
+   },
+   "shares": {
+    "bullish": 0.5454545454545454,
+    "bearish": 0.36363636363636365,
+    "neutral": 0.09090909090909091
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 10,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 135,
+    "classified_or_prefiltered": 115,
+    "pending": 20,
+    "share_done": 0.8518518518518519,
+    "filtered_low_likes": 384,
+    "filtered_target_not_named": 11,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "PARTIAL",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-19",
+   "group_sessions": [
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-11-17T00:00:00Z",
+   "window_end_utc": "2026-11-19T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-19T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-20",
+   "accounts": {
+    "bullish": 47,
+    "bearish": 22,
+    "neutral": 6
+   },
+   "accounts_total": 75,
+   "posts": {
+    "bullish": 61,
+    "bearish": 26,
+    "neutral": 7
+   },
+   "posts_total": 94,
+   "shares_equal_weight": {
+    "bullish": 0.6266666666666667,
+    "bearish": 0.29333333333333333,
+    "neutral": 0.08
+   },
+   "shares_by_post": {
+    "bullish": 0.648936170212766,
+    "bearish": 0.2765957446808511,
+    "neutral": 0.07446808510638298
+   },
+   "shares": {
+    "bullish": 0.6266666666666667,
+    "bearish": 0.29333333333333333,
+    "neutral": 0.08
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 9,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 133,
+    "classified_or_prefiltered": 113,
+    "pending": 20,
+    "share_done": 0.849624060150376,
+    "filtered_low_likes": 376,
+    "filtered_target_not_named": 10,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "PARTIAL",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  },
+  {
+   "window_kind": "session3",
+   "window_label": "2026-11-24",
+   "group_sessions": [
+    "2026-11-20",
+    "2026-11-23",
+    "2026-11-24"
+   ],
+   "group_size": 3,
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "lang_scope": "all",
+   "mode": "BATCH_AFTER_CLOSE",
+   "window_start_utc": "2026-11-20T00:00:00Z",
+   "window_end_utc": "2026-11-24T21:00:00Z",
+   "signal_committed_at_utc": "2026-11-24T23:30:00Z",
+   "snapshot_id": "synthetic-snapshot-21",
+   "accounts": {
+    "bullish": 59,
+    "bearish": 13,
+    "neutral": 3
+   },
+   "accounts_total": 75,
+   "posts": {
+    "bullish": 75,
+    "bearish": 15,
+    "neutral": 4
+   },
+   "posts_total": 94,
+   "shares_equal_weight": {
+    "bullish": 0.7866666666666666,
+    "bearish": 0.17333333333333334,
+    "neutral": 0.04
+   },
+   "shares_by_post": {
+    "bullish": 0.7978723404255319,
+    "bearish": 0.1595744680851064,
+    "neutral": 0.0425531914893617
+   },
+   "shares": {
+    "bullish": 0.7866666666666666,
+    "bearish": 0.17333333333333334,
+    "neutral": 0.04
+   },
+   "excluded_or_unjudged": {
+    "IRRELEVANT": 9,
+    "EVIDENCE_NOT_IN_TEXT": 8,
+    "JSON_INVALID": 1
+   },
+   "classification": {
+    "matched_posts": 203,
+    "classified_or_prefiltered": 113,
+    "pending": 90,
+    "share_done": 0.5566502463054187,
+    "filtered_low_likes": 376,
+    "filtered_target_not_named": 10,
+    "sample_version": "synthetic-sample-version"
+   },
+   "collection_status": "PARTIAL",
+   "low_sample": false,
+   "low_sample_threshold": 30,
+   "state": "UNKNOWN",
+   "state_reason": "CLASSIFICATION_INCOMPLETE",
+   "empty_reason": null,
+   "activation": {
+    "model_id": "synthetic-model",
+    "model_revision": "synthetic-revision-0000",
+    "prompt_hash": "synthetic-prompt-hash",
+    "identity": "synthetic-identity",
+    "sample_version": "synthetic-sample-version"
+   }
+  }
+ ],
+ "narratives": [],
+ "episodes": [],
+ "returns": [],
+ "conditional": [
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 1,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 1,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 1,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 3,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 3,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 3,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 5,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 5,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 5,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 10,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 10,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 10,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 20,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 20,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 20,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 30,
+   "state": "bullish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 30,
+   "state": "bearish",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  },
+  {
+   "topic_id": "qqq",
+   "target_id": "QQQ",
+   "kind": "desc_return",
+   "h": 30,
+   "state": "neutral",
+   "n_dates": 0,
+   "state_days_without_return": 0,
+   "mean": null,
+   "median": null,
+   "up_share": null,
+   "unconditional": {
+    "n_dates": 0,
+    "mean": null
+   },
+   "mean_ci95": null,
+   "status": "INCONCLUSIVE",
+   "status_reason": "TOO_FEW_STATE_DAYS"
+  }
+ ],
+ "has_data": true,
+ "data_kinds": {
+  "live": 0,
+  "batch": 0,
+  "retrospective": 0
+ },
+ "limits": [
+  "accounts in the retrieved sample only",
+  "planned sample, not all of X",
+  "not a prediction",
+  "labels not validated by human review"
+ ],
+ "worker_health": {
+  "state": "NOT_REPORTED"
+ },
+ "updates": {
+  "state": "FRESH",
+  "ok": true,
+  "stage_exits": {
+   "build": 0,
+   "collect": 0,
+   "export": 0
+  },
+  "age_hours": 0.5,
+  "interval_hours": 2,
+  "round_started_at_utc": "2026-11-26T02:20:00Z",
+  "round_finished_at_utc": "2026-11-26T02:28:00Z",
+  "last_successful_update_at_utc": "2026-11-26T02:28:00Z",
+  "last_successful_collection_at_utc": "2026-11-26T02:24:00Z",
+  "last_label_written_at_utc": "2026-11-26T02:25:00Z",
+  "last_summary_committed_at_utc": "2026-11-26T02:26:00Z",
+  "collection": {
+   "status": "RAN",
+   "requests": 32,
+   "returned": 120,
+   "new_posts": 100
+  },
+  "credit_hold": null,
+  "pending": {
+   "new_posts_queue": 90,
+   "history_backlog": 1500
+  }
+ },
+ "recovery_todo": null,
+ "simple": null,
+ "missing_inputs": [
+  {
+   "input": "WORKER_HEALTH",
+   "detail": "the collection worker's self-check (quant-x-stance.sh health)"
+  },
+  {
+   "input": "validation.holdout_start",
+   "detail": "relationship_study"
+  },
+  {
+   "input": "topics[memory].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  },
+  {
+   "input": "topics[technology].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  },
+  {
+   "input": "topics[market].comparison_asset",
+   "detail": "market_pairing_for_this_topic"
+  }
+ ],
+ "closes": {
+  "qqq": {
+   "2026-08-24": 600,
+   "2026-08-25": 604.64,
+   "2026-08-26": 608.97,
+   "2026-08-27": 612.67,
+   "2026-08-28": 615.55,
+   "2026-08-31": 617.46,
+   "2026-09-01": 618.38,
+   "2026-09-02": 618.41,
+   "2026-09-03": 617.72,
+   "2026-09-04": 616.57,
+   "2026-09-08": 615.28,
+   "2026-09-09": 614.19,
+   "2026-09-10": 613.59,
+   "2026-09-11": 613.74,
+   "2026-09-14": 614.81,
+   "2026-09-15": 616.87,
+   "2026-09-16": 619.88,
+   "2026-09-17": 623.7,
+   "2026-09-18": 628.09,
+   "2026-09-21": 632.75,
+   "2026-09-23": 641.61,
+   "2026-09-24": 645.21,
+   "2026-09-25": 647.94,
+   "2026-09-28": 649.7,
+   "2026-09-29": 650.49,
+   "2026-09-30": 650.39,
+   "2026-10-01": 649.61,
+   "2026-10-02": 648.42,
+   "2026-10-05": 647.14,
+   "2026-10-06": 646.1,
+   "2026-10-07": 645.6,
+   "2026-10-08": 645.88,
+   "2026-10-09": 647.1,
+   "2026-10-12": 649.31,
+   "2026-10-13": 652.45,
+   "2026-10-14": 656.37,
+   "2026-10-15": 660.82,
+   "2026-10-16": 665.5,
+   "2026-10-19": 670.08,
+   "2026-10-20": 674.25,
+   "2026-10-21": 677.72,
+   "2026-10-22": 680.32,
+   "2026-10-23": 681.93,
+   "2026-10-26": 682.57,
+   "2026-10-27": 682.35,
+   "2026-10-28": 681.49,
+   "2026-10-29": 680.27,
+   "2026-10-30": 679.01,
+   "2026-11-02": 678.03,
+   "2026-11-03": 677.63,
+   "2026-11-04": 678.05,
+   "2026-11-05": 679.41,
+   "2026-11-06": 681.77,
+   "2026-11-09": 685.04,
+   "2026-11-10": 689.06,
+   "2026-11-11": 693.56,
+   "2026-11-12": 698.25,
+   "2026-11-13": 702.79,
+   "2026-11-16": 706.86,
+   "2026-11-17": 710.22,
+   "2026-11-18": 640,
+   "2026-11-19": 642.5,
+   "2026-11-20": 645,
+   "2026-11-23": 647.5
+  }
+ },
+ "closes_meta": {
+  "frozen_input_last_date": "2026-11-17",
+  "display_fill": {
+   "state": "READY",
+   "source": "moomoo daily bars, unadjusted (portal display history)",
+   "basis": "UNADJUSTED",
+   "currency": "USD",
+   "after": "2026-11-17",
+   "dates_added": 4,
+   "through": "2026-11-23"
+  },
+  "research": {
+   "basis": "ADJUSTED",
+   "currency": "USD",
+   "series_ids": [
+    "US.QQQ|DAY|a1"
+   ],
+   "source": "frozen research price input (anchor close of each h=1 pair)"
+  }
+ }
+}
