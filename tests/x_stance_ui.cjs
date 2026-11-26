@@ -299,7 +299,11 @@ test('overview: receipt, a headline per panel and one primary chart, details fol
   const lines = svgs[0].all(e => e.tagName === 'polyline').map(e => e.attrs.class);
   assert.deepStrictEqual(lines, ['xs-c-price xs-c-price-disp']);                                                             // broken where the source changes: the one research close is a dot, not joined to the display line
   assert.deepStrictEqual(svgs[0].all(e => e.tagName === 'circle').map(e => e.attrs.class), ['xs-c-dot', 'xs-c-dot xs-c-dot-disp', 'xs-c-dot xs-c-dot-disp']);
-  assert.ok(texts(ov).join('|').includes('虚线部分'));
+  assert.ok(texts(ov).join('|').includes('虚线和空心点：'));
+  // the live case of 2026-11-26: one display close between research closes draws a lone point, so the caption names points only
+  const one = overviewPayload(); one.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25}};
+  const ov1 = (await mount(one)).panel('overview'), t1 = texts(ov1).join('|');
+  assert.ok(t1.includes('空心点：') && !t1.includes('虚线') && ov1.all(e => e.tagName === 'polyline').length === 0);
   assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'svg').length, 0);                                            // the QQQ chart is drawn once, on top
   ov.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
   assert.ok(ui.panel('overview').all(e => e.tagName === 'text').map(e => e.textContent).includes('12'));

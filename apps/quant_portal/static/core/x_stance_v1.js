@@ -577,11 +577,11 @@
     });
     svg.append(s('rect', {x: L, y: pt - 8, width: W - L - R, height: pb - pt + 16, rx: 4, class: 'xs-c-strip'}));
     const pts = prices.map((p, i) => ({x: L + i * bw + bw / 2, ...p})), have = pts.filter(p => p.v != null);
-    let gaps = false, display = false;
+    let gaps = false, display = false, dashed = false;
     if (have.length > 1) {
       const lo = Math.min(...have.map(p => p.v)), hi = Math.max(...have.map(p => p.v)), sp = hi - lo || 1, Y = v => pb - (v - lo) / sp * (pb - pt);
       let seg = [];
-      const flush = () => { if (seg.length > 1) svg.append(s('polyline', {class: seg[0].src === 'display' ? 'xs-c-price xs-c-price-disp' : 'xs-c-price', fill: 'none', points: seg.map(p => `${p.x.toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ')})); seg = []; };
+      const flush = () => { if (seg.length > 1 && seg[0].src === 'display') dashed = true; if (seg.length > 1) svg.append(s('polyline', {class: seg[0].src === 'display' ? 'xs-c-price xs-c-price-disp' : 'xs-c-price', fill: 'none', points: seg.map(p => `${p.x.toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ')})); seg = []; };
       pts.forEach((p, i) => {
         if (p.v == null) { if (have.some(q => q.x < p.x) && have.some(q => q.x > p.x)) gaps = true; flush(); return; }
         if (seg.length && seg[seg.length - 1].src !== p.src) flush();
@@ -594,7 +594,7 @@
     }
     [0, Math.floor((n - 1) / 2), n - 1].filter((v, i, a) => v >= 0 && a.indexOf(v) === i).forEach(i => {
       const t = s('text', {x: L + i * bw + bw / 2, y: H - 12, class: 'xs-c-ax', 'text-anchor': n === 1 ? 'middle' : i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle'}); t.textContent = lastDay(rows[i]); svg.append(t); });
-    return {svg, priced: have.length > 1, gaps, display};
+    return {svg, priced: have.length > 1, gaps, display, dashed};
   }
   function renderOverview(d) {
     const p = panel('overview'); if (!p) return;
@@ -605,7 +605,7 @@
     if (scope !== 'keyword' && !pn.available) box.append(h('p', 'muted', '还没有导入重点作者名单。'));
     else if (!shown.length) box.append(d.has_data ? h('p', 'muted', '这个标的还没有带有效标签的日期。') : missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：'));
     else {
-      const cm = closeMap(d), {svg, priced, gaps, display} = mainChart(shown, shown.map(r => closeOf(cm, PRIMARY, r)));
+      const cm = closeMap(d), {svg, priced, gaps, display, dashed} = mainChart(shown, shown.map(r => closeOf(cm, PRIMARY, r)));
       const key = h('div', 'xs-key');
       for (const k of ['bullish', 'neutral', 'bearish']) { const it = h('span', 'xs-key-i'); it.append(h('i', `xs-sw xs-${k}`), h('span', null, STATE[k])); key.append(it); }
       key.append(h('span', 'xs-key-i', '柱上数字：账号数'), h('span', 'xs-key-i', '浅色柱：账号少于 30 个'), h('span', 'xs-key-i', '数字后的 *：分类未完成'),
@@ -615,7 +615,7 @@
       if (!priced) fig.append(h('figcaption', 'fine-print', '这一段没有可配对的收盘价，价格区留空。'));
       if (gaps) fig.append(h('figcaption', 'fine-print', '价格线在缺少收盘价的组断开，不做插值。'));
       const fill = (d.closes_meta || {}).display_fill;
-      if (display && fill) { const fc = h('figcaption', 'fine-print'); fc.append(h('span', null, '虚线部分：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); fig.append(fc); }
+      if (display && fill) { const fc = h('figcaption', 'fine-print'); fc.append(h('span', null, dashed ? '虚线和空心点：' : '空心点：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); fig.append(fc); }
       box.append(key, fig);
     }
     box.append(h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是预测；价格只作日期对照。分母、帖子口径和逐条材料在下方“每组明细与分母”里。'));
