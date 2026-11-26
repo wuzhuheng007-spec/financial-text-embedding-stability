@@ -438,3 +438,16 @@ def test_without_a_list_or_a_key_the_page_says_so_and_nothing_is_called_collecte
     s = v["watchlist"]["summary"]
     assert (s["logical_authors"], s["collected_at_least_once"], s["stable_ids_bound"]) == (7, 0, 0) and v["watchlist"]["reading"] == [] and v["watchlist"]["plan"] is None
     assert all(a["availability"] == "WAITING_FOR_FIRST_COLLECTION" for a in v["watchlist"]["authors"]) and db.execute("SELECT count(*) FROM x_cost_ledger").fetchone()[0] == 0
+
+
+def test_a_watched_post_dropped_by_the_naming_rule_or_an_unknown_filter_does_not_break_the_page(db, cfg, tmp_path):
+    """Regression (2026-11-26): the first watched post the naming rule dropped (FILTERED_TARGET_NOT_NAMED) raised a
+    KeyError in the reading block, and the whole page read came back as READ_ERROR."""
+    collected(db, cfg)
+    db.execute("UPDATE x_post_topics SET quality='FILTERED_TARGET_NOT_NAMED' WHERE post_id='103'")
+    db.execute("UPDATE x_post_topics SET quality='FILTERED_SOMETHING_NEW' WHERE post_id='102'")
+    db.commit()
+    v = pipeline.read_for_portal(cfg, tmp_path / "x.sqlite3", env={})
+    read = {r["post_id"]: r for r in v["watchlist"]["reading"]}
+    assert read["103"]["analysis"][0]["state"] == "NOT_IN_ANALYSIS" and read["103"]["analysis"][0]["reason"] == "TARGET_NOT_NAMED"
+    assert read["102"]["analysis"][0]["reason"] == "FILTERED_SOMETHING_NEW"                       # shown by name, not an error

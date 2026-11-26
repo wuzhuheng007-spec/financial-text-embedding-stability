@@ -236,7 +236,7 @@ def _progress(db, ver: str, identity) -> dict:
             "filtered_low_likes": r[3] or 0, "filtered_likes_unknown": r[4] or 0}
 
 
-WHY_NOT = {"FILTERED_LOW_LIKES": "BELOW_LIKE_FLOOR", "FILTERED_LIKES_UNKNOWN": "LIKE_COUNT_UNKNOWN"}
+WHY_NOT = {"FILTERED_LOW_LIKES": "BELOW_LIKE_FLOOR", "FILTERED_LIKES_UNKNOWN": "LIKE_COUNT_UNKNOWN", "FILTERED_TARGET_NOT_NAMED": "TARGET_NOT_NAMED"}
 
 
 def _watch(db, cfg: dict, out: dict, act: dict) -> None:
@@ -272,7 +272,7 @@ def _watch(db, cfg: dict, out: dict, act: dict) -> None:
                 lab = db.execute("SELECT label, quality_status FROM x_stance_labels WHERE provider=? AND post_id=? AND topic_id=? AND target_id=? AND inference_identity IS ? ORDER BY label_written_at_utc DESC LIMIT 1",
                                  (p["provider"], p["post_id"], t["topic_id"], t["target_id"], act["identity"] or "")).fetchone()
                 if t["quality"].startswith("FILTERED_"):
-                    state, why = "NOT_IN_ANALYSIS", WHY_NOT[t["quality"]]
+                    state, why = "NOT_IN_ANALYSIS", WHY_NOT.get(t["quality"], t["quality"])     # a filter the page has no text for yet is shown by name, never an error
                 elif lab is None:
                     state, why = ("NOT_IN_ANALYSIS", t["quality"]) if t["quality"] != "PENDING" else ("WAITING_FOR_CLASSIFICATION", None)
                 elif lab["label"]:

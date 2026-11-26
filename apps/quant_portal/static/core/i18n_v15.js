@@ -1442,6 +1442,7 @@
     "未计入：点赞低于下限": "Not counted: likes below the minimum",
     "未计入：点赞数未知": "Not counted: like count unknown",
     "未计入：正文没有提到任何标的关键词": "Not counted: the text names no target keyword",
+    "未计入：正文没有点名该标的": "Not counted: the text does not name this target",
     "未计入：模型判为无关": "Not counted: judged not relevant by the model",
     "未计入：纯转发": "Not counted: plain repost",
     "未计入：只有图片或链接": "Not counted: image or link only",
