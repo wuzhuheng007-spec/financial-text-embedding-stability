@@ -584,7 +584,7 @@
     const pn = panelDaily(d, sc), label = chip('模型判断，待人工验证', 'xs-tag-label');
     if (sc !== 'keyword' && !pn.available) { card.append(h('p', 'muted', '还没有导入重点作者名单。'), label); return card; }
     const {kind, rows, sel} = series(d, sc);
-    if (sel) { const p = h('p', 'fine-print'); p.append(h('span', null, '名单选定于'), when(((d.watchlist || {}).summary || {}).selected_at_utc), h('span', null, '；更早的分组不属于这个面板。')); card.append(p); }
+    if (sel) { const p = h('p', 'fine-print'); p.append(h('span', null, '名单选定于'), h('span', null, ' '), when(((d.watchlist || {}).summary || {}).selected_at_utc), h('span', null, '；更早的分组不属于这个面板。')); card.append(p); }
     if (!rows.length) { card.append(h('p', 'muted', '还没有 QQQ 的占比数据。'), label); return card; }
     const latest = rows[rows.length - 1], valued = rows.filter(hasEq), r = valued[valued.length - 1], st = status(latest);
     const w1 = h('p', 'xs-when'); w1.append(h('span', null, kind === 'session3' ? '最新一组（三个交易日）' : '最新交易日（还没有三日分组）'), data(` ${span(latest)} `), chip(STATUS[st], st === 'ok' ? 'run-succeeded' : 'xs-tag-warn')); card.append(w1);
