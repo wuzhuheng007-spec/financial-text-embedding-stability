@@ -456,3 +456,11 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .xs-fold{margin-top:8px}
 .xs-settings{display:grid;gap:0}
 .xs-fold>.disclosure-body>.card+.card,.xs-fold>.disclosure-body>.section+.section{margin-top:10px}
+.xs-receipt{display:flex;flex-direction:column;gap:8px}.xs-receipt .fine-print{margin:0}
+.xs-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:6px 12px}
+.xs-fact{display:flex;flex-direction:column;gap:1px;min-width:0}.xs-fact-k{font-size:11.5px;color:var(--text-3)}.xs-fact .num{overflow-wrap:anywhere}
+.xs-note{margin:0;font-size:12.5px;color:var(--text-2)}
+.tag.xs-tag-bad{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,transparent)}
+.xs-c-gap{fill:none;stroke:var(--line-2);stroke-dasharray:2 3}
+.xs-c-mark{font-size:12px;fill:var(--text-3)}
+.xs-c-price-disp{stroke-dasharray:4 3}.xs-c-dot-disp{fill:var(--text-3)}

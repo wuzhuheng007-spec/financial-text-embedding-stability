@@ -254,43 +254,74 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
   assert.deepStrictEqual(left, []);
 });
 
-// Overview: one headline per panel (latest three-session group, one vote per account), the low-sample warning, the
-// update receipt in Beijing time, the model label, and one chart with the account count above each bar and the
-// QQQ close strip. The payload is synthetic.
-test('overview: a headline per panel and one primary chart, details folded below', async () => {
+// Overview: the update receipt, one headline per panel (equal-weight shares of the latest group with values, its
+// denominators, completion and model), the low-sample and coverage notes, and one chart that keeps every group on the
+// axis with a marker where there are no shares, and breaks the price line at a source change. The payload is synthetic.
+function overviewPayload() {
   const d = JSON.parse(JSON.stringify(EMPTY));
-  const g = (label, sessions, sh, acc, extra) => ({window_kind: 'session3', window_label: label, group_sessions: sessions, topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE',
-    shares: sh, shares_equal_weight: sh, accounts_total: acc, posts_total: acc + 5, unjudged_total: 0, state: 'UNKNOWN', state_reason: null, classification: {share_done: 1, pending: 0, matched_posts: acc + 5}, ...extra});
+  const g = (label, sessions, eq, acc, extra) => ({window_kind: 'session3', window_label: label, group_sessions: sessions, topic_id: 'qqq', target_id: 'QQQ', lang_scope: 'all', mode: 'BATCH_AFTER_CLOSE',
+    shares: eq, shares_equal_weight: eq, accounts_total: acc, posts_total: acc + 5, unjudged_total: 0, state: 'UNKNOWN', state_reason: null, activation: {model_id: 'synthetic-model'},
+    classification: {share_done: 1, pending: 0, matched_posts: acc + 5}, ...extra});
   const none = {bullish: null, bearish: null, neutral: null};
   d.has_data = true;
   d.daily = [g('2026-11-13', ['2026-11-13', '2026-11-16', '2026-11-17'], {bullish: 0.5, bearish: 0.3, neutral: 0.2}, 64),
-    g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.25, bearish: 0.5, neutral: 0.25}, 48),
-    g('2026-11-23', ['2026-11-23', '2026-11-24', '2026-11-25'], none, 0, {state_reason: 'CLASSIFICATION_INCOMPLETE'}),
-    {...g('2026-11-20', [], {bullish: 0.9, bearish: 0.1, neutral: 0}, 9), window_kind: 'session'}];              // per-session rows do not feed the headline
+    g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.25, bearish: 0.5, neutral: 0.25}, 48, {classification: {share_done: 0.5, pending: 7, matched_posts: 60}, state_reason: 'CLASSIFICATION_INCOMPLETE'}),
+    g('2026-11-23', ['2026-11-23', '2026-11-24', '2026-11-25'], none, 0, {state_reason: 'CLASSIFICATION_INCOMPLETE', empty_reason: 'PENDING', classification: {pending: 9, matched_posts: 9}}),
+    {...g('2026-11-20', [], {bullish: 0.9, bearish: 0.1, neutral: 0}, 9), window_kind: 'session'}];              // per-session rows do not feed the overview
   d.panels.watchlist = {sample_version: 'v-w', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.6, bearish: 0.2, neutral: 0.2}, 12)]};
-  d.panels.combined = {sample_version: 'v-c', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], {bullish: 0.3, bearish: 0.4, neutral: 0.3}, 57)]};
-  d.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25}};                                                     // the direct close map of a later read model; a group is priced at its last session
-  d.updates = {state: 'FRESH', last_successful_update_at_utc: '2026-11-26T02:05:00Z', credit_hold: null};
-  const ui = await mount(d), ov = ui.panel('overview');
-  const heads = ov.all(e => e.className === 'card xs-head');
+  d.panels.combined = {sample_version: 'v-c', available: true, narratives: [], daily: [g('2026-11-18', ['2026-11-18', '2026-11-19', '2026-11-20'], none, 57, {shares: {bullish: 0.3, bearish: 0.4, neutral: 0.3}})]};
+  d.closes = {qqq: {'2026-11-17': 600.5, '2026-11-20': 590.25, '2026-11-25': 595}};                                  // a group is priced at its last session
+  d.closes_meta = {frozen_input_last_date: '2026-11-17', display_fill: {after: '2026-11-17', dates_added: 2}};
+  d.updates = {state: 'FRESH', ok: true, stage_exits: {build: 0, collect: 0}, round_finished_at_utc: '2026-11-26T02:05:00Z', last_successful_update_at_utc: '2026-11-26T02:05:00Z',
+    last_successful_collection_at_utc: '2026-11-26T02:01:00Z', last_label_written_at_utc: '2026-11-26T02:03:00Z', last_summary_committed_at_utc: '2026-11-26T02:04:00Z', credit_hold: null};
+  return d;
+}
+const dataOf = x => x.all(() => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
+
+test('overview: receipt, a headline per panel and one primary chart, details folded below', async () => {
+  const ui = await mount(overviewPayload()), ov = ui.panel('overview');
+  const rec = ov.all(e => e.className === 'card xs-receipt')[0], rt = texts(rec).join('|');
+  assert.ok(rt.includes('本轮成功') && !rt.includes('本轮失败') && dataOf(rec).includes('2026-11-26 10:05'));             // 02:05 UTC is 10:05 in Beijing
+  assert.ok(rec.all(() => true).some(e => e.dataset.utc === '2026-11-26T02:05:00Z'));                                       // the stored UTC stays on the node
+  const heads = ov.all(e => e.className === 'card xs-head'), t = heads.map(x => texts(x).join('|'));
   assert.strictEqual(heads.length, 3);
-  const t = heads.map(x => texts(x).join('|')), all = x => x.all(e => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
-  assert.ok(all(heads[0]).includes('2026-11-18 – 2026-11-20') && all(heads[0]).includes('25.0%') && all(heads[0]).includes('50.0%') && all(heads[0]).includes('48'));
-  assert.ok(t[0].includes('更新的分组还没有占比') && all(heads[0]).includes('2026-11-23 – 2026-11-25'));               // the newer pending group is named, never shown as shares
-  assert.ok(!t[0].includes('样本账号少于 30 个') && t[1].includes('样本账号少于 30 个') && !t[2].includes('样本账号少于 30 个'));
-  for (const x of t) assert.ok(x.includes('模型判断，待人工验证') && x.includes('更新回执：按计划运行') && x.includes('北京时间'));
-  assert.ok(all(heads[0]).includes('2026-11-26 10:05'));                                                            // 02:05 UTC is 10:05 in Beijing
+  // keyword: the latest group is pending, the shares come from the latest group with values, named by its own dates
+  assert.ok(t[0].includes('待分类，暂无占比') && dataOf(heads[0]).includes('2026-11-23 – 2026-11-25') && t[0].includes('下面的占比来自最近有值的一组') && dataOf(heads[0]).includes('2026-11-18 – 2026-11-20'));
+  for (const v of ['25.0%', '50.0%', '53', '48', '7', 'synthetic-model', '2026-11-20', '447']) assert.ok(dataOf(heads[0]).includes(v), v);
+  assert.ok(t[0].includes('这一组还有待分类的帖子') && t[0].includes('有效帖子距每组 500 条的覆盖目标还差') && !t[0].includes('样本账号少于 30 个'));
+  assert.ok(t[1].includes('样本账号少于 30 个') && dataOf(heads[1]).includes('60.0%'));
+  assert.ok(t[2].includes('等权占比缺失') && !dataOf(heads[2]).some(v => /%$/.test(v)));                                    // weighted shares never stand in for equal-weight ones
+  for (const x of t) assert.ok(x.includes('模型判断，待人工验证'));
   const svgs = ov.all(e => e.tagName === 'svg');
   assert.strictEqual(svgs.length, 1);
   const labels = svgs[0].all(e => e.tagName === 'text').map(e => e.textContent);
-  assert.ok(labels.includes('64') && labels.includes('48') && labels.includes('600.50') && labels.includes('590.25'));
-  assert.strictEqual(svgs[0].all(e => e.tagName === 'polyline').length, 1);
-  assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'svg').length, 0);                                    // the QQQ chart is drawn once, on top
+  assert.ok(labels.includes('64') && labels.includes('48*') && labels.includes('…') && labels.includes('2026-11-25'));       // the pending group keeps its place on the axis
+  const lines = svgs[0].all(e => e.tagName === 'polyline').map(e => e.attrs.class);
+  assert.deepStrictEqual(lines, ['xs-c-price xs-c-price-disp']);                                                             // broken where the source changes: the one research close is a dot, not joined to the display line
+  assert.deepStrictEqual(svgs[0].all(e => e.tagName === 'circle').map(e => e.attrs.class), ['xs-c-dot', 'xs-c-dot xs-c-dot-disp', 'xs-c-dot xs-c-dot-disp']);
+  assert.ok(texts(ov).join('|').includes('虚线部分'));
+  assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'svg').length, 0);                                            // the QQQ chart is drawn once, on top
   ov.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
   assert.ok(ui.panel('overview').all(e => e.tagName === 'text').map(e => e.textContent).includes('12'));
   const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
   assert.deepStrictEqual(left, []);
   for (const k of ['额度与费用', '采集与分类进度', '关键词与账号规则（可修改）', '采集端与模型诊断'])
     assert.ok(ui.panel('settings').all(e => e.tagName === 'summary').some(e => e.textContent === k), k);
-  assert.ok(ui.panel('settings').all(e => e.tagName === 'details').every(e => !e.open));                             // every detail group starts closed
+  assert.ok(ui.panel('settings').all(e => e.tagName === 'details').every(e => !e.open));                                    // every detail group starts closed
+});
+
+test('overview receipt: a FRESH receipt of a failed or partial round, a provider pause and a stale receipt are told apart', async () => {
+  const cases = [[{ok: false, stage_exits: {build: 1}}, ['本轮失败'], ['本轮成功', '部分成功']],
+    [{ok: false, stage_exits: {collect: 0, build: 1}}, ['本轮部分成功：汇总没有完成'], ['本轮成功']],
+    [{ok: true, stage_exits: {collect: 2, build: 0}}, ['本轮部分成功：有步骤出错'], ['本轮成功']],
+    [{ok: true, stage_exits: {build: 0}, collection: {status: 'PAUSED_PROVIDER_CREDITS'}, credit_hold: {reason: 'PROVIDER_CREDITS_EXHAUSTED'}}, ['本轮成功', '供应商暂停'], []],
+    [{state: 'STALE', ok: true, stage_exits: {build: 0}}, ['数据过期'], []]];
+  for (const [over, want, never] of cases) {
+    const d = overviewPayload(); d.updates = {...d.updates, ...over};
+    const ui = await mount(d), rt = texts(ui.panel('overview').all(e => e.className === 'card xs-receipt')[0]).join('|');
+    for (const w of want) assert.ok(rt.includes(w), `${JSON.stringify(over)} lacks ${w}`);
+    for (const n of never) assert.ok(!rt.includes(n), `${JSON.stringify(over)} shows ${n}`);
+    const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
+    assert.deepStrictEqual(left, []);
+  }
 });
