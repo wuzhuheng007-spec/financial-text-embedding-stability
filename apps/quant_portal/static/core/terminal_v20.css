@@ -478,4 +478,24 @@ details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-
 .xs-c-slot{cursor:pointer;outline:none}.xs-c-hit{fill:transparent;stroke:none}
 .xs-c-slot.xs-c-on .xs-c-hit{stroke:var(--accent);stroke-width:1.5}
 .xs-c-slot:focus-visible .xs-c-hit{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:4 2}
+/* 2026-11-27: two cards, quieter chips, bear shift, compact table */
+.xs-heads{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.xs-head{gap:10px;padding:16px 18px}
+.xs-head .xs-desc{line-height:1.5}
+.xs-head .xs-stat-v{font-size:30px}
+.xs-head .xs-bar.xs-bar-lg{height:10px}
+.xs-head .xs-stages{gap:6px}
+.xs-head .xs-stages .tag{font-size:11px;min-height:0;padding:1px 7px;border-style:solid;background:transparent;color:var(--text-3);border-color:var(--line-2)}
+.xs-meta{margin:0;font-size:12.5px;color:var(--text-2)}.xs-meta .num{color:var(--text);font-weight:600}
+.xs-shift-line{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 4px;font-size:12.5px;color:var(--text-2);padding:6px 8px;border-radius:6px;background:color-mix(in srgb,var(--line) 45%,transparent)}
+.xs-shift{font-weight:700;white-space:nowrap}.xs-shift .num{font-size:inherit}
+.xs-shift-bear,.xs-shift-bear .num{color:var(--down,#d9534f)}.xs-shift-bull,.xs-shift-bull .num{color:var(--up,#2f9e6e)}
+.xs-shift-line .xs-shift .num{font-size:15px}
+.xs-bias{margin:0;padding:8px 12px;border-left:3px solid var(--warn);border-radius:4px;font-size:12.5px;line-height:1.6;color:var(--text-2);background:color-mix(in srgb,var(--warn) 7%,transparent)}
+.xs-table-wrap .official-table{min-width:760px}
+.xs-table-wrap .official-table td{vertical-align:middle}
+.xs-table-wrap .official-table td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12px}
+.xs-table-wrap .official-table td:nth-child(2){width:120px}.xs-table-wrap .xs-bar{width:110px}
+.xs-cell-sh{display:flex;flex-direction:column;gap:1px}.xs-cell-sub{font-size:11px;color:var(--text-3)}.xs-cell-sub .num{color:var(--text-3)}.xs-cell-warn,.xs-cell-warn .num{color:var(--warn)}
+@media (max-width:640px){.xs-head{padding:12px}.xs-head .xs-stat-v{font-size:24px}}
 @media (max-width:640px){.xs-c-n{font-size:15px}.xs-c-ax{font-size:17px}.xs-c-mark{font-size:18px}.xs-key{font-size:11.5px;gap:4px 10px}}

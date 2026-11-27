@@ -97,7 +97,8 @@ test('filled panels: backfill label, null shares stay blank, five views at most,
   assert.ok(daily.includes('样本账号过少') && daily.includes('本次采集样本中的比例') && daily.includes('交易日窗口总数 4；有有效标签并画入图表 2；没有有效标签：1；待分类：1'));
   const dayRows = ui.panel('daily').all(e => e.tagName === 'tr').filter(r => /2025-06-0\d/.test(r.textContent)).map(r => r.all(e => e.tagName === 'td').map(c => c.textContent));
   assert.deepStrictEqual(dayRows.map(c => c[0]), ['2025-06-04', '2025-06-02']);                 // only dates with valid labels are listed and drawn: no blank row, no 0 %, no neutral for an empty day
-  assert.deepStrictEqual([dayRows[1][3], dayRows[1][5], dayRows[1][8]], ['55', '40', '50.0% / 25.0% / 25.0%']);
+  assert.deepStrictEqual([dayRows[1][4], dayRows[1][3]], ['55', '40']);                          // valid posts and authors, each in its own column
+  assert.ok(dayRows[1][2].includes('加权 50.0% / 25.0% / 25.0%'));                                 // the weighted shares are a small line in the shares cell
   assert.strictEqual(ui.panel('daily').all(e => (e.className || '').includes('xs-bar-empty')).length, 0);
   assert.strictEqual(ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === '查看材料').length, 2);
   assert.strictEqual(ui.panel('views').all(e => (e.className || '') === 'xs-view').length, 5);
@@ -126,7 +127,7 @@ test('a pipeline-built synthetic store renders every state without inventing or 
   const ok = (name, cond) => { report.checks[name] = !!cond; assert.ok(cond, name); };
   const marked = el => el.all(() => true).filter(e => e.attrs.translate === 'no').map(e => e.textContent.trim());
   ok('state follows has_data', ui.state.textContent === (d.has_data ? '已有数据' : '尚无数据'));
-  ok('three panel cards and one receipt', ov.all(e => e.className === 'card xs-head').length === 3 && ov.all(e => e.className === 'card xs-receipt').length === 1);
+  ok('two panel cards and one receipt', ov.all(e => e.className === 'card xs-head').length === 2 && ov.all(e => e.className === 'card xs-receipt').length === 1);
   const q = d.daily.filter(r => r.topic_id === 'qqq' && r.lang_scope === 'all'), kind = q.some(r => r.window_kind === 'session3') ? 'session3' : 'session';
   const rows = q.filter(r => r.window_kind === kind);
   ok('every QQQ group is on the chart axis', ov.all(e => e.tagName === 'g' && (e.attrs.class || '').startsWith('xs-c-slot')).length === rows.length);
@@ -160,7 +161,7 @@ test('account rules, the two queues and weighted next to equal-weight shares are
   s = texts(ui.panel('settings')).join('|');
   for (const need of ['10 / 40', '1 / 2', '12.5', '900 / 900', '714.3', '4.3', '3210', '20 / 20', '10 / 20', '50.0%', '近期队列先处理']) assert.ok(s.includes(need), need);
   const cells = ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-19')).all(e => e.tagName === 'td').map(c => c.textContent);
-  assert.deepStrictEqual([cells[6], cells[8], cells[11]], ['25.0% / 50.0% / 25.0%', '50.0% / 20.0% / 30.0%', '3210']);   // one account one vote (bull / bear / neutral), the weighted shares beside it, and what the like floor left out
+  assert.ok(cells[2].startsWith('25.0% / 50.0% / 25.0%') && cells[2].includes('加权 50.0% / 20.0% / 30.0%') && cells[6].includes('点赞不足 3210'));   // one account one vote (bull / bear / neutral) first, the weighted shares under it, and what the like floor left out
   assert.ok(texts(ui.panel('daily')).join('|').includes('按账号权重计算'));
   const left = [...new Set(texts(ui.root).map(t => t.trim()).filter(Boolean))].filter(t => han.test(i18n.translate(t)));
   assert.deepStrictEqual(left, []);                                                           // nothing of the new cards is left in Chinese in English mode
@@ -203,10 +204,7 @@ test('watched authors: list, ambiguous author, switches and the three panels wit
   assert.deepStrictEqual(d.__posts.map(x => [x.url, x.body]), [['/x-stance/watch/', {watch_id: 'watch-03', enabled: true}]]);
   // panel switch on the daily tab: no list data yet -> the missing inputs, never rows
   const btn = name => ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === name)[0];
-  assert.ok(btn('关键词样本') && btn('重点作者') && btn('合并去重') && btn('关键词样本').attrs['aria-pressed'] === 'true');
-  btn('重点作者').listeners.click();
-  const dt = texts(ui.panel('daily')).join('|');
-  assert.ok(dt.includes('还没有导入重点作者名单。') && rowsOf(ui.panel('daily')) === 0);          // the EMPTY fixture has no list: the panel says so
+  assert.ok(btn('关键词样本') && !btn('重点作者') && btn('合并去重') && btn('关键词样本').attrs['aria-pressed'] === 'true');     // 2026-11-27: the watched-author panel is no longer a scope; its list stays in the authors section
   const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
   assert.deepStrictEqual(left, []);
 });
@@ -236,12 +234,10 @@ test('watched authors: raw posts with the reason each is or is not counted, and 
   assert.ok(ui.panel('authors').all(e => e.tagName === 'a').every(a => a.href.startsWith('https://x.com/')));
   const cells = () => ui.panel('daily').all(e => e.tagName === 'tr').find(r => r.textContent.includes('2026-11-20')).all(e => e.tagName === 'td').map(c => c.textContent);
   const click = name => ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === name)[0].listeners.click();
-  assert.deepStrictEqual([cells()[6], cells()[5]], ['50.0% / 25.0% / 25.0%', '40']);
-  click('重点作者');
-  assert.deepStrictEqual([cells()[6], cells()[5]], ['100.0% / 0.0% / 0.0%', '3']);
-  assert.ok(ui.root.all(e => e.attrs.translate === 'no').some(e => e.textContent.includes('+watchlist:list-1')));
+  assert.deepStrictEqual([cells()[2].slice(0, 21), cells()[3]], ['50.0% / 25.0% / 25.0%', '40']);
+  assert.ok(!ui.panel('daily').all(e => e.tagName === 'button' && e.textContent === '重点作者').length);                // no watched-author scope any more
   click('合并去重');
-  assert.deepStrictEqual([cells()[6], cells()[5]], ['60.0% / 20.0% / 20.0%', '42']);                              // each panel shows its own denominator
+  assert.deepStrictEqual([cells()[2].slice(0, 21), cells()[3]], ['60.0% / 20.0% / 20.0%', '42']);                    // each panel shows its own denominator
   d.watchlist.reading = d.watchlist.reading.filter(r => r.post_id !== '11');
   const ui2 = await mount(d);
   assert.ok(texts(ui2.panel('authors')).join('|').includes('无达标样本') && !texts(ui2.panel('authors')).join('|').includes('有已计入的观点'));    // "no qualifying sample", never "neutral"
@@ -262,18 +258,17 @@ const slots = ov => ov.all(e => e.tagName === 'g' && (e.attrs.class || '').start
 const picked = ov => texts(ov.all(e => e.className === 'xs-pick')[0]).join('|') + '|' + dataOf(ov.all(e => e.className === 'xs-pick')[0]).join('|');
 
 test('overview cards: sample, period, authors and evidence, with stage tags next to the numbers', async () => {
-  const ui = await mount(DEID()), ov = ui.panel('overview'), [kw, wl, cb] = cards(ov);
+  const ui = await mount(DEID()), ov = ui.panel('overview'), [kw, cb] = cards(ov);
+  assert.strictEqual(cards(ov).length, 2);                                                                                                    // keyword and combined; the watched-author card is gone
   const k = allText(kw);
   for (const need of ['关键词检索采到', '最新一组（三个交易日）', '2026-11-20 – 2026-11-24', '分类未完成，占比还会变', '按作者（每人一票）', '按有效帖子（每帖一次）', '已处理判断', '模型待分类',
-    '覆盖不全', '分类未完成', '行情不完整', '模型未人工验证', '有效帖子距每组 500 条的覆盖目标还差', '详情：模型、版本与时间', 'synthetic-model', '模型判断，待人工验证']) assert.ok(k.includes(need), `keyword card lacks ${need}`);
+    '覆盖不全', '分类未完成', '行情不完整', '模型未人工验证', '距每组 500 条还差', '详情：票数、进度、模型与时间', 'synthetic-model', '看空较之前', '组均值']) assert.ok(k.includes(need), `keyword card lacks ${need}`);
   const r = DEID().daily.at(-1), c = r.classification;
   assert.ok(dataOf(kw).includes(`${c.classified_or_prefiltered} / ${c.matched_posts}`) && dataOf(kw).includes(String(c.pending)));          // processed judgements, numerator and denominator, and the true model queue
   assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_equal_weight.bullish * 100).toFixed(1)}% (${r.accounts.bullish})`)));            // by author: share and real votes
   assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_by_post.bullish * 100).toFixed(1)}% (${r.posts.bullish})`)));                  // by valid post, listed apart
-  // one watched author: the count and the state are the main line; the real votes stay, the percentages go
-  const w = allText(wl);
-  assert.ok(w.includes('位作者 · 样本不足') && dataOf(wl).includes('1') && w.includes('名单选定于') && w.includes('作者少于 30 位'));
-  assert.ok(!dataOf(wl).some(v => /%/.test(v)) && wl.all(e => (e.className || '').includes('xs-stat-v')).length === 0);
+  assert.ok(!allText(ov).includes('名单选定于'));                                                                                             // nothing of the watched-author card is left
+  assert.ok(allText(ov).includes('读数提醒'));                                                                                                 // the blind-review note sits under the cards
   assert.ok(allText(cb).includes('跨来源去重'));
   assert.ok(kw.all(e => e.tagName === 'details').every(e => !e.open));                                                                        // the identity detail starts closed
   assert.deepStrictEqual(leftChinese(ui), []);
@@ -307,8 +302,7 @@ test('overview chart: every group on the axis, a range to narrow it, keyboard an
   const ov2 = ui.panel('overview');
   assert.strictEqual(slots(ov2).length, 10);
   assert.ok(dataOf(ov2).includes('10') && dataOf(ov2).includes(String(d.daily.length)));                                                     // shown and total
-  ov2.all(e => e.tagName === 'button' && e.textContent === '重点作者')[0].listeners.click();
-  assert.strictEqual(slots(ui.panel('overview')).length, 1);                                                                                 // the list exists from its selection date
+  assert.ok(!ov2.all(e => e.tagName === 'button' && e.textContent === '重点作者').length);                                                  // no watched-author scope on the chart
   assert.deepStrictEqual(leftChinese(ui), []);
 });
 
@@ -332,7 +326,7 @@ test('overview states: empty store, failed read and a slow read never show share
   await new Promise(r => setTimeout(r, 5));
   assert.strictEqual(ov.children.length, 0);
   release(); await new Promise(r => setTimeout(r, 5));
-  assert.strictEqual(cards(ov).length, 3);
+  assert.strictEqual(cards(ov).length, 2);
 });
 
 test('overview receipt: a FRESH receipt of a failed or partial round, a provider pause and a stale receipt are told apart', async () => {

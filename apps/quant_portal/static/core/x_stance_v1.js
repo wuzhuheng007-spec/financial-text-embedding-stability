@@ -11,6 +11,7 @@
   const pct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
   const TABS = ['settings', 'simple', 'news', 'authors', 'daily', 'views', 'history'];
   const PANEL = {keyword: '关键词样本', watchlist: '重点作者', combined: '合并去重'};
+  const SHOWN_PANELS = ['keyword', 'combined'];      // 2026-11-27: the watched-author panel had 1 QQQ post in 22 groups; it is no longer a card or a scope (the list stays under 重点作者)
   let scope = 'keyword', last = null, grain = 'session3', shown = 'session3';
   const GRAIN = {session3: '每三个交易日', session: '每个交易日'};
   const TOPIC = {memory: '存储', technology: '科技 / 半导体', market: '股市 / 宏观', qqq: 'QQQ'};
@@ -278,7 +279,7 @@
   const span = r => (r.group_sessions && r.group_sessions.length > 1) ? `${r.group_sessions[0]} – ${r.group_sessions[r.group_sessions.length - 1]}` : r.window_label;
   function scopeBar() {
     const bar = h('div', 'xs-chips');
-    Object.keys(PANEL).forEach(k => { const b = h('button', `tag ${k === scope ? '' : 'tag-dim'}`, PANEL[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === scope));
+    SHOWN_PANELS.forEach(k => { const b = h('button', `tag ${k === scope ? '' : 'tag-dim'}`, PANEL[k]); b.type = 'button'; b.setAttribute('aria-pressed', String(k === scope));
       b.addEventListener('click', () => { scope = k; if (last) { renderOverview(last); renderDaily(last); renderViews(last); } }); bar.append(b); });
     return bar;
   }
@@ -374,20 +375,33 @@
         else sec.append(chart(withData.slice(-60).map(r => ({...r, shares: (r.shares_equal_weight && r.shares_equal_weight.bullish != null) ? r.shares_equal_weight : r.shares})), cl));
         const box = h('div', 'xs-day'); box.hidden = true;
         const pick = r => { const b = h('button', 'button', '查看材料'); b.type = 'button'; b.dataset.day = r.window_label; b.addEventListener('click', () => openDay(box, r.target_id, r.window_label)); return b; };
-        sec.append(table([shown === 'session3' ? '交易日（三日一组）' : '交易日', '账号占比', '帖子：多 / 空 / 中', '分母（帖子）', '账号：多 / 空 / 中', '分母（账号）', '账号占比：多 / 空 / 中', '帖子占比：多 / 空 / 中', '加权账号占比：多 / 空 / 中', '无关或失败', '待分类', '点赞不足未计入', '来源', '说明', '材料'],
-          withData.slice(-30).reverse().map(r => { const e = r.shares_equal_weight || {}, bp = r.shares_by_post || {}, c = r.classification || {};
-            const three = c => c ? `${c.bullish} / ${c.bearish} / ${c.neutral}` : '—';
-            return [span(r), shareBar(e.bullish == null ? r.shares : e), three(r.posts), r.posts_total,
-              three(r.accounts), r.accounts_total,
-              data(e.bullish == null ? '—' : `${pct(e.bullish)} / ${pct(e.bearish)} / ${pct(e.neutral)}`), data(bp.bullish == null ? '—' : `${pct(bp.bullish)} / ${pct(bp.bearish)} / ${pct(bp.neutral)}`),
-              data(r.shares.bullish == null ? '—' : `${pct(r.shares.bullish)} / ${pct(r.shares.bearish)} / ${pct(r.shares.neutral)}`), r.unjudged_total, c.pending, c.filtered_low_likes, MODE[r.mode] || r.mode, [why(r.state_reason), r.low_sample ? '样本账号少于 ' + r.low_sample_threshold : ''].filter(Boolean).join('；'), pick(r)]; })));
+        // nine columns: the shares cell carries the per-post and weighted shares as small lines; the rest is under 查看材料
+        const weighted = (d.account_rules || {}).enabled, sh3 = x => `${pct(x.bullish)} / ${pct(x.bearish)} / ${pct(x.neutral)}`;
+        const shareCell = r => { const e = r.shares_equal_weight || {}, bp = r.shares_by_post || {}, b = h('div', 'xs-cell-sh');
+          b.append(data(e.bullish == null ? '—' : sh3(e)));
+          if (bp.bullish != null) { const l = h('span', 'xs-cell-sub'); l.append(h('span', null, '按帖'), data(` ${sh3(bp)}`)); b.append(l); }
+          if (weighted && (r.shares || {}).bullish != null) { const l = h('span', 'xs-cell-sub'); l.append(h('span', null, '加权'), data(` ${sh3(r.shares)}`)); b.append(l); }
+          return b; };
+        const leftOut = r => { const c = r.classification || {}, b = h('div', 'xs-cell-sh');
+          const l1 = h('span', 'xs-cell-sub'); l1.append(h('span', null, '无关或失败'), data(` ${r.unjudged_total == null ? '—' : r.unjudged_total}`));
+          const l2 = h('span', 'xs-cell-sub'); l2.append(h('span', null, '点赞不足'), data(` ${c.filtered_low_likes == null ? '—' : c.filtered_low_likes}`)); b.append(l1, l2);
+          if (c.pending) { const l3 = h('span', 'xs-cell-sub xs-cell-warn'); l3.append(h('span', null, '待分类'), data(` ${c.pending}`)); b.append(l3); }
+          return b; };
+        const stateCell = r => { const b = h('div', 'xs-cell-sh'); b.append(h('span', null, MODE[r.mode] || r.mode));
+          [why(r.state_reason), r.low_sample ? '样本账号少于 ' + r.low_sample_threshold : ''].filter(Boolean).forEach(t => b.append(h('span', 'xs-cell-sub', t))); return b; };
+        const shifts = withData.map((r, i) => bearShift(withData, i));
+        const t = table([shown === 'session3' ? '交易日组' : '交易日', '账号占比', '看多 / 看空 / 中性（每人一票）', '作者', '有效帖子', '看空偏离', '未计入', '来源与说明', '材料'],
+          withData.map((r, i) => [span(r), shareBar((r.shares_equal_weight || {}).bullish == null ? r.shares : r.shares_equal_weight), shareCell(r), r.accounts_total, r.posts_total,
+            shiftCell(shifts[i]), leftOut(r), stateCell(r), pick(r)]).slice(-30).reverse());
+        t.className = 'table-scroll xs-table-wrap'; sec.append(t);
         sec.append(box);
       }
       const parts = Object.keys(empty).map(k => (EMPTY[k] || k) + '：' + empty[k]);
       sec.append(h('p', 'fine-print', [(shown === 'session3' ? '分组总数 ' : '交易日窗口总数 ') + rows.length, '有有效标签并画入图表 ' + withData.length].concat(parts).join('；')));
       out.push(sec);
     }
-    if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '“加权账号占比”按账号权重计算（粉丝数分档或指定账号）；“账号占比”是每个账号一票的结果，图表画的是后者。点赞数低于下限的帖子不在样本内。'));
+    if ((d.account_rules || {}).enabled) out.push(h('p', 'fine-print', '“加权”一行按账号权重计算（粉丝数分档或指定账号）；主数字是每个账号一票的结果，图表画的是后者。点赞数低于下限的帖子不在样本内。'));
+    out.push(h('p', 'fine-print', SHIFT_NOTE));
     out.push(h('p', 'fine-print', '图表和表格只包含有有效标签的交易日。占比的分母只含已成功分类且相关的帖子（或账号）；无关、分类失败、待分类单独计数，不算中性。账号占比每个账号一票（取窗口内最后一条有效帖子），帖子占比每条帖子一次。'));
     out.push(h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是持仓。交易日窗口为上一交易日收盘到当日收盘。历史回填的日期是后来取得并分类的材料，不能当作当天可用的信号。采集不完整的日期不给出主导状态。'));
     p.replaceChildren(...out);
@@ -488,7 +502,8 @@
   // equal-weight shares shows a missing state and never borrows the weighted ones.
   const PRIMARY = 'qqq', LOW = 30, TARGET_POSTS = 500;
   const RANGES = [[10, '最近 10 组'], [20, '最近 20 组'], [0, '全部']];
-  let range = 0, picked = null;
+  let range = 0, picked = null, view = 'share';
+  const VIEWS = [['share', '占比'], ['shift', '看空偏离']];
   const lastDay = r => { const g = r.group_sessions || []; return g.length ? g[g.length - 1] : r.window_label; };
   function closeMap(d) {                                    // close, source and the last priced date per topic; a group is priced at its last session
     const m = {}, src = {}, meta = d.closes_meta || {}, cut = meta.frozen_input_last_date, fill = meta.display_fill, last = {};
@@ -506,6 +521,22 @@
   const BASIS = {research: '复权研究收盘价（冻结研究序列，参与收益计算）', display: '未复权展示收盘价（moomoo 日线，只用于画图）'};
   const eqOf = r => r.shares_equal_weight || {};
   const hasEq = r => eqOf(r).bullish != null;
+  // Bear shift: a group's bearish share (one vote per author) minus the mean of the previous BASE_N groups that have at least
+  // LOW authors. It shows change against the sample's own level; it does not reweight or alter any stored share.
+  const BASE_N = 10, BASE_MIN = 3;
+  const SHIFT_NOTE = '看空偏离 = 这一组的看空占比减去之前最多 10 组（每组至少 30 位作者）的平均看空占比，单位是百分点；之前不足 3 组或本组作者少于 30 位时不计算。它只显示相对自身水平的变化，原始占比不加权、不改动。';
+  function bearShift(rows, i) {
+    const r = rows[i]; if (!r || !hasEq(r) || (r.accounts_total || 0) < LOW) return null;
+    const prev = rows.slice(0, i).filter(x => hasEq(x) && (x.accounts_total || 0) >= LOW).slice(-BASE_N);
+    if (prev.length < BASE_MIN) return null;
+    const base = prev.reduce((a, x) => a + eqOf(x).bearish, 0) / prev.length;
+    return {now: eqOf(r).bearish, base, diff: eqOf(r).bearish - base, n: prev.length};
+  }
+  const pp = v => `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toFixed(1)}`;
+  function shiftCell(x) {
+    if (!x) return h('span', 'muted', '—');
+    const b = h('span', `xs-shift ${x.diff >= 0 ? 'xs-shift-bear' : 'xs-shift-bull'}`); b.append(data(pp(x.diff)), h('span', null, ' 个百分点')); return b;
+  }
   function status(r) {
     const c = r.classification || {};
     if (hasEq(r)) return (c.pending > 0 || r.state_reason === 'CLASSIFICATION_INCOMPLETE') ? 'partial' : 'ok';
@@ -566,8 +597,8 @@
     if ((d.classifier || {}).quality !== 'VALIDATED') out.push(tag('模型未人工验证', 'xs-tag-label'));
     const b = h('div', 'xs-stages'); b.append(...out); return b;
   }
-  function cardDetail(d, r) {                               // identity, versions and the time chain, one click away
-    const det = h('details', 'xs-card-detail'); det.append(h('summary', null, '详情：模型、版本与时间'));
+  function cardDetail(d, r, extra) {                        // votes, progress, identity, versions and the time chain, one click away
+    const det = h('details', 'xs-card-detail'); det.append(h('summary', null, extra ? '详情：票数、进度、模型与时间' : '详情：模型、版本与时间'), ...(extra || []));
     const act = r.activation || {}, c = r.classification || {}, ex = r.excluded_or_unjudged || {}, g = h('div', 'xs-facts');
     const short = v => v ? String(v).slice(0, 16) : '—';
     g.append(fact('窗口开始', when(r.window_start_utc)), fact('窗口结束', when(r.window_end_utc)), fact('汇总提交', when(r.signal_committed_at_utc || r.first_committed_at_utc)),
@@ -598,7 +629,17 @@
       for (const k of ['bullish', 'bearish', 'neutral']) { const b = h('div', `xs-stat xs-t-${k}`); const v = data(pct(sh[k])); v.className = 'num xs-stat-v'; b.append(h('span', 'xs-stat-k', STATE[k]), v); big.append(b); }
       const bar = shareBar(sh); bar.classList.add('xs-bar-lg'); card.append(big, bar);
     }
-    card.append(stages(d, r, cm));
+    if (n >= LOW) {                                          // the bear share against this panel's own recent level
+      const sx = bearShift(rows, rows.indexOf(r)), sl = h('p', 'xs-shift-line');
+      if (sx) sl.append(h('span', 'xs-line-k', '看空较之前'), data(` ${sx.n} `), h('span', 'xs-line-k', '组均值'), h('span', null, ' '), shiftCell(sx), h('span', 'xs-line-k', ' · 均值'), data(` ${pct(sx.base)}`));
+      else sl.append(h('span', 'xs-line-k', '之前的分组不足 3 组，暂不计算看空偏离'));
+      card.append(sl);
+    }
+    const meta = h('p', 'xs-meta'); meta.append(data(String(n)), h('span', null, ' 位作者'), h('span', null, ' · '), data(String(r.posts_total || 0)), h('span', null, ' 条有效帖子'));
+    if ((r.posts_total || 0) < TARGET_POSTS) meta.append(h('span', null, ' · '), h('span', null, '距每组 500 条还差'), data(` ${TARGET_POSTS - (r.posts_total || 0)}`));
+    card.append(meta, stages(d, r, cm));
+    if (n < LOW) card.append(h('p', 'xs-warn', '作者少于 30 位：几位作者就能改变比例，这里只列票数，不给比例结论。'));
+    if (status(r) === 'partial') card.append(h('p', 'xs-note', '这一组还有待分类的帖子：数字是已分类部分的结果，还会变。'));
     const g = h('div', 'xs-split');
     const line = (k, s_, c_, total, unit) => { const p = h('p', 'xs-line'); p.append(h('span', 'xs-line-k', k), h('span', null, ' '), ...triple(s_, c_, n >= LOW), h('span', null, ' · '), h('span', null, '共'), data(` ${total} `), h('span', null, unit)); return p; };
     g.append(line('按作者（每人一票）', sh, na, n, '位作者'));
@@ -606,20 +647,18 @@
     const c = r.classification || {};
     const prog = h('p', 'xs-line'); prog.append(h('span', 'xs-line-k', '已处理判断'), data(` ${c.classified_or_prefiltered == null ? '—' : c.classified_or_prefiltered} / ${c.matched_posts == null ? '—' : c.matched_posts} `),
       h('span', 'fine-print', '（含有效、无关、分类失败和规则预筛）'), h('span', null, ' · 模型待分类'), data(` ${c.pending == null ? '—' : c.pending}`));
-    g.append(prog); card.append(g);
-    if (n < LOW) card.append(h('p', 'xs-warn', '作者少于 30 位：几位作者就能改变比例，这里只列票数，不给比例结论。'));
-    if (status(r) === 'partial') card.append(h('p', 'xs-note', '这一组还有待分类的帖子：数字是已分类部分的结果，还会变。'));
-    if ((r.posts_total || 0) < TARGET_POSTS) { const gap = h('p', 'xs-note'); gap.append(h('span', null, '有效帖子距每组 500 条的覆盖目标还差'), data(` ${TARGET_POSTS - (r.posts_total || 0)}`)); card.append(gap); }
-    card.append(cardDetail(d, r), label);
+    g.append(prog);
+    card.append(cardDetail(d, r, [g]));
     return card;
   }
-  function slotInfo(r, p) {                                  // the line under the chart for the selected group
+  function slotInfo(r, p, sx) {                                  // the line under the chart for the selected group
     const box = h('div'), st = status(r);
     const head = h('p', 'xs-pick-head'); head.append(data(span(r)), h('span', null, ' · '), h('span', null, STATUS[st])); box.append(head);
     if (st === 'ok' || st === 'partial') {
       const a = h('p', 'xs-line'); a.append(h('span', 'xs-line-k', '按作者'), h('span', null, ' '), ...triple(eqOf(r), r.accounts || {}, (r.accounts_total || 0) >= LOW), h('span', null, ' · '), h('span', null, '共'), data(` ${r.accounts_total} `), h('span', null, '位作者'));
       box.append(a);
       if ((r.accounts_total || 0) < LOW) box.append(h('p', 'xs-note', '作者少于 30 位，只作参考。'));
+      if (sx) { const b = h('p', 'xs-line'); b.append(h('span', 'xs-line-k', '看空偏离'), h('span', null, ' '), shiftCell(sx), h('span', 'xs-line-k', ' · 之前均值'), data(` ${pct(sx.base)}`), h('span', 'xs-line-k', ' · 本组'), data(` ${pct(sx.now)}`)); box.append(b); }
     } else box.append(h('p', 'xs-note', {pending: '这一组的帖子还在等模型分类，所以没有占比。', nosample: '这一组没有采到符合条件的帖子。', novalid: '这一组的帖子都无关或分类失败，没有有效标签。', noeq: '这一组只有加权结果，没有等权占比。'}[st]));
     const pr = h('p', 'xs-line');
     if (p.v != null) pr.append(h('span', 'xs-line-k', '收盘价'), data(` ${p.v.toFixed(2)} USD `), h('span', null, BASIS[p.src]), h('span', null, ' · 交易日'), data(` ${lastDay(r)}`));
@@ -627,7 +666,9 @@
     box.append(pr);
     return box;
   }
-  function mainChart(rows, prices, onPick) {
+  function mainChart(rows, prices, onPick, shifts) {
+    // shifts (optional): the bear-shift view - each group a bar up (more bearish than its recent mean) or down, scaled to
+    // the largest shift shown; a group without a shift gets the empty marker. The price strip is the same in both views.
     // every group on the axis in order: account shares (one vote per author, stacked, 0-100 %) with the author count
     // above, a marker where a group has no shares, and the QQQ close strip below, broken at gaps and at a source change.
     // Each group is a focusable slot: arrow keys, Home / End, Enter or a tap / click select it and fill the line under the chart.
@@ -635,11 +676,20 @@
     const W = 720, H = 300, L = 8, R = 8, bt = 22, bb = 172, pt = 196, pb = 262, n = rows.length, bw = (W - L - R) / Math.max(n, 1);
     const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, class: 'xs-chart xs-main', role: 'group', 'aria-label': '账号占比、账号数与收盘价'});
     svg.append(s('line', {x1: L, x2: W - R, y1: (bt + bb) / 2, y2: (bt + bb) / 2, class: 'xs-c-grid'}));
-    const slots = [];
+    const slots = [], mid = (bt + bb) / 2, half = (bb - bt) / 2;
+    const maxAbs = shifts ? Math.max(0.05, ...shifts.filter(Boolean).map(x => Math.abs(x.diff))) : 0;
+    if (shifts) {
+      const a = s('text', {x: L + 2, y: bb + 15, class: 'xs-c-ax'}); a.textContent = `±${(maxAbs * 100).toFixed(1)} pp`; svg.append(a);   // the scale, in the gap above the price strip, clear of every bar
+    }
     rows.forEach((r, i) => {
       const x = L + i * bw, w = Math.max(bw - 2, 1), st = status(r), cx = x + w / 2, g = s('g', {class: 'xs-c-slot', tabindex: '-1', role: 'button', 'aria-label': STATUS[st]}), ttl = s('title'); ttl.textContent = span(r); g.append(ttl);
       const lab = s('text', {x: cx, y: bt - 7, 'text-anchor': 'middle'});
-      if (st === 'ok' || st === 'partial') {
+      if (shifts) {
+        const sx = shifts[i];
+        if (sx) { const hh = Math.max(Math.abs(sx.diff) / maxAbs * half, 1); g.append(s('rect', {x, y: sx.diff >= 0 ? mid - hh : mid, width: w, height: hh, class: sx.diff >= 0 ? 'xs-c-bearish' : 'xs-c-bullish'})); }
+        else { g.append(s('rect', {x, y: bt, width: w, height: bb - bt, class: 'xs-c-gap'})); const m = s('text', {x: cx, y: mid + 4, 'text-anchor': 'middle', class: 'xs-c-mark'}); m.textContent = '–'; g.append(m); }
+        lab.setAttribute('class', `xs-c-n${(r.accounts_total || 0) < LOW ? ' xs-c-nlow' : ''}`); lab.textContent = String(r.accounts_total || 0);
+      } else if (st === 'ok' || st === 'partial') {
         const sh = eqOf(r), low = r.accounts_total == null || r.accounts_total < LOW; let y = bt;
         for (const k of ['bullish', 'neutral', 'bearish']) { const hh = (bb - bt) * sh[k]; g.append(s('rect', {x, y, width: w, height: hh, class: `xs-c-${k}${low ? ' xs-c-low' : ''}`})); y += hh; }
         lab.setAttribute('class', `xs-c-n${low ? ' xs-c-nlow' : ''}`); lab.textContent = `${r.accounts_total == null ? '—' : r.accounts_total}${st === 'partial' ? MARK.partial : ''}`;
@@ -683,20 +733,28 @@
     const {kind, rows} = series(d, scope);
     if (!rows.length) { box.append(d.has_data ? h('p', 'muted', '这个标的还没有带有效标签的日期。') : missingBox(d, '还没有情绪数据。开始采集和分类之前需要以下输入：')); return box; }
     const shown = range ? rows.slice(-range) : rows;
+    const allShifts = rows.map((_, i) => bearShift(rows, i)), shifts = range ? allShifts.slice(-range) : allShifts;   // the baseline uses every earlier group, not only the ones shown
     const bar = h('div', 'xs-range'), rb = h('div', 'xs-chips'); rb.setAttribute('role', 'group'); rb.setAttribute('aria-label', '显示范围');
     RANGES.forEach(([k, t]) => { const b = h('button', `tag ${k === range ? '' : 'tag-dim'}`, t); b.type = 'button'; b.setAttribute('aria-pressed', String(k === range)); b.addEventListener('click', () => { range = k; if (last) renderOverview(last); }); rb.append(b); });
+    const mb = h('div', 'xs-chips'); mb.setAttribute('role', 'group'); mb.setAttribute('aria-label', '图表视图');
+    VIEWS.forEach(([k, t]) => { const b = h('button', `tag ${k === view ? '' : 'tag-dim'}`, t); b.type = 'button'; b.setAttribute('aria-pressed', String(k === view)); b.addEventListener('click', () => { view = k; if (last) renderOverview(last); }); mb.append(b); });
     const span_ = h('p', 'xs-when'); span_.append(h('span', null, '显示'), data(` ${(shown[0].group_sessions || [shown[0].window_label])[0]} – ${lastDay(shown[shown.length - 1])} `), h('span', null, '共'), data(` ${shown.length} `), h('span', null, kind === 'session3' ? '组' : '个交易日'), h('span', null, '（全部'), data(` ${rows.length} `), h('span', null, '）'));
-    bar.append(rb, span_); box.append(bar);
+    bar.append(rb, mb, span_); box.append(bar);
     const prices = shown.map(r => closeOf(cm, PRIMARY, r)), info = h('div', 'xs-pick'); info.setAttribute('aria-live', 'polite');
     let idx = Math.max(0, shown.findIndex(r => r.window_label === picked)); if (picked == null || shown[idx].window_label !== picked) idx = shown.length - 1;
     const chart = mainChart(shown, prices, (i, focus) => {
       chart.slots.forEach((g, j) => { g.setAttribute('tabindex', j === i ? '0' : '-1'); g.setAttribute('aria-pressed', String(j === i)); g.setAttribute('class', j === i ? 'xs-c-slot xs-c-on' : 'xs-c-slot'); });
-      picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i]));
+      picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i], shifts[i]));
       if (focus && chart.slots[i].focus) chart.slots[i].focus();
-    });
+    }, view === 'shift' ? shifts : null);
     const key = h('div', 'xs-key');
-    for (const k of ['bullish', 'neutral', 'bearish']) { const it = h('span', 'xs-key-i'); it.append(h('i', `xs-sw xs-${k}`), h('span', null, STATE[k])); key.append(it); }
-    key.append(h('span', 'xs-key-i', '柱上数字：作者数'), h('span', 'xs-key-i', '浅色柱：作者少于 30 位'), h('span', 'xs-key-i', '数字后的 *：分类未完成'));
+    if (view === 'shift') {
+      const up = h('span', 'xs-key-i'); up.append(h('i', 'xs-sw xs-bearish'), h('span', null, '向上：看空高于之前均值')); const dn = h('span', 'xs-key-i'); dn.append(h('i', 'xs-sw xs-bullish'), h('span', null, '向下：看空低于之前均值'));
+      key.append(up, dn, h('span', 'xs-key-i', '柱上数字：作者数'), h('span', 'xs-key-i', '–：之前不足 3 组或作者少于 30 位'));
+    } else {
+      for (const k of ['bullish', 'neutral', 'bearish']) { const it = h('span', 'xs-key-i'); it.append(h('i', `xs-sw xs-${k}`), h('span', null, STATE[k])); key.append(it); }
+      key.append(h('span', 'xs-key-i', '柱上数字：作者数'), h('span', 'xs-key-i', '浅色柱：作者少于 30 位'), h('span', 'xs-key-i', '数字后的 *：分类未完成'));
+    }
     const kr = h('span', 'xs-key-i'); kr.append(h('i', 'xs-sw-line'), h('span', null, '实线和实心点：复权研究收盘价（USD）')); key.append(kr);
     if (chart.display) { const kd = h('span', 'xs-key-i'); kd.append(h('i', 'xs-sw-line xs-sw-dash'), h('span', null, '虚线和空心点：未复权展示收盘价（USD，只画图）')); key.append(kd); }
     const fig = h('figure', 'xs-figure'); fig.append(chart.svg, info);
@@ -706,17 +764,20 @@
       '休市日不在轴上；交易日有记录但缺收盘价时，价格线在那里断开，并在选中这一组时写出原因。',
       '价格取每组最后一个交易日的收盘价；研究序列与展示序列之间断线，不相连。',
       '选中一组：点按柱子，或用 Tab 进入后按左右方向键、Home、End。鼠标经过不会切换。'].forEach(t => notes.append(h('li', null, t)));
+    if (view === 'shift') notes.append(h('li', null, SHIFT_NOTE));
     if (!chart.priced) notes.append(h('li', null, '这一段没有可配对的收盘价，价格区留空。'));
     const fill = (cm.meta || {}).display_fill;
     if (chart.display && fill) { const li = h('li'); li.append(h('span', null, chart.dashed ? '虚线和空心点：' : '空心点：'), data(fill.after), h('span', null, ' '), h('span', null, '之后的收盘价来自 moomoo 展示用日线（未复权，只用于画图，不参与收益配对）。')); notes.append(li); }
     box.append(key, fig, notes, h('p', 'fine-print', '这是本次采集样本中的比例，不是全部 X 用户的比例，也不是预测；价格只作日期对照。分母、帖子口径和逐条材料在下方“每组明细与分母”里。'));
-    chart.slots.length && (() => { const i = idx; chart.slots.forEach((g, j) => g.setAttribute('tabindex', j === i ? '0' : '-1')); picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i])); chart.slots[i].setAttribute('class', 'xs-c-slot xs-c-on'); chart.slots[i].setAttribute('aria-pressed', 'true'); })();
+    chart.slots.length && (() => { const i = idx; chart.slots.forEach((g, j) => g.setAttribute('tabindex', j === i ? '0' : '-1')); picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i], shifts[i])); chart.slots[i].setAttribute('class', 'xs-c-slot xs-c-on'); chart.slots[i].setAttribute('aria-pressed', 'true'); })();
     return box;
   }
+  const BIAS_NOTE = '读数提醒：11-26 对 150 条 QQQ 帖子做了盲审（由第二个模型复核，不是人工）。按样本池估计，模型把约 64% 判为看多，复核只有约 30%；复核认为中性的帖子，模型大多判成了看多或看空。只看有方向的帖子，复核也有约 3/4 看多。所以偏多一部分是样本本身，一部分是模型放大；绝对比例要打折看，组与组之间的变化更可靠。';
+  const biasNote = () => { const p = h('p', 'xs-bias'); p.append(h('span', null, BIAS_NOTE)); return p; };   // the blind review is in local_only/x_qqq_audit_20261126/blind_eval_150.json
   function renderOverview(d) {
     const p = panel('overview'); if (!p) return;
-    const cm = closeMap(d), heads = h('div', 'xs-heads'); Object.keys(PANEL).forEach(k => heads.append(headline(d, k, cm)));
-    p.replaceChildren(receiptStrip(d), heads, chartBox(d, cm));
+    const cm = closeMap(d), heads = h('div', 'xs-heads'); SHOWN_PANELS.forEach(k => heads.append(headline(d, k, cm)));
+    p.replaceChildren(...[receiptStrip(d), heads, d.has_data ? biasNote() : null, chartBox(d, cm)].filter(Boolean));     // the review note only next to real shares
   }
 
   const load = () => fetch(root.dataset.url + (simpleIdentity ? `?identity=${encodeURIComponent(simpleIdentity)}` : ''), {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {
