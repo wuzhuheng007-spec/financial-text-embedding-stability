@@ -1,0 +1,158 @@
+{
+ "schema": "feed_first_due_period_receipt_v2",
+ "feed_image": "quant-personal-app:feed-35a2471",
+ "process": "existing feed container, no restart, no schedule change",
+ "due_period": "2026-11-27 pre-market (XNYS EARLY_CLOSE day), due from 2026-11-27T09:00:00Z (Beijing 17:00)",
+ "result": "6/6 confirmed subscriptions (fixed at Beijing 16:59) received a valid pre-market quote in [09:00Z, 09:11Z); dropped 0, still subscribed without a valid quote 0, new 0",
+ "quote_outcome": "ALL_RECEIVED",
+ "failure_classes": [],
+ "observation": {
+  "mode": "LIVE",
+  "missing": [],
+  "live_health": "OBSERVED",
+  "baseline_taken_utc": "2026-11-27T08:59:00Z",
+  "health_coverage": {
+   "samples_ok": 32,
+   "read_errors": 0,
+   "first_sample_after_start_seconds": 1.0,
+   "largest_gap_seconds": 30.0,
+   "complete": true,
+   "reason": null
+  }
+ },
+ "denominator": {
+  "n": 6,
+  "source": "BASELINE_1659_CONFIRMED_SET"
+ },
+ "counts": {
+  "received": 6,
+  "subscribed_no_valid_quote": 0,
+  "dropped": 0,
+  "new": 0
+ },
+ "per_subscription": {
+  "S1": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.235133Z",
+    "source_at_utc": "2026-11-27T09:00:00.155000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 80.1,
+    "seconds_after_start": 0.235
+   }
+  },
+  "S2": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.143620Z",
+    "source_at_utc": "2026-11-27T09:00:00.064000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 79.6,
+    "seconds_after_start": 0.144
+   }
+  },
+  "S3": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.121936Z",
+    "source_at_utc": "2026-11-27T09:00:00.052000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 69.9,
+    "seconds_after_start": 0.122
+   }
+  },
+  "S4": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.218874Z",
+    "source_at_utc": "2026-11-27T09:00:00.116000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 102.9,
+    "seconds_after_start": 0.219
+   }
+  },
+  "S5": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.223080Z",
+    "source_at_utc": "2026-11-27T09:00:00.116000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 107.1,
+    "seconds_after_start": 0.223
+   }
+  },
+  "S6": {
+   "state": "RECEIVED",
+   "first_valid": {
+    "received_at_utc": "2026-11-27T09:00:00.100446Z",
+    "source_at_utc": "2026-11-27T09:00:00.002000Z",
+    "session": "PREMARKET",
+    "source_channel": "WS_QUOTE",
+    "receive_minus_source_ms": 98.4,
+    "seconds_after_start": 0.1
+   }
+  }
+ },
+ "new_subscriptions": {},
+ "baseline_beijing_1659": {
+  "health": {
+   "t": "2026-11-27T08:59:00Z",
+   "healthy": true,
+   "business": "OK",
+   "ok": true,
+   "state": "CONNECTED_DELAY_UNKNOWN",
+   "phase": "CLOSED",
+   "grace_left_seconds": null,
+   "down_seconds": null,
+   "heartbeat_age_seconds": 2.7,
+   "grace": null
+  },
+  "subscriptions_confirmed": 6
+ },
+ "health_first_seen_utc": {
+  "WAITING_FIRST_PUSH": null,
+  "OK": "2026-11-27T09:00:01Z",
+  "NO_FIRST_PUSH": null
+ },
+ "health_other_verdicts_seen": [],
+ "health_transitions": [
+  {
+   "at_utc": "2026-11-27T09:00:01Z",
+   "business": "OK",
+   "ok": true,
+   "state": "CONNECTED_DELAY_UNKNOWN",
+   "grace_left_seconds": null,
+   "down_seconds": null
+  }
+ ],
+ "review": {
+  "window_utc": [
+   "2026-11-27T09:00:00.000000Z",
+   "2026-11-27T09:11:00.000000Z"
+  ],
+  "window_rule": "[start, end), UTC, parsed per record",
+  "subscriptions_confirmed": 6,
+  "first_valid_any_utc": "2026-11-27T09:00:00.100446Z",
+  "no_valid_quote_from_start_seconds": 0.1,
+  "no_valid_quote_still_open": false,
+  "excluded_records": {
+   "OTHER_SESSION": 1
+  },
+  "records_in_window": 5137,
+  "records_for_unconfirmed_symbols": 0,
+  "reconnects_after_start": 0,
+  "calendar_registered": true,
+  "collected_at_utc": "2026-11-27T09:11:19.954341Z"
+ },
+ "reconnect_and_subscription_events": {
+  "provider_state_events": [],
+  "reconnect_events_after_start": [],
+  "subscription_state_updates_since_start": []
+ },
+ "redaction": "subscriptions are S1..Sn from the 16:59 set (new ones N1..), matched by salted keys that are not published; no quote values, symbols, keys, account or server address"
+}
