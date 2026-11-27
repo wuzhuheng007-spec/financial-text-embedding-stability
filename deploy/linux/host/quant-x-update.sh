@@ -23,7 +23,10 @@ exec 9>/run/lock/quant-x-update.lock; flock -n 9 || { echo "another update round
 with_lock() { ( flock -w 900 8 || { echo "data lock busy for 15 min; skipped" >&2; exit 75; }; "$@" ) 8>/run/lock/quant-data.lock; }
 local_job()   { docker run --rm --network none --memory 1500m --cpus 2 -v "$VOL":/app/apps/quant_portal/var --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
 offload_job() { docker run --rm --network none --memory 1g --cpus 1 -v "$VOL":/app/apps/quant_portal/var -v "$OFF":/offload --entrypoint python "$APP_IMAGE" -m scripts.x_stance_v1.cli "$@"; }
-net_job()     { docker compose -f compose.yaml --env-file "$ENV" run --rm --no-deps -T -e TWITTERAPI_IO_API_KEY --entrypoint python feed -m scripts.x_stance_v1.cli "$@"; }
+# The collector borrows the feed service only for its network and settings. Since 2026-11-26 the feed service runs its
+# own image (FEED_IMAGE), which has no X module, so the one-off collector container is pinned to the web image
+# (APP_IMAGE) the other steps use. Shell variables take precedence over --env-file; the running feed is not touched.
+net_job()     { FEED_IMAGE="$APP_IMAGE" docker compose -f compose.yaml --env-file "$ENV" run --rm --no-deps -T -e TWITTERAPI_IO_API_KEY --entrypoint python feed -m scripts.x_stance_v1.cli "$@"; }
 now() { date +%s.%N; }
 secs() { python3 -c "print(round($2-$1,1))"; }
 STARTED=$(date -u +%FT%TZ); T0=$(now)
