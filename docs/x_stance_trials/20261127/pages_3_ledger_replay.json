@@ -1,0 +1,175 @@
+{
+ "empirical_next_page_after_full": {
+  "vocab-20261122-a": [
+   79,
+   19.3,
+   74
+  ],
+  "focus:qqq-20261125": [
+   4,
+   20.0,
+   4
+  ]
+ },
+ "days": {
+  "2026-11-25": {
+   "incremental_requests": 41,
+   "full_first_pages_with_cursor": 17,
+   "actual": {
+    "kw_posts": 657,
+    "kw_credits": 9900,
+    "all_credits": 36675
+   },
+   "upper_every_extra_page_full": {
+    "extra_pages_asked": 34,
+    "pages_blocked_by_cap": 0,
+    "extra_posts": 680,
+    "extra_credits": 10200,
+    "extra_usd": 0.102,
+    "kw_after": {
+     "posts": 1337,
+     "credits": 20100,
+     "share_of_kw_credit_cap": 0.558
+    },
+    "all_jobs_usd_after": 0.4688
+   },
+   "empirical": {
+    "extra_pages_asked": 32.9,
+    "pages_blocked_by_cap": 0,
+    "extra_posts": 635,
+    "extra_credits": 9383.354430379739,
+    "extra_usd": 0.0938,
+    "kw_after": {
+     "posts": 1292,
+     "credits": 19283.35443037974,
+     "share_of_kw_credit_cap": 0.536
+    },
+    "all_jobs_usd_after": 0.4606
+   },
+   "lower_every_extra_page_empty": {
+    "extra_pages_asked": 17,
+    "pages_blocked_by_cap": 0,
+    "extra_posts": 0,
+    "extra_credits": 255,
+    "extra_usd": 0.0026,
+    "kw_after": {
+     "posts": 657,
+     "credits": 10155,
+     "share_of_kw_credit_cap": 0.282
+    },
+    "all_jobs_usd_after": 0.3693
+   },
+   "rounds_seen": 4,
+   "scaled_to_12_rounds": {
+    "upper_every_extra_page_full": {
+     "kw_credits_without": 29700,
+     "extra_credits": 6300,
+     "extra_usd": 0.063,
+     "kw_share_of_cap": 1.0,
+     "cap_binds": true,
+     "extra_posts_approx": 420
+    },
+    "empirical": {
+     "kw_credits_without": 29700,
+     "extra_credits": 6300,
+     "extra_usd": 0.063,
+     "kw_share_of_cap": 1.0,
+     "cap_binds": true,
+     "extra_posts_approx": 420
+    },
+    "lower_every_extra_page_empty": {
+     "kw_credits_without": 29700,
+     "extra_credits": 765,
+     "extra_usd": 0.0076,
+     "kw_share_of_cap": 0.846,
+     "cap_binds": false,
+     "extra_posts_approx": 51
+    }
+   }
+  },
+  "2026-11-26": {
+   "incremental_requests": 72,
+   "full_first_pages_with_cursor": 40,
+   "actual": {
+    "kw_posts": 1164,
+    "kw_credits": 17490,
+    "all_credits": 51180
+   },
+   "upper_every_extra_page_full": {
+    "extra_pages_asked": 61,
+    "pages_blocked_by_cap": 10,
+    "extra_posts": 1220,
+    "extra_credits": 18300,
+    "extra_usd": 0.183,
+    "kw_after": {
+     "posts": 2384,
+     "credits": 35790,
+     "share_of_kw_credit_cap": 0.994
+    },
+    "all_jobs_usd_after": 0.6948
+   },
+   "empirical": {
+    "extra_pages_asked": 63.9,
+    "pages_blocked_by_cap": 7,
+    "extra_posts": 1233,
+    "extra_credits": 18214.74683544298,
+    "extra_usd": 0.1821,
+    "kw_after": {
+     "posts": 2397,
+     "credits": 35704.74683544298,
+     "share_of_kw_credit_cap": 0.992
+    },
+    "all_jobs_usd_after": 0.6939
+   },
+   "lower_every_extra_page_empty": {
+    "extra_pages_asked": 40,
+    "pages_blocked_by_cap": 0,
+    "extra_posts": 0,
+    "extra_credits": 600,
+    "extra_usd": 0.006,
+    "kw_after": {
+     "posts": 1164,
+     "credits": 18090,
+     "share_of_kw_credit_cap": 0.502
+    },
+    "all_jobs_usd_after": 0.5178
+   },
+   "rounds_seen": 9,
+   "scaled_to_12_rounds": {
+    "upper_every_extra_page_full": {
+     "kw_credits_without": 23320,
+     "extra_credits": 12680,
+     "extra_usd": 0.1268,
+     "kw_share_of_cap": 1.0,
+     "cap_binds": true,
+     "extra_posts_approx": 845
+    },
+    "empirical": {
+     "kw_credits_without": 23320,
+     "extra_credits": 12680,
+     "extra_usd": 0.1268,
+     "kw_share_of_cap": 1.0,
+     "cap_binds": true,
+     "extra_posts_approx": 845
+    },
+    "lower_every_extra_page_empty": {
+     "kw_credits_without": 23320,
+     "extra_credits": 800,
+     "extra_usd": 0.008,
+     "kw_share_of_cap": 0.67,
+     "cap_binds": false,
+     "extra_posts_approx": 53
+    }
+   }
+  }
+ },
+ "caps": {
+  "kw_posts": 2400,
+  "kw_credits": 36000,
+  "recent_posts": 3000,
+  "recent_credits": 45000,
+  "all_posts": 5000,
+  "all_credits": 75000
+ },
+ "note": "keyword sub-pool = job_type 'recent' (incremental and other keyword runs); watched authors have their own 600 / USD 0.09 share and are not touched"
+}

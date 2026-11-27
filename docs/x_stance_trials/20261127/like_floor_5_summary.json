@@ -1,0 +1,182 @@
+{
+ "keyword": {
+  "groups": 22,
+  "pairs_admitted_5_19": 130,
+  "valid_posts_added": 66,
+  "excluded_added_by_reason": {
+   "IRRELEVANT": 9,
+   "EVIDENCE_NOT_IN_TEXT": 5,
+   "JSON_INVALID": 0
+  },
+  "new_distinct_authors_sum_over_groups": 50,
+  "authors_lost": 0,
+  "groups_without_change": 4,
+  "still_below_5_likes_or_unknown_after": 400,
+  "max_abs_change_pp": {
+   "bullish": 1.5,
+   "bearish": 1.4,
+   "neutral": 1.1
+  },
+  "bear_change_pp_by_group": {
+   "2026-08-26": -0.2,
+   "2026-08-31": -0.1,
+   "2026-09-03": -0.2,
+   "2026-09-09": -0.2,
+   "2026-09-14": -0.1,
+   "2026-09-17": 0.7,
+   "2026-09-22": -0.1,
+   "2026-09-25": 0.0,
+   "2026-09-30": -0.2,
+   "2026-10-05": 0.0,
+   "2026-10-08": 0.0,
+   "2026-10-13": 1.0,
+   "2026-10-16": -0.3,
+   "2026-10-21": -0.2,
+   "2026-10-26": -0.4,
+   "2026-10-29": -0.2,
+   "2026-11-03": -0.2,
+   "2026-11-06": 1.4,
+   "2026-11-11": 0.0,
+   "2026-11-16": 1.0,
+   "2026-11-19": -0.1,
+   "2026-11-24": 0.2
+  },
+  "latest": {
+   "group": "2026-11-24",
+   "authors_before": 145,
+   "authors_after": 169,
+   "new_authors": 24,
+   "valid_posts_before": 214,
+   "valid_posts_after": 243,
+   "eq_before": {
+    "bullish": 0.7172413793103448,
+    "bearish": 0.23448275862068965,
+    "neutral": 0.04827586206896552
+   },
+   "eq_after": {
+    "bullish": 0.7041420118343196,
+    "bearish": 0.23668639053254437,
+    "neutral": 0.05917159763313609
+   },
+   "eq_change_pp": {
+    "bullish": -1.3,
+    "bearish": 0.2,
+    "neutral": 1.1
+   },
+   "excluded_before": {
+    "EVIDENCE_NOT_IN_TEXT": 28,
+    "IRRELEVANT": 16,
+    "JSON_INVALID": 3
+   },
+   "excluded_after": {
+    "EVIDENCE_NOT_IN_TEXT": 31,
+    "IRRELEVANT": 19,
+    "JSON_INVALID": 3
+   },
+   "filtered_before": {
+    "filtered_low_likes": 472,
+    "filtered_likes_unknown": 0,
+    "filtered_target_not_named": 13,
+    "pending": 0,
+    "matched_posts": 261
+   },
+   "filtered_after": {
+    "filtered_low_likes": 390,
+    "filtered_likes_unknown": 0,
+    "filtered_target_not_named": 60,
+    "pending": 0,
+    "matched_posts": 296
+   }
+  }
+ },
+ "combined": {
+  "groups": 22,
+  "pairs_admitted_5_19": 130,
+  "valid_posts_added": 66,
+  "excluded_added_by_reason": {
+   "IRRELEVANT": 9,
+   "EVIDENCE_NOT_IN_TEXT": 5,
+   "JSON_INVALID": 0
+  },
+  "new_distinct_authors_sum_over_groups": 50,
+  "authors_lost": 0,
+  "groups_without_change": 4,
+  "still_below_5_likes_or_unknown_after": 400,
+  "max_abs_change_pp": {
+   "bullish": 1.5,
+   "bearish": 1.4,
+   "neutral": 1.1
+  },
+  "bear_change_pp_by_group": {
+   "2026-08-26": -0.2,
+   "2026-08-31": -0.1,
+   "2026-09-03": -0.2,
+   "2026-09-09": -0.2,
+   "2026-09-14": -0.1,
+   "2026-09-17": 0.7,
+   "2026-09-22": -0.1,
+   "2026-09-25": 0.0,
+   "2026-09-30": -0.2,
+   "2026-10-05": 0.0,
+   "2026-10-08": 0.0,
+   "2026-10-13": 1.0,
+   "2026-10-16": -0.3,
+   "2026-10-21": -0.2,
+   "2026-10-26": -0.4,
+   "2026-10-29": -0.2,
+   "2026-11-03": -0.2,
+   "2026-11-06": 1.4,
+   "2026-11-11": 0.0,
+   "2026-11-16": 1.0,
+   "2026-11-19": -0.1,
+   "2026-11-24": 0.2
+  },
+  "latest": {
+   "group": "2026-11-24",
+   "authors_before": 146,
+   "authors_after": 170,
+   "new_authors": 24,
+   "valid_posts_before": 215,
+   "valid_posts_after": 244,
+   "eq_before": {
+    "bullish": 0.7191780821917808,
+    "bearish": 0.2328767123287671,
+    "neutral": 0.04794520547945205
+   },
+   "eq_after": {
+    "bullish": 0.7058823529411765,
+    "bearish": 0.23529411764705882,
+    "neutral": 0.058823529411764705
+   },
+   "eq_change_pp": {
+    "bullish": -1.3,
+    "bearish": 0.2,
+    "neutral": 1.1
+   },
+   "excluded_before": {
+    "EVIDENCE_NOT_IN_TEXT": 28,
+    "IRRELEVANT": 17,
+    "JSON_INVALID": 3
+   },
+   "excluded_after": {
+    "EVIDENCE_NOT_IN_TEXT": 31,
+    "IRRELEVANT": 20,
+    "JSON_INVALID": 3
+   },
+   "filtered_before": {
+    "filtered_low_likes": 472,
+    "filtered_likes_unknown": 0,
+    "filtered_target_not_named": 13,
+    "pending": 0,
+    "matched_posts": 263
+   },
+   "filtered_after": {
+    "filtered_low_likes": 390,
+    "filtered_likes_unknown": 0,
+    "filtered_target_not_named": 60,
+    "pending": 0,
+    "matched_posts": 298
+   }
+  }
+ }
+}

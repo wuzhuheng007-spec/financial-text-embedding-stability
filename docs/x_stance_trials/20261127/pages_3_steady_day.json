@@ -1,0 +1,52 @@
+{
+ "rounds_used": 9,
+ "first_pages_per_round": 8.0,
+ "full_first_pages_per_round": 4.44,
+ "full_first_pages_by_topic_11_26": {
+  "technology": 12,
+  "market": 16,
+  "memory": 6,
+  "qqq": 6
+ },
+ "next_page_after_full_observed": {
+  "pairs": 79,
+  "mean_returned": 19.3,
+  "share_full": 0.937
+ },
+ "now_pages_1": {
+  "posts_per_day": 1339,
+  "credits_per_day": 20120,
+  "usd_per_day": 0.2012,
+  "share_of_keyword_cap": 0.559
+ },
+ "pages_3_upper_all_full": {
+  "credits_per_day_wanted": 52120,
+  "credits_per_day_within_cap": 36000,
+  "usd_per_day": 0.36,
+  "share_of_keyword_cap": 1.0,
+  "cap_binds": true,
+  "posts_per_day_approx": 2398,
+  "extra_usd_per_day_vs_now": 0.1588,
+  "rounds_before_cap": 8.3
+ },
+ "pages_3_expected": {
+  "credits_per_day_wanted": 50023,
+  "credits_per_day_within_cap": 36000,
+  "usd_per_day": 0.36,
+  "share_of_keyword_cap": 1.0,
+  "cap_binds": true,
+  "posts_per_day_approx": 2398,
+  "extra_usd_per_day_vs_now": 0.1588,
+  "rounds_before_cap": 8.6
+ },
+ "pages_3_lower_all_empty": {
+  "credits_per_day_wanted": 20920,
+  "credits_per_day_within_cap": 20920,
+  "usd_per_day": 0.2092,
+  "share_of_keyword_cap": 0.581,
+  "cap_binds": false,
+  "posts_per_day_approx": 1339,
+  "extra_usd_per_day_vs_now": 0.008,
+  "rounds_before_cap": 12
+ }
+}
