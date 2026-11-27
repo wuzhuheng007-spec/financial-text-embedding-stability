@@ -772,12 +772,17 @@
     chart.slots.length && (() => { const i = idx; chart.slots.forEach((g, j) => g.setAttribute('tabindex', j === i ? '0' : '-1')); picked = shown[i].window_label; info.replaceChildren(slotInfo(shown[i], prices[i], shifts[i])); chart.slots[i].setAttribute('class', 'xs-c-slot xs-c-on'); chart.slots[i].setAttribute('aria-pressed', 'true'); })();
     return box;
   }
-  const BIAS_NOTE = '读数提醒：11-26 对 150 条 QQQ 帖子做了盲审（由第二个模型复核，不是人工）。按样本池估计，模型把约 64% 判为看多，复核只有约 30%；复核认为中性的帖子，模型大多判成了看多或看空。只看有方向的帖子，复核也有约 3/4 看多。所以偏多一部分是样本本身，一部分是模型放大；绝对比例要打折看，组与组之间的变化更可靠。';
-  const biasNote = () => { const p = h('p', 'xs-bias'); p.append(h('span', null, BIAS_NOTE)); return p; };   // the blind review is in local_only/x_qqq_audit_20261126/blind_eval_150.json
+  // The 11-26 blind review (150 QQQ posts drawn by model outcome from the 1,232 classified >=20-like posts; pool-weighted).
+  // The figures use the cards' own basis (shares of bullish / bearish / neutral), and hold only for the classifier and
+  // prompt that were reviewed: under any other classifier the note is not shown.
+  const BIAS_REVIEWED = {model_id: 'Qwen/Qwen2.5-3B-Instruct', prompt_version: 'x-stance-simple-v1-20261123'};
+  const BIAS_NOTE = '读数提醒：11-26 从 1,232 条 ≥20 赞、已分类的 QQQ 帖子中抽 150 条盲审（复核由第二个模型完成，不是人工）。在看多、看空、中性三类里，本模型约 82% 看多，复核约 42%；复核判为中性的帖子，本模型约 2/3 判成了看多。只看有方向的帖子，复核仍约 75% 看多（本模型约 86%）。所以偏多一部分来自样本，一部分来自模型；绝对比例要打折看，组与组之间的变化更可靠。';
+  const biasApplies = d => !!d.has_data && !!d.classifier && Object.entries(BIAS_REVIEWED).every(([k, v]) => d.classifier[k] === v);
+  const biasNote = () => { const p = h('p', 'xs-bias'); p.append(h('span', null, BIAS_NOTE)); return p; };
   function renderOverview(d) {
     const p = panel('overview'); if (!p) return;
     const cm = closeMap(d), heads = h('div', 'xs-heads'); SHOWN_PANELS.forEach(k => heads.append(headline(d, k, cm)));
-    p.replaceChildren(...[receiptStrip(d), heads, d.has_data ? biasNote() : null, chartBox(d, cm)].filter(Boolean));     // the review note only next to real shares
+    p.replaceChildren(...[receiptStrip(d), heads, biasApplies(d) ? biasNote() : null, chartBox(d, cm)].filter(Boolean));     // only next to real shares from the reviewed classifier
   }
 
   const load = () => fetch(root.dataset.url + (simpleIdentity ? `?identity=${encodeURIComponent(simpleIdentity)}` : ''), {credentials: 'same-origin', cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }).then(d => {

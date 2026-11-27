@@ -268,7 +268,7 @@ test('overview cards: sample, period, authors and evidence, with stage tags next
   assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_equal_weight.bullish * 100).toFixed(1)}% (${r.accounts.bullish})`)));            // by author: share and real votes
   assert.ok(dataOf(kw).some(v => v.startsWith(`${(r.shares_by_post.bullish * 100).toFixed(1)}% (${r.posts.bullish})`)));                  // by valid post, listed apart
   assert.ok(!allText(ov).includes('名单选定于'));                                                                                             // nothing of the watched-author card is left
-  assert.ok(allText(ov).includes('读数提醒'));                                                                                                 // the blind-review note sits under the cards
+  assert.ok(!allText(ov).includes('读数提醒'));                                                                                                // the fixture's classifier was not reviewed: no review note
   assert.ok(allText(cb).includes('跨来源去重'));
   assert.ok(kw.all(e => e.tagName === 'details').every(e => !e.open));                                                                        // the identity detail starts closed
   assert.deepStrictEqual(leftChinese(ui), []);
@@ -354,4 +354,28 @@ test('watched authors: a failed classification is named as such, never as neutra
   assert.ok(t.includes('未计入：模型给出的依据在原文里找不到（分类失败）') && !t.includes('未计入：无法判定'));
   const left = [...new Set(texts(ui.root).map(x => x.trim()).filter(Boolean))].filter(x => han.test(i18n.translate(x)));
   assert.deepStrictEqual(left, []);
+});
+
+test('reading note: only for the reviewed classifier and prompt, on the cards own basis, and only next to real shares', async () => {
+  const reviewed = d => Object.assign(d, {classifier: Object.assign({}, d.classifier, {model_id: 'Qwen/Qwen2.5-3B-Instruct', prompt_version: 'x-stance-simple-v1-20261123'})});
+  let ui = await mount(reviewed(DEID())), t = allText(ui.panel('overview'));
+  assert.ok(t.includes('读数提醒'));
+  for (const need of ['在看多、看空、中性三类里', '本模型约 82% 看多，复核约 42%', '本模型约 2/3 判成了看多', '复核仍约 75% 看多', '不是人工']) assert.ok(t.includes(need), `note lacks ${need}`);
+  for (const wrong of ['约 64%', '约 30%', '看多或看空']) assert.ok(!t.includes(wrong), `note still says ${wrong}`);   // the old note mixed denominators and blurred where the neutral posts went
+  assert.deepStrictEqual(leftChinese(ui), []);
+  for (const other of [{prompt_version: 'x-stance-simple-v2'}, {model_id: 'Qwen/Qwen2.5-7B-Instruct'}]) {
+    const d = reviewed(DEID()); Object.assign(d.classifier, other);
+    ui = await mount(d); assert.ok(!allText(ui.panel('overview')).includes('读数提醒'), JSON.stringify(other));
+  }
+  const empty = reviewed(DEID()); empty.has_data = false;
+  ui = await mount(empty); assert.ok(!allText(ui.panel('overview')).includes('读数提醒'));
+});
+
+test('the translation catalog has no key defined twice (a later copy silently wins)', () => {
+  const src = fs.readFileSync(path.join(core, 'i18n_v15.js'), 'utf8'), seen = new Map(), dups = [];
+  src.split('\n').forEach((line, i) => {
+    const m = line.match(/^\s*"((?:\\.|[^"\\])*)"\s*:/); if (!m) return;
+    if (seen.has(m[1])) dups.push(`${m[1]} (lines ${seen.get(m[1])} and ${i + 1})`); else seen.set(m[1], i + 1);
+  });
+  assert.deepStrictEqual(dups, []);
 });
