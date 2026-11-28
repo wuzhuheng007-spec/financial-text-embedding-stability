@@ -1,0 +1,123 @@
+{
+ "protocol": "qqq-x-10y-probe-v1",
+ "requests": 671,
+ "credits": 100650,
+ "usd": 1.0065,
+ "tweets_returned": 6471,
+ "errors": [
+  [
+   "HTTP_503_NOT_CHARGED",
+   503,
+   1
+  ]
+ ],
+ "units": {
+  "COMPLETE": 239,
+  "TRUNCATED": 0,
+  "FAILED": 1,
+  "OPEN": 0,
+  "NOT_RUN": 0
+ },
+ "first_month_with_cash_results": "2016-12",
+ "by_year": {
+  "2016": {
+   "months_run": 1,
+   "cash_mean_per_hour": 3.0,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 3.0,
+   "union_mean_per_hour": 3.0,
+   "bare_only_share_of_union": 0.0,
+   "cash_main_share": 1.0
+  },
+  "2017": {
+   "months_run": 12,
+   "cash_mean_per_hour": 9.2,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 9.8,
+   "union_mean_per_hour": 9.6,
+   "bare_only_share_of_union": 0.043,
+   "cash_main_share": 0.9
+  },
+  "2018": {
+   "months_run": 12,
+   "cash_mean_per_hour": 7.8,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 8.2,
+   "union_mean_per_hour": 8.2,
+   "bare_only_share_of_union": 0.061,
+   "cash_main_share": 0.914
+  },
+  "2019": {
+   "months_run": 12,
+   "cash_mean_per_hour": 7.6,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 8.1,
+   "union_mean_per_hour": 8.1,
+   "bare_only_share_of_union": 0.062,
+   "cash_main_share": 0.934
+  },
+  "2020": {
+   "months_run": 12,
+   "cash_mean_per_hour": 16.3,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 18.3,
+   "union_mean_per_hour": 18.3,
+   "bare_only_share_of_union": 0.109,
+   "cash_main_share": 0.944
+  },
+  "2021": {
+   "months_run": 12,
+   "cash_mean_per_hour": 20.2,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 23.4,
+   "union_mean_per_hour": 23.5,
+   "bare_only_share_of_union": 0.138,
+   "cash_main_share": 0.942
+  },
+  "2022": {
+   "months_run": 12,
+   "cash_mean_per_hour": 33.5,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 35.8,
+   "union_mean_per_hour": 39.4,
+   "bare_only_share_of_union": 0.137,
+   "cash_main_share": 0.881
+  },
+  "2023": {
+   "months_run": 12,
+   "cash_mean_per_hour": 40.5,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 46.2,
+   "union_mean_per_hour": 48.5,
+   "bare_only_share_of_union": 0.165,
+   "cash_main_share": 0.895
+  },
+  "2024": {
+   "months_run": 12,
+   "cash_mean_per_hour": 42.1,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 45.6,
+   "union_mean_per_hour": 50.1,
+   "bare_only_share_of_union": 0.16,
+   "cash_main_share": 0.879
+  },
+  "2025": {
+   "months_run": 12,
+   "cash_mean_per_hour": 44.7,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 53.8,
+   "union_mean_per_hour": 55.2,
+   "bare_only_share_of_union": 0.192,
+   "cash_main_share": 0.896
+  },
+  "2026": {
+   "months_run": 11,
+   "cash_mean_per_hour": 33.1,
+   "cash_months_truncated": 0,
+   "bare_mean_per_hour": 40.5,
+   "union_mean_per_hour": 47.5,
+   "bare_only_share_of_union": 0.304,
+   "cash_main_share": 0.92
+  }
+ }
+}
