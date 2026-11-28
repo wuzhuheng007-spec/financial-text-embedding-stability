@@ -1,0 +1,15 @@
+item,value
+main-sample posts,4335
+model label bearish,423
+model label bullish,2588
+model label failure,431
+model label irrelevant,366
+model label neutral,246
+model label unlabelled,281
+model failure rate (failure / labelled),0.1063
+directional labels whose evidence quote is verbatim in the text,2908
+directional labels with a non-matching or empty quote,103
+inference identities,none=281;59b22a1a723d=25;20cf954bf1af=4029
+"human blind review (double, adjudicated)",NOT DONE - needs two reviewers; precision/recall/confusion matrix pending
+independent model re-label of key cells,NOT DONE - no key cell has enough days
+post-training-cutoff subsample,all held posts are 2026-08..11; model qwen2.5-3b (2024 release) predates them

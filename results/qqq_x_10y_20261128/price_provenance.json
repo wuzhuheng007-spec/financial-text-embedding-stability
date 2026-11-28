@@ -1,0 +1,145 @@
+{
+ "protocol": "qqq-x-10y-regimes-v1",
+ "price": {
+  "vendor": "moomoo (Futu OpenAPI history K-line, read-only export)",
+  "security": "US.QQQ Invesco QQQ Trust (ETF)",
+  "snapshot_sha256": "c5b5ec22b1d3773f6a0345004080d4d2ff10e4cc7d48be21fe13a99cbc6ebe7e",
+  "snapshot_file": "market_research.sqlite",
+  "series_main": "US.QQQ|DAY|a0",
+  "series_dividend_adjusted": "US.QQQ|DAY|a1",
+  "adjustment_main": "none (autype 0); no split in the window, see check_splits",
+  "adjustment_dividend": "moomoo forward adjustment autype 1 (cash dividends)",
+  "session": "regular session daily bars, exchange local date, close 16:00 ET (13:00 on early-close days)",
+  "time_zone": "America/New_York (vendor time_zone field -5, time_key at the session close)",
+  "source_archives": [
+   {
+    "name": "moomoo_history_20261118T214803Z_41e00a.zip",
+    "sha256": "85aa32f5749ceadd3b5eb28245b693063136552a81756edb302acf49b1eeb309",
+    "files": 250
+   },
+   {
+    "name": "moomoo_patch_20261118T221352Z_fa2b41.zip",
+    "sha256": "08ff7106037db53ddc45dc86f93f5d7dcfd3df5e47471d679e02317f1db0f170",
+    "files": 33
+   }
+  ],
+  "first_date": "1999-03-10",
+  "last_date": "2026-11-17"
+ },
+ "study_window_requested": [
+  "2016-11-28",
+  "2026-11-27"
+ ],
+ "last_closed_trading_day_by_calendar": "2026-11-27",
+ "data_end_used": "2026-11-17",
+ "calendar_check": {
+  "window": [
+   "2016-11-28",
+   "2026-11-27"
+  ],
+  "rule_trading_days_to_data_end": 2507,
+  "bars": 2507,
+  "missing_bars": [],
+  "bars_on_rule_holidays": [],
+  "not_research_eligible": [],
+  "tail_gap_after_data_end": [
+   "2026-11-18",
+   "2026-11-19",
+   "2026-11-20",
+   "2026-11-23",
+   "2026-11-24",
+   "2026-11-25",
+   "2026-11-27"
+  ],
+  "early_closes_in_window": [
+   "2017-07-03",
+   "2017-11-24",
+   "2018-07-03",
+   "2018-11-23",
+   "2018-12-24",
+   "2019-07-03",
+   "2019-11-29",
+   "2019-12-24",
+   "2020-11-27",
+   "2020-12-24",
+   "2021-11-26",
+   "2022-11-25",
+   "2023-07-03",
+   "2023-11-24",
+   "2024-07-03",
+   "2024-11-29",
+   "2024-12-24",
+   "2025-07-03",
+   "2025-11-28",
+   "2025-12-24",
+   "2026-11-27"
+  ]
+ },
+ "corporate_actions": {
+  "day_moves_over_20pct": [],
+  "split_detected": false,
+  "note": "moomoo's forward adjustment is not a pure multiplicative factor, so the a1/a0 ratio drifts slightly every day; steps above 0.05% are counted as ex-dividend dates",
+  "ex_dividend_like_steps": 41,
+  "ex_dividend_like_dates": [
+   "2016-12-15",
+   "2017-03-16",
+   "2017-06-15",
+   "2017-09-15",
+   "2017-12-15",
+   "2018-03-16",
+   "2018-06-15",
+   "2018-09-21",
+   "2018-12-21",
+   "2019-03-15",
+   "2019-06-21",
+   "2019-09-20",
+   "2019-12-20",
+   "2020-03-20",
+   "2020-06-19",
+   "2020-09-18",
+   "2020-12-18",
+   "2021-03-19",
+   "2021-06-18",
+   "2021-09-17",
+   "2021-12-17",
+   "2022-03-18",
+   "2022-06-17",
+   "2022-09-16",
+   "2022-12-16",
+   "2023-03-17",
+   "2023-06-16",
+   "2023-09-15",
+   "2023-12-15",
+   "2023-12-26",
+   "2024-03-15",
+   "2024-06-21",
+   "2024-09-20",
+   "2024-12-20",
+   "2025-03-21",
+   "2025-06-20",
+   "2025-09-19",
+   "2025-12-19",
+   "2026-03-20",
+   "2026-06-18",
+   "2026-09-18"
+  ]
+ },
+ "warmup_first_bar": "1999-03-10",
+ "study_trading_days": 2507,
+ "phase_days_in_study": {
+  "NARROW": 472,
+  "OTHER": 1076,
+  "DRAWDOWN": 562,
+  "REBOUND": 397
+ },
+ "overlap_days_narrow_inside_drawdown": 0,
+ "overlap_days_narrow_inside_rebound_phase": 0,
+ "drawdown_events_triggered_in_study": 23,
+ "narrow63_runs_in_study": 17,
+ "outputs_sha256": {
+  "regime_daily_private.csv": "2aeeac218b32a66729467767aa73b98a2104d26d5ee54b07d3bbbeddb09d0a10",
+  "regime_events.csv": "5aff39669b2e7ac582e227838523dea499b386ef4fab0d9f3f0a542674625ee5",
+  "case_comparison.csv": "4575252a96777111a25eff1999e5e6cdf1aaf03a20ec41e3cd37a702e353bdba",
+  "regime_by_month.csv": "784f6a2ce5cfb52337873f3d8111878e38a5b3201bebc80bd05d6890ca9e4b3c"
+ }
+}

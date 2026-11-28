@@ -1,0 +1,101 @@
+{
+ "protocol": "qqq-x-10y-sample-v1",
+ "posts_qqq_topic": 5041,
+ "reasons": {
+  "not_english": 241,
+  "index_only_not_qqq": 198,
+  "main": 4388,
+  "reply": 74,
+  "qqq_not_named": 132,
+  "ticker_string_only": 7,
+  "only_tqqq_sqqq_qqqm": 1
+ },
+ "main_by_label": {
+  "unlabelled": 334,
+  "failure": 431,
+  "bearish": 423,
+  "bullish": 2588,
+  "irrelevant": 366,
+  "neutral": 246
+ },
+ "main_by_layer": {
+  "history_no_floor": 186,
+  "other_topic_query": 150,
+  "floor20_focus": 3908,
+  "floor20_increment": 259,
+  "control_floor20": 17,
+  "control_no_threshold": 1
+ },
+ "main_by_source": {
+  "original": 3446,
+  "quote_own_text": 942
+ },
+ "main_by_ingest": {
+  "BATCH_AFTER_CLOSE": 235,
+  "RETROSPECTIVE_VISIBLE_NOW": 3872,
+  "LIVE": 281
+ },
+ "main_cashtag_vs_bare": {
+  "cashtag": 4379,
+  "bare_only": 9
+ },
+ "main_evidence_in_text": {
+  "True": 2917,
+  "False": 340
+ },
+ "main_dup_text_posts": 22,
+ "main_edited": {
+  "VERSION_UNKNOWN": 4387,
+  "CHANGED_AFTER_FIRST_SEEN_VERSION_UNKNOWN": 1
+ },
+ "first_post_utc": "2026-08-23T14:30:00Z",
+ "last_post_utc": "2026-11-28T02:00:40Z",
+ "months_total": 121,
+ "months_not_searched": 117,
+ "export_meta": {
+  "exported_at_utc": "2026-11-28T08:55:04Z",
+  "store": "production X stance store (online backup copy)",
+  "files": {
+   "posts_qqq": {
+    "rows": 5041,
+    "sha256": "9915cf5197633bd9940cf175a178238fdcbf8ce8cacdd52dd1f5e6ccf0dddbe1"
+   },
+   "topics_qqq": {
+    "rows": 11253,
+    "sha256": "6de599bb7071e4eacdb5da0917694d8e12ea4daa9ebe282d978757f82bc9c1e2"
+   },
+   "labels_qqq": {
+    "rows": 4274,
+    "sha256": "743a8cef3735fc2efd4d527730cd307533d46132df0a93bc03a75a19b7f06fb9"
+   },
+   "queries": {
+    "rows": 82,
+    "sha256": "2ee1333df2374cdf48a206cb27e902a26e22eb70d7911e342add385259787c6d"
+   },
+   "runs": {
+    "rows": 1283,
+    "sha256": "b01ccc091974021d5187dad9874a51231c5e611100e0ae0cbb50666924301c18"
+   },
+   "run_posts": {
+    "rows": 12615,
+    "sha256": "834de9e005a22eb24c91ed2a329d2187acc42b4c70cbf40275569d216d765c4b"
+   },
+   "pages": {
+    "rows": 1488,
+    "sha256": "7b6c9e29441b32f3a4e41178029dad4d2ae0997cd03aac1c3a047f6a8d11ed9e"
+   },
+   "ledger": {
+    "rows": 1591,
+    "sha256": "5062ce88b4376efc02b4513c68718a5c39a4c3d97096616ba8e0f5dd84cb987c"
+   },
+   "plans": {
+    "rows": 5,
+    "sha256": "05024cdc5d01b510420b10f2cb40e7767175d180496dce855a923032dfc7600e"
+   },
+   "watch_authors": {
+    "rows": 25,
+    "sha256": "c916f1d520a056fb9ab6615c6eb125c5d6d4fb28b018ce2865907f2e9164eae0"
+   }
+  }
+ }
+}

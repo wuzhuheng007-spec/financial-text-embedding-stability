@@ -1,0 +1,155 @@
+{
+ "signal_days_with_posts": 68,
+ "eligible_days": 68,
+ "eligible_days_with_mature_10d_outcome": 51,
+ "phase_of_eligible_days": {
+  "REBOUND": 14,
+  "OTHER": 34,
+  "NARROW": 1,
+  "DRAWDOWN": 12,
+  "AFTER_PRICE_DATA_END": 7
+ },
+ "bucket_of_eligible_days": {
+  "P4": 66,
+  "P3": 2
+ },
+ "sentiment_cells_with_days": 36,
+ "sentiment_cells_OK": 0,
+ "price_only_main_h": [
+  {
+   "split": "DEV",
+   "state": "REBOUND",
+   "signal_days": 180,
+   "up": 127,
+   "p_up": 0.7056,
+   "ci_lo": 0.5278,
+   "ci_hi": 0.8778
+  },
+  {
+   "split": "DEV",
+   "state": "DRAWDOWN",
+   "signal_days": 254,
+   "up": 194,
+   "p_up": 0.7638,
+   "ci_lo": 0.6575,
+   "ci_hi": 0.8583
+  },
+  {
+   "split": "DEV",
+   "state": "NARROW",
+   "signal_days": 300,
+   "up": 206,
+   "p_up": 0.6867,
+   "ci_lo": 0.5533,
+   "ci_hi": 0.8067
+  },
+  {
+   "split": "DEV",
+   "state": "OTHER",
+   "signal_days": 539,
+   "up": 343,
+   "p_up": 0.6364,
+   "ci_lo": 0.5399,
+   "ci_hi": 0.7273
+  },
+  {
+   "split": "DEV",
+   "state": "ALL",
+   "signal_days": 1273,
+   "up": 870,
+   "p_up": 0.6834,
+   "ci_lo": 0.6174,
+   "ci_hi": 0.7463
+  },
+  {
+   "split": "VAL",
+   "state": "REBOUND",
+   "signal_days": 102,
+   "up": 43,
+   "p_up": 0.4216,
+   "ci_lo": 0.2745,
+   "ci_hi": 0.598
+  },
+  {
+   "split": "VAL",
+   "state": "DRAWDOWN",
+   "signal_days": 194,
+   "up": 108,
+   "p_up": 0.5567,
+   "ci_lo": 0.3608,
+   "ci_hi": 0.7371
+  },
+  {
+   "split": "VAL",
+   "state": "NARROW",
+   "signal_days": 38,
+   "up": 15,
+   "p_up": 0.3947,
+   "ci_lo": 0.2368,
+   "ci_hi": 0.5526
+  },
+  {
+   "split": "VAL",
+   "state": "OTHER",
+   "signal_days": 157,
+   "up": 102,
+   "p_up": 0.6497,
+   "ci_lo": 0.4395,
+   "ci_hi": 0.8471
+  },
+  {
+   "split": "VAL",
+   "state": "ALL",
+   "signal_days": 491,
+   "up": 268,
+   "p_up": 0.5458,
+   "ci_lo": 0.4277,
+   "ci_hi": 0.664
+  },
+  {
+   "split": "TEST",
+   "state": "REBOUND",
+   "signal_days": 115,
+   "up": 85,
+   "p_up": 0.7391,
+   "ci_lo": 0.5391,
+   "ci_hi": 0.9217
+  },
+  {
+   "split": "TEST",
+   "state": "DRAWDOWN",
+   "signal_days": 104,
+   "up": 72,
+   "p_up": 0.6923,
+   "ci_lo": 0.5192,
+   "ci_hi": 0.8365
+  },
+  {
+   "split": "TEST",
+   "state": "NARROW",
+   "signal_days": 134,
+   "up": 59,
+   "p_up": 0.4403,
+   "ci_lo": 0.2687,
+   "ci_hi": 0.6343
+  },
+  {
+   "split": "TEST",
+   "state": "OTHER",
+   "signal_days": 360,
+   "up": 203,
+   "p_up": 0.5639,
+   "ci_lo": 0.4472,
+   "ci_hi": 0.675
+  },
+  {
+   "split": "TEST",
+   "state": "ALL",
+   "signal_days": 713,
+   "up": 419,
+   "p_up": 0.5877,
+   "ci_lo": 0.5007,
+   "ci_hi": 0.676
+  }
+ ]
+}
