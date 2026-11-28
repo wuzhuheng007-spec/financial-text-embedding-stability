@@ -27,7 +27,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timedelta, timezone
 
-from . import control_pair, batch, provider, stance, store, vocab, watchlist
+from . import control_pair, batch, page_pilot, provider, stance, store, vocab, watchlist
 from .ledger import JobBudget, Ledger, get_meta, set_meta
 
 STATE_KEY, RECEIPT_KEY, RESUME_KEY = "incremental_state", "update_receipt", "credit_hold_cleared"
@@ -132,10 +132,11 @@ def preview(db, cfg: dict, now: datetime, ledger: Ledger) -> dict:
             "per_day_if_every_page_is_full": {"runs": per_day, "keyword_posts": int((len(kw) * s_["pages_per_query"] + ctl_req) * page * per_day), "control_posts": int(ctl_req * page * per_day),
                                               "keyword_share_cap_posts": ((cfg["allocation"]["recent"].get("sub_pools") or {}).get("recent") or {}).get("max_returned_posts_per_day"),
                                               "watched_author_requests": int(len(wa) * s_["pages_per_query"] * per_day)},
-            "usage": ledger.usage(now)}
+            "usage": ledger.usage(now),
+            "page_pilot": page_pilot.preview(db, cfg, now, ledger, keyword_queries=len(kw), watched_queries=len(wa)) if page_pilot.pilot_cfg(cfg) else None}
 
 
-def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger | None = None, audit_db=None) -> dict:
+def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger | None = None, audit_db=None, audit_db_pilot=None) -> dict:
     clock = clock or batch.utc_now
     hold = credit_hold(db)
     out = {"job": "incremental", "started_at_utc": store.iso(clock()), "requests": 0, "units_asked": 0, "returned": 0, "new_posts": 0, "duplicates": 0, "stopped": None,
@@ -145,7 +146,8 @@ def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger |
         return out
     ledger = ledger or Ledger(db, cfg, clock=clock)
     s_, st, cols, closed = settings(cfg), _state(db), {}, set()
-    for u in units(db, cfg, now):
+    us, asked = units(db, cfg, now), []
+    for u in us:
         if u["job_type"] in closed:
             continue
         if u["job_type"] not in cols:
@@ -160,6 +162,7 @@ def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger |
             out["stopped"] = stop.reason
             break
         out["units_asked"] += 1
+        asked.append((u, res))
         for k in ("returned", "new_posts", "duplicates"):
             out[k] += res.get(k) or 0
         if res.get("status") in DONE:                             # only a window that was read moves the query forward
@@ -169,6 +172,18 @@ def run(db, cfg: dict, transport, now: datetime, *, clock=None, ledger: Ledger |
             out["interruptions"].append({"topic_id": u["topic_id"], "reason": res.get("stop_reason")})
     set_meta(db, STATE_KEY, json.dumps(st, sort_keys=True)); db.commit()
     out["requests"] = sum(c.budget.requests for c in cols.values())
+    if page_pilot.pilot_cfg(cfg) and not out["stopped"]:        # pages 2-3 of this round's pilot windows: own store, own caps, regular share kept
+        ok, why = page_pilot.active(cfg, now)
+        if ok:
+            pdb = page_pilot.connect_audit(audit_db_pilot or page_pilot.audit_path(db.execute("PRAGMA database_list").fetchone()[2]))
+            try:
+                out["page_pilot"] = page_pilot.run(db, pdb, cfg, transport, now, ledger=ledger, asked=asked, clock=clock,
+                                                   keyword_queries=sum(1 for u in us if u["job_type"] == "recent"), watched_queries=sum(1 for u in us if u["job_type"] == "watchlist"))
+            finally:
+                pdb.close()
+            out["requests_pilot"] = out["page_pilot"]["requests"]
+        else:
+            out["page_pilot"] = {"job": "page_pilot", "state": why, "requests": 0}
     if control_pair.pairs_cfg(cfg) and not out["stopped"]:       # isolated: its pages and posts go to the audit store, production gets ledger rows only
         adb = control_pair.connect_audit(audit_db or control_pair.audit_path(db.execute("PRAGMA database_list").fetchone()[2]))
         try:

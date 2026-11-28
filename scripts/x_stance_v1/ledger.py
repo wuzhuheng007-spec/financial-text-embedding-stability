@@ -127,8 +127,10 @@ class Ledger:
         out["tolerated_max_posts_per_page"] = self.tolerated
         return out
 
-    def reserve(self, *, pool: str, is_preflight: bool = False, job_type: str | None = None, run_id=None, window=(None, None), cursor=None, attempt: int = 1) -> str:
-        """Atomic: check every cap including the full page about to be requested, then write the reservation."""
+    def reserve(self, *, pool: str, is_preflight: bool = False, job_type: str | None = None, run_id=None, window=(None, None), cursor=None, attempt: int = 1, guard=None) -> str:
+        """Atomic: check every cap including the full page about to be requested, then write the reservation.
+        `guard(ledger, now)` is an extra check of the caller's own, run inside the same transaction; it returns the
+        name of a limit it hits, or None."""
         if pool not in POOLS:
             raise ValueError("unknown pool")
         now = self.clock()
@@ -153,6 +155,10 @@ class Ledger:
                 checks += [("PREFLIGHT_POSTS", fp + self.check_posts > self.pre_posts), ("PREFLIGHT_USD", fc + self.check_credits > self.pre_credits)]
             for kind, over in checks:
                 if over:
+                    raise LimitReached(kind)
+            if guard is not None:
+                kind = guard(self, now)
+                if kind:
                     raise LimitReached(kind)
             rid = uuid.uuid4().hex
             self.db.execute("INSERT INTO x_cost_ledger VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -221,14 +227,14 @@ class Ledger:
 class JobBudget:
     """The collector's view of the ledger for one job. Same three calls the collector makes around every request."""
 
-    def __init__(self, ledger: Ledger, *, pool: str, is_preflight: bool = False, job_type: str | None = None):
-        self.ledger, self.pool, self.is_preflight, self.job_type = ledger, pool, is_preflight, job_type or pool
+    def __init__(self, ledger: Ledger, *, pool: str, is_preflight: bool = False, job_type: str | None = None, guard=None):
+        self.ledger, self.pool, self.is_preflight, self.job_type, self.guard = ledger, pool, is_preflight, job_type or pool, guard
         self.current, self.requests, self.context = None, 0, {}
 
     def reserve_next_page(self, now=None) -> None:
         c = self.context
         self.current = self.ledger.reserve(pool=self.pool, is_preflight=self.is_preflight, job_type=self.job_type, run_id=c.get("run_id"),
-                                           window=(c.get("ws"), c.get("we")), cursor=c.get("cursor"), attempt=c.get("attempt", 1))
+                                           window=(c.get("ws"), c.get("we")), cursor=c.get("cursor"), attempt=c.get("attempt", 1), guard=self.guard)
 
     def charge(self, returned: int, now=None, unique_ids: int | None = None) -> Decimal:
         credits = self.ledger.settle(self.current, returned=returned, unique_ids=returned if unique_ids is None else unique_ids)
