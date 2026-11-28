@@ -1,0 +1,54 @@
+{
+ "trial": "like floor 20 -> 5, offline, QQQ and the other topics (2026-11-27)",
+ "private_location": "the owner's server, trial directory with mode 700 (path kept out of this file); local copies in the owner's private folder",
+ "source_snapshot": {
+  "file": "c_before.sqlite3",
+  "taken_utc": "2026-11-27T05:40:59Z (sqlite online backup of the production store, read-only mount)",
+  "sha256": "331008d7f25d487d883e288177604f11d857ff2883fcb2a4803d943c07419ee8",
+  "bytes": 251863040
+ },
+ "image": {"tag": "quant-personal-app:64d3154", "id": "sha256:68a978fbf9e5dafd5ff5aee639798ff8b50b568ad4cfc7fa8cbac2afe94d2efc", "source_commit": "64d3154"},
+ "config": {
+  "candidate_file": "cand.json = shipped config with aggregation.account_rules.min_likes 5 (and a _trial_note)",
+  "candidate_sha256": "2894b70a50a82c4d91a0282cf556acd7d99ea51cf885eb44938bb35b447c7074",
+  "candidate_config_hash": "b8b8b0d52424ff23defc3960d278a8e1d04ae3b65a2af4dd97428aaac51f97da",
+  "config_version": "x-sentiment-twitterapiio-5000-watchlist-20261123",
+  "rules_version_in_force": "account-rules-v2-20261125-fc399b14 (without the private watch list attached); sample version in production vocab-20261122-a@account-rules-v2-20261125-1b14ca4c",
+  "rules_version_candidate": "account-rules-v2-20261125-273955d9 (without the watch list); with it ...-577326cc"
+ },
+ "classification": {
+  "work_file_sha256": "ada22bf1695f933c37310e364c47946dc1360f59f0f66067a9db14b56b89047c",
+  "work_items": 728, "work_by_queue": {"recent": 471, "history": 257}, "work_created_utc": "2026-11-27T05:44:48Z",
+  "results_sha256": "f5c696c36e0fdb76af5c7ef578c23263df88461259af748afd136b9e5002e3c0",
+  "results_manifest_sha256": "4906c1ea265392f64741f40c287799e5cc03b92ce6495cdd942bfda4ba9090c0",
+  "inference_identity": "20cf954bf1af34ebc6281a79a380dde73913629d3060c63655f42c9cd3a6e243 (production's)",
+  "profile": "simple-v1-qwen25-3b-local-gpu", "engine": "transformers 4.57.1, torch 2.11.0+cu128, CUDA 12.8, local RTX 5070 Ti Laptop GPU"
+ },
+ "outputs": {
+  "compare_json_sha256": "e2545d2115aa1245f08b9398ff41d083e0df666c77ff6766638ef3f262a40686",
+  "a_summary_json_sha256": "f9ea84fdd960f2c0a7e6d07cdadbc6abb5fd333f6afded3d14b8ad0d4f7a0030",
+  "published_counts": ["../20261127/like_floor_5_summary.json", "../20261127/like_floor_5_by_group.json"]
+ },
+ "scripts_sha256": {
+  "t1_prepare.sh": "7456f88da99e7688d6d1835aab28b239f9aad4566780fd349e22f83396561acf",
+  "run_gpu.sh": "31a97960cfe6c5e82137b36ec66fe6a982e400b20b9303c06b6165bbcf2be185",
+  "t2_import.sh": "07ed0290aba15b5251bc2db284fc95267525d4fca279a64ed94e278eed6d5f37",
+  "t2_compare.py": "256c90293f8a263954f9f7ce084a20da8c6087cfb6be6196456d0848d337d959",
+  "t3_reproduce.sh": "ce9179f02e58b2ea2f48c6e444fb31799905310274f06c7ea61c0081ae903479"
+ },
+ "recompute": [
+  "1. sudo bash t3_reproduce.sh  (server; checks the image id and the sha256 of c_before.sqlite3, cand.json, results.jsonl, t2_compare.py and compare.json before it starts)",
+  "2. it makes two fresh copies of c_before.sqlite3 in a new repro_<utc> directory, builds one with cand.json, imports results.jsonl into it only, builds again, and runs t2_compare.py",
+  "3. it compares the new compare.json with the first one field by field and deletes its two working copies; the snapshot stays",
+  "classification itself can be redone with run_gpu.sh on the work file (same model snapshot, greedy decoding); the reproduction above re-uses the recorded results so that the comparison, not the GPU, is what is checked"
+ ],
+ "reproduction_2026_11_28": {
+  "started_utc": "2026-11-28T07:08:17Z", "finished_utc": "2026-11-28T07:14:26Z",
+  "inputs_checked": "image id and five input hashes matched",
+  "import": {"status": "IMPORTED", "lines": 728, "labels_written": 728, "already_present": 0, "rejected": {}},
+  "builds": "both exit 0",
+  "result": "identical: the new compare.json has the same sha256 as the first (e2545d21...), 0 differences",
+  "diff_json_sha256": "d3088d819bb7164cf670fd5261b9c4260dcae9fc6f34a1f62a765474bf0d9b4a"
+ },
+ "deletion": "not done. The trial copy is kept until the owner confirms deletion separately."
+}

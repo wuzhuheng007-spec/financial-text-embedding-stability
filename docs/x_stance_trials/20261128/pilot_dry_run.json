@@ -1,0 +1,20 @@
+{
+ "what": "QQQ-only three-page pilot, dry run on a copy of the production store (tmpfs, no network, production image with the changed files overlaid). No request was sent; no pilot ledger row was written on the copy.",
+ "run_at_utc": "2026-11-28T07:2x",
+ "shipped_state": "NOT_APPROVED",
+ "dry_run_state_with_a_test_approval": "ACTIVE",
+ "regular_queries_per_round": {"keyword": 8, "watched_authors": 24},
+ "headroom_at_run_time": {
+  "budget_day": "2026-11-28",
+  "rounds_left_today": 4,
+  "page_check": {"credits": 375, "posts": 25},
+  "kept_for_regular": {"keyword": {"credits": 12000, "posts": 800}, "watched_authors": {"credits": 5970, "posts": 570}, "historical_pool_left": {"credits": 30000, "posts": 2000}},
+  "used": {"recent_pool": {"credits": 14385, "posts": 779}, "all_jobs_today": {"credits": 14385, "posts": 779}, "rolling_credits_720h": 198480, "pilot": {"requests": 0, "credits": 0}},
+  "ok": true,
+  "pilot_pages_that_fit_now_by_the_guard_alone": 33
+ },
+ "qqq_windows_with_a_cursor_left_by_beijing_day": {"2026-11-25": {"en": 3, "zh": 4}, "2026-11-26": {"en": 9, "zh": 9}, "2026-11-27": {"en": 4, "zh": 5}, "2026-11-28 (to 14:20)": {"en": 8, "zh": 7}},
+ "full_first_pages_with_a_cursor_left_qqq": {"2026-11-25": {"en": 0, "zh": 0}, "2026-11-26": {"en": 6, "zh": 0}, "2026-11-27": {"en": 0, "zh": 0}, "2026-11-28 (to 14:20)": {"en": 2, "zh": 0}},
+ "rounds_per_day_note": "11-25 and 11-27 had 5 rounds (collector outage 11-26 16:20 to 11-27 12:24 Beijing); 11-26 had 9",
+ "caps_proposed": {"max_extra_requests_per_day": 36, "max_extra_usd_per_day": "0.12", "max_extra_requests_total": 108, "max_extra_usd_total": "0.30", "duration": "3 Beijing days"}
+}
