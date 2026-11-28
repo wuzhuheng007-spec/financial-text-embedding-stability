@@ -1,0 +1,22 @@
+{
+ "what": "QQQ-only three-page pilot: owner approval, config commit, overlay web image, release and the first round after it. Counts and hashes only.",
+ "approval": {"by": "owner", "beijing": "2026-11-28 16:3x", "caps": {"requests_per_day": 36, "usd_per_day": "0.12", "requests_total": 108, "usd_total": "0.30"}, "window_beijing": "2026-11-29 00:00 to 2026-12-02 00:00", "window_utc": "2026-11-28T16:00:00Z to 2026-12-01T16:00:00Z"},
+ "config_commit": "7d6b15faa76582c132ab6334c15621b9f34eb0a5 (budget and allocation blocks unchanged, so the preflight binding is unchanged)",
+ "tests": "336 passed, 1 skipped; 1 failure needs scipy, not installed on the local machine (unrelated)",
+ "image": {
+  "tag": "quant-personal-app:7d6b15f", "id": "sha256:5edcdb1eea8aeb5512aba28b8af8c436a2b2a5b0bf5bee3a1dce71b3b7eddf3c",
+  "method": "overlay on quant-personal-app:64d3154, built with no network, user 10001:10001",
+  "files_changed": {
+   "research/x_stance_v1/config/x_stance_v2_twitterapiio_5000_20261122.json": "c0dc882c70f113060c5cb6aa489d45feb2eba04ea87aacbe039e433a9fe90ad8",
+   "scripts/x_stance_v1/incremental.py": "64e2137538bd0642e0f2f96658e7ecb8545d80af1ffb75abfe767abbd7d81f51",
+   "scripts/x_stance_v1/ledger.py": "cf3e191c2c86da596a4fd8650c4629969d3a5ad75b6c29d16576f878f6b56662",
+   "scripts/x_stance_v1/page_pilot.py": "cc63f22ff25619faf700ef1f81f1cb43c1a9c7a00822721cdfc2ea3e08b937ff"
+  },
+  "whole_app_compare": "1,069 files in 64d3154, 1,070 in 7d6b15f; only the four files above differ (page_pilot.py is new)",
+  "preflight_state_on_a_store_copy": "identical under both images (state sha 92192caa...)",
+  "pilot_state_at_build": "BEFORE_START"
+ },
+ "release": {"beijing": "2026-11-28 16:41", "container": "web only, healthy after 9 s", "env_file": "only APP_IMAGE changed", "untouched": ["feed", "news", "db", "proxy", "timers", "updater script (sha d8dcd332..., same as the repo)"], "rollback": "quant-personal-app:64d3154 with the env backup", "page_read": "OK, 150 reading rows", "site_through_tunnel": "302 to login"},
+ "first_round_after_release": {"beijing": "2026-11-28 18:20", "regular_requests": 32, "pilot_state": "BEFORE_START", "pilot_requests": 0, "receipt_ok": true, "pilot_store_present": false, "pilot_ledger_rows": 0},
+ "next": {"first_pilot_round_beijing": "2026-11-29 00:20", "last_pilot_round_beijing": "2026-12-01 22:20", "report_after": "pages 2 and 3 apart: new valid posts, distinct authors, classification failure rate, actual cost"}
+}
