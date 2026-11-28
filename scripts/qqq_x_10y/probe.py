@@ -88,6 +88,47 @@ def plan_cal(main_units=None, years=(2017, 2019, 2021, 2023, 2025, 2026)) -> lis
     return units
 
 
+S1_PROTOCOL = "qqq-x-10y-s1-v1"
+S1_MAX_REQUESTS, S1_MAX_CREDITS = 25_000, 3_000_000      # owner approval 2026-11-29 "Approve S1": hard cap USD 30
+S1_DAYS, S1_REGULAR, S1_OFF = 4, 4, 2
+
+
+def plan_s1(first="2016-12", last="2026-11", data_end=date(2026, 11, 27)) -> list[dict]:
+    """Plan S1 (separate ledger, its own cap). Per month the 4 trading days with the smallest sha256(S1|day|<month>|<day>).
+    Per day the ET wall-clock hours are split into regular hours (those overlapping 09:30 to the close: 09..15, or 09..12
+    on a 13:00 early close) and off hours (the rest). 4 regular and 2 off hours are drawn without replacement by smallest
+    sha256(S1|hour|<day>|<hh>); the inclusion probability is stored per slice. Both queries per slice, read to the end
+    or 10 pages. Order: pass 1 every Q_BARE unit, pass 2 every Q_CASH unit, each pass in sha256(S1|order|<slice>) order,
+    so a stop at the cap leaves an unbiased subset with the main query first."""
+    from zoneinfo import ZoneInfo
+    from . import calendar_us as cal
+    et = ZoneInfo("America/New_York")
+    y, m = map(int, first.split("-")); y1, m1 = map(int, last.split("-"))
+    slices = []
+    while (y, m) <= (y1, m1):
+        mo = f"{y:04d}-{m:02d}"
+        days = [d for d in cal.trading_days(date(y, m, 1), date(y + (m == 12), m % 12 + 1, 1)) if d.month == m and d <= data_end]
+        for d in sorted(sorted(days, key=lambda d: _h(f"{S1_PROTOCOL}|day|{mo}|{d.isoformat()}"))[:S1_DAYS]):
+            close = cal.close_time_et(d).hour
+            reg = list(range(9, close)); off = [h for h in range(24) if h not in reg]
+            key = lambda h: _h(f"{S1_PROTOCOL}|hour|{d.isoformat()}|{h:02d}")
+            pick = [(h, "REGULAR", min(S1_REGULAR, len(reg)) / len(reg)) for h in sorted(reg, key=key)[:S1_REGULAR]]
+            pick += [(h, "OFF", S1_OFF / len(off)) for h in sorted(off, key=key)[:S1_OFF]]
+            for h, kind, p in sorted(pick):
+                a = datetime.combine(d, dtime(0, 0), et) + timedelta(hours=h)
+                slices.append({"slice_id": f"{d.isoformat()}:{h:02d}", "month": mo, "day": d.isoformat(), "hour_et": h,
+                               "session": kind, "incl_prob_hour": round(p, 6), "incl_prob_day": round(min(S1_DAYS, len(days)) / len(days), 6),
+                               "early_close": close == 13, "since_time": int(a.timestamp()), "until_time": int((a + timedelta(hours=1)).timestamp())})
+        y, m = (y + (m == 12), m % 12 + 1)
+    slices.sort(key=lambda s: _h(f"{S1_PROTOCOL}|order|{s['slice_id']}"))
+    units = []
+    for qid in ("Q_BARE", "Q_CASH"):
+        for s in slices:
+            units.append({**s, "unit_id": f"s1:{s['slice_id']}:{qid}", "query_id": qid,
+                          "query": f"{QUERIES[qid]} since_time:{s['since_time']} until_time:{s['until_time']}"})
+    return units
+
+
 SCHEMA = [
     "CREATE TABLE IF NOT EXISTS probe_units(unit_id TEXT PRIMARY KEY, status TEXT NOT NULL, pages INTEGER NOT NULL, cursor TEXT, stop_reason TEXT, updated_utc TEXT)",
     "CREATE TABLE IF NOT EXISTS probe_requests(n INTEGER PRIMARY KEY AUTOINCREMENT, unit_id TEXT NOT NULL, page INTEGER NOT NULL, status TEXT NOT NULL,"
@@ -257,12 +298,13 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("plan"); p.add_argument("out")
     pc = sub.add_parser("plan-cal"); pc.add_argument("out")
+    ps = sub.add_parser("plan-s1"); ps.add_argument("out")
     ro = sub.add_parser("reopen"); ro.add_argument("--out", required=True); ro.add_argument("--unit", required=True); ro.add_argument("--reason", required=True)
     r = sub.add_parser("run"); r.add_argument("--plan", required=True); r.add_argument("--out", required=True); r.add_argument("--cutoff-utc", required=True)
-    r.add_argument("--plan-name", default="main", choices=["main", "cal"])
+    r.add_argument("--plan-name", default="main", choices=["main", "cal", "s1"])
     a = ap.parse_args(argv)
-    if a.cmd in ("plan", "plan-cal"):
-        u = plan() if a.cmd == "plan" else plan_cal(); Path(a.out).write_text(json.dumps(u, indent=1), encoding="utf-8")
+    if a.cmd in ("plan", "plan-cal", "plan-s1"):
+        u = {"plan": plan, "plan-cal": plan_cal, "plan-s1": plan_s1}[a.cmd](); Path(a.out).write_text(json.dumps(u, indent=1), encoding="utf-8")
         print(json.dumps({"units": len(u), "sha256": _h(json.dumps(u, sort_keys=True))})); return
     if a.cmd == "reopen":
         print(json.dumps(reopen_503(Path(a.out), a.unit, a.reason))); return
@@ -273,7 +315,13 @@ def main(argv=None):
     t = P.UrllibTransport(key, min_interval=MIN_INTERVAL)
     units = json.loads(Path(a.plan).read_text(encoding="utf-8"))
     cut = datetime.fromisoformat(a.cutoff_utc.replace("Z", "+00:00"))
-    caps = {"plan_max_requests": CAL_MAX_REQUESTS, "plan_max_credits": CAL_MAX_CREDITS} if a.plan_name == "cal" else {}
+    if a.plan_name == "s1":          # S1 has its own ledger: refuse to run it in the probe ledger
+        if (Path(a.out) / "probe_ledger.sqlite3").exists() and _open(Path(a.out)).execute(
+                "SELECT COUNT(*) FROM probe_requests WHERE plan!='s1'").fetchone()[0]:
+            raise SystemExit("refused: S1 must use its own ledger")
+        caps = {"max_requests": S1_MAX_REQUESTS, "max_credits": S1_MAX_CREDITS}
+    else:
+        caps = {"plan_max_requests": CAL_MAX_REQUESTS, "plan_max_credits": CAL_MAX_CREDITS} if a.plan_name == "cal" else {}
     print(json.dumps(run(units, Path(a.out), t, cut, schema_error=P.page_schema_error, http_error=P.ProviderHTTPError,
                          plan_name=a.plan_name, **caps)))
 

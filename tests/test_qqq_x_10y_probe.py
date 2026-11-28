@@ -172,6 +172,25 @@ def test_reopen_only_a_503_unit_and_resume_from_its_cursor(tmp_path):
         P.reopen_503(tmp_path, "m0:Q", "again")                                               # complete units are refused
 
 
+def test_s1_plan_four_days_six_slices_bare_pass_first():
+    u = P.plan_s1()
+    assert len(u) == 120 * 4 * 6 * 2 and P.plan_s1() == u
+    half = len(u) // 2
+    assert {x["query_id"] for x in u[:half]} == {"Q_BARE"} and {x["query_id"] for x in u[half:]} == {"Q_CASH"}
+    assert [x["slice_id"] for x in u[:half]] == [x["slice_id"] for x in u[half:]]           # same order in both passes
+    by_day = {}
+    for x in u[:half]:
+        by_day.setdefault(x["day"], []).append(x)
+    assert len(by_day) == 480 and all(len(v) == 6 for v in by_day.values())
+    for v in by_day.values():
+        reg = [x for x in v if x["session"] == "REGULAR"]
+        assert len(reg) == 4 and all(9 <= x["hour_et"] < (13 if x["early_close"] else 16) for x in reg)
+        assert all(x["until_time"] - x["since_time"] == 3600 for x in v)
+    assert {x["incl_prob_hour"] for x in u if x["session"] == "REGULAR" and not x["early_close"]} == {round(4 / 7, 6)}
+    assert len({x["month"] for x in u}) == 120 and max(x["day"] for x in u) <= "2026-11-27"
+    assert [x["day"] for x in u[:half]] != sorted(x["day"] for x in u[:half])
+
+
 def test_calibration_plan_six_days_24_hours_both_queries_on_main_days():
     main = P.plan(); cal = P.plan_cal(main)
     assert len(cal) == 6 * 24 * 2
