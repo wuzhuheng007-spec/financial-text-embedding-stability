@@ -93,3 +93,90 @@ def test_resume_skips_finished_units_and_continues_cursor(tmp_path):
     assert net.calls[0]["cursor"] == "c1"                                    # unit 2 resumed from its cursor
     with pytest.raises(SystemExit):
         P.run(units(4), tmp_path, Net(), T0 + timedelta(hours=1), clock=lambda: T0)   # a different plan is refused
+
+
+class Crash(BaseException):
+    """Stands for the process dying: not an Exception, so nothing in the probe catches it."""
+
+
+class ReceivedThenCrash(Net):
+    def __init__(self, crash_on_call, **k):
+        super().__init__(**k); self.crash_on = crash_on_call
+
+    def get(self, params):
+        page = super().get(params)                  # the provider has the request (and would charge it)
+        if len(self.calls) == self.crash_on:
+            raise Crash()
+        return page
+
+
+def test_interrupted_after_send_counts_worst_case_and_is_never_resent(tmp_path):
+    u = units(3)
+    net = ReceivedThenCrash(2, pages_per_unit=1)
+    with pytest.raises(Crash):
+        P.run(u, tmp_path, net, T0 + timedelta(hours=1), clock=lambda: T0)
+    (tmp_path / P.LOCK).unlink(missing_ok=True)     # after a kill -9 the lock stays and is removed by hand
+    db = sqlite3.connect(tmp_path / "probe_ledger.sqlite3")
+    assert db.execute("SELECT status, credits FROM probe_requests ORDER BY n").fetchall() == [("OK", 300), ("RESERVED", 375)]
+    db.close()
+    net2 = Net(pages_per_unit=1)
+    r = P.run(u, tmp_path, net2, T0 + timedelta(hours=1), clock=lambda: T0)
+    assert r["recovered_reservations"] == 1
+    assert [c["query"] for c in net2.calls] == ["q2"]          # q1 (uncertain) is not sent again
+    assert r["units"] == {"COMPLETE": 2, "UNCERTAIN": 1} and r["credits"] == 300 + 375 + 300
+
+
+def test_reservation_counts_against_the_cap_before_the_answer(tmp_path):
+    seen = []
+
+    class Peek(Net):
+        def get(self, params):
+            db = sqlite3.connect(tmp_path / "probe_ledger.sqlite3")
+            seen.append(db.execute("SELECT status, credits FROM probe_requests ORDER BY n DESC LIMIT 1").fetchone()); db.close()
+            return super().get(params)
+    P.run(units(1), tmp_path, Peek(), T0 + timedelta(hours=1), clock=lambda: T0)
+    assert seen == [("RESERVED", 375)]
+
+
+def test_only_one_instance(tmp_path):
+    (tmp_path / P.LOCK).write_text("other")
+    with pytest.raises(SystemExit, match="ANOTHER_INSTANCE"):
+        P.run(units(1), tmp_path, Net(), T0 + timedelta(hours=1), clock=lambda: T0)
+
+
+def test_plans_share_the_total_cap_and_keep_their_own(tmp_path):
+    P.run(units(3), tmp_path, Net(), T0 + timedelta(hours=1), clock=lambda: T0)              # main: 3 requests, 900 credits
+    cal = [{"unit_id": f"cal:{i}", "query": f"c{i}"} for i in range(10)]
+    r = P.run(cal, tmp_path, Net(), T0 + timedelta(hours=1), clock=lambda: T0, plan_name="cal", max_requests=5)
+    assert r["stopped"] == "REQUEST_CAP" and r["requests"] == 5 and r["plan_requests"] == 2
+    r = P.run(cal, tmp_path / "x", Net(), T0 + timedelta(hours=1), clock=lambda: T0, plan_name="cal", plan_max_credits=375 * 2)
+    assert r["stopped"] == "PLAN_CREDIT_CAP" and r["plan_requests"] == 2
+
+
+def test_reopen_only_a_503_unit_and_resume_from_its_cursor(tmp_path):
+    net = Net(pages_per_unit=3)
+    calls = {"n": 0}
+
+    class Once503(Net):
+        def get(self, params):
+            calls["n"] += 1
+            if calls["n"] == 2:
+                raise Err(503, "HTTP_503_NOT_CHARGED")
+            return super().get(params)
+    r = P.run(units(1), tmp_path, Once503(pages_per_unit=3), T0 + timedelta(hours=1), clock=lambda: T0, http_error=Err)
+    assert r["units"] == {"FAILED": 1} and r["credits"] == 300
+    P.reopen_503(tmp_path, "m0:Q", "owner: resume the 503 unit")
+    r = P.run(units(1), tmp_path, net, T0 + timedelta(hours=1), clock=lambda: T0)
+    assert r["units"] == {"COMPLETE": 1} and [c["cursor"] for c in net.calls] == ["c1", "c2"]
+    with pytest.raises(SystemExit):
+        P.reopen_503(tmp_path, "m0:Q", "again")                                               # complete units are refused
+
+
+def test_calibration_plan_six_days_24_hours_both_queries_on_main_days():
+    main = P.plan(); cal = P.plan_cal(main)
+    assert len(cal) == 6 * 24 * 2
+    days = sorted({u["day"] for u in cal}); assert len(days) == 6
+    assert set(days) <= {u["day"] for u in main}
+    for d in days:
+        sl = sorted((u["since_time"], u["until_time"]) for u in cal if u["day"] == d and u["query_id"] == "Q_CASH")
+        assert all(b == a2 for (_, b), (a2, _) in zip(sl, sl[1:])) and all(b - a == 3600 for a, b in sl)
