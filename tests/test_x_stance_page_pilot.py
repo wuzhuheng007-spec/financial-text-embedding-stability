@@ -67,14 +67,21 @@ def inc(db, cfg, net, t, clock=None, audit=None):
     return incremental.run(db, cfg, net, t, clock=clk, ledger=Ledger(db, cfg, clock=clk), audit_db_pilot=audit)
 
 
-def test_shipped_pilot_is_inactive_and_sends_nothing(dbs):
+def test_shipped_pilot_is_the_approved_three_beijing_days_and_sends_nothing_outside_them(dbs):
     db, a = dbs
     c = C.load()
-    assert page_pilot.active(c, T0) == (False, "NOT_APPROVED")
+    p = page_pilot.pilot_cfg(c)
+    assert p["approved"] and p["topic_ids"] == ["qqq"] and p["pages_per_query"] == 3
+    assert p["caps"] == {"max_extra_requests_per_day": 36, "max_extra_usd_per_day": "0.12",
+                         "max_extra_requests_total": 108, "max_extra_usd_total": "0.30"}
+    start, end = store.parse(p["active_from_utc"]), store.parse(p["active_until_utc"])
+    assert end - start == timedelta(days=3) and (start + timedelta(hours=8)).hour == 0   # Beijing midnight to midnight
+    assert page_pilot.active(c, T0) == (False, "BEFORE_START")
+    assert page_pilot.active(c, start) == (True, "ACTIVE") and page_pilot.active(c, end) == (False, "ENDED")
     c["topics"] = [t for t in c["topics"] if t["id"] == "qqq"]; c["languages"] = ["en"]
     c["incremental"] = {**c["incremental"], "include_watchlist": False, "control_pairs": [], "query_suffix": "", "lag_hours": 0}
     net = Net(); out = inc(db, c, net, T0, audit=a)
-    assert out["page_pilot"]["state"] == "NOT_APPROVED" and out["page_pilot"]["requests"] == 0
+    assert out["page_pilot"]["state"] == "BEFORE_START" and out["page_pilot"]["requests"] == 0
     assert len(net.requests) == 1 and not a.exists()
 
 
