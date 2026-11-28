@@ -1,0 +1,7 @@
+era,source,items,discusses_qqq_Y,not_N,unclear_U,share_Y,share_Y_or_U,reviewer
+2016-2019,bare_only,12,9,2,1,0.75,0.833,"Claude (model), blind to source and era; not a human review"
+2016-2019,both,12,2,10,0,0.167,0.167,"Claude (model), blind to source and era; not a human review"
+2020-2022,bare_only,20,13,6,1,0.65,0.7,"Claude (model), blind to source and era; not a human review"
+2020-2022,both,20,11,7,2,0.55,0.65,"Claude (model), blind to source and era; not a human review"
+2023-2026,bare_only,20,6,8,6,0.3,0.6,"Claude (model), blind to source and era; not a human review"
+2023-2026,both,20,5,10,5,0.25,0.5,"Claude (model), blind to source and era; not a human review"

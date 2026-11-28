@@ -1,123 +1,242 @@
 {
- "protocol": "qqq-x-10y-probe-v1",
- "requests": 671,
- "credits": 100650,
- "usd": 1.0065,
- "tweets_returned": 6471,
- "errors": [
+ "protocol": "qqq-x-10y-probe-summary-v2",
+ "ledger_by_plan": {
+  "cal": {
+   "requests": 400,
+   "credits": 30900,
+   "tweets": 1871
+  },
+  "main": {
+   "requests": 672,
+   "credits": 100665,
+   "tweets": 6471
+  }
+ },
+ "requests_total": 1072,
+ "credits_total": 131565,
+ "usd_total": 1.3156,
+ "non_ok_requests": [
   [
    "HTTP_503_NOT_CHARGED",
    503,
    1
   ]
  ],
- "units": {
-  "COMPLETE": 239,
+ "main_units": {
+  "COMPLETE": 240,
   "TRUNCATED": 0,
-  "FAILED": 1,
+  "FAILED": 0,
+  "UNCERTAIN": 0,
   "OPEN": 0,
   "NOT_RUN": 0
  },
- "first_month_with_cash_results": "2016-12",
+ "months": {
+  "PAIRED_COMPLETE": 120,
+  "PAIRED_LOWER_BOUND": 0,
+  "HALF_MISSING": 0
+ },
+ "earliest_month_observed_in_this_sample": "2016-12",
+ "records_without_id": 0,
+ "main_missing_author_ids": 0,
+ "calibration": {
+  "2017-03-27": {
+   "hours_complete": 24,
+   "all_24_complete": true,
+   "main_union_day_observed": 135,
+   "main_union_11h": 11,
+   "ratio_day_to_11h": 12.27
+  },
+  "2019-02-13": {
+   "hours_complete": 24,
+   "all_24_complete": true,
+   "main_union_day_observed": 113,
+   "main_union_11h": 7,
+   "ratio_day_to_11h": 16.14
+  },
+  "2021-08-20": {
+   "hours_complete": 24,
+   "all_24_complete": true,
+   "main_union_day_observed": 266,
+   "main_union_11h": 22,
+   "ratio_day_to_11h": 12.09
+  },
+  "2023-04-03": {
+   "hours_complete": 22,
+   "all_24_complete": false,
+   "main_union_day_observed": 388,
+   "main_union_11h": 42,
+   "ratio_day_to_11h": null
+  },
+  "2025-09-17": {
+   "hours_complete": 0,
+   "all_24_complete": false,
+   "main_union_day_observed": 0,
+   "main_union_11h": null,
+   "ratio_day_to_11h": null
+  },
+  "2026-03-06": {
+   "hours_complete": 0,
+   "all_24_complete": false,
+   "main_union_day_observed": 0,
+   "main_union_11h": null,
+   "ratio_day_to_11h": null
+  }
+ },
+ "calibration_units": {
+  "COMPLETE": 189,
+  "TRUNCATED": 0,
+  "FAILED": 0,
+  "UNCERTAIN": 0,
+  "OPEN": 1,
+  "NOT_RUN": 98
+ },
  "by_year": {
   "2016": {
-   "months_run": 1,
-   "cash_mean_per_hour": 3.0,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 3.0,
-   "union_mean_per_hour": 3.0,
-   "bare_only_share_of_union": 0.0,
-   "cash_main_share": 1.0
+   "planned_months": 1,
+   "paired_complete": 1,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 3.0,
+   "main_cash_mean_per_hour": 3.0,
+   "main_bare_only_share": 0.0,
+   "main_bare_word_gain_share": 0.0,
+   "main_cash_query_recall_gap_share": 0.0,
+   "main_union_authors_mean": 3.0
   },
   "2017": {
-   "months_run": 12,
-   "cash_mean_per_hour": 9.2,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 9.8,
-   "union_mean_per_hour": 9.6,
-   "bare_only_share_of_union": 0.043,
-   "cash_main_share": 0.9
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 8.7,
+   "main_cash_mean_per_hour": 8.2,
+   "main_bare_only_share": 0.048,
+   "main_bare_word_gain_share": 0.048,
+   "main_cash_query_recall_gap_share": 0.0,
+   "main_union_authors_mean": 7.3
   },
   "2018": {
-   "months_run": 12,
-   "cash_mean_per_hour": 7.8,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 8.2,
-   "union_mean_per_hour": 8.2,
-   "bare_only_share_of_union": 0.061,
-   "cash_main_share": 0.914
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 7.4,
+   "main_cash_mean_per_hour": 7.1,
+   "main_bare_only_share": 0.045,
+   "main_bare_word_gain_share": 0.045,
+   "main_cash_query_recall_gap_share": 0.0,
+   "main_union_authors_mean": 6.7
   },
   "2019": {
-   "months_run": 12,
-   "cash_mean_per_hour": 7.6,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 8.1,
-   "union_mean_per_hour": 8.1,
-   "bare_only_share_of_union": 0.062,
-   "cash_main_share": 0.934
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 7.3,
+   "main_cash_mean_per_hour": 7.1,
+   "main_bare_only_share": 0.034,
+   "main_bare_word_gain_share": 0.034,
+   "main_cash_query_recall_gap_share": 0.0,
+   "main_union_authors_mean": 6.5
   },
   "2020": {
-   "months_run": 12,
-   "cash_mean_per_hour": 16.3,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 18.3,
-   "union_mean_per_hour": 18.3,
-   "bare_only_share_of_union": 0.109,
-   "cash_main_share": 0.944
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 16.8,
+   "main_cash_mean_per_hour": 15.4,
+   "main_bare_only_share": 0.08,
+   "main_bare_word_gain_share": 0.08,
+   "main_cash_query_recall_gap_share": 0.0,
+   "main_union_authors_mean": 14.2
   },
   "2021": {
-   "months_run": 12,
-   "cash_mean_per_hour": 20.2,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 23.4,
-   "union_mean_per_hour": 23.5,
-   "bare_only_share_of_union": 0.138,
-   "cash_main_share": 0.942
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 21.5,
+   "main_cash_mean_per_hour": 19.1,
+   "main_bare_only_share": 0.112,
+   "main_bare_word_gain_share": 0.066,
+   "main_cash_query_recall_gap_share": 0.047,
+   "main_union_authors_mean": 19.8
   },
   "2022": {
-   "months_run": 12,
-   "cash_mean_per_hour": 33.5,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 35.8,
-   "union_mean_per_hour": 39.4,
-   "bare_only_share_of_union": 0.137,
-   "cash_main_share": 0.881
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 33.5,
+   "main_cash_mean_per_hour": 29.5,
+   "main_bare_only_share": 0.119,
+   "main_bare_word_gain_share": 0.062,
+   "main_cash_query_recall_gap_share": 0.057,
+   "main_union_authors_mean": 29.9
   },
   "2023": {
-   "months_run": 12,
-   "cash_mean_per_hour": 40.5,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 46.2,
-   "union_mean_per_hour": 48.5,
-   "bare_only_share_of_union": 0.165,
-   "cash_main_share": 0.895
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 42.9,
+   "main_cash_mean_per_hour": 36.2,
+   "main_bare_only_share": 0.155,
+   "main_bare_word_gain_share": 0.064,
+   "main_cash_query_recall_gap_share": 0.091,
+   "main_union_authors_mean": 37.7
   },
   "2024": {
-   "months_run": 12,
-   "cash_mean_per_hour": 42.1,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 45.6,
-   "union_mean_per_hour": 50.1,
-   "bare_only_share_of_union": 0.16,
-   "cash_main_share": 0.879
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 43.3,
+   "main_cash_mean_per_hour": 37.0,
+   "main_bare_only_share": 0.146,
+   "main_bare_word_gain_share": 0.073,
+   "main_cash_query_recall_gap_share": 0.073,
+   "main_union_authors_mean": 37.9
   },
   "2025": {
-   "months_run": 12,
-   "cash_mean_per_hour": 44.7,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 53.8,
-   "union_mean_per_hour": 55.2,
-   "bare_only_share_of_union": 0.192,
-   "cash_main_share": 0.896
+   "planned_months": 12,
+   "paired_complete": 12,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 49.2,
+   "main_cash_mean_per_hour": 40.0,
+   "main_bare_only_share": 0.188,
+   "main_bare_word_gain_share": 0.066,
+   "main_cash_query_recall_gap_share": 0.122,
+   "main_union_authors_mean": 40.2
   },
   "2026": {
-   "months_run": 11,
-   "cash_mean_per_hour": 33.1,
-   "cash_months_truncated": 0,
-   "bare_mean_per_hour": 40.5,
-   "union_mean_per_hour": 47.5,
-   "bare_only_share_of_union": 0.304,
-   "cash_main_share": 0.92
+   "planned_months": 11,
+   "paired_complete": 11,
+   "paired_lower_bound": 0,
+   "half_missing": 0,
+   "main_union_mean_per_hour": 44.1,
+   "main_cash_mean_per_hour": 30.5,
+   "main_bare_only_share": 0.309,
+   "main_bare_word_gain_share": 0.076,
+   "main_cash_query_recall_gap_share": 0.233,
+   "main_union_authors_mean": 39.4
   }
- }
+ },
+ "blind_pool_by_era": {
+  "2016-2019": {
+   "bare_only": 12,
+   "both": 272
+  },
+  "2020-2022": {
+   "bare_only": 93,
+   "both": 734
+  },
+  "2023-2026": {
+   "bare_only": 417,
+   "both": 1531
+  }
+ },
+ "blind_items": 104
 }
